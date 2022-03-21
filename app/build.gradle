@@ -1,0 +1,56 @@
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+bootJar {
+    mainClass = 'com.howoocast.hywtl_has.Application'
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
+    implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
+    implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+    implementation "com.querydsl:querydsl-core:${querydslVersion}"
+    implementation "com.querydsl:querydsl-apt:${querydslVersion}"
+    implementation "org.mariadb.jdbc:mariadb-java-client:${mariadbDriverVersion}"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.assertj:assertj-core:3.22.0'
+
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+compileJava {
+    options.compilerArgs += [
+            '-Amapstruct.suppressGeneratorTimestamp=false',
+            '-Amapstruct.suppressGeneratorVersionInfoComment=false',
+            '-Amapstruct.verbose=false',
+            '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+test {
+    useJUnitPlatform()
+}

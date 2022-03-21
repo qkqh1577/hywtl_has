@@ -1,0 +1,32 @@
+buildscript {
+    ext {
+        springBootVersion = '2.6.4'
+        lombokVersion = '1.18.22'
+        mariadbDriverVersion = '2.7.3'
+        querydslVersion = '5.0.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.6.4'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    }
+}
+
+allprojects {
+    group = 'com.howoocast.hywtl_has'
+    version = '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = '11'
+
+    repositories {
+        mavenCentral()
+    }
+}

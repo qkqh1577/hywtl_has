@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+    db:
+        build:
+            context: db
+            dockerfile: DockerFiles
+        ports:
+            - "3304:3306"
+        volumes:
+            - ./db/initdb.d:/docker-entrypoint-initdb.d
+        env_file: db/.env
+        environment:
+            TZ: Asia/Seoul
+        restart: always
