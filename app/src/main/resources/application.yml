@@ -5,7 +5,7 @@ logging:
     level:
         root: INFO
         web: DEBUG
-        com.hwoocast: DEBUG
+        com.howoocast: DEBUG
 
 spring:
     datasource:

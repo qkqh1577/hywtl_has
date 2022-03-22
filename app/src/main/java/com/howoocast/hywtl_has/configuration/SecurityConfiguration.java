@@ -27,7 +27,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/")
             .permitAll()
             .antMatchers("/**")
-            .denyAll()
+             // TODO: 권한 및 url 체계 확정 후 denyAll로 전환 
+            .permitAll()
         ;
     }
 

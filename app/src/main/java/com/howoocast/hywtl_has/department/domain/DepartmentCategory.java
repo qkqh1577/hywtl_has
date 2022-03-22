@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.department.domain;
 
-public enum DepartmentCategories {
+public enum DepartmentCategory {
     COMPANY, // 회사
     HQ, // 본부
     TEAM, // 팀
