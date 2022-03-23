@@ -5,11 +5,13 @@ import { Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DepartmentPage from 'page/DepartmentPage';
+import DetailPage from 'page/DetailPage';
 
 const theme = createTheme();
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: '#faa'
+    backgroundColor: '#eee',
+    color: '#fff',
   }
 }));
 
@@ -19,7 +21,12 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <Grid container spacing={3} className={classes.root}>
-          <DepartmentPage />
+          <Grid item container sm={6}>
+            <DepartmentPage />
+          </Grid>
+          <Grid item container sm={6}>
+            <DetailPage />
+          </Grid>
         </Grid>
       </ThemeProvider>
     </Provider>
