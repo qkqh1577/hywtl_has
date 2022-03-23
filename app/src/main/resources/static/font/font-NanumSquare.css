@@ -1,0 +1,40 @@
+ @font-face {
+    font-family: 'NanumSquare';
+    font-style: normal;
+    font-weight: 100;
+    src: 
+		url(/font/NanumSquareL.woff) url(NanumSquareL.woff) format('woff'),
+		url(/font/NanumSquareL.otf) url(NanumSquareL.otf) format('opentype');
+  }
+  @font-face {
+     font-family: 'NanumSquare';
+     font-style: normal;
+     font-weight: 400;
+     src: 
+		url(/font/NanumSquareR.woff) url(NanumSquareR.woff) format('woff'),
+		url(/font/NanumSquareR.otf) url(NanumSquareR.otf) format('opentype');
+   }
+  @font-face {
+     font-family: 'NanumSquare';
+     font-style: normal;
+     font-weight: 500;
+     src: 
+		url(/font/NanumSquareR.woff) url(NanumSquareR.woff) format('woff'),
+		url(/font/NanumSquareR.otf) url(NanumSquareR.otf) format('opentype');
+   }
+  @font-face {
+     font-family: 'NanumSquare';
+     font-style: normal;
+     font-weight: 700;
+     src: 
+		url(/font/NanumSquareB.woff) url(NanumSquareB.woff) format('woff'),
+		url(/font/NanumSquareB.otf) url(NanumSquareB.otf) format('opentype');
+   }
+  @font-face {
+     font-family: 'NanumSquare';
+     font-style: normal;
+     font-weight: 900;
+     src: 
+		url(/font/NanumSquareEB.woff) url(NanumSquareEB.woff) format('woff'),
+		url(/font/NanumSquareEB.otf) url(NanumSquareEB.otf) format('opentype');
+   } 
