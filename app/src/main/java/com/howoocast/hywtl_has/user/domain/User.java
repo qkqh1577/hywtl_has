@@ -62,13 +62,13 @@ public class User {
     private LocalDateTime removedTime; // 삭제 일자
 
     public static User add(
-        UserRepository provider,
-        String username,
-        String password,
-        String name,
-        String email,
-        Department department,
-        UserRole userRole
+            UserRepository provider,
+            String username,
+            String password,
+            String name,
+            String email,
+            Department department,
+            UserRole userRole
     ) {
         if (provider.findByUsername(username).isPresent()) {
             throw new DuplicatedValueException("username", username);
@@ -86,6 +86,14 @@ public class User {
         user.userRole = userRole;
 
         return user;
+    }
+
+    public void change(
+            String name,
+            String email
+    ) {
+        this.name = name;
+        this.email = email;
     }
 
 }
