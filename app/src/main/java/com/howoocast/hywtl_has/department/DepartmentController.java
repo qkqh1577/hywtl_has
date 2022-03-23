@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentPredicateBuilder;
 import com.howoocast.hywtl_has.department.service.DepartmentService;
+import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import java.util.List;
 import javax.validation.Valid;
@@ -43,6 +44,11 @@ public class DepartmentController {
                 .build(),
             pageable
         );
+    }
+
+    @GetMapping(value = "/departments/all")
+    public List<DepartmentListView> list() {
+        return departmentService.list();
     }
 
     @GetMapping("/departments/{id}")

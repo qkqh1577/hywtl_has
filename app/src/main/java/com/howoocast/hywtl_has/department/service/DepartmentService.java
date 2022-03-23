@@ -5,9 +5,12 @@ import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +32,11 @@ public class DepartmentService {
             .map(p -> departmentRepository.findAll(p, pageable))
             .orElse(departmentRepository.findAll(pageable))
             .map(DepartmentView::assemble);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DepartmentListView> list() {
+        return departmentRepository.findAll().stream().map(DepartmentListView::assemble).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

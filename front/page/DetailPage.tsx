@@ -1,17 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import useDepartment from 'department/hook';
-import { Box, Button, Grid, MenuItem, Select, TextField } from '@mui/material';
+import { Button, Grid, MenuItem, TextField } from '@mui/material';
 import { DepartmentChangeParameter, DepartmentQuery } from 'department/parameter';
 import { makeStyles } from '@mui/styles';
 import { departmentCategoryList, departmentCategoryName } from 'department/data';
 import { DepartmentCategory } from 'department/Department';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 
 const useStyles = makeStyles(() => ({
   component: {
     alignContent: 'flex-start',
+  },
+  input: {
+    width: '100%'
   }
 }));
+
+type DepartmentType = {
+  name: string;
+  category: DepartmentCategory | 'unselect';
+  seq: number;
+  memo: string;
+}
+
+const initialState: DepartmentType = {
+  name: '',
+  category: 'unselect',
+  seq: 0,
+  memo: '',
+};
+
 const DetailPage = () => {
   const classes = useStyles();
 
@@ -28,15 +46,7 @@ const DetailPage = () => {
     selectOne: selectDepartment
   } = useDepartment();
 
-  const [departmentParams, setDepartmentParams] = useState<{
-    name: string;
-    category: DepartmentCategory | 'unselect';
-    memo?: string;
-    seq?: number;
-  }>({
-    name: '',
-    category: 'unselect',
-  });
+  const [departmentParams, setDepartmentParams] = useState<DepartmentType>(initialState);
 
   const submitHandler = (values: any, { setSubmitting }: FormikHelpers<any>) => {
     if (!departmentDetail) {
@@ -81,7 +91,10 @@ const DetailPage = () => {
   useEffect(() => {
     if (departmentDetail) {
       setDepartmentParams({
-        ...departmentDetail
+        name: departmentDetail.name ?? initialState.name,
+        category: departmentDetail.category ?? initialState.category,
+        seq: departmentDetail.seq ?? initialState.seq,
+        memo: departmentDetail.memo ?? initialState.memo,
       });
     }
   }, [departmentDetail]);
@@ -96,37 +109,35 @@ const DetailPage = () => {
           <Grid item sm={12}>
             {departmentDetail && (<h2>부서 상세</h2>)}
           </Grid>
-
           <Formik
             initialValues={departmentParams}
             enableReinitialize
             onSubmit={submitHandler}
           >
             {({ values, handleChange, handleSubmit }) => (
-              <Form
-                autoComplete="off"
-              >
+              <Grid container spacing={3}>
                 <Grid item sm={6}>
                   <TextField
                     type="text"
                     name="name"
-                    placeholder="부서명을 입력하세요"
                     label="부서명"
                     value={values.name}
                     onChange={handleChange}
+                    placeholder="부서명을 입력하세요"
+                    className={classes.input}
                     required
                   />
                 </Grid>
                 <Grid item sm={6}>
                   <TextField
-                    id="category"
                     select
                     type="select"
                     name="category"
+                    label="부서 유형"
                     value={values.category}
                     onChange={handleChange}
                     placeholder="부서 유형을 선택하세요"
-                    label="부서 유형"
+                    className={classes.input}
                     required
                   >
                     <MenuItem value="unselect">선택</MenuItem>
@@ -136,6 +147,29 @@ const DetailPage = () => {
                       </MenuItem>
                     ))}
                   </TextField>
+                </Grid>
+                <Grid item sm={6}>
+                  <TextField
+                    type="number"
+                    name="seq"
+                    label="노출 순서"
+                    value={values.seq}
+                    onChange={handleChange}
+                    placeholder="노출 순서를 지정하세요"
+                    className={classes.input}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <TextField
+                    type="text"
+                    name="memo"
+                    label="설명"
+                    value={values.memo}
+                    onChange={handleChange}
+                    placeholder="설명을 입력하세요"
+                    className={classes.input}
+                  />
                 </Grid>
                 <Grid item sm={12}>
                   <Button
@@ -155,7 +189,7 @@ const DetailPage = () => {
                     저장
                   </Button>
                 </Grid>
-              </Form>
+              </Grid>
             )}
           </Formik>
         </>

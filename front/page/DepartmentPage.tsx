@@ -79,13 +79,8 @@ const DepartmentPage = () => {
   const {
     departmentState: {
       page,
-      detail
     },
     getPage,
-    getOne,
-    clearOne,
-    add,
-    change,
   } = useDepartment();
 
   useEffect(() => {
