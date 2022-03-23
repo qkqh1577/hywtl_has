@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import departmentReducer, { DepartmentState } from 'department/reducer';
+import departmentReducer, { DepartmentState } from 'services/department/reducer';
 
 export type RootState = {
   department: DepartmentState;

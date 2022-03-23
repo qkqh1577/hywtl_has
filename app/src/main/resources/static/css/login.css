@@ -1,0 +1,123 @@
+@charset "utf-8";
+@import "../font/font-NanumGothic.css";
+
+html {
+  font-size: 14px;
+}
+body {
+  background-color: #273852;
+  min-height: calc(100vh - 60px);
+  height: auto;
+  height:100%;
+  margin-top: -60px;
+  color:#fff;
+}
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100vh;
+}
+.login-form .ui.form{
+  width:400px;
+}
+.login-form .ui.form .field{
+  margin-bottom: 20px;
+}
+.login-form .ui.form input{
+  width:100%;
+  height:60px;
+  padding:10px 20px;
+  background: #1e2530;
+  border-color: #1e2530;
+  border-radius: 10px;
+  color:#fff;
+  font-size: 18px;
+}
+.login-form .ui.form input::placeholder{
+  color:#8f94a0;
+  font-size: 18px;
+}
+.login-form .ui.form input::-ms-input-placeholder{
+  color:#8f94a0;
+  font-size: 18px;
+}
+.login-form .ui.form input::-webkit-input-placeholder{
+  color:#8f94a0;
+  font-size: 18px;
+}
+.login-form .ui.form input:focus{
+  background: #1e2530;
+  color:#fff;
+}
+.login-form .ui.form .info-text{
+  width:100%;
+  margin-bottom: 30px;
+  font-size: 13px;
+  color: #8f94a0;
+  text-align: center;
+}
+.login-form .ui.form .message{
+  position: absolute;
+  left: 0px;
+  top:-30px;
+  width: 100%;
+  color: #ffd028;
+  text-align: center;
+}
+.login-form .ui.form.password-form .field{
+  position: relative;
+  margin-bottom: 40px;
+}
+.login-form .ui.form.password-form .message{
+  top:auto;
+  bottom: -28px;
+  left: 50%;
+  width: 450px;
+  margin-left: -225px;
+}
+.login-form .ui.form.password-form .info-text{
+  margin:10px 0px 0px;
+  margin: 0px 0px 30px;
+}
+.login-form .ui.form .btn-wrapper{
+  position: relative;
+  margin-top:40px;
+  text-align: right;
+}
+.login-form .ui.form .ui.button{
+  width:100%;
+  height:60px;
+  margin:0px 0px 20px;
+  border-radius: 30px;
+  font-size: 20px;
+  background: #4d7cfe;
+}
+.login-form .ui.form .ui.button:hover{
+  background: #3759b9;
+}
+.login-form .link{
+  font-size: 15px;
+  color:#a4a8b3;
+}
+
+.login-form .ui.form .btn-wrapper .link{
+  margin: 0px 10px 0px;
+}
+.login-form .info{
+  position: absolute;
+  left: 0px;
+  bottom: 40px;
+  width:100%;
+  font-size: 13px;
+  line-height: 18px;
+  color: #8f94a0;
+  text-align: center;
+}
+.login-form h2{
+  margin-top: 12px;
+  font-size: 24px;
+  color: #ffffff;
+}

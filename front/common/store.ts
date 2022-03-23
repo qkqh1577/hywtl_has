@@ -1,7 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
-import departmentSaga from 'department/saga';
+import departmentSaga from 'services/department/saga';
 import reducer from 'common/reducer';
 
 const middleware = createSagaMiddleware();

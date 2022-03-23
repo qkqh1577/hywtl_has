@@ -7,7 +7,15 @@ logging:
         web: DEBUG
         com.howoocast: DEBUG
 
+
 spring:
+    devtools:
+      restart:
+          enabled: true
+      livereload:
+          enabled: true
+    thymeleaf:
+        cache: false
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
         url: jdbc:mariadb://localhost:3304/hywtl_has_api
