@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.common;
 
+import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,11 @@ public class ExceptionController {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFound(NotFoundException e) {
+        return e.getResponse();
+    }
+
+    @ExceptionHandler(DuplicatedValueException.class)
+    public ResponseEntity<?> duplicatedValue(DuplicatedValueException e) {
         return e.getResponse();
     }
 }

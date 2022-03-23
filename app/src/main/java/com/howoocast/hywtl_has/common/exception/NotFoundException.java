@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 public class NotFoundException extends RuntimeException {
 
     public ResponseEntity<String> getResponse() {
-        return new ResponseEntity<>("NotFound", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("NotFound", HttpStatus.NOT_FOUND);
     }
 }

@@ -1,0 +1,169 @@
+### department ###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "회사",
+  "category": "COMPANY"
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술본부",
+  "category": "HQ",
+  "parentId": 1
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술팀",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "영업팀",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "모형팀",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술부",
+  "category": "PART",
+  "parentId": 3
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "실험부",
+  "category": "PART",
+  "parentId": 3
+}
+
+###
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "편집부",
+  "category": "PART",
+  "parentId": 3
+}
+
+### user ###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "master",
+  "password": "password",
+  "name": "최고관리자",
+  "email": "master@test.com",
+  "departmentId": 1,
+  "userRole": "MASTER"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "password",
+  "name": "기술본부 관리자",
+  "email": "admin@test.com",
+  "departmentId": 2,
+  "userRole": "ADMIN"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "admin2",
+  "password": "password",
+  "name": "기술팀 관리자",
+  "email": "admin2@test.com",
+  "departmentId": 3,
+  "userRole": "ADMIN"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "admin3",
+  "password": "password",
+  "name": "기술부 관리자",
+  "email": "admin3@test.com",
+  "departmentId": 6,
+  "userRole": "ADMIN"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password",
+  "name": "기술부 사원",
+  "email": "user1@test.com",
+  "departmentId": 6,
+  "userRole": "NORMAL"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "password",
+  "name": "기술부 사원",
+  "email": "user2@test.com",
+  "departmentId": 6,
+  "userRole": "NORMAL"
+}
+
+###
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "user3",
+  "password": "password",
+  "name": "실험부 사원",
+  "email": "user3@test.com",
+  "departmentId": 7,
+  "userRole": "NORMAL"
+}
