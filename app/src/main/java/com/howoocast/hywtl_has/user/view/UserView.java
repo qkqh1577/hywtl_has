@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user.view;
 
-import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.howoocast.hywtl_has.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,15 +12,15 @@ public class UserView {
     private String username;
     private String email;
     private String name;
-    private DepartmentView department;
+    private Long departmentId;
 
     public static UserView assemble(User source) {
         UserView target = new UserView();
-        target.setId(source.getId());
-        target.setUsername(source.getUsername());
-        target.setEmail(source.getEmail());
-        target.setName(source.getName());
-        target.setDepartment(DepartmentView.assemble(source.getDepartment()));
+        target.id = source.getId();
+        target.username = source.getUsername();
+        target.email = source.getEmail();
+        target.name = source.getName();
+        target.departmentId = source.getDepartment().getId();
 
         return target;
     }
