@@ -6,6 +6,7 @@ import Page, { initial } from 'common/Page';
 export type DepartmentState = {
   page: Page<Department>;
   detail?: Department;
+  selectedId?: number;
 }
 
 export const initState: DepartmentState = {
@@ -13,9 +14,17 @@ export const initState: DepartmentState = {
 };
 
 const departmentReducer = createReducer(initState, {
+  [DepartmentActionType.setPage]: (state, action) => ({
+    ...state,
+    page: action.payload,
+  }),
   [DepartmentActionType.setOne]: (state, action) => ({
     ...state,
     detail: action.payload,
+  }),
+  [DepartmentActionType.selectOne]: (state, action) => ({
+    ...state,
+    selectedId: action.payload,
   }),
 });
 

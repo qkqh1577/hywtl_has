@@ -2,11 +2,13 @@ package com.howoocast.hywtl_has.department.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -88,5 +90,32 @@ public class Department {
         return department;
     }
 
+    public void changeParent(
+        DepartmentRepository provider,
+        @Nullable Long parentId
+    ) {
+        if (Objects.isNull(parentId)) {
+            if (Objects.isNull(this.parent)) {
+                throw new IllegalRequestException("이미 최상위 부서입니다.");
+            }
+            this.parent = null;
+        } else {
+            if (Objects.nonNull(this.parent) && this.parent.id.equals(parentId)) {
+                throw new IllegalRequestException("동일한 부모 부서 입니다.");
+            }
+            provider.findById(parentId).ifPresentOrElse((parent) -> this.parent = parent, () -> new NotFoundException());
+        }
+    }
 
+    public void change(
+        String name,
+        DepartmentCategory category,
+        String memo,
+        Integer seq
+    ) {
+        this.name = name;
+        this.category = category;
+        this.memo = memo;
+        this.seq = seq;
+    }
 }

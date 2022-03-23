@@ -17,6 +17,8 @@ public class DepartmentView {
     private String name;
     private DepartmentCategory category;
 
+    private Integer seq;
+
     private Long parentId;
 
     private List<DepartmentView> childrenList;
@@ -28,6 +30,7 @@ public class DepartmentView {
         target.id = source.getId();
         target.name = source.getName();
         target.category = source.getCategory();
+        target.seq = source.getSeq();
         if (Objects.nonNull(source.getParent())) {
             target.parentId = source.getParent().getId();
         }
