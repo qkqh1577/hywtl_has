@@ -29,7 +29,7 @@ const App = () => {
   const navigate = useNavigate();
   const mdTheme = createTheme({
     palette: {
-      mode: 'dark'
+      mode: 'light'
     }
   });
 
@@ -74,7 +74,6 @@ const App = () => {
                 noWrap
                 sx={{flexGrow: 1}}
               >
-                Dashboard
               </Typography>
               <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
