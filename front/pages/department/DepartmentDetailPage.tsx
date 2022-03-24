@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import useDepartment from 'services/department/hook';
-import { Button, Grid, MenuItem, TextField } from '@mui/material';
-import { DepartmentChangeParameter, DepartmentQuery } from 'services/department/parameter';
-import { makeStyles } from '@mui/styles';
-import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { DepartmentCategory } from 'services/department/Department';
-import { Formik, FormikHelpers } from 'formik';
+import {Button, Grid, MenuItem, TextField} from '@mui/material';
+import {DepartmentChangeParameter} from 'services/department/parameter';
+import {makeStyles} from '@mui/styles';
+import {departmentCategoryList, departmentCategoryName} from 'services/department/data';
+import {DepartmentCategory} from 'services/department/Department';
+import {Formik, FormikHelpers} from 'formik';
 
 const useStyles = makeStyles(() => ({
   component: {
@@ -48,7 +48,7 @@ const DepartmentDetailPage = () => {
 
   const [departmentParams, setDepartmentParams] = useState<DepartmentType>(initialState);
 
-  const submitHandler = (values: any, { setSubmitting }: FormikHelpers<any>) => {
+  const submitHandler = (values: any, {setSubmitting}: FormikHelpers<any>) => {
     if (!departmentDetail) {
       window.alert('부서가 선택되지 않았습니다.');
       return;
@@ -106,16 +106,16 @@ const DepartmentDetailPage = () => {
       )}
       {departmentDetail && (
         <>
-          <Grid item sm={12}>
-            {departmentDetail && (<h2>부서 상세</h2>)}
-          </Grid>
           <Formik
             initialValues={departmentParams}
             enableReinitialize
             onSubmit={submitHandler}
           >
-            {({ values, handleChange, handleSubmit }) => (
+            {({values, handleChange, handleSubmit}) => (
               <Grid container spacing={3}>
+                <Grid item sm={12}>
+                  {departmentDetail && (<h3>부서 상세</h3>)}
+                </Grid>
                 <Grid item sm={6}>
                   <TextField
                     type="text"
@@ -189,7 +189,12 @@ const DepartmentDetailPage = () => {
                     저장
                   </Button>
                 </Grid>
+                <Grid item sm={12}>
+                  <h3>부서원 목록</h3>
+                  <div>부서원 목록 노출 예정</div>
+                </Grid>
               </Grid>
+
             )}
           </Formik>
         </>

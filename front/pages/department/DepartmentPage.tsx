@@ -1,25 +1,30 @@
 import React, {useEffect} from 'react';
 import useDepartment from 'services/department/hook';
-import {Grid} from '@mui/material';
+import {Button, Grid, Paper} from '@mui/material';
 import {makeStyles} from '@mui/styles';
 import {DepartmentQuery} from 'services/department/parameter';
 import Department from 'services/department/Department';
 import DepartmentDetailPage from "./DepartmentDetailPage";
+import DepartmentAddModalPage from "./DepartmentAddModalPage";
 
 const useStyles = makeStyles(() => ({
   box: {
-    border: '1px solid #777',
-    marginBottom: '4px',
-    padding: '4px',
+    //border: '1px solid #777',
+    marginBottom: '0px',
+    padding: '10px',
+
   },
   nameBox: {
-    backgroundColor: '#006c8f',
+    //backgroundColor: '#006c8f',
   },
   selectedNameBox: {
-    backgroundColor: '#0076c0',
+    backgroundColor: '#f0f0f0',
   },
   nameLabel: {
     cursor: 'pointer',
+    padding: '0px',
+    margin: '0px',
+    fontSize: '14px'
   }
 }));
 
@@ -52,7 +57,7 @@ const DepartmentComponent = (props: { department: Department }) => {
   return (
     <Grid item container spacing={1} className={classes.box}>
       <Grid item sm={1}>
-        {'┤'}
+        {'┣'}
       </Grid>
       <Grid item sm={11} onClick={clickHandler} className={isSelected ? classes.selectedNameBox : classes.nameBox}>
         <h3 className={classes.nameLabel}>
@@ -89,16 +94,34 @@ const DepartmentPage = () => {
   }, []);
 
   return (
-    <>
+    <Paper sx={{width: '100%', overflow: 'hidden', 'margin-bottom': '30px', padding: '20px'}}>
+
       <Grid item container>
-        {page.content.map((department) => (
-          <DepartmentComponent key={department.id} department={department}/>
-        ))}
+        <Grid item sm={12}>
+
+          <DepartmentAddModalPage></DepartmentAddModalPage>
+
+          &nbsp;
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => {
+            }}
+          >
+            선택부서 위치 이동
+          </Button>
+        </Grid>
+        <Grid item sm={5}>
+          {page.content.map((department) => (
+            <DepartmentComponent key={department.id} department={department}/>
+          ))}
+        </Grid>
+        <Grid item sm={7}>
+          <DepartmentDetailPage></DepartmentDetailPage>
+        </Grid>
       </Grid>
-      <Grid item container>
-        <DepartmentDetailPage></DepartmentDetailPage>
-      </Grid>
-    </>
+
+    </Paper>
   );
 };
 
