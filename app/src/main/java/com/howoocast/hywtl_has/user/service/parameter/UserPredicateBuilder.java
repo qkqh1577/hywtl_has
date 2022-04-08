@@ -29,11 +29,11 @@ public class UserPredicateBuilder {
         }
         final String keywordStr = keyword.trim();
 
-        if (Objects.isNull(keywordType) || Objects.equals(keywordType, "이름")) {
+        if (Objects.isNull(keywordType) || Objects.equals(keywordType, "by_name")) {
             criteria.and(user.name.containsIgnoreCase(keywordStr));
-        } else if (Objects.equals(keywordType, "아이디")) {
+        } else if (Objects.equals(keywordType, "by_username")) {
             criteria.and(user.username.containsIgnoreCase(keywordStr));
-        } else if (Objects.equals(keywordType, "이메일")) {
+        } else if (Objects.equals(keywordType, "by_email")) {
             criteria.and(user.email.containsIgnoreCase(keywordStr));
         }
 

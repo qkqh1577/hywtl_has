@@ -64,7 +64,10 @@ export function UserPage() {
         ...filter,
         page: 0,
         role: values.role,
+        keywordType: values.keywordType ?? 'by_username',
+        keyword: values.keyword ?? undefined,
       });
+      setSubmitting(false);
     }
   };
 
@@ -105,41 +108,29 @@ export function UserPage() {
                     </FormControl>
                   </Box>
                   <Box sx={{ display: 'flex' }}>
-                    <FormControl fullWidth>
-                      <FormLabel component="legend">문자 검색</FormLabel>
-                      <FormGroup row>
-                        <FormControlLabel
-                          control={
-                            <Select
-                              value={values.keywordType}
-                              onChange={handleChange}
-                              name="keywordType"
-                            >
-                              <MenuItem value="by_username">아이디</MenuItem>
-                              <MenuItem value="by_name">이름</MenuItem>
-                              <MenuItem value="by_email">이메일</MenuItem>
-                            </Select>
-                          }
-                          label="검색 대상"
-                        />
-                        <FormControlLabel
-                          control={
-                            <TextField
-                              type="text"
-                              name="keyword"
-                              label="검색어"
-                              placeholder="검색어를 입력하세요"
-                            />
-                          }
-                          label="검색어"
-                        />
-                      </FormGroup>
-                    </FormControl>
+                    <FormLabel component="legend">문자 검색</FormLabel>
+                    <Select
+                      value={values.keywordType}
+                      onChange={handleChange}
+                      name="keywordType"
+                    >
+                      <MenuItem value="by_username">아이디</MenuItem>
+                      <MenuItem value="by_name">이름</MenuItem>
+                      <MenuItem value="by_email">이메일</MenuItem>
+                    </Select>
+                    <TextField
+                      type="text"
+                      name="keyword"
+                      value={values.keyword}
+                      onChange={handleChange}
+                      placeholder="검색어를 입력하세요"
+                    />
                   </Box>
                   <Box>
                     <Button
                       color="primary"
                       variant="contained"
+                      disabled={isSubmitting}
                       onClick={() => {
                         handleSubmit();
                       }}
