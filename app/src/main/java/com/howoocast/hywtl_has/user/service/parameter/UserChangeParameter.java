@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.user.parameter;
+package com.howoocast.hywtl_has.user.service.parameter;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;

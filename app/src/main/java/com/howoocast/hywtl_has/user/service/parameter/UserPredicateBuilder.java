@@ -1,7 +1,7 @@
-package com.howoocast.hywtl_has.user.parameter;
+package com.howoocast.hywtl_has.user.service.parameter;
 
 import com.howoocast.hywtl_has.user.domain.QUser;
-import com.howoocast.hywtl_has.user.domain.UserRole;
+import com.howoocast.hywtl_has.user.common.UserRole;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;

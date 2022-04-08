@@ -1,4 +1,4 @@
-export type UserRole = '';
+export type UserRole = 'NORMAL' | 'ADMIN' | 'MASTER';
 
 type User = {
   id: number;
@@ -7,6 +7,7 @@ type User = {
   email: string;
   userRole: UserRole;
   departmentId: number;
+  departmentName: string;
 }
 
 export default User;

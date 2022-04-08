@@ -26,8 +26,8 @@ function* change(action: ActionType<typeof userActions.change>) {
 }
 
 export default function* saga() {
-  takeLatest(UserActionType.getPage, getPage);
-  takeLatest(UserActionType.getOne, getOne);
-  takeLatest(UserActionType.add, add);
-  takeLatest(UserActionType.change, change);
+  yield takeLatest(UserActionType.getPage, getPage);
+  yield takeLatest(UserActionType.getOne, getOne);
+  yield takeLatest(UserActionType.add, add);
+  yield takeLatest(UserActionType.change, change);
 }

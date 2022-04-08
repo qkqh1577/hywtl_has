@@ -1,6 +1,6 @@
-package com.howoocast.hywtl_has.user.parameter;
+package com.howoocast.hywtl_has.user.service.parameter;
 
-import com.howoocast.hywtl_has.user.domain.UserRole;
+import com.howoocast.hywtl_has.user.common.UserRole;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;

@@ -125,7 +125,7 @@ const App = () => {
           >
             <Toolbar/>
             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-              <ReactRouter></ReactRouter>
+              <ReactRouter />
             </Container>
           </Box>
         </Box>

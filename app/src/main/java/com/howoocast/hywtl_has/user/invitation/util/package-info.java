@@ -1,4 +1,4 @@
 @NonNullApi
-package com.howoocast.hywtl_has.user.parameter;
+package com.howoocast.hywtl_has.user.invitation.util;
 
 import org.springframework.lang.NonNullApi;

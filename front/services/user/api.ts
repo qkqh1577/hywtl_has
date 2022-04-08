@@ -1,12 +1,18 @@
-import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
-import Page from 'common/Page';
-import User from './User';
 import axios from 'axios';
+import queryString from 'qs';
+import Page from 'common/Page';
+import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
+import User from './User';
 
 export class UserApi {
   async getPage(query: UserQuery): Promise<Page<User>> {
     const { data } = await axios.get('/users', {
-      params: query
+      params: query,
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
     });
     return data;
   }

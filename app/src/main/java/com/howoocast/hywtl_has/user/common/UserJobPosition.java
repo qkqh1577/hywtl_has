@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.user.domain;
+package com.howoocast.hywtl_has.user.common;
 
 /**
  * 유저 직책

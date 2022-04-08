@@ -1,7 +1,7 @@
-import React from "react";
-import {Button, Divider, Grid, Paper, TextField} from "@mui/material";
-import {Formik} from "formik";
-import {makeStyles} from "@mui/styles";
+import React from 'react';
+import { Button, Divider, Grid, Paper, TextField } from '@mui/material';
+import { Formik } from 'formik';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
   component: {
@@ -16,16 +16,20 @@ const UserDetailPage = () => {
   const classes = useStyles();
 
   return (
-    <Paper sx={{width: '100%', overflow: 'hidden', padding: '30px'}}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
 
       <Grid item sm={12}>
         {<h2>계정 상세 정보</h2>}
       </Grid>
 
-      <Formik>
+      <Formik
+        initialValues={{}}
+        onSubmit={(values) => {
+          console.log(values);
+        }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <table style={{width: '100%'}}>
+            <table style={{ width: '100%' }}>
               <tr>
                 <td>계정상태</td>
                 <td>정상</td>
@@ -100,23 +104,23 @@ const UserDetailPage = () => {
           </Grid>
 
           <Grid item sm={12}>
-            <Divider/>
+            <Divider />
           </Grid>
 
           <Grid item sm={12}>
-            <div style={{textAlign:'center'}}>인사카드 개발 시점 정보 일부 노출 예정</div>
+            <div style={{ textAlign: 'center' }}>인사카드 개발 시점 정보 일부 노출 예정</div>
           </Grid>
 
           <Grid item sm={12}>
-            <Divider/>
+            <Divider />
           </Grid>
 
           <Grid item sm={12}>
-            <div style={{textAlign:'center'}}>시스템 접속 이력 조회 기능 추가 예정</div>
+            <div style={{ textAlign: 'center' }}>시스템 접속 이력 조회 기능 추가 예정</div>
           </Grid>
 
           <Grid item sm={12}>
-            <Divider/>
+            <Divider />
           </Grid>
 
           <Grid item sm={12}>
@@ -137,7 +141,7 @@ const UserDetailPage = () => {
             </Button>
 
             <Button
-              style={{float:'right'}}
+              style={{ float: 'right' }}
               color="primary"
               variant="outlined"
               onClick={() => {
@@ -153,7 +157,7 @@ const UserDetailPage = () => {
       </Formik>
 
     </Paper>
-  )
-}
+  );
+};
 
 export default UserDetailPage;
