@@ -1,6 +1,8 @@
+import Department from 'services/department/Department';
+
 export type UserRole = 'NORMAL' | 'ADMIN' | 'MASTER';
 
-type User = {
+export type ListUser = {
   id: number;
   name: string;
   username: string;
@@ -10,4 +12,11 @@ type User = {
   departmentName: string;
 }
 
-export default User;
+type UserDetail = Omit<ListUser, 'departmentId' | 'departmentName'> & {
+  department: Department;
+  createdTime: Date;
+  signedInTime?: Date;
+  passwordChangedTime?: Date;
+}
+
+export default UserDetail;

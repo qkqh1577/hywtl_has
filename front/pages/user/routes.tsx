@@ -9,7 +9,7 @@ const routes: AppRoutes[] = [
     path: '/user',
     element: <UserPage />
   }, {
-    path: '/user/detail',
+    path: '/user/:id',
     element: <UserDetailPage />
   }
 ];

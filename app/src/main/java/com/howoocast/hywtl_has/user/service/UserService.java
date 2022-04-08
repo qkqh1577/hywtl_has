@@ -7,7 +7,8 @@ import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
-import com.howoocast.hywtl_has.user.service.view.UserView;
+import com.howoocast.hywtl_has.user.service.view.UserDetailView;
+import com.howoocast.hywtl_has.user.service.view.UserListView;
 import com.querydsl.core.types.Predicate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -28,23 +29,23 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
 
     @Transactional(readOnly = true)
-    public Page<UserView> page(
+    public Page<UserListView> page(
             @Nullable Predicate predicate,
             Pageable pageable
     ) {
         return Optional.ofNullable(predicate)
                 .map(p -> userRepository.findAll(p, pageable))
                 .orElse(userRepository.findAll(pageable))
-                .map(UserView::assemble);
+                .map(UserListView::assemble);
     }
 
     @Transactional(readOnly = true)
-    public UserView get(Long id) {
-        return UserView.assemble(this.load(id));
+    public UserDetailView get(Long id) {
+        return UserDetailView.assemble(this.load(id));
     }
 
     @Transactional
-    public UserView add(UserAddParameter params) {
+    public UserDetailView add(UserAddParameter params) {
         Department department = departmentRepository.findById(params.getDepartmentId())
                 .orElseThrow(NotFoundException::new);
 
@@ -61,7 +62,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserView change(Long id, UserChangeParameter params) {
+    public UserDetailView change(Long id, UserChangeParameter params) {
         User user = this.load(id);
         user.change(params.getName(), params.getEmail());
         return this.save(user);
@@ -71,8 +72,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    private UserView save(User source) {
-        return UserView.assemble(userRepository.save(source));
+    private UserDetailView save(User source) {
+        return UserDetailView.assemble(userRepository.save(source));
     }
 
 }

@@ -2,10 +2,10 @@ import axios from 'axios';
 import queryString from 'qs';
 import Page from 'common/Page';
 import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
-import User from './User';
+import User, { ListUser } from './User';
 
 export class UserApi {
-  async getPage(query: UserQuery): Promise<Page<User>> {
+  async getPage(query: UserQuery): Promise<Page<ListUser>> {
     const { data } = await axios.get('/users', {
       params: query,
       paramsSerializer: (params: any) =>

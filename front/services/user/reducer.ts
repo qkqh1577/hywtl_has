@@ -1,10 +1,10 @@
-import User from './User';
+import User, { ListUser } from './User';
 import Page, { initial } from 'common/Page';
 import { createReducer } from 'typesafe-actions';
 import { UserActionType } from './actions';
 
 export type UserState = {
-  page: Page<User>;
+  page: Page<ListUser>;
   detail?: User;
   selectedId?: number;
 }

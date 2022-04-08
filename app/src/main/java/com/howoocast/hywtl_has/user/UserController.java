@@ -5,7 +5,8 @@ import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.service.UserService;
-import com.howoocast.hywtl_has.user.service.view.UserView;
+import com.howoocast.hywtl_has.user.service.view.UserDetailView;
+import com.howoocast.hywtl_has.user.service.view.UserListView;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public Page<UserView> page(
+    public Page<UserListView> page(
         @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
@@ -47,17 +48,17 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public UserView get(@PathVariable Long id) {
+    public UserDetailView get(@PathVariable Long id) {
         return userService.get(id);
     }
 
     @PostMapping("/users")
-    public UserView add(@Valid @RequestBody UserAddParameter params) {
+    public UserDetailView add(@Valid @RequestBody UserAddParameter params) {
         return userService.add(params);
     }
 
     @PatchMapping("/users/{id}")
-    public UserView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
+    public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
         return userService.change(id, params);
     }
 
