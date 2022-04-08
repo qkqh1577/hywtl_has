@@ -7,7 +7,6 @@ logging:
         web: DEBUG
         com.howoocast: DEBUG
 
-
 spring:
     devtools:
       restart:
@@ -50,3 +49,16 @@ spring:
             hibernate.cache.region_prefix: local
             hibernate.cache.region.factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
             javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+    profiles:
+        active: local
+
+application:
+    mail:
+        username: caster@howoocast.com
+        password: zozo@123123
+        host: smtp.office365.com
+        port: 587
+        auth: true
+        starttls: true
+        name: 발송자
+        dev-receiver: young@howoocast.com

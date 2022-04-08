@@ -6,10 +6,10 @@ import DepartmentDetailPage from './DepartmentDetailPage'
 const routes: AppRoutes[] = [
   {
     path: '/department',
-    element: <DepartmentPage></DepartmentPage>
+    element: <DepartmentPage />
   },{
     path: '/department/detail',
-    element: <DepartmentDetailPage></DepartmentDetailPage>
+    element: <DepartmentDetailPage />
   }
 ];
 

@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'common/Page';
-import User from './User';
+import User, { ListUser } from './User';
 import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
 
 export enum UserActionType {
@@ -15,7 +15,7 @@ export enum UserActionType {
 
 export const userActions = {
   getPage: createAction(UserActionType.getPage)<UserQuery>(),
-  setPage: createAction(UserActionType.setPage)<Page<User>>(),
+  setPage: createAction(UserActionType.setPage)<Page<ListUser>>(),
   getOne: createAction(UserActionType.getOne)<number>(),
   setOne: createAction(UserActionType.setOne)<User | undefined>(),
   add: createAction(UserActionType.add)<UserAddParameter>(),

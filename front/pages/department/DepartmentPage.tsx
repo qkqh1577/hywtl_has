@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import useDepartment from 'services/department/hook';
-import {Button, Grid, Paper} from '@mui/material';
-import {makeStyles} from '@mui/styles';
-import {DepartmentQuery} from 'services/department/parameter';
+import { Button, Grid, Paper } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { DepartmentQuery } from 'services/department/parameter';
 import Department from 'services/department/Department';
-import DepartmentDetailPage from "./DepartmentDetailPage";
-import DepartmentAddModalPage from "./DepartmentAddModalPage";
+import DepartmentDetailPage from './DepartmentDetailPage';
+import DepartmentAddModalPage from './DepartmentAddModalPage';
 
 const useStyles = makeStyles(() => ({
   box: {
@@ -36,7 +36,7 @@ const initialQuery: DepartmentQuery = {
 
 const DepartmentComponent = (props: { department: Department }) => {
   const classes = useStyles();
-  const {department} = props;
+  const { department } = props;
   const {
     departmentState: {
       selectedId
@@ -71,7 +71,7 @@ const DepartmentComponent = (props: { department: Department }) => {
           </Grid>
           <Grid item container sm={11}>
             {department.childrenList.map(
-              (child) => (<DepartmentComponent key={child.id} department={child}/>)
+              (child) => (<DepartmentComponent key={child.id} department={child} />)
             )}
           </Grid>
         </>
@@ -94,13 +94,11 @@ const DepartmentPage = () => {
   }, []);
 
   return (
-    <Paper sx={{width: '100%', overflow: 'hidden', 'margin-bottom': '30px', padding: '20px'}}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom: '30px', padding: '20px' }}>
 
       <Grid item container>
         <Grid item sm={12}>
-
-          <DepartmentAddModalPage></DepartmentAddModalPage>
-
+          <DepartmentAddModalPage />
           &nbsp;
           <Button
             color="primary"
@@ -113,14 +111,13 @@ const DepartmentPage = () => {
         </Grid>
         <Grid item sm={5}>
           {page.content.map((department) => (
-            <DepartmentComponent key={department.id} department={department}/>
+            <DepartmentComponent key={department.id} department={department} />
           ))}
         </Grid>
         <Grid item sm={7}>
-          <DepartmentDetailPage></DepartmentDetailPage>
+          <DepartmentDetailPage />
         </Grid>
       </Grid>
-
     </Paper>
   );
 };

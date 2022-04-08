@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.department.view;
 
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
-import com.howoocast.hywtl_has.user.view.UserView;
+import com.howoocast.hywtl_has.user.service.view.UserListView;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class DepartmentView {
 
     private List<DepartmentView> childrenList;
 
-    private List<UserView> userList;
+    private List<UserListView> userList;
 
     public static DepartmentView assemble(Department source) {
         DepartmentView target = new DepartmentView();
@@ -42,7 +42,7 @@ public class DepartmentView {
                 .collect(Collectors.toList());
         }
         if (Objects.nonNull(source.getUserList())) {
-            target.userList = source.getUserList().stream().map(UserView::assemble)
+            target.userList = source.getUserList().stream().map(UserListView::assemble)
                 .collect(Collectors.toList());
         }
         return target;

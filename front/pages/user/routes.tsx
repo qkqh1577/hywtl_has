@@ -7,10 +7,10 @@ import UserDetailPage from './UserDetailPage'
 const routes: AppRoutes[] = [
   {
     path: '/user',
-    element: <UserPage></UserPage>
+    element: <UserPage />
   }, {
-    path: '/user/detail',
-    element: <UserDetailPage></UserDetailPage>
+    path: '/user/:id',
+    element: <UserDetailPage />
   }
 ];
 

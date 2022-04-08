@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.user.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -29,15 +30,19 @@ public class User {
 
     @NotBlank
     @Column(nullable = false)
-    protected String name; // 사용자명
+    private String name; // 사용자명
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false)
     private String username; // 로그인 아이디
 
+    @NotBlank
+    @Column(nullable = false)
     @JsonIgnore
     private String password; // 로그인 비밀번호
 
+    @NotBlank
+    @Column(nullable = false)
     private String email; // 이메일
 
     @NotNull
@@ -59,7 +64,7 @@ public class User {
     private LocalDateTime createdTime = LocalDateTime.now(); // 생성 일자
 
     @Column(insertable = false)
-    private LocalDateTime removedTime; // 삭제 일자
+    private LocalDateTime deletedTime; // 삭제 일자
 
     public static User add(
             UserRepository provider,

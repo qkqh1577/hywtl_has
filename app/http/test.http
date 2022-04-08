@@ -3,7 +3,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "회사",
+  "name": "한양풍동실험연구소",
   "category": "COMPANY"
 }
 
@@ -12,7 +12,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "기술본부",
+  "name": "기술",
   "category": "HQ",
   "parentId": 1
 }
@@ -22,7 +22,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "기술팀",
+  "name": "기술",
   "category": "TEAM",
   "parentId": 2
 }
@@ -32,7 +32,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "영업팀",
+  "name": "영업",
   "category": "TEAM",
   "parentId": 2
 }
@@ -42,7 +42,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "모형팀",
+  "name": "모형",
   "category": "TEAM",
   "parentId": 2
 }
@@ -52,7 +52,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "기술부",
+  "name": "기술",
   "category": "PART",
   "parentId": 3
 }
@@ -62,7 +62,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "실험부",
+  "name": "실험",
   "category": "PART",
   "parentId": 3
 }
@@ -72,7 +72,7 @@ POST http://localhost:8080/departments
 Content-Type: application/json
 
 {
-  "name": "편집부",
+  "name": "편집",
   "category": "PART",
   "parentId": 3
 }

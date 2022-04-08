@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.user.domain;
+package com.howoocast.hywtl_has.user.common;
 
 public enum UserRole {
     MASTER, // 모든 권한을 가지는 루트 유저

@@ -1,12 +1,10 @@
-package com.howoocast.hywtl_has.user.view;
+package com.howoocast.hywtl_has.user.service.view;
 
 import com.howoocast.hywtl_has.user.domain.User;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class UserView {
+public class UserListView {
 
     private Long id;
     private String username;
@@ -14,13 +12,17 @@ public class UserView {
     private String name;
     private Long departmentId;
 
-    public static UserView assemble(User source) {
-        UserView target = new UserView();
+    private String departmentName;
+
+    public static UserListView assemble(User source) {
+        UserListView target = new UserListView();
         target.id = source.getId();
         target.username = source.getUsername();
         target.email = source.getEmail();
         target.name = source.getName();
         target.departmentId = source.getDepartment().getId();
+        target.departmentName = source.getDepartment().getName()
+            + source.getDepartment().getCategory().value();
 
         return target;
     }
