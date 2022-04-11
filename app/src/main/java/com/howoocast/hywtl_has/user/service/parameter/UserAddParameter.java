@@ -1,8 +1,6 @@
 package com.howoocast.hywtl_has.user.service.parameter;
 
-import com.howoocast.hywtl_has.user.common.UserRole;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,22 +8,18 @@ import lombok.Setter;
 @Setter
 public class UserAddParameter {
 
-    @NotBlank
+    @NotBlank(message = "아이디는 필수 항목입니다.")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "비밀번호는 필수 항목입니다.")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "이름은 필수 항목입니다.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "인증에 실패하였습니다.")
     private String email;
 
-    @NotNull
-    private Long departmentId;
-
-    @NotNull
-    private UserRole userRole;
-
+    @NotBlank(message = "인증에 실패하였습니다.")
+    private String authKey;
 }

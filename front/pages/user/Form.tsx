@@ -74,8 +74,6 @@ const UserForm = () => {
         setSubmitting(false);
         return;
       }
-      console.log(error);
-      console.log(values);
 
       const params: UserInvitationInviteParameter = { name, email, userRole, departmentId };
       invite(params, (data) => {
@@ -176,6 +174,7 @@ const UserForm = () => {
               <Grid item sm={12}>
                 <Button
                   color="primary"
+                  variant="contained"
                   onClick={() => {
                     handleSubmit();
                   }}
