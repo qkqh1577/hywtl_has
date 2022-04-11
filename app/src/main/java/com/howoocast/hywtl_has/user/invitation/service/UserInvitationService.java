@@ -1,14 +1,18 @@
 package com.howoocast.hywtl_has.user.invitation.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
+import com.howoocast.hywtl_has.user.invitation.event.UserInvitationAddEvent;
 import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
+import com.howoocast.hywtl_has.user.invitation.service.exception.UserInvitationAuthenticationFailureException;
 import com.howoocast.hywtl_has.user.invitation.service.view.UserInvitationView;
 import com.howoocast.hywtl_has.user.invitation.util.MailAuthKeyManager;
 import com.howoocast.hywtl_has.user.invitation.service.parameter.UserInviteParameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,34 +21,39 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserInvitationService {
 
+    @Value("${application.user-invitation.invalidate-duration}")
+    private String invalidateDuration;
+
     private final UserInvitationRepository userInvitationRepository;
 
     private final DepartmentRepository departmentRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public UserInvitationView invite(UserInviteParameter params) {
         invalidateIfExists(params.getEmail());
         UserInvitation userInvitation = UserInvitation.of(
             params.getEmail(),
+            MailAuthKeyManager.generate(params.getEmail()),
             params.getName(),
             departmentRepository.findById(params.getDepartmentId()).orElseThrow(NotFoundException::new),
             params.getUserRole()
         );
 
         userInvitationRepository.save(userInvitation);
+        eventPublisher.publishEvent(new UserInvitationAddEvent(userInvitation));
         return UserInvitationView.assemble(userInvitation);
     }
 
     @Transactional
-    public void authenticate(String email, String authKey) {
+    public UserInvitationView authenticate(String email, String authKey) {
         UserInvitation userInvitation = userInvitationRepository.findByEmailAndDeletedTimeIsNull(email)
             .orElseThrow(NotFoundException::new);
-        if (!MailAuthKeyManager.authenticate(userInvitation, authKey)) {
-            // TODO: 이메일 인증 실패 exception
-            throw new NullPointerException();
+        if (!MailAuthKeyManager.authenticate(userInvitation, invalidateDuration, authKey)) {
+            throw new UserInvitationAuthenticationFailureException();
         }
-        // TODO: 이메일 인증 성공
-        invalidateIfExists(email);
+        return UserInvitationView.assemble(userInvitation);
     }
 
     private void invalidateIfExists(String email) {

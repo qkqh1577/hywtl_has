@@ -18,7 +18,10 @@ export const userActions = {
   setPage: createAction(UserActionType.setPage)<Page<ListUser>>(),
   getOne: createAction(UserActionType.getOne)<number>(),
   setOne: createAction(UserActionType.setOne)<User | undefined>(),
-  add: createAction(UserActionType.add)<UserAddParameter>(),
+  add: createAction(UserActionType.add)<{
+    params: UserAddParameter;
+    callback: (data?: User) => void;
+  }>(),
   change: createAction(UserActionType.change)<UserChangeParameter>(),
   selectOne: createAction(UserActionType.selectOne)<number>(),
 };

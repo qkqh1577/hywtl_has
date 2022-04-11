@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,11 +24,15 @@ public class UserInvitation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Column(nullable = false, updatable = false)
     private String email; // 이메일
 
-    @NotNull
+    @NotBlank
+    @Column(nullable = false, updatable = false)
+    private String authId; // 이메일 전환 key
+
+    @NotBlank
     @Column(nullable = false, updatable = false)
     private String name; // 이름
 
@@ -43,18 +48,19 @@ public class UserInvitation {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @NotNull
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
     public static UserInvitation of(
         String email,
+        String authId,
         String name,
         Department department,
         UserRole userRole
     ) {
         return new UserInvitation(
             email,
+            authId,
             name,
             department,
             userRole
@@ -67,11 +73,13 @@ public class UserInvitation {
 
     private UserInvitation(
         String email,
+        String authId,
         String name,
         Department department,
         UserRole userRole
     ) {
         this.email = email;
+        this.authId = authId;
         this.name = name;
         this.department = department;
         this.userRole = userRole;

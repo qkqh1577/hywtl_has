@@ -39,7 +39,7 @@ const UserDetailPage = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
 
       <Grid item sm={12}>
-        {<h2>계정 상세 정보</h2>}
+        <h2>계정 상세 정보</h2>
       </Grid>
       <Grid container spacing={2}>
         <Grid item sm={12}>

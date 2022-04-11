@@ -6,7 +6,7 @@ export const userRoleList: UserRole[] = [
   'MASTER'
 ];
 
-export const getUserRoleName = (userRole: UserRole): string => {
+export const userRoleName = (userRole: UserRole): string => {
   switch (userRole) {
     case 'NORMAL':
       return '일반';

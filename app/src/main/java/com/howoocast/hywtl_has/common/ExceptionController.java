@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.common;
 
-import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
-import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.service.exception.IllegalRequestException;
+import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

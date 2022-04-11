@@ -1,12 +1,12 @@
 import { ActionType } from 'typesafe-actions';
-import { userActions, UserActionType } from './actions';
-import User from './User';
-import Page from 'common/Page';
-import userApi from './api';
 import { put, takeLatest } from 'redux-saga/effects';
+import Page from 'common/Page';
+import { userActions, UserActionType } from './actions';
+import User, { ListUser } from './User';
+import userApi from './api';
 
 function* getPage(action: ActionType<typeof userActions.getPage>) {
-  const page: Page<User> = yield userApi.getPage(action.payload);
+  const page: Page<ListUser> = yield userApi.getPage(action.payload);
   yield put(userActions.setPage(page));
 }
 
@@ -15,9 +15,16 @@ function* getOne(action: ActionType<typeof userActions.getOne>) {
   yield put(userActions.setOne(data));
 }
 
+
 function* add(action: ActionType<typeof userActions.add>) {
-  const data: User = yield userApi.add(action.payload);
-  yield put(userActions.setOne(data));
+  const { params, callback } = action.payload;
+  try {
+    const data: User = yield userApi.add(params);
+    yield put(userActions.setOne(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
 }
 
 function* change(action: ActionType<typeof userActions.change>) {

@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.service.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.repository.UserRepository;

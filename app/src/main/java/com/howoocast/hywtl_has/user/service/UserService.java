@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.user.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;

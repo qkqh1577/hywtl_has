@@ -38,12 +38,6 @@ const App = () => {
     setOpen(!open);
   };
 
-  useEffect(() => {
-    console.warn('use effect');
-  }, []);
-
-  console.debug(menuData);
-
   return (
     <Provider store={store}>
       <ThemeProvider theme={mdTheme}>

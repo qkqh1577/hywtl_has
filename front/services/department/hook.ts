@@ -12,6 +12,11 @@ export default function useDepartment() {
   const departmentState = useSelector((state: RootState) => state.department);
   const dispatch = useDispatch();
 
+  const getAll = useCallback(
+    () => dispatch(departmentActions.getAll()),
+    [dispatch]
+  );
+
   const getPage = useCallback(
     (query: DepartmentQuery) =>
       dispatch(departmentActions.getPage(query)),
@@ -55,6 +60,7 @@ export default function useDepartment() {
 
   return {
     departmentState,
+    getAll,
     getPage,
     getOne,
     clearOne,

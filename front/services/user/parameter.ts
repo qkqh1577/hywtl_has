@@ -9,9 +9,12 @@ export type UserQuery = {
   role: UserRole[];
 }
 
-export type UserAddParameter = Omit<User, 'id'> & {
-  password: string;
-}
+export type UserAddParameter = Omit<User,
+  'id'
+  | 'username'
+  | 'createdTime'
+  | 'signedInTime'
+  | 'passwordChangedTime'>;
 
 export type UserChangeParameter = {
   id: number;

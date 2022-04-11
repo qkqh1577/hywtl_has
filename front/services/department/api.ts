@@ -8,6 +8,11 @@ import {
 import Page from 'common/Page';
 
 export class DepartmentApi {
+  async getAll(): Promise<Department[]> {
+    const { data } = await axios.get('/departments/all');
+    return data;
+  }
+
   async getPage(query: DepartmentQuery): Promise<Page<Department>> {
     const { data } = await axios.get('/departments', {
       params: query
