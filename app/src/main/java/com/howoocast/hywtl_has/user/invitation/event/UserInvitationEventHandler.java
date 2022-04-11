@@ -38,7 +38,7 @@ public class UserInvitationEventHandler {
                 + "<a href=\"%s/user/authenticate?email=%s&authKey=%s\">"
                 + " 인증 페이지로 가기 </a>"
                 + "<br>"
-                + "<h5>해당 url은 %s까지 유효합니다.</h5>",
+                + "<h5>해당 주소는 %s까지 유효합니다.</h5>",
             frontUrl,
             URLEncoder.encode(data.getEmail(), StandardCharsets.UTF_8),
             URLEncoder.encode(MailAuthKeyManager.generate(data.getEmail()), StandardCharsets.UTF_8),

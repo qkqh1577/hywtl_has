@@ -35,7 +35,6 @@ public class UserInvitationService {
         invalidateIfExists(params.getEmail());
         UserInvitation userInvitation = UserInvitation.of(
             params.getEmail(),
-            MailAuthKeyManager.generate(params.getEmail()),
             params.getName(),
             departmentRepository.findById(params.getDepartmentId()).orElseThrow(NotFoundException::new),
             params.getUserRole()

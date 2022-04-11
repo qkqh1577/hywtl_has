@@ -11,7 +11,6 @@ export type UserQuery = {
 
 export type UserAddParameter = Omit<User,
   'id'
-  | 'username'
   | 'createdTime'
   | 'signedInTime'
   | 'passwordChangedTime'>;

@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -68,6 +69,8 @@ public class MailService {
         mimeMessage.setFrom(new InternetAddress(username, name, UTF8));
         mimeMessage.setSubject(title, UTF8);
         mimeMessage.setText(message, UTF8);
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, UTF8);
+        helper.setText(message, true);
 
         if (Objects.isNull(devReceiver) || devReceiver.isEmpty()) {
             mimeMessage.setRecipient(RecipientType.TO, new InternetAddress(toEmail, toName, UTF8));

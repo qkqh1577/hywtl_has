@@ -1,20 +1,26 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Button,
   FormControl,
   Grid,
   Input,
-  InputLabel, MenuItem,
-  Paper, Select
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import useUserInvitation from 'services/user/invitation/hook';
+import { UserAddParameter } from 'services/user/parameter';
 
 const UserAuthenticationForm = () => {
-  const { email, authKey } = useParams<{ email: string, authKey: string }>();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const email: string | null = searchParams.get('email');
+  const authKey: string | null = searchParams.get('authKey');
+
   const { userInvitationState: { detail }, getOne, clearOne } = useUserInvitation();
-  const initialParameter = {};
 
   const handler = {
     submit: (values: any, { setSubmitting }: FormikHelpers<any>) => {
@@ -42,7 +48,15 @@ const UserAuthenticationForm = () => {
       )}
       {detail && (
         <Formik
-          initialValues={initialParameter}
+          initialValues={{
+            name: detail.name,
+            email: detail.email,
+            department: detail.department,
+            userRole: detail.userRole,
+            username: '',
+            password: '',
+            passwordCheck: '',
+          }}
           onSubmit={handler.submit}
         >
           {({}) => (

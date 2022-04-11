@@ -16,12 +16,12 @@ const routes: AppRoutes[] = [
     element: <UserForm />
   },
   {
-    path: '/user/:id',
-    element: <UserDetailPage />
-  },
-  {
     path: '/user/authenticate',
     element: <AuthenticationForm />
+  },
+  {
+    path: '/user/:id',
+    element: <UserDetailPage />
   },
 ];
 

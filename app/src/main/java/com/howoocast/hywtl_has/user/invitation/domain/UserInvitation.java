@@ -30,10 +30,6 @@ public class UserInvitation {
 
     @NotBlank
     @Column(nullable = false, updatable = false)
-    private String authId; // 이메일 전환 key
-
-    @NotBlank
-    @Column(nullable = false, updatable = false)
     private String name; // 이름
 
     @NotNull
@@ -53,14 +49,12 @@ public class UserInvitation {
 
     public static UserInvitation of(
         String email,
-        String authId,
         String name,
         Department department,
         UserRole userRole
     ) {
         return new UserInvitation(
             email,
-            authId,
             name,
             department,
             userRole
@@ -73,13 +67,11 @@ public class UserInvitation {
 
     private UserInvitation(
         String email,
-        String authId,
         String name,
         Department department,
         UserRole userRole
     ) {
         this.email = email;
-        this.authId = authId;
         this.name = name;
         this.department = department;
         this.userRole = userRole;
