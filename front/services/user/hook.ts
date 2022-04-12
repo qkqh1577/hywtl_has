@@ -35,8 +35,8 @@ export default function useUser() {
   );
 
   const change = useCallback(
-    (params: UserChangeParameter) =>
-      dispatch(userActions.change(params)),
+    (params: UserChangeParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.change({ params, callback })),
     [dispatch],
   );
 

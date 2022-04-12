@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRoutes} from "routes/routes";
+import {AppRoutes} from "common/routes";
 import SalesPage from './SalesPage';
 import SalesDetailPage from './SalesDetailPage'
 

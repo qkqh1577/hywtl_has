@@ -32,7 +32,7 @@ public class UserInvitationService {
 
     @Transactional
     public UserInvitationView invite(UserInviteParameter params) {
-        invalidateIfExists(params.getEmail());
+
         UserInvitation userInvitation = UserInvitation.of(
             params.getEmail(),
             params.getName(),
@@ -53,9 +53,5 @@ public class UserInvitationService {
             throw new UserInvitationAuthenticationFailureException();
         }
         return UserInvitationView.assemble(userInvitation);
-    }
-
-    private void invalidateIfExists(String email) {
-        userInvitationRepository.findByEmailAndDeletedTimeIsNull(email).ifPresent(UserInvitation::invalidate);
     }
 }

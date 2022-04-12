@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   Grid,
@@ -20,7 +20,6 @@ import useUser from 'services/user/hook';
 import { UserQuery } from 'services/user/parameter';
 import { userRoleName, userRoleList } from 'services/user/data';
 
-//https://mui.com/components/tables/
 type TableCellProperty = {
   key: string;
   label: string;
@@ -90,7 +89,7 @@ export function UserPage() {
               initialValues={filter}
               onSubmit={handler.search}
             >
-              {({ values, setFieldValue, isSubmitting, handleChange, handleSubmit }) => (
+              {({ values, isSubmitting, handleChange, handleSubmit }) => (
                 <Form>
                   <Box sx={{ display: 'flex' }}>
                     <FormControl fullWidth>

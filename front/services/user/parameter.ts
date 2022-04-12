@@ -22,4 +22,6 @@ export type UserChangeParameter = {
   id: number;
   name: string;
   email: string;
+  userRole: UserRole;
+  departmentId: number;
 }

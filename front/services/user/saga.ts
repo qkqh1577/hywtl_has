@@ -28,8 +28,14 @@ function* add(action: ActionType<typeof userActions.add>) {
 }
 
 function* change(action: ActionType<typeof userActions.change>) {
-  const data: User = yield userApi.change(action.payload);
-  yield put(userActions.setOne(data));
+  const { params, callback } = action.payload;
+  try {
+    const data: User = yield userApi.change(params);
+    yield put(userActions.setOne(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
 }
 
 export default function* saga() {

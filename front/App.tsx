@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import ReactRouter from 'routes/routes';
+import ReactRouter from 'common/routes';
 
 import store from 'common/store';
 import CssBaseline from '@mui/material/CssBaseline';

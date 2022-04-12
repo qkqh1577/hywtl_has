@@ -22,6 +22,9 @@ export const userActions = {
     params: UserAddParameter;
     callback: (data?: User) => void;
   }>(),
-  change: createAction(UserActionType.change)<UserChangeParameter>(),
+  change: createAction(UserActionType.change)<{
+    params: UserChangeParameter;
+    callback: (data?: User) => void;
+  }>(),
   selectOne: createAction(UserActionType.selectOne)<number>(),
 };

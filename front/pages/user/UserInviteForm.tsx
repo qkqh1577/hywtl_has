@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Button,
   FormControl,
@@ -10,32 +10,28 @@ import {
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { UserInvitationInviteParameter } from 'services/user/invitation/parameter';
 import { userRoleName, userRoleList } from 'services/user/data';
-import useDepartment from 'services/department/hook';
-import { departmentCategoryName } from 'services/department/data';
 import { UserRole } from 'services/user/User';
-import Department from 'services/department/Department';
 import useUserInvitation from 'services/user/invitation/hook';
+import DepartmentSelector from 'components/DepartmentSelector';
 
 type Parameter = {
   name: string;
   email: string;
   userRole: UserRole | '';
-  department: number | '';
+  departmentId: number | '';
 }
 const initialParameter: Parameter = {
   name: '',
   email: '',
   userRole: '',
-  department: '',
+  departmentId: '',
 };
 
-const UserForm = () => {
+const UserInviteForm = () => {
   const { invite } = useUserInvitation();
-  const { departmentState: { list: departmentList }, getAll: getAllDepartments } = useDepartment();
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-
       const error: any = {};
 
       const name: string = values.name;
@@ -48,26 +44,15 @@ const UserForm = () => {
         error.email = '이메일 입력은 필수입니다.';
       }
 
-      const userRole: UserRole =
-        ((): UserRole => {
-          const userRole = userRoleList.find(item => item === values.userRole);
-          if (userRole) {
-            return userRole;
-          }
-          error.userRole = '권한 선택은 필수입니다.';
-          return '' as UserRole;
-        })();
+      const userRole: UserRole = values.userRole;
+      if (!userRole) {
+        error.userRole = '권한 선택은 필수입니다.';
+      }
 
-      const departmentId: number =
-        ((): number => {
-          const department: Department | undefined = departmentList.find(item => item.id === values.department);
-          if (department) {
-            return department.id;
-          }
-          error.department = '부서 선택은 필수입니다.';
-          return -1;
-        })();
-
+      const departmentId: number = values.departmentId;
+      if (!departmentId) {
+        error.department = '부서 선택은 필수입니다.';
+      }
 
       if (Object.keys(error).length > 0) {
         setErrors(error);
@@ -84,10 +69,6 @@ const UserForm = () => {
       });
     }
   };
-
-  useEffect(() => {
-    getAllDepartments();
-  }, []);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
@@ -152,23 +133,16 @@ const UserForm = () => {
               </Grid>
               <Grid item sm={12}>
                 <FormControl variant="standard" fullWidth>
-                  <InputLabel id="params-department-label">소속 부서</InputLabel>
-                  <Select
-                    labelId="params-department-label"
-                    id="params-department"
-                    name="department"
+                  <InputLabel id="params-departmentId-label">소속 부서</InputLabel>
+                  <DepartmentSelector
+                    labelId="params-departmentId-label"
+                    id="params-departmentId"
+                    name="departmentId"
                     label="소속 부서"
-                    value={values.department}
-                    onChange={handleChange}
-                    required
-                  >
-                    {departmentList.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>{
-                        `${item.name} ${departmentCategoryName(item.category)}`
-                      }</MenuItem>
-                    ))}
-                  </Select>
-                  <ErrorMessage name="department" />
+                    value={values.departmentId}
+                    handleChange={handleChange}
+                  />
+                  <ErrorMessage name="departmentId" />
                 </FormControl>
               </Grid>
               <Grid item sm={12}>
@@ -191,4 +165,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default UserInviteForm;

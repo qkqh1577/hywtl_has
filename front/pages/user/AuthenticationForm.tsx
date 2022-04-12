@@ -178,7 +178,7 @@ const UserAuthenticationForm = () => {
                   <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="params-password-check">비밀번호 확인</InputLabel>
                     <Input
-                      type="passwordCheck"
+                      type="password"
                       id="params-password-check"
                       name="passwordCheck"
                       value={values.passwordCheck}

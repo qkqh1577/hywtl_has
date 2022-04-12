@@ -7,7 +7,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUsernameAndDeletedTimeIsNull(String username);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailAndDeletedTimeIsNull(String email);
+
 }

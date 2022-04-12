@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.user.service;
 
 import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
+import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
 import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
@@ -34,6 +36,8 @@ public class UserService {
 
     private final UserInvitationRepository userInvitationRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     @Transactional(readOnly = true)
     public Page<UserListView> page(
         @Nullable Predicate predicate,
@@ -60,7 +64,6 @@ public class UserService {
         }
 
         User user = User.add(
-            userRepository,
             params.getUsername(),
             params.getPassword(),
             params.getName(),
@@ -68,15 +71,20 @@ public class UserService {
             userInvitation.getDepartment(),
             userInvitation.getUserRole()
         );
-        userInvitationRepository.findByEmailAndDeletedTimeIsNull(params.getEmail())
-            .ifPresent(UserInvitation::invalidate);
         return this.save(user);
     }
 
     @Transactional
     public UserDetailView change(Long id, UserChangeParameter params) {
+        Department department = departmentRepository.findById(params.getDepartmentId())
+            .orElseThrow(NotFoundException::new);
         User user = this.load(id);
-        user.change(params.getName(), params.getEmail());
+        user.change(
+            params.getName(),
+            params.getEmail(),
+            params.getUserRole(),
+            department
+        );
         return this.save(user);
     }
 
@@ -87,5 +95,4 @@ public class UserService {
     private UserDetailView save(User source) {
         return UserDetailView.assemble(userRepository.save(source));
     }
-
 }
