@@ -57,10 +57,9 @@ spring:
         active: local
 
 application:
-    user-invitation:
-        invalidate-duration: PT1H
     front-url: http://localhost:8080
     mail:
+        invalidate-duration: PT1H
         username: caster@howoocast.com
         password: zozo@123123
         host: smtp.office365.com

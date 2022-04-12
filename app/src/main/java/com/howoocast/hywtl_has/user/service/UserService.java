@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
+import com.howoocast.hywtl_has.user.event.UserResetPasswordEvent;
 import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
 import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
 import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -28,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Value("${application.user-invitation.invalidate-duration}")
+    @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
     private final UserRepository userRepository;
@@ -36,6 +38,8 @@ public class UserService {
     private final UserInvitationRepository userInvitationRepository;
 
     private final DepartmentRepository departmentRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public Page<UserListView> page(
@@ -98,7 +102,7 @@ public class UserService {
     @Transactional
     public UserDetailView resetPassword(Long id) {
         User user = this.load(id);
-        user.lock();
+        eventPublisher.publishEvent(new UserResetPasswordEvent(user));
         return this.save(user);
     }
 

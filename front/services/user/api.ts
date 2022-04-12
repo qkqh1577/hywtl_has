@@ -1,7 +1,12 @@
 import axios from 'axios';
 import queryString from 'qs';
 import Page from 'common/Page';
-import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
+import {
+  AddUserParameter,
+  ChangeUserParameter,
+  ChangeUserPasswordParameter,
+  UserQuery
+} from './parameter';
 import User, { ListUser } from './User';
 
 export class UserApi {
@@ -22,16 +27,46 @@ export class UserApi {
     return data;
   }
 
-  async add(params: UserAddParameter): Promise<User> {
-    const { data } = await axios.post('/users', params);
+  async add(params: AddUserParameter): Promise<User> {
+    const { data } = await axios.post('/users', params, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
     return data;
   }
 
-  async change(params: UserChangeParameter): Promise<User> {
-    const { id, ...rest } = params;
-    const { data } = await axios.patch(`/users/${id}`, rest);
+  async resetPassword(id: number): Promise<User> {
+    const { data } = await axios.post(`/users/${id}/password/reset`);
     return data;
   }
+
+  async change(params: ChangeUserParameter): Promise<User> {
+    const { id, ...rest } = params;
+    const { data } = await axios.patch(`/users/${id}`, rest, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
+    return data;
+  }
+
+  async changePassword(params: ChangeUserPasswordParameter): Promise<User> {
+    const { id, ...rest } = params;
+    const { data } = await axios.patch(`/users/${id}/password`, rest, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
+    return data;
+  }
+
 }
 
 const userApi = new UserApi();

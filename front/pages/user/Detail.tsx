@@ -13,12 +13,12 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import useUser from 'services/user/hook';
 import DateFormat from 'components/DateFormat';
-import { userRoleList, userRoleName } from 'services/user/data';
 import DepartmentSelector from 'components/DepartmentSelector';
+import useUser from 'services/user/hook';
 import { UserRole } from 'services/user/User';
-import { UserChangeParameter } from 'services/user/parameter';
+import { userRoleList, userRoleName } from 'services/user/data';
+import { ChangeUserParameter } from 'services/user/parameter';
 
 const useStyles = makeStyles(() => ({
   component: {
@@ -38,6 +38,7 @@ const UserDetail = () => {
       detail
     },
     getOne,
+    resetPassword,
     change,
     clearOne
   } = useUser();
@@ -69,7 +70,7 @@ const UserDetail = () => {
         error.department = '부서 선택은 필수입니다.';
       }
 
-      const params: UserChangeParameter = {
+      const params: ChangeUserParameter = {
         id: detail.id,
         name,
         email,
@@ -91,7 +92,17 @@ const UserDetail = () => {
       });
     },
     password: () => {
-
+      if (!detail) {
+        window.alert('잘못된 접근입니다.');
+        return;
+      }
+      if (window.confirm('해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?')) {
+        resetPassword(detail.id, (data) => {
+          if (data) {
+            window.alert('비밀번호 변경 메일을 발송하였습니다.');
+          }
+        });
+      }
     },
   };
   useEffect(() => {

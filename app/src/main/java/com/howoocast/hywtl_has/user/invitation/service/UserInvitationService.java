@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserInvitationService {
 
-    @Value("${application.user-invitation.invalidate-duration}")
+    @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
     private final UserInvitationRepository userInvitationRepository;

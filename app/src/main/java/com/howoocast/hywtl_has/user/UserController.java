@@ -58,6 +58,10 @@ public class UserController {
         return userService.add(params);
     }
 
+    @PostMapping("/users/{id}/password/reset")
+    public UserDetailView resetPassword(@PathVariable Long id) {
+        return userService.resetPassword(id);
+    }
 
     @PatchMapping("/users/{id}")
     public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
@@ -74,8 +78,5 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/users/{id}/password")
-    public UserDetailView resetPassword(@PathVariable Long id) {
-        return userService.resetPassword(id);
-    }
+
 }

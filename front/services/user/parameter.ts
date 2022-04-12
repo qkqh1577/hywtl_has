@@ -9,7 +9,7 @@ export type UserQuery = {
   role: UserRole[];
 }
 
-export type UserAddParameter = {
+export type AddUserParameter = {
   name: string;
   username: string;
   password: string;
@@ -18,10 +18,16 @@ export type UserAddParameter = {
 
 }
 
-export type UserChangeParameter = {
+export type ChangeUserParameter = {
   id: number;
   name: string;
   email: string;
   userRole: UserRole;
   departmentId: number;
+}
+
+export type ChangeUserPasswordParameter = {
+  id: number;
+  nowPassword: string;
+  newPassword: string;
 }
