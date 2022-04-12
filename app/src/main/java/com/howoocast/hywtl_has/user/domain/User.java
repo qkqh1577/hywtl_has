@@ -1,8 +1,12 @@
 package com.howoocast.hywtl_has.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.howoocast.hywtl_has.common.service.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
+import com.howoocast.hywtl_has.user.exception.UserPasswordNotMatchException;
+import com.howoocast.hywtl_has.user.exception.UserPasswordSameException;
+import com.howoocast.hywtl_has.user.repository.UserProvider;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
@@ -54,19 +59,22 @@ public class User {
     private UserRole userRole;
 
     @Column(insertable = false)
-    private LocalDateTime signedInTime; // 최근 접속일
+    private LocalDateTime signedInTime; // 최근 접속일시
 
     @Column(insertable = false)
-    private LocalDateTime passwordChangedTime; // 비밀번호 변경일
+    private LocalDateTime lockedTime; // 잠김 처리일시
+
+    @Column(nullable = false)
+    private LocalDateTime passwordChangedTime; // 비밀번호 변경일시
 
     @NotNull
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime; // 생성 일자
+    private LocalDateTime createdTime; // 생성일시
 
     @Column(insertable = false)
-    private LocalDateTime deletedTime; // 삭제 일자
+    private LocalDateTime deletedTime; // 삭제일시
 
-    public static User add(
+    public static User of(
         String username,
         String password,
         String name,
@@ -84,6 +92,21 @@ public class User {
         );
     }
 
+    public void checkEmailUsed(UserProvider provider) {
+        provider.findBy(this.email).ifPresent(target -> {
+            if (!Objects.equals(this.id, target.id)) {
+                throw new DuplicatedValueException("email", this.email);
+            }
+        });
+    }
+
+    public void checkUsernameUsed(UserProvider provider) {
+        provider.findBy(this.username).ifPresent(target -> {
+            if (!Objects.equals(this.id, target.id)) {
+                throw new DuplicatedValueException("username", this.username);
+            }
+        });
+    }
 
     public boolean canSignIn(String invalidatePeriod) {
         boolean isDeleted = Objects.nonNull(this.deletedTime);
@@ -106,14 +129,28 @@ public class User {
         this.department = department;
     }
 
-    public void changeRole(
-        UserRole userRole
+    public void changePassword(
+        String nowPassword,
+        String newPassword
     ) {
-        this.userRole = userRole;
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(nowPassword, this.password)) {
+            throw new UserPasswordNotMatchException();
+        }
+        if (passwordEncoder.matches(newPassword, this.password)) {
+            throw new UserPasswordSameException();
+        }
+        this.setPassword(newPassword);
     }
 
     public void signIn() {
         this.signedInTime = LocalDateTime.now();
+    }
+
+    public void lock() {
+        if (Objects.isNull(this.lockedTime)) {
+            this.lockedTime = LocalDateTime.now();
+        }
     }
 
     public void delete() {
@@ -129,12 +166,17 @@ public class User {
         UserRole userRole
     ) {
         this.username = username;
-        this.password = new BCryptPasswordEncoder().encode(password);
         this.name = name;
         this.email = email;
         this.department = department;
         this.userRole = userRole;
         this.createdTime = LocalDateTime.now();
-        this.passwordChangedTime = this.createdTime;
+        this.setPassword(password);
+    }
+
+    private void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+        this.passwordChangedTime = LocalDateTime.now();
+        this.lockedTime = null;
     }
 }

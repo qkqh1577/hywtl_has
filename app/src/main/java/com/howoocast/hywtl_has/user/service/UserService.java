@@ -6,11 +6,10 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
 import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
-import com.howoocast.hywtl_has.user.invitation.service.exception.UserInvitationAuthenticationFailureException;
-import com.howoocast.hywtl_has.user.invitation.util.MailAuthKeyManager;
 import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user.service.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.service.view.UserDetailView;
 import com.howoocast.hywtl_has.user.service.view.UserListView;
 import com.querydsl.core.types.Predicate;
@@ -56,14 +55,11 @@ public class UserService {
 
     @Transactional
     public UserDetailView add(UserAddParameter params) {
-        UserInvitation userInvitation = userInvitationRepository.findByEmailAndDeletedTimeIsNull(params.getEmail())
-            .orElseThrow(NotFoundException::new);
+        UserInvitation userInvitation =
+            UserInvitation.load(userInvitationRepository::findByEmailAndDeletedTimeIsNull, params.getEmail());
+        userInvitation.checkValid(invalidateDuration, params.getAuthKey());
 
-        if (!MailAuthKeyManager.authenticate(userInvitation, invalidateDuration, params.getAuthKey())) {
-            throw new UserInvitationAuthenticationFailureException();
-        }
-
-        User user = User.add(
+        User user = User.of(
             params.getUsername(),
             params.getPassword(),
             params.getName(),
@@ -71,6 +67,9 @@ public class UserService {
             userInvitation.getDepartment(),
             userInvitation.getUserRole()
         );
+        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
+        user.checkUsernameUsed(userRepository::findByUsernameAndDeletedTimeIsNull);
+        userInvitation.invalidate();
         return this.save(user);
     }
 
@@ -85,6 +84,21 @@ public class UserService {
             params.getUserRole(),
             department
         );
+        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
+        return this.save(user);
+    }
+
+    @Transactional
+    public UserDetailView changePassword(Long id, UserPasswordChangeParameter params) {
+        User user = this.load(id);
+        user.changePassword(params.getNowPassword(), params.getNewPassword());
+        return this.save(user);
+    }
+
+    @Transactional
+    public UserDetailView resetPassword(Long id) {
+        User user = this.load(id);
+        user.lock();
         return this.save(user);
     }
 

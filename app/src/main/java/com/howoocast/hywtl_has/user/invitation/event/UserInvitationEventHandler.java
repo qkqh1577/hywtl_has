@@ -2,7 +2,6 @@ package com.howoocast.hywtl_has.user.invitation.event;
 
 import com.howoocast.hywtl_has.common.service.MailService;
 import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
-import com.howoocast.hywtl_has.user.invitation.util.MailAuthKeyManager;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +28,7 @@ public class UserInvitationEventHandler {
 
     private final MailService mailService;
 
-    @TransactionalEventListener(classes = UserInvitationAddEvent.class, phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener(classes = UserInvitationAddEvent.class, phase = TransactionPhase.AFTER_COMPLETION)
     public void add(UserInvitationAddEvent e) throws MessagingException, UnsupportedEncodingException {
         UserInvitation data = e.getData();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -41,7 +40,7 @@ public class UserInvitationEventHandler {
                 + "<h5>해당 주소는 %s까지 유효합니다.</h5>",
             frontUrl,
             URLEncoder.encode(data.getEmail(), StandardCharsets.UTF_8),
-            URLEncoder.encode(MailAuthKeyManager.generate(data.getEmail()), StandardCharsets.UTF_8),
+            URLEncoder.encode(data.getAuthKey(), StandardCharsets.UTF_8),
             data.getCreatedTime().plus(Duration.parse(invalidateDuration)).format(formatter)
         );
         mailService.send(

@@ -5,7 +5,5 @@ import java.util.Optional;
 
 public interface UserProvider {
 
-    Optional<User> findByUsername(String username);
-
-    Optional<User> findByEmail(String email);
+    Optional<User> findBy(String target);
 }

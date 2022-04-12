@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.user.invitation.service.exception;
+package com.howoocast.hywtl_has.user.invitation.exception;
 
 import com.howoocast.hywtl_has.common.service.exception.CustomExceptionAdaptor;
 

@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.user;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
+import com.howoocast.hywtl_has.user.service.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.service.UserService;
 import com.howoocast.hywtl_has.user.service.view.UserDetailView;
@@ -57,13 +58,24 @@ public class UserController {
         return userService.add(params);
     }
 
+
     @PatchMapping("/users/{id}")
     public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
         return userService.change(id, params);
     }
 
-    @DeleteMapping("/users/{id}")
-    public void delete() {
+    @PatchMapping("/users/{id}/password")
+    public UserDetailView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
+        return userService.changePassword(id, params);
+    }
 
+    @DeleteMapping("/users/{id}")
+    public void delete(@PathVariable Long id) {
+
+    }
+
+    @DeleteMapping("/users/{id}/password")
+    public UserDetailView resetPassword(@PathVariable Long id) {
+        return userService.resetPassword(id);
     }
 }
