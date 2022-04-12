@@ -1,40 +1,18 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <title>오뚜기 품질포털</title>
-        <meta charset="UTF-8">
-        <meta http-equiv="x-ua-compatible" content="IE=edge"/>
-        <link type="text/css" rel="stylesheet" href="/lib/fomantic/semantic.min.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/login.css"/>
+        <title>한양 풍동</title>
+        <style>
+            html, body, #root {
+                padding: 0;
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
     </head>
-</head>
-<body>
-<div class="login-form">
-    <div class="ui grid center aligned">
-        <div class="row ">
-            <h1>HYWTL HAS</h1>
-        </div>
-        <div class="row">
-            <form class="ui form" role="form" method="post" action="/portal">
-                <div class="field">
-                    <input type="text" name="username" placeholder="아이디" value="howoocast1">
-                </div>
-                <div class="field">
-                    <input type="password" name="password" id="password" placeholder="비밀번호" value="howoocast123">
-                </div>
-                <div class="btn-wrapper">
-                    <button type="submit" class="ui button primary">로그인</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="info">
-        임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다. <br/>
-        불법으로 사용시에는 법적 제재를 받을 수가 있습니다. <br/>
-        Only authorized personnel can access this web site.
-    </div>
-</div>
-</body>
+    <body>
+        <div id="root"></div>
+        <script src="http://localhost:3000/bundle.js"></script>
+    </body>
 </html>

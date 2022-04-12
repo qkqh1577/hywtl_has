@@ -4,16 +4,22 @@ import Department from './Department';
 import Page, { initial } from 'common/Page';
 
 export type DepartmentState = {
+  list: Department[];
   page: Page<Department>;
   detail?: Department;
   selectedId?: number;
 }
 
 export const initState: DepartmentState = {
+  list: [],
   page: initial,
 };
 
 const departmentReducer = createReducer(initState, {
+  [DepartmentActionType.setAll]: (state, action) => ({
+    ...state,
+    list: action.payload,
+  }),
   [DepartmentActionType.setPage]: (state, action) => ({
     ...state,
     page: action.payload,

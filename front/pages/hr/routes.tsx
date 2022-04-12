@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRoutes} from "routes/routes";
+import {AppRoutes} from "common/routes";
 import HrCardPage from './HrCardPage';
 import HrCardDetailPage from './HrCardDetailPage'
 

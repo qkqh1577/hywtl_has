@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import ReactRouter from "routes/routes";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import ReactRouter from 'common/routes';
 
 import store from 'common/store';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,12 +17,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import AppBar from 'layouts/AppBar';
 import AppDrawer from './layouts/AppDrawer';
-import {menuData} from 'layouts/AppMenu';
-import {ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import { menuData } from 'layouts/AppMenu';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 const App = () => {
 
@@ -38,17 +38,11 @@ const App = () => {
     setOpen(!open);
   };
 
-  useEffect(() => {
-    console.warn('use effect');
-  }, []);
-
-  console.debug(menuData);
-
   return (
     <Provider store={store}>
       <ThemeProvider theme={mdTheme}>
-        <Box sx={{display: 'flex'}}>
-          <CssBaseline/>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
           <AppBar position="absolute" open={open}>
             <Toolbar
               sx={{
@@ -62,22 +56,22 @@ const App = () => {
                 onClick={toggleDrawer}
                 sx={{
                   marginRight: '36px',
-                  ...(open && {display: 'none'}),
+                  ...(open && { display: 'none' }),
                 }}
               >
-                <MenuIcon/>
+                <MenuIcon />
               </IconButton>
               <Typography
                 component="h1"
                 variant="h6"
                 color="inherit"
                 noWrap
-                sx={{flexGrow: 1}}
+                sx={{ flexGrow: 1 }}
               >
               </Typography>
               <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon/>
+                  <NotificationsIcon />
                 </Badge>
               </IconButton>
             </Toolbar>
@@ -92,10 +86,10 @@ const App = () => {
               }}
             >
               <IconButton onClick={toggleDrawer}>
-                <ChevronLeftIcon/>
+                <ChevronLeftIcon />
               </IconButton>
             </Toolbar>
-            <Divider/>
+            <Divider />
             <List>
               <div>
                 {menuData.map(menu => {
@@ -105,7 +99,7 @@ const App = () => {
                     <ListItemIcon>
                       {React.createElement(menu.icon)}
                     </ListItemIcon>
-                    <ListItemText primary={menu.name}/>
+                    <ListItemText primary={menu.name} />
                   </ListItem>);
                 })}
               </div>
@@ -123,8 +117,8 @@ const App = () => {
               overflow: 'auto',
             }}
           >
-            <Toolbar/>
-            <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <ReactRouter />
             </Container>
           </Box>
@@ -132,6 +126,6 @@ const App = () => {
       </ThemeProvider>
     </Provider>
   );
-}
+};
 
 export default App;

@@ -1,4 +1,4 @@
-import User, { UserRole } from './User';
+import { UserRole } from './User';
 
 export type UserQuery = {
   page: number;
@@ -9,12 +9,19 @@ export type UserQuery = {
   role: UserRole[];
 }
 
-export type UserAddParameter = Omit<User, 'id'> & {
+export type UserAddParameter = {
+  name: string;
+  username: string;
   password: string;
+  email: string;
+  authKey: string;
+
 }
 
 export type UserChangeParameter = {
   id: number;
   name: string;
   email: string;
+  userRole: UserRole;
+  departmentId: number;
 }

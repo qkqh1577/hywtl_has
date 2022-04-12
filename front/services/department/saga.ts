@@ -5,6 +5,10 @@ import Department from './Department';
 import departmentApi from './api';
 import Page from 'common/Page';
 
+function* getAll() {
+  const list: Department[] = yield departmentApi.getAll();
+  yield put(departmentActions.setAll(list));
+}
 
 function* getPage(action: ActionType<typeof departmentActions.getPage>) {
   const page: Page<Department> = yield departmentApi.getPage(action.payload);
@@ -44,6 +48,7 @@ function* changeParent(action: ActionType<typeof departmentActions.changeParent>
 }
 
 export default function* saga() {
+  yield takeLatest(DepartmentActionType.getAll, getAll);
   yield takeLatest(DepartmentActionType.getPage, getPage);
   yield takeLatest(DepartmentActionType.getOne, getOne);
   yield takeLatest(DepartmentActionType.add, add);

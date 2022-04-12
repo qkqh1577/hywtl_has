@@ -18,5 +18,4 @@ type UserDetail = Omit<ListUser, 'departmentId' | 'departmentName'> & {
   signedInTime?: Date;
   passwordChangedTime?: Date;
 }
-
 export default UserDetail;

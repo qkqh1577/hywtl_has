@@ -1,8 +1,9 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from 'common/reducer';
-import {useCallback} from 'react';
-import {UserAddParameter, UserChangeParameter, UserQuery} from './parameter';
-import {userActions} from './actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'common/reducer';
+import { useCallback } from 'react';
+import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
+import { userActions } from './actions';
+import User from 'services/user/User';
 
 export default function useUser() {
   const userState = useSelector((state: RootState) => state.user);
@@ -26,15 +27,16 @@ export default function useUser() {
     [dispatch],
   );
 
+
   const add = useCallback(
-    (params: UserAddParameter) =>
-      dispatch(userActions.add(params)),
+    (params: UserAddParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.add({ params, callback })),
     [dispatch],
   );
 
   const change = useCallback(
-    (params: UserChangeParameter) =>
-      dispatch(userActions.change(params)),
+    (params: UserChangeParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.change({ params, callback })),
     [dispatch],
   );
 

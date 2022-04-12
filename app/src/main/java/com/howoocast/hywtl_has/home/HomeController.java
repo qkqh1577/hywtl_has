@@ -3,8 +3,7 @@ package com.howoocast.hywtl_has.home;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
@@ -17,10 +16,11 @@ public class HomeController {
         return mav;
     }
 
-    @RequestMapping("portal")
-    public ModelAndView appView(ModelAndView mav) {
-        mav.setViewName("app");
+    @GetMapping("/{*path}")
+    public ModelAndView pathIndexView(ModelAndView mav, @PathVariable String path) {
+        mav.setViewName("index");
+        log.debug("[trim path] {}", path);
+        mav.addObject("path", path);
         return mav;
     }
-
 }

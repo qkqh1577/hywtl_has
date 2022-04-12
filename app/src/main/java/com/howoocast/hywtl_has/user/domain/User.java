@@ -1,11 +1,11 @@
 package com.howoocast.hywtl_has.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +33,7 @@ public class User {
     private String name; // 사용자명
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String username; // 로그인 아이디
 
     @NotBlank
@@ -54,51 +54,87 @@ public class User {
     private UserRole userRole;
 
     @Column(insertable = false)
-    private LocalDateTime signedInTime;
+    private LocalDateTime signedInTime; // 최근 접속일
 
     @Column(insertable = false)
-    private LocalDateTime passwordChangedTime;
+    private LocalDateTime passwordChangedTime; // 비밀번호 변경일
 
     @NotNull
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime = LocalDateTime.now(); // 생성 일자
+    private LocalDateTime createdTime; // 생성 일자
 
     @Column(insertable = false)
     private LocalDateTime deletedTime; // 삭제 일자
 
     public static User add(
-            UserRepository provider,
-            String username,
-            String password,
-            String name,
-            String email,
-            Department department,
-            UserRole userRole
+        String username,
+        String password,
+        String name,
+        String email,
+        Department department,
+        UserRole userRole
     ) {
-        if (provider.findByUsername(username).isPresent()) {
-            throw new DuplicatedValueException("username", username);
-        }
-        if (provider.findByEmail(email).isPresent()) {
-            throw new DuplicatedValueException("email", email);
-        }
+        return new User(
+            username,
+            password,
+            name,
+            email,
+            department,
+            userRole
+        );
+    }
 
-        User user = new User();
-        user.username = username;
-        user.password = new BCryptPasswordEncoder().encode(password);
-        user.name = name;
-        user.email = email;
-        user.department = department;
-        user.userRole = userRole;
 
-        return user;
+    public boolean canSignIn(String invalidatePeriod) {
+        boolean isDeleted = Objects.nonNull(this.deletedTime);
+
+        LocalDateTime limitTime = this.passwordChangedTime.plus(Duration.parse(invalidatePeriod));
+        boolean isPasswordInvalidated = limitTime.isBefore(LocalDateTime.now());
+
+        return !(isDeleted || isPasswordInvalidated);
     }
 
     public void change(
-            String name,
-            String email
+        String name,
+        String email,
+        UserRole userRole,
+        Department department
     ) {
         this.name = name;
         this.email = email;
+        this.userRole = userRole;
+        this.department = department;
     }
 
+    public void changeRole(
+        UserRole userRole
+    ) {
+        this.userRole = userRole;
+    }
+
+    public void signIn() {
+        this.signedInTime = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.deletedTime = LocalDateTime.now();
+    }
+
+    protected User(
+        String username,
+        String password,
+        String name,
+        String email,
+        Department department,
+        UserRole userRole
+    ) {
+        this.username = username;
+        this.password = new BCryptPasswordEncoder().encode(password);
+        this.name = name;
+        this.email = email;
+        this.department = department;
+        this.userRole = userRole;
+        this.createdTime = LocalDateTime.now();
+        this.passwordChangedTime = this.createdTime;
+    }
 }

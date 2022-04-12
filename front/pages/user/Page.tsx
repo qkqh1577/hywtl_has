@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   Grid,
@@ -18,9 +18,8 @@ import {
 import { Formik, FormikHelpers, Form } from 'formik';
 import useUser from 'services/user/hook';
 import { UserQuery } from 'services/user/parameter';
-import { getUserRoleName, userRoleList } from 'pages/user/util';
+import { userRoleName, userRoleList } from 'services/user/data';
 
-//https://mui.com/components/tables/
 type TableCellProperty = {
   key: string;
   label: string;
@@ -37,6 +36,7 @@ const columns: TableCellProperty[] = [
 ];
 
 export function UserPage() {
+  const navigate = useNavigate();
   const { userState: { page }, getPage } = useUser();
   const [filter, setFilter] = useState<UserQuery>({
     page: 0,
@@ -46,6 +46,11 @@ export function UserPage() {
     keywordType: 'by_username'
   });
   const handler = {
+    move: {
+      add: () => {
+        navigate('/user/add');
+      }
+    },
     page: (e: any, page: number) => {
       setFilter({
         ...filter,
@@ -84,7 +89,7 @@ export function UserPage() {
               initialValues={filter}
               onSubmit={handler.search}
             >
-              {({ values, setFieldValue, isSubmitting, handleChange, handleSubmit }) => (
+              {({ values, isSubmitting, handleChange, handleSubmit }) => (
                 <Form>
                   <Box sx={{ display: 'flex' }}>
                     <FormControl fullWidth>
@@ -101,7 +106,7 @@ export function UserPage() {
                                 name="role"
                               />
                             }
-                            label={getUserRoleName(item)}
+                            label={userRoleName(item)}
                           />
                         ))}
                       </FormGroup>
@@ -169,7 +174,7 @@ export function UserPage() {
                     </TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{getUserRoleName(user.userRole)}</TableCell>
+                    <TableCell>{userRoleName(user.userRole)}</TableCell>
                     <TableCell>{user.departmentName}</TableCell>
                   </TableRow>
                 );
@@ -186,6 +191,17 @@ export function UserPage() {
           onPageChange={handler.page}
           onRowsPerPageChange={handler.size}
         />
+      </Paper>
+      <Paper>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handler.move.add}
+          >
+            등록
+          </Button>
+        </Box>
       </Paper>
     </>
   );

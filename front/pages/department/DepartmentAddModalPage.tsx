@@ -2,10 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import {Formik} from "formik";
 
-import {Grid, MenuItem, TextField} from "@mui/material";
-import {departmentCategoryList, departmentCategoryName} from "../../services/department/data";
+import { Grid, MenuItem, TextField } from '@mui/material';
+import { departmentCategoryList, departmentCategoryName } from '../../services/department/data';
 
 const style = {
   position: 'absolute',
@@ -39,7 +38,6 @@ export default function DepartmentAddModalPage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Formik>
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <h3>부서 추가</h3>
@@ -106,7 +104,6 @@ export default function DepartmentAddModalPage() {
                 </Button>
               </Grid>
             </Grid>
-          </Formik>
         </Box>
       </Modal>
     </>
