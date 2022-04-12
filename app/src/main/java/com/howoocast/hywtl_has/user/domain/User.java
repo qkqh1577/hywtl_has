@@ -59,7 +59,7 @@ public class User {
     private UserRole userRole;
 
     @Column(insertable = false)
-    private LocalDateTime signedInTime; // 최근 접속일시
+    private LocalDateTime loginTime; // 최근 접속일시
 
     @Column(insertable = false)
     private LocalDateTime lockedTime; // 잠김 처리일시
@@ -108,7 +108,7 @@ public class User {
         });
     }
 
-    public boolean canSignIn(String invalidatePeriod) {
+    public boolean canLogin(String invalidatePeriod) {
         boolean isDeleted = Objects.nonNull(this.deletedTime);
 
         LocalDateTime limitTime = this.passwordChangedTime.plus(Duration.parse(invalidatePeriod));
@@ -143,8 +143,8 @@ public class User {
         this.setPassword(newPassword);
     }
 
-    public void signIn() {
-        this.signedInTime = LocalDateTime.now();
+    public void login() {
+        this.loginTime = LocalDateTime.now();
     }
 
     public void lock() {

@@ -57,6 +57,14 @@ public class UserService {
         return UserDetailView.assemble(this.load(id));
     }
 
+    @Transactional(readOnly = true)
+    public UserDetailView get(String username) {
+        return UserDetailView.assemble(
+            userRepository.findByUsernameAndDeletedTimeIsNull(username)
+                .orElseThrow(NotFoundException::new)
+        );
+    }
+
     @Transactional
     public UserDetailView add(UserAddParameter params) {
         UserInvitation userInvitation =

@@ -5,6 +5,7 @@ import { UserActionType } from './actions';
 
 export type UserState = {
   page: Page<ListUser>;
+  login?: User;
   detail?: User;
   selectedId?: number;
 }

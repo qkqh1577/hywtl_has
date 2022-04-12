@@ -146,7 +146,7 @@ const UserDetail = () => {
               최근접속일
             </Grid>
             <Grid item sm={8}>
-              <DateFormat date={detail?.signedInTime} format="YYYY-MM-DD HH:mm" />
+              <DateFormat date={detail?.loginTime} format="YYYY-MM-DD HH:mm" />
             </Grid>
           </Grid>
           <Grid container spacing={3} item sm={6} xs={12}>

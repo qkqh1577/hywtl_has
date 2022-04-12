@@ -8,12 +8,14 @@ import com.howoocast.hywtl_has.user.service.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.service.UserService;
 import com.howoocast.hywtl_has.user.service.view.UserDetailView;
 import com.howoocast.hywtl_has.user.service.view.UserListView;
+import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +48,13 @@ public class UserController {
                 .build(),
             pageable
         );
+    }
+
+    @GetMapping("/users/login")
+    public UserDetailView getLogin(Authentication authentication) {
+        String username = authentication.getName();
+        log.debug("[Login] username: {}", username);
+        return userService.get(username);
     }
 
     @GetMapping("/users/{id}")
