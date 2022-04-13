@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,14 +33,20 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @GetMapping("/departments")
-    public Page<DepartmentView> page(
-        @RequestParam(required = false) Long parentId,
-        @RequestParam(required = false) List<DepartmentCategory> categoryList,
-        @PageableDefault(sort = "seq", direction = Direction.ASC) Pageable pageable) {
+    public Page<DepartmentListView> page(
+        @RequestParam(required = false, name="parentId[]") List<Long> parentIdList,
+        @RequestParam(required = false, name="category[]") List<DepartmentCategory> categoryList,
+        @RequestParam(required = false) String keywordType,
+        @RequestParam(required = false) String keyword,
+        @SortDefault.SortDefaults({
+            @SortDefault(sort ="parent.id", direction = Sort.Direction.ASC),
+            @SortDefault(sort ="seq", direction = Sort.Direction.ASC),
+        }) Pageable pageable) {
         return departmentService.page(
             new DepartmentPredicateBuilder()
-                .parentId(parentId)
-                .category(categoryList)
+                .parentIdIn(parentIdList)
+                .categoryIn(categoryList)
+                .keyword(keywordType, keyword)
                 .build(),
             pageable
         );

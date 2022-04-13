@@ -1,7 +1,5 @@
 package com.howoocast.hywtl_has.department.common;
 
-import lombok.Getter;
-
 /**
  * 부서 유형
  */

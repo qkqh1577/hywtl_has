@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import Department from './Department';
+import Department, { ListDepartment } from './Department';
 import {
   DepartmentAddParameter,
   DepartmentChangeParameter,
@@ -24,7 +24,7 @@ export const departmentActions = {
   getAll: createAction(DepartmentActionType.getAll)(),
   setAll: createAction(DepartmentActionType.setAll)<Department[]>(),
   getPage: createAction(DepartmentActionType.getPage)<DepartmentQuery>(),
-  setPage: createAction(DepartmentActionType.setPage)<Page<Department>>(),
+  setPage: createAction(DepartmentActionType.setPage)<Page<ListDepartment>>(),
   getOne: createAction(DepartmentActionType.getOne)<number>(),
   setOne: createAction(DepartmentActionType.setOne)<Department | undefined>(),
   add: createAction(DepartmentActionType.add)<DepartmentAddParameter>(),

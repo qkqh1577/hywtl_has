@@ -1,6 +1,6 @@
 import React from 'react';
 import {AppRoutes} from "common/routes";
-import DepartmentPage from './DepartmentPage';
+import DepartmentPage from 'pages/department/Page';
 import DepartmentDetailPage from './DepartmentDetailPage'
 
 const routes: AppRoutes[] = [

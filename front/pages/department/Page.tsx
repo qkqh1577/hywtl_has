@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import {
+  Box,
   Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   Grid,
+  Input,
   MenuItem,
-  Select,
   Paper,
-  TableContainer,
+  Select,
   Table,
-  TablePagination,
-  TableHead,
   TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
   TableRow,
-  TableCell, Checkbox, FormLabel, Box, FormControl, FormGroup, FormControlLabel, Input
 } from '@mui/material';
-import { Formik, FormikHelpers, Form } from 'formik';
-import useUser from 'services/user/hook';
-import { UserQuery } from 'services/user/parameter';
-import { userRoleName, userRoleList } from 'services/user/data';
+import { Form, Formik, FormikHelpers } from 'formik';
+import useDepartment from 'services/department/hook';
+import { DepartmentQuery } from 'services/department/parameter';
+import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
+import { Link } from 'react-router-dom';
 
 type TableCellProperty = {
   key: string;
@@ -25,32 +32,46 @@ type TableCellProperty = {
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
   style?: any;
 }
+
 const columns: TableCellProperty[] = [
   { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'userId', label: '아이디', style: { minWidth: 100 } },
-  { key: 'name', label: '이름', style: { minWidth: 100 } },
-  { key: 'email', label: '이메일', style: { minWidth: 100 } },
-  { key: 'role', label: '권한', style: { minWidth: 100 } },
-  { key: 'department', label: '소속', style: { minWidth: 100 } },
+  { key: 'name', label: '부서명', style: { minWidth: 100 } },
+  { key: 'category', label: '유형', style: { minWidth: 100 } },
+  { key: 'parent', label: '상위 부서', style: { minWidth: 100 } },
+  { key: 'userCount', label: '소속 유저 수', style: { minWidth: 100 } },
+  { key: 'childrenCount', label: '하위 부서 수', style: { minWidth: 100 } },
 ];
 
-const initQuery: UserQuery = {
-  page: 0,
+const initFilter: DepartmentQuery = {
   size: 10,
-  sort: 'id,DESC',
-  role: userRoleList,
-  keywordType: 'by_username'
+  page: 0,
+  category: departmentCategoryList,
+  keywordType: 'by_name',
+  keyword: '',
 };
 
-const UserPage = () => {
-  const navigate = useNavigate();
-  const { userState: { page }, getPage } = useUser();
-  const [filter, setFilter] = useState<UserQuery>(initQuery);
+const DepartmentPage = () => {
+  const {
+    departmentState: {
+      page,
+    },
+    getPage,
+  } = useDepartment();
+  const [filter, setFilter] = useState<DepartmentQuery>(initFilter);
+
   const handler = {
-    move: {
-      add: () => {
-        navigate('/user/add');
-      }
+    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      setFilter({
+        ...filter,
+        page: 0,
+        category: values.category,
+        keywordType: values.keywordType ?? 'by_name',
+        keyword: values.keyword ?? undefined,
+      });
+      setSubmitting(false);
+    },
+    clear: () => {
+      setFilter(initFilter);
     },
     page: (e: any, page: number) => {
       setFilter({
@@ -65,19 +86,6 @@ const UserPage = () => {
         size: e.target.value
       });
     },
-    clear: () => {
-      setFilter(initQuery);
-    },
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setFilter({
-        ...filter,
-        page: 0,
-        role: values.role,
-        keywordType: values.keywordType ?? 'by_username',
-        keyword: values.keyword ?? undefined,
-      });
-      setSubmitting(false);
-    }
   };
 
   useEffect(() => {
@@ -90,7 +98,7 @@ const UserPage = () => {
         display: 'flex',
         width: '100%',
       }}>
-        <h2>유저 목록</h2>
+        <h2>부서 목록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
@@ -109,20 +117,20 @@ const UserPage = () => {
                   <Grid container spacing={1}>
                     <Grid item sm={12}>
                       <FormControl variant="standard" fullWidth>
-                        <FormLabel component="legend">권한</FormLabel>
+                        <FormLabel component="legend">부서 유형</FormLabel>
                         <FormGroup row>
-                          {userRoleList.map((item) => (
+                          {departmentCategoryList.map((item) => (
                             <FormControlLabel
                               key={item as string}
                               control={
                                 <Checkbox
                                   value={item}
-                                  checked={values.role.includes(item)}
+                                  checked={values.category?.includes(item)}
                                   onChange={handleChange}
-                                  name="role"
+                                  name="category"
                                 />
                               }
-                              label={userRoleName(item)}
+                              label={departmentCategoryName(item)}
                             />
                           ))}
                         </FormGroup>
@@ -136,10 +144,9 @@ const UserPage = () => {
                             value={values.keywordType}
                             onChange={handleChange}
                             name="keywordType"
+                            placeholder="선택"
                           >
-                            <MenuItem value="by_username">아이디</MenuItem>
-                            <MenuItem value="by_name">이름</MenuItem>
-                            <MenuItem value="by_email">이메일</MenuItem>
+                            <MenuItem value="by_name">부서명</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
@@ -208,20 +215,20 @@ const UserPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {page.content.map((user, i) => {
+              {page.content.map((item, i) => {
                 const no: number = i + 1;
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
                     <TableCell>{no}</TableCell>
                     <TableCell>
-                      <Link to={`/user/${user.id}`}>
-                        {user.username}
+                      <Link to={`/department/${item.id}`}>
+                        {`${item.name}${departmentCategoryName(item.category)}`}
                       </Link>
                     </TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{userRoleName(user.userRole)}</TableCell>
-                    <TableCell>{user.departmentName}</TableCell>
+                    <TableCell>{departmentCategoryName(item.category)}</TableCell>
+                    <TableCell>{item.parent ? `${item.parent.name}${departmentCategoryName(item.parent.category)}` : '-'}</TableCell>
+                    <TableCell>{item.userCount ?? '-'}</TableCell>
+                    <TableCell>{item.childrenCount ?? '-'}</TableCell>
                   </TableRow>
                 );
               })}
@@ -232,39 +239,21 @@ const UserPage = () => {
       <Box sx={{
         display: 'flex',
         width: '100%',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        mb: '20px',
       }}>
-        <Grid container spacing={1}>
-          <Grid item sm={8} sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-          }}>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={page.content.length}
-              rowsPerPage={filter.size}
-              page={filter.page}
-              onPageChange={handler.page}
-              onRowsPerPageChange={handler.size}
-            />
-          </Grid>
-          <Grid item sm={4} sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handler.move.add}
-            >
-              등록
-            </Button>
-          </Grid>
-        </Grid>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={page.content.length}
+          rowsPerPage={filter.size}
+          page={filter.page}
+          onPageChange={handler.page}
+          onRowsPerPageChange={handler.size}
+        />
       </Box>
     </Paper>
   );
 };
 
-export default UserPage;
+export default DepartmentPage;

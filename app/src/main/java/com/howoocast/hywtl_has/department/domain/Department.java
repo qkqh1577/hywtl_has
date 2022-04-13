@@ -104,7 +104,7 @@ public class Department {
             if (Objects.nonNull(this.parent) && this.parent.id.equals(parentId)) {
                 throw new IllegalRequestException("동일한 부모 부서 입니다.");
             }
-            provider.findById(parentId).ifPresentOrElse((parent) -> this.parent = parent, () -> new NotFoundException());
+            provider.findById(parentId).ifPresentOrElse((parent) -> this.parent = parent, NotFoundException::new);
         }
     }
 

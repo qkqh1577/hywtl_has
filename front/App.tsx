@@ -148,7 +148,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    getLogin();
+      getLogin();
   }, [path]);
 
   useEffect(() => {

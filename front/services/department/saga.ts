@@ -1,7 +1,7 @@
 import { ActionType } from 'typesafe-actions';
 import { departmentActions, DepartmentActionType } from './actions';
 import { put, takeLatest } from 'redux-saga/effects';
-import Department from './Department';
+import Department, { ListDepartment } from './Department';
 import departmentApi from './api';
 import Page from 'common/Page';
 
@@ -11,7 +11,7 @@ function* getAll() {
 }
 
 function* getPage(action: ActionType<typeof departmentActions.getPage>) {
-  const page: Page<Department> = yield departmentApi.getPage(action.payload);
+  const page: Page<ListDepartment> = yield departmentApi.getPage(action.payload);
   yield put(departmentActions.setPage(page));
 }
 
