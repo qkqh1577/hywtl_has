@@ -15,7 +15,7 @@ export type ListUser = {
 type UserDetail = Omit<ListUser, 'departmentId' | 'departmentName'> & {
   department: Department;
   createdTime: Date;
-  signedInTime?: Date;
+  loginTime?: Date;
   passwordChangedTime?: Date;
 }
 export default UserDetail;

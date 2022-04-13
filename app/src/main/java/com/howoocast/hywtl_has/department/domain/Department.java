@@ -2,8 +2,9 @@ package com.howoocast.hywtl_has.department.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.howoocast.hywtl_has.common.service.exception.IllegalRequestException;
-import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;

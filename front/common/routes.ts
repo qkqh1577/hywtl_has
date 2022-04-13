@@ -11,7 +11,6 @@ export interface AppRoutes extends RouteProps {
 }
 
 const Routes = () => {
-
   const routes: AppRoutes[] = [
     ...departmentRoutes,
     ...userRoutes,

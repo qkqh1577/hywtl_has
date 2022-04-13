@@ -27,6 +27,17 @@ function* add(action: ActionType<typeof userActions.add>) {
   }
 }
 
+function* resetPassword(action: ActionType<typeof userActions.resetPassword>) {
+  const { id, callback } = action.payload;
+  try {
+    const data: User = yield userApi.resetPassword(id);
+    yield put(userActions.setOne(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
 function* change(action: ActionType<typeof userActions.change>) {
   const { params, callback } = action.payload;
   try {
@@ -38,9 +49,49 @@ function* change(action: ActionType<typeof userActions.change>) {
   }
 }
 
+function* changePassword(action: ActionType<typeof userActions.changePassword>) {
+  const { params, callback } = action.payload;
+  try {
+    const data: User = yield userApi.changePassword(params);
+    yield put(userActions.setOne(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
+function* getLogin() {
+  try {
+    const data: User = yield userApi.getLogin();
+    yield put(userActions.setLogin(data));
+  } catch (e) {
+    yield put(userActions.setLogin(undefined));
+  }
+}
+
+function* login(action: ActionType<typeof userActions.login>) {
+  const { params, callback } = action.payload;
+  try {
+    const data: User = yield userApi.login(params);
+    yield put(userActions.setLogin(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
+function* logout() {
+  yield userApi.logout();
+}
+
 export default function* saga() {
   yield takeLatest(UserActionType.getPage, getPage);
   yield takeLatest(UserActionType.getOne, getOne);
   yield takeLatest(UserActionType.add, add);
+  yield takeLatest(UserActionType.resetPassword, resetPassword);
   yield takeLatest(UserActionType.change, change);
+  yield takeLatest(UserActionType.changePassword, changePassword);
+  yield takeLatest(UserActionType.getLogin, getLogin);
+  yield takeLatest(UserActionType.login, login);
+  yield takeLatest(UserActionType.logout, logout);
 }

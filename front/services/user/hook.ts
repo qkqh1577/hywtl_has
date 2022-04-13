@@ -1,9 +1,14 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'common/reducer';
-import { useCallback } from 'react';
-import { UserAddParameter, UserChangeParameter, UserQuery } from './parameter';
-import { userActions } from './actions';
 import User from 'services/user/User';
+import {
+  AddUserParameter,
+  ChangeUserParameter,
+  ChangeUserPasswordParameter, LoginParameter,
+  UserQuery
+} from './parameter';
+import { userActions } from './actions';
 
 export default function useUser() {
   const userState = useSelector((state: RootState) => state.user);
@@ -27,16 +32,27 @@ export default function useUser() {
     [dispatch],
   );
 
-
   const add = useCallback(
-    (params: UserAddParameter, callback: (data?: User) => void) =>
+    (params: AddUserParameter, callback: (data?: User) => void) =>
       dispatch(userActions.add({ params, callback })),
     [dispatch],
   );
 
+  const resetPassword = useCallback(
+    (id: number, callback: (data?: User) => void) =>
+      dispatch(userActions.resetPassword({ id, callback })),
+    [dispatch]
+  );
+
   const change = useCallback(
-    (params: UserChangeParameter, callback: (data?: User) => void) =>
+    (params: ChangeUserParameter, callback: (data?: User) => void) =>
       dispatch(userActions.change({ params, callback })),
+    [dispatch],
+  );
+
+  const changePassword = useCallback(
+    (params: ChangeUserPasswordParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.changePassword({ params, callback })),
     [dispatch],
   );
 
@@ -46,13 +62,42 @@ export default function useUser() {
     [dispatch],
   );
 
+  const getLogin = useCallback(
+    () =>
+      dispatch(userActions.getLogin()),
+    [dispatch]
+  );
+
+  const setLogin = useCallback(
+    (data?: User) =>
+      dispatch(userActions.setLogin(data)),
+    [dispatch]
+  );
+
+  const login = useCallback(
+    (params: LoginParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.login({ params, callback })),
+    [dispatch]
+  );
+  const logout = useCallback(
+    () =>
+      dispatch(userActions.logout()),
+    [dispatch]
+  );
+
   return {
     userState,
     getPage,
     getOne,
     clearOne,
     add,
+    resetPassword,
     change,
+    changePassword,
     selectOne,
+    getLogin,
+    setLogin,
+    login,
+    logout,
   };
 }

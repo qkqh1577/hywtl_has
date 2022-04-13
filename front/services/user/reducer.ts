@@ -5,6 +5,7 @@ import { UserActionType } from './actions';
 
 export type UserState = {
   page: Page<ListUser>;
+  login?: User;
   detail?: User;
   selectedId?: number;
 }
@@ -25,6 +26,10 @@ const userReducer = createReducer(initState, {
   [UserActionType.selectOne]: (state, action) => ({
     ...state,
     selectedId: action.payload,
+  }),
+  [UserActionType.setLogin]: (state, action) => ({
+    ...state,
+    login: action.payload,
   }),
 });
 

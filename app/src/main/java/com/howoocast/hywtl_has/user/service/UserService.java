@@ -1,23 +1,24 @@
 package com.howoocast.hywtl_has.user.service;
 
-import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
-import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
-import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
-import com.howoocast.hywtl_has.user.invitation.service.exception.UserInvitationAuthenticationFailureException;
-import com.howoocast.hywtl_has.user.invitation.util.MailAuthKeyManager;
-import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
-import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
+import com.howoocast.hywtl_has.user.event.UserResetPasswordEvent;
+import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
+import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
+import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
-import com.howoocast.hywtl_has.user.service.view.UserDetailView;
-import com.howoocast.hywtl_has.user.service.view.UserListView;
+import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
+import com.howoocast.hywtl_has.user.view.UserDetailView;
+import com.howoocast.hywtl_has.user.view.UserListView;
 import com.querydsl.core.types.Predicate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Value("${application.user-invitation.invalidate-duration}")
+    @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
     private final UserRepository userRepository;
@@ -37,6 +38,8 @@ public class UserService {
     private final UserInvitationRepository userInvitationRepository;
 
     private final DepartmentRepository departmentRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public Page<UserListView> page(
@@ -54,16 +57,21 @@ public class UserService {
         return UserDetailView.assemble(this.load(id));
     }
 
+    @Transactional(readOnly = true)
+    public UserDetailView get(String username) {
+        return UserDetailView.assemble(
+            userRepository.findByUsernameAndDeletedTimeIsNull(username)
+                .orElseThrow(NotFoundException::new)
+        );
+    }
+
     @Transactional
     public UserDetailView add(UserAddParameter params) {
-        UserInvitation userInvitation = userInvitationRepository.findByEmailAndDeletedTimeIsNull(params.getEmail())
-            .orElseThrow(NotFoundException::new);
+        UserInvitation userInvitation =
+            UserInvitation.load(userInvitationRepository::findByEmailAndDeletedTimeIsNull, params.getEmail());
+        userInvitation.checkValid(invalidateDuration, params.getAuthKey());
 
-        if (!MailAuthKeyManager.authenticate(userInvitation, invalidateDuration, params.getAuthKey())) {
-            throw new UserInvitationAuthenticationFailureException();
-        }
-
-        User user = User.add(
+        User user = User.of(
             params.getUsername(),
             params.getPassword(),
             params.getName(),
@@ -71,6 +79,9 @@ public class UserService {
             userInvitation.getDepartment(),
             userInvitation.getUserRole()
         );
+        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
+        user.checkUsernameUsed(userRepository::findByUsernameAndDeletedTimeIsNull);
+        userInvitation.invalidate();
         return this.save(user);
     }
 
@@ -85,6 +96,21 @@ public class UserService {
             params.getUserRole(),
             department
         );
+        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
+        return this.save(user);
+    }
+
+    @Transactional
+    public UserDetailView changePassword(Long id, UserPasswordChangeParameter params) {
+        User user = this.load(id);
+        user.changePassword(params.getNowPassword(), params.getNewPassword());
+        return this.save(user);
+    }
+
+    @Transactional
+    public UserDetailView resetPassword(Long id) {
+        User user = this.load(id);
+        eventPublisher.publishEvent(new UserResetPasswordEvent(user));
         return this.save(user);
     }
 

@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.department.parameter;
 
-import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
+import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.department.domain.QDepartment;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
