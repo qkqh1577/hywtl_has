@@ -69,7 +69,7 @@ export default function useUser() {
   );
 
   const setLogin = useCallback(
-    (data: User) =>
+    (data?: User) =>
       dispatch(userActions.setLogin(data)),
     [dispatch]
   );
@@ -77,6 +77,11 @@ export default function useUser() {
   const login = useCallback(
     (params: LoginParameter, callback: (data?: User) => void) =>
       dispatch(userActions.login({ params, callback })),
+    [dispatch]
+  );
+  const logout = useCallback(
+    () =>
+      dispatch(userActions.logout()),
     [dispatch]
   );
 
@@ -93,5 +98,6 @@ export default function useUser() {
     getLogin,
     setLogin,
     login,
+    logout,
   };
 }

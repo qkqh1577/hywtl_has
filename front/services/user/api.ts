@@ -80,6 +80,12 @@ export class UserApi {
     return data;
   }
 
+  async logout(): Promise<any> {
+    const form = new FormData();
+    const { data } = await axios.post('/logout', form);
+    return data;
+  }
+
 }
 
 const userApi = new UserApi();

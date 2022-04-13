@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 import departmentReducer, { DepartmentState } from 'services/department/reducer';
-import userReducer , { UserState } from 'services/user/reducer';
+import userReducer, { UserState } from 'services/user/reducer';
 import userInvitationReducer, { UserInvitationState } from 'services/user/invitation/reducer';
 
 export type RootState = {
@@ -15,4 +15,11 @@ const reducer = combineReducers<RootState>({
   userInvitation: userInvitationReducer,
 });
 
-export default reducer;
+const rootReducer: Reducer = (state, action) => {
+  if (action.type === 'user/logout') {
+    return reducer(undefined, action);
+  }
+  return reducer(state, action);
+};
+
+export default rootReducer;

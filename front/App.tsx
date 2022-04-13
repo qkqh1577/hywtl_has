@@ -6,7 +6,7 @@ import {
   Container,
   CssBaseline,
   Divider,
-  IconButton,
+  IconButton, Link,
   List,
   ListItem,
   ListItemIcon,
@@ -24,13 +24,12 @@ import { AppBar, AppDrawer } from 'layouts';
 import { menuData } from 'layouts/AppMenu';
 import { routes as ReactRouter } from 'common';
 import useUser from 'services/user/hook';
-import userApi from 'services/user/api';
 
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
-  const { userState: { login }, getLogin, setLogin } = useUser();
+  const { userState: { login }, getLogin, logout } = useUser();
   const [reloaded, setReloaded] = useState<boolean>(true);
 
   const [open, setOpen] = useState(true);
@@ -38,19 +37,30 @@ const App = () => {
     setOpen(!open);
   };
 
-  if (!login && reloaded) {
-    userApi.getLogin().then(setLogin).finally(() => {
-      setReloaded(false);
-    });
-  }
-
-  if (!login && !reloaded) {
-    navigate('/login');
-    return null;
-  }
+  const handler = {
+    logout: () => {
+      if (window.confirm('로그아웃하시겠습니까?')) {
+        logout();
+        navigate('/login');
+        return null;
+      }
+    }
+  };
 
   useEffect(() => {
-    getLogin();
+    if (!login) {
+      if (reloaded) {
+        setReloaded(false);
+      } else {
+        navigate('/login', { state: { path: location.pathname } });
+      }
+    }
+  }, [reloaded]);
+
+  useEffect(() => {
+    if (path !== '/login') {
+      getLogin();
+    }
   }, [path]);
 
 
@@ -76,13 +86,42 @@ const App = () => {
             <MenuIcon />
           </IconButton>
           <Typography
-            component="h1"
-            variant="h6"
+            variant="h3"
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
           >
           </Typography>
+          {login && (
+            <>
+              <Typography
+                component={Link}
+                noWrap
+                sx={{
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  p: '10px',
+                }}
+                onClick={() => {
+                  console.log(login);
+                }}
+              >
+                {login.name} 님
+              </Typography>
+              <Typography
+                component={Link}
+                noWrap
+                sx={{
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  p: '10px',
+                }}
+                onClick={handler.logout}
+              >
+                로그아웃
+              </Typography>
+            </>
+          )}
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />

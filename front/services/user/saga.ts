@@ -80,6 +80,10 @@ function* login(action: ActionType<typeof userActions.login>) {
   }
 }
 
+function* logout() {
+  yield userApi.logout();
+}
+
 export default function* saga() {
   yield takeLatest(UserActionType.getPage, getPage);
   yield takeLatest(UserActionType.getOne, getOne);
@@ -89,4 +93,5 @@ export default function* saga() {
   yield takeLatest(UserActionType.changePassword, changePassword);
   yield takeLatest(UserActionType.getLogin, getLogin);
   yield takeLatest(UserActionType.login, login);
+  yield takeLatest(UserActionType.logout, logout);
 }

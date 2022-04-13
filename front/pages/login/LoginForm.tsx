@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { KeyboardEvent, useEffect } from 'react';
 import { Box, Button, FormControl, Grid, Input, InputLabel, Paper } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { ErrorMessage, Form, Formik, FormikHelpers, validateYupSchema } from 'formik';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { LoginParameter } from 'services/user/parameter';
 import userApi from 'services/user/api';
 
 const LoginForm = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    userApi.getLogin().then(() => {
+      const state: any | undefined = location.state;
+      const prevLocation = state?.path ?? '/';
+      navigate(prevLocation);
+    });
+  }, []);
+
   const handler = {
+    keyDown: (e: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>, handleSubmit: () => void) => {
+      if (e.key === 'Enter') {
+        handleSubmit();
+      }
+    },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
 
       const errors: any = {};
@@ -92,6 +106,9 @@ const LoginForm = () => {
                       name="password"
                       value={values.password}
                       onChange={handleChange}
+                      onKeyDown={(e) => {
+                        handler.keyDown(e, handleSubmit);
+                      }}
                       required
                     />
                     <ErrorMessage name="password" />

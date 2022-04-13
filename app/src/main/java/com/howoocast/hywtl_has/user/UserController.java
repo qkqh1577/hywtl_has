@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.user;
 
+import com.howoocast.hywtl_has.common.service.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
@@ -52,9 +53,13 @@ public class UserController {
 
     @GetMapping("/users/login")
     public UserDetailView getLogin(Authentication authentication) {
-        String username = authentication.getName();
-        log.debug("[Login] username: {}", username);
-        return userService.get(username);
+        try {
+            String username = authentication.getName();
+            log.debug("[Login] username: {}", username);
+            return userService.get(username);
+        } catch (Exception e) {
+            throw new IllegalRequestException("로그인이 필요합니다.");
+        }
     }
 
     @GetMapping("/users/{id}")

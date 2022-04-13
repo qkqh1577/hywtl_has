@@ -21,6 +21,7 @@ export enum UserActionType {
   getLogin = 'user/getLogin',
   setLogin = 'user/setLogin',
   login = 'user/login',
+  logout = 'user/logout',
 }
 
 export const userActions = {
@@ -51,4 +52,5 @@ export const userActions = {
     params: LoginParameter;
     callback: (data?: User) => void;
   }>(),
+  logout: createAction(UserActionType.logout)(),
 };
