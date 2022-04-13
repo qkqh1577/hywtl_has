@@ -27,6 +27,10 @@ const userReducer = createReducer(initState, {
     ...state,
     selectedId: action.payload,
   }),
+  [UserActionType.setLogin]: (state, action) => ({
+    ...state,
+    login: action.payload,
+  }),
 });
 
 export default userReducer;

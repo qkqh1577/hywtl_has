@@ -4,7 +4,7 @@ import Page from 'common/Page';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter,
+  ChangeUserPasswordParameter, LoginParameter,
   UserQuery
 } from './parameter';
 import User, { ListUser } from './User';
@@ -64,6 +64,19 @@ export class UserApi {
           encode: true,
         })
     });
+    return data;
+  }
+
+  async getLogin(): Promise<User> {
+    const { data } = await axios.get('/users/login');
+    return data;
+  }
+
+  async login(params: LoginParameter): Promise<User> {
+    const form = new FormData();
+    form.append('username', params.username);
+    form.append('password', params.password);
+    const { data } = await axios.post('/login', form);
     return data;
   }
 

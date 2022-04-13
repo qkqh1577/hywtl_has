@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import useUserInvitation from 'services/user/invitation/hook';
-import { UserAddParameter } from 'services/user/parameter';
+import { AddUserParameter } from 'services/user/parameter';
 import useUser from 'services/user/hook';
 
 const UserAuthenticationForm = () => {
@@ -67,7 +67,7 @@ const UserAuthenticationForm = () => {
         return;
       }
 
-      const params: UserAddParameter = {
+      const params: AddUserParameter = {
         name,
         username,
         password,
@@ -85,7 +85,6 @@ const UserAuthenticationForm = () => {
   };
 
   useEffect(() => {
-    console.log(email, authKey);
     if (email && authKey) {
       getOne({ email, authKey });
     }

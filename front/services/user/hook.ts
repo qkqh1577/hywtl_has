@@ -5,7 +5,7 @@ import User from 'services/user/User';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter,
+  ChangeUserPasswordParameter, LoginParameter,
   UserQuery
 } from './parameter';
 import { userActions } from './actions';
@@ -62,6 +62,24 @@ export default function useUser() {
     [dispatch],
   );
 
+  const getLogin = useCallback(
+    () =>
+      dispatch(userActions.getLogin()),
+    [dispatch]
+  );
+
+  const setLogin = useCallback(
+    (data: User) =>
+      dispatch(userActions.setLogin(data)),
+    [dispatch]
+  );
+
+  const login = useCallback(
+    (params: LoginParameter, callback: (data?: User) => void) =>
+      dispatch(userActions.login({ params, callback })),
+    [dispatch]
+  );
+
   return {
     userState,
     getPage,
@@ -72,5 +90,8 @@ export default function useUser() {
     change,
     changePassword,
     selectOne,
+    getLogin,
+    setLogin,
+    login,
   };
 }

@@ -4,7 +4,7 @@ import User, { ListUser } from './User';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter,
+  ChangeUserPasswordParameter, LoginParameter,
   UserQuery
 } from './parameter';
 
@@ -18,6 +18,9 @@ export enum UserActionType {
   change = 'user/change',
   changePassword = 'user/changePassword',
   selectOne = 'user/selectOne',
+  getLogin = 'user/getLogin',
+  setLogin = 'user/setLogin',
+  login = 'user/login',
 }
 
 export const userActions = {
@@ -42,4 +45,10 @@ export const userActions = {
     callback: (data?: User) => void;
   }>(),
   selectOne: createAction(UserActionType.selectOne)<number>(),
+  getLogin: createAction(UserActionType.getLogin)(),
+  setLogin: createAction(UserActionType.setLogin)<User | undefined>(),
+  login: createAction(UserActionType.login)<{
+    params: LoginParameter;
+    callback: (data?: User) => void;
+  }>(),
 };

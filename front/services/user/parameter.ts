@@ -31,3 +31,8 @@ export type ChangeUserPasswordParameter = {
   nowPassword: string;
   newPassword: string;
 }
+
+export type LoginParameter = {
+  username: string;
+  password: string;
+}

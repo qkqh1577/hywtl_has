@@ -60,6 +60,26 @@ function* changePassword(action: ActionType<typeof userActions.changePassword>) 
   }
 }
 
+function* getLogin() {
+  try {
+    const data: User = yield userApi.getLogin();
+    yield put(userActions.setLogin(data));
+  } catch (e) {
+    yield put(userActions.setLogin(undefined));
+  }
+}
+
+function* login(action: ActionType<typeof userActions.login>) {
+  const { params, callback } = action.payload;
+  try {
+    const data: User = yield userApi.login(params);
+    yield put(userActions.setLogin(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
 export default function* saga() {
   yield takeLatest(UserActionType.getPage, getPage);
   yield takeLatest(UserActionType.getOne, getOne);
@@ -67,4 +87,6 @@ export default function* saga() {
   yield takeLatest(UserActionType.resetPassword, resetPassword);
   yield takeLatest(UserActionType.change, change);
   yield takeLatest(UserActionType.changePassword, changePassword);
+  yield takeLatest(UserActionType.getLogin, getLogin);
+  yield takeLatest(UserActionType.login, login);
 }
