@@ -1,6 +1,6 @@
-import {styled} from '@mui/material/styles';
-import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
-import {drawerWidth} from './AppLayoutConfig';
+import { styled } from '@mui/material/styles';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { drawerWidth } from './AppLayoutConfig';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -8,7 +8,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({theme, open}) => ({
+})<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
