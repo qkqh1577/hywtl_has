@@ -11,4 +11,4 @@ export type DepartmentQuery = {
 
 export type DepartmentAddParameter = Omit<Department, 'id' | 'seq' | 'childrenList' | 'userList'>;
 
-export type DepartmentChangeParameter = Omit<Department, 'parentId' | 'childrenList' | 'userList'>;
+export type DepartmentChangeParameter = Omit<Department, 'childrenList' | 'userList'>;

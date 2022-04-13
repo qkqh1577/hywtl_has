@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.department.view;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,5 +38,9 @@ public class DepartmentListView {
         target.userCount = Optional.ofNullable(source.getUserList()).map(List::size).orElse(0);
         target.childrenCount = Optional.ofNullable(source.getChildrenList()).map(List::size).orElse(0);
         return target;
+    }
+
+    public Long getParentId() {
+        return Objects.isNull(this.parent) ? null : this.parent.id;
     }
 }

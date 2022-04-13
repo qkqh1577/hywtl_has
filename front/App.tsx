@@ -148,7 +148,7 @@ const App = () => {
   };
 
   useEffect(() => {
-      getLogin();
+    getLogin();
   }, [path]);
 
   useEffect(() => {
@@ -245,10 +245,6 @@ const App = () => {
           onDragStart={handler.dragStart}
           onDragEnter={handler.dragEnter}
           onDrop={handler.drop}
-          onSelect={(selectedKeys) => {
-            const path: string = selectedKeys[0] as string;
-            navigate(path);
-          }}
           draggable
           defaultExpandAll
           virtual={false}
@@ -256,7 +252,13 @@ const App = () => {
           {menuData.map((menu) => (
             <TreeNode
               title={
-                <ListItem key={menu.path} button>
+                <ListItem
+                  key={menu.path}
+                  onClick={() => {
+                    navigate(menu.path);
+                  }}
+                  button
+                >
                   <ListItemIcon>
                     {React.createElement(menu.icon)}
                   </ListItemIcon>

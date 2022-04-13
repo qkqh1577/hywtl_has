@@ -7,7 +7,6 @@ type Props = {
   labelId?: string;
   id: string;
   name: string;
-  label: string;
   value: number | '';
   required?: boolean;
   handleChange: {
@@ -20,7 +19,6 @@ const DepartmentSelector = (props: Props) => {
     labelId,
     id,
     name,
-    label,
     value,
     required,
     handleChange
@@ -40,7 +38,6 @@ const DepartmentSelector = (props: Props) => {
       labelId={labelId}
       id={id}
       name={name}
-      label={label}
       value={value}
       onChange={handleChange}
       required={required === true}
