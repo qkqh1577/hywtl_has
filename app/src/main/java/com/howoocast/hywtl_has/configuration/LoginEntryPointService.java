@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.configuration;
 
-import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.user.exception;
 
-import com.howoocast.hywtl_has.common.service.exception.CustomExceptionAdaptor;
-import org.springframework.http.ResponseEntity;
+import com.howoocast.hywtl_has.common.exception.CustomExceptionAdaptor;
 
 public class UserPasswordNotMatchException extends CustomExceptionAdaptor {
 

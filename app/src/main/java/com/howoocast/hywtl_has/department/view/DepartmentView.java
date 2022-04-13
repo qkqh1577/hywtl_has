@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.department.view;
 
 import com.howoocast.hywtl_has.department.domain.Department;
-import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
-import com.howoocast.hywtl_has.user.service.view.UserListView;
+import com.howoocast.hywtl_has.department.common.DepartmentCategory;
+import com.howoocast.hywtl_has.user.view.UserListView;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

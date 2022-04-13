@@ -1,18 +1,18 @@
 package com.howoocast.hywtl_has.user.service;
 
-import com.howoocast.hywtl_has.common.service.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.event.UserResetPasswordEvent;
-import com.howoocast.hywtl_has.user.invitation.domain.UserInvitation;
-import com.howoocast.hywtl_has.user.invitation.repository.UserInvitationRepository;
-import com.howoocast.hywtl_has.user.service.parameter.UserAddParameter;
-import com.howoocast.hywtl_has.user.service.parameter.UserChangeParameter;
+import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
+import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
+import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
-import com.howoocast.hywtl_has.user.service.parameter.UserPasswordChangeParameter;
-import com.howoocast.hywtl_has.user.service.view.UserDetailView;
-import com.howoocast.hywtl_has.user.service.view.UserListView;
+import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
+import com.howoocast.hywtl_has.user.view.UserDetailView;
+import com.howoocast.hywtl_has.user.view.UserListView;
 import com.querydsl.core.types.Predicate;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
