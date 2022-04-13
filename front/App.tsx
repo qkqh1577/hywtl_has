@@ -48,6 +48,10 @@ const App = () => {
   };
 
   useEffect(() => {
+    getLogin();
+  }, [path]);
+
+  useEffect(() => {
     if (!login) {
       if (reloaded) {
         setReloaded(false);
@@ -55,13 +59,7 @@ const App = () => {
         navigate('/login', { state: { path: location.pathname } });
       }
     }
-  }, [reloaded]);
-
-  useEffect(() => {
-    if (path !== '/login') {
-      getLogin();
-    }
-  }, [path]);
+  }, [reloaded, login]);
 
 
   return (
