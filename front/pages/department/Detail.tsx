@@ -23,7 +23,7 @@ const DepartmentDetail = () => {
   const id = idString ? +idString : undefined;
   if (typeof id === 'undefined' || Number.isNaN(id)) {
     window.alert('잘못된 접근입니다.');
-    navigate('/departments');
+    navigate('/department');
     return null;
   }
 
@@ -54,7 +54,10 @@ const DepartmentDetail = () => {
       if (!category) {
         errors.category = '부서 유형 선택은 필수입니다.';
       }
-      const parentId: number | undefined = values.parentId;
+      const parentId: number | undefined = values.parentId === 'root' ? undefined : values.parentId;
+      if (!values.parentId) {
+        errors.parentId = '상위 부서 선택은 필수입니다.';
+      }
       const memo: string | undefined = values.memo || undefined;
 
       if (Object.keys(errors).length > 0) {
@@ -67,7 +70,6 @@ const DepartmentDetail = () => {
         id: detail.id,
         name,
         category,
-        seq: detail.seq,
         parentId,
         memo,
       };
@@ -162,6 +164,7 @@ const DepartmentDetail = () => {
                             disabled={values.category === 'COMPANY'}
                             required={values.category !== 'COMPANY'}
                           >
+                            <MenuItem value="root">최상위</MenuItem>
                             {list
                             .filter((department) => department.id !== detail.id)
                             .filter((department) => {
@@ -180,16 +183,10 @@ const DepartmentDetail = () => {
                               };
 
                               const ancestorIdList = getAncestorIdList(department.parentId, []);
-                              console.log({
-                                id: department.id,
-                                name: `${department.name}${departmentCategoryName(department.category)}`,
-                                ancestorList: ancestorIdList,
-                                contains: ancestorIdList.includes(detail.id)
-                              });
                               return !ancestorIdList.includes(detail.id);
                             }).map((department) => (
                               <MenuItem key={department.id} value={department.id}>
-                                {`${department.name}${departmentCategoryName(department.category)}`}
+                                {department.name}
                               </MenuItem>
                             ))}
                           </Select>
@@ -215,7 +212,7 @@ const DepartmentDetail = () => {
                         color="secondary"
                         variant="contained"
                         onClick={() => {
-                          history.go(-1);
+                          navigate(-1);
                         }}
                       >
                         취소

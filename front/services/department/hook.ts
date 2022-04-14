@@ -7,6 +7,7 @@ import {
   DepartmentChangeParameter,
   DepartmentQuery
 } from './parameter';
+import Department from 'services/department/Department';
 
 export default function useDepartment() {
   const departmentState = useSelector((state: RootState) => state.department);
@@ -35,26 +36,14 @@ export default function useDepartment() {
   );
 
   const add = useCallback(
-    (params: DepartmentAddParameter) =>
-      dispatch(departmentActions.add(params)),
+    (params: DepartmentAddParameter, callback: (data?: Department) => void) =>
+      dispatch(departmentActions.add({ params, callback })),
     [dispatch]
   );
 
   const change = useCallback(
-    (params: DepartmentChangeParameter, callback: (success?: boolean) => void) =>
+    (params: DepartmentChangeParameter, callback: (data?: Department) => void) =>
       dispatch(departmentActions.change({ params, callback })),
-    [dispatch]
-  );
-
-  const changeParent = useCallback(
-    (params: { id: number; parentId?: number; }, callback: (success?: boolean) => void) =>
-      dispatch(departmentActions.changeParent({ params, callback })),
-    [dispatch]
-  );
-
-  const selectOne = useCallback(
-    (id?: number) =>
-      dispatch(departmentActions.selectOne(id)),
     [dispatch]
   );
 
@@ -66,7 +55,5 @@ export default function useDepartment() {
     clearOne,
     add,
     change,
-    changeParent,
-    selectOne
   };
 }

@@ -53,20 +53,7 @@ export class DepartmentApi {
     });
     return data;
   }
-
-  async changeParent(params: { id: number; parentId?: number; }): Promise<Department> {
-    const { id, parentId } = params;
-    const { data } = await axios.patch(`/departments/${id}/parent`, {
-      parentId,
-    }, {
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
-    return data;
-  }
 }
 
-export default new DepartmentApi();
+const departmentApi = new DepartmentApi();
+export default departmentApi;

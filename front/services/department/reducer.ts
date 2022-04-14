@@ -7,7 +7,6 @@ export type DepartmentState = {
   list: Department[];
   page: Page<ListDepartment>;
   detail?: Department;
-  selectedId?: number;
 }
 
 export const initState: DepartmentState = {
@@ -27,10 +26,6 @@ const departmentReducer = createReducer(initState, {
   [DepartmentActionType.setOne]: (state, action) => ({
     ...state,
     detail: action.payload,
-  }),
-  [DepartmentActionType.selectOne]: (state, action) => ({
-    ...state,
-    selectedId: action.payload,
   }),
 });
 

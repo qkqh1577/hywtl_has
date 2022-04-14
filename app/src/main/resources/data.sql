@@ -1,10 +1,10 @@
 INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (1, 'COMPANY', '2022-04-12 15:13:04.655439', null, '한양풍동실험연구소', null, 1, null);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (2, 'HQ', '2022-04-12 15:13:04.740280', null, '기술', null, 1, 1);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (3, 'TEAM', '2022-04-12 15:13:04.799615', null, '기술', null, 1, 2);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (4, 'TEAM', '2022-04-12 15:13:04.844448', null, '영업', null, 2, 2);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (5, 'TEAM', '2022-04-12 15:13:04.903988', null, '모형', null, 3, 2);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (6, 'PART', '2022-04-12 15:13:04.959709', null, '기술', null, 1, 3);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (7, 'PART', '2022-04-12 15:13:05.009016', null, '실험', null, 2, 3);
-INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (8, 'PART', '2022-04-12 15:13:05.054741', null, '편집', null, 3, 3);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (2, 'HQ', '2022-04-12 15:13:04.740280', null, '기술본부', null, 1, 1);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (3, 'TEAM', '2022-04-12 15:13:04.799615', null, '기술팀', null, 1, 2);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (4, 'TEAM', '2022-04-12 15:13:04.844448', null, '영업팀', null, 2, 2);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (5, 'TEAM', '2022-04-12 15:13:04.903988', null, '모형팀', null, 3, 2);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (6, 'PART', '2022-04-12 15:13:04.959709', null, '기술부', null, 1, 3);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (7, 'PART', '2022-04-12 15:13:05.009016', null, '실험부', null, 2, 3);
+INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (8, 'PART', '2022-04-12 15:13:05.054741', null, '편집부', null, 3, 3);
 INSERT INTO hywtl_has_api.user_invitation (id, created_time, deleted_time, email, name, user_role, department_id) VALUES (1, '2022-04-13 10:42:47.046140', '2022-04-13 10:43:09.705662', 'admin@test.com', 'admin', 0, 1);
 INSERT INTO hywtl_has_api.user (id, created_time, deleted_time, email, locked_time, login_time, name, password, password_changed_time, user_role, username, department_id) VALUES (1, '2022-04-13 10:43:09.640141', null, 'admin@test.com', null, null, '마스터', '$2a$10$0ATIxnSm9RIMhg7.q5mqWOBp45n48KUFMUzzXqqwGcc9LN/VgCEUa', '2022-04-13 10:43:09.700159', 0, 'admin', 1);

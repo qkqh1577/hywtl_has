@@ -24,7 +24,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import useDepartment from 'services/department/hook';
 import { DepartmentQuery } from 'services/department/parameter';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type TableCellProperty = {
   key: string;
@@ -51,6 +51,7 @@ const initFilter: DepartmentQuery = {
 };
 
 const DepartmentPage = () => {
+  const navigate = useNavigate();
   const {
     departmentState: {
       page,
@@ -60,18 +61,8 @@ const DepartmentPage = () => {
   const [filter, setFilter] = useState<DepartmentQuery>(initFilter);
 
   const handler = {
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setFilter({
-        ...filter,
-        page: 0,
-        category: values.category,
-        keywordType: values.keywordType ?? 'by_name',
-        keyword: values.keyword ?? undefined,
-      });
-      setSubmitting(false);
-    },
-    clear: () => {
-      setFilter(initFilter);
+    toAdd: () => {
+      navigate('/department/add');
     },
     page: (e: any, page: number) => {
       setFilter({
@@ -85,6 +76,19 @@ const DepartmentPage = () => {
         page: 0,
         size: e.target.value
       });
+    },
+    clear: () => {
+      setFilter(initFilter);
+    },
+    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      setFilter({
+        ...filter,
+        page: 0,
+        category: values.category,
+        keywordType: values.keywordType ?? 'by_name',
+        keyword: values.keyword ?? undefined,
+      });
+      setSubmitting(false);
     },
   };
 
@@ -222,11 +226,11 @@ const DepartmentPage = () => {
                     <TableCell>{no}</TableCell>
                     <TableCell>
                       <Link to={`/department/${item.id}`}>
-                        {`${item.name}${departmentCategoryName(item.category)}`}
+                        {item.name}
                       </Link>
                     </TableCell>
                     <TableCell>{departmentCategoryName(item.category)}</TableCell>
-                    <TableCell>{item.parent ? `${item.parent.name}${departmentCategoryName(item.parent.category)}` : '-'}</TableCell>
+                    <TableCell>{item.parent ? item.parent.name : '-'}</TableCell>
                     <TableCell>{item.userCount ?? '-'}</TableCell>
                     <TableCell>{item.childrenCount ?? '-'}</TableCell>
                   </TableRow>
@@ -242,15 +246,34 @@ const DepartmentPage = () => {
         justifyContent: 'flex-end',
         mb: '20px',
       }}>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={page.content.length}
-          rowsPerPage={filter.size}
-          page={filter.page}
-          onPageChange={handler.page}
-          onRowsPerPageChange={handler.size}
-        />
+        <Grid container spacing={1}>
+          <Grid item sm={8} sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={page.content.length}
+              rowsPerPage={filter.size}
+              page={filter.page}
+              onPageChange={handler.page}
+              onRowsPerPageChange={handler.size}
+            />
+          </Grid>
+          <Grid item sm={4} sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handler.toAdd}
+            >
+              등록
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Paper>
   );

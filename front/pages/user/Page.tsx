@@ -46,11 +46,10 @@ const UserPage = () => {
   const navigate = useNavigate();
   const { userState: { page }, getPage } = useUser();
   const [filter, setFilter] = useState<UserQuery>(initQuery);
+
   const handler = {
-    move: {
-      add: () => {
-        navigate('/user/add');
-      }
+    toAdd: () => {
+      navigate('/user/add');
     },
     page: (e: any, page: number) => {
       setFilter({
@@ -256,7 +255,7 @@ const UserPage = () => {
             <Button
               color="primary"
               variant="contained"
-              onClick={handler.move.add}
+              onClick={handler.toAdd}
             >
               등록
             </Button>

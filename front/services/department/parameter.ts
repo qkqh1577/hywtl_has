@@ -9,6 +9,6 @@ export type DepartmentQuery = {
   keyword?: string;
 }
 
-export type DepartmentAddParameter = Omit<Department, 'id' | 'seq' | 'childrenList' | 'userList'>;
+export type DepartmentChangeParameter = Omit<Department, 'seq' | 'childrenList' | 'userList'>;
+export type DepartmentAddParameter = Omit<DepartmentChangeParameter, 'id'>;
 
-export type DepartmentChangeParameter = Omit<Department, 'childrenList' | 'userList'>;
