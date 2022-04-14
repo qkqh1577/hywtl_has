@@ -18,6 +18,7 @@ export type ListDepartment = {
   name: string;
   category: DepartmentCategory;
   parent?: ListDepartment;
+  parentId?: number;
   userCount?: number;
   childrenCount?: number;
 }

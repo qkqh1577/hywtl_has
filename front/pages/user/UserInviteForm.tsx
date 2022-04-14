@@ -75,96 +75,115 @@ const UserInviteForm = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
+        justifyContent: 'space-between',
         width: '100%',
+        height: '50px',
+        mb: '40px',
       }}>
         <h2>유저 초대</h2>
       </Box>
-      <Formik
-        initialValues={initialParameter}
-        onSubmit={handler.submit}
-      >
-        {({ values, isSubmitting, handleChange, handleSubmit }) => (
-          <Form>
-            <Grid container spacing={1}>
-              <Grid item sm={12}>
-                <FormControl variant="standard" fullWidth>
-                  <InputLabel htmlFor="params-name">이름</InputLabel>
-                  <Input
-                    type="text"
-                    id="params-name"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    placeholder="이름을 입력하세요"
-                    required
-                  />
-                  <ErrorMessage name="name" />
-                </FormControl>
-              </Grid>
-              <Grid item sm={12}>
-                <FormControl variant="standard" fullWidth>
-                  <InputLabel htmlFor="params-email">이메일</InputLabel>
-                  <Input
-                    type="text"
-                    id="params-email"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    placeholder="이메일을 입력하세요"
-                    required
-                  />
-                  <ErrorMessage name="email" />
-                </FormControl>
-              </Grid>
-              <Grid item sm={12}>
-                <FormControl variant="standard" fullWidth>
-                  <InputLabel id="params-role-label">권한</InputLabel>
-                  <Select
-                    labelId="params-userRole-label"
-                    id="params-userRole"
-                    name="userRole"
-                    label="권한"
-                    value={values.userRole}
-                    onChange={handleChange}
-                    required
-                  >
-                    {userRoleList.map((item) => (
-                      <MenuItem key={item} value={item}>{userRoleName(item)} 권한</MenuItem>
-                    ))}
-                  </Select>
-                  <ErrorMessage name="userRole" />
-                </FormControl>
-              </Grid>
-              <Grid item sm={12}>
-                <FormControl variant="standard" fullWidth>
-                  <InputLabel id="params-departmentId-label">소속 부서</InputLabel>
-                  <DepartmentSelector
-                    labelId="params-departmentId-label"
-                    id="params-departmentId"
-                    name="departmentId"
-                    label="소속 부서"
-                    value={values.departmentId}
-                    handleChange={handleChange}
-                  />
-                  <ErrorMessage name="departmentId" />
-                </FormControl>
-              </Grid>
-              <Grid item sm={12}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    handleSubmit();
-                  }}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? ' 등록 중' : '등록'}
-                </Button>
-              </Grid>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        mb: '40px',
+      }}>
+        <Grid container spacing={1}>
+          <Grid item sm={12}>
+            <Formik
+              initialValues={initialParameter}
+              onSubmit={handler.submit}
+            >
+              {({ values, isSubmitting, handleChange, handleSubmit }) => (
+                <Form>
+                  <Grid container spacing={1}>
+                    <Grid item sm={12}>
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel htmlFor="params-name">이름</InputLabel>
+                        <Input
+                          type="text"
+                          id="params-name"
+                          name="name"
+                          value={values.name}
+                          onChange={handleChange}
+                          placeholder="이름을 입력하세요"
+                          required
+                        />
+                        <ErrorMessage name="name" />
+                      </FormControl>
+                    </Grid>
+                    <Grid item sm={12}>
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel htmlFor="params-email">이메일</InputLabel>
+                        <Input
+                          type="text"
+                          id="params-email"
+                          name="email"
+                          value={values.email}
+                          onChange={handleChange}
+                          placeholder="이메일을 입력하세요"
+                          required
+                        />
+                        <ErrorMessage name="email" />
+                      </FormControl>
+                    </Grid>
+                    <Grid item sm={12}>
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel id="params-role-label">권한</InputLabel>
+                        <Select
+                          labelId="params-userRole-label"
+                          id="params-userRole"
+                          name="userRole"
+                          label="권한"
+                          value={values.userRole}
+                          onChange={handleChange}
+                          required
+                        >
+                          {userRoleList.map((item) => (
+                            <MenuItem key={item} value={item}>{userRoleName(item)} 권한</MenuItem>
+                          ))}
+                        </Select>
+                        <ErrorMessage name="userRole" />
+                      </FormControl>
+                    </Grid>
+                    <Grid item sm={12}>
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel id="params-departmentId-label">소속 부서</InputLabel>
+                        <DepartmentSelector
+                          labelId="params-departmentId-label"
+                          id="params-departmentId"
+                          name="departmentId"
+                          value={values.departmentId}
+                          handleChange={handleChange}
+                        />
+                        <ErrorMessage name="departmentId" />
+                      </FormControl>
+                    </Grid>
+                    <Grid item sm={12}>
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        width: '100%',
+                        mt: '40px',
+                      }}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? ' 등록 중' : '등록'}
+                        </Button>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Box>
     </Paper>
   );
 };

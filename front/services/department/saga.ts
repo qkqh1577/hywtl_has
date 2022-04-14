@@ -6,7 +6,7 @@ import departmentApi from './api';
 import { departmentActions, DepartmentActionType } from './actions';
 
 function* getAll() {
-  const list: Department[] = yield departmentApi.getAll();
+  const list: ListDepartment[] = yield departmentApi.getAll();
   yield put(departmentActions.setAll(list));
 }
 

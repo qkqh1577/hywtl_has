@@ -71,14 +71,17 @@ const LoginForm = () => {
     >
       <Box sx={{
         display: 'flex',
-        width: '100%',
         justifyContent: 'center',
+        width: '100%',
+        height: '50px',
+        mb: '40px',
       }}>
         <h2>로그인</h2>
       </Box>
       <Box sx={{
         display: 'flex',
         width: '100%',
+        mb: '40px',
         justifyContent: 'center',
       }}>
         <Formik initialValues={{
@@ -122,16 +125,23 @@ const LoginForm = () => {
                   </FormControl>
                 </Grid>
                 <Grid item sm={12}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => {
-                      handleSubmit();
-                    }}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? ' 로그인 중' : '로그인'}
-                  </Button>
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    width: '100%',
+                    mt: '40px',
+                  }}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={() => {
+                        handleSubmit();
+                      }}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? ' 로그인 중' : '로그인'}
+                    </Button>
+                  </Box>
                 </Grid>
                 <Grid item sm={12} sx={{ color: '#700', textAlign: 'center' }}>
                   초기 관리자 계정: admin / qwe123

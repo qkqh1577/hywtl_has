@@ -20,7 +20,7 @@ export enum DepartmentActionType {
 
 export const departmentActions = {
   getAll: createAction(DepartmentActionType.getAll)(),
-  setAll: createAction(DepartmentActionType.setAll)<Department[]>(),
+  setAll: createAction(DepartmentActionType.setAll)<ListDepartment[]>(),
   getPage: createAction(DepartmentActionType.getPage)<DepartmentQuery>(),
   setPage: createAction(DepartmentActionType.setPage)<Page<ListDepartment>>(),
   getOne: createAction(DepartmentActionType.getOne)<number>(),

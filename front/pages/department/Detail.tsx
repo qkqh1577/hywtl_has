@@ -14,7 +14,7 @@ import {
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import useDepartment from 'services/department/hook';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import Department, { DepartmentCategory } from 'services/department/Department';
+import { DepartmentCategory, ListDepartment } from 'services/department/Department';
 import { DepartmentChangeParameter } from 'services/department/parameter';
 
 const DepartmentDetail = () => {
@@ -96,20 +96,29 @@ const DepartmentDetail = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
-      <Box sx={{ mb: '20px' }}>
-        <Grid container spacing={1}>
-          <Grid item sm={12}>
-            <h2>부서 상세 정보</h2>
-          </Grid>
-        </Grid>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: '50px',
+        mb: '40px',
+      }}>
+        <h2>부서 상세 정보</h2>
       </Box>
-      <Box sx={{ mb: '20px' }}>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        mb: '40px',
+      }}>
         <Grid container spacing={1}>
           <Grid item sm={12}>
             {detail && (
               <Formik
                 initialValues={{
-                  ...detail,
+                  id: detail.id,
+                  name: detail.name,
+                  category: detail.category,
+                  parentId: detail.parentId ?? '',
                   memo: detail.memo ?? ''
                 }}
                 enableReinitialize
@@ -172,7 +181,7 @@ const DepartmentDetail = () => {
                                 return true;
                               }
                               const getAncestorIdList = (sourceId: number, temp: number[]): number[] => {
-                                const target: Department | undefined = list.find(item => item.id === sourceId);
+                                const target: ListDepartment | undefined = list.find(item => item.id === sourceId);
                                 if (target) {
                                   if (target.parentId) {
                                     return [target.id, ...getAncestorIdList(target.parentId, temp)];
@@ -208,25 +217,32 @@ const DepartmentDetail = () => {
                       </Grid>
                     </Grid>
                     <Grid item sm={12}>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => {
-                          navigate(-1);
-                        }}
-                      >
-                        취소
-                      </Button>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
-                      >
-                        저장
-                      </Button>
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        width: '100%',
+                        mt: '40px',
+                      }}>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => {
+                            navigate(-1);
+                          }}
+                        >
+                          취소
+                        </Button>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          disabled={isSubmitting}
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                        >
+                          저장
+                        </Button>
+                      </Box>
                     </Grid>
                   </Form>
                 )}

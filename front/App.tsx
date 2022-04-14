@@ -247,7 +247,6 @@ const App = () => {
           onDrop={handler.drop}
           draggable
           defaultExpandAll
-          virtual={false}
         >
           {menuData.map((menu) => (
             <TreeNode

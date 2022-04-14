@@ -73,14 +73,20 @@ const DepartmentAddForm = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
-      <Box sx={{ mb: '20px' }}>
-        <Grid container spacing={1}>
-          <Grid item sm={12}>
-            <h2>부서 등록</h2>
-          </Grid>
-        </Grid>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: '50px',
+        mb: '40px',
+      }}>
+        <h2>부서 등록</h2>
       </Box>
-      <Box sx={{ mb: '20px' }}>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        mb: '40px',
+      }}>
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <Formik
@@ -169,25 +175,33 @@ const DepartmentAddForm = () => {
                     </Grid>
                   </Grid>
                   <Grid item sm={12}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={() => {
-                        navigate(-1);
-                      }}
-                    >
-                      취소
-                    </Button>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      disabled={isSubmitting}
-                      onClick={() => {
-                        handleSubmit();
-                      }}
-                    >
-                      저장
-                    </Button>
+                    <Box sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                      mt: '40px',
+                    }}>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => {
+                          navigate(-1);
+                        }}
+                      >
+                        취소
+                      </Button>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          handleSubmit();
+                        }}
+                      >
+                        저장
+                      </Button>
+                    </Box>
+
                   </Grid>
                 </Form>
               )}

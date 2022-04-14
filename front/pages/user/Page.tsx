@@ -87,7 +87,10 @@ const UserPage = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
+        justifyContent: 'space-between',
         width: '100%',
+        height: '50px',
+        mb: '40px',
       }}>
         <h2>유저 목록</h2>
       </Box>
@@ -248,17 +251,21 @@ const UserPage = () => {
               onRowsPerPageChange={handler.size}
             />
           </Grid>
-          <Grid item sm={4} sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handler.toAdd}
-            >
-              등록
-            </Button>
+          <Grid item sm={4}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              width: '100%',
+              mt: '40px',
+            }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handler.toAdd}
+              >
+                등록
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Box>

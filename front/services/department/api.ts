@@ -9,7 +9,7 @@ import {
 } from './parameter';
 
 export class DepartmentApi {
-  async getAll(): Promise<Department[]> {
+  async getAll(): Promise<ListDepartment[]> {
     const { data } = await axios.get('/departments/all');
     return data;
   }

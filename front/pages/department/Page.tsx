@@ -24,7 +24,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import useDepartment from 'services/department/hook';
 import { DepartmentQuery } from 'services/department/parameter';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 type TableCellProperty = {
   key: string;
@@ -52,13 +52,14 @@ const initFilter: DepartmentQuery = {
 
 const DepartmentPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     departmentState: {
       page,
     },
     getPage,
   } = useDepartment();
-  const [filter, setFilter] = useState<DepartmentQuery>(initFilter);
+  const [filter, setFilter] = useState<DepartmentQuery>((location?.state as any)?.filter ?? initFilter);
 
   const handler = {
     toAdd: () => {
@@ -100,9 +101,26 @@ const DepartmentPage = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
+        justifyContent: 'space-between',
         width: '100%',
+        height: '50px',
+        mb: '40px',
       }}>
         <h2>부서 목록</h2>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            navigate('/department-tree', {
+              state: {
+                filter,
+                expend: (location?.state as any)?.expend,
+              }
+            });
+          }}
+        >
+          트리로 보기
+        </Button>
       </Box>
       <Box sx={{
         display: 'flex',
@@ -261,17 +279,21 @@ const DepartmentPage = () => {
               onRowsPerPageChange={handler.size}
             />
           </Grid>
-          <Grid item sm={4} sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handler.toAdd}
-            >
-              등록
-            </Button>
+          <Grid item sm={4}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              width: '100%',
+              mt: '40px',
+            }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handler.toAdd}
+              >
+                등록
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Box>

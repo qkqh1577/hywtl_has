@@ -4,7 +4,7 @@ import Department, { ListDepartment } from './Department';
 import Page, { initial } from 'common/Page';
 
 export type DepartmentState = {
-  list: Department[];
+  list: ListDepartment[];
   page: Page<ListDepartment>;
   detail?: Department;
 }
