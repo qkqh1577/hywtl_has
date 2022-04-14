@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Button,
   FormControl,
   Grid,
@@ -72,9 +73,12 @@ const UserInviteForm = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
-      <Grid item sm={12}>
-        <h2>계정 초대</h2>
-      </Grid>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+      }}>
+        <h2>유저 초대</h2>
+      </Box>
       <Formik
         initialValues={initialParameter}
         onSubmit={handler.submit}

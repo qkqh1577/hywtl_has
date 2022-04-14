@@ -1,11 +1,12 @@
 import axios from 'axios';
-import Department from './Department';
+import Page from 'common/Page';
+import queryString from 'qs';
+import Department, { ListDepartment } from './Department';
 import {
   DepartmentAddParameter,
   DepartmentChangeParameter,
   DepartmentQuery
 } from './parameter';
-import Page from 'common/Page';
 
 export class DepartmentApi {
   async getAll(): Promise<Department[]> {
@@ -13,9 +14,14 @@ export class DepartmentApi {
     return data;
   }
 
-  async getPage(query: DepartmentQuery): Promise<Page<Department>> {
+  async getPage(query: DepartmentQuery): Promise<Page<ListDepartment>> {
     const { data } = await axios.get('/departments', {
-      params: query
+      params: query,
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
     });
     return data;
   }
@@ -26,23 +32,28 @@ export class DepartmentApi {
   }
 
   async add(params: DepartmentAddParameter): Promise<Department> {
-    const { data } = await axios.post('/departments', params);
+    const { data } = await axios.post('/departments', params, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
     return data;
   }
 
   async change(params: DepartmentChangeParameter): Promise<Department> {
     const { id } = params;
-    const { data } = await axios.patch(`/departments/${id}`, params);
-    return data;
-  }
-
-  async changeParent(params: { id: number; parentId?: number; }): Promise<Department> {
-    const { id, parentId } = params;
-    const { data } = await axios.patch(`/departments/${id}/parent`, {
-      parentId,
+    const { data } = await axios.patch(`/departments/${id}`, params, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
     });
     return data;
   }
 }
 
-export default new DepartmentApi();
+const departmentApi = new DepartmentApi();
+export default departmentApi;

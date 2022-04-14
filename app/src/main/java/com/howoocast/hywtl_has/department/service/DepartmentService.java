@@ -9,6 +9,7 @@ import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +28,18 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
 
     @Transactional(readOnly = true)
-    public Page<DepartmentView> page(@Nullable Predicate predicate, Pageable pageable) {
+    public Page<DepartmentListView> page(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
             .map(p -> departmentRepository.findAll(p, pageable))
             .orElse(departmentRepository.findAll(pageable))
-            .map(DepartmentView::assemble);
+            .map(DepartmentListView::assemble);
     }
 
     @Transactional(readOnly = true)
     public List<DepartmentListView> list() {
-        return departmentRepository.findAll().stream().map(DepartmentListView::assemble).collect(Collectors.toList());
+        return departmentRepository.findByDeletedTimeIsNull().stream()
+            .map(DepartmentListView::assemble)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -46,40 +49,33 @@ public class DepartmentService {
 
     @Transactional
     public DepartmentView add(DepartmentAddParameter params) {
-        Department department = Department.add(
+        return DepartmentView.assemble(Department.add(
             departmentRepository,
             params.getName(),
             params.getCategory(),
-            params.getParentId(),
+            this.find(params.getParentId()),
             params.getMemo()
-        );
-        return this.save(department);
-    }
-
-    @Transactional
-    public DepartmentView changeParent(Long id, @Nullable Long parentId) {
-        Department department = this.load(id);
-        department.changeParent(departmentRepository, parentId);
-        return this.save(department);
+        ));
     }
 
     @Transactional
     public DepartmentView change(Long id, DepartmentChangeParameter params) {
         Department department = this.load(id);
-        department.change(
+        return DepartmentView.assemble(department.change(
+            departmentRepository,
             params.getName(),
             params.getCategory(),
-            params.getMemo(),
-            params.getSeq()
-        );
-        return this.save(department);
+            this.find(params.getParentId()),
+            params.getMemo()
+        ));
+    }
+
+    @Nullable
+    private Department find(@Nullable Long id) {
+        return Objects.isNull(id) ? null : this.load(id);
     }
 
     private Department load(Long id) {
-        return departmentRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
-
-    private DepartmentView save(Department source) {
-        return DepartmentView.assemble(departmentRepository.save(source));
+        return departmentRepository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
     }
 }

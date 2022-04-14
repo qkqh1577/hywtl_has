@@ -10,14 +10,13 @@ import lombok.Setter;
 @Setter
 public class DepartmentChangeParameter {
 
-    @NotBlank
+    @NotBlank(message = "부서명은 필수입니다.")
     private String name;
 
-    @NotNull
+    @NotNull(message = "부서 유형은 필수입니다.")
     private DepartmentCategory category;
 
     private String memo;
 
-    @NotNull
-    private Integer seq;
+    private Long parentId;
 }

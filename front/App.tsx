@@ -6,24 +6,38 @@ import {
   Container,
   CssBaseline,
   Divider,
-  IconButton, Link,
-  List,
+  IconButton,
+  Link,
   ListItem,
   ListItemIcon,
   ListItemText,
+  SvgIcon,
   Toolbar,
   Typography
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
-  ChevronLeft as ChevronLeftIcon
+  ChevronLeft as ChevronLeftIcon,
+  FlightSharp as FlightSharpIcon,
+  FlightTakeoffSharp as FlightTakeoffSharpIcon,
+  FlightLandSharp as FlightLandSharpIcon
 } from '@mui/icons-material';
+import Tree, { TreeNode } from 'rc-tree';
 
 import { AppBar, AppDrawer } from 'layouts';
-import { menuData } from 'layouts/AppMenu';
 import { routes as ReactRouter } from 'common';
 import useUser from 'services/user/hook';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
+import { EventDataNode, Key } from 'rc-tree/lib/interface';
+
+type Menu = {
+  title: string;
+  path: string;
+  icon: typeof SvgIcon;
+  children?: Menu[];
+}
 
 const App = () => {
   const navigate = useNavigate();
@@ -33,11 +47,97 @@ const App = () => {
   const [reloaded, setReloaded] = useState<boolean>(true);
 
   const [open, setOpen] = useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+  const [menuData, setMenuData] = useState<Menu[]>([
+    {
+      title: 'Department',
+      path: '/department',
+      icon: DashboardIcon
+    }, {
+      title: 'User',
+      path: '/user',
+      icon: DashboardIcon
+    }, {
+      title: 'HR',
+      path: '/hr/card',
+      icon: DashboardIcon
+    }, {
+      title: 'SALES',
+      path: '/sales',
+      icon: DashboardIcon
+    }, {
+      title: 'PROJECT',
+      path: '/project',
+      icon: DashboardIcon
+    }
+  ]);
 
   const handler = {
+    toggle: () => {
+      setOpen(!open);
+    },
+    dragStart: (info: NodeDragEventParams) => {
+      console.log(info);
+      setMenuData(menuData.map((menu) => {
+        if (info.node.key as string === menu.path) {
+          return {
+            ...menu,
+            icon: FlightTakeoffSharpIcon
+          };
+        }
+        return menu;
+      }));
+    },
+    dragEnter: (info: NodeDragEventParams & {
+      expandedKeys: Key[];
+    }) => {
+      console.log(info);
+    },
+    drop: (info: NodeDragEventParams & {
+      dragNode: EventDataNode;
+      dragNodesKeys: Key[];
+      dropPosition: number;
+      dropToGap: boolean;
+    }) => {
+      const dropKey = info.node.key as string;
+      const dragKey = info.dragNode.key as string;
+      const dropPos = info.node.pos.split('-');
+      const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+
+      const loop = (data: Menu[], path: string, callback: (item: Menu, index: number, arr: Menu[]) => void) => {
+        data.forEach((item, index, arr) => {
+          if (item.path === path) {
+            callback(item, index, arr);
+            return;
+          }
+        });
+      };
+      const data: Menu[] = [...menuData];
+
+      // Find dragObject
+      let dragObj: Menu | undefined;
+      loop(data, dragKey, (item, index, arr) => {
+        arr.splice(index, 1);
+        dragObj = item;
+      });
+      if (dragObj) {
+        // Drop on the gap (insert before or insert after)
+        let ar: Menu[] | undefined;
+        let i: number | undefined;
+        loop(data, dropKey, (item, index, arr) => {
+          ar = arr;
+          i = index;
+        });
+        if (ar && typeof i === 'number') {
+          if (dropPosition === -1) {
+            ar.splice(i, 0, dragObj);
+          } else {
+            ar.splice(i + 1, 0, dragObj);
+          }
+        }
+      }
+
+      setMenuData(data.map(menu => ({ ...menu, icon: DashboardIcon })));
+    },
     logout: () => {
       if (window.confirm('로그아웃하시겠습니까?')) {
         logout();
@@ -75,7 +175,7 @@ const App = () => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={toggleDrawer}
+            onClick={handler.toggle}
             sx={{
               marginRight: '36px',
               ...(open && { display: 'none' }),
@@ -136,25 +236,41 @@ const App = () => {
             px: [1],
           }}
         >
-          <IconButton onClick={toggleDrawer}>
+          <IconButton onClick={handler.toggle}>
             <ChevronLeftIcon />
           </IconButton>
         </Toolbar>
         <Divider />
-        <List>
-          <div>
-            {menuData.map(menu => {
-              return (<ListItem key={menu.path} button onClick={() => {
-                navigate(menu.path);
-              }}>
-                <ListItemIcon>
-                  {React.createElement(menu.icon)}
-                </ListItemIcon>
-                <ListItemText primary={menu.name} />
-              </ListItem>);
-            })}
-          </div>
-        </List>
+        <Tree
+          onDragStart={handler.dragStart}
+          onDragEnter={handler.dragEnter}
+          onDrop={handler.drop}
+          draggable
+          defaultExpandAll
+          virtual={false}
+        >
+          {menuData.map((menu) => (
+            <TreeNode
+              title={
+                <ListItem
+                  key={menu.path}
+                  onClick={() => {
+                    navigate(menu.path);
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    {React.createElement(menu.icon)}
+                  </ListItemIcon>
+                  <ListItemText primary={menu.title} />
+                </ListItem>
+              }
+              key={menu.path}
+              checkable={false}
+            />
+
+          ))}
+        </Tree>
       </AppDrawer>
       <Box
         component="main"

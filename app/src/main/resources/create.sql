@@ -6,7 +6,7 @@ create table department
 	created_time datetime(6) not null,
 	memo varchar(255) null,
 	name varchar(255) not null,
-	removed_time datetime(6) null,
+	deleted_time datetime(6) null,
 	seq int not null,
 	parent_id bigint null
 )engine = InnoDB DEFAULT CHARSET = utf8mb4;

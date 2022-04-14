@@ -11,7 +11,6 @@ import {
   Paper,
   Select
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
 import DepartmentSelector from 'components/DepartmentSelector';
@@ -20,17 +19,7 @@ import { UserRole } from 'services/user/User';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 
-const useStyles = makeStyles(() => ({
-  component: {
-    alignContent: 'flex-start',
-  },
-  input: {
-    width: '100%'
-  }
-}));
-
 const UserDetail = () => {
-  const classes = useStyles();
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   const {
@@ -181,7 +170,6 @@ const UserDetail = () => {
                             id="params-username"
                             name="username"
                             value={values.username}
-                            className={classes.input}
                             disabled
                           />
                         </FormControl>
@@ -223,7 +211,6 @@ const UserDetail = () => {
                             labelId="params-userRole-label"
                             id="params-userRole"
                             name="userRole"
-                            label="권한"
                             value={values.userRole}
                             onChange={handleChange}
                             required
@@ -242,7 +229,6 @@ const UserDetail = () => {
                             labelId="params-departmentId-label"
                             id="params-departmentId"
                             name="departmentId"
-                            label="소속 부서"
                             value={values.departmentId}
                             handleChange={handleChange}
                           />
