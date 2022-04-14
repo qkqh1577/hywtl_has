@@ -54,7 +54,7 @@ const DepartmentDetail = () => {
       if (!category) {
         errors.category = '부서 유형 선택은 필수입니다.';
       }
-      const parentId: number | undefined = values.parent?.id ?? undefined;
+      const parentId: number | undefined = values.parentId;
       const memo: string | undefined = values.memo || undefined;
 
       if (Object.keys(errors).length > 0) {
@@ -165,7 +165,7 @@ const DepartmentDetail = () => {
                             {list
                             .filter((department) => department.id !== detail.id)
                             .filter((department) => {
-                              if(!department.parentId) {
+                              if (!department.parentId) {
                                 return true;
                               }
                               const getAncestorIdList = (sourceId: number, temp: number[]): number[] => {

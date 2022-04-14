@@ -72,10 +72,5 @@ public class DepartmentController {
         return departmentService.change(id, params);
     }
 
-    @PatchMapping("/departments/{id}/parent")
-    public DepartmentView changeParent(@PathVariable Long id, @RequestBody(required = false) Long parentId) {
-        return departmentService.changeParent(id, parentId);
-    }
-
 
 }

@@ -39,6 +39,6 @@ public class DepartmentPredicateBuilder {
 
     @Nullable
     public Predicate build() {
-        return criteria.getValue();
+        return criteria.and(department.deletedTime.isNull()).getValue();
     }
 }
