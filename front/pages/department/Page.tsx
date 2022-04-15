@@ -111,12 +111,7 @@ const DepartmentPage = () => {
           color="primary"
           variant="contained"
           onClick={() => {
-            navigate('/department-tree', {
-              state: {
-                filter,
-                expend: (location?.state as any)?.expend,
-              }
-            });
+            navigate('/department-tree', { state: { filter } });
           }}
         >
           트리로 보기

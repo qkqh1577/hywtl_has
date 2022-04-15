@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'common/reducer';
-import User from 'services/user/User';
+import { RootState } from 'services/common/reducer';
+import User from 'services/user/entity';
 import {
   AddUserParameter,
   ChangeUserParameter,

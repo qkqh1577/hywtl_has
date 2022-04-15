@@ -15,7 +15,7 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
 import DepartmentSelector from 'components/DepartmentSelector';
 import useUser from 'services/user/hook';
-import { UserRole } from 'services/user/User';
+import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 

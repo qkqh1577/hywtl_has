@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppRoutes} from "common/routes";
+import {AppRoutes} from "services/common/routes";
 import DepartmentPage from 'pages/department/Page';
 import DepartmentAddForm from 'pages/department/AddForm';
 import DepartmentDetail from 'pages/department/Detail';

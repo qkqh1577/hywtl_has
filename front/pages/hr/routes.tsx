@@ -1,15 +1,15 @@
 import React from 'react';
-import {AppRoutes} from "common/routes";
+import {AppRoutes} from "services/common/routes";
 import HrCardPage from './HrCardPage';
 import HrCardDetailPage from './HrCardDetailPage'
 
 const routes: AppRoutes[] = [
   {
     path: '/hr/card',
-    element: <HrCardPage></HrCardPage>
+    element: <HrCardPage/>
   },{
     path: '/hr/card/detail',
-    element: <HrCardDetailPage></HrCardDetailPage>
+    element: <HrCardDetailPage/>
   }
 ];
 

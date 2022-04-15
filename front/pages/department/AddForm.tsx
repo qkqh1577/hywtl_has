@@ -14,7 +14,7 @@ import {
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import useDepartment from 'services/department/hook';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { DepartmentCategory } from 'services/department/Department';
+import { DepartmentCategory } from 'services/department/entity';
 import { DepartmentAddParameter } from 'services/department/parameter';
 
 const DepartmentAddForm = () => {
@@ -201,7 +201,6 @@ const DepartmentAddForm = () => {
                         저장
                       </Button>
                     </Box>
-
                   </Grid>
                 </Form>
               )}

@@ -1,7 +1,7 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
-import Page from 'common/Page';
-import Department, { ListDepartment } from './Department';
+import Page from 'components/Page';
+import Department, { ListDepartment } from 'services/department/entity';
 import departmentApi from './api';
 import { departmentActions, DepartmentActionType } from './actions';
 
@@ -42,10 +42,22 @@ function* change(action: ActionType<typeof departmentActions.change>) {
   }
 }
 
+function* changeTree(action: ActionType<typeof departmentActions.changeTree>) {
+  const { params, callback } = action.payload;
+  try {
+    const list: ListDepartment[] = yield departmentApi.changeTree(params);
+    yield put(departmentActions.setAll(list));
+    callback(list);
+  } catch (e) {
+    callback();
+  }
+}
+
 export default function* saga() {
   yield takeLatest(DepartmentActionType.getAll, getAll);
   yield takeLatest(DepartmentActionType.getPage, getPage);
   yield takeLatest(DepartmentActionType.getOne, getOne);
   yield takeLatest(DepartmentActionType.add, add);
   yield takeLatest(DepartmentActionType.change, change);
+  yield takeLatest(DepartmentActionType.changeTree, changeTree);
 }

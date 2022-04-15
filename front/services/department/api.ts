@@ -1,10 +1,10 @@
 import axios from 'axios';
-import Page from 'common/Page';
+import Page from 'components/Page';
 import queryString from 'qs';
-import Department, { ListDepartment } from './Department';
+import Department, { ListDepartment } from 'services/department/entity';
 import {
   DepartmentAddParameter,
-  DepartmentChangeParameter,
+  DepartmentChangeParameter, DepartmentChangeTreeParameter,
   DepartmentQuery
 } from './parameter';
 
@@ -45,6 +45,17 @@ export class DepartmentApi {
   async change(params: DepartmentChangeParameter): Promise<Department> {
     const { id } = params;
     const { data } = await axios.patch(`/departments/${id}`, params, {
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
+    return data;
+  }
+
+  async changeTree(params: DepartmentChangeTreeParameter): Promise<ListDepartment[]> {
+    const { data } = await axios.post('/departments/tree', params, {
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {
           arrayFormat: 'brackets',

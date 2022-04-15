@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRoutes } from 'common/routes';
+import { AppRoutes } from 'services/common/routes';
 
 import UserPage from 'pages/user/Page';
 import UserForm from 'pages/user/UserInviteForm';

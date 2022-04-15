@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions';
-import Page from 'common/Page';
-import User, { ListUser } from './User';
+import Page from 'components/Page';
+import User, { ListUser } from 'services/user/entity';
 import {
   AddUserParameter,
   ChangeUserParameter,

@@ -1,4 +1,4 @@
-import User from '../user/User';
+import User from 'services/user/entity';
 
 export type DepartmentCategory = 'COMPANY' | 'HQ' | 'TEAM' | 'PART' | 'PERSON' | 'EXTRA';
 

@@ -4,6 +4,8 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
+import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
+import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter.DepartmentTreeParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
@@ -68,6 +70,24 @@ public class DepartmentService {
             this.find(params.getParentId()),
             params.getMemo()
         ));
+    }
+
+    @Transactional
+    public List<DepartmentListView> changeTree(DepartmentChangeTreeParameter params) {
+        List<DepartmentTreeParameter> list = params.getList();
+
+        list.forEach(item -> {
+            Department department = this.load(item.getId());
+            department.changeParent(
+                departmentRepository,
+                this.find(item.getParentId()),
+                item.getSeq()
+            );
+        });
+
+        return departmentRepository.findByDeletedTimeIsNull().stream()
+            .map(DepartmentListView::assemble)
+            .collect(Collectors.toList());
     }
 
     @Nullable

@@ -1,5 +1,5 @@
-import User, { ListUser } from './User';
-import Page, { initial } from 'common/Page';
+import User, { ListUser } from 'services/user/entity';
+import Page, { initial } from 'components/Page';
 import { createReducer } from 'typesafe-actions';
 import { UserActionType } from './actions';
 

@@ -1,4 +1,4 @@
-import { UserRole } from 'services/user/User';
+import { UserRole } from 'services/user/entity';
 
 export type UserInvitationQuery = {
   email: string;

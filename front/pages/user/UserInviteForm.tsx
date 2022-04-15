@@ -11,7 +11,7 @@ import {
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { UserInvitationInviteParameter } from 'services/user/invitation/parameter';
 import { userRoleName, userRoleList } from 'services/user/data';
-import { UserRole } from 'services/user/User';
+import { UserRole } from 'services/user/entity';
 import useUserInvitation from 'services/user/invitation/hook';
 import DepartmentSelector from 'components/DepartmentSelector';
 

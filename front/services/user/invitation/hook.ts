@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'common/reducer';
+import { RootState } from 'services/common/reducer';
 import UserInvitation from 'services/user/invitation/UserInvitation';
 import {
   UserInvitationInviteParameter,
