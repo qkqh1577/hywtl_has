@@ -117,6 +117,16 @@ public class Department {
         return repository.save(this);
     }
 
+    public Department changeParent(
+        DepartmentRepository repository,
+        @Nullable Department parent,
+        Integer seq
+    ) {
+        this.parent = parent;
+        this.seq = seq;
+        return repository.save(this);
+    }
+
     protected Department(
         String name,
         DepartmentCategory category,

@@ -19,14 +19,12 @@ import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
   ChevronLeft as ChevronLeftIcon,
-  FlightSharp as FlightSharpIcon,
   FlightTakeoffSharp as FlightTakeoffSharpIcon,
-  FlightLandSharp as FlightLandSharpIcon
 } from '@mui/icons-material';
 import Tree, { TreeNode } from 'rc-tree';
 
 import { AppBar, AppDrawer } from 'layouts';
-import { routes as ReactRouter } from 'common';
+import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
@@ -247,7 +245,6 @@ const App = () => {
           onDrop={handler.drop}
           draggable
           defaultExpandAll
-          virtual={false}
         >
           {menuData.map((menu) => (
             <TreeNode

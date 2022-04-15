@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import App from './App';
 import LoginForm from 'pages/user/LoginForm';
 import AuthenticationForm from 'pages/user/AuthenticationForm';
-import { store } from 'common';
+import { store } from 'services/common';
 
 const render = () => {
 

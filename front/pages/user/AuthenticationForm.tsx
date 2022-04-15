@@ -110,14 +110,17 @@ const UserAuthenticationForm = () => {
     >
       <Box sx={{
         display: 'flex',
-        width: '100%',
         justifyContent: 'center',
+        width: '100%',
+        height: '50px',
+        mb: '40px',
       }}>
         <h2>계정 등록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
         width: '100%',
+        mb: '40px',
         justifyContent: 'center',
       }}>
         {!detail && (
@@ -211,16 +214,23 @@ const UserAuthenticationForm = () => {
                     </FormControl>
                   </Grid>
                   <Grid item sm={12}>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={() => {
-                        handleSubmit();
-                      }}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? ' 가입 요청 중' : '가입'}
-                    </Button>
+                    <Box sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                      mt: '40px',
+                    }}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => {
+                          handleSubmit();
+                        }}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? ' 가입 요청 중' : '가입'}
+                      </Button>
+                    </Box>
                   </Grid>
                 </Grid>
               </Form>

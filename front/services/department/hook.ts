@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'common/reducer';
+import { RootState } from 'services/common/reducer';
 import { useCallback } from 'react';
 import { departmentActions } from './actions';
 import {
   DepartmentAddParameter,
-  DepartmentChangeParameter,
+  DepartmentChangeParameter, DepartmentChangeTreeParameter,
   DepartmentQuery
 } from './parameter';
-import Department from 'services/department/Department';
+import Department, { ListDepartment } from 'services/department/entity';
 
 export default function useDepartment() {
   const departmentState = useSelector((state: RootState) => state.department);
@@ -47,6 +47,12 @@ export default function useDepartment() {
     [dispatch]
   );
 
+  const changeTree = useCallback(
+    (params: DepartmentChangeTreeParameter, callback: (list?: ListDepartment[]) => void) =>
+      dispatch(departmentActions.changeTree({ params, callback })),
+    [dispatch],
+  );
+
   return {
     departmentState,
     getAll,
@@ -55,5 +61,6 @@ export default function useDepartment() {
     clearOne,
     add,
     change,
+    changeTree,
   };
 }

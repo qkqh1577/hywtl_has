@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -15,13 +15,14 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
 import DepartmentSelector from 'components/DepartmentSelector';
 import useUser from 'services/user/hook';
-import { UserRole } from 'services/user/User';
+import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
+  const navigate = useNavigate();
   const {
     userState: {
       detail
@@ -105,14 +106,20 @@ const UserDetail = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
-      <Box sx={{ mb: '20px' }}>
-        <Grid container spacing={1}>
-          <Grid item sm={12}>
-            <h2>계정 상세 정보</h2>
-          </Grid>
-        </Grid>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: '50px',
+        mb: '40px',
+      }}>
+        <h2>계정 상세 정보</h2>
       </Box>
-      <Box sx={{ mb: '20px' }}>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        mb: '40px',
+      }}>
         <Grid container spacing={1}>
           <Grid container spacing={3} item sm={6} xs={12}>
             <Grid item sm={4}>
@@ -236,33 +243,40 @@ const UserDetail = () => {
                         </FormControl>
                       </Grid>
                       <Grid item sm={12}>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          onClick={() => {
-                            history.go(-1);
-                          }}
-                        >
-                          취소
-                        </Button>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          disabled={isSubmitting}
-                          onClick={() => {
-                            handleSubmit();
-                          }}
-                        >
-                          저장
-                        </Button>
-                        <Button
-                          style={{ float: 'right' }}
-                          color="primary"
-                          variant="contained"
-                          onClick={handler.password}
-                        >
-                          비밀번호 변경
-                        </Button>
+                        <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          width: '100%',
+                          mt: '40px',
+                        }}>
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => {
+                              navigate(-1);
+                            }}
+                          >
+                            취소
+                          </Button>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                              handleSubmit();
+                            }}
+                          >
+                            저장
+                          </Button>
+                          <Button
+                            style={{ float: 'right' }}
+                            color="primary"
+                            variant="contained"
+                            onClick={handler.password}
+                          >
+                            비밀번호 변경
+                          </Button>
+                        </Box>
                       </Grid>
                     </Grid>
                   </Form>

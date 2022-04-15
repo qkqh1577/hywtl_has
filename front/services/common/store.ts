@@ -4,7 +4,7 @@ import { all } from 'redux-saga/effects';
 import departmentSaga from 'services/department/saga';
 import userSaga from 'services/user/saga';
 import userInvitationSaga from 'services/user/invitation/saga';
-import reducer from 'common/reducer';
+import reducer from 'services/common/reducer';
 
 const middleware = createSagaMiddleware();
 

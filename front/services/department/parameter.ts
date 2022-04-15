@@ -1,4 +1,4 @@
-import Department, { DepartmentCategory } from './Department';
+import Department, { DepartmentCategory } from 'services/department/entity';
 
 export type DepartmentQuery = {
   page: number;
@@ -11,4 +11,12 @@ export type DepartmentQuery = {
 
 export type DepartmentChangeParameter = Omit<Department, 'seq' | 'childrenList' | 'userList'>;
 export type DepartmentAddParameter = Omit<DepartmentChangeParameter, 'id'>;
+export type DepartmentTreeParameter = {
+  id: number;
+  parentId?: number;
+  seq: number;
+};
+export type DepartmentChangeTreeParameter = {
+  list: DepartmentTreeParameter[];
+};
 

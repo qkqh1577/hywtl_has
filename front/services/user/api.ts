@@ -1,13 +1,13 @@
 import axios from 'axios';
 import queryString from 'qs';
-import Page from 'common/Page';
+import Page from 'components/Page';
 import {
   AddUserParameter,
   ChangeUserParameter,
   ChangeUserPasswordParameter, LoginParameter,
   UserQuery
 } from './parameter';
-import User, { ListUser } from './User';
+import User, { ListUser } from 'services/user/entity';
 
 export class UserApi {
   async getPage(query: UserQuery): Promise<Page<ListUser>> {

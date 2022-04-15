@@ -20,6 +20,8 @@ public class DepartmentListView {
     private DepartmentCategory category;
     private DepartmentListView parent;
 
+    private Long parentId;
+
     private Integer userCount;
     private Integer childrenCount;
 
@@ -28,13 +30,14 @@ public class DepartmentListView {
         target.id = source.getId();
         target.name = source.getName();
         target.category = source.getCategory();
-        target.parent = Optional.ofNullable(source.getParent()).map(sourceParent -> {
+        if (Objects.nonNull(source.getParent())) {
             DepartmentListView targetParent = new DepartmentListView();
-            targetParent.id = sourceParent.getId();
-            targetParent.name = sourceParent.getName();
-            targetParent.category = sourceParent.getCategory();
-            return targetParent;
-        }).orElse(null);
+            targetParent.id = source.getParent().getId();
+            targetParent.name = source.getParent().getName();
+            targetParent.category = source.getParent().getCategory();
+            target.parent = targetParent;
+            target.parentId = source.getParent().getId();
+        }
         target.userCount = Optional.ofNullable(source.getUserList()).map(List::size).orElse(0);
         target.childrenCount = Optional.ofNullable(source.getChildrenList()).map(List::size).orElse(0);
         return target;

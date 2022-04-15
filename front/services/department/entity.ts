@@ -1,4 +1,4 @@
-import User from '../user/User';
+import User from 'services/user/entity';
 
 export type DepartmentCategory = 'COMPANY' | 'HQ' | 'TEAM' | 'PART' | 'PERSON' | 'EXTRA';
 
@@ -18,6 +18,7 @@ export type ListDepartment = {
   name: string;
   category: DepartmentCategory;
   parent?: ListDepartment;
+  parentId?: number;
   userCount?: number;
   childrenCount?: number;
 }

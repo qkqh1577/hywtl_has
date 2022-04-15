@@ -1,5 +1,5 @@
-import Department from 'services/department/Department';
-import { UserRole } from 'services/user/User';
+import Department from 'services/department/entity';
+import { UserRole } from 'services/user/entity';
 
 type UserInvitation = {
   name: string;

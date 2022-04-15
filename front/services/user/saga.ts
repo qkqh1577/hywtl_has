@@ -1,8 +1,8 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
-import Page from 'common/Page';
+import Page from 'components/Page';
 import { userActions, UserActionType } from './actions';
-import User, { ListUser } from './User';
+import User, { ListUser } from 'services/user/entity';
 import userApi from './api';
 
 function* getPage(action: ActionType<typeof userActions.getPage>) {
