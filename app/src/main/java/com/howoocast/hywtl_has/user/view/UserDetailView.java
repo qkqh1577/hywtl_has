@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.user.view;
 
 import com.howoocast.hywtl_has.department.view.DepartmentView;
+import com.howoocast.hywtl_has.personnel.domain.Personnel;
+import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
@@ -19,6 +21,8 @@ public class UserDetailView {
     private LocalDateTime loginTime;
     private LocalDateTime passwordChangedTime;
 
+    private PersonnelView personnel;
+
     public static UserDetailView assemble(User source) {
         UserDetailView target = new UserDetailView();
         target.id = source.getId();
@@ -30,6 +34,7 @@ public class UserDetailView {
         target.createdTime = source.getCreatedTime();
         target.loginTime = source.getLoginTime();
         target.passwordChangedTime = source.getPasswordChangedTime();
+        target.personnel = PersonnelView.assemble(source.getPersonnel());
         return target;
     }
 }
