@@ -8,11 +8,6 @@ logging:
         com.howoocast: DEBUG
 
 spring:
-    devtools:
-        restart:
-            enabled: true
-        livereload:
-            enabled: true
     thymeleaf:
         cache: false
     sql:
@@ -68,3 +63,29 @@ application:
         starttls: true
         name: 발송자
         dev-receiver: young@howoocast.com
+    file:
+        extension-list:
+            - doc # document
+            - docx
+            - ppt
+            - pptx
+            - xls
+            - xlsx
+            - pdf
+            - hwp
+            - txt
+            - png    # image
+            - jpg
+            - jpeg
+            - bmp
+            - webp
+            - tiff
+            - gif
+            - mp4 # video
+            - mov
+            - wmv
+            - avi
+            - webm
+            - zip  # extra
+        max-size-limit: 5242880 # 5 * 1024(KB) * 1024(MB)
+        root-path: C:/Users/young/work/hywtl_has

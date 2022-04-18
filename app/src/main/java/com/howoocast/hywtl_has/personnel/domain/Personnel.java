@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
+import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -19,14 +21,13 @@ public class Personnel {
     @Id
     private Long id; // share user id
 
-    @NotNull
     @OneToOne
     @JoinColumn(name = "id")
     private User user;
 
     @NotNull
     @Embedded
-    PersonnelBasic basic;
+    private PersonnelBasic basic;
 
     // 직위
     // 직종
@@ -38,5 +39,18 @@ public class Personnel {
     // 면허 - 리스트
     // 어학 - 리스트
 
+    public static Personnel of(
+        PersonnelRepository repository,
+        User user,
+        PersonnelBasic basic
+    ) {
+        if (repository.findById(user.getId()).isPresent()) {
+            throw new IllegalRequestException("인사카드가 존재합니다.");
+        }
+        Personnel instance = new Personnel();
+        instance.id = user.getId();
+        instance.basic = basic;
+        return repository.save(instance);
+    }
 
 }

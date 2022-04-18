@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.personnel.view;
 
+import com.howoocast.hywtl_has.common.view.FileItemView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ public class PersonnelBasicView {
 
     private String sex; //성별
 
-    private String image; // 사진
+    private FileItemView image; // 사진
 
     private String address; // 거주지 주소
 
@@ -31,7 +32,7 @@ public class PersonnelBasicView {
         target.engName = source.getEngName();
         target.birthDate = source.getBirthDate();
         target.sex = source.getSex();
-        target.image = source.getImage();
+        target.image = FileItemView.assemble(source.getImage());
         target.address = source.getAddress();
         target.phone = source.getPhone();
         target.emergencyPhone = source.getEmergencyPhone();
