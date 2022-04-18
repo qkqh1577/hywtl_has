@@ -5,9 +5,12 @@ create table file_item
 	created_time datetime(6) not null,
 	deleted_time datetime(6) not null,
 	ext varchar(255) not null,
+	file_key varchar(255) not null,
 	filename varchar(255) not null,
 	path varchar(255) not null,
-	size bigint not null
+	size bigint not null,
+	constraint UK_file_item_file_key
+		unique (file_key)
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table department

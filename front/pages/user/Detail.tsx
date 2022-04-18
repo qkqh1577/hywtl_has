@@ -297,6 +297,11 @@ const UserDetail = () => {
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <div style={{ textAlign: 'center' }}>시스템 접속 이력 조회 기능 추가 예정</div>
+            {detail?.personnel?.image && (
+              <video width="400" height="400" preload="auto" controls loop>
+                <source src={`/file-items/${detail.personnel.image.id}/streaming`} />
+              </video>
+            )}
           </Grid>
         </Grid>
       </Box>

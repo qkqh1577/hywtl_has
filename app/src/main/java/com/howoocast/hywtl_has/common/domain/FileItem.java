@@ -4,11 +4,16 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException.RequestFileNotAvailableExceptionType;
-import com.howoocast.hywtl_has.common.repository.FileItemRepository;
 import com.howoocast.hywtl_has.common.util.SHA265Generator;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -27,6 +33,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Slf4j
 @Getter
@@ -54,6 +61,10 @@ public class FileItem {
     @Column(nullable = false, updatable = false)
     private String ext;
 
+    @NotBlank
+    @Column(nullable = false, unique = true, updatable = false)
+    private String fileKey;
+
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime = LocalDateTime.now();
@@ -62,7 +73,6 @@ public class FileItem {
     private LocalDateTime deletedTime;
 
     public static FileItem of(
-        FileItemRepository repository,
         MultipartFile multipartFile,
         String dirPath,
         List<String> extWhiteList,
@@ -102,8 +112,7 @@ public class FileItem {
         } catch (Exception e) {
             instance.deleteFile();
         }
-
-        return repository.save(instance);
+        return instance;
     }
 
     private void deleteFile() {
@@ -149,6 +158,7 @@ public class FileItem {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SS");
             String pepper = String.format("%s-%d", LocalDateTime.now().format(formatter), rd.nextInt(1000));
             String fileKey = SHA265Generator.make(String.format("%s-%s", filename, pepper));
+            this.fileKey = fileKey;
             this.path = String.format("%s/%s.%s", dirPath, fileKey, this.ext);
         } catch (Exception e) {
             throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
@@ -169,4 +179,66 @@ public class FileItem {
         outputStream.close();
     }
 
+    public void download(HttpServletResponse response) throws Exception {
+        File file = new File(this.path);
+        if (!file.exists() || !file.isFile()) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
+
+        OutputStream outputStream = null;
+        try {
+            String encodedFileName = URLEncoder.encode(this.filename, StandardCharsets.UTF_8)
+                .replace("+", "%20");
+            response.setHeader("Content-Disposition", String.format("attachment;filename=%s", encodedFileName));
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            outputStream = response.getOutputStream();
+            Files.copy(file.toPath(), outputStream);
+            response.flushBuffer();
+        } catch (Exception outputStreamException) {
+            throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
+        } finally {
+            if (Objects.nonNull(outputStream)) {
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (Exception closingException) {
+                    log.warn("[File Service] OutputStream has error when closing. file id: {}", this.id);
+                }
+            }
+        }
+    }
+
+    public StreamingResponseBody streaming() throws Exception {
+        File file = new File(this.path);
+        if (!file.exists() || !file.isFile()) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
+        final Long id = this.id;
+        // TODO: is video file?
+        try {
+            final InputStream inputStream = new FileInputStream(file);
+
+            return outputStream -> {
+                // TODO: extract buffer size to application.yml
+                byte[] b = new byte[2048];
+                try {
+                    while (inputStream.read(b) > 0) {
+                        outputStream.write(b);
+                    }
+                    outputStream.flush();
+                } finally {
+                    try {
+                        outputStream.close();
+                        inputStream.close();
+                    } catch (Exception e) {
+                        log.warn("[File Service] OutputStream has error when closing. file id: {}", id);
+                    }
+                }
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
+        }
+
+    }
 }

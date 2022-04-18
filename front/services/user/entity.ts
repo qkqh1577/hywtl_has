@@ -17,5 +17,10 @@ type User = Omit<ListUser, 'departmentId' | 'departmentName'> & {
   createdTime: Date;
   loginTime?: Date;
   passwordChangedTime?: Date;
+  personnel?: {
+    image?: {
+      id: number;
+    }
+  }
 }
 export default User;
