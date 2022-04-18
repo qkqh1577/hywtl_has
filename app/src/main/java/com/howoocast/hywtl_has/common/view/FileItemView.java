@@ -10,15 +10,18 @@ public class FileItemView {
 
     private Long id;
     private String filename;
-    private Long size;
     private String ext;
+
+    private String fileKey;
+    private Long size;
 
     public static FileItemView assemble(FileItem source) {
         FileItemView target = new FileItemView();
         target.id = source.getId();
         target.filename = source.getFilename();
-        target.size = source.getSize();
         target.ext = source.getExt();
+        target.fileKey = source.getFileKey();
+        target.size = source.getSize();
 
         return target;
     }

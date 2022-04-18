@@ -3,15 +3,17 @@ package com.howoocast.hywtl_has.common.service;
 import com.howoocast.hywtl_has.common.domain.FileItem;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
+import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.common.repository.FileItemRepository;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Setter
@@ -41,9 +43,28 @@ public class FileItemService {
     }
 
     @Transactional
-    public FileItem add(MultipartFile multipartFile) {
+    public FileItem build(FileItemParameter params) {
+        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete()) && Objects.isNull(
+            params.getMultipartFile())) {
+            // 요청이 전부 빈 경우
+            throw new FileSystemException(FileSystemExceptionType.ILLEGAL_REQUEST);
+        }
+
+        if (Objects.nonNull(params.getId())) {
+            // 요청에 파일 id가 있는 경우
+            Optional<FileItem> optional = fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId());
+            if (Objects.isNull(params.getRequestDelete()) || !params.getRequestDelete()) {
+                // 기존 파일을 그대로 사용 시
+                return optional.orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
+            }
+            // 기존 파일 삭제 요청 시
+            // TODO: Transactional 처리
+            fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId()).ifPresent((FileItem::deleteFile));
+        }
+
+        // 신규 파일 처리
         return fileItemRepository.save(FileItem.of(
-            multipartFile,
+            params.getMultipartFile(),
             rootPath,
             extensionList,
             maxSizeLimit

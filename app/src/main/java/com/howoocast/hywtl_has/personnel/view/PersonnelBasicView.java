@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class PersonnelBasicView {
 
+    private String name; // user.name
+
     private String engName; // 영문이름
 
     private String birthDate; // 생년월일
@@ -27,8 +29,12 @@ public class PersonnelBasicView {
 
     private String personalEmail; // 개인 이메일
 
-    public static PersonnelBasicView assemble(PersonnelBasic source) {
+    public static PersonnelBasicView assemble(
+        PersonnelBasic source,
+        String name
+    ) {
         PersonnelBasicView target = new PersonnelBasicView();
+        target.name = name;
         target.engName = source.getEngName();
         target.birthDate = source.getBirthDate();
         target.sex = source.getSex();

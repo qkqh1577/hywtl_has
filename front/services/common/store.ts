@@ -4,6 +4,7 @@ import { all } from 'redux-saga/effects';
 import departmentSaga from 'services/department/saga';
 import userSaga from 'services/user/saga';
 import userInvitationSaga from 'services/user/invitation/saga';
+import personnelSaga from 'services/personnel/saga';
 import reducer from 'services/common/reducer';
 
 const middleware = createSagaMiddleware();
@@ -13,6 +14,7 @@ function* saga() {
     departmentSaga(),
     userSaga(),
     userInvitationSaga(),
+    personnelSaga(),
   ]);
 }
 

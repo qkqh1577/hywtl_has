@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.common.exception;
 public class FileSystemException extends CustomExceptionAdaptor {
 
     public enum FileSystemExceptionType {
+        ILLEGAL_REQUEST("요청이 잘못되었습니다."),
         PERMISSION_DENIED("접근 권한이 없습니다."),
         NOT_DIRECTORY("폴더가 아닙니다."),
         NOT_FOUND("해당 파일을 찾을 수 없습니다."),

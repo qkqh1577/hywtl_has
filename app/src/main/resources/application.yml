@@ -74,7 +74,7 @@ application:
             - pdf
             - hwp
             - txt
-            - png    # image
+            - png # image
             - jpg
             - jpeg
             - bmp

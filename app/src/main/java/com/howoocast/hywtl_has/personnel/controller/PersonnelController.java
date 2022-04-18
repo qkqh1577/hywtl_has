@@ -7,7 +7,9 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonnelController {
 
     private final PersonnelService personnelService;
+
+    @GetMapping("/personnels/{id}")
+    public PersonnelView get(@PathVariable Long id) {
+        return personnelService.get(id);
+    }
 
     @PostMapping("/personnels")
     public PersonnelView add(@Valid @ModelAttribute PersonnelAddParameter params) {

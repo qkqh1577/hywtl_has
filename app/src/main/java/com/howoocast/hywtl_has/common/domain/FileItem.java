@@ -115,7 +115,7 @@ public class FileItem {
         return instance;
     }
 
-    private void deleteFile() {
+    public void deleteFile() {
         File file = new File(this.path);
         if (!file.exists()) {
             throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
@@ -123,9 +123,7 @@ public class FileItem {
         if (!file.isFile()) {
             throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
         }
-        if (!file.delete()) {
-            throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
-        }
+        this.deletedTime = LocalDateTime.now();
     }
 
     private void setExt(final List<String> extWhiteList) {
@@ -156,7 +154,7 @@ public class FileItem {
         try {
             Random rd = new Random();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_SS");
-            String pepper = String.format("%s-%d", LocalDateTime.now().format(formatter), rd.nextInt(1000));
+            String pepper = String.format("%s-%03d", LocalDateTime.now().format(formatter), rd.nextInt(1000));
             String fileKey = SHA265Generator.make(String.format("%s-%s", filename, pepper));
             this.fileKey = fileKey;
             this.path = String.format("%s/%s.%s", dirPath, fileKey, this.ext);
