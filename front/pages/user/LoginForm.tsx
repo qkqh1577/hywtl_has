@@ -48,7 +48,18 @@ const LoginForm = () => {
         password
       };
       userApi.login(params).then(() => {
-        navigate('/');
+        try {
+          if (location.state && typeof location.state === 'object') {
+            const { path } = location.state as any;
+            if (typeof path === 'string') {
+              navigate(path);
+              return;
+            }
+          }
+          navigate('/');
+        } catch (e) {
+          navigate('/');
+        }
       }).catch((e) => {
         console.log(e);
       }).finally(() => {

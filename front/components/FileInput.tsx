@@ -14,6 +14,7 @@ const FileInput = (props: FileInputProps) => {
   const { id, fileItem, setFieldValue } = props;
   const [params, setParams] = useState<FileItemParameter | undefined>();
   const ref = createRef<HTMLInputElement>();
+
   useEffect(() => {
     if (fileItem) {
       setParams({
@@ -21,11 +22,20 @@ const FileInput = (props: FileInputProps) => {
       });
     }
   }, [fileItem]);
+
   useEffect(() => {
     if (params) {
       setFieldValue(`${id}-temp`, params);
     } else {
-      setFieldValue(`${id}-temp`, undefined);
+      if (typeof fileItem === 'undefined') {
+        setFieldValue(`${id}-temp`, undefined);
+      } else {
+        setFieldValue(`${id}`, undefined);
+        setFieldValue(`${id}-temp`, {
+          id: fileItem.id,
+          requestDelete: true,
+        });
+      }
     }
   }, [params]);
 
@@ -62,6 +72,7 @@ const FileInput = (props: FileInputProps) => {
                   multipartFile: files[0],
                 });
               }
+              e.target.value = '';
             }}
             hidden
           />

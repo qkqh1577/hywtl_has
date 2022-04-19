@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Embeddable
@@ -39,7 +40,7 @@ public class PersonnelBasic {
         String engName,
         String birthDate,
         String sex,
-        FileItem fileItem,
+        @Nullable FileItem fileItem,
         String address,
         String phone,
         String emergencyPhone,

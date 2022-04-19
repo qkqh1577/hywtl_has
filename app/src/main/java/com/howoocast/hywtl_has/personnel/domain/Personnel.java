@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Embedded;
@@ -21,6 +21,9 @@ public class Personnel {
     @Id
     private Long id; // share user id
 
+    @SuppressWarnings("unused")
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id")
     private User user;
@@ -41,16 +44,15 @@ public class Personnel {
 
     public static Personnel of(
         PersonnelRepository repository,
-        User user,
+        Long id,
         PersonnelBasic basic
     ) {
-        if (repository.findById(user.getId()).isPresent()) {
-            throw new IllegalRequestException("인사카드가 존재합니다.");
-        }
-        Personnel instance = new Personnel();
-        instance.id = user.getId();
+        Personnel instance = repository.findById(id).orElse(new Personnel(id));
         instance.basic = basic;
         return repository.save(instance);
     }
 
+    private Personnel(Long id) {
+        this.id = id;
+    }
 }

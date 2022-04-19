@@ -176,7 +176,7 @@ const DepartmentTreeView = () => {
         };
         changeTree(params, (list) => {
           if (list) {
-            window.alert('저장되었습니다.');
+            window.alert('저장하였습니다.');
           }
         });
       }

@@ -5,25 +5,18 @@ import Personnel from 'services/personnel/entity';
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* getOne(action: ActionType<typeof personnelActions.getOne>) {
-  const detail: Personnel = yield personnelApi.getOne(action.payload);
-  yield put(personnelActions.setOne(detail));
-}
-
-function* add(action: ActionType<typeof personnelActions.add>) {
-  const { params, callback } = action.payload;
   try {
-    const data: Personnel = yield personnelApi.add(params);
-    yield put(personnelActions.setOne(data));
-    callback(data);
+    const detail: Personnel = yield personnelApi.getOne(action.payload);
+    yield put(personnelActions.setOne(detail));
   } catch (e) {
-    callback();
+    // nothing to do
   }
 }
 
-function* change(action: ActionType<typeof personnelActions.change>) {
+function* update(action: ActionType<typeof personnelActions.update>) {
   const { params, callback } = action.payload;
   try {
-    const data: Personnel = yield personnelApi.change(params);
+    const data: Personnel = yield personnelApi.update(params);
     yield put(personnelActions.setOne(data));
     callback(data);
   } catch (e) {
@@ -32,7 +25,6 @@ function* change(action: ActionType<typeof personnelActions.change>) {
 }
 
 export default function* saga() {
-  takeLatest(PersonnelActionType.getOne, getOne);
-  takeLatest(PersonnelActionType.add, add);
-  takeLatest(PersonnelActionType.change, change);
+  yield takeLatest(PersonnelActionType.getOne, getOne);
+  yield takeLatest(PersonnelActionType.update, update);
 }

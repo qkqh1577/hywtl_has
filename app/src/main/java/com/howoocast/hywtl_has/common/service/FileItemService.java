@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +43,11 @@ public class FileItemService {
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
-    @Transactional
-    public FileItem build(FileItemParameter params) {
+    @Nullable
+    public FileItem build(@Nullable FileItemParameter params) {
+        if (Objects.isNull(params)) {
+            return null;
+        }
         if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete()) && Objects.isNull(
             params.getMultipartFile())) {
             // 요청이 전부 빈 경우
@@ -58,8 +62,14 @@ public class FileItemService {
                 return optional.orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            // TODO: Transactional 처리
-            fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId()).ifPresent((FileItem::deleteFile));
+            fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId()).ifPresent(fileItem -> {
+                fileItem.deleteFile();
+                fileItemRepository.save(fileItem);
+            });
+        }
+
+        if (Objects.isNull(params.getMultipartFile())) {
+            return null;
         }
 
         // 신규 파일 처리

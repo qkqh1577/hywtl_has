@@ -1,13 +1,11 @@
 import { PersonnelBasic } from 'services/personnel/entity';
+import FileItemParameter from 'services/common/file-item/parameter';
 
-export type PersonnelBasicAddParameter = Partial<PersonnelBasic>;
-export type PersonnelAddParameter = {
-  userId: number;
-  basic: PersonnelBasicAddParameter;
-}
-
-export type PersonnelBasicChangeParameter = Partial<PersonnelBasic>;
-export type PersonnelChangeParameter = {
+export type PersonnelBasicParameter
+  = Partial<Omit<PersonnelBasic, 'image'>> & {
+  image: FileItemParameter;
+};
+export type PersonnelParameter = {
   id: number;
-  basic: PersonnelBasicChangeParameter;
+  basic: PersonnelBasicParameter;
 }

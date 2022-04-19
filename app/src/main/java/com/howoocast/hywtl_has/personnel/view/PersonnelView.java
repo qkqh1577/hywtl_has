@@ -12,7 +12,7 @@ public class PersonnelView {
 
     public static PersonnelView assemble(Personnel source) {
         PersonnelView target = new PersonnelView();
-        target.basic = PersonnelBasicView.assemble(source.getBasic(), source.getUser().getName());
+        target.basic = PersonnelBasicView.assemble(source.getBasic());
         return target;
     }
 }

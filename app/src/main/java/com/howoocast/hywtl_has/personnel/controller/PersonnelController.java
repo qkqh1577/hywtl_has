@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.personnel.controller;
 
-import com.howoocast.hywtl_has.personnel.parameter.PersonnelAddParameter;
+import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.service.PersonnelService;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import javax.validation.Valid;
@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -26,8 +26,11 @@ public class PersonnelController {
         return personnelService.get(id);
     }
 
-    @PostMapping("/personnels")
-    public PersonnelView add(@Valid @ModelAttribute PersonnelAddParameter params) {
-        return personnelService.add(params);
+    @PutMapping("/personnels/{id}")
+    public PersonnelView update(
+        @PathVariable Long id,
+        @Valid @ModelAttribute PersonnelParameter params
+    ) {
+        return personnelService.update(id, params);
     }
 }

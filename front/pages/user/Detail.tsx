@@ -289,15 +289,13 @@ const UserDetail = () => {
           </Grid>
         </Box>
       </Paper>
-      {detail && (<PersonnelDetail />)}
+      {detail && (<PersonnelDetail id={detail.id} />)}
       <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
         <Box sx={{ mb: '20px' }}>
           <Grid container spacing={1}>
             <Grid item sm={12}>
-              <div style={{ textAlign: 'center' }}>시스템 접속 이력 조회 기능 추가 예정
-              <input type="file" onChange={(e) => {
-                e.target.files
-              }} />
+              <div style={{ textAlign: 'center' }}>
+                시스템 접속 이력 조회 기능 추가 예정
               </div>
             </Grid>
           </Grid>

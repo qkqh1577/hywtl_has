@@ -4,8 +4,8 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
-import com.howoocast.hywtl_has.personnel.parameter.PersonnelAddParameter;
-import com.howoocast.hywtl_has.personnel.parameter.PersonnelAddParameter.PersonnelBasicAddParameter;
+import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
+import com.howoocast.hywtl_has.personnel.parameter.PersonnelBasicParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
@@ -31,13 +31,18 @@ public class PersonnelService {
     }
 
     @Transactional
-    public PersonnelView add(PersonnelAddParameter params) {
-        PersonnelBasicAddParameter basicParams = params.getBasic();
+    public PersonnelView update(Long id, PersonnelParameter params) {
+
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException();
+        }
+
+        PersonnelBasicParameter basicParams = params.getBasic();
         PersonnelBasic basic = PersonnelBasic.of(
             basicParams.getEngName(),
             basicParams.getBirthDate(),
             basicParams.getSex(),
-            fileItemService.build(basicParams.getImageFile()),
+            fileItemService.build(basicParams.getImage()),
             basicParams.getAddress(),
             basicParams.getPhone(),
             basicParams.getEmergencyPhone(),
@@ -47,10 +52,9 @@ public class PersonnelService {
 
         Personnel personnel = Personnel.of(
             personnelRepository,
-            userRepository.findById(params.getUserId()).orElseThrow(NotFoundException::new),
+            id,
             basic
         );
-
         return PersonnelView.assemble(personnelRepository.save(personnel));
     }
 

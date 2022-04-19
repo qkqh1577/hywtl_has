@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { useCallback } from 'react';
 import { personnelActions } from 'services/personnel/actions';
-import { PersonnelAddParameter, PersonnelChangeParameter } from 'services/personnel/parameter';
+import { PersonnelParameter } from 'services/personnel/parameter';
 import Personnel from 'services/personnel/entity';
 
 export default function usePersonnel() {
@@ -21,23 +21,16 @@ export default function usePersonnel() {
     [dispatch]
   );
 
-  const add = useCallback(
-    (params: PersonnelAddParameter, callback: (data?: Personnel) => void) =>
-      dispatch(personnelActions.add({ params, callback })),
+  const update = useCallback(
+    (params: PersonnelParameter, callback: (data?: Personnel) => void) =>
+      dispatch(personnelActions.update({ params, callback })),
     [dispatch]
-  );
-
-  const change = useCallback(
-    (params: PersonnelChangeParameter, callback: (data?: Personnel) => void) =>
-      dispatch(personnelActions.change({ params, callback })),
-    [dispatch],
   );
 
   return {
     personnelState,
     getOne,
     clearOne,
-    add,
-    change,
+    update,
   };
 }

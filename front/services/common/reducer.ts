@@ -2,7 +2,7 @@ import { combineReducers, Reducer } from 'redux';
 import departmentReducer, { DepartmentState } from 'services/department/reducer';
 import userReducer, { UserState } from 'services/user/reducer';
 import userInvitationReducer, { UserInvitationState } from 'services/user/invitation/reducer';
-import personnelReducer, { PersonnelState} from 'services/personnel/reducer';
+import personnelReducer, { PersonnelState } from 'services/personnel/reducer';
 
 export type RootState = {
   department: DepartmentState;
