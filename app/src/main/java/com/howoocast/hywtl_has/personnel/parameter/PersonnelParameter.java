@@ -13,4 +13,7 @@ public class PersonnelParameter {
 
     @NotNull(message = "유저 기본 정보는 필수입니다.")
     private PersonnelBasicParameter basic;
+
+    @NotNull(message = "유저 회사 정보는 필수입니다.")
+    private PersonnelCompanyParameter company;
 }

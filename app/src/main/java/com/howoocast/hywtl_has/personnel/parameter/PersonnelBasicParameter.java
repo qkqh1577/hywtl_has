@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
 import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import lombok.Setter;
 public class PersonnelBasicParameter {
 
     private String engName;
-    private String birthDate;
+    private LocalDate birthDate;
     private String sex;
     private FileItemParameter image;
     private String address;

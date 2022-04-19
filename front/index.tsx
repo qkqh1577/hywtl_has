@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import App from './App';
+import { store } from 'services/common';
 import LoginForm from 'pages/user/LoginForm';
 import AuthenticationForm from 'pages/user/AuthenticationForm';
-import { store } from 'services/common';
+import 'dayjs/locale/ko'
 
 const render = () => {
 
@@ -24,9 +27,11 @@ const render = () => {
           <Route path="/user/authenticate" element={<AuthenticationForm />} />
           <Route path="*" element={
             <Provider store={store}>
-              <ThemeProvider theme={mdTheme}>
-                <App />
-              </ThemeProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">
+                <ThemeProvider theme={mdTheme}>
+                  <App />
+                </ThemeProvider>
+              </LocalizationProvider>
             </Provider>
           } />
         </Routes>

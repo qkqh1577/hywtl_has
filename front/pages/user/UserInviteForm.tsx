@@ -93,7 +93,7 @@ const UserInviteForm = () => {
               initialValues={initialParameter}
               onSubmit={handler.submit}
             >
-              {({ values, isSubmitting, handleChange, handleSubmit }) => (
+              {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit }) => (
                 <Form>
                   <Grid container spacing={1}>
                     <Grid item sm={12}>
@@ -153,7 +153,9 @@ const UserInviteForm = () => {
                           id="params-departmentId"
                           name="departmentId"
                           value={values.departmentId}
-                          handleChange={handleChange}
+                          onChange={(departmentId) => {
+                            setFieldValue('departmentId', departmentId);
+                          }}
                         />
                         <ErrorMessage name="departmentId" />
                       </FormControl>

@@ -5,7 +5,24 @@ export type PersonnelBasicParameter
   = Partial<Omit<PersonnelBasic, 'image'>> & {
   image: FileItemParameter;
 };
+
+export type PersonnelJobParameter = {
+  departmentId: number;
+  jobTitle: string;
+  jobType: string;
+  jobPosition: string;
+  jobClass?: string;
+  jobDuty?: string;
+}
+export type PersonnelCompanyParameter = {
+  hiredDate: Date;
+  hiredType: string;
+  recommender?: string;
+  jobList: PersonnelJobParameter[];
+}
+
 export type PersonnelParameter = {
   id: number;
   basic: PersonnelBasicParameter;
+  company: PersonnelCompanyParameter;
 }

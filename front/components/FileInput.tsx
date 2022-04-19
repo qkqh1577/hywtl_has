@@ -61,6 +61,7 @@ const FileInput = (props: FileInputProps) => {
           </FormControl>
           <input
             type="file"
+            accept="image/*"
             name="multipartFileInput"
             ref={ref}
             onChange={(e) => {

@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import com.howoocast.hywtl_has.common.domain.FileItem;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -18,7 +19,7 @@ public class PersonnelBasic {
 
     protected String engName; // 영문이름
 
-    protected String birthDate; // 생년월일
+    protected LocalDate birthDate; // 생년월일
 
     protected String sex; //성별
 
@@ -38,7 +39,7 @@ public class PersonnelBasic {
 
     public static PersonnelBasic of(
         String engName,
-        String birthDate,
+        LocalDate birthDate,
         String sex,
         @Nullable FileItem fileItem,
         String address,

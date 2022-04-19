@@ -11,18 +11,21 @@ export class PersonnelApi {
   async update(params: PersonnelParameter): Promise<Personnel> {
     const { id, ...rest } = params;
     const form = new FormData();
-    const basic: any = rest.basic as any;
-    if (basic.engName) form.append('basic.engName', basic.engName);
-    if (basic.birthDate) form.append('basic.birthDate', basic.birthDate);
-    if (basic.sex) form.append('basic.sex', basic.sex);
-    if (basic.image?.id) form.append('basic.image.id', basic.image.id);
-    if (basic.image?.requestDelete) form.append('basic.image.requestDelete', basic.image.requestDelete);
-    if (basic.image?.multipartFile) form.append('basic.image.multipartFile', basic.image.multipartFile as Blob);
-    if (basic.address) form.append('basic.address', basic.address);
-    if (basic.phone) form.append('basic.phone', basic.phone);
-    if (basic.emergencyPhone) form.append('basic.emergencyPhone', basic.emergencyPhone);
-    if (basic.relationship) form.append('basic.relationship', basic.relationship);
-    if (basic.personalEmail) form.append('basic.personalEmail', basic.personalEmail);
+    setFormData(rest, form);
+    console.log(form);
+    // const basic: any = rest.basic as any;
+    // if (basic.engName) form.append('basic.engName', basic.engName);
+    // if (basic.birthDate) form.append('basic.birthDate', basic.birthDate);
+    // if (basic.sex) form.append('basic.sex', basic.sex);
+    // if (basic.image?.id) form.append('basic.image.id', basic.image.id);
+    // if (basic.image?.requestDelete) form.append('basic.image.requestDelete', basic.image.requestDelete);
+    // if (basic.image?.multipartFile) form.append('basic.image.multipartFile', basic.image.multipartFile as Blob);
+    // if (basic.address) form.append('basic.address', basic.address);
+    // if (basic.phone) form.append('basic.phone', basic.phone);
+    // if (basic.emergencyPhone) form.append('basic.emergencyPhone', basic.emergencyPhone);
+    // if (basic.relationship) form.append('basic.relationship', basic.relationship);
+    // if (basic.personalEmail) form.append('basic.personalEmail', basic.personalEmail);
+
 
     const { data } = await axios.put(`/personnels/${id}`, form, {
       headers: {
@@ -32,6 +35,27 @@ export class PersonnelApi {
     return data;
   }
 }
+
+const setFormData = (obj: any, form: FormData, prefix?: string) => {
+  if (Array.isArray(obj)) {
+    obj.forEach((item, i) => setFormData(item, form, prefix ? `${prefix}[${i}]` : `[${i}]`));
+    return;
+  }
+
+  Object.keys(obj).forEach((key) => {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj;
+      if (value === null || value === undefined || Number.isNaN(value)) {
+        return;
+      }
+      if (typeof value === 'object') {
+        setFormData(value, form, prefix ? `${prefix}.${key}` : key);
+      } else {
+        form.append(prefix ? `${prefix}.${key}` : key, value);
+      }
+    }
+  });
+};
 
 const personnelApi = new PersonnelApi();
 export default personnelApi;

@@ -3,6 +3,8 @@ package com.howoocast.hywtl_has.personnel.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,23 +34,32 @@ public class Personnel {
     @Embedded
     private PersonnelBasic basic;
 
-    // 직위
-    // 직종
-    // 부서
-    // 구분(신입, 경력)
-    // 추천자
+    @NotNull
+    @Embedded
+    private PersonnelCompany company;
+
     // 학력 - 리스트
     // 경력 - 리스트
     // 면허 - 리스트
     // 어학 - 리스트
 
+    @NotNull
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdTime;
+
+    @Column(insertable = false)
+    private LocalDateTime deletedTime;
+
     public static Personnel of(
         PersonnelRepository repository,
         Long id,
-        PersonnelBasic basic
+        PersonnelBasic basic,
+        PersonnelCompany company
     ) {
         Personnel instance = repository.findById(id).orElse(new Personnel(id));
         instance.basic = basic;
+        instance.company = company;
+        instance.createdTime = LocalDateTime.now();
         return repository.save(instance);
     }
 

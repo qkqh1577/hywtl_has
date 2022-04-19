@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.personnel.view;
 
 import com.howoocast.hywtl_has.common.view.FileItemView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,23 +10,23 @@ import lombok.Setter;
 @Setter
 public class PersonnelBasicView {
 
-    private String engName; // 영문이름
+    private String engName;
 
-    private String birthDate; // 생년월일
+    private LocalDate birthDate;
 
-    private String sex; //성별
+    private String sex;
 
-    private FileItemView image; // 사진
+    private FileItemView image;
 
-    private String address; // 거주지 주소
+    private String address;
 
-    private String phone; // 연락처(핸드폰)
+    private String phone;
 
-    private String emergencyPhone; // 비상연락망
+    private String emergencyPhone;
 
-    private String relationship; // 비상연락망- 사원과의관계
+    private String relationship;
 
-    private String personalEmail; // 개인 이메일
+    private String personalEmail;
 
     public static PersonnelBasicView assemble(PersonnelBasic source) {
         PersonnelBasicView target = new PersonnelBasicView();
