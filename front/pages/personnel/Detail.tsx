@@ -260,6 +260,7 @@ const PersonnelDetail = (props: { id: number }) => {
         || Object.keys(errors.jobList).length > 0
         || Object.keys(errors.academicList).length > 0
       ) {
+        console.log(errors);
         setErrors(errors);
         setSubmitting(false);
         return;
@@ -535,6 +536,7 @@ const PersonnelDetail = (props: { id: number }) => {
                         disableFuture
                         allowSameDateSelection
                       />
+                      <ErrorMessage name="company.hiredDate" />
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <FormControl variant="standard" fullWidth required>
@@ -635,7 +637,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
-                          <FormControl variant="standard" fullWidth>
+                          <FormControl variant="standard" fullWidth required>
                             <InputLabel htmlFor={`params-jobList[${i}].jobPosition`}>직위</InputLabel>
                             <Input
                               type="text"

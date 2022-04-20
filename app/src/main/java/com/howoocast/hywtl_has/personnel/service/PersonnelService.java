@@ -89,10 +89,10 @@ public class PersonnelService {
                         item.getAcademyName(),
                         item.getMajor(),
                         item.getDegree(),
+                        item.getState(),
                         item.getGrade(),
                         item.getStartDate(),
-                        item.getEndDate(),
-                        item.getState()
+                        item.getEndDate()
                     ))
                     .collect(Collectors.toList())
                 )
