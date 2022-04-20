@@ -4,12 +4,14 @@ import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 public class PersonnelBasicParameter {
 
     private String engName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String sex;
     private FileItemParameter image;

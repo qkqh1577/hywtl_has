@@ -13,6 +13,12 @@ export type PersonnelBasic = {
   personalEmail?: string;
 }
 
+export type PersonnelCompany = {
+  hiredDate: Date;
+  hiredType: string;
+  recommender?: string;
+}
+
 export type PersonnelJob = {
   department: Department;
   jobTitle: string;
@@ -22,17 +28,11 @@ export type PersonnelJob = {
   jobDuty?: string;
 }
 
-export type PersonnelCompany = {
-  hiredDate: Date;
-  hiredType: string;
-  recommender?: string;
-  jobList: PersonnelJob[];
-}
-
 type Personnel = {
   id: number;
   basic: PersonnelBasic;
   company: PersonnelCompany;
+  jobList: PersonnelJob[];
 }
 
 export default Personnel;

@@ -69,16 +69,20 @@ create table personnel
 	sex varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table personnel_job_list
+create table personnel_job
 (
-	personnel_id bigint not null,
-	department_id bigint null,
-	job_class varchar(255) null,
+  id bigint auto_increment primary key,
+	department_id bigint not null,
 	job_duty varchar(255) null,
 	job_position varchar(255) not null,
 	job_title varchar(255) not null,
-	job_type varchar(255) not null
+	job_type varchar(255) not null,
+  job_class varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-
-
+create table personnel_job_list
+(
+	personnel_id bigint not null,
+	job_list_id bigint not null,
+	constraint UK_personnel_job_personnel_job_list unique (job_list_id)
+);

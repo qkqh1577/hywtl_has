@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -38,6 +41,9 @@ public class Personnel {
     @Embedded
     private PersonnelCompany company;
 
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    protected List<PersonnelJob> jobList; // 직함 목록
+
     // 학력 - 리스트
     // 경력 - 리스트
     // 면허 - 리스트
@@ -54,11 +60,13 @@ public class Personnel {
         PersonnelRepository repository,
         Long id,
         PersonnelBasic basic,
-        PersonnelCompany company
+        PersonnelCompany company,
+        List<PersonnelJob> jobList
     ) {
         Personnel instance = repository.findById(id).orElse(new Personnel(id));
         instance.basic = basic;
         instance.company = company;
+        instance.jobList = jobList;
         instance.createdTime = LocalDateTime.now();
         return repository.save(instance);
     }

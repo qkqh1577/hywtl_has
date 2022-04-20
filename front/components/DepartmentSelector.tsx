@@ -8,7 +8,10 @@ type Props = {
   name: string;
   value: number | '';
   required?: boolean;
-  onChange: (departmentId: number | '') => void;
+  onChange: {
+    (e: React.ChangeEvent<any>): void;
+    <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
+  }
 }
 const DepartmentSelector = (props: Props) => {
   const {
@@ -35,14 +38,7 @@ const DepartmentSelector = (props: Props) => {
       id={id}
       name={name}
       value={value}
-      onChange={(e) => {
-        const { value } = e.target;
-        if (typeof value === 'number') {
-          onChange(value as number);
-        } else {
-          onChange('');
-        }
-      }}
+      onChange={onChange}
       required={required === true}
     >
       {departmentList.map((item) => (

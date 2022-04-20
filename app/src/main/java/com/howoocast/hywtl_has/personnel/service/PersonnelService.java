@@ -61,8 +61,15 @@ public class PersonnelService {
         PersonnelCompany company = PersonnelCompany.of(
             companyParams.getHiredDate(),
             companyParams.getHiredType(),
-            companyParams.getRecommender(),
-            companyParams.getJobList().stream()
+            companyParams.getRecommender()
+        );
+
+        Personnel personnel = Personnel.of(
+            personnelRepository,
+            id,
+            basic,
+            company,
+            params.getJobList().stream()
                 .map(jobParams -> PersonnelJob.of(
                     departmentRepository.findByIdAndDeletedTimeIsNull(jobParams.getDepartmentId())
                         .orElseThrow(NotFoundException::new),
@@ -73,13 +80,6 @@ public class PersonnelService {
                     jobParams.getJobDuty()
                 ))
                 .collect(Collectors.toList())
-        );
-
-        Personnel personnel = Personnel.of(
-            personnelRepository,
-            id,
-            basic,
-            company
         );
         return PersonnelView.assemble(personnelRepository.save(personnel));
     }

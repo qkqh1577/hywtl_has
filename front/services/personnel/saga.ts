@@ -20,6 +20,7 @@ function* update(action: ActionType<typeof personnelActions.update>) {
     yield put(personnelActions.setOne(data));
     callback(data);
   } catch (e) {
+    console.log(e);
     callback();
   }
 }

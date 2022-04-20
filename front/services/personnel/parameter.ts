@@ -18,11 +18,11 @@ export type PersonnelCompanyParameter = {
   hiredDate: Date;
   hiredType: string;
   recommender?: string;
-  jobList: PersonnelJobParameter[];
 }
 
 export type PersonnelParameter = {
   id: number;
   basic: PersonnelBasicParameter;
   company: PersonnelCompanyParameter;
+  jobList: PersonnelJobParameter[];
 }

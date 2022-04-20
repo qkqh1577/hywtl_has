@@ -1,12 +1,9 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import java.time.LocalDate;
-import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,21 +26,15 @@ public class PersonnelCompany {
 
     protected String recommender; // 추천자
 
-    @ElementCollection
-    @NotEmpty
-    protected List<PersonnelJob> jobList; // 직함 목록
-
     public static PersonnelCompany of(
         LocalDate hiredDate,
         String hiredType,
-        String recommender,
-        List<PersonnelJob> jobList
+        String recommender
     ) {
         return new PersonnelCompany(
             hiredDate,
             hiredType,
-            recommender,
-            jobList
+            recommender
         );
     }
 }

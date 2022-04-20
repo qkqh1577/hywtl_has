@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Button,
+  Box,
+  Button,
   FormControl,
   Grid,
   Input,
   InputLabel,
   MenuItem,
   Paper,
-  Select, TextField
+  Select,
+  TextField
 } from '@mui/material';
 import {
   ErrorMessage,
@@ -16,7 +18,6 @@ import {
   Formik,
   FormikHelpers
 } from 'formik';
-import produce from 'immer';
 import FileInput from 'components/FileInput';
 import DepartmentSelector from 'components/DepartmentSelector';
 import FileItem from 'services/common/file-item/entity';
@@ -54,8 +55,8 @@ type View = {
     hiredDate: Date | '';
     hiredType: string;
     recommender: string;
-    jobList: JobView[];
-  }
+  },
+  jobList: JobView[];
 };
 const initJobView: JobView = {
   departmentId: '',
@@ -80,8 +81,8 @@ const initView: View = {
     hiredDate: '',
     hiredType: '',
     recommender: '',
-    jobList: [initJobView],
-  }
+  },
+  jobList: [initJobView],
 };
 
 const PersonnelDetail = (props: { id: number }) => {
@@ -103,17 +104,18 @@ const PersonnelDetail = (props: { id: number }) => {
       setSubmitting,
       setErrors,
     }: FormikHelpers<any>) => {
+      console.log('submit on');
       const errors: any = {
         basic: {},
         company: {},
-        jobList: {},
       };
+      console.log('submit basic');
       if (Object.keys(errors.basic).length > 0) {
         setErrors(errors);
         setSubmitting(false);
         return;
       }
-
+      console.log('submit company');
       const companyHiredDate: Date = values.company.hiredDate;
       if (!companyHiredDate) {
         errors.company.hiredDate = '입사일 입력은 필수입니다.';
@@ -126,8 +128,8 @@ const PersonnelDetail = (props: { id: number }) => {
 
       const companyRecommender: string | undefined = values.company.recommender || undefined;
 
-      if (!Array.isArray(values.company.jobList) || values.company.jobList.length === 0) {
-        errors.company.jobList = '직함 정보는 하나 이상 필수입니다.';
+      if (!Array.isArray(values.jobList) || values.jobList.length === 0) {
+        errors.jobList = '직함 정보는 하나 이상 필수입니다.';
       }
 
       if (Object.keys(errors.company).length > 0) {
@@ -136,7 +138,8 @@ const PersonnelDetail = (props: { id: number }) => {
         return;
       }
 
-      const jobListParams: (PersonnelJobParameter | null)[] = (values.company.jobList as JobView[]).map((item: JobView, index: number) => {
+      errors.jobList = {};
+      const jobListParams: (PersonnelJobParameter | null)[] = (values.jobList as JobView[]).map((item: JobView, index: number) => {
         const jobErrors: any = {};
 
         const departmentId = item.departmentId;
@@ -162,7 +165,6 @@ const PersonnelDetail = (props: { id: number }) => {
         const jobClass: string | undefined = item.jobClass || undefined;
         const jobDuty: string | undefined = item.jobDuty || undefined;
 
-
         if (Object.keys(jobErrors).length > 0) {
           errors.jobList[index] = jobErrors;
           return null;
@@ -184,7 +186,6 @@ const PersonnelDetail = (props: { id: number }) => {
         return;
       }
 
-
       const basicParams: PersonnelBasicParameter = {
         ...values.basic,
         birthDate: values.basic.birthDate ?? undefined,
@@ -197,15 +198,15 @@ const PersonnelDetail = (props: { id: number }) => {
         hiredDate: companyHiredDate,
         hiredType: companyHiredType,
         recommender: companyRecommender,
-        jobList: jobListParams
-        .filter(item => item !== null)
-        .map(item => item as PersonnelJobParameter)
       };
 
       const params: PersonnelParameter = {
         id,
         basic: basicParams,
         company: companyParams,
+        jobList: jobListParams
+        .filter(item => item !== null)
+        .map(item => item as PersonnelJobParameter)
       };
 
       update(params, (data?) => {
@@ -233,15 +234,15 @@ const PersonnelDetail = (props: { id: number }) => {
             hiredDate: detail.company.hiredDate ?? view.company.hiredDate,
             hiredType: detail.company.hiredType ?? view.company.hiredType,
             recommender: detail.company.recommender ?? view.company.recommender,
-            jobList: detail.company.jobList.map((job) => ({
-              departmentId: job.department.id,
-              jobTitle: job.jobTitle,
-              jobType: job.jobType,
-              jobPosition: job.jobPosition,
-              jobClass: job.jobClass ?? '',
-              jobDuty: job.jobDuty ?? '',
-            }))
-          }
+          },
+          jobList: detail.jobList.map((job) => ({
+            departmentId: job.department.id,
+            jobTitle: job.jobTitle,
+            jobType: job.jobType,
+            jobPosition: job.jobPosition,
+            jobClass: job.jobClass ?? '',
+            jobDuty: job.jobDuty ?? '',
+          }))
         });
       } else {
         setView(initView);
@@ -321,7 +322,7 @@ const PersonnelDetail = (props: { id: number }) => {
                         okText="적용"
                         openTo="year"
                         label="생년월일"
-                        value={values.basic.birthDate}
+                        value={values.basic.birthDate || null}
                         onChange={(date) => {
                           setFieldValue('basic.birthDate', date ?? '');
                         }}
@@ -345,12 +346,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           id="params-basic.sex"
                           name="basic.sex"
                           value={values.basic.sex}
-                          onChange={(e) => {
-                            setView(produce((draft) => {
-                              draft.basic.sex = e.target.value;
-                              return draft;
-                            }));
-                          }}
+                          onChange={handleChange}
                         >
                           <MenuItem value="남">남</MenuItem>
                           <MenuItem value="여">여</MenuItem>
@@ -434,7 +430,7 @@ const PersonnelDetail = (props: { id: number }) => {
                         okText="적용"
                         openTo="year"
                         label="입사일"
-                        value={values.company.hiredDate}
+                        value={values.company.hiredDate || null}
                         onChange={(date) => {
                           setFieldValue('company.hiredDate', date ?? '');
                         }}
@@ -448,6 +444,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           />
                         )}
                         disableFuture
+                        allowSameDateSelection
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -458,12 +455,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           id="params-company.hiredType"
                           name="company.hiredType"
                           value={values.company.hiredType}
-                          onChange={(e) => {
-                            setView(produce((draft) => {
-                              draft.company.hiredType = e.target.value;
-                              return draft;
-                            }));
-                          }}
+                          onChange={handleChange}
                           required
                         >
                           <MenuItem value="신입">신입</MenuItem>
@@ -498,133 +490,101 @@ const PersonnelDetail = (props: { id: number }) => {
                         variant="contained"
                         style={{ height: '36px' }}
                         onClick={() => {
-                          const { company: { jobList, ...companyRest }, ...rest } = view;
+                          const { jobList, ...rest } = values;
                           setView({
                             ...rest,
-                            company: {
-                              ...companyRest,
-                              jobList: [...jobList, initJobView]
-                            }
+                            jobList: [...jobList, initJobView]
                           });
                         }}
                       >
                         추가
                       </Button>
                     </Grid>
-                    {values.company.jobList.map((item, i) => (
+                    {values.jobList.map((item, i) => (
                       <Grid key={i} container spacing={2} item sm={12}>
                         <Grid item sm={3}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel id={`params-jobList.${i}.departmentId-label`}>
+                            <InputLabel id={`params-jobList[${i}].departmentId-label`}>
                               소속 부서
                             </InputLabel>
                             <DepartmentSelector
-                              id={`params-jobList.${i}.departmentId`}
-                              labelId={`params-jobList.${i}.departmentId-label`}
-                              name={`jobList.${i}.departmentId`}
+                              id={`params-jobList[${i}].departmentId`}
+                              labelId={`params-jobList[${i}].departmentId-label`}
+                              name={`jobList[${i}].departmentId`}
                               value={item.departmentId}
-                              onChange={(departmentId) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].departmentId = departmentId;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
+                            <ErrorMessage name={`jobList[${i}].departmentId`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={3}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList.${i}.jobTitle`}>직함</InputLabel>
+                            <InputLabel htmlFor={`params-jobList[${i}].jobTitle`}>직함</InputLabel>
                             <Input
                               type="text"
-                              id={`params-jobList.${i}.jobTitle`}
-                              name={`jobList.${i}.jobTitle`}
+                              id={`params-jobList[${i}].jobTitle`}
+                              name={`jobList[${i}].jobTitle`}
                               value={item.jobTitle}
                               placeholder="직함을 입력해 주세요"
-                              onChange={(e) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].jobTitle = e.target.value;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
-                            <ErrorMessage name={`jobList.${i}.jobTitle`} />
+                            <ErrorMessage name={`jobList[${i}].jobTitle`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList.${i}.jobType`}>직종</InputLabel>
+                            <InputLabel htmlFor={`params-jobList[${i}].jobType`}>직종</InputLabel>
                             <Input
                               type="text"
-                              id={`params-jobList.${i}.jobType`}
-                              name={`jobList.${i}.jobType`}
+                              id={`params-jobList[${i}].jobType`}
+                              name={`jobList[${i}].jobType`}
                               value={item.jobType}
                               placeholder="직종을 입력해 주세요"
-                              onChange={(e) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].jobType = e.target.value;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
-                            <ErrorMessage name={`jobList.${i}.jobType`} />
+                            <ErrorMessage name={`jobList[${i}].jobType`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList.${i}.jobPosition`}>직위</InputLabel>
+                            <InputLabel htmlFor={`params-jobList[${i}].jobPosition`}>직위</InputLabel>
                             <Input
                               type="text"
-                              id={`params-jobList.${i}.jobPosition`}
-                              name={`jobList.${i}.jobPosition`}
+                              id={`params-jobList[${i}].jobPosition`}
+                              name={`jobList[${i}].jobPosition`}
                               value={item.jobPosition}
                               placeholder="직위를 입력해 주세요"
-                              onChange={(e) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].jobPosition = e.target.value;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
-                            <ErrorMessage name={`jobList.${i}.jobPosition`} />
+                            <ErrorMessage name={`jobList[${i}].jobPosition`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList.${i}.jobClass`}>직급</InputLabel>
+                            <InputLabel htmlFor={`params-jobList[${i}].jobClass`}>직급</InputLabel>
                             <Input
                               type="text"
-                              id={`params-jobList.${i}.jobClass`}
-                              name={`jobList.${i}.jobClass`}
+                              id={`params-jobList[${i}].jobClass`}
+                              name={`jobList[${i}].jobClass`}
                               value={item.jobClass}
                               placeholder="직급을 입력해 주세요"
-                              onChange={(e) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].jobClass = e.target.value;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
-                            <ErrorMessage name={`jobList.${i}.jobClass`} />
+                            <ErrorMessage name={`jobList[${i}].jobClass`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={2}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList.${i}.jobDuty`}>직책</InputLabel>
+                            <InputLabel htmlFor={`params-jobList[${i}].jobDuty`}>직책</InputLabel>
                             <Input
                               type="text"
-                              id={`params-jobList.${i}.jobDuty`}
-                              name={`jobList.${i}.jobDuty`}
+                              id={`params-jobList[${i}].jobDuty`}
+                              name={`jobList[${i}].jobDuty`}
                               value={item.jobDuty}
                               placeholder="직책을 입력해 주세요"
-                              onChange={(e) => {
-                                setView(produce((draft) => {
-                                  draft.company.jobList[i].jobDuty = e.target.value;
-                                  return draft;
-                                }));
-                              }}
+                              onChange={handleChange}
                             />
-                            <ErrorMessage name={`jobList.${i}.jobDuty`} />
+                            <ErrorMessage name={`jobList[${i}].jobDuty`} />
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
@@ -633,10 +593,11 @@ const PersonnelDetail = (props: { id: number }) => {
                             variant="contained"
                             fullWidth
                             onClick={() => {
-                              setView(produce((draft) => {
-                                draft.company.jobList.filter((item, j) => i !== j);
-                                return draft;
-                              }));
+                              const { jobList, ...rest } = values;
+                              setView({
+                                ...rest,
+                                jobList: jobList.filter((item, j) => i !== j)
+                              });
                             }}
                           >
                             삭제
