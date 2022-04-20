@@ -28,6 +28,7 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${querydslVersion}"
     implementation "org.mariadb.jdbc:mariadb-java-client:${mariadbDriverVersion}"
 
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
     annotationProcessor 'jakarta.persistence:jakarta.persistence-api'

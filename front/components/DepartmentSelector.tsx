@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { MenuItem, Select } from '@mui/material';
 import useDepartment from 'services/department/hook';
-import { departmentCategoryName } from 'services/department/data';
 
 type Props = {
   labelId?: string;
@@ -9,10 +8,10 @@ type Props = {
   name: string;
   value: number | '';
   required?: boolean;
-  handleChange: {
+  onChange: {
     (e: React.ChangeEvent<any>): void;
     <T = string | React.ChangeEvent<any>>(field: T): T extends React.ChangeEvent<any> ? void : (e: string | React.ChangeEvent<any>) => void;
-  };
+  }
 }
 const DepartmentSelector = (props: Props) => {
   const {
@@ -21,7 +20,7 @@ const DepartmentSelector = (props: Props) => {
     name,
     value,
     required,
-    handleChange
+    onChange
   } = props;
   const {
     departmentState: {
@@ -39,13 +38,13 @@ const DepartmentSelector = (props: Props) => {
       id={id}
       name={name}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
       required={required === true}
     >
       {departmentList.map((item) => (
-        <MenuItem key={item.id} value={item.id}>{
-          `${item.name}${departmentCategoryName(item.category)}`
-        }</MenuItem>
+        <MenuItem key={item.id} value={item.id}>
+          {item.name}
+        </MenuItem>
       ))}
     </Select>
   );
