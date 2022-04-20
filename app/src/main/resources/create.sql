@@ -73,11 +73,11 @@ create table personnel_job
 (
   id bigint auto_increment primary key,
 	department_id bigint not null,
+  job_class varchar(255) null,
 	job_duty varchar(255) null,
 	job_position varchar(255) not null,
 	job_title varchar(255) not null,
-	job_type varchar(255) not null,
-  job_class varchar(255) null
+  job_type varchar(255) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table personnel_job_list
@@ -86,3 +86,15 @@ create table personnel_job_list
 	job_list_id bigint not null,
 	constraint UK_personnel_job_personnel_job_list unique (job_list_id)
 );
+
+create table personnel_academic_list
+(
+	personnel_id bigint not null,
+	academy_name varchar(255) not null,
+	degree varchar(255) null,
+	end_date date null,
+	grade varchar(255) null,
+	major varchar(255) not null,
+	start_date date null,
+	state varchar(255) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;

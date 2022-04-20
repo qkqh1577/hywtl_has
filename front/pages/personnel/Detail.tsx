@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import {
   Box,
-  Button,
+  Button, Divider,
   FormControl,
   Grid,
   Input,
@@ -22,6 +23,7 @@ import FileInput from 'components/FileInput';
 import DepartmentSelector from 'components/DepartmentSelector';
 import FileItem from 'services/common/file-item/entity';
 import {
+  PersonnelAcademicParameter,
   PersonnelBasicParameter,
   PersonnelCompanyParameter,
   PersonnelJobParameter,
@@ -38,6 +40,15 @@ type JobView = {
   jobPosition: string;
   jobClass: string;
   jobDuty: string;
+}
+type  AcademicView = {
+  academyName: string;
+  major: string;
+  degree: string;
+  state: string;
+  grade: string;
+  startDate: Date | '';
+  endDate: Date | '';
 }
 type View = {
   basic: {
@@ -57,6 +68,7 @@ type View = {
     recommender: string;
   },
   jobList: JobView[];
+  academicList: AcademicView[];
 };
 const initJobView: JobView = {
   departmentId: '',
@@ -65,6 +77,15 @@ const initJobView: JobView = {
   jobPosition: '',
   jobClass: '',
   jobDuty: ''
+};
+const initAcademicView: AcademicView = {
+  academyName: '',
+  major: '',
+  degree: '',
+  grade: '',
+  startDate: '',
+  endDate: '',
+  state: '',
 };
 const initView: View = {
   basic: {
@@ -83,6 +104,7 @@ const initView: View = {
     recommender: '',
   },
   jobList: [initJobView],
+  academicList: [],
 };
 
 const PersonnelDetail = (props: { id: number }) => {
@@ -104,18 +126,25 @@ const PersonnelDetail = (props: { id: number }) => {
       setSubmitting,
       setErrors,
     }: FormikHelpers<any>) => {
-      console.log('submit on');
       const errors: any = {
         basic: {},
         company: {},
+        jobList: {},
+        academicList: {},
       };
-      console.log('submit basic');
-      if (Object.keys(errors.basic).length > 0) {
-        setErrors(errors);
-        setSubmitting(false);
-        return;
+      const basicEngName: string = values.basic.engName;
+      if (!basicEngName) {
+        errors.basic.engName = '영문명 입력은 필수입니다.';
       }
-      console.log('submit company');
+      const basicBirthDate: Date = values.basic.birthDate;
+      if (!basicBirthDate) {
+        errors.basic.birthDate = '생년월일 입력은 필수입니다.';
+      }
+      const basicSex: string = values.basic.sex;
+      if (!basicSex) {
+        errors.basic.sex = '성별 입력은 필수입니다.';
+      }
+
       const companyHiredDate: Date = values.company.hiredDate;
       if (!companyHiredDate) {
         errors.company.hiredDate = '입사일 입력은 필수입니다.';
@@ -128,18 +157,8 @@ const PersonnelDetail = (props: { id: number }) => {
 
       const companyRecommender: string | undefined = values.company.recommender || undefined;
 
-      if (!Array.isArray(values.jobList) || values.jobList.length === 0) {
-        errors.jobList = '직함 정보는 하나 이상 필수입니다.';
-      }
-
-      if (Object.keys(errors.company).length > 0) {
-        setErrors(errors);
-        setSubmitting(false);
-        return;
-      }
-
-      errors.jobList = {};
-      const jobListParams: (PersonnelJobParameter | null)[] = (values.jobList as JobView[]).map((item: JobView, index: number) => {
+      const jobListParams: PersonnelJobParameter[] = (values.jobList as any[])
+      .map((item, index) => {
         const jobErrors: any = {};
 
         const departmentId = item.departmentId;
@@ -178,9 +197,69 @@ const PersonnelDetail = (props: { id: number }) => {
           jobDuty
         };
         return jobParams;
-      });
+      })
+      .filter(item => item !== null)
+      .map(item => item as PersonnelJobParameter);
 
-      if (Object.keys(errors.jobList).length > 0) {
+      if (jobListParams.length === 0) {
+        errors.jobList.size = '직함 정보는 하나 이상 필수입니다.';
+      }
+
+      const academicListParams: PersonnelAcademicParameter[] = (values.academicList as any[])
+      .map((item, i) => {
+        const academicErrors: any = {};
+
+        const academyName: string = item.academyName;
+        if (!academyName) {
+          academicErrors.academyName = '교육기관명 입력은 필수입니다.';
+        }
+
+        const major: string = item.major;
+        if (!major) {
+          academicErrors.major = '전공 입력은 필수입니다.';
+        }
+
+        const degree: string | undefined = item.degree || undefined;
+
+        const state: string = item.state;
+        if (!state) {
+          academicErrors.state = '재적 상태 입력은 필수입니다.';
+        }
+
+        const grade: string | undefined = item.grade || undefined;
+
+        const startDate: Date = item.startDate;
+        if (!startDate) {
+          academicErrors.startDate = '교육 시작일 입력은 필수입니다.';
+        }
+
+        const endDate: Date = item.endDate;
+        if (!endDate) {
+          academicErrors.endDate = '교육 종료일 입력은 필수입니다.';
+        }
+        if (Object.keys(academicErrors).length > 0) {
+          errors.academicList[i] = academicErrors;
+          return null;
+        }
+        const academicParams: PersonnelAcademicParameter = {
+          academyName,
+          major,
+          degree,
+          state,
+          grade,
+          startDate: dayjs(startDate).format('YYYY-MM-DD'),
+          endDate: dayjs(endDate).format('YYYY-MM-DD')
+        };
+        return academicParams;
+      })
+      .filter(item => item !== null)
+      .map(item => item as PersonnelAcademicParameter);
+
+      if (Object.keys(errors.basic).length > 0
+        || Object.keys(errors.company).length > 0
+        || Object.keys(errors.jobList).length > 0
+        || Object.keys(errors.academicList).length > 0
+      ) {
         setErrors(errors);
         setSubmitting(false);
         return;
@@ -188,14 +267,14 @@ const PersonnelDetail = (props: { id: number }) => {
 
       const basicParams: PersonnelBasicParameter = {
         ...values.basic,
-        birthDate: values.basic.birthDate ?? undefined,
+        birthDate: values.basic.birthDate ? dayjs(values.birthDate).format('YYYY-MM-DD') : undefined,
         image: values.basic['image-temp'] ?? {
           id: values.basic.image?.id,
         }
       };
 
       const companyParams: PersonnelCompanyParameter = {
-        hiredDate: companyHiredDate,
+        hiredDate: dayjs(companyHiredDate).format('YYYY-MM-DD'),
         hiredType: companyHiredType,
         recommender: companyRecommender,
       };
@@ -204,9 +283,8 @@ const PersonnelDetail = (props: { id: number }) => {
         id,
         basic: basicParams,
         company: companyParams,
-        jobList: jobListParams
-        .filter(item => item !== null)
-        .map(item => item as PersonnelJobParameter)
+        jobList: jobListParams,
+        academicList: academicListParams
       };
 
       update(params, (data?) => {
@@ -242,7 +320,16 @@ const PersonnelDetail = (props: { id: number }) => {
             jobPosition: job.jobPosition,
             jobClass: job.jobClass ?? '',
             jobDuty: job.jobDuty ?? '',
-          }))
+          })),
+          academicList: detail.academicList?.map((item) => ({
+            academyName: item.academyName,
+            major: item.major,
+            degree: item.degree ?? '',
+            state: item.state,
+            grade: item.grade ?? '',
+            startDate: item.startDate,
+            endDate: item.endDate,
+          })) ?? [],
         });
       } else {
         setView(initView);
@@ -301,7 +388,7 @@ const PersonnelDetail = (props: { id: number }) => {
                       <h2>기본 정보</h2>
                     </Grid>
                     <Grid item sm={6} xs={12}>
-                      <FormControl variant="standard" fullWidth>
+                      <FormControl variant="standard" fullWidth required>
                         <InputLabel htmlFor="params-basic.engName">영문명</InputLabel>
                         <Input
                           type="text"
@@ -332,6 +419,7 @@ const PersonnelDetail = (props: { id: number }) => {
                             variant="standard"
                             placeholder="생년월일(YYYY-MM-DD)을 입력하세요"
                             fullWidth
+                            required
                           />
                         )}
                         disableFuture
@@ -339,7 +427,7 @@ const PersonnelDetail = (props: { id: number }) => {
                       <ErrorMessage name="basic.birthDate" />
                     </Grid>
                     <Grid item sm={6} xs={12}>
-                      <FormControl variant="standard" fullWidth>
+                      <FormControl variant="standard" fullWidth required>
                         <InputLabel id="params-basic.sex-label">성별</InputLabel>
                         <Select
                           labelId="params-basic.sex-label"
@@ -418,6 +506,7 @@ const PersonnelDetail = (props: { id: number }) => {
                       </FormControl>
                     </Grid>
                   </Grid>
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <h2>입사 정보</h2>
@@ -448,7 +537,7 @@ const PersonnelDetail = (props: { id: number }) => {
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
-                      <FormControl variant="standard" fullWidth>
+                      <FormControl variant="standard" fullWidth required>
                         <InputLabel id="params-company.hiredType-label">입사 구분</InputLabel>
                         <Select
                           labelId="params-company.hiredType-label"
@@ -456,7 +545,6 @@ const PersonnelDetail = (props: { id: number }) => {
                           name="company.hiredType"
                           value={values.company.hiredType}
                           onChange={handleChange}
-                          required
                         >
                           <MenuItem value="신입">신입</MenuItem>
                           <MenuItem value="경력">경력</MenuItem>
@@ -479,6 +567,7 @@ const PersonnelDetail = (props: { id: number }) => {
                       </FormControl>
                     </Grid>
                   </Grid>
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12} sx={{
                       display: 'flex',
@@ -503,7 +592,7 @@ const PersonnelDetail = (props: { id: number }) => {
                     {values.jobList.map((item, i) => (
                       <Grid key={i} container spacing={2} item sm={12}>
                         <Grid item sm={3}>
-                          <FormControl variant="standard" fullWidth>
+                          <FormControl variant="standard" fullWidth required>
                             <InputLabel id={`params-jobList[${i}].departmentId-label`}>
                               소속 부서
                             </InputLabel>
@@ -518,7 +607,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           </FormControl>
                         </Grid>
                         <Grid item sm={3}>
-                          <FormControl variant="standard" fullWidth>
+                          <FormControl variant="standard" fullWidth required>
                             <InputLabel htmlFor={`params-jobList[${i}].jobTitle`}>직함</InputLabel>
                             <Input
                               type="text"
@@ -532,7 +621,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           </FormControl>
                         </Grid>
                         <Grid item sm={1}>
-                          <FormControl variant="standard" fullWidth>
+                          <FormControl variant="standard" fullWidth required>
                             <InputLabel htmlFor={`params-jobList[${i}].jobType`}>직종</InputLabel>
                             <Input
                               type="text"
@@ -561,7 +650,9 @@ const PersonnelDetail = (props: { id: number }) => {
                         </Grid>
                         <Grid item sm={1}>
                           <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor={`params-jobList[${i}].jobClass`}>직급</InputLabel>
+                            <InputLabel
+                              htmlFor={`params-jobList[${i}].jobClass`}
+                            >직급</InputLabel>
                             <Input
                               type="text"
                               id={`params-jobList[${i}].jobClass`}
@@ -594,6 +685,10 @@ const PersonnelDetail = (props: { id: number }) => {
                             fullWidth
                             onClick={() => {
                               const { jobList, ...rest } = values;
+                              if (jobList.length === 1) {
+                                window.alert('하나 이상의 소속 정보가 필요합니다.');
+                                return;
+                              }
                               setView({
                                 ...rest,
                                 jobList: jobList.filter((item, j) => i !== j)
@@ -606,6 +701,178 @@ const PersonnelDetail = (props: { id: number }) => {
                       </Grid>
                     ))}
                   </Grid>
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
+                  <Grid container spacing={2}>
+                    <Grid item sm={12} sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}>
+                      <h2>학력 정보</h2>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        style={{ height: '36px' }}
+                        onClick={() => {
+                          const { academicList, ...rest } = values;
+                          setView({
+                            ...rest,
+                            academicList: [...academicList, initAcademicView]
+                          });
+                        }}
+                      >
+                        추가
+                      </Button>
+                    </Grid>
+                    {values.academicList && values.academicList.map((item, i) => (
+                      <Grid key={i} container spacing={2} item sm={12}>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-academicList[${i}].academyName`}>
+                              교육기관명
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-academicList[${i}].academyName`}
+                              name={`academicList[${i}].academyName`}
+                              value={item.academyName}
+                              placeholder="교육기관명을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`academicList[${i}].academyName`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-academicList[${i}].major`}>
+                              전공
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-academicList[${i}].major`}
+                              name={`academicList[${i}].major`}
+                              value={item.major}
+                              placeholder="전공을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`academicList[${i}].major`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor={`params-academicList[${i}].degree`}>
+                              학위
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-academicList[${i}].degree`}
+                              name={`academicList[${i}].degree`}
+                              value={item.degree}
+                              placeholder="학위를 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`academicList[${i}].degree`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-academicList[${i}].state`}>
+                              재적 상태
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-academicList[${i}].state`}
+                              name={`academicList[${i}].state`}
+                              value={item.state}
+                              placeholder="재적 상태를 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`academicList[${i}].state`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor={`params-academicList[${i}].grade`}>
+                              학점
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-academicList[${i}].grade`}
+                              name={`academicList[${i}].grade`}
+                              value={item.grade}
+                              placeholder="학점을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`academicList[${i}].grade`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={2}>
+                          <DatePicker
+                            mask="____-__-__"
+                            inputFormat="YYYY-MM-DD"
+                            toolbarFormat="YYYY-MM-DD"
+                            okText="적용"
+                            openTo="year"
+                            label="시작일"
+                            value={values.academicList[i].startDate || null}
+                            onChange={(date) => {
+                              setFieldValue(`academicList[${i}].startDate`, date ?? '');
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                placeholder="시작일(YYYY-MM-DD)을 입력하세요"
+                                fullWidth
+                                required
+                              />
+                            )}
+                            allowSameDateSelection
+                          />
+                        </Grid>
+                        <Grid item sm={2}>
+                          <DatePicker
+                            mask="____-__-__"
+                            inputFormat="YYYY-MM-DD"
+                            toolbarFormat="YYYY-MM-DD"
+                            okText="적용"
+                            openTo="year"
+                            label="종료일"
+                            value={values.academicList[i].endDate || null}
+                            onChange={(date) => {
+                              setFieldValue(`academicList[${i}].endDate`, date ?? '');
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                placeholder="종료일(YYYY-MM-DD)을 입력하세요"
+                                fullWidth
+                                required
+                              />
+                            )}
+                            allowSameDateSelection
+                          />
+                        </Grid>
+                        <Grid item sm={1}>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            fullWidth
+                            onClick={() => {
+                              const { academicList, ...rest } = values;
+                              setView({
+                                ...rest,
+                                academicList: academicList.filter((item, j) => i !== j)
+                              });
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <Box sx={{

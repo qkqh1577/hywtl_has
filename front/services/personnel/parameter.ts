@@ -2,9 +2,16 @@ import { PersonnelBasic } from 'services/personnel/entity';
 import FileItemParameter from 'services/common/file-item/parameter';
 
 export type PersonnelBasicParameter
-  = Partial<Omit<PersonnelBasic, 'image'>> & {
+  = Partial<Omit<PersonnelBasic, 'image' | 'birthDate'>> & {
+  birthDate?: string;
   image: FileItemParameter;
 };
+
+export type PersonnelCompanyParameter = {
+  hiredDate: string;
+  hiredType: string;
+  recommender?: string;
+}
 
 export type PersonnelJobParameter = {
   departmentId: number;
@@ -14,10 +21,15 @@ export type PersonnelJobParameter = {
   jobClass?: string;
   jobDuty?: string;
 }
-export type PersonnelCompanyParameter = {
-  hiredDate: Date;
-  hiredType: string;
-  recommender?: string;
+
+export type PersonnelAcademicParameter = {
+  academyName: string;
+  major: string;
+  degree?: string;
+  state: string;
+  grade?: string;
+  startDate: string;
+  endDate: string;
 }
 
 export type PersonnelParameter = {
@@ -25,4 +37,5 @@ export type PersonnelParameter = {
   basic: PersonnelBasicParameter;
   company: PersonnelCompanyParameter;
   jobList: PersonnelJobParameter[];
+  academicList: PersonnelAcademicParameter[];
 }

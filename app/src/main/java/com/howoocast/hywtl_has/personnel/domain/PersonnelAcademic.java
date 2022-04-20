@@ -25,33 +25,34 @@ public class PersonnelAcademic {
 
     protected String degree; // 학위
 
+    @NotBlank
+    @Column(nullable = false)
+    protected String state; // 상태 [졸업, 휴학, 재학, 중퇴]
+
     protected String grade; // 학점 (숫자, 수료, 이수 등)
 
     protected LocalDate startDate; // 시작일
 
     protected LocalDate endDate; // 종료일
 
-    @NotBlank
-    @Column(nullable = false)
-    protected String state; // 상태 [졸업, 휴학, 재학, 중퇴]
 
     public static PersonnelAcademic of(
         String academyName,
         String major,
         String degree,
         String grade,
+        String state,
         LocalDate startDate,
-        LocalDate endDate,
-        String state
+        LocalDate endDate
     ) {
         return new PersonnelAcademic(
             academyName,
             major,
             degree,
             grade,
+            state,
             startDate,
-            endDate,
-            state
+            endDate
         );
     }
 }

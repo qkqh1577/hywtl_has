@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Personnel from 'services/personnel/entity';
 import { PersonnelParameter } from 'services/personnel/parameter';
-import dayjs from 'dayjs';
 
 export class PersonnelApi {
   async getOne(id: number): Promise<Personnel> {
@@ -13,21 +12,26 @@ export class PersonnelApi {
     const {
       id,
       jobList,
-      company: { hiredDate, ...companyRest },
-      basic: { birthDate, image, ...basicRest },
+      company,
+      basic: { image, ...basicRest },
+      academicList,
       ...rest
     } = params;
     const form = new FormData();
     setFormData(rest, form);
+
     setFormData(basicRest, form, 'basic');
     if (image) setFormData(image, form, 'basic.image');
-    setFormData(companyRest, form, 'company');
+
+    setFormData(company, form, 'company');
+
     jobList.forEach((item, i) => {
       setFormData(jobList[i], form, `jobList[${i}]`);
     });
-    if (birthDate) form.append('basic.birthDate', dayjs(birthDate).format('YYYY-MM-DD'));
-    if (hiredDate) form.append('company.hiredDate', dayjs(hiredDate).format('YYYY-MM-DD'));
-    console.log(form);
+
+    if (academicList) academicList.forEach((item, i) => {
+      setFormData(academicList[i], form, `academicList[${i}]`);
+    });
 
 
     const { data } = await axios.put(`/personnels/${id}`, form, {
@@ -46,7 +50,7 @@ const setFormData = (obj: any, form: FormData, prefix?: string) => {
       if (value === null || value === undefined || Number.isNaN(value)) {
         return;
       }
-      if (value !== '') {
+      if (typeof value !== 'object' && value !== '') {
         form.append(prefix ? `${prefix}.${key}` : key, value);
       }
     }
