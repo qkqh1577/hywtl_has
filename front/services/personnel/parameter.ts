@@ -32,10 +32,18 @@ export type PersonnelAcademicParameter = {
   endDate: string;
 }
 
+export type PersonnelCareerParameter = {
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  majorJob: string;
+}
+
 export type PersonnelParameter = {
   id: number;
   basic: PersonnelBasicParameter;
   company: PersonnelCompanyParameter;
   jobList: PersonnelJobParameter[];
   academicList: PersonnelAcademicParameter[];
+  careerList: PersonnelCareerParameter[];
 }

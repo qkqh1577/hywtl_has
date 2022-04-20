@@ -24,7 +24,7 @@ import DepartmentSelector from 'components/DepartmentSelector';
 import FileItem from 'services/common/file-item/entity';
 import {
   PersonnelAcademicParameter,
-  PersonnelBasicParameter,
+  PersonnelBasicParameter, PersonnelCareerParameter,
   PersonnelCompanyParameter,
   PersonnelJobParameter,
   PersonnelParameter
@@ -41,7 +41,7 @@ type JobView = {
   jobClass: string;
   jobDuty: string;
 }
-type  AcademicView = {
+type AcademicView = {
   academyName: string;
   major: string;
   degree: string;
@@ -50,6 +50,13 @@ type  AcademicView = {
   startDate: Date | '';
   endDate: Date | '';
 }
+type CareerView = {
+  companyName: String;
+  startDate: Date | '';
+  endDate: Date | '';
+  majorJob: string;
+}
+
 type View = {
   basic: {
     engName: string;
@@ -69,6 +76,7 @@ type View = {
   },
   jobList: JobView[];
   academicList: AcademicView[];
+  careerList: CareerView[];
 };
 const initJobView: JobView = {
   departmentId: '',
@@ -87,6 +95,12 @@ const initAcademicView: AcademicView = {
   endDate: '',
   state: '',
 };
+const initCareer: CareerView = {
+  companyName: '',
+  startDate: '',
+  endDate: '',
+  majorJob: '',
+};
 const initView: View = {
   basic: {
     engName: '',
@@ -104,7 +118,8 @@ const initView: View = {
     recommender: '',
   },
   jobList: [initJobView],
-  academicList: [],
+  academicList: [initAcademicView],
+  careerList: [initCareer],
 };
 
 const PersonnelDetail = (props: { id: number }) => {
@@ -131,6 +146,7 @@ const PersonnelDetail = (props: { id: number }) => {
         company: {},
         jobList: {},
         academicList: {},
+        careerList: {},
       };
       const basicEngName: string = values.basic.engName;
       if (!basicEngName) {
@@ -144,6 +160,11 @@ const PersonnelDetail = (props: { id: number }) => {
       if (!basicSex) {
         errors.basic.sex = '성별 입력은 필수입니다.';
       }
+      const basicAddress: string | undefined = values.basic.address || undefined;
+      const basicPhone: string | undefined = values.basic.phone || undefined;
+      const basicEmergencyPhone: string | undefined = values.basic.emergencyPhone || undefined;
+      const basicRelationship: string | undefined = values.basic.relationship || undefined;
+      const basicPersonalEmail: string | undefined = values.basic.personalEmail || undefined;
 
       const companyHiredDate: Date = values.company.hiredDate;
       if (!companyHiredDate) {
@@ -255,6 +276,46 @@ const PersonnelDetail = (props: { id: number }) => {
       .filter(item => item !== null)
       .map(item => item as PersonnelAcademicParameter);
 
+      const careerListParams: PersonnelCareerParameter[] = (values.careerList as any[])
+      .map((item, i) => {
+        const careerErrors: any = {};
+
+        const companyName: string = item.companyName;
+        if (!companyName) {
+          careerErrors.companyName = '근무처명 입력은 필수입니다.';
+        }
+
+        const startDate: Date = item.startDate;
+        if (!startDate) {
+          careerErrors.startDate = '근무시작일 입력은 필수입니다.';
+        }
+
+        const endDate: Date = item.endDate;
+        if (!endDate) {
+          careerErrors.endDate = '근무종료일 입력은 필수입니다.';
+        }
+
+        const majorJob: string = item.majorJob;
+        if (!majorJob) {
+          careerErrors.majorJob = '주 업무 입력은 필수입니다.';
+        }
+
+        if (Object.keys(careerErrors).length > 0) {
+          errors.careerList[i] = careerErrors;
+          return null;
+        }
+
+        const careerParams: PersonnelCareerParameter = {
+          companyName,
+          startDate: dayjs(startDate).format('YYYY-MM-DD'),
+          endDate: dayjs(endDate).format('YYYY-MM-DD'),
+          majorJob
+        };
+        return careerParams;
+      })
+      .filter(item => item !== null)
+      .map(item => item as PersonnelCareerParameter);
+
       if (Object.keys(errors.basic).length > 0
         || Object.keys(errors.company).length > 0
         || Object.keys(errors.jobList).length > 0
@@ -267,11 +328,17 @@ const PersonnelDetail = (props: { id: number }) => {
       }
 
       const basicParams: PersonnelBasicParameter = {
-        ...values.basic,
-        birthDate: values.basic.birthDate ? dayjs(values.birthDate).format('YYYY-MM-DD') : undefined,
+        engName: basicEngName,
+        sex: basicSex,
+        birthDate: dayjs(basicBirthDate).format('YYYY-MM-DD'),
         image: values.basic['image-temp'] ?? {
           id: values.basic.image?.id,
-        }
+        },
+        address: basicAddress,
+        phone: basicPhone,
+        emergencyPhone: basicEmergencyPhone,
+        relationship: basicRelationship,
+        personalEmail: basicPersonalEmail,
       };
 
       const companyParams: PersonnelCompanyParameter = {
@@ -285,7 +352,8 @@ const PersonnelDetail = (props: { id: number }) => {
         basic: basicParams,
         company: companyParams,
         jobList: jobListParams,
-        academicList: academicListParams
+        academicList: academicListParams,
+        careerList: careerListParams,
       };
 
       update(params, (data?) => {
@@ -330,7 +398,8 @@ const PersonnelDetail = (props: { id: number }) => {
             grade: item.grade ?? '',
             startDate: item.startDate,
             endDate: item.endDate,
-          })) ?? [],
+          })) ?? view.academicList,
+          careerList: detail.careerList?.map((item) => item as CareerView) ?? view.careerList,
         });
       } else {
         setView(initView);
@@ -874,6 +943,132 @@ const PersonnelDetail = (props: { id: number }) => {
                       </Grid>
                     ))}
                   </Grid>
+
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
+                  <Grid container spacing={2}>
+                    <Grid item sm={12} sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}>
+                      <h2>경력 정보</h2>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        style={{ height: '36px' }}
+                        onClick={() => {
+                          const { careerList, ...rest } = values;
+                          setView({
+                            ...rest,
+                            careerList: [...careerList, initCareer]
+                          });
+                        }}
+                      >
+                        추가
+                      </Button>
+                    </Grid>
+                    {values.careerList && values.careerList.map((item, i) => (
+                      <Grid key={i} container spacing={2} item sm={12}>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-careerList[${i}].companyName`}>
+                              근무처명
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-careerList[${i}].companyName`}
+                              name={`careerList[${i}].companyName`}
+                              value={item.companyName}
+                              placeholder="근무처명을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`careerList[${i}].companyName`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={3}>
+                          <DatePicker
+                            mask="____-__-__"
+                            inputFormat="YYYY-MM-DD"
+                            toolbarFormat="YYYY-MM-DD"
+                            okText="적용"
+                            openTo="year"
+                            label="시작일"
+                            value={values.careerList[i].startDate || null}
+                            onChange={(date) => {
+                              setFieldValue(`careerList[${i}].startDate`, date ?? '');
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                placeholder="시작일(YYYY-MM-DD)을 입력하세요"
+                                fullWidth
+                                required
+                              />
+                            )}
+                            allowSameDateSelection
+                          />
+                        </Grid>
+                        <Grid item sm={3}>
+                          <DatePicker
+                            mask="____-__-__"
+                            inputFormat="YYYY-MM-DD"
+                            toolbarFormat="YYYY-MM-DD"
+                            okText="적용"
+                            openTo="year"
+                            label="종료일"
+                            value={values.careerList[i].endDate || null}
+                            onChange={(date) => {
+                              setFieldValue(`careerList[${i}].endDate`, date ?? '');
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                placeholder="종료일(YYYY-MM-DD)을 입력하세요"
+                                fullWidth
+                                required
+                              />
+                            )}
+                            allowSameDateSelection
+                          />
+                        </Grid>
+                        <Grid item sm={3}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-careerList[${i}].majorJob`}>
+                              주 업무
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-careerList[${i}].majorJob`}
+                              name={`careerList[${i}].majorJob`}
+                              value={item.majorJob}
+                              placeholder="주 업무를 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`careerList[${i}].majorJob`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            fullWidth
+                            onClick={() => {
+                              const { careerList, ...rest } = values;
+                              setView({
+                                ...rest,
+                                careerList: careerList.filter((item, j) => i !== j)
+                              });
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+
+
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12}>

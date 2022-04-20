@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelAcademic;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelCareer;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelCompany;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelCompanyParameter;
@@ -93,6 +94,17 @@ public class PersonnelService {
                         item.getGrade(),
                         item.getStartDate(),
                         item.getEndDate()
+                    ))
+                    .collect(Collectors.toList())
+                )
+                .orElse(Collections.emptyList()),
+            Optional.ofNullable(params.getCareerList())
+                .map(list -> list.stream()
+                    .map(item -> PersonnelCareer.of(
+                        item.getCompanyName(),
+                        item.getStartDate(),
+                        item.getEndDate(),
+                        item.getMajorJob()
                     ))
                     .collect(Collectors.toList())
                 )

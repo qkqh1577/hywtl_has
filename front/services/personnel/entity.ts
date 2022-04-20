@@ -38,12 +38,20 @@ export type PersonnelAcademic = {
   endDate: Date;
 }
 
+export type PersonnelCareer = {
+  companyName: string;
+  startDate: Date;
+  endDate: Date;
+  majorJob: string;
+}
+
 type Personnel = {
   id: number;
   basic: PersonnelBasic;
   company: PersonnelCompany;
   jobList: PersonnelJob[];
   academicList?: PersonnelAcademic[];
+  careerList?: PersonnelCareer[];
 }
 
 export default Personnel;

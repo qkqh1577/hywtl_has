@@ -15,13 +15,19 @@ export class PersonnelApi {
       company,
       basic: { image, ...basicRest },
       academicList,
+      careerList,
       ...rest
     } = params;
     const form = new FormData();
     setFormData(rest, form);
 
     setFormData(basicRest, form, 'basic');
-    if (image) setFormData(image, form, 'basic.image');
+    if (image) {
+      const fileItem: any = image;
+      if (typeof fileItem.id !== 'undefined') form.append('basic.image.id', fileItem.id);
+      if (typeof fileItem.requestDelete !== 'undefined') form.append('basic.image.requestDelete', fileItem.requestDelete);
+      if (typeof fileItem.multipartFile !== 'undefined') form.append('basic.image.multipartFile', fileItem.multipartFile);
+    }
 
     setFormData(company, form, 'company');
 
@@ -31,6 +37,10 @@ export class PersonnelApi {
 
     if (academicList) academicList.forEach((item, i) => {
       setFormData(academicList[i], form, `academicList[${i}]`);
+    });
+
+    if (careerList) careerList.forEach((item, i) => {
+      setFormData(careerList[i], form, `careerList[${i}]`);
     });
 
 

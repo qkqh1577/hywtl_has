@@ -23,4 +23,6 @@ public class PersonnelParameter {
     private List<PersonnelJobParameter> jobList;
 
     private List<PersonnelAcademicParameter> academicList;
+
+    private List<PersonnelCareerParameter> careerList;
 }

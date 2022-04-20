@@ -20,6 +20,8 @@ public class PersonnelView {
 
     private List<PersonnelAcademicView> academicList;
 
+    private List<PersonnelCareerView> careerList;
+
     public static PersonnelView assemble(Personnel source) {
         PersonnelView target = new PersonnelView();
         target.basic = PersonnelBasicView.assemble(source.getBasic());
@@ -28,6 +30,9 @@ public class PersonnelView {
             .map(PersonnelJobView::assemble).collect(Collectors.toList());
         target.academicList = Optional.ofNullable(source.getAcademicList())
             .map(list -> list.stream().map(PersonnelAcademicView::assemble).collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
+        target.careerList = Optional.ofNullable(source.getCareerList())
+            .map(list -> list.stream().map(PersonnelCareerView::assemble).collect(Collectors.toList()))
             .orElse(Collections.emptyList());
         return target;
     }
