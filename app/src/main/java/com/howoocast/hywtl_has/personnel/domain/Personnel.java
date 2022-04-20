@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -42,9 +43,11 @@ public class Personnel {
     private PersonnelCompany company;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    protected List<PersonnelJob> jobList; // 직함 목록
+    private List<PersonnelJob> jobList; // 직함 목록
 
-    // 학력 - 리스트
+    @ElementCollection
+    private List<PersonnelAcademic> academicList; // 학력 목록
+
     // 경력 - 리스트
     // 면허 - 리스트
     // 어학 - 리스트
@@ -53,6 +56,7 @@ public class Personnel {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
+    @SuppressWarnings("unused")
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
@@ -61,12 +65,14 @@ public class Personnel {
         Long id,
         PersonnelBasic basic,
         PersonnelCompany company,
-        List<PersonnelJob> jobList
+        List<PersonnelJob> jobList,
+        List<PersonnelAcademic> academicList
     ) {
         Personnel instance = repository.findById(id).orElse(new Personnel(id));
         instance.basic = basic;
         instance.company = company;
         instance.jobList = jobList;
+        instance.academicList = academicList;
         instance.createdTime = LocalDateTime.now();
         return repository.save(instance);
     }

@@ -21,4 +21,6 @@ public class PersonnelParameter {
 
     @NotEmpty(message = "직함 정보는 하나 이상 필수 항목입니다.")
     private List<PersonnelJobParameter> jobList;
+
+    private List<PersonnelAcademicParameter> academicList;
 }

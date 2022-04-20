@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelAcademic;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelCompany;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
@@ -13,6 +14,8 @@ import com.howoocast.hywtl_has.personnel.parameter.PersonnelBasicParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +82,21 @@ public class PersonnelService {
                     jobParams.getJobClass(),
                     jobParams.getJobDuty()
                 ))
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()),
+            Optional.ofNullable(params.getAcademicList())
+                .map(list -> list.stream()
+                    .map(item -> PersonnelAcademic.of(
+                        item.getAcademyName(),
+                        item.getMajor(),
+                        item.getDegree(),
+                        item.getGrade(),
+                        item.getStartDate(),
+                        item.getEndDate(),
+                        item.getState()
+                    ))
+                    .collect(Collectors.toList())
+                )
+                .orElse(Collections.emptyList())
         );
         return PersonnelView.assemble(personnelRepository.save(personnel));
     }
