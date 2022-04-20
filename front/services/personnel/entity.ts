@@ -45,6 +45,15 @@ export type PersonnelCareer = {
   majorJob: string;
 }
 
+export type PersonnelLicense = {
+  name: string;
+  type?: string;
+  organizationName: string;
+  qualifiedNumber: string;
+  qualifiedDate: Date;
+  memo?: string;
+}
+
 type Personnel = {
   id: number;
   basic: PersonnelBasic;
@@ -52,6 +61,7 @@ type Personnel = {
   jobList: PersonnelJob[];
   academicList?: PersonnelAcademic[];
   careerList?: PersonnelCareer[];
+  licenseList?: PersonnelLicense[];
 }
 
 export default Personnel;

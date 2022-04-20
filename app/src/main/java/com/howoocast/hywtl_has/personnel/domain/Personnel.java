@@ -51,6 +51,9 @@ public class Personnel {
     @ElementCollection
     private List<PersonnelCareer> careerList; // 경력 목록
 
+    @ElementCollection
+    private List<PersonnelLicense> licenseList; // 면허 목록
+
     // 경력 - 리스트
     // 면허 - 리스트
     // 어학 - 리스트
@@ -70,7 +73,8 @@ public class Personnel {
         PersonnelCompany company,
         List<PersonnelJob> jobList,
         List<PersonnelAcademic> academicList,
-        List<PersonnelCareer> careerList
+        List<PersonnelCareer> careerList,
+        List<PersonnelLicense> licenseList
     ) {
         Personnel instance = repository.findById(id).orElse(new Personnel(id));
         instance.basic = basic;
@@ -78,6 +82,7 @@ public class Personnel {
         instance.jobList = jobList;
         instance.academicList = academicList;
         instance.careerList = careerList;
+        instance.licenseList = licenseList;
         instance.createdTime = LocalDateTime.now();
         return repository.save(instance);
     }

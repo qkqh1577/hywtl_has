@@ -39,6 +39,15 @@ export type PersonnelCareerParameter = {
   majorJob: string;
 }
 
+export type PersonnelLicenseParameter = {
+  name: string;
+  type?: string;
+  organizationName: string;
+  qualifiedNumber: string;
+  qualifiedDate: string;
+  memo?: string;
+}
+
 export type PersonnelParameter = {
   id: number;
   basic: PersonnelBasicParameter;
@@ -46,4 +55,5 @@ export type PersonnelParameter = {
   jobList: PersonnelJobParameter[];
   academicList: PersonnelAcademicParameter[];
   careerList: PersonnelCareerParameter[];
+  licenseList: PersonnelLicenseParameter[];
 }

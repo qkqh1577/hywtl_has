@@ -21,106 +21,25 @@ import {
 } from 'formik';
 import FileInput from 'components/FileInput';
 import DepartmentSelector from 'components/DepartmentSelector';
-import FileItem from 'services/common/file-item/entity';
 import {
   PersonnelAcademicParameter,
   PersonnelBasicParameter, PersonnelCareerParameter,
   PersonnelCompanyParameter,
-  PersonnelJobParameter,
+  PersonnelJobParameter, PersonnelLicenseParameter,
   PersonnelParameter
 } from 'services/personnel/parameter';
 import usePersonnel from 'services/personnel/hook';
 import Personnel from 'services/personnel/entity';
 import { DatePicker } from '@mui/x-date-pickers';
+import {
+  PersonnelCareerView,
+  PersonnelView,
+  initAcademicView,
+  initCareerView,
+  initJobView,
+  initView, initLicenseView,
+} from 'services/personnel/view';
 
-type JobView = {
-  departmentId: number | '';
-  jobTitle: string;
-  jobType: string;
-  jobPosition: string;
-  jobClass: string;
-  jobDuty: string;
-}
-type AcademicView = {
-  academyName: string;
-  major: string;
-  degree: string;
-  state: string;
-  grade: string;
-  startDate: Date | '';
-  endDate: Date | '';
-}
-type CareerView = {
-  companyName: String;
-  startDate: Date | '';
-  endDate: Date | '';
-  majorJob: string;
-}
-
-type View = {
-  basic: {
-    engName: string;
-    birthDate: Date | '';
-    sex: string;
-    image?: FileItem;
-    address: string;
-    phone: string;
-    emergencyPhone: string;
-    relationship: string;
-    personalEmail: string;
-  },
-  company: {
-    hiredDate: Date | '';
-    hiredType: string;
-    recommender: string;
-  },
-  jobList: JobView[];
-  academicList: AcademicView[];
-  careerList: CareerView[];
-};
-const initJobView: JobView = {
-  departmentId: '',
-  jobTitle: '',
-  jobType: '',
-  jobPosition: '',
-  jobClass: '',
-  jobDuty: ''
-};
-const initAcademicView: AcademicView = {
-  academyName: '',
-  major: '',
-  degree: '',
-  grade: '',
-  startDate: '',
-  endDate: '',
-  state: '',
-};
-const initCareer: CareerView = {
-  companyName: '',
-  startDate: '',
-  endDate: '',
-  majorJob: '',
-};
-const initView: View = {
-  basic: {
-    engName: '',
-    birthDate: '',
-    sex: '',
-    address: '',
-    phone: '',
-    emergencyPhone: '',
-    relationship: '',
-    personalEmail: '',
-  },
-  company: {
-    hiredDate: '',
-    hiredType: '',
-    recommender: '',
-  },
-  jobList: [initJobView],
-  academicList: [initAcademicView],
-  careerList: [initCareer],
-};
 
 const PersonnelDetail = (props: { id: number }) => {
   const { id } = props;
@@ -134,7 +53,7 @@ const PersonnelDetail = (props: { id: number }) => {
     clearOne,
     update
   } = usePersonnel();
-  const [view, setView] = useState<View>(initView);
+  const [view, setView] = useState<PersonnelView>(initView);
 
   const handler = {
     submit: (values: any, {
@@ -147,6 +66,7 @@ const PersonnelDetail = (props: { id: number }) => {
         jobList: {},
         academicList: {},
         careerList: {},
+        licenseList: {},
       };
       const basicEngName: string = values.basic.engName;
       if (!basicEngName) {
@@ -316,10 +236,57 @@ const PersonnelDetail = (props: { id: number }) => {
       .filter(item => item !== null)
       .map(item => item as PersonnelCareerParameter);
 
+      const licenseListParams: PersonnelLicenseParameter[] = (values.licenseList as any[])
+      .map((item, i) => {
+        const licenseErrors: any = {};
+
+        const name: string = item.name;
+        if (!name) {
+          licenseErrors.name = '면허명 입력은 필수입니다.';
+        }
+
+        const type: string | undefined = item.type || undefined;
+
+        const organizationName: string = item.organizationName;
+        if (!organizationName) {
+          licenseErrors.organizationName = '발급기관명 입력은 필수입니다.';
+        }
+
+        const qualifiedNumber: string = item.qualifiedNumber;
+        if (!qualifiedNumber) {
+          licenseErrors.qualifiedNumber = '인가 번호 입력은 필수입니다.';
+        }
+
+        const qualifiedDate: Date = item.qualifiedDate;
+        if (!qualifiedDate) {
+          licenseErrors.qualifiedDate = '인가일 입력은 필수입니다.';
+        }
+
+        const memo: string | undefined = item.memo || undefined;
+
+        if (Object.keys(licenseErrors).length > 0) {
+          errors.licenseList[i] = licenseErrors;
+          return null;
+        }
+
+        const licenseParams: PersonnelLicenseParameter = {
+          name,
+          type,
+          organizationName,
+          qualifiedNumber,
+          qualifiedDate: dayjs(qualifiedDate).format('YYYY-MM-DD'),
+          memo
+        };
+        return licenseParams;
+      })
+      .filter(item => item !== null)
+      .map(item => item as PersonnelLicenseParameter);
+
       if (Object.keys(errors.basic).length > 0
         || Object.keys(errors.company).length > 0
         || Object.keys(errors.jobList).length > 0
         || Object.keys(errors.academicList).length > 0
+        || Object.keys(errors.licenseList).length > 0
       ) {
         console.log(errors);
         setErrors(errors);
@@ -354,6 +321,7 @@ const PersonnelDetail = (props: { id: number }) => {
         jobList: jobListParams,
         academicList: academicListParams,
         careerList: careerListParams,
+        licenseList: licenseListParams,
       };
 
       update(params, (data?) => {
@@ -399,7 +367,15 @@ const PersonnelDetail = (props: { id: number }) => {
             startDate: item.startDate,
             endDate: item.endDate,
           })) ?? view.academicList,
-          careerList: detail.careerList?.map((item) => item as CareerView) ?? view.careerList,
+          careerList: detail.careerList?.map((item) => item as PersonnelCareerView) ?? view.careerList,
+          licenseList: detail.licenseList?.map((item) => ({
+            name: item.name,
+            type: item.type ?? '',
+            organizationName: item.organizationName,
+            qualifiedNumber: item.qualifiedNumber,
+            qualifiedDate: item.qualifiedDate ?? '',
+            memo: item.memo ?? '',
+          })) ?? view.licenseList,
         });
       } else {
         setView(initView);
@@ -884,7 +860,7 @@ const PersonnelDetail = (props: { id: number }) => {
                             okText="적용"
                             openTo="year"
                             label="시작일"
-                            value={values.academicList[i].startDate || null}
+                            value={item.startDate || null}
                             onChange={(date) => {
                               setFieldValue(`academicList[${i}].startDate`, date ?? '');
                             }}
@@ -908,7 +884,7 @@ const PersonnelDetail = (props: { id: number }) => {
                             okText="적용"
                             openTo="year"
                             label="종료일"
-                            value={values.academicList[i].endDate || null}
+                            value={item.endDate || null}
                             onChange={(date) => {
                               setFieldValue(`academicList[${i}].endDate`, date ?? '');
                             }}
@@ -943,7 +919,6 @@ const PersonnelDetail = (props: { id: number }) => {
                       </Grid>
                     ))}
                   </Grid>
-
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12} sx={{
@@ -959,7 +934,7 @@ const PersonnelDetail = (props: { id: number }) => {
                           const { careerList, ...rest } = values;
                           setView({
                             ...rest,
-                            careerList: [...careerList, initCareer]
+                            careerList: [...careerList, initCareerView]
                           });
                         }}
                       >
@@ -992,7 +967,7 @@ const PersonnelDetail = (props: { id: number }) => {
                             okText="적용"
                             openTo="year"
                             label="시작일"
-                            value={values.careerList[i].startDate || null}
+                            value={item.startDate || null}
                             onChange={(date) => {
                               setFieldValue(`careerList[${i}].startDate`, date ?? '');
                             }}
@@ -1016,7 +991,7 @@ const PersonnelDetail = (props: { id: number }) => {
                             okText="적용"
                             openTo="year"
                             label="종료일"
-                            value={values.careerList[i].endDate || null}
+                            value={item.endDate || null}
                             onChange={(date) => {
                               setFieldValue(`careerList[${i}].endDate`, date ?? '');
                             }}
@@ -1067,8 +1042,153 @@ const PersonnelDetail = (props: { id: number }) => {
                       </Grid>
                     ))}
                   </Grid>
-
-
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
+                  <Grid container spacing={2}>
+                    <Grid item sm={12} sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}>
+                      <h2>면허 정보</h2>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        style={{ height: '36px' }}
+                        onClick={() => {
+                          const { licenseList, ...rest } = values;
+                          setView({
+                            ...rest,
+                            licenseList: [...licenseList, initLicenseView]
+                          });
+                        }}
+                      >
+                        추가
+                      </Button>
+                    </Grid>
+                    {values.licenseList && values.licenseList.map((item, i) => (
+                      <Grid key={i} container spacing={2} item sm={12}>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-licenseList[${i}].name`}>
+                              면허명
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-licenseList[${i}].name`}
+                              name={`licenseList[${i}].name`}
+                              value={item.name}
+                              placeholder="면허명을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`licenseList[${i}].name`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor={`params-licenseList[${i}].type`}>
+                              종별
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-licenseList[${i}].type`}
+                              name={`licenseList[${i}].type`}
+                              value={item.type}
+                              placeholder="면허 종별을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`licenseList[${i}].type`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-licenseList[${i}].organizationName`}>
+                              발급기관명
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-licenseList[${i}].organizationName`}
+                              name={`licenseList[${i}].organizationName`}
+                              value={item.organizationName}
+                              placeholder="발급기관명을 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`licenseList[${i}].organizationName`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth required>
+                            <InputLabel htmlFor={`params-licenseList[${i}].qualifiedNumber`}>
+                              인가 번호
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-licenseList[${i}].qualifiedNumber`}
+                              name={`licenseList[${i}].qualifiedNumber`}
+                              value={item.qualifiedNumber}
+                              placeholder="인가 번호를 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`licenseList[${i}].qualifiedNumber`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={2}>
+                          <DatePicker
+                            mask="____-__-__"
+                            inputFormat="YYYY-MM-DD"
+                            toolbarFormat="YYYY-MM-DD"
+                            okText="적용"
+                            openTo="year"
+                            label="인가일"
+                            value={item.qualifiedDate || null}
+                            onChange={(date) => {
+                              setFieldValue(`licenseList[${i}].qualifiedDate`, date ?? '');
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                placeholder="인가일(YYYY-MM-DD)을 입력하세요"
+                                fullWidth
+                                required
+                              />
+                            )}
+                            allowSameDateSelection
+                          />
+                        </Grid>
+                        <Grid item sm={2}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor={`params-licenseList[${i}].memo`}>
+                              비고
+                            </InputLabel>
+                            <Input
+                              type="text"
+                              id={`params-licenseList[${i}].memo`}
+                              name={`licenseList[${i}].memo`}
+                              value={item.memo}
+                              placeholder="비고를 입력해 주세요"
+                              onChange={handleChange}
+                            />
+                            <ErrorMessage name={`licenseList[${i}].memo`} />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={1}>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            fullWidth
+                            onClick={() => {
+                              const { licenseList, ...rest } = values;
+                              setView({
+                                ...rest,
+                                licenseList: licenseList.filter((item, j) => i !== j)
+                              });
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12}>

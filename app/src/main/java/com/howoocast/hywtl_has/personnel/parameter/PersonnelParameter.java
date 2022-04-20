@@ -25,4 +25,6 @@ public class PersonnelParameter {
     private List<PersonnelAcademicParameter> academicList;
 
     private List<PersonnelCareerParameter> careerList;
+
+    private List<PersonnelLicenseParameter> licenseList;
 }

@@ -22,6 +22,8 @@ public class PersonnelView {
 
     private List<PersonnelCareerView> careerList;
 
+    private List<PersonnelLicenseView> licenseList;
+
     public static PersonnelView assemble(Personnel source) {
         PersonnelView target = new PersonnelView();
         target.basic = PersonnelBasicView.assemble(source.getBasic());
@@ -33,6 +35,9 @@ public class PersonnelView {
             .orElse(Collections.emptyList());
         target.careerList = Optional.ofNullable(source.getCareerList())
             .map(list -> list.stream().map(PersonnelCareerView::assemble).collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
+        target.licenseList = Optional.ofNullable(source.getLicenseList())
+            .map(list -> list.stream().map(PersonnelLicenseView::assemble).collect(Collectors.toList()))
             .orElse(Collections.emptyList());
         return target;
     }

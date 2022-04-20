@@ -16,6 +16,7 @@ export class PersonnelApi {
       basic: { image, ...basicRest },
       academicList,
       careerList,
+      licenseList,
       ...rest
     } = params;
     const form = new FormData();
@@ -41,6 +42,10 @@ export class PersonnelApi {
 
     if (careerList) careerList.forEach((item, i) => {
       setFormData(careerList[i], form, `careerList[${i}]`);
+    });
+
+    if (licenseList) licenseList.forEach((item, i) => {
+      setFormData(licenseList[i], form, `licenseList[${i}]`);
     });
 
 
