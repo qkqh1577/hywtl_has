@@ -1,10 +1,10 @@
 import FileItem from 'services/common/file-item/entity';
-import Department from 'services/department/entity';
+import { ListDepartment } from 'services/department/entity';
 
 export type PersonnelBasic = {
-  engName?: string;
-  birthDate?: Date;
-  sex?: string;
+  engName: string;
+  birthDate: Date;
+  sex: string;
   image?: FileItem;
   address?: string;
   phone?: string;
@@ -20,7 +20,7 @@ export type PersonnelCompany = {
 }
 
 export type PersonnelJob = {
-  department: Department;
+  department: ListDepartment;
   jobTitle: string;
   jobType: string;
   jobPosition: string;
@@ -28,11 +28,51 @@ export type PersonnelJob = {
   jobDuty?: string;
 }
 
+export type PersonnelAcademic = {
+  academyName: string;
+  major: string;
+  degree?: string;
+  state: string;
+  grade?: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+export type PersonnelCareer = {
+  companyName: string;
+  startDate: Date;
+  endDate: Date;
+  majorJob: string;
+}
+
+export type PersonnelLicense = {
+  name: string;
+  type?: string;
+  organizationName: string;
+  qualifiedNumber: string;
+  qualifiedDate: Date;
+  memo?: string;
+}
+
+export type PersonnelLanguage = {
+  name: string;
+  type: string;
+  grade?: string;
+  organizationName: string;
+  certifiedDate: Date;
+  expiryPeriod?: string;
+  trainingPeriod?: string;
+}
+
 type Personnel = {
   id: number;
   basic: PersonnelBasic;
   company: PersonnelCompany;
   jobList: PersonnelJob[];
+  academicList?: PersonnelAcademic[];
+  careerList?: PersonnelCareer[];
+  licenseList?: PersonnelLicense[];
+  languageList?: PersonnelLanguage[];
 }
 
 export default Personnel;

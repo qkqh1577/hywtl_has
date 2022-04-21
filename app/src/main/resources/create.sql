@@ -73,11 +73,11 @@ create table personnel_job
 (
   id bigint auto_increment primary key,
 	department_id bigint not null,
+  job_class varchar(255) null,
 	job_duty varchar(255) null,
 	job_position varchar(255) not null,
 	job_title varchar(255) not null,
-	job_type varchar(255) not null,
-  job_class varchar(255) null
+  job_type varchar(255) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table personnel_job_list
@@ -86,3 +86,48 @@ create table personnel_job_list
 	job_list_id bigint not null,
 	constraint UK_personnel_job_personnel_job_list unique (job_list_id)
 );
+
+create table personnel_academic_list
+(
+	personnel_id bigint not null,
+	academy_name varchar(255) not null,
+	degree varchar(255) null,
+	end_date date null,
+	grade varchar(255) null,
+	major varchar(255) not null,
+	start_date date null,
+	state varchar(255) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table personnel_career_list
+(
+	personnel_id bigint not null,
+	company_name varchar(255) not null,
+	end_date date not null,
+	major_job varchar(255) not null,
+	start_date date not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table personnel_license_list
+(
+	personnel_id bigint not null,
+	memo varchar(255) null,
+	name varchar(255) not null,
+	organization_name varchar(255) not null,
+	qualified_date date not null,
+	qualified_number varchar(255) not null,
+	type varchar(255) null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table personnel_language_list
+(
+	personnel_id bigint not null,
+	certified_date date not null,
+	expiry_period varchar(255) null,
+	grade varchar(255) null,
+	name varchar(255) not null,
+	organization_name varchar(255) not null,
+	training_period varchar(255) null,
+	type varchar(255) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+

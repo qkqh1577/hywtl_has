@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.department.domain.Department;
 import javax.persistence.Column;
 import javax.persistence.Entity;

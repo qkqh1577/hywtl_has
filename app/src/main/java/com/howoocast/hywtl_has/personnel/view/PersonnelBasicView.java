@@ -3,8 +3,10 @@ package com.howoocast.hywtl_has.personnel.view;
 import com.howoocast.hywtl_has.common.view.FileItemView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import java.time.LocalDate;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -28,8 +30,11 @@ public class PersonnelBasicView {
 
     private String personalEmail;
 
-    public static PersonnelBasicView assemble(PersonnelBasic source) {
+    public static PersonnelBasicView assemble(@Nullable PersonnelBasic source) {
         PersonnelBasicView target = new PersonnelBasicView();
+        if (Objects.isNull(source)) {
+            return target;
+        }
         target.engName = source.getEngName();
         target.birthDate = source.getBirthDate();
         target.sex = source.getSex();

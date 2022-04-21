@@ -1,75 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField } from '@mui/material';
-import { DatePickerProps, DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
-import { FieldProps } from 'formik';
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
+import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
+import dayjs from 'dayjs';
+import { ErrorMessage } from 'formik';
+import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
-interface Props extends FieldProps, DatePickerProps {
-  placeholder?: string;
+type Props = {
+  value: Date | null;
+  name: string;
+  label: string;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  required?: boolean;
+  format?: string;
+  openTo?: CalendarPickerView;
+  disableFuture?: boolean;
 }
 
 const DatePicker = ({
-  form,
-  field: { name },
-  value,
+  name,
   label,
-  placeholder,
-  onError,
-  onChange,
-  renderInput,
-  ...props
+  value,
+  setFieldValue,
+  required,
+  format = 'YYYY-MM-DD',
+  openTo = 'day',
+  disableFuture
 }: Props) => {
-  const {
-    setFieldValue,
-    setFieldError,
-    setErrors,
-    errors,
-    touched
-  } = form;
-  const currentError = errors[name];
-  const toShowError = Boolean(currentError && touched[name]);
-  // TODO: 에러 메세지 처리
+  const [error, setError] = useState<string | undefined>();
+  const placeholder: string = `${label}(${format})${getObjectPostPosition(label)} 입력하세요`;
   return (
     <MuiDatePicker
       mask="____-__-__"
-      inputFormat="YYYY-MM-DD"
-      toolbarFormat="YYYY-MM-DD"
       okText="적용"
+      inputFormat={format}
+      toolbarFormat={format}
       value={value}
-      onChange={onChange}
+      openTo={openTo}
+      onChange={(date) => {
+        setFieldValue(name, date);
+      }}
       onError={(reason) => {
         switch (reason) {
           case 'invalidDate':
-            setFieldError('basic.birthDate', '날짜 유형(YYYY-MM-DD)이 올바르지 않습니다.');
+            setError(`날짜 유형(${format})이 올바르지 않습니다.`);
             break;
           case 'disableFuture':
-            setFieldError('basic.birthDate', '미래 날짜는 넣을 수 없습니다.');
+            setError('미래 날짜는 넣을 수 없습니다.');
             break;
           default:
-            setErrors({
-              ...errors,
-              [name]: undefined,
-            });
+            setError(undefined);
         }
       }}
-      renderInput={({ InputProps, ...params }) => (
+      renderInput={(params) => (
         <TextField
           {...params}
-          variant="standard"
-          fullWidth
+          id={`params-${name}`}
           name={name}
+          value={value === null ? '' : dayjs(value).format(format)}
           label={label}
-          error={toShowError}
-          InputProps={{
-            ...InputProps,
-            id: `params-${name}`,
-            type: 'text',
-            name,
-            placeholder,
-          }}
+          helperText={error ?? <ErrorMessage name={name} />}
+          placeholder={placeholder}
+          variant="standard"
+          required={required === true}
+          fullWidth
         >
         </TextField>
       )}
-      {...props}
+      allowSameDateSelection
+      disableFuture={disableFuture === true}
     />
   );
 };
