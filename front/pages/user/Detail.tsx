@@ -19,6 +19,7 @@ import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 import PersonnelDetail from 'pages/personnel/Detail';
+import { ListDepartment } from 'services/department/entity';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -56,24 +57,23 @@ const UserDetail = () => {
         error.userRole = '권한 선택은 필수입니다.';
       }
 
-      const departmentId: number = values.departmentId;
-      if (!departmentId) {
+      const department: ListDepartment = values.department;
+      if (!department) {
         error.department = '부서 선택은 필수입니다.';
       }
-
-      const params: ChangeUserParameter = {
-        id: detail.id,
-        name,
-        email,
-        userRole,
-        departmentId,
-      };
 
       if (Object.keys(error).length > 0) {
         setErrors(error);
         setSubmitting(false);
         return;
       }
+      const params: ChangeUserParameter = {
+        id: detail.id,
+        name,
+        email,
+        userRole,
+        departmentId: department.id,
+      };
 
       change(params, (data) => {
         if (data) {
@@ -164,11 +164,10 @@ const UserDetail = () => {
                 <Formik
                   initialValues={{
                     ...detail,
-                    departmentId: detail.department.id,
                   }}
                   onSubmit={handler.submit}
                 >
-                  {({ values, isSubmitting, handleChange, handleSubmit }) => (
+                  {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit }) => (
                     <Form>
                       <Grid container spacing={2}>
                         <Grid item sm={12}>
@@ -232,17 +231,13 @@ const UserDetail = () => {
                           </FormControl>
                         </Grid>
                         <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel id="params-departmentId-label">소속 부서</InputLabel>
-                            <DepartmentSelector
-                              labelId="params-departmentId-label"
-                              id="params-departmentId"
-                              name="departmentId"
-                              value={values.departmentId}
-                              handleChange={handleChange}
-                            />
-                            <ErrorMessage name="departmentId" />
-                          </FormControl>
+                          <DepartmentSelector
+                            name="department"
+                            label="소속 부서"
+                            value={values.department}
+                            setFieldValue={setFieldValue}
+                            required
+                          />
                         </Grid>
                         <Grid item sm={12}>
                           <Box sx={{

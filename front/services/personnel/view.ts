@@ -1,8 +1,9 @@
 import FileItem from 'services/common/file-item/entity';
+import { ListDepartment } from 'services/department/entity';
 
 export type PersonnelBasicView = {
   engName: string;
-  birthDate: Date | '';
+  birthDate: Date | null;
   sex: string;
   image?: FileItem;
   address: string;
@@ -13,13 +14,13 @@ export type PersonnelBasicView = {
 }
 
 export type PersonnelCompanyView = {
-  hiredDate: Date | '';
+  hiredDate: Date | null;
   hiredType: string;
   recommender: string;
 }
 
 export type PersonnelJobView = {
-  departmentId: number | '';
+  department: ListDepartment | null;
   jobTitle: string;
   jobType: string;
   jobPosition: string;
@@ -33,14 +34,14 @@ export type PersonnelAcademicView = {
   degree: string;
   state: string;
   grade: string;
-  startDate: Date | '';
-  endDate: Date | '';
+  startDate: Date | null;
+  endDate: Date | null;
 }
 
 export type PersonnelCareerView = {
   companyName: string;
-  startDate: Date | '';
-  endDate: Date | '';
+  startDate: Date | null;
+  endDate: Date | null;
   majorJob: string;
 }
 
@@ -49,8 +50,18 @@ export type PersonnelLicenseView = {
   type: string;
   organizationName: string;
   qualifiedNumber: string;
-  qualifiedDate: Date | '';
+  qualifiedDate: Date | null;
   memo: string;
+}
+
+export type PersonnelLanguageView = {
+  name: string;
+  type: string;
+  grade: string;
+  organizationName: string;
+  certifiedDate: Date | null;
+  expiryPeriod: string;
+  trainingPeriod: string;
 }
 
 export type PersonnelView = {
@@ -60,11 +71,12 @@ export type PersonnelView = {
   academicList: PersonnelAcademicView[];
   careerList: PersonnelCareerView[];
   licenseList: PersonnelLicenseView[];
+  languageList: PersonnelLanguageView[];
 };
 
 export const initBasicView: PersonnelBasicView = {
   engName: '',
-  birthDate: '',
+  birthDate: null,
   sex: '',
   address: '',
   phone: '',
@@ -74,13 +86,13 @@ export const initBasicView: PersonnelBasicView = {
 };
 
 export const initCompanyView: PersonnelCompanyView = {
-  hiredDate: '',
+  hiredDate: null,
   hiredType: '',
   recommender: '',
 };
 
 export const initJobView: PersonnelJobView = {
-  departmentId: '',
+  department: null,
   jobTitle: '',
   jobType: '',
   jobPosition: '',
@@ -93,15 +105,15 @@ export const initAcademicView: PersonnelAcademicView = {
   major: '',
   degree: '',
   grade: '',
-  startDate: '',
-  endDate: '',
+  startDate: null,
+  endDate: null,
   state: '',
 };
 
 export const initCareerView: PersonnelCareerView = {
   companyName: '',
-  startDate: '',
-  endDate: '',
+  startDate: null,
+  endDate: null,
   majorJob: '',
 };
 
@@ -110,8 +122,18 @@ export const initLicenseView: PersonnelLicenseView = {
   type: '',
   organizationName: '',
   qualifiedNumber: '',
-  qualifiedDate: '',
+  qualifiedDate: null,
   memo: '',
+};
+
+export const initLanguageView: PersonnelLanguageView = {
+  name: '',
+  type: '',
+  grade: '',
+  organizationName: '',
+  certifiedDate: null,
+  expiryPeriod: '',
+  trainingPeriod: '',
 };
 
 export const initView: PersonnelView = {
@@ -121,4 +143,5 @@ export const initView: PersonnelView = {
   academicList: [initAcademicView],
   careerList: [initCareerView],
   licenseList: [initLicenseView],
+  languageList: [initLanguageView],
 };

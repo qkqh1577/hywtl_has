@@ -1,15 +1,15 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
+import com.howoocast.hywtl_has.common.parameter.CustomParameter;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelCareer;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
 @Setter
-public class PersonnelCareerParameter {
+public class PersonnelCareerParameter extends CustomParameter<PersonnelCareer> {
 
     @NotBlank(message = "근무처명은 필수 항목입니다.")
     private String companyName;
@@ -24,4 +24,13 @@ public class PersonnelCareerParameter {
 
     @NotBlank(message = "주 업무는 필수 항목입니다.")
     private String majorJob;
+
+    public PersonnelCareer build() {
+        return PersonnelCareer.of(
+            companyName,
+            startDate,
+            endDate,
+            majorJob
+        );
+    }
 }

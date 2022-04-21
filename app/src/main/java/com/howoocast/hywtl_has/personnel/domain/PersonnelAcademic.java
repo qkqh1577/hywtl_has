@@ -40,8 +40,8 @@ public class PersonnelAcademic {
         String academyName,
         String major,
         String degree,
-        String grade,
         String state,
+        String grade,
         LocalDate startDate,
         LocalDate endDate
     ) {
@@ -49,8 +49,8 @@ public class PersonnelAcademic {
             academyName,
             major,
             degree,
-            grade,
             state,
+            grade,
             startDate,
             endDate
         );

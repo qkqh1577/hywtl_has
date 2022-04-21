@@ -14,18 +14,19 @@ import { userRoleName, userRoleList } from 'services/user/data';
 import { UserRole } from 'services/user/entity';
 import useUserInvitation from 'services/user/invitation/hook';
 import DepartmentSelector from 'components/DepartmentSelector';
+import { ListDepartment } from 'services/department/entity';
 
 type Parameter = {
   name: string;
   email: string;
   userRole: UserRole | '';
-  departmentId: number | '';
+  department: ListDepartment | null;
 }
 const initialParameter: Parameter = {
   name: '',
   email: '',
   userRole: '',
-  departmentId: '',
+  department: null,
 };
 
 const UserInviteForm = () => {
@@ -146,19 +147,13 @@ const UserInviteForm = () => {
                       </FormControl>
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel id="params-departmentId-label">소속 부서</InputLabel>
                         <DepartmentSelector
-                          labelId="params-departmentId-label"
-                          id="params-departmentId"
-                          name="departmentId"
-                          value={values.departmentId}
-                          onChange={(departmentId) => {
-                            setFieldValue('departmentId', departmentId);
-                          }}
+                          name="department"
+                          label="소속 부서"
+                          value={values.department}
+                          setFieldValue={setFieldValue}
+                          required
                         />
-                        <ErrorMessage name="departmentId" />
-                      </FormControl>
                     </Grid>
                     <Grid item sm={12}>
                       <Box sx={{

@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,9 +53,8 @@ public class Personnel {
     @ElementCollection
     private List<PersonnelLicense> licenseList; // 면허 목록
 
-    // 경력 - 리스트
-    // 면허 - 리스트
-    // 어학 - 리스트
+    @ElementCollection
+    private List<PersonnelLanguage> languageList; // 어학 자격 목록
 
     @NotNull
     @Column(nullable = false, updatable = false)
@@ -66,25 +64,27 @@ public class Personnel {
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
-    public static Personnel of(
-        PersonnelRepository repository,
-        Long id,
+    public void of(
         PersonnelBasic basic,
         PersonnelCompany company,
         List<PersonnelJob> jobList,
         List<PersonnelAcademic> academicList,
         List<PersonnelCareer> careerList,
-        List<PersonnelLicense> licenseList
+        List<PersonnelLicense> licenseList,
+        List<PersonnelLanguage> languageList
     ) {
-        Personnel instance = repository.findById(id).orElse(new Personnel(id));
-        instance.basic = basic;
-        instance.company = company;
-        instance.jobList = jobList;
-        instance.academicList = academicList;
-        instance.careerList = careerList;
-        instance.licenseList = licenseList;
-        instance.createdTime = LocalDateTime.now();
-        return repository.save(instance);
+        this.basic = basic;
+        this.company = company;
+        this.jobList = jobList;
+        this.academicList = academicList;
+        this.careerList = careerList;
+        this.licenseList = licenseList;
+        this.languageList = languageList;
+        this.createdTime = LocalDateTime.now();
+    }
+
+    public static Personnel create(Long id) {
+        return new Personnel(id);
     }
 
     private Personnel(Long id) {

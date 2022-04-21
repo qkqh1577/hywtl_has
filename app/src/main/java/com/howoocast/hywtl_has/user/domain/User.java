@@ -3,7 +3,6 @@ package com.howoocast.hywtl_has.user.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.department.domain.Department;
-import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.UserPasswordNotMatchException;
 import com.howoocast.hywtl_has.user.exception.UserPasswordSameException;
@@ -16,9 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -32,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
+    @SuppressWarnings("unused")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -76,9 +74,6 @@ public class User {
 
     @Column(insertable = false)
     private LocalDateTime deletedTime; // 삭제일시
-
-    @OneToOne(mappedBy = "user")
-    private Personnel personnel;
 
     public static User of(
         String username,

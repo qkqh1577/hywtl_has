@@ -6,6 +6,7 @@ drop table if exists personnel_academic_list;
 drop table if exists personnel_career_list;
 drop table if exists personnel_job;
 drop table if exists personnel_job_list;
+drop table if exists personnel_language_list;
 drop table if exists personnel_license_list;
 drop table if exists user;
 drop table if exists user_invitation;

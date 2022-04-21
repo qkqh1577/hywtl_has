@@ -119,3 +119,15 @@ create table personnel_license_list
 	type varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
+create table personnel_language_list
+(
+	personnel_id bigint not null,
+	certified_date date not null,
+	expiry_period varchar(255) null,
+	grade varchar(255) null,
+	name varchar(255) not null,
+	organization_name varchar(255) not null,
+	training_period varchar(255) null,
+	type varchar(255) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+

@@ -1,14 +1,14 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
+import com.howoocast.hywtl_has.common.parameter.CustomParameter;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelLicense;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
 @Setter
-public class PersonnelLicenseParameter {
+public class PersonnelLicenseParameter extends CustomParameter<PersonnelLicense> {
 
     @NotBlank(message = "면허명은 필수입니다.")
     private String name;
@@ -26,4 +26,16 @@ public class PersonnelLicenseParameter {
     private LocalDate qualifiedDate;
 
     private String memo;
+
+    @Override
+    public PersonnelLicense build() {
+        return PersonnelLicense.of(
+            name,
+            type,
+            organizationName,
+            qualifiedNumber,
+            qualifiedDate,
+            memo
+        );
+    }
 }

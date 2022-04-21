@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,44 +14,47 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PersonnelLicense {
+public class PersonnelLanguage {
 
     @NotBlank
     @Column(nullable = false)
-    protected String name; // 면허 이름
+    protected String name; // 자격증명
 
-    protected String type; // 종별
+    @NotBlank
+    @Column(nullable = false)
+    protected String type; // 대상 언어
+
+    protected String grade; // 급수, 종류
 
     @NotBlank
     @Column(nullable = false)
     protected String organizationName; // 발급기관명
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    protected String qualifiedNumber; // 승인 번호
+    protected LocalDate certifiedDate; // 취득일
 
-    @NotBlank
-    @Column(nullable = false)
-    protected LocalDate qualifiedDate; // 승인 일자
+    protected String expiryPeriod; // 유효 기간
 
-    protected String memo; // 비고
+    protected String trainingPeriod; // 연수 기간
 
-    public static PersonnelLicense of(
+    public static PersonnelLanguage of(
         String name,
         String type,
+        String grade,
         String organizationName,
-        String qualifiedNumber,
-        LocalDate qualifiedDate,
-        String memo
+        LocalDate certifiedDate,
+        String expiryPeriod,
+        String trainingPeriod
     ) {
-        return new PersonnelLicense(
+        return new PersonnelLanguage(
             name,
             type,
+            grade,
             organizationName,
-            qualifiedNumber,
-            qualifiedDate,
-            memo
+            certifiedDate,
+            expiryPeriod,
+            trainingPeriod
         );
     }
-
 }

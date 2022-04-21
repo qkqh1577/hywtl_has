@@ -27,4 +27,7 @@ public class PersonnelParameter {
     private List<PersonnelCareerParameter> careerList;
 
     private List<PersonnelLicenseParameter> licenseList;
+
+    private List<PersonnelLanguageParameter> languageList;
+
 }
