@@ -1,4 +1,3 @@
 rootProject.name = 'hywtl_has'
 include 'app'
-include 'file_service'
 

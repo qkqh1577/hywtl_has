@@ -8,7 +8,7 @@ configurations {
     }
 }
 
-bootJar {
+bootWar {
     mainClass = 'com.howoocast.hywtl_has.Application'
 }
 

@@ -1,0 +1,15 @@
+FROM eclipse-temurin:11
+
+WORKDIR /app
+
+COPY ./app/build.gradle ./app/
+COPY ./gradle ./gradle
+COPY ./build.gradle ./
+COPY ./settings.gradle ./
+COPY ./gradlew ./
+
+RUN ./gradlew
+
+COPY ./app ./app
+
+RUN ./gradlew bootWar
