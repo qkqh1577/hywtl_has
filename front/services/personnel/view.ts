@@ -1,6 +1,18 @@
 import FileItem from 'services/common/file-item/entity';
 import { ListDepartment } from 'services/department/entity';
 
+export type PersonnelFilterView = {
+  sex: string[];
+  hiredType: string[];
+  keyword: string;
+  keywordType: string[];
+  startDate: Date | null;
+  endDate: Date | null;
+  dateType: string[];
+  size: number;
+  page: number;
+}
+
 export type PersonnelBasicView = {
   engName: string;
   birthDate: Date | null;
@@ -72,6 +84,23 @@ export type PersonnelView = {
   careerList: PersonnelCareerView[];
   licenseList: PersonnelLicenseView[];
   languageList: PersonnelLanguageView[];
+};
+
+export const sexList: string[] = ['남', '여'];
+export const hiredTypeList: string[] = ['신입', '경력'];
+export const keywordTypeList: string[] = ['이름', '이메일', '영문명', '주소', '연락처'];
+export const dateTypeList: string[] = ['생년월일', '입사일', '학력 시작일'];
+
+export const initFilterView: PersonnelFilterView = {
+  sex: sexList,
+  hiredType: hiredTypeList,
+  keyword: '',
+  keywordType: keywordTypeList,
+  startDate: null,
+  endDate: null,
+  dateType: dateTypeList,
+  size: 10,
+  page: 0,
 };
 
 export const initBasicView: PersonnelBasicView = {

@@ -8,11 +8,15 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
+import com.howoocast.hywtl_has.personnel.view.PersonnelListView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.querydsl.core.types.Predicate;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +34,21 @@ public class PersonnelService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
+    public Page<PersonnelListView> page(
+        Predicate predicate,
+        Pageable pageable
+    ) {
+        return personnelRepository.findAll(predicate, pageable)
+            .map(PersonnelListView::assemble);
+    }
+
+    @Transactional(readOnly = true)
     public PersonnelView get(Long id) {
         return PersonnelView.assemble(Personnel.load(personnelRepository, id));
     }
 
     @Transactional
-    public PersonnelView update(Long id, PersonnelParameter params) {
+    public void update(Long id, PersonnelParameter params) {
 
         if (!userRepository.existsById(id)) {
             throw new NotFoundException();
@@ -56,7 +69,6 @@ public class PersonnelService {
             ListConvertor.make(params.getLicenseList()),
             ListConvertor.make(params.getLanguageList())
         );
-        return PersonnelView.assemble(personnelRepository.save(personnel));
     }
 
 }

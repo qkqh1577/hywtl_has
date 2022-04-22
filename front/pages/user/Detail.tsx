@@ -18,7 +18,7 @@ import useUser from 'services/user/hook';
 import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
-import PersonnelDetail from 'pages/personnel/Detail';
+import PersonnelDetail from 'pages/hr/Detail';
 import { ListDepartment } from 'services/department/entity';
 
 const UserDetail = () => {

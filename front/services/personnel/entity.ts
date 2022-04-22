@@ -64,6 +64,20 @@ export type PersonnelLanguage = {
   trainingPeriod?: string;
 }
 
+export type ListPersonnel = {
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  basic: PersonnelBasic;
+  company: PersonnelCompany;
+  jobCount?: number;
+  academicCount?: number;
+  careerCount?: number;
+  licenseCount?: number;
+  languageCount?: number;
+}
+
 type Personnel = {
   id: number;
   basic: PersonnelBasic;

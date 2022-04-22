@@ -1,8 +1,22 @@
 import axios from 'axios';
-import Personnel from 'services/personnel/entity';
-import { PersonnelParameter } from 'services/personnel/parameter';
+import Personnel, { ListPersonnel } from 'services/personnel/entity';
+import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
+import Page from 'components/Page';
+import queryString from 'qs';
 
 export class PersonnelApi {
+  async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {
+    const { data } = await axios.get('/personnels', {
+      params: query,
+      paramsSerializer: (params: any) =>
+        queryString.stringify(params, {
+          arrayFormat: 'brackets',
+          encode: true,
+        })
+    });
+    return data;
+  }
+
   async getOne(id: number): Promise<Personnel> {
     const { data } = await axios.get(`/personnels/${id}`);
     return data;

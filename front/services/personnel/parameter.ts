@@ -1,5 +1,17 @@
 import FileItemParameter from 'services/common/file-item/parameter';
 
+export type PersonnelQuery = {
+  sex?: string[];
+  hiredType?: string[];
+  keyword?: string;
+  keywordType?: string[];
+  startDate?: string;
+  endDate?: string;
+  dateType?: string[];
+  size: number;
+  page: number;
+}
+
 export type PersonnelBasicParameter = {
   engName: string;
   birthDate: string;
