@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.user_verification.service;
 
-import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.event.UserInvitationAddEvent;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
@@ -32,38 +32,36 @@ public class UserInvitationService {
 
     private final ApplicationEventPublisher eventPublisher;
 
+    @Transactional(readOnly = true)
+    public UserInvitationView authenticate(String email, String authKey) {
+        UserInvitation userInvitation = UserInvitation.load(
+            userInvitationRepository,
+            email
+        );
+        userInvitation.checkValid(invalidateDuration, authKey);
+        return UserInvitationView.assemble(userInvitation);
+    }
+
     @Transactional
     public UserInvitationView invite(UserInviteParameter params) {
         String email = params.getEmail();
 
         // 기 가입자 이메일 사용 체크
-        if (userRepository.findByEmailAndDeletedTimeIsNull(email).isPresent()) {
-            throw new DuplicatedValueException("email", email);
-        }
+        User.checkEmail(userRepository, email);
 
         // 기존 초대 코드 무효화
-        userInvitationRepository.findByEmailAndDeletedTimeIsNull(email).ifPresent(UserInvitation::invalidate);
+        UserInvitation.invalidateIfExists(userInvitationRepository, email);
 
         UserInvitation userInvitation = UserInvitation.of(
+            userInvitationRepository,
             email,
             params.getName(),
-            departmentRepository.findById(params.getDepartmentId()).orElseThrow(NotFoundException::new),
+            Department.load(departmentRepository, params.getDepartmentId()),
             params.getUserRole()
         );
 
-        userInvitationRepository.save(userInvitation);
         // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new UserInvitationAddEvent(userInvitation));
-        return UserInvitationView.assemble(userInvitation);
-    }
-
-    @Transactional
-    public UserInvitationView authenticate(String email, String authKey) {
-        UserInvitation userInvitation = UserInvitation.load(
-            userInvitationRepository::findByEmailAndDeletedTimeIsNull,
-            email
-        );
-        userInvitation.checkValid(invalidateDuration, authKey);
         return UserInvitationView.assemble(userInvitation);
     }
 }

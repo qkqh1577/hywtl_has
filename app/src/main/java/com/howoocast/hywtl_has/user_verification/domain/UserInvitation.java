@@ -1,10 +1,11 @@
 package com.howoocast.hywtl_has.user_verification.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user_verification.exception.UserInvitationAuthenticationFailureException;
-import com.howoocast.hywtl_has.user_verification.repository.UserInvitationProvider;
+import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -27,6 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserInvitation {
 
+    @SuppressWarnings("unused")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,29 +57,80 @@ public class UserInvitation {
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
+    @Transient
+    private UserInvitationRepository repository;
 
-    public static UserInvitation of(
+    //////////////////////////////////
+    //// constructor
+    //////////////////////////////////
+    protected UserInvitation(
+        UserInvitationRepository repository,
         String email,
         String name,
         Department department,
         UserRole userRole
     ) {
-        return new UserInvitation(
+        this.repository = repository;
+        this.email = email;
+        this.name = name;
+        this.department = department;
+        this.userRole = userRole;
+        this.createdTime = LocalDateTime.now();
+    }
+
+    //////////////////////////////////
+    //// getter - setter
+    //////////////////////////////////
+    public String getAuthKey() {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(this.getRawKey());
+    }
+
+    private String getRawKey() {
+        return this.createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
+            + this.email;
+    }
+
+    //////////////////////////////////
+    //// builder
+    //////////////////////////////////
+    public static UserInvitation of(
+        UserInvitationRepository repository,
+        String email,
+        String name,
+        Department department,
+        UserRole userRole
+    ) {
+        UserInvitation instance = new UserInvitation(
+            repository,
             email,
             name,
             department,
             userRole
         );
+        instance.save();
+        return instance;
     }
 
+    //////////////////////////////////
+    //// finder
+    //////////////////////////////////
     public static UserInvitation load(
-        UserInvitationProvider provider,
+        UserInvitationRepository repository,
         String email
     ) {
-        return provider.findByEmail(email).orElseThrow(NotFoundException::new);
+        UserInvitation instance = repository
+            .findByEmailAndDeletedTimeIsNull(email)
+            .orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
     }
 
-
+    //////////////////////////////////
+    //// checker
+    //////////////////////////////////
     public void checkValid(String invalidatePeriod, String authKey) {
         LocalDateTime limitTime = this.getCreatedTime().plus(Duration.parse(invalidatePeriod));
         if (limitTime.isBefore(LocalDateTime.now())) {
@@ -88,32 +142,23 @@ public class UserInvitation {
         }
     }
 
+    //////////////////////////////////
+    //// modifier
+    //////////////////////////////////
+    public static void invalidateIfExists(
+        UserInvitationRepository repository,
+        String email
+    ) {
+        repository.findByEmailAndDeletedTimeIsNull(email).ifPresent(UserInvitation::invalidate);
+    }
+
     public void invalidate() {
         this.deletedTime = LocalDateTime.now();
+        this.save();
     }
 
-    public String getAuthKey() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(this.getRawKey());
-    }
-
-    private UserInvitation(
-        String email,
-        String name,
-        Department department,
-        UserRole userRole
-    ) {
-        this.email = email;
-        this.name = name;
-        this.department = department;
-        this.userRole = userRole;
-        this.createdTime = LocalDateTime.now();
-    }
-
-
-    private String getRawKey() {
-        return this.createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
-            + this.email;
+    private void save() {
+        repository.save(this);
     }
 }
 

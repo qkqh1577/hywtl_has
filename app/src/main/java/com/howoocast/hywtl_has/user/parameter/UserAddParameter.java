@@ -4,8 +4,8 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class UserAddParameter {
 
     @NotBlank(message = "아이디는 필수 항목입니다.")
@@ -17,9 +17,11 @@ public class UserAddParameter {
     @NotBlank(message = "이름은 필수 항목입니다.")
     private String name;
 
+    @Getter
     @NotBlank(message = "인증에 실패하였습니다.")
     private String email;
 
+    @Getter
     @NotBlank(message = "인증에 실패하였습니다.")
     private String authKey;
 }

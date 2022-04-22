@@ -54,7 +54,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDetailView get(Long id) {
-        return UserDetailView.assemble(this.load(id));
+        return UserDetailView.assemble(User.load(userRepository, id));
     }
 
     @Transactional(readOnly = true)
@@ -67,11 +67,11 @@ public class UserService {
 
     @Transactional
     public UserDetailView add(UserAddParameter params) {
-        UserInvitation userInvitation =
-            UserInvitation.load(userInvitationRepository::findByEmailAndDeletedTimeIsNull, params.getEmail());
+        UserInvitation userInvitation = UserInvitation.load(userInvitationRepository, params.getEmail());
         userInvitation.checkValid(invalidateDuration, params.getAuthKey());
 
         User user = User.of(
+            userRepository,
             params.getUsername(),
             params.getPassword(),
             params.getName(),
@@ -79,46 +79,34 @@ public class UserService {
             userInvitation.getDepartment(),
             userInvitation.getUserRole()
         );
-        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
-        user.checkUsernameUsed(userRepository::findByUsernameAndDeletedTimeIsNull);
         userInvitation.invalidate();
-        return this.save(user);
+        return UserDetailView.assemble(user);
     }
 
     @Transactional
     public UserDetailView change(Long id, UserChangeParameter params) {
-        Department department = departmentRepository.findById(params.getDepartmentId())
-            .orElseThrow(NotFoundException::new);
-        User user = this.load(id);
+        User user = User.load(userRepository, id);
         user.change(
             params.getName(),
             params.getEmail(),
             params.getUserRole(),
-            department
+            Department.load(departmentRepository, params.getDepartmentId())
         );
-        user.checkEmailUsed(userRepository::findByEmailAndDeletedTimeIsNull);
-        return this.save(user);
+        return UserDetailView.assemble(user);
     }
 
     @Transactional
     public UserDetailView changePassword(Long id, UserPasswordChangeParameter params) {
-        User user = this.load(id);
+        User user = User.load(userRepository, id);
         user.changePassword(params.getNowPassword(), params.getNewPassword());
-        return this.save(user);
+        return UserDetailView.assemble(user);
     }
 
     @Transactional
     public UserDetailView resetPassword(Long id) {
-        User user = this.load(id);
+        User user = User.load(userRepository, id);
         eventPublisher.publishEvent(new UserResetPasswordEvent(user));
-        return this.save(user);
+        return UserDetailView.assemble(user);
     }
 
-    private User load(Long id) {
-        return userRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
-
-    private UserDetailView save(User source) {
-        return UserDetailView.assemble(userRepository.save(source));
-    }
 }

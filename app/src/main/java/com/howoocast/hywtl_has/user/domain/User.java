@@ -2,11 +2,13 @@ package com.howoocast.hywtl_has.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
-import com.howoocast.hywtl_has.user.exception.UserPasswordNotMatchException;
-import com.howoocast.hywtl_has.user.exception.UserPasswordSameException;
-import com.howoocast.hywtl_has.user.repository.UserProvider;
+import com.howoocast.hywtl_has.user.exception.PasswordException;
+import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
+import com.howoocast.hywtl_has.user.exception.UserLockedException;
+import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -75,7 +78,16 @@ public class User {
     @Column(insertable = false)
     private LocalDateTime deletedTime; // 삭제일시
 
-    public static User of(
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
+    @Transient
+    private UserRepository repository;
+
+    //////////////////////////////////
+    //// constructor
+    //////////////////////////////////
+    protected User(
+        UserRepository repository,
         String username,
         String password,
         String name,
@@ -83,7 +95,39 @@ public class User {
         Department department,
         UserRole userRole
     ) {
-        return new User(
+        this.repository = repository;
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.department = department;
+        this.userRole = userRole;
+        this.createdTime = LocalDateTime.now();
+        this.setPassword(password);
+    }
+
+    //////////////////////////////////
+    //// getter - setter
+    //////////////////////////////////
+    private void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+        this.passwordChangedTime = LocalDateTime.now();
+        this.lockedTime = null;
+    }
+
+    //////////////////////////////////
+    //// builder
+    //////////////////////////////////
+    public static User of(
+        UserRepository repository,
+        String username,
+        String password,
+        String name,
+        String email,
+        Department department,
+        UserRole userRole
+    ) {
+        User instance = new User(
+            repository,
             username,
             password,
             name,
@@ -91,33 +135,69 @@ public class User {
             department,
             userRole
         );
+        instance.checkEmailUsed();
+        instance.checkUsernameUsed();
+        instance.save();
+        return instance;
     }
 
-    public void checkEmailUsed(UserProvider provider) {
-        provider.findBy(this.email).ifPresent(target -> {
+    //////////////////////////////////
+    //// finder
+    //////////////////////////////////
+    public static User load(
+        UserRepository repository,
+        Long id
+    ) {
+        User instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
+    }
+
+    //////////////////////////////////
+    //// checker
+    //////////////////////////////////
+    public static void checkEmail(
+        UserRepository repository,
+        String email
+    ) {
+        if (repository.findByEmailAndDeletedTimeIsNull(email).isPresent()) {
+            throw new DuplicatedValueException("email", email);
+        }
+    }
+
+    private void checkEmailUsed() {
+        repository.findByEmailAndDeletedTimeIsNull(this.email).ifPresent(target -> {
             if (!Objects.equals(this.id, target.id)) {
                 throw new DuplicatedValueException("email", this.email);
             }
         });
     }
 
-    public void checkUsernameUsed(UserProvider provider) {
-        provider.findBy(this.username).ifPresent(target -> {
+    private void checkUsernameUsed() {
+        repository.findByUsernameAndDeletedTimeIsNull(this.username).ifPresent(target -> {
             if (!Objects.equals(this.id, target.id)) {
                 throw new DuplicatedValueException("username", this.username);
             }
         });
     }
 
-    public boolean canLogin(String invalidatePeriod) {
-        boolean isDeleted = Objects.nonNull(this.deletedTime);
+    private void checkCanLogin(String invalidatePeriod) {
+        if (Objects.nonNull(this.deletedTime)) {
+            throw new NotFoundException();
+        }
+        if (Objects.nonNull(this.lockedTime)) {
+            throw new UserLockedException();
+        }
 
         LocalDateTime limitTime = this.passwordChangedTime.plus(Duration.parse(invalidatePeriod));
-        boolean isPasswordInvalidated = limitTime.isBefore(LocalDateTime.now());
-
-        return !(isDeleted || isPasswordInvalidated);
+        if (limitTime.isBefore(LocalDateTime.now())) {
+            throw new PasswordException(PasswordExceptionType.INVALIDATED);
+        }
     }
 
+    //////////////////////////////////
+    //// modifier
+    //////////////////////////////////
     public void change(
         String name,
         String email,
@@ -128,6 +208,9 @@ public class User {
         this.email = email;
         this.userRole = userRole;
         this.department = department;
+
+        this.checkEmailUsed();
+        this.save();
     }
 
     public void changePassword(
@@ -136,48 +219,28 @@ public class User {
     ) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(nowPassword, this.password)) {
-            throw new UserPasswordNotMatchException();
+            throw new PasswordException(PasswordExceptionType.NOT_MATCH);
         }
         if (passwordEncoder.matches(newPassword, this.password)) {
-            throw new UserPasswordSameException();
+            throw new PasswordException(PasswordExceptionType.SAME);
         }
         this.setPassword(newPassword);
+        this.save();
     }
 
-    public void login() {
+    public void login(
+        String invalidatePeriod
+    ) {
+        this.checkCanLogin(invalidatePeriod);
         this.loginTime = LocalDateTime.now();
-    }
-
-    public void lock() {
-        if (Objects.isNull(this.lockedTime)) {
-            this.lockedTime = LocalDateTime.now();
-        }
+        this.save();
     }
 
     public void delete() {
         this.deletedTime = LocalDateTime.now();
     }
 
-    protected User(
-        String username,
-        String password,
-        String name,
-        String email,
-        Department department,
-        UserRole userRole
-    ) {
-        this.username = username;
-        this.name = name;
-        this.email = email;
-        this.department = department;
-        this.userRole = userRole;
-        this.createdTime = LocalDateTime.now();
-        this.setPassword(password);
-    }
-
-    private void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
-        this.passwordChangedTime = LocalDateTime.now();
-        this.lockedTime = null;
+    private void save() {
+        repository.save(this);
     }
 }

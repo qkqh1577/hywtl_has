@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -64,7 +67,51 @@ public class Personnel {
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
-    public void of(
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
+    @Transient
+    private PersonnelRepository repository;
+
+    //////////////////////////////////
+    //// constructor
+    //////////////////////////////////
+    private Personnel(Long id) {
+        this.id = id;
+    }
+
+    //////////////////////////////////
+    //// builder
+    //////////////////////////////////
+    public static Personnel create(Long id) {
+        return new Personnel(id);
+    }
+
+
+    //////////////////////////////////
+    //// finder
+    //////////////////////////////////
+    public static Personnel load(
+        PersonnelRepository repository,
+        Long id
+    ) {
+        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
+    }
+
+    public static Personnel find(
+        PersonnelRepository repository,
+        Long id
+    ) {
+        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElse(new Personnel(id));
+        instance.repository = repository;
+        return instance;
+    }
+
+    //////////////////////////////////
+    //// modifier
+    //////////////////////////////////
+    public void change(
         PersonnelBasic basic,
         PersonnelCompany company,
         List<PersonnelJob> jobList,
@@ -83,11 +130,5 @@ public class Personnel {
         this.createdTime = LocalDateTime.now();
     }
 
-    public static Personnel create(Long id) {
-        return new Personnel(id);
-    }
 
-    private Personnel(Long id) {
-        this.id = id;
-    }
 }

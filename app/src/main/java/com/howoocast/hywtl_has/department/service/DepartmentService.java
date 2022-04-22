@@ -1,17 +1,14 @@
 package com.howoocast.hywtl_has.department.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
-import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter.DepartmentTreeParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -46,56 +43,39 @@ public class DepartmentService {
 
     @Transactional(readOnly = true)
     public DepartmentView get(Long id) {
-        return DepartmentView.assemble(this.load(id));
+        return DepartmentView.assemble(Department.load(departmentRepository, id));
     }
 
     @Transactional
     public DepartmentView add(DepartmentAddParameter params) {
-        return DepartmentView.assemble(Department.add(
-            departmentRepository,
-            params.getName(),
-            params.getCategory(),
-            this.find(params.getParentId()),
-            params.getMemo()
-        ));
-    }
-
-    @Transactional
-    public DepartmentView change(Long id, DepartmentChangeParameter params) {
-        Department department = this.load(id);
-        return DepartmentView.assemble(department.change(
-            departmentRepository,
-            params.getName(),
-            params.getCategory(),
-            this.find(params.getParentId()),
-            params.getMemo()
-        ));
-    }
-
-    @Transactional
-    public List<DepartmentListView> changeTree(DepartmentChangeTreeParameter params) {
-        List<DepartmentTreeParameter> list = params.getList();
-
-        list.forEach(item -> {
-            Department department = this.load(item.getId());
-            department.changeParent(
+        return DepartmentView.assemble(
+            Department.of(
                 departmentRepository,
-                this.find(item.getParentId()),
-                item.getSeq()
+                params.getName(),
+                params.getCategory(),
+                Department.find(departmentRepository, params.getParentId()),
+                params.getMemo()
+            )
+        );
+    }
+
+    @Transactional
+    public void change(Long id, DepartmentChangeParameter params) {
+        Department
+            .load(departmentRepository, id)
+            .change(
+                params.getName(),
+                params.getCategory(),
+                Department.find(departmentRepository, params.getParentId()),
+                params.getMemo()
             );
-        });
-
-        return departmentRepository.findByDeletedTimeIsNull().stream()
-            .map(DepartmentListView::assemble)
-            .collect(Collectors.toList());
     }
 
-    @Nullable
-    private Department find(@Nullable Long id) {
-        return Objects.isNull(id) ? null : this.load(id);
-    }
-
-    private Department load(Long id) {
-        return departmentRepository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+    @Transactional
+    public void changeTree(DepartmentChangeTreeParameter params) {
+        params.getList().forEach(item -> Department.load(departmentRepository, item.getId()).changeParent(
+            Department.find(departmentRepository, item.getParentId()),
+            item.getSeq()
+        ));
     }
 }

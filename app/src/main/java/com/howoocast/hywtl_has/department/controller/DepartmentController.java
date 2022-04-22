@@ -70,12 +70,14 @@ public class DepartmentController {
 
     @PostMapping("/departments/tree")
     public List<DepartmentListView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter params) {
-        return departmentService.changeTree(params);
+        departmentService.changeTree(params);
+        return list();
     }
 
     @PatchMapping("/departments/{id}")
     public DepartmentView change(@PathVariable Long id, @Valid @RequestBody DepartmentChangeParameter params) {
-        return departmentService.change(id, params);
+        departmentService.change(id, params);
+        return departmentService.get(id);
     }
 
 

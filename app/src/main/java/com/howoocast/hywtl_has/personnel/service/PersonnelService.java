@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.personnel.service;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.common.util.ListConvertor;
+import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
@@ -30,7 +31,7 @@ public class PersonnelService {
 
     @Transactional(readOnly = true)
     public PersonnelView get(Long id) {
-        return PersonnelView.assemble(this.load(id));
+        return PersonnelView.assemble(Personnel.load(personnelRepository, id));
     }
 
     @Transactional
@@ -40,17 +41,13 @@ public class PersonnelService {
             throw new NotFoundException();
         }
 
-        Personnel personnel = personnelRepository
-            .findByIdAndDeletedTimeIsNull(id)
-            .orElse(Personnel.create(id));
-        personnel.of(
+        Personnel personnel = Personnel.find(personnelRepository, id);
+        personnel.change(
             params.getBasic().imageItem(fileItemService.build(params.getBasic().getImage())).build(),
             params.getCompany().build(),
             ListConvertor.make(params.getJobList().stream()
                 .peek(item -> item.setDepartment(
-                    departmentRepository
-                        .findByIdAndDeletedTimeIsNull(item.getDepartmentId())
-                        .orElseThrow(NotFoundException::new))
+                    Department.load(departmentRepository, item.getDepartmentId()))
                 )
                 .collect(Collectors.toList())
             ),
@@ -62,7 +59,4 @@ public class PersonnelService {
         return PersonnelView.assemble(personnelRepository.save(personnel));
     }
 
-    private Personnel load(Long id) {
-        return personnelRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
 }
