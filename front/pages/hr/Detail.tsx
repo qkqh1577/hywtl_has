@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -48,10 +48,16 @@ import {
 import FileItemParameter from 'services/common/file-item/parameter';
 import { ListDepartment } from 'services/department/entity';
 
-const PersonnelDetail = (props: { id: number }) => {
-  const { id } = props;
-
+const PersonnelDetail = () => {
   const navigate = useNavigate();
+  const { id: idString } = useParams<{ id: string }>();
+  const id = idString ? +idString : undefined;
+  if (typeof id === 'undefined' || Number.isNaN(id)) {
+    window.alert('잘못된 접근입니다.');
+    navigate('/personnel');
+    return null;
+  }
+
   const {
     personnelState: {
       detail

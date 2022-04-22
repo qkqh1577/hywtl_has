@@ -4,10 +4,8 @@ import com.howoocast.hywtl_has.common.util.ListConvertor;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class PersonnelView {
 
     private PersonnelBasicView basic;

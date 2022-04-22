@@ -30,7 +30,6 @@ public class Personnel {
     private Long id; // share user id
 
     @SuppressWarnings("unused")
-    @Getter(AccessLevel.NONE)
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id")
