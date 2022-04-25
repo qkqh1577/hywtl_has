@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.common.controller;
 
+import com.howoocast.hywtl_has.common.exception.CustomExceptionAdaptor;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -24,6 +25,11 @@ public class ExceptionController {
 
     @ExceptionHandler(IllegalRequestException.class)
     public ResponseEntity<?> illegalRequest(IllegalRequestException e) {
+        return e.getResponse();
+    }
+
+    @ExceptionHandler(CustomExceptionAdaptor.class)
+    public ResponseEntity<?> exception(CustomExceptionAdaptor e) {
         return e.getResponse();
     }
 }

@@ -63,8 +63,8 @@ export default function useUser() {
   );
 
   const getLogin = useCallback(
-    () =>
-      dispatch(userActions.getLogin()),
+    (callback: () => void) =>
+      dispatch(userActions.getLogin(callback)),
     [dispatch]
   );
 

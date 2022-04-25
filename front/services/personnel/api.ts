@@ -1,24 +1,16 @@
-import axios from 'axios';
+import apiClient from 'services/common/api';
 import Personnel, { ListPersonnel } from 'services/personnel/entity';
 import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
 import Page from 'components/Page';
-import queryString from 'qs';
 
 export class PersonnelApi {
   async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {
-    const { data } = await axios.get('/personnels', {
-      params: query,
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
+    const { data } = await apiClient.get('/personnels', query);
     return data;
   }
 
   async getOne(id: number): Promise<Personnel> {
-    const { data } = await axios.get(`/personnels/${id}`);
+    const { data } = await apiClient.get(`/personnels/${id}`);
     return data;
   }
 
@@ -63,7 +55,7 @@ export class PersonnelApi {
     });
 
 
-    const { data } = await axios.put(`/personnels/${id}`, form, {
+    const { data } = await apiClient.put(`/personnels/${id}`, form, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },

@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user_verification.exception.UserInvitationAuthenticationFailureException;
+import com.howoocast.hywtl_has.user_verification.exception.UserInvitationAuthenticationFailureException.UserInvitationAuthenticationFailureExceptionType;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -134,11 +135,11 @@ public class UserInvitation {
     public void checkValid(String invalidatePeriod, String authKey) {
         LocalDateTime limitTime = this.getCreatedTime().plus(Duration.parse(invalidatePeriod));
         if (limitTime.isBefore(LocalDateTime.now())) {
-            throw new UserInvitationAuthenticationFailureException();
+            throw new UserInvitationAuthenticationFailureException(UserInvitationAuthenticationFailureExceptionType.EXPIRED);
         }
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(this.getRawKey(), authKey)) {
-            throw new UserInvitationAuthenticationFailureException();
+            throw new UserInvitationAuthenticationFailureException(UserInvitationAuthenticationFailureExceptionType.ILLEGAL_KEY);
         }
     }
 

@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 @RequiredArgsConstructor
 public class IllegalRequestException extends CustomExceptionAdaptor {
 
-    public IllegalRequestException(String message) {
-        super(message);
+    public IllegalRequestException(String code, String message) {
+        super(code, message);
     }
 
 }

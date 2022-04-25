@@ -46,7 +46,7 @@ export const userActions = {
     callback: (data?: User) => void;
   }>(),
   selectOne: createAction(UserActionType.selectOne)<number>(),
-  getLogin: createAction(UserActionType.getLogin)(),
+  getLogin: createAction(UserActionType.getLogin)<() => void>(),
   setLogin: createAction(UserActionType.setLogin)<User | undefined>(),
   login: createAction(UserActionType.login)<{
     params: LoginParameter;
