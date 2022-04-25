@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -27,9 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .headers()
             .cacheControl().and().contentTypeOptions().disable()
             .and()
-            .httpBasic().disable()
+            // TODO: CSRF 처리 필요
             .csrf().disable()
-            .cors().disable()
+            .httpBasic().disable()
             .formLogin()
             .loginPage("/login")
             .defaultSuccessUrl("/")
@@ -39,11 +38,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logoutSuccessUrl("/login")
             .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/")
+            .antMatchers(
+                HttpMethod.GET,
+                "/",
+                "/user-invitations/authenticate",
+                "/users/login",
+                "/login",
+                "errors/*"
+            )
             .permitAll()
             .antMatchers("/**")
-            // TODO: 권한 및 url 체계 확정 후 denyAll로 전환
-            .permitAll()
+            // TODO: 권한 및 url 체계 확정 후 denyAll 전환
+            .authenticated()
+
         ;
     }
 

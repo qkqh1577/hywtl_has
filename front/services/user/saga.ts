@@ -1,9 +1,9 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import Page from 'components/Page';
-import { userActions, UserActionType } from './actions';
 import User, { ListUser } from 'services/user/entity';
 import userApi from './api';
+import { userActions, UserActionType } from './actions';
 
 function* getPage(action: ActionType<typeof userActions.getPage>) {
   const page: Page<ListUser> = yield userApi.getPage(action.payload);
@@ -60,12 +60,12 @@ function* changePassword(action: ActionType<typeof userActions.changePassword>) 
   }
 }
 
-function* getLogin() {
+function* getLogin(action: ActionType<typeof userActions.getLogin>) {
   try {
     const data: User = yield userApi.getLogin();
     yield put(userActions.setLogin(data));
   } catch (e) {
-    yield put(userActions.setLogin(undefined));
+    action.payload();
   }
 }
 
@@ -76,12 +76,14 @@ function* login(action: ActionType<typeof userActions.login>) {
     yield put(userActions.setLogin(data));
     callback(data);
   } catch (e) {
+    yield put(userActions.setLogin(undefined));
     callback();
   }
 }
 
 function* logout() {
   yield userApi.logout();
+  yield put(userActions.setLogin(undefined));
 }
 
 export default function* saga() {

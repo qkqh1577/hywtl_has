@@ -1,7 +1,8 @@
 package com.howoocast.hywtl_has.user.controller;
 
-import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.user.common.UserRole;
+import com.howoocast.hywtl_has.user.exception.UserLoginException;
+import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
@@ -57,7 +58,7 @@ public class UserController {
             log.debug("[Login] username: {}", username);
             return userService.get(username);
         } catch (Exception e) {
-            throw new IllegalRequestException("로그인이 필요합니다.");
+            throw new UserLoginException(UserLoginExceptionType.NOT_AUTHENTICATED);
         }
     }
 

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import queryString from 'qs';
+import apiClient from 'services/common/api';
 import Page from 'components/Page';
 import {
   AddUserParameter,
@@ -11,64 +10,39 @@ import User, { ListUser } from 'services/user/entity';
 
 export class UserApi {
   async getPage(query: UserQuery): Promise<Page<ListUser>> {
-    const { data } = await axios.get('/users', {
-      params: query,
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
+    const { data } = await apiClient.get('/users', query);
     return data;
   }
 
   async getOne(id: number): Promise<User> {
-    const { data } = await axios.get(`/users/${id}`);
+    const { data } = await apiClient.get(`/users/${id}`);
     return data;
   }
 
   async add(params: AddUserParameter): Promise<User> {
-    const { data } = await axios.post('/users', params, {
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
+    const { data } = await apiClient.post('/users', params);
     return data;
   }
 
   async resetPassword(id: number): Promise<User> {
-    const { data } = await axios.post(`/users/${id}/password/reset`);
+    const { data } = await apiClient.post(`/users/${id}/password/reset`);
     return data;
   }
 
   async change(params: ChangeUserParameter): Promise<User> {
     const { id, ...rest } = params;
-    const { data } = await axios.patch(`/users/${id}`, rest, {
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
+    const { data } = await apiClient.patch(`/users/${id}`, rest);
     return data;
   }
 
   async changePassword(params: ChangeUserPasswordParameter): Promise<User> {
     const { id, ...rest } = params;
-    const { data } = await axios.patch(`/users/${id}/password`, rest, {
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
-    });
+    const { data } = await apiClient.patch(`/users/${id}/password`, rest);
     return data;
   }
 
   async getLogin(): Promise<User> {
-    const { data } = await axios.get('/users/login');
+    const { data } = await apiClient.get('/users/login');
     return data;
   }
 
@@ -76,16 +50,23 @@ export class UserApi {
     const form = new FormData();
     form.append('username', params.username);
     form.append('password', params.password);
-    const { data } = await axios.post('/login', form);
+    const { data } = await apiClient.post('/login', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    });
     return data;
   }
 
   async logout(): Promise<any> {
     const form = new FormData();
-    const { data } = await axios.post('/logout', form);
+    const { data } = await apiClient.post('/logout', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    });
     return data;
   }
-
 }
 
 const userApi = new UserApi();

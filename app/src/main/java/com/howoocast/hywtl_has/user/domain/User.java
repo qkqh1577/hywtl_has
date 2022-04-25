@@ -7,7 +7,8 @@ import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
 import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
-import com.howoocast.hywtl_has.user.exception.UserLockedException;
+import com.howoocast.hywtl_has.user.exception.UserLoginException;
+import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -186,12 +187,12 @@ public class User {
             throw new NotFoundException();
         }
         if (Objects.nonNull(this.lockedTime)) {
-            throw new UserLockedException();
+            throw new UserLoginException(UserLoginExceptionType.LOCKED);
         }
 
         LocalDateTime limitTime = this.passwordChangedTime.plus(Duration.parse(invalidatePeriod));
         if (limitTime.isBefore(LocalDateTime.now())) {
-            throw new PasswordException(PasswordExceptionType.INVALIDATED);
+            throw new PasswordException(PasswordExceptionType.EXPIRED);
         }
     }
 

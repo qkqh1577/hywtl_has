@@ -1,21 +1,12 @@
 import React, { KeyboardEvent, useEffect } from 'react';
 import { Box, Button, FormControl, Grid, Input, InputLabel, Paper } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LoginParameter } from 'services/user/parameter';
 import userApi from 'services/user/api';
 
 const LoginForm = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    userApi.getLogin().then(() => {
-      const state: any | undefined = location.state;
-      const prevLocation = state?.path ?? '/';
-      navigate(prevLocation);
-    });
-  }, []);
 
   const handler = {
     keyDown: (e: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>, handleSubmit: () => void) => {
@@ -48,18 +39,8 @@ const LoginForm = () => {
         password
       };
       userApi.login(params).then(() => {
-        try {
-          if (location.state && typeof location.state === 'object') {
-            const { path } = location.state as any;
-            if (typeof path === 'string') {
-              navigate(path);
-              return;
-            }
-          }
-          navigate('/');
-        } catch (e) {
-          navigate('/');
-        }
+        const prevLocation = localStorage.getItem('path') ?? '/';
+        navigate(prevLocation);
       }).catch((e) => {
         console.log(e);
       }).finally(() => {
@@ -67,6 +48,15 @@ const LoginForm = () => {
       });
     }
   };
+
+  useEffect(() => {
+    userApi.getLogin().then(() => {
+      const prevLocation = localStorage.getItem('path') ?? '/';
+      navigate(prevLocation);
+    }).catch(() => {
+      // nothing to do
+    });
+  }, []);
 
   return (
     <Paper sx={{
