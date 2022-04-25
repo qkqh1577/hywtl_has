@@ -35,7 +35,7 @@ create table user
 	name varchar(255) not null,
 	password varchar(255) not null,
 	password_changed_time datetime(6) not null,
-	user_role int not null,
+	user_role varchar(255) not null,
 	username varchar(255) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -131,3 +131,26 @@ create table personnel_language_list
 	type varchar(255) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
+create table project
+(
+	id bigint auto_increment primary key,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	updated_time datetime(6) not null
+);
+
+create table project_basic
+(
+	id bigint auto_increment primary key,
+	alias varchar(255) null,
+	code varchar(255) not null,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	name varchar(255) not null,
+	status varchar(255) null,
+	updated_time datetime(6) not null,
+	project_id bigint not null,
+	project_manager_id bigint not null,
+	sales_manager_id bigint not null,
+	constraint UK_project_project_basic unique (code)
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
