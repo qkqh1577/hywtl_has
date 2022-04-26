@@ -65,6 +65,10 @@ const App = () => {
       title: 'PROJECT',
       path: '/project',
       icon: DashboardIcon
+    }, {
+      title: 'COMPANY',
+      path: '/company',
+      icon: DashboardIcon
     }
   ]);
 

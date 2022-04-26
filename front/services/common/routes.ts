@@ -5,6 +5,7 @@ import userRoutes from 'pages/user/routes';
 import hrCardRoutes from 'pages/hr/routes';
 import sales from 'pages/sales/routes';
 import project from 'pages/project/routes';
+import company from 'pages/company/routes';
 
 export interface AppRoutes extends RouteProps {
   // extension wrapper
@@ -16,7 +17,8 @@ const Routes = () => {
     ...userRoutes,
     ...hrCardRoutes,
     ...sales,
-    ...project
+    ...project,
+    ...company,
   ];
 
   return useRoutes(routes as RouteObject[]);
