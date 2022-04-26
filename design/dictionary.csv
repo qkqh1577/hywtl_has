@@ -4,12 +4,12 @@
 # 영문단어가 두개 이상의 단어조합으로 정의되는 경우 >> 예시) 작성일,createdDate
 # 단어는 수식어를 쓰지 않는다 >> 예시) 예쁜꽃 X --> 꽃
 
-업체명
-대표명
-사업자번호
-주소
-대표전화번호
-담당자
-담당자이메일
-담당자핸드폰
-비고
+업체명,companyName
+대표명,representativeName
+사업자번호,registrationNumber
+주소,address
+대표전화번호,officePhone
+담당자,name
+담당자이메일,email
+담당자핸드폰,mobile
+비고,memo
