@@ -9,6 +9,7 @@ import lombok.Getter;
 public class ProjectCommentView {
 
     private Long id;
+    private Long projectId;
     private UserListView writer;
     private String description;
     private LocalDateTime createdTime;
@@ -17,6 +18,7 @@ public class ProjectCommentView {
     public static ProjectCommentView assemble(ProjectComment source) {
         ProjectCommentView target = new ProjectCommentView();
         target.id = source.getId();
+        target.projectId = source.getProject().getId();
         target.writer = UserListView.assemble(source.getWriter());
         target.description = source.getDescription();
         target.createdTime = source.getCreatedTime();
