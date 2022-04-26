@@ -276,7 +276,9 @@ const App = () => {
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth={false} sx={{
+          paddingLeft: path.includes('project') ? '0 !important': '24px'
+        }}>
           <ReactRouter />
         </Container>
       </Box>

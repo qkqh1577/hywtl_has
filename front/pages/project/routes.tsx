@@ -1,11 +1,11 @@
 import React from 'react';
 import { AppRoutes } from 'services/common/routes';
-import List from './List';
+import ProjectContainer from 'pages/project/Container';
 
 const routes: AppRoutes[] = [
   {
     path: '/project/*',
-    element: <List />
+    element: <ProjectContainer />
   }
 ];
 
