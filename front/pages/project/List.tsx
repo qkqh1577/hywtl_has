@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Grid,
+  Grid, Link,
   Paper,
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
 import { Form, Formik, FormikHelpers } from 'formik';
 import { DataField } from 'components';
 import useProject from 'services/project/hook';
-import { initProjectFilter, ProjectFilterView } from 'services/project/view';
+import { initProjectFilter, ProjectFilterView, projectStatusName } from 'services/project/view';
 
 type TableCellProperty = {
   key: string;
@@ -140,10 +140,25 @@ const ProjectList = () => {
             <TableBody>
               {page.content.map((item) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
+                  <TableRow
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={item.id}
+                    hover
+                  >
                     <TableCell>{item.code}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
+                    <TableCell>
+                      <Link
+                        sx={{
+                          cursor: 'pointer'
+                        }}
+                        onClick={() => {
+                          navigate(`/project/${item.id}/basic`);
+                        }}>
+                        {item.name}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{projectStatusName(item.status)}</TableCell>
                   </TableRow>
                 );
               })}

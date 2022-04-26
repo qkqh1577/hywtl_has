@@ -10,7 +10,7 @@ import {
   Box,
   Button,
   Container,
-  Divider,
+  Divider, Grid,
   IconButton,
   Paper,
   Toolbar
@@ -81,28 +81,41 @@ const ProjectContainer = () => {
         <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
           <Box sx={{
             display: 'flex',
-            justifyContent: 'space-between',
             width: '100%',
             height: '20px',
+            mb: '10px',
           }}>
             {detail && (
-              <>
-                <h2>{detail?.basic.name}</h2>
-                <IconButton color="primary">
-                  <StarOutlineIcon />
-                </IconButton>
-              </>
-            )}
+              <Grid container spacing={2} sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignContent: 'center',
+                alignItems: 'center',
+                flexWrap: 'noWrap'
+              }}>
+                <Grid item>
+                  <h2>{detail?.basic.name}</h2>
+                </Grid>
+                <Grid item>
+                  <IconButton color="primary">
+                    <StarOutlineIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+              )}
           </Box>
+          <Divider />
           <Box sx={{
             display: 'flex',
             width: '100%',
             height: '30px',
+            mb: '10px',
           }}>
             <div>
               프로젝트 상태 TBD
             </div>
           </Box>
+          <Divider />
           <Box sx={{
             display: 'flex',
             width: '100%',

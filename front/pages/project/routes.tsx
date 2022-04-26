@@ -4,7 +4,11 @@ import ProjectContainer from 'pages/project/Container';
 
 const routes: AppRoutes[] = [
   {
-    path: '/project/*',
+    path: '/project',
+    element: <ProjectContainer />
+  },
+  {
+    path: '/project/:id/*',
     element: <ProjectContainer />
   }
 ];
