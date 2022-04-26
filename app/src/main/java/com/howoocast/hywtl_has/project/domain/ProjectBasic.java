@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
+import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -11,9 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -30,10 +31,9 @@ public class ProjectBasic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter(AccessLevel.NONE)
     @JsonIgnore
-    @OneToOne
-    @JoinColumn
-    @NotNull
+    @OneToOne(mappedBy = "basic")
     private Project project;
 
     @NotBlank
@@ -71,6 +71,11 @@ public class ProjectBasic {
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
+    @Transient
+    protected ProjectBasicRepository repository;
+
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
@@ -84,7 +89,9 @@ public class ProjectBasic {
     //// builder
     //////////////////////////////////
     public static ProjectBasic of(
+        ProjectBasicRepository repository,
         String name,
+        String code,
         String alias,
         ProjectStatus status,
         User salesManager,
@@ -98,9 +105,11 @@ public class ProjectBasic {
             salesManager,
             projectManager
         );
+        instance.repository = repository;
+        instance.code = code;
         instance.createdTime = LocalDateTime.now();
         instance.updatedTime = instance.createdTime;
-        return instance;
+        return repository.save(instance);
     }
 
     //////////////////////////////////
@@ -142,5 +151,10 @@ public class ProjectBasic {
             projectManager
         );
         this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void save() {
+        repository.save(this);
     }
 }

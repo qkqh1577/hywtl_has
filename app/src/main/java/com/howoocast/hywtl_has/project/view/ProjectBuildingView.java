@@ -2,7 +2,9 @@ package com.howoocast.hywtl_has.project.view;
 
 import com.howoocast.hywtl_has.common.view.AddressView;
 import com.howoocast.hywtl_has.project.domain.ProjectBuilding;
+import java.util.Objects;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 @Getter
 public class ProjectBuildingView {
@@ -24,8 +26,11 @@ public class ProjectBuildingView {
 
     private Integer baseCount;
 
-    public static ProjectBuildingView assemble(ProjectBuilding source) {
+    public static ProjectBuildingView assemble(@Nullable ProjectBuilding source) {
         ProjectBuildingView target = new ProjectBuildingView();
+        if (Objects.isNull(source)) {
+            return target;
+        }
         target.address = AddressView.assemble(source.getAddress());
         target.purpose1 = source.getPurpose1();
         target.purpose2 = source.getPurpose2();

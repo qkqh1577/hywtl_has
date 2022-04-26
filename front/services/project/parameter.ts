@@ -1,5 +1,6 @@
 import { ProjectStatus } from 'services/project/entity';
 import { AddressParameter } from 'services/common/address/parameter';
+
 export type ProjectQuery = {
   size: number;
   page: number;
@@ -26,6 +27,6 @@ export type ProjectBuildingParameter = {
   baseCount?: number;
 }
 
-export type ProjectAddParameter = {
-  basic: ProjectBasicParameter;
+export type ProjectAddParameter = ProjectBasicParameter & {
+  code: string;
 }

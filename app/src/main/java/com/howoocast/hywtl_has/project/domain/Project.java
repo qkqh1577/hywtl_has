@@ -2,6 +2,8 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
+import com.howoocast.hywtl_has.project.repository.ProjectBuildingRepository;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
@@ -10,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -24,11 +27,13 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "project", cascade = {CascadeType.ALL, CascadeType.MERGE})
     @NotNull
+    @OneToOne
+    @JoinColumn
     private ProjectBasic basic;
 
-    @OneToOne(mappedBy = "project", cascade = {CascadeType.ALL, CascadeType.MERGE})
+    @OneToOne
+    @JoinColumn
     private ProjectBuilding building;
 
     @NotNull
@@ -76,7 +81,7 @@ public class Project {
             basic
         );
         instance.repository = repository;
-        return instance;
+        return repository.save(instance);
     }
 
     //////////////////////////////////

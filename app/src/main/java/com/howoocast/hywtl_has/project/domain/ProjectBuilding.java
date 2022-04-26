@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.domain.Address;
+import com.howoocast.hywtl_has.project.repository.ProjectBuildingRepository;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -9,8 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,10 +27,9 @@ public class ProjectBuilding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter(AccessLevel.NONE)
     @JsonIgnore
-    @OneToOne
-    @JoinColumn
-    @NotNull
+    @OneToOne(mappedBy = "building")
     private Project project;
 
     @Embedded
@@ -64,6 +64,11 @@ public class ProjectBuilding {
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
+    @Getter(AccessLevel.NONE)
+    @JsonIgnore
+    @Transient
+    protected ProjectBuildingRepository repository;
+
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
@@ -76,6 +81,7 @@ public class ProjectBuilding {
     //// builder
     //////////////////////////////////
     public static ProjectBuilding of(
+        ProjectBuildingRepository repository,
         Address address,
         String purpose1,
         String purpose2,
@@ -98,9 +104,10 @@ public class ProjectBuilding {
             floorCount,
             baseCount
         );
+        instance.repository = repository;
         instance.createdTime = LocalDateTime.now();
         instance.updatedTime = instance.createdTime;
-        return instance;
+        return repository.save(instance);
     }
 
     //////////////////////////////////
@@ -159,5 +166,10 @@ public class ProjectBuilding {
             baseCount
         );
         this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void save() {
+        repository.save(this);
     }
 }

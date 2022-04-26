@@ -24,6 +24,7 @@ import {
 import ProjectList from 'pages/project/List';
 import ProjectDrawer from 'pages/project/ProjectDrawer';
 import useProject from 'services/project/hook';
+import ProjectAddModal from 'pages/project/AddModal';
 
 const ProjectContainer = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -183,6 +184,7 @@ const ProjectContainer = () => {
           </Box>
         </Paper>
         <Routes>
+          <Route path="/add" element={<ProjectAddModal />} />
           <Route path="/:id/basic" element={<h2>basic</h2>} />
           <Route path="/:id/building" element={<h2>building</h2>} />
           <Route path="/:id/bid" element={<h2>bid</h2>} />

@@ -1,7 +1,7 @@
 import { ListUser } from 'services/user/entity';
 import Address from 'services/common/address/entity';
 
-export type ProjectStatus = '가등록' | '진행';
+export type ProjectStatus = 'ON_GOING' | 'TEMPLATE';
 
 export type ListProject = {
   id: number;

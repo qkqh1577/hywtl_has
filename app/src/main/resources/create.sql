@@ -137,7 +137,9 @@ create table project
 	id bigint auto_increment primary key,
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
-	updated_time datetime(6) not null
+	updated_time datetime(6) not null,
+    basic_id bigint not null,
+    building_id bigint null
 );
 
 create table project_basic
@@ -150,7 +152,6 @@ create table project_basic
 	name varchar(255) not null,
 	status varchar(255) null,
 	updated_time datetime(6) not null,
-	project_id bigint not null,
 	project_manager_id bigint not null,
 	sales_manager_id bigint not null,
 	constraint UK_project_project_basic unique (code)
@@ -177,6 +178,5 @@ create table project_building
     purpose1 varchar(255) null,
     purpose2 varchar(255) null,
     total_area double null,
-    updated_time datetime(6) not null,
-    project_id bigint not null
+    updated_time datetime(6) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -30,7 +31,9 @@ const columns: TableCellProperty[] = [
 ];
 
 const ProjectList = () => {
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
   const {
     projectState: { page },
     getPage,
@@ -47,7 +50,7 @@ const ProjectList = () => {
       setFilter(initProjectFilter);
     },
     toAdd: () => {
-      console.log('add');
+      navigate('/project/add');
     }
   };
 
@@ -57,7 +60,7 @@ const ProjectList = () => {
       page: filter.page,
       keyword: filter.keyword || undefined,
     });
-  }, [filter]);
+  }, [filter, path]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>

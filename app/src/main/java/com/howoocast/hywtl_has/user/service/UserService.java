@@ -14,7 +14,9 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.view.UserDetailView;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import com.querydsl.core.types.Predicate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,6 +55,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public List<UserListView> getAll() {
+        return userRepository.findAll().stream()
+            .map(UserListView::assemble)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public UserDetailView get(Long id) {
         return UserDetailView.assemble(User.load(userRepository, id));
     }
@@ -67,7 +76,8 @@ public class UserService {
 
     @Transactional
     public UserDetailView add(UserAddParameter params) {
-        UserInvitation userInvitation = UserInvitation.load(userInvitationRepository, params.getEmail());
+        UserInvitation userInvitation = UserInvitation.load(userInvitationRepository,
+            params.getEmail());
         userInvitation.checkValid(invalidateDuration, params.getAuthKey());
 
         User user = User.of(

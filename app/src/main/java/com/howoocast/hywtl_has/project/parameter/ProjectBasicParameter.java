@@ -12,6 +12,7 @@ public class ProjectBasicParameter {
 
     @NotBlank(message = "project.basic.name.not-blank")
     private String name;
+
     private String alias;
 
     @NotNull(message = "project.basic.status.not-null")
