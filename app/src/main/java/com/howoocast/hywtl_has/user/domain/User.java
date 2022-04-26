@@ -163,6 +163,16 @@ public class User {
         return instance;
     }
 
+    public static User load(
+        UserRepository repository,
+        String username
+    ) {
+        User instance = repository.findByUsernameAndDeletedTimeIsNull(username)
+            .orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
+    }
+
     //////////////////////////////////
     //// checker
     //////////////////////////////////

@@ -180,3 +180,14 @@ create table project_building
     total_area double null,
     updated_time datetime(6) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_comment
+(
+    id bigint auto_increment primary key,
+    created_time datetime(6) not null,
+    deleted_time datetime(6) null,
+    description  varchar(255) not null,
+    updated_time datetime(6) not null,
+    project_id bigint null,
+    writer_id bigint null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;

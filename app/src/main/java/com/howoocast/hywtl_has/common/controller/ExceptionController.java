@@ -201,6 +201,12 @@ public class ExceptionController {
             case "address.longitude.not-null":
                 value = "경도";
                 break;
+            case "project-comment.project-id.not-null":
+                value = "프로젝트";
+                break;
+            case "project-comment.description.not-blank":
+                value = "메모 내용";
+                break;
         }
 
         if (Objects.isNull(value)) {
