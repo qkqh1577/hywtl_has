@@ -5,6 +5,7 @@ import departmentSaga from 'services/department/saga';
 import userSaga from 'services/user/saga';
 import userInvitationSaga from 'services/user/invitation/saga';
 import personnelSaga from 'services/personnel/saga';
+import projectSaga from 'services/project/saga';
 import reducer from 'services/common/reducer';
 
 const middleware = createSagaMiddleware();
@@ -15,6 +16,7 @@ function* saga() {
     userSaga(),
     userInvitationSaga(),
     personnelSaga(),
+    projectSaga(),
   ]);
 }
 

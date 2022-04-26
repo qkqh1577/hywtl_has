@@ -6,22 +6,24 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
 public class PersonnelLanguageParameter extends CustomParameter<PersonnelLanguage> {
 
-    @NotBlank(message = "자격증명은 필수 항목입니다.")
+    @NotBlank(message = "personnel.language.name.not-blank")
     private String name;
 
-    @NotBlank(message = "자격증 대상 언어는 필수 항목입니다.")
+    @NotBlank(message = "personnel.language.type.not-blank")
     private String type;
 
     private String grade;
 
-    @NotBlank(message = "발급기관명은 필수 항목입니다.")
+    @NotBlank(message = "personnel.language.organization-name.not-blank")
     private String organizationName;
 
-    @NotNull(message = "취득일은 필수 항목입니다.")
+    @NotNull(message = "personnel.language.certified-date.not-null")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate certifiedDate;
 
     private String expiryPeriod;

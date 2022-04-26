@@ -3,12 +3,14 @@ import departmentReducer, { DepartmentState } from 'services/department/reducer'
 import userReducer, { UserState } from 'services/user/reducer';
 import userInvitationReducer, { UserInvitationState } from 'services/user/invitation/reducer';
 import personnelReducer, { PersonnelState } from 'services/personnel/reducer';
+import projectReducer, { ProjectState } from 'services/project/reducer';
 
 export type RootState = {
   department: DepartmentState;
   user: UserState;
   userInvitation: UserInvitationState;
   personnel: PersonnelState;
+  project: ProjectState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -16,6 +18,7 @@ const reducer = combineReducers<RootState>({
   user: userReducer,
   userInvitation: userInvitationReducer,
   personnel: personnelReducer,
+  project: projectReducer,
 });
 
 const rootReducer: Reducer = (state, action) => {

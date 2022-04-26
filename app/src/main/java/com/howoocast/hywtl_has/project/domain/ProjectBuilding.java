@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBuilding {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,7 +60,104 @@ public class ProjectBuilding {
     @Column(nullable = false)
     private LocalDateTime updatedTime;
 
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
+    //////////////////////////////////
+    //// constructor
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// getter - setter
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// builder
+    //////////////////////////////////
+    public static ProjectBuilding of(
+        Address address,
+        String purpose1,
+        String purpose2,
+        Double lotArea,
+        Double totalArea,
+        Integer buildingCount,
+        Integer householdCount,
+        Integer floorCount,
+        Integer baseCount
+    ) {
+        ProjectBuilding instance = new ProjectBuilding();
+        instance.set(
+            address,
+            purpose1,
+            purpose2,
+            lotArea,
+            totalArea,
+            buildingCount,
+            householdCount,
+            floorCount,
+            baseCount
+        );
+        instance.createdTime = LocalDateTime.now();
+        instance.updatedTime = instance.createdTime;
+        return instance;
+    }
+
+    //////////////////////////////////
+    //// finder
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// checker
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// modifier
+    //////////////////////////////////
+    private void set(
+        Address address,
+        String purpose1,
+        String purpose2,
+        Double lotArea,
+        Double totalArea,
+        Integer buildingCount,
+        Integer householdCount,
+        Integer floorCount,
+        Integer baseCount
+    ) {
+        this.address = address;
+        this.purpose1 = purpose1;
+        this.purpose2 = purpose2;
+        this.lotArea = lotArea;
+        this.totalArea = totalArea;
+        this.buildingCount = buildingCount;
+        this.householdCount = householdCount;
+        this.floorCount = floorCount;
+        this.baseCount = baseCount;
+    }
+
+    public void change(
+        Address address,
+        String purpose1,
+        String purpose2,
+        Double lotArea,
+        Double totalArea,
+        Integer buildingCount,
+        Integer householdCount,
+        Integer floorCount,
+        Integer baseCount
+    ) {
+        this.set(
+            address,
+            purpose1,
+            purpose2,
+            lotArea,
+            totalArea,
+            buildingCount,
+            householdCount,
+            floorCount,
+            baseCount
+        );
+        this.updatedTime = LocalDateTime.now();
+    }
 }

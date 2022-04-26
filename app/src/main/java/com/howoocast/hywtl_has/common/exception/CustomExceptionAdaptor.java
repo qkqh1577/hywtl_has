@@ -27,7 +27,7 @@ public abstract class CustomExceptionAdaptor extends RuntimeException {
 
     @Getter
     @RequiredArgsConstructor
-    private static class ErrorBody {
+    public static class ErrorBody {
 
         private final String code;
         private final String message;

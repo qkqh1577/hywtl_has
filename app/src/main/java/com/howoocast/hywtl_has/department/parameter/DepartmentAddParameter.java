@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 public class DepartmentAddParameter {
 
-    @NotBlank
+    @NotBlank(message = "department.name.not-blank")
     private String name;
 
-    @NotNull
+    @NotNull(message = "department.category.not-null")
     private DepartmentCategory category;
 
     private String memo;

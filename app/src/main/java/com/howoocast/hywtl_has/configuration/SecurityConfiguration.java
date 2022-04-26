@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .cacheControl().and().contentTypeOptions().disable()
             .and()
             // TODO: CSRF 처리 필요
+            .cors().disable()
             .csrf().disable()
             .httpBasic().disable()
             .formLogin()

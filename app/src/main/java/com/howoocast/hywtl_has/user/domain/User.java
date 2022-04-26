@@ -26,13 +26,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -76,8 +74,13 @@ public class User {
 
     @NotNull
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime; // 생성일시
+    private final LocalDateTime createdTime; // 생성일시
 
+    @NotNull
+    @Column(nullable = false)
+    private final LocalDateTime updatedTime; // 변경일시
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
     private LocalDateTime deletedTime; // 삭제일시
 
@@ -89,8 +92,12 @@ public class User {
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
+    protected User() {
+        this.createdTime = LocalDateTime.now();
+        this.updatedTime = this.createdTime;
+    }
+
     protected User(
-        UserRepository repository,
         String username,
         String password,
         String name,
@@ -98,13 +105,12 @@ public class User {
         Department department,
         UserRole userRole
     ) {
-        this.repository = repository;
+        this();
         this.username = username;
         this.name = name;
         this.email = email;
         this.department = department;
         this.userRole = userRole;
-        this.createdTime = LocalDateTime.now();
         this.setPassword(password);
     }
 
@@ -130,7 +136,6 @@ public class User {
         UserRole userRole
     ) {
         User instance = new User(
-            repository,
             username,
             password,
             name,
@@ -138,6 +143,7 @@ public class User {
             department,
             userRole
         );
+        instance.repository = repository;
         instance.checkEmailUsed();
         instance.checkUsernameUsed();
         instance.save();
@@ -151,7 +157,8 @@ public class User {
         UserRepository repository,
         Long id
     ) {
-        User instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        User instance = repository.findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(NotFoundException::new);
         instance.repository = repository;
         return instance;
     }

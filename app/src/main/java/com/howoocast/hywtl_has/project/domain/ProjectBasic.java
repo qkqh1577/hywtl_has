@@ -1,10 +1,13 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,10 +16,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasic {
 
     @JsonIgnore
@@ -40,7 +46,10 @@ public class ProjectBasic {
 
     private String alias; // 별칭
 
-    private String status; // 상태
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(nullable = false)
+    private ProjectStatus status; // 상태
 
     @ManyToOne
     @NotNull
@@ -58,27 +67,80 @@ public class ProjectBasic {
     @Column(nullable = false)
     private LocalDateTime updatedTime;
 
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 
-    protected ProjectBasic() {
-        this.createdTime = LocalDateTime.now();
-        this.updatedTime = this.createdTime;
-    }
+    //////////////////////////////////
+    //// constructor
+    //////////////////////////////////
 
+    //////////////////////////////////
+    //// getter - setter
+    //////////////////////////////////
+
+
+    //////////////////////////////////
+    //// builder
+    //////////////////////////////////
     public static ProjectBasic of(
         String name,
         String alias,
-        String status,
+        ProjectStatus status,
         User salesManager,
         User projectManager
     ) {
         ProjectBasic instance = new ProjectBasic();
-        instance.name = name;
-        instance.alias = alias;
-        instance.status = status;
-        instance.salesManager = salesManager;
-        instance.projectManager = projectManager;
+        instance.set(
+            name,
+            alias,
+            status,
+            salesManager,
+            projectManager
+        );
+        instance.createdTime = LocalDateTime.now();
+        instance.updatedTime = instance.createdTime;
         return instance;
+    }
+
+    //////////////////////////////////
+    //// finder
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// checker
+    //////////////////////////////////
+
+    //////////////////////////////////
+    //// modifier
+    //////////////////////////////////
+    private void set(
+        String name,
+        String alias,
+        ProjectStatus status,
+        User salesManager,
+        User projectManager
+    ) {
+        this.name = name;
+        this.alias = alias;
+        this.status = status;
+        this.salesManager = salesManager;
+        this.projectManager = projectManager;
+    }
+
+    public void change(
+        String name,
+        String alias,
+        ProjectStatus status,
+        User salesManager,
+        User projectManager) {
+        this.set(
+            name,
+            alias,
+            status,
+            salesManager,
+            projectManager
+        );
+        this.updatedTime = LocalDateTime.now();
     }
 }

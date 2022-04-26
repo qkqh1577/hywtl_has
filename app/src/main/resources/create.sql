@@ -35,6 +35,7 @@ create table user
 	name varchar(255) not null,
 	password varchar(255) not null,
 	password_changed_time datetime(6) not null,
+    updated_time datetime(6)  not null,
 	user_role varchar(255) not null,
 	username varchar(255) not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
@@ -153,4 +154,29 @@ create table project_basic
 	project_manager_id bigint not null,
 	sales_manager_id bigint not null,
 	constraint UK_project_project_basic unique (code)
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_building
+(
+    id bigint auto_increment primary key,
+    depth1 varchar(255) not null,
+    depth2 varchar(255) not null,
+    extra varchar(255) null,
+    land_number varchar(255) null,
+    latitude double not null,
+    longitude double not null,
+    place varchar(255) null,
+    road varchar(255) not null,
+    base_count int null,
+    building_count int null,
+    created_time datetime(6) not null,
+    deleted_time datetime(6) null,
+    floor_count int null,
+    household_count int null,
+    lot_area double null,
+    purpose1 varchar(255) null,
+    purpose2 varchar(255) null,
+    total_area double null,
+    updated_time datetime(6) not null,
+    project_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;

@@ -10,15 +10,15 @@ import lombok.Setter;
 @Setter
 public class UserInviteParameter {
 
-    @NotBlank(message = "이메일은 필수 항목입니다.")
+    @NotBlank(message = "user-verification.email.not-blank")
     private String email;
 
-    @NotBlank(message = "이름은 필수 항목입니다.")
+    @NotBlank(message = "user-verification.name.not-blank")
     private String name;
 
-    @NotNull(message = "소속 부서는 필수 항목입니다.")
+    @NotNull(message = "user-verification.department-id.not-null")
     private Long departmentId;
 
-    @NotNull(message = "권한은 필수 항목입니다.")
+    @NotNull(message = "user-verification.user-role.not-null")
     private UserRole userRole;
 }

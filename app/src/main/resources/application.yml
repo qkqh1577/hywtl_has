@@ -15,9 +15,9 @@ spring:
             mode: always
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://localhost:3304/hywtl_has_api
-        username: hywtl_has
-        password: hywtl_has7698
+        url: jdbc:mariadb://localhost:3306/hywtl_has_api
+        username: root
+        password: root7698
         hikari:
             pool-name: hikariPool
             auto-commit: false
@@ -88,4 +88,4 @@ application:
             - webm
             - zip  # extra
         max-size-limit: 5242880 # 5 * 1024(KB) * 1024(MB)
-        root-path: C:/Users/young/work/hywtl_has
+        root-path: E:/work/hywtl_has

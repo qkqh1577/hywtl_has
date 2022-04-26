@@ -14,14 +14,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelBasicParameter extends CustomParameter<PersonnelBasic> {
 
-    @NotBlank(message = "영문명은 필수 항목입니다.")
+    @NotBlank(message = "personnel.basic.eng-name.not-blank")
     private String engName;
 
-    @NotNull(message = "생년월일은 필수 항목입니다.")
+    @NotNull(message = "personnel.basic.birth-date.not-null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-    @NotBlank(message = "성별은 필수 항목입니다.")
+    @NotBlank(message = "personnel.basic.sex.not-blank")
     private String sex;
 
     @Getter

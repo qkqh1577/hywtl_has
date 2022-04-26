@@ -10,16 +10,16 @@ import lombok.Setter;
 @Setter
 public class UserChangeParameter {
 
-    @NotBlank(message = "이름은 필수 항목입니다.")
+    @NotBlank(message = "user.name.not-blank")
     private String name;
 
-    @NotBlank(message = "이메일은 필수 항목입니다.")
+    @NotBlank(message = "user.email.not-blank")
     private String email;
 
-    @NotNull(message = "권한은 필수 항목입니다.")
+    @NotNull(message = "user.user-role.not-null")
     private UserRole userRole;
 
-    @NotNull(message = "소속 부서는 필수 항목입니다.")
+    @NotNull(message = "user.department-id.not-null")
     private Long departmentId;
 
 }
