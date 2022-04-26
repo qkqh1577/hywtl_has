@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { drawerWidth } from 'layouts/AppLayoutConfig';
 import MuiDrawer from '@mui/material/Drawer';
 
 const ProjectDrawer = styled(MuiDrawer, {
@@ -9,7 +8,8 @@ const ProjectDrawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': {
       position: 'relative',
       whiteSpace: 'nowrap',
-      width: drawerWidth,
+      width: 260,
+      height: '100%',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
