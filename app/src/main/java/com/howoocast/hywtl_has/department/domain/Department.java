@@ -39,7 +39,6 @@ import org.springframework.lang.Nullable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Department {
 
-    @SuppressWarnings("unused")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -70,13 +69,11 @@ public class Department {
     @Column(insertable = false)
     protected LocalDateTime deletedTime; // 삭제 일자
 
-    @SuppressWarnings("unused")
     @JsonManagedReference
     @OneToMany(mappedBy = "parent")
     @OrderBy("seq")
     private List<Department> childrenList; // 하위 부서 리스트
 
-    @SuppressWarnings("unused")
     @JsonManagedReference
     @OneToMany(mappedBy = "department")
     @OrderBy("id")

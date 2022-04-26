@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -29,7 +30,6 @@ public class Personnel {
     @Id
     private Long id; // share user id
 
-    @SuppressWarnings("unused")
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id")
@@ -43,6 +43,7 @@ public class Personnel {
     @Embedded
     private PersonnelCompany company;
 
+    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<PersonnelJob> jobList; // 직함 목록
 
@@ -62,7 +63,6 @@ public class Personnel {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @SuppressWarnings("unused")
     @Column(insertable = false)
     private LocalDateTime deletedTime;
 

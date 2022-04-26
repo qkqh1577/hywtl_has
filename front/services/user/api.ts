@@ -14,6 +14,11 @@ export class UserApi {
     return data;
   }
 
+  async getAll(): Promise<ListUser[]> {
+    const { data } = await apiClient.get('/users/all');
+    return data;
+  }
+
   async getOne(id: number): Promise<User> {
     const { data } = await apiClient.get(`/users/${id}`);
     return data;

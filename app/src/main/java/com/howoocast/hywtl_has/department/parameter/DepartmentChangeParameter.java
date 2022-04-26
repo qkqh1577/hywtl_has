@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 public class DepartmentChangeParameter {
 
-    @NotBlank(message = "부서명은 필수입니다.")
+    @NotBlank(message = "department.name.not-blank")
     private String name;
 
-    @NotNull(message = "부서 유형은 필수입니다.")
+    @NotNull(message = "department.category.not-null")
     private DepartmentCategory category;
 
     private String memo;

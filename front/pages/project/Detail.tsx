@@ -1,9 +1,9 @@
 import React from "react";
 
-const ProjectDetailPage = () => {
+const ProjectDetail = () => {
   return (
     <h1>Project detail page</h1>
   )
 }
 
-export default ProjectDetailPage;
+export default ProjectDetail;

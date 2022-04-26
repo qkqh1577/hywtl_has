@@ -284,7 +284,7 @@ const UserDetail = () => {
           </Grid>
         </Box>
       </Paper>
-      {detail && (<PersonnelDetail id={detail.id} />)}
+      {detail && (<PersonnelDetail />)}
       <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
         <Box sx={{ mb: '20px' }}>
           <Grid container spacing={1}>

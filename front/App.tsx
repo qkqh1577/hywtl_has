@@ -18,8 +18,9 @@ import {
 import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
-  ChevronLeft as ChevronLeftIcon,
   FlightTakeoffSharp as FlightTakeoffSharpIcon,
+  ChevronLeft as LeftIcon,
+  ChevronRight as RightIcon,
 } from '@mui/icons-material';
 import { Dashboard as DashboardIcon } from '@mui/icons-material';
 import Tree, { TreeNode } from 'rc-tree';
@@ -229,7 +230,7 @@ const App = () => {
           }}
         >
           <IconButton onClick={handler.toggle}>
-            <ChevronLeftIcon />
+            {open ? <LeftIcon /> : <RightIcon />}
           </IconButton>
         </Toolbar>
         <Divider />
@@ -276,7 +277,7 @@ const App = () => {
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
           <ReactRouter />
         </Container>
       </Box>

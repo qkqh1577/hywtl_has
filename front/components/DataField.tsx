@@ -1,6 +1,6 @@
 import React from 'react';
 import { ErrorMessage } from 'formik';
-import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Value = string | number;
@@ -18,6 +18,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   required?: boolean;
   options?: Option[] | Value[];
+  helperText?: string | React.ReactNode;
 }
 
 const DataField = ({
@@ -27,41 +28,14 @@ const DataField = ({
   value,
   setFieldValue,
   required,
-  options
+  options,
+  helperText,
 }: Props) => {
-  if (type === 'select') {
-    if (!options) {
-      throw 'property options required when type="select"';
-    }
-
-    return (
-      <FormControl variant="standard" fullWidth required={required === true}>
-        <InputLabel id={`params-${name}-label`}>{label}</InputLabel>
-        <Select
-          labelId={`params-${name}-label`}
-          id={`params-${name}`}
-          name={name}
-          value={value}
-          onChange={(e) => {
-            setFieldValue(name, e.target.value ?? '');
-          }}
-        >
-          {options.map((option) => {
-            if (typeof option === 'string' || typeof option === 'number') {
-              const item: Value = option as Value;
-              return <MenuItem key={item} value={item}>{item}</MenuItem>;
-            }
-            const item: Option = option as Option;
-            return <MenuItem key={item.key} value={item.key}>{item.value}</MenuItem>;
-          })}
-        </Select>
-      </FormControl>
-    );
-  }
 
   return (
     <TextField
       type={type}
+      select={type === 'select' ? true : undefined}
       id={`params-${name}`}
       name={name}
       value={value}
@@ -70,11 +44,20 @@ const DataField = ({
       }}
       label={label}
       placeholder={`${label}${getObjectPostPosition(label)} 입력해 주세요`}
-      helperText={<ErrorMessage name={name} />}
+      helperText={<ErrorMessage name={name} /> ?? helperText}
       variant="standard"
       fullWidth
       required={required === true}
-    />
+    >
+      {type === 'select' && options && options.map((option) => {
+        if (typeof option === 'string' || typeof option === 'number') {
+          const item: Value = option as Value;
+          return <MenuItem key={item} value={item}>{item}</MenuItem>;
+        }
+        const item: Option = option as Option;
+        return <MenuItem key={item.key} value={item.key}>{item.value}</MenuItem>;
+      })}
+    </TextField>
   );
 };
 

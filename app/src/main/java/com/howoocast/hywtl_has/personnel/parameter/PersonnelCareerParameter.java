@@ -11,18 +11,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelCareerParameter extends CustomParameter<PersonnelCareer> {
 
-    @NotBlank(message = "근무처명은 필수 항목입니다.")
+    @NotBlank(message = "personnel.career.company-name.not-blank")
     private String companyName;
 
-    @NotNull(message = "근무시작일은 필수 항목입니다.")
+    @NotNull(message = "personnel.career.start-date.not-null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @NotNull(message = "근무종료일 필수 항목입니다.")
+    @NotNull(message = "personnel.career.end-date.not-null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @NotBlank(message = "주 업무는 필수 항목입니다.")
+    @NotBlank(message = "personnel.career.major-job.not-blank")
     private String majorJob;
 
     public PersonnelCareer build() {

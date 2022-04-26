@@ -51,6 +51,11 @@ public class UserController {
         );
     }
 
+    @GetMapping("/users/all")
+    public List<UserListView> getAll() {
+        return userService.getAll();
+    }
+
     @GetMapping("/users/login")
     public UserDetailView getLogin(Authentication authentication) {
         try {
