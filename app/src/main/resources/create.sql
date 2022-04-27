@@ -138,8 +138,8 @@ create table project
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
 	updated_time datetime(6) not null,
-    basic_id bigint not null,
-    building_id bigint null
+  basic_id bigint not null,
+  building_id bigint null
 );
 
 create table project_basic
@@ -179,4 +179,15 @@ create table project_building
     purpose2 varchar(255) null,
     total_area double null,
     updated_time datetime(6) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_comment
+(
+    id bigint auto_increment primary key,
+    created_time datetime(6) not null,
+    deleted_time datetime(6) null,
+    description  varchar(255) not null,
+    updated_time datetime(6) not null,
+    project_id bigint null,
+    writer_id bigint null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;

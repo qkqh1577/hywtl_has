@@ -11,6 +11,7 @@ drop table if exists personnel_license_list;
 drop table if exists project;
 drop table if exists project_basic;
 drop table if exists project_building;
+drop table if exists project_comment;
 drop table if exists user;
 drop table if exists user_invitation;
 set FOREIGN_KEY_CHECKS = 1;

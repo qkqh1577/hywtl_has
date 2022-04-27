@@ -17,6 +17,7 @@ type Props = {
   value: string | number | '';
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   required?: boolean;
+  disabled?: boolean;
   options?: Option[] | Value[];
   helperText?: string | React.ReactNode;
 }
@@ -28,6 +29,7 @@ const DataField = ({
   value,
   setFieldValue,
   required,
+  disabled,
   options,
   helperText,
 }: Props) => {
@@ -47,7 +49,8 @@ const DataField = ({
       helperText={<ErrorMessage name={name} /> ?? helperText}
       variant="standard"
       fullWidth
-      required={required === true}
+      required={!(disabled === true) && required === true}
+      disabled={disabled === true}
     >
       {type === 'select' && options && options.map((option) => {
         if (typeof option === 'string' || typeof option === 'number') {

@@ -8,7 +8,7 @@ const ProjectDrawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': {
       position: 'relative',
       whiteSpace: 'nowrap',
-      width: 260,
+      width: 310,
       height: '100%',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,

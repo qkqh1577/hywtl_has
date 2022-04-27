@@ -6,7 +6,11 @@ const routes: AppRoutes[] = [
   {
     path: '/project/*',
     element: <ProjectContainer />
-  }
+  },
+  {
+    path: '/project/:id/*',
+    element: <ProjectContainer />
+  },
 ];
 
 export default routes;

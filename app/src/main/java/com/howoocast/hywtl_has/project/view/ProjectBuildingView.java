@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project.view;
 
-import com.howoocast.hywtl_has.common.view.AddressView;
 import com.howoocast.hywtl_has.project.domain.ProjectBuilding;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 @Getter
 public class ProjectBuildingView {
 
-    private AddressView address;
+    private String address;
     private String purpose1;
 
     private String purpose2;
@@ -26,12 +26,14 @@ public class ProjectBuildingView {
 
     private Integer baseCount;
 
+    private LocalDateTime updatedTime;
+
     public static ProjectBuildingView assemble(@Nullable ProjectBuilding source) {
         ProjectBuildingView target = new ProjectBuildingView();
         if (Objects.isNull(source)) {
             return target;
         }
-        target.address = AddressView.assemble(source.getAddress());
+        target.address = source.getAddress();
         target.purpose1 = source.getPurpose1();
         target.purpose2 = source.getPurpose2();
         target.lotArea = source.getLotArea();
@@ -40,6 +42,7 @@ public class ProjectBuildingView {
         target.householdCount = source.getHouseholdCount();
         target.floorCount = source.getFloorCount();
         target.baseCount = source.getBaseCount();
+        target.updatedTime = source.getUpdatedTime();
         return target;
     }
 }

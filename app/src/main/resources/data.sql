@@ -1,3 +1,4 @@
+set FOREIGN_KEY_CHECKS = 0;
 INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (1, 'COMPANY', '2022-04-12 15:13:04.655439', null, '한양풍동실험연구소', null, 1, null);
 INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (2, 'HQ', '2022-04-12 15:13:04.740280', null, '기술본부', null, 1, 1);
 INSERT INTO hywtl_has_api.department (id, category, created_time, memo, name, deleted_time, seq, parent_id) VALUES (3, 'TEAM', '2022-04-12 15:13:04.799615', null, '기술팀', null, 1, 2);
@@ -18,3 +19,6 @@ INSERT INTO hywtl_has_api.personnel (id, address, birth_date, emergency_phone, e
 INSERT INTO hywtl_has_api.personnel_academic_list (personnel_id, academy_name, degree, end_date, grade, major, start_date, state) VALUES (2, '한양대', null, '2022-03-02', null, '유저과', '2018-02-05', '졸업');
 INSERT INTO hywtl_has_api.personnel_job (id, job_class, job_duty, job_position, job_title, job_type, department_id) VALUES (2, null, null, '일반', '일반직', '일반유저', 1);
 INSERT INTO hywtl_has_api.personnel_job_list (personnel_id, job_list_id) VALUES (2, 2);
+INSERT INTO hywtl_has_api.project (id, created_time, deleted_time, updated_time, basic_id, building_id) VALUES (1, '2022-04-27 12:05:37.044207', null, '2022-04-27 12:05:37.044207', 1, null);
+INSERT INTO hywtl_has_api.project_basic (id, alias, code, created_time, deleted_time, name, status, updated_time, project_manager_id, sales_manager_id) VALUES (1, 'ssx', '123', '2022-04-27 12:05:37.028178', null, 'asdf', 'TEMPLATE', '2022-04-27 12:05:37.028178', 2, 1);
+set FOREIGN_KEY_CHECKS = 1;

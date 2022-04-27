@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.project.controller;
 
-import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
+import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
 import com.howoocast.hywtl_has.project.service.ProjectService;
 import com.howoocast.hywtl_has.project.view.ProjectListView;
@@ -45,7 +45,8 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public ProjectView add(@Valid @RequestBody ProjectAddParameter params) {
+    public ProjectView add(@Valid @RequestBody ProjectBasicParameter params) {
         return projectService.add(params);
     }
+
 }

@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Grid, IconButton, Modal, Paper } from '@mui/material';
 import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField } from 'components';
+import { UserSelector, DataField } from 'components';
 import { initProjectBasic } from 'services/project/view';
 import useProject from 'services/project/hook';
-import { ProjectAddParameter } from 'services/project/parameter';
-import userApi from 'services/user/api';
-import { ListUser } from 'services/user/entity';
+import { ProjectBasicParameter } from 'services/project/parameter';
 
 const ProjectAddModal = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const path = location.pathname;
-  const { add } = useProject();
-  const [userList, setUserList] = useState<ListUser[]>([]);
+  const {
+    projectState: { addModal },
+    add,
+    setAddModal
+  } = useProject();
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      console.log(values);
       const errors: any = {};
       const name: string = values.name;
       if (!name) {
@@ -50,36 +48,30 @@ const ProjectAddModal = () => {
         return;
       }
 
-      const params: ProjectAddParameter = {
+      const params: ProjectBasicParameter = {
         name,
         code,
         alias,
-        status: 'TEMPLATE',
         salesManagerId,
         projectManagerId,
       };
       add(params, (data?) => {
         if (data) {
           window.alert('등록되었습니다.');
+          setAddModal(false);
           navigate(`/project/${data.id}/basic`);
         }
         setSubmitting(false);
       });
     },
     close: () => {
-      navigate('/project');
+      setAddModal(false);
     }
   };
 
-  useEffect(() => {
-    if (path === '/project/add') {
-      userApi.getAll().then(setUserList);
-    }
-  }, [path]);
-
   return (
     <Modal
-      open={path === '/project/add'}
+      open={addModal}
       onClose={handler.close}
     >
       <Paper sx={{
@@ -144,30 +136,20 @@ const ProjectAddModal = () => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <DataField
-                      type="select"
+                    <UserSelector
                       name="salesManagerId"
                       label="영업 담당자"
                       value={values.salesManagerId}
                       setFieldValue={setFieldValue}
-                      options={userList.map((item) => ({
-                        key: item.id,
-                        value: item.name,
-                      }))}
                       required
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <DataField
-                      type="select"
+                    <UserSelector
                       name="projectManagerId"
                       label="담당 PM"
                       value={values.projectManagerId}
                       setFieldValue={setFieldValue}
-                      options={userList.map((item) => ({
-                        key: item.id,
-                        value: item.name,
-                      }))}
                       required
                     />
                   </Grid>

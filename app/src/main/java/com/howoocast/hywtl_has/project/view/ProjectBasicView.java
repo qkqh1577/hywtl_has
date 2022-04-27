@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project.view;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectBasic;
 import com.howoocast.hywtl_has.user.view.UserListView;
+import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
@@ -20,6 +21,8 @@ public class ProjectBasicView {
 
     private UserListView projectManager;
 
+    private LocalDateTime updatedTime;
+
     public static ProjectBasicView assemble(ProjectBasic source) {
         ProjectBasicView target = new ProjectBasicView();
         target.code = source.getCode();
@@ -28,6 +31,7 @@ public class ProjectBasicView {
         target.status = source.getStatus();
         target.salesManager = UserListView.assemble(source.getSalesManager());
         target.projectManager = UserListView.assemble(source.getProjectManager());
+        target.updatedTime = source.getUpdatedTime();
         return target;
     }
 }

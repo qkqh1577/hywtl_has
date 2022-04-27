@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -93,20 +94,19 @@ public class ProjectBasic {
         String name,
         String code,
         String alias,
-        ProjectStatus status,
         User salesManager,
         User projectManager
     ) {
         ProjectBasic instance = new ProjectBasic();
         instance.set(
             name,
+            code,
             alias,
-            status,
             salesManager,
             projectManager
         );
         instance.repository = repository;
-        instance.code = code;
+        instance.status = ProjectStatus.TEMPLATE;
         instance.createdTime = LocalDateTime.now();
         instance.updatedTime = instance.createdTime;
         return repository.save(instance);
@@ -115,6 +115,12 @@ public class ProjectBasic {
     //////////////////////////////////
     //// finder
     //////////////////////////////////
+    public static ProjectBasic load(ProjectBasicRepository repository, Long projectId) {
+        ProjectBasic projectBasic = repository.findByProject_IdAndDeletedTimeIsNull(projectId)
+            .orElseThrow(NotFoundException::new);
+        projectBasic.repository = repository;
+        return projectBasic;
+    }
 
     //////////////////////////////////
     //// checker
@@ -125,28 +131,28 @@ public class ProjectBasic {
     //////////////////////////////////
     private void set(
         String name,
+        String code,
         String alias,
-        ProjectStatus status,
         User salesManager,
         User projectManager
     ) {
         this.name = name;
+        this.code = code;
         this.alias = alias;
-        this.status = status;
         this.salesManager = salesManager;
         this.projectManager = projectManager;
     }
 
     public void change(
         String name,
+        String code,
         String alias,
-        ProjectStatus status,
         User salesManager,
         User projectManager) {
         this.set(
             name,
+            code,
             alias,
-            status,
             salesManager,
             projectManager
         );

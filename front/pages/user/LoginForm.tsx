@@ -43,7 +43,6 @@ const LoginForm = () => {
         navigate(prevLocation);
       }).catch((e) => {
         console.log(e);
-      }).finally(() => {
         setSubmitting(false);
       });
     }
@@ -53,8 +52,6 @@ const LoginForm = () => {
     userApi.getLogin().then(() => {
       const prevLocation = localStorage.getItem('path') ?? '/';
       navigate(prevLocation);
-    }).catch(() => {
-      // nothing to do
     });
   }, []);
 
