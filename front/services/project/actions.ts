@@ -9,6 +9,8 @@ export enum ProjectActionType {
   getOne = 'project/getOne',
   setOne = 'project/setOne',
   add = 'project/add',
+  getAddModal = 'project/getAddModal',
+  setAddModal = 'project/setAddModal',
 }
 
 export const projectActions = {
@@ -20,4 +22,6 @@ export const projectActions = {
     params: ProjectAddParameter;
     callback: (data?: Project) => void;
   }>(),
+  getAddModal: createAction(ProjectActionType.getAddModal)(),
+  setAddModal: createAction(ProjectActionType.setAddModal)<boolean>(),
 }

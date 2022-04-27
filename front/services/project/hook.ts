@@ -33,11 +33,25 @@ export default function useProject() {
     [dispatch]
   );
 
+  const getAddModal = useCallback(
+    () =>
+      dispatch(projectActions.getAddModal()),
+    [dispatch],
+  );
+
+  const setAddModal = useCallback(
+    (modal: boolean) =>
+      dispatch(projectActions.setAddModal(modal)),
+    [dispatch]
+  );
+
   return {
     projectState,
     getPage,
     getOne,
     clearOne,
-    add
+    add,
+    getAddModal,
+    setAddModal
   };
 }

@@ -138,8 +138,8 @@ create table project
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
 	updated_time datetime(6) not null,
-    basic_id bigint not null,
-    building_id bigint null
+  basic_id bigint not null,
+  building_id bigint null
 );
 
 create table project_basic

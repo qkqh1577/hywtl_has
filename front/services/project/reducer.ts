@@ -6,10 +6,12 @@ import { ProjectActionType } from 'services/project/actions';
 export type ProjectState = {
   page: Page<ListProject>;
   detail?: Project;
+  addModal: boolean;
 }
 
 export const initState: ProjectState = {
   page: initial,
+  addModal: false,
 };
 
 const projectReducer = createReducer(initState, {
@@ -20,6 +22,10 @@ const projectReducer = createReducer(initState, {
   [ProjectActionType.setOne]: (state, action) => ({
     ...state,
     detail: action.payload,
+  }),
+  [ProjectActionType.setAddModal]: (state, action) => ({
+    ...state,
+    addModal: action.payload,
   }),
 });
 

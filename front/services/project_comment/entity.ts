@@ -4,6 +4,7 @@ type ProjectComment = {
   id: number;
   projectId: number;
   writer: ListUser;
+  description: string;
   createdTime: Date;
   updatedTime: Date;
 }

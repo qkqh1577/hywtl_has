@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Grid, IconButton, Modal, Paper } from '@mui/material';
 import {
   Close as CloseIcon
@@ -13,15 +13,16 @@ import userApi from 'services/user/api';
 import { ListUser } from 'services/user/entity';
 
 const ProjectAddModal = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const path = location.pathname;
-  const { add } = useProject();
+  const {
+    projectState: { addModal },
+    add,
+    setAddModal
+  } = useProject();
   const [userList, setUserList] = useState<ListUser[]>([]);
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      console.log(values);
       const errors: any = {};
       const name: string = values.name;
       if (!name) {
@@ -61,25 +62,26 @@ const ProjectAddModal = () => {
       add(params, (data?) => {
         if (data) {
           window.alert('등록되었습니다.');
+          setAddModal(false);
           navigate(`/project/${data.id}/basic`);
         }
         setSubmitting(false);
       });
     },
     close: () => {
-      navigate('/project');
+      setAddModal(false);
     }
   };
 
   useEffect(() => {
-    if (path === '/project/add') {
+    if (addModal) {
       userApi.getAll().then(setUserList);
     }
-  }, [path]);
+  }, [addModal]);
 
   return (
     <Modal
-      open={path === '/project/add'}
+      open={addModal}
       onClose={handler.close}
     >
       <Paper sx={{

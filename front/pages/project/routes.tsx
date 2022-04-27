@@ -4,13 +4,13 @@ import ProjectContainer from 'pages/project/Container';
 
 const routes: AppRoutes[] = [
   {
-    path: '/project',
+    path: '/project/:id/*',
     element: <ProjectContainer />
   },
   {
-    path: '/project/:id/*',
+    path: '/project/*',
     element: <ProjectContainer />
-  }
+  },
 ];
 
 export default routes;

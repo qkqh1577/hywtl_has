@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -29,11 +30,13 @@ public class ProjectCommentController {
     @GetMapping("/project-comments")
     public Page<ProjectCommentView> page(
         @RequestParam Long projectId,
-        @PageableDefault(sort = "id,DESC") Pageable pageable
+        @RequestParam(required = false) String keyword,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
     ) {
         return projectCommentService.page(
             new ProjectCommentPredicateBuilder()
                 .projectId(projectId)
+                .keyword(keyword)
                 .build(),
             pageable
         );

@@ -37,6 +37,7 @@ const ProjectList = () => {
   const {
     projectState: { page },
     getPage,
+    setAddModal
   } = useProject();
 
   const [filter, setFilter] = useState<ProjectFilterView>(initProjectFilter);
@@ -49,8 +50,8 @@ const ProjectList = () => {
     clear: () => {
       setFilter(initProjectFilter);
     },
-    toAdd: () => {
-      navigate('/project/add');
+    addModal: () => {
+      setAddModal(true);
     }
   };
 
@@ -173,7 +174,7 @@ const ProjectList = () => {
         <Button
           color="primary"
           variant="contained"
-          onClick={handler.toAdd}
+          onClick={handler.addModal}
         >
           등록
         </Button>
