@@ -1,11 +1,9 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.domain.Address;
 import com.howoocast.hywtl_has.project.repository.ProjectBuildingRepository;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +13,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBuilding {
 
     @JsonIgnore
@@ -32,9 +28,8 @@ public class ProjectBuilding {
     @OneToOne(mappedBy = "building")
     private Project project;
 
-    @Embedded
-    @NotNull
-    private Address address;
+    // TODO: 주소 컴포넌트 개발 이후 변경
+    private String address;
 
     private String purpose1; // 건물 용도 1
 
@@ -72,6 +67,10 @@ public class ProjectBuilding {
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
+    protected ProjectBuilding() {
+        this.createdTime = LocalDateTime.now();
+        this.updatedTime = this.createdTime;
+    }
 
     //////////////////////////////////
     //// getter - setter
@@ -80,39 +79,16 @@ public class ProjectBuilding {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static ProjectBuilding of(
-        ProjectBuildingRepository repository,
-        Address address,
-        String purpose1,
-        String purpose2,
-        Double lotArea,
-        Double totalArea,
-        Integer buildingCount,
-        Integer householdCount,
-        Integer floorCount,
-        Integer baseCount
-    ) {
-        ProjectBuilding instance = new ProjectBuilding();
-        instance.set(
-            address,
-            purpose1,
-            purpose2,
-            lotArea,
-            totalArea,
-            buildingCount,
-            householdCount,
-            floorCount,
-            baseCount
-        );
-        instance.repository = repository;
-        instance.createdTime = LocalDateTime.now();
-        instance.updatedTime = instance.createdTime;
-        return repository.save(instance);
-    }
 
     //////////////////////////////////
     //// finder
     //////////////////////////////////
+    public static ProjectBuilding load(ProjectBuildingRepository repository, Long projectId) {
+        ProjectBuilding instance = repository.findByProject_IdAndDeletedTimeIsNull(projectId)
+            .orElse(new ProjectBuilding());
+        instance.repository = repository;
+        return instance;
+    }
 
     //////////////////////////////////
     //// checker
@@ -121,8 +97,8 @@ public class ProjectBuilding {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-    private void set(
-        Address address,
+    public void change(
+        String address,
         String purpose1,
         String purpose2,
         Double lotArea,
@@ -141,30 +117,6 @@ public class ProjectBuilding {
         this.householdCount = householdCount;
         this.floorCount = floorCount;
         this.baseCount = baseCount;
-    }
-
-    public void change(
-        Address address,
-        String purpose1,
-        String purpose2,
-        Double lotArea,
-        Double totalArea,
-        Integer buildingCount,
-        Integer householdCount,
-        Integer floorCount,
-        Integer baseCount
-    ) {
-        this.set(
-            address,
-            purpose1,
-            purpose2,
-            lotArea,
-            totalArea,
-            buildingCount,
-            householdCount,
-            floorCount,
-            baseCount
-        );
         this.updatedTime = LocalDateTime.now();
         this.save();
     }

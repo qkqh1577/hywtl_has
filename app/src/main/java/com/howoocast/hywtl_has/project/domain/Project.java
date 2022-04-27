@@ -2,11 +2,8 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
-import com.howoocast.hywtl_has.project.repository.ProjectBuildingRepository;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,11 +35,11 @@ public class Project {
 
     @NotNull
     @Column(nullable = false, updatable = false)
-    private final LocalDateTime createdTime;
+    private LocalDateTime createdTime;
 
     @NotNull
     @Column(nullable = false)
-    private final LocalDateTime updatedTime;
+    private LocalDateTime updatedTime;
 
     @Getter(AccessLevel.NONE)
     @Column(insertable = false)
@@ -59,6 +56,10 @@ public class Project {
     protected Project() {
         this.createdTime = LocalDateTime.now();
         this.updatedTime = this.createdTime;
+    }
+
+    protected Project(Long id) {
+        this.id = id;
     }
 
     protected Project(ProjectBasic basic) {

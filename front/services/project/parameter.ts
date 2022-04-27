@@ -1,5 +1,5 @@
-import { ProjectStatus } from 'services/project/entity';
-import { AddressParameter } from 'services/common/address/parameter';
+// TODO: 주소 컴포넌트 개발 이후 변경
+// import { AddressParameter } from 'services/common/address/parameter';
 
 export type ProjectQuery = {
   size: number;
@@ -9,14 +9,16 @@ export type ProjectQuery = {
 
 export type ProjectBasicParameter = {
   name: string;
+  code: string;
   alias?: string;
-  status: ProjectStatus;
   salesManagerId: number;
   projectManagerId: number;
 }
 
 export type ProjectBuildingParameter = {
-  address: AddressParameter;
+  // TODO: 주소 컴포넌트 개발 이후 변경
+  // address: AddressParameter;
+  address: string;
   purpose1?: string;
   purpose2?: string;
   lotArea?: number;
@@ -25,8 +27,4 @@ export type ProjectBuildingParameter = {
   householdCount?: number;
   floorCount?: number;
   baseCount?: number;
-}
-
-export type ProjectAddParameter = ProjectBasicParameter & {
-  code: string;
 }

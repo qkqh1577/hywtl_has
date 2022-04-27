@@ -21,9 +21,10 @@ import {
   StarOutline as StarOutlineIcon,
   Star as StarFillIcon
 } from '@mui/icons-material';
-import { ProjectList, ProjectDrawer, ProjectAddModal } from 'pages/project';
 import useProject from 'services/project/hook';
+import { ProjectList, ProjectDrawer, ProjectAddModal } from 'pages/project';
 import { ProjectCommentList, ProjectCommentDrawer } from 'pages/project/comment';
+import ProjectInfoDetail from 'pages/project/info';
 
 const ProjectContainer = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -206,12 +207,12 @@ const ProjectContainer = () => {
             </Box>
           </Paper>
           <Routes>
-            <Route path="/:id/basic" element={<h2>basic</h2>} />
-            <Route path="/:id/building" element={<h2>building</h2>} />
-            <Route path="/:id/bid" element={<h2>bid</h2>} />
-            <Route path="/:id/contract" element={<h2>contract</h2>} />
-            <Route path="/:id/schedule" element={<h2>schedule</h2>} />
-            <Route path="/:id/record" element={<h2>record</h2>} />
+            <Route path="basic" element={<ProjectInfoDetail />} />
+            <Route path="building" element={<h2>building</h2>} />
+            <Route path="bid" element={<h2>bid</h2>} />
+            <Route path="contract" element={<h2>contract</h2>} />
+            <Route path="schedule" element={<h2>schedule</h2>} />
+            <Route path="record" element={<h2>record</h2>} />
           </Routes>
         </Container>
         {id && (

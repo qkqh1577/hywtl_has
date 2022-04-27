@@ -1,5 +1,6 @@
 import { ListUser } from 'services/user/entity';
-import Address from 'services/common/address/entity';
+// TODO: 주소 컴포넌트 개발 이후 변경
+// import Address from 'services/common/address/entity';
 
 export type ProjectStatus = 'ON_GOING' | 'TEMPLATE';
 
@@ -17,10 +18,13 @@ export type ProjectBasic = {
   status: ProjectStatus;
   salesManager: ListUser;
   projectManager: ListUser;
+  updatedTime: Date;
 }
 
 export type ProjectBuilding = {
-  address: Address;
+  // TODO: 주소 컴포넌트 개발 이후 변경
+  // address: Address;
+  address: string;
   purpose1?: string;
   purpose2?: string;
   lotArea?: number;
@@ -29,6 +33,7 @@ export type ProjectBuilding = {
   householdCount?: number;
   floorCount?: number;
   baseCount?: number;
+  updatedTime: Date;
 }
 
 type Project = {

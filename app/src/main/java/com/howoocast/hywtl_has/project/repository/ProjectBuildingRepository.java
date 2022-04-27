@@ -6,7 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjectBuildingRepository extends JpaRepository<ProjectBuilding, Long> {
 
-    Optional<ProjectBuilding> findByIdAndDeletedTimeIsNull(Long id);
-
     Optional<ProjectBuilding> findByProject_IdAndDeletedTimeIsNull(Long projectId);
 }

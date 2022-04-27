@@ -1,11 +1,13 @@
 import Page, { initial } from 'components/Page';
-import Project, { ListProject } from 'services/project/entity';
+import Project, { ListProject, ProjectBasic, ProjectBuilding } from 'services/project/entity';
 import { createReducer } from 'typesafe-actions';
 import { ProjectActionType } from 'services/project/actions';
 
 export type ProjectState = {
   page: Page<ListProject>;
   detail?: Project;
+  basic?: ProjectBasic;
+  building?: ProjectBuilding;
   addModal: boolean;
 }
 
@@ -22,6 +24,14 @@ const projectReducer = createReducer(initState, {
   [ProjectActionType.setOne]: (state, action) => ({
     ...state,
     detail: action.payload,
+  }),
+  [ProjectActionType.setBasic]: (state, action) => ({
+    ...state,
+    basic: action.payload,
+  }),
+  [ProjectActionType.setBuilding]: (state, action) => ({
+    ...state,
+    building: action.payload,
   }),
   [ProjectActionType.setAddModal]: (state, action) => ({
     ...state,

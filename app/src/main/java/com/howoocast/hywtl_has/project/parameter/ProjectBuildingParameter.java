@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project.parameter;
 
-import com.howoocast.hywtl_has.common.parameter.AddressParameter;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +8,9 @@ import lombok.Setter;
 @Setter
 public class ProjectBuildingParameter {
 
+    // TODO: 주소 컴포넌트 개발 이후 변경
     @NotNull(message = "project.building.address.not-null")
-    private AddressParameter address;
+    private String address;
 
     private String purpose1;
 

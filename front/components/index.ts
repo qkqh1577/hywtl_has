@@ -8,3 +8,5 @@ export { default as DepartmentSelector } from './DepartmentSelector';
 export * from './DepartmentSelector';
 export { default as FileInput } from './FileInput';
 export * from './FileInput';
+export { default as UserSelector } from './UserSelector';
+export * from './UserSelector';

@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Grid, IconButton, Modal, Paper } from '@mui/material';
 import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField } from 'components';
+import { UserSelector, DataField } from 'components';
 import { initProjectBasic } from 'services/project/view';
 import useProject from 'services/project/hook';
-import { ProjectAddParameter } from 'services/project/parameter';
-import userApi from 'services/user/api';
-import { ListUser } from 'services/user/entity';
+import { ProjectBasicParameter } from 'services/project/parameter';
 
 const ProjectAddModal = () => {
   const navigate = useNavigate();
@@ -19,7 +17,6 @@ const ProjectAddModal = () => {
     add,
     setAddModal
   } = useProject();
-  const [userList, setUserList] = useState<ListUser[]>([]);
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
@@ -51,11 +48,10 @@ const ProjectAddModal = () => {
         return;
       }
 
-      const params: ProjectAddParameter = {
+      const params: ProjectBasicParameter = {
         name,
         code,
         alias,
-        status: 'TEMPLATE',
         salesManagerId,
         projectManagerId,
       };
@@ -72,12 +68,6 @@ const ProjectAddModal = () => {
       setAddModal(false);
     }
   };
-
-  useEffect(() => {
-    if (addModal) {
-      userApi.getAll().then(setUserList);
-    }
-  }, [addModal]);
 
   return (
     <Modal
@@ -146,30 +136,20 @@ const ProjectAddModal = () => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <DataField
-                      type="select"
+                    <UserSelector
                       name="salesManagerId"
                       label="영업 담당자"
                       value={values.salesManagerId}
                       setFieldValue={setFieldValue}
-                      options={userList.map((item) => ({
-                        key: item.id,
-                        value: item.name,
-                      }))}
                       required
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <DataField
-                      type="select"
+                    <UserSelector
                       name="projectManagerId"
                       label="담당 PM"
                       value={values.projectManagerId}
                       setFieldValue={setFieldValue}
-                      options={userList.map((item) => ({
-                        key: item.id,
-                        value: item.name,
-                      }))}
                       required
                     />
                   </Grid>
