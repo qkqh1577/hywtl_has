@@ -1,5 +1,5 @@
 import {
-  ProjectCommentAddParameter,
+  ProjectCommentAddParameter, ProjectCommentChangeParameter,
   ProjectCommentQuery
 } from 'services/project_comment/parameter';
 import Page from 'components/Page';
@@ -14,6 +14,17 @@ export class ProjectCommentApi {
 
   async add(params: ProjectCommentAddParameter): Promise<ProjectComment> {
     const { data } = await apiClient.post('/project-comments', params);
+    return data;
+  }
+
+  async change(params: ProjectCommentChangeParameter): Promise<ProjectComment> {
+    const { id, ...rest } = params;
+    const { data } = await apiClient.patch(`/project-comments/${id}`, rest);
+    return data;
+  }
+
+  async remove(id: number): Promise<void> {
+    const { data } = await apiClient.delete(`/project-comments/${id}`);
     return data;
   }
 }

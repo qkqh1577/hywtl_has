@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_comment.domain.ProjectComment;
 import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentAddParameter;
+import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentChangeParameter;
 import com.howoocast.hywtl_has.project_comment.repository.ProjectCommentRepository;
 import com.howoocast.hywtl_has.project_comment.view.ProjectCommentView;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -37,6 +38,11 @@ public class ProjectCommentService {
             .map(ProjectCommentView::assemble);
     }
 
+    @Transactional(readOnly = true)
+    public ProjectCommentView get(Long id) {
+        return ProjectCommentView.assemble(ProjectComment.load(projectCommentRepository, id));
+    }
+
     @Transactional
     public ProjectCommentView add(String username, ProjectCommentAddParameter params) {
         return ProjectCommentView.assemble(ProjectComment.of(
@@ -46,5 +52,15 @@ public class ProjectCommentService {
                 params.getDescription()
             )
         );
+    }
+
+    @Transactional
+    public void change(Long id, ProjectCommentChangeParameter params) {
+        ProjectComment.load(projectCommentRepository, id).changeDescription(params.getDescription());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        ProjectComment.load(projectCommentRepository, id).delete();
     }
 }

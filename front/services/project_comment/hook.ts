@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { useCallback } from 'react';
 import {
-  ProjectCommentAddParameter,
+  ProjectCommentAddParameter, ProjectCommentChangeParameter,
   ProjectCommentQuery
 } from 'services/project_comment/parameter';
 import { projectCommentActions } from 'services/project_comment/actions';
@@ -36,12 +36,26 @@ export default function useProjectComment() {
     [dispatch],
   );
 
+  const change = useCallback(
+    (params: ProjectCommentChangeParameter, callback: (data?: ProjectComment) => void) =>
+      dispatch(projectCommentActions.change({ params, callback })),
+    [dispatch]
+  );
+
+  const remove = useCallback(
+    (id: number, callback: () => void) =>
+      dispatch(projectCommentActions.remove({ id, callback })),
+    [dispatch],
+  );
+
 
   return {
     projectCommentState,
     getPage,
     getOne,
     clearOne,
-    add
+    add,
+    change,
+    remove
   };
 }

@@ -9,3 +9,8 @@ export type ProjectCommentAddParameter = {
   projectId: number;
   description: string;
 }
+
+export type ProjectCommentChangeParameter = {
+  id: number;
+  description: string;
+}

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Divider, Grid, Paper } from '@mui/material';
+import { Box, Button, Divider, Grid, IconButton, Paper } from '@mui/material';
+import {
+  Edit as EditIcon,
+  DeleteForever as DeleteIcon,
+  EditOff as ResetIcon,
+} from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { DataField, DateFormat } from 'components';
 import {
-  ProjectCommentAddParameter,
+  ProjectCommentAddParameter, ProjectCommentChangeParameter,
   ProjectCommentQuery
 } from 'services/project_comment/parameter';
 import useProjectComment from 'services/project_comment/hook';
+import useUser from 'services/user/hook';
+import ProjectComment from 'services/project_comment/entity';
 
 
 const ProjectCommentList = () => {
@@ -26,9 +33,15 @@ const ProjectCommentList = () => {
   const {
     projectCommentState: { page },
     getPage,
-    add
+    add,
+    change,
+    remove,
   } = useProjectComment();
+  const {
+    userState: { login }
+  } = useUser();
   const [filter, setFilter] = useState<ProjectCommentQuery>(initFilter);
+  const [selected, setSelected] = useState<ProjectComment | undefined>();
 
   const handler = {
     search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
@@ -53,21 +66,37 @@ const ProjectCommentList = () => {
         return;
       }
 
-      const params: ProjectCommentAddParameter = {
-        projectId: id,
-        description,
-      };
+      if (selected) {
+        const params: ProjectCommentChangeParameter = {
+          id: selected.id,
+          description,
+        };
+        change(params, (data) => {
+          if (data) {
+            window.alert('메모가 수정되었습니다.');
+            setFilter(initFilter);
+            setSelected(undefined);
+            resetForm();
+          }
+          setSubmitting(false);
+        });
+      } else {
+        const params: ProjectCommentAddParameter = {
+          projectId: id,
+          description,
+        };
+        add(params, (data) => {
+          if (data) {
+            window.alert('메모가 등록되었습니다.');
+            setFilter(initFilter);
+            resetForm();
+          }
+          setSubmitting(false);
+        });
+      }
 
-      add(params, (data) => {
-        if (data) {
-          window.alert('메모가 등록되었습니다.');
-          setFilter(initFilter);
-          resetForm();
-        }
-        setSubmitting(false);
-      });
 
-    }
+    },
   };
 
   useEffect(() => {
@@ -129,7 +158,7 @@ const ProjectCommentList = () => {
       }}>
         <Formik
           initialValues={{
-            description: '',
+            description: selected?.description ?? '',
           }}
           onSubmit={handler.submit}
           enableReinitialize
@@ -154,7 +183,7 @@ const ProjectCommentList = () => {
                       handleSubmit();
                     }}
                   >
-                    등록
+                    {selected ? '수정' : '등록'}
                   </Button>
                 </Grid>
               </Grid>
@@ -180,9 +209,44 @@ const ProjectCommentList = () => {
               <Grid item sm={12}>
                 {item.description}
               </Grid>
-              {item.writer.id === 1 && (
+              {!selected && login && item.writer.id === login.id && (
                 <Grid item sm={12}>
-                  수정 항목 TBD
+                  <IconButton
+                    color="primary"
+                    onClick={() => {
+                      setSelected(item);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="secondary"
+                    onClick={() => {
+                      if (window.confirm('해당 메모를 삭제하시겠습니까?')) {
+                         remove(item.id, () => {
+                            window.alert('삭제되었습니다.');
+                            setSelected(undefined);
+                            setFilter(initFilter);
+                         });
+                      }
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
+              )}
+              {selected && (
+                <Grid item sm={12}>
+                  <IconButton
+                    color="secondary"
+                    onClick={() => {
+                      if (window.confirm('수정을 취소하시겠습니까?')) {
+                        setSelected(undefined);
+                      }
+                    }}
+                  >
+                    <ResetIcon />
+                  </IconButton>
                 </Grid>
               )}
             </Grid>

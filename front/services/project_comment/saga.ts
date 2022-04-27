@@ -20,7 +20,29 @@ function* add(action: ActionType<typeof projectCommentActions.add>) {
   }
 }
 
+function* change(action: ActionType<typeof projectCommentActions.change>) {
+  const { params, callback } = action.payload;
+  try {
+    const data: ProjectComment = yield projectCommentApi.change(params);
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
+function* remove(action: ActionType<typeof projectCommentActions.remove>) {
+  const { id, callback } = action.payload;
+  try {
+    yield projectCommentApi.remove(id);
+    callback();
+  } catch (e) {
+    callback();
+  }
+}
+
 export default function* saga() {
   yield takeLatest(ProjectCommentActionType.getPage, getPage);
   yield takeLatest(ProjectCommentActionType.add, add);
+  yield takeLatest(ProjectCommentActionType.change, change);
+  yield takeLatest(ProjectCommentActionType.remove, remove);
 }
