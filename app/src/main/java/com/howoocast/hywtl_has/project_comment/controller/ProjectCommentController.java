@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_comment.controller;
 
 import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentAddParameter;
+import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentChangeParameter;
 import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentPredicateBuilder;
 import com.howoocast.hywtl_has.project_comment.service.ProjectCommentService;
 import com.howoocast.hywtl_has.project_comment.view.ProjectCommentView;
@@ -13,7 +14,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,5 +54,19 @@ public class ProjectCommentController {
             authentication.getName(),
             params
         );
+    }
+
+    @PatchMapping("/project-comments/{id}")
+    public ProjectCommentView changeDescription(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectCommentChangeParameter params
+    ) {
+        projectCommentService.change(id, params);
+        return projectCommentService.get(id);
+    }
+
+    @DeleteMapping("/project-comments/{id}")
+    public void delete(@PathVariable Long id) {
+        projectCommentService.delete(id);
     }
 }

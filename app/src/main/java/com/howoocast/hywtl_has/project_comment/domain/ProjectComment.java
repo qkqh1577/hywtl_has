@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_comment.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_comment.repository.ProjectCommentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -94,6 +95,14 @@ public class ProjectComment {
     //////////////////////////////////
     //// finder
     //////////////////////////////////
+    public static ProjectComment load(
+        ProjectCommentRepository repository,
+        Long id
+    ) {
+        ProjectComment instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
+    }
 
     //////////////////////////////////
     //// checker
@@ -102,4 +111,18 @@ public class ProjectComment {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
+    public void changeDescription(String description) {
+        this.description = description;
+        this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void delete() {
+        this.deletedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void save() {
+        repository.save(this);
+    }
 }
