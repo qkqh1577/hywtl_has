@@ -12,8 +12,8 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField } from 'components';
+import { Formik, FormikHelpers } from 'formik';
+import { Divider, DataField } from 'components';
 import useProject from 'services/project/hook';
 import { initProjectFilter, ProjectFilterView, projectStatusName } from 'services/project/view';
 
@@ -64,13 +64,11 @@ const ProjectList = () => {
   }, [filter, path]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '15px', mb: '30px' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
         width: '100%',
-        height: '50px',
-        mb: '40px',
       }}>
         <Formik
           initialValues={filter}
@@ -84,43 +82,56 @@ const ProjectList = () => {
             handleSubmit,
             resetForm
           }) => (
-            <Form>
-              <Grid container spacing={1}>
-                <Grid item sm={12}>
-                  <DataField
-                    name="keyword"
-                    label="프로젝트명 또는 코드"
-                    value={values.keyword}
-                    setFieldValue={setFieldValue}
-                  />
-                </Grid>
-                <Grid item sm={12}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    disabled={isSubmitting}
-                    onClick={() => {
-                      handleSubmit();
-                    }}
-                  >
-                    검색
-                  </Button>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={() => {
-                      handler.clear();
-                      resetForm();
-                    }}
-                  >
-                    초기화
-                  </Button>
-                </Grid>
+            <Grid container spacing={1}>
+              <Grid item sm={9}>
+                <DataField
+                  variant="outlined"
+                  name="keyword"
+                  label="프로젝트명 또는 코드"
+                  value={values.keyword}
+                  setFieldValue={setFieldValue}
+                />
               </Grid>
-            </Form>
+              <Grid item sm={3}
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'spacing-between',
+                }}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                  fullWidth
+                  sx={{
+                    height: 20
+                  }}
+                >
+                  검색
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => {
+                    handler.clear();
+                    resetForm();
+                  }}
+                  fullWidth
+                  sx={{
+                    height: 20
+                  }}
+                >
+                  초기화
+                </Button>
+              </Grid>
+            </Grid>
           )}
         </Formik>
       </Box>
+      <Divider variant="middle" />
       <Box sx={{
         display: 'flex',
         width: '100%',

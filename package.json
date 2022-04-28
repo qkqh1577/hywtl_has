@@ -5,7 +5,7 @@
   "main": "front/index.ts",
   "scripts": {
     "start": "webpack serve --config webpack.config.js",
-    "build": "webpack --config webpack.config.build.js",
+    "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -38,6 +38,7 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.7.1",
     "dayjs": "^1.11.0",
+    "file-loader": "^6.2.0",
     "formik": "^2.2.9",
     "gulp": "^4.0.2",
     "gulp-watch": "^5.0.1",

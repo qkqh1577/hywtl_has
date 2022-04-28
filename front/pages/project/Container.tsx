@@ -10,10 +10,11 @@ import {
   Box,
   Button,
   Container,
-  Divider, Grid,
+  Divider,
+  Grid,
   IconButton,
   Paper,
-  Toolbar
+  Toolbar, Typography
 } from '@mui/material';
 import {
   ChevronLeft as LeftIcon,
@@ -22,7 +23,7 @@ import {
   Star as StarFillIcon
 } from '@mui/icons-material';
 import useProject from 'services/project/hook';
-import { ProjectList, ProjectDrawer, ProjectAddModal } from 'pages/project';
+import { ProjectAddModal } from 'pages/project';
 import { ProjectCommentList, ProjectCommentDrawer } from 'pages/project/comment';
 import ProjectInfoDetail from 'pages/project/info';
 
@@ -41,14 +42,10 @@ const ProjectContainer = () => {
     setAddModal
   } = useProject();
 
-  const [openDrawer, setOpenDrawer] = useState<boolean>(true);
-  const [openCommentDrawer, setOpenCommentDrawer] = useState<boolean>(false);
+  const [openComment, setOpenComment] = useState<boolean>(false);
   const handler = {
-    toggle: () => {
-      setOpenDrawer(!openDrawer);
-    },
     toggleComment: () => {
-      setOpenCommentDrawer(!openCommentDrawer);
+      setOpenComment(!openComment);
     }
   };
 
@@ -71,22 +68,6 @@ const ProjectContainer = () => {
         display: 'flex',
         height: '100%'
       }}>
-        <ProjectDrawer variant="permanent" open={openDrawer}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}
-          >
-            <IconButton onClick={handler.toggle}>
-              {openDrawer ? <LeftIcon /> : <RightIcon />}
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          {openDrawer && <ProjectList />}
-        </ProjectDrawer>
         <Container>
           <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
             <Box sx={{
@@ -216,21 +197,21 @@ const ProjectContainer = () => {
           </Routes>
         </Container>
         {id && (
-          <ProjectCommentDrawer variant="permanent" open={openCommentDrawer}>
+          <ProjectCommentDrawer variant="permanent" open={openComment}>
             <Toolbar
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'flex-end',
+                justifyContent: openComment ? 'space-between' : 'flex-end',
                 px: [1],
               }}
             >
               <IconButton onClick={handler.toggleComment}>
-                {openCommentDrawer ? <RightIcon /> : <LeftIcon />}
+                {openComment ? <RightIcon /> : <LeftIcon />}
               </IconButton>
             </Toolbar>
             <Divider />
-            {openCommentDrawer && <ProjectCommentList />}
+            {openComment && <ProjectCommentList />}
           </ProjectCommentDrawer>
         )}
       </Box>

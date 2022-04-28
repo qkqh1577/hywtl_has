@@ -12,6 +12,7 @@ type Option = {
 
 type Props = {
   type?: string;
+  variant?: 'standard' | 'filled' | 'outlined';
   name: string;
   label: string;
   value: string | number | '';
@@ -20,10 +21,14 @@ type Props = {
   disabled?: boolean;
   options?: Option[] | Value[];
   helperText?: string | React.ReactNode;
+  sx?: any;
+  inputProps?: any;
+
 }
 
 const DataField = ({
   type = 'text',
+  variant = 'standard',
   name,
   label,
   value,
@@ -32,6 +37,8 @@ const DataField = ({
   disabled,
   options,
   helperText,
+  sx,
+  inputProps,
 }: Props) => {
 
   return (
@@ -47,10 +54,12 @@ const DataField = ({
       label={label}
       placeholder={`${label}${getObjectPostPosition(label)} 입력해 주세요`}
       helperText={<ErrorMessage name={name} /> ?? helperText}
-      variant="standard"
+      variant={variant}
       fullWidth
       required={!(disabled === true) && required === true}
       disabled={disabled === true}
+      sx={sx}
+      inputProps={inputProps}
     >
       {type === 'select' && options && options.map((option) => {
         if (typeof option === 'string' || typeof option === 'number') {

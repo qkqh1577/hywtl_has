@@ -13,6 +13,11 @@ import 'dayjs/locale/ko';
 
 const render = () => {
   const mdTheme = createTheme({
+    typography: {
+      fontFamily: [
+        'inter'
+      ].join(',')
+    },
     palette: {
       primary: {
         main: '#301a9a',
@@ -32,7 +37,7 @@ const render = () => {
         selected: '#5470ff',
         disabled: '#494949',
         disabledBackground: '#f1eaff',
-      }
+      },
     },
   });
 

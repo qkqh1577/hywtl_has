@@ -4,7 +4,7 @@ import {
   Box,
   Container,
   CssBaseline,
-  Divider,
+  Divider, Grid,
   IconButton,
   ListItem,
   ListItemIcon,
@@ -28,8 +28,15 @@ import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
 import { EventDataNode, Key } from 'rc-tree/lib/interface';
 
 import { AppBar, AppDrawer } from 'layouts';
+import {
+  appDrawerWidth,
+  projectDrawerWidth,
+  iconWidth
+} from 'layouts/data';
+import { ProjectDrawer, ProjectList } from 'pages/project';
 import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
+import logo from 'assets/logo.png';
 
 type Menu = {
   title: string;
@@ -44,34 +51,39 @@ const App = () => {
   const path = location.pathname;
   const { userState: { login }, getLogin, logout } = useUser();
 
-  const [open, setOpen] = useState(true);
+  const [openMenu, setOpenMenu] = useState(true);
+  const [openProject, setOpenProject] = useState(true);
+  const [width, setWidth] = useState<number>(appDrawerWidth);
   const [menuData, setMenuData] = useState<Menu[]>([
     {
-      title: 'Department',
+      title: '부서 관리',
       path: '/department',
       icon: DashboardIcon
     }, {
-      title: 'User',
+      title: '사용자 관리',
       path: '/user',
       icon: DashboardIcon
     }, {
-      title: 'HR',
+      title: '인사카드 관리',
       path: '/hr/card',
       icon: DashboardIcon
     }, {
-      title: 'SALES',
+      title: '영업 관리',
       path: '/sales',
       icon: DashboardIcon
     }, {
-      title: 'PROJECT',
+      title: '프로젝트 관리',
       path: '/project',
       icon: DashboardIcon
     }
   ]);
 
   const handler = {
-    toggle: () => {
-      setOpen(!open);
+    toggleMenu: () => {
+      setOpenMenu(!openMenu);
+    },
+    toggleProject: () => {
+      setOpenProject(!openProject);
     },
     dragStart: (info: NodeDragEventParams) => {
       console.log(info);
@@ -155,24 +167,47 @@ const App = () => {
     }
   }, [path]);
 
+  useEffect(() => {
+    let tempWidth: number = 0;
+    tempWidth += openMenu ? appDrawerWidth : iconWidth;
+    if (path.startsWith('/project')) {
+      tempWidth += openProject ? projectDrawerWidth : iconWidth;
+    }
+    setWidth(tempWidth);
+  }, [path, openMenu, openProject]);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open} color="transparent">
+      <AppBar
+        position="absolute"
+        color="transparent"
+        width={width}
+      >
         <Toolbar
           sx={{
-            pr: '24px', // keep right padding when drawer closed
             backgroundColor: '#3c3757'
           }}
         >
-          <Typography
-            variant="h3"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          />
+          <Grid container spacing={2} wrap="nowrap"
+            sx={{
+              display: 'flex',
+              flexWrap: 'nowrap',
+              alignContent: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Grid item>
+              <img src={logo} width="auto" height="26" />
+            </Grid>
+          </Grid>
           {login && (
-            <>
+            <Grid item
+              sx={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                justifyContent: 'flex-end',
+              }}>
               <IconButton color="warning">
                 <NotificationsIcon />
                 <Typography color="white">
@@ -193,20 +228,20 @@ const App = () => {
               >
                 <LogoutIcon />
               </IconButton>
-            </>
+            </Grid>
           )}
         </Toolbar>
       </AppBar>
-      <AppDrawer variant="permanent" open={open}>
+      <AppDrawer variant="permanent" open={openMenu}>
         <Toolbar
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: open? 'space-between' : 'flex-end',
+            justifyContent: openMenu ? 'space-between' : 'flex-end',
             px: [1],
           }}
         >
-          {open && (
+          {openMenu && (
             <Typography
               color="primary"
               sx={{
@@ -236,14 +271,14 @@ const App = () => {
                 backgroundColor: 'transparent',
                 border: '2px solid #301a9a',
               }}
-              onClick={handler.toggle}
+              onClick={handler.toggleMenu}
             >
-              {open ? <LeftIcon /> : <RightIcon />}
+              {openMenu ? <LeftIcon /> : <RightIcon />}
             </IconButton>
           </Box>
         </Toolbar>
         <Divider />
-        {open && (
+        {openMenu && (
           <Tree
             onDragStart={handler.dragStart}
             onDragEnter={handler.dragEnter}
@@ -274,6 +309,56 @@ const App = () => {
           </Tree>
         )}
       </AppDrawer>
+      {path.startsWith('/project') && (
+        <ProjectDrawer variant="permanent" open={openProject}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: openProject ? 'space-between' : 'flex-end',
+              px: [1],
+            }}
+          >
+            {openProject && (
+              <Typography
+                color="primary"
+                sx={{
+                  ml: '19px',
+                  fontSize: '16px'
+                }}
+              >
+                프로젝트 목록
+              </Typography>
+            )}
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              width: '36px',
+              height: '36px',
+              backgroundColor: '#c4baf5',
+              borderRadius: '4px'
+            }}>
+              <IconButton
+                color="primary"
+                sx={{
+                  display: 'flex',
+                  width: '16.25px',
+                  height: '16.25px',
+                  backgroundColor: 'transparent',
+                  border: '2px solid #301a9a',
+                }}
+                onClick={handler.toggleProject}
+              >
+                {openProject ? <LeftIcon /> : <RightIcon />}
+              </IconButton>
+            </Box>
+          </Toolbar>
+          <Divider />
+          {openProject && <ProjectList />}
+        </ProjectDrawer>
+      )}
       <Box
         component="main"
         sx={{
@@ -291,6 +376,7 @@ const App = () => {
           <ReactRouter />
         </Container>
       </Box>
+
     </Box>
   );
 };
