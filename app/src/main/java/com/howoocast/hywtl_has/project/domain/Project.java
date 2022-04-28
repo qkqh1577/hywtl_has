@@ -29,10 +29,6 @@ public class Project {
     @JoinColumn
     private ProjectBasic basic;
 
-    @OneToOne
-    @JoinColumn
-    private ProjectBuilding building;
-
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
@@ -107,11 +103,6 @@ public class Project {
     //////////////////////////////////
     public void change(ProjectBasic basic) {
         this.basic = basic;
-        this.save();
-    }
-
-    public void change(ProjectBuilding building) {
-        this.building = building;
         this.save();
     }
 

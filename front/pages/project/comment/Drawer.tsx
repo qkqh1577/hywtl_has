@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
+import { commentDrawerWidth, iconWidth } from 'layouts/data';
 
 const ProjectCommentDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open'
@@ -8,8 +9,9 @@ const ProjectCommentDrawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': {
       position: 'relative',
       whiteSpace: 'nowrap',
-      width: 410,
+      width: `${commentDrawerWidth}px`,
       height: '100%',
+      borderLeft: '1px solid #0000001f',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
@@ -21,10 +23,7 @@ const ProjectCommentDrawer = styled(MuiDrawer, {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
+        width: `${iconWidth}px`,
       }),
     },
   }),

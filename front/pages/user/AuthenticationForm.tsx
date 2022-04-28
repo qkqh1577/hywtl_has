@@ -24,7 +24,7 @@ const UserAuthenticationForm = () => {
 
   if (!email || !authKey) {
     return (
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Grid item sm={12}>
           <h2>계정 등록</h2>
         </Grid>

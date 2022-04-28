@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
+import { iconWidth, projectDrawerWidth } from 'layouts/data';
 
 const ProjectDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open'
@@ -8,7 +9,7 @@ const ProjectDrawer = styled(MuiDrawer, {
     '& .MuiDrawer-paper': {
       position: 'relative',
       whiteSpace: 'nowrap',
-      width: 310,
+      width: `${projectDrawerWidth}px`,
       height: '100%',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -21,10 +22,7 @@ const ProjectDrawer = styled(MuiDrawer, {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
+        width: `${iconWidth}px`
       }),
     },
   }),

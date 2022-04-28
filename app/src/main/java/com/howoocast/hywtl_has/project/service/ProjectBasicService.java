@@ -36,7 +36,21 @@ public class ProjectBasicService {
             params.getCode(),
             params.getAlias(),
             User.load(userRepository, params.getSalesManagerId()),
-            User.load(userRepository, params.getProjectManagerId())
+            User.load(userRepository, params.getProjectManagerId()),
+            params.getAddress(),
+            params.getPurpose1(),
+            params.getPurpose2(),
+            params.getLotArea(),
+            params.getTotalArea(),
+            params.getBuildingCount(),
+            params.getHouseholdCount(),
+            params.getFloorCount(),
+            params.getBaseCount(),
+            params.getClientName(),
+            params.getIsClientLH(),
+            params.getClientManager(),
+            params.getClientPhone(),
+            params.getClientEmail()
         );
         Project.load(projectRepository, projectId).change(projectBasic);
     }

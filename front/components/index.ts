@@ -10,3 +10,5 @@ export { default as FileInput } from './FileInput';
 export * from './FileInput';
 export { default as UserSelector } from './UserSelector';
 export * from './UserSelector';
+export { default as Divider } from './Divider';
+export * from './Divider';

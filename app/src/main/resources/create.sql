@@ -145,41 +145,32 @@ create table project
 create table project_basic
 (
 	id bigint auto_increment primary key,
+	address varchar(255) null,
 	alias varchar(255) null,
+	base_count int null,
+	building_count int null,
+	client_email varchar(255) null,
+	client_manager varchar(255) null,
+	client_name varchar(255) null,
+	client_phone varchar(255) null,
 	code varchar(255) not null,
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
+	floor_count int null,
+	household_count int null,
+	is_client_lh bit null,
+	lot_area double null,
 	name varchar(255) not null,
-	status varchar(255) null,
+	purpose1 varchar(255) null,
+	purpose2 varchar(255) null,
+	status varchar(255) not null,
+	total_area double null,
 	updated_time datetime(6) not null,
 	project_manager_id bigint not null,
 	sales_manager_id bigint not null,
 	constraint UK_project_project_basic unique (code)
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_building
-(
-    id bigint auto_increment primary key,
-    depth1 varchar(255) not null,
-    depth2 varchar(255) not null,
-    extra varchar(255) null,
-    land_number varchar(255) null,
-    latitude double not null,
-    longitude double not null,
-    place varchar(255) null,
-    road varchar(255) not null,
-    base_count int null,
-    building_count int null,
-    created_time datetime(6) not null,
-    deleted_time datetime(6) null,
-    floor_count int null,
-    household_count int null,
-    lot_area double null,
-    purpose1 varchar(255) null,
-    purpose2 varchar(255) null,
-    total_area double null,
-    updated_time datetime(6) not null
-) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_comment
 (

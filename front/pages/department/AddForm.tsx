@@ -72,7 +72,7 @@ const DepartmentAddForm = () => {
   }, []);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
