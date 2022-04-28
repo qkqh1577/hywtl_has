@@ -22,5 +22,33 @@ public class ProjectBasicParameter {
 
     @NotNull(message = "project.basic.project-manager-id.not-null")
     private Long projectManagerId;
+
+    private String address;
+
+    private String purpose1;
+
+    private String purpose2;
+
+    private Double lotArea;
+
+    private Double totalArea;
+
+    private Integer buildingCount;
+
+    private Integer householdCount;
+
+    private Integer floorCount;
+
+    private Integer baseCount;
+
+    private String clientName;
+
+    private Boolean isClientLH;
+
+    private String clientManager;
+
+    private String clientPhone;
+
+    private String clientEmail;
 }
 

@@ -17,7 +17,7 @@ type Props = {
   name: string;
   label: string;
   placeholder?: string;
-  value: string | number | '';
+  value: Value | '';
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   required?: boolean;
   disabled?: boolean;

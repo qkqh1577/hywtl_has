@@ -21,6 +21,34 @@ public class ProjectBasicView {
 
     private UserListView projectManager;
 
+    private String address;
+
+    private String purpose1;
+
+    private String purpose2;
+
+    private Double lotArea;
+
+    private Double totalArea;
+
+    private Integer buildingCount;
+
+    private Integer householdCount;
+
+    private Integer floorCount;
+
+    private Integer baseCount;
+
+    private String clientName;
+
+    private Boolean isClientLH;
+
+    private String clientManager;
+
+    private String clientPhone;
+
+    private String clientEmail;
+
     private LocalDateTime updatedTime;
 
     public static ProjectBasicView assemble(ProjectBasic source) {
@@ -31,6 +59,20 @@ public class ProjectBasicView {
         target.status = source.getStatus();
         target.salesManager = UserListView.assemble(source.getSalesManager());
         target.projectManager = UserListView.assemble(source.getProjectManager());
+        target.address = source.getAddress();
+        target.purpose1 = source.getPurpose1();
+        target.purpose2 = source.getPurpose2();
+        target.lotArea = source.getLotArea();
+        target.totalArea = source.getTotalArea();
+        target.buildingCount = source.getBuildingCount();
+        target.householdCount = source.getHouseholdCount();
+        target.floorCount = source.getFloorCount();
+        target.baseCount = source.getBaseCount();
+        target.clientName = source.getClientName();
+        target.isClientLH = source.getIsClientLH();
+        target.clientManager = source.getClientManager();
+        target.clientPhone = source.getClientPhone();
+        target.clientEmail = source.getClientEmail();
         target.updatedTime = source.getUpdatedTime();
         return target;
     }

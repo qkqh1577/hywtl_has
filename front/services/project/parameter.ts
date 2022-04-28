@@ -13,12 +13,7 @@ export type ProjectBasicParameter = {
   alias?: string;
   salesManagerId: number;
   projectManagerId: number;
-}
-
-export type ProjectBuildingParameter = {
-  // TODO: 주소 컴포넌트 개발 이후 변경
-  // address: AddressParameter;
-  address: string;
+  address?: string;
   purpose1?: string;
   purpose2?: string;
   lotArea?: number;
@@ -27,4 +22,9 @@ export type ProjectBuildingParameter = {
   householdCount?: number;
   floorCount?: number;
   baseCount?: number;
+  clientName?: string;
+  isClientLH?: boolean;
+  clientManager?: string;
+  clientPhone?: string;
+  clientEmail?: string;
 }

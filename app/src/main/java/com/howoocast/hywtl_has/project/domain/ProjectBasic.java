@@ -60,6 +60,36 @@ public class ProjectBasic {
     @NotNull
     private User projectManager; // 담당 PM
 
+    // TODO: 주소 컴포넌트 개발 이후 변경
+    private String address;
+
+    private String purpose1; // 건물 용도 1
+
+    private String purpose2; // 건물 용도 2
+
+    private Double lotArea; // 대지면적
+
+    private Double totalArea; // 연면적
+
+    private Integer buildingCount; // 총 동 수
+
+    private Integer householdCount; // 건물 당 세대 수
+
+    private Integer floorCount; // 층 수
+
+    private Integer baseCount; // 지하층 수
+
+    private String clientName; // 업체명
+
+    @Column(name = "is_client_lh")
+    private Boolean isClientLH; // 업체 LH 여부
+
+    private String clientManager; // 업체 담당자
+
+    private String clientPhone; // 업체 담당자 핸드폰
+
+    private String clientEmail; // 업체 담당자 이메일
+
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
@@ -98,17 +128,15 @@ public class ProjectBasic {
         User projectManager
     ) {
         ProjectBasic instance = new ProjectBasic();
-        instance.set(
-            name,
-            code,
-            alias,
-            salesManager,
-            projectManager
-        );
-        instance.repository = repository;
+        instance.name = name;
+        instance.code = code;
+        instance.alias = alias;
+        instance.salesManager = salesManager;
+        instance.projectManager = projectManager;
         instance.status = ProjectStatus.TEMPLATE;
         instance.createdTime = LocalDateTime.now();
         instance.updatedTime = instance.createdTime;
+        instance.repository = repository;
         return repository.save(instance);
     }
 
@@ -129,33 +157,47 @@ public class ProjectBasic {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-    private void set(
-        String name,
-        String code,
-        String alias,
-        User salesManager,
-        User projectManager
-    ) {
-        this.name = name;
-        this.code = code;
-        this.alias = alias;
-        this.salesManager = salesManager;
-        this.projectManager = projectManager;
-    }
 
     public void change(
         String name,
         String code,
         String alias,
         User salesManager,
-        User projectManager) {
-        this.set(
-            name,
-            code,
-            alias,
-            salesManager,
-            projectManager
-        );
+        User projectManager,
+        String address,
+        String purpose1,
+        String purpose2,
+        Double lotArea,
+        Double totalArea,
+        Integer buildingCount,
+        Integer householdCount,
+        Integer floorCount,
+        Integer baseCount,
+        String clientName,
+        Boolean isClientLH,
+        String clientManager,
+        String clientPhone,
+        String clientEmail
+    ) {
+        this.name = name;
+        this.code = code;
+        this.alias = alias;
+        this.salesManager = salesManager;
+        this.projectManager = projectManager;
+        this.address = address;
+        this.purpose1 = purpose1;
+        this.purpose2 = purpose2;
+        this.lotArea = lotArea;
+        this.totalArea = totalArea;
+        this.buildingCount = buildingCount;
+        this.householdCount = householdCount;
+        this.floorCount = floorCount;
+        this.baseCount = baseCount;
+        this.clientName = clientName;
+        this.isClientLH = isClientLH;
+        this.clientManager = clientManager;
+        this.clientPhone = clientPhone;
+        this.clientEmail = clientEmail;
         this.updatedTime = LocalDateTime.now();
         this.save();
     }

@@ -1,6 +1,4 @@
 import { ProjectStatus } from 'services/project/entity';
-// TODO: 주소 컴포넌트 개발 이후 변경
-// import Address from 'services/common/address/entity';
 
 export const projectStatusName = (status: ProjectStatus): string => {
   if (status === 'ON_GOING') {
@@ -23,11 +21,6 @@ export type ProjectBasicView = {
   alias: string;
   salesManagerId: number | '';
   projectManagerId: number | '';
-}
-
-export type ProjectBuildingView = {
-  // TODO: 주소 컴포넌트 개발 이후 변경
-  // address: Address | null;
   address: string;
   purpose1: string;
   purpose2: string;
@@ -37,6 +30,11 @@ export type ProjectBuildingView = {
   householdCount: number | '';
   floorCount: number | '';
   baseCount: number | '';
+  clientName: string;
+  isClientLH: string;
+  clientManager: string;
+  clientPhone: string;
+  clientEmail: string;
 }
 
 export const initProjectFilter: ProjectFilterView = {
@@ -51,9 +49,6 @@ export const initProjectBasic: ProjectBasicView = {
   alias: '',
   salesManagerId: '',
   projectManagerId: '',
-};
-
-export const initProjectBuilding: ProjectBuildingView = {
   address: '',
   purpose1: '',
   purpose2: '',
@@ -62,5 +57,10 @@ export const initProjectBuilding: ProjectBuildingView = {
   buildingCount: '',
   householdCount: '',
   floorCount: '',
-  baseCount: ''
+  baseCount: '',
+  clientName: '',
+  isClientLH: '',
+  clientManager: '',
+  clientPhone: '',
+  clientEmail: '',
 };
