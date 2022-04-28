@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Divider, Grid, IconButton, Paper } from '@mui/material';
+import { Box, Button, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
 import {
   Edit as EditIcon,
   SaveAs as SaveIcon,
@@ -125,7 +125,6 @@ const ProjectBasicDetail = () => {
               display: 'flex',
               justifyContent: 'space-between',
               width: '100%',
-              height: '50px',
               mb: '40px',
             }}>
               <Grid container spacing={2} sx={{
@@ -133,62 +132,133 @@ const ProjectBasicDetail = () => {
                 justifyContent: 'space-between',
                 width: '100%',
               }}>
-                <Grid item>
-                  <strong>기본 정보</strong>
+                <Grid item sx={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  alignItems: 'center',
+                }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      marginRight: '4px'
+                    }}
+                  >
+                    기본 정보
+                  </Typography>
                   {open && edit && (
                     <>
-                      <IconButton
-                        color="primary"
-                        disabled={isSubmitting || !dirty}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => {
-                          if (edit && dirty) {
-                            if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
-                              resetForm();
-                              setView({
-                                name: detail?.name ?? view.name,
-                                code: detail?.code ?? view.code,
-                                alias: detail?.alias ?? view.alias,
-                                salesManagerId: detail?.salesManager.id ?? view.salesManagerId,
-                                projectManagerId: detail?.projectManager.id ?? view.projectManagerId,
-                              });
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        width: '25px',
+                        height: '25px',
+                        backgroundColor: (theme) => theme.palette.primary.main,
+                        borderRadius: '4px'
+                      }}>
+                        <IconButton
+                          disabled={isSubmitting || !dirty}
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                          sx={{
+                            color: '#ffffff',
+                            maxHeight: '21px'
+                          }}>
+                          <SaveIcon />
+                        </IconButton>
+                      </Box>
+                      <Box color="primary" sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        width: '25px',
+                        height: '25px',
+                        backgroundColor: (theme) => theme.palette.primary.main,
+                        borderRadius: '4px'
+                      }}>
+                        <IconButton
+                          onClick={() => {
+                            if (edit && dirty) {
+                              if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
+                                resetForm();
+                                setView({
+                                  name: detail?.name ?? view.name,
+                                  code: detail?.code ?? view.code,
+                                  alias: detail?.alias ?? view.alias,
+                                  salesManagerId: detail?.salesManager.id ?? view.salesManagerId,
+                                  projectManagerId: detail?.projectManager.id ?? view.projectManagerId,
+                                });
+                                setEdit(false);
+                              }
+                            } else {
                               setEdit(false);
                             }
-                          } else {
-                            setEdit(false);
-                          }
-                        }}
-                      >
-                        <ResetIcon />
-                      </IconButton>
+                          }}
+                          sx={{
+                            color: '#ffffff',
+                            maxHeight: '21px'
+                          }}>
+                          <ResetIcon />
+                        </IconButton>
+                      </Box>
                     </>
                   )}
                   {open && !edit && (
-                    <IconButton onClick={handler.edit}>
-                      <EditIcon />
-                    </IconButton>
+                    <Box color="primary" sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                      width: '25px',
+                      height: '25px',
+                      backgroundColor: (theme) => theme.palette.primary.main,
+                      borderRadius: '4px'
+                    }}>
+                      <IconButton
+                        onClick={handler.edit}
+                        sx={{
+                          color: '#ffffff',
+                          maxHeight: '21px'
+                        }}>
+                        <EditIcon />
+                      </IconButton>
+                    </Box>
                   )}
                 </Grid>
                 {!edit && (
-                  <Grid item>
+                  <Grid item sx={{
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    alignItems: 'center',
+                  }}>
+                    <Typography
+                      sx={{
+                        fontWeight: 'bold',
+                        marginRight: '4px'
+                      }}
+                    >
+                      최종수정일시
+                    </Typography>
+                    <Typography
+                      sx={{
+                        marginRight: '8px'
+                      }}
+                    >
+                      <DateFormat date={detail?.updatedTime} format="YYYY-MM-DD HH:mm" />
+                    </Typography>
                     <Button
                       color="primary"
                       variant="contained"
                       onClick={handler.toggle}
+                      sx={{
+                        maxHeight: '30px'
+                      }}
                     >
                       {open ? '접기' : '펴기'}
                     </Button>
-                    <span>최종수정일시</span>
-                    <strong>
-                      <DateFormat date={detail?.updatedTime} format="YYYY-MM-DD HH:mm" />
-                    </strong>
                   </Grid>
                 )}
               </Grid>
@@ -198,9 +268,18 @@ const ProjectBasicDetail = () => {
               width: '100%',
               mb: '40px',
             }}>
-
               <Grid container spacing={2}>
-                <Grid item sm={6}>
+                <Grid item sm={2}>
+                  <DataField
+                    name="code"
+                    label="프로젝트 코드"
+                    value={values.code}
+                    setFieldValue={setFieldValue}
+                    disabled={!edit}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={5}>
                   <DataField
                     name="name"
                     label="프로젝트명"
@@ -210,17 +289,7 @@ const ProjectBasicDetail = () => {
                     required
                   />
                 </Grid>
-                <Grid item sm={6}>
-                  <DataField
-                    name="code"
-                    label="프로젝트 코드"
-                    value={values.code}
-                    setFieldValue={setFieldValue}
-                    required
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={3}>
                   <DataField
                     name="alias"
                     label="프로젝트 닉네임"
@@ -229,7 +298,7 @@ const ProjectBasicDetail = () => {
                     disabled={!edit}
                   />
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={2}>
                   <UserSelector
                     name="salesManagerId"
                     label="영업 담당자"
@@ -239,7 +308,7 @@ const ProjectBasicDetail = () => {
                     required
                   />
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={2}>
                   <UserSelector
                     name="projectManagerId"
                     label="담당 PM"

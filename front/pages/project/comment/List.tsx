@@ -6,7 +6,7 @@ import {
   DeleteForever as DeleteIcon,
   EditOff as ResetIcon,
 } from '@mui/icons-material';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { Formik, FormikHelpers } from 'formik';
 import { DataField, DateFormat } from 'components';
 import {
   ProjectCommentAddParameter, ProjectCommentChangeParameter,
@@ -158,7 +158,7 @@ const ProjectCommentList = () => {
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({ values, isSubmitting, setFieldValue, handleSubmit }) => (
+          {({ values, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <DataField
@@ -189,13 +189,13 @@ const ProjectCommentList = () => {
               <Grid item sm={12} sx={{
                 display: 'flex',
                 alignContent: 'center',
-                flexWrap:'nowrap',
+                flexWrap: 'nowrap',
 
               }}>
                 <Typography
                   sx={{
                     fontWeight: 'bold',
-                    textAlign:'center'
+                    textAlign: 'center'
                   }}
                 >
                   <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
@@ -249,7 +249,6 @@ const ProjectCommentList = () => {
               <Grid item sm={12}>
                 {item.description}
               </Grid>
-
             </Grid>
           ))}
         </Grid>

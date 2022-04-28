@@ -113,7 +113,7 @@ const ProjectBuildingDetail = () => {
   }, [detail]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Formik
         initialValues={view}
         onSubmit={handler.submit}
