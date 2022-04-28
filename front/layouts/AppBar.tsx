@@ -1,14 +1,12 @@
 import { styled } from '@mui/material/styles';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
 
-interface AppBarProps extends MuiAppBarProps {
-  width: number;
-}
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ width }) => ({
-  width: `calc(100% - ${width}px)`
+})<AppBarProps>(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  width: '100%',
 }));
 
 export default AppBar;

@@ -2,6 +2,7 @@ import React from 'react';
 import { ErrorMessage } from 'formik';
 import { MenuItem, TextField } from '@mui/material';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
+import { OutlinedInputProps } from '@mui/material/OutlinedInput';
 
 type Value = string | number;
 
@@ -15,6 +16,7 @@ type Props = {
   variant?: 'standard' | 'filled' | 'outlined';
   name: string;
   label: string;
+  placeholder?: string;
   value: string | number | '';
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   required?: boolean;
@@ -22,8 +24,10 @@ type Props = {
   options?: Option[] | Value[];
   helperText?: string | React.ReactNode;
   sx?: any;
-  inputProps?: any;
-
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  InputProps?: Partial<OutlinedInputProps>;
 }
 
 const DataField = ({
@@ -31,6 +35,7 @@ const DataField = ({
   variant = 'standard',
   name,
   label,
+  placeholder,
   value,
   setFieldValue,
   required,
@@ -38,28 +43,36 @@ const DataField = ({
   options,
   helperText,
   sx,
-  inputProps,
+  InputProps,
+  onFocus,
+  onKeyDown,
+  onKeyUp,
 }: Props) => {
 
   return (
     <TextField
       type={type}
+      variant={variant}
       select={type === 'select' ? true : undefined}
       id={`params-${name}`}
       name={name}
       value={value}
+      label={label}
       onChange={(e) => {
         setFieldValue(name, e.target.value ?? '');
       }}
-      label={label}
-      placeholder={`${label}${getObjectPostPosition(label)} 입력해 주세요`}
+      placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
       helperText={<ErrorMessage name={name} /> ?? helperText}
-      variant={variant}
-      fullWidth
       required={!(disabled === true) && required === true}
       disabled={disabled === true}
       sx={sx}
-      inputProps={inputProps}
+      InputProps={{
+        ...InputProps,
+        onFocus,
+        onKeyDown,
+        onKeyUp,
+      }}
+      fullWidth
     >
       {type === 'select' && options && options.map((option) => {
         if (typeof option === 'string' || typeof option === 'number') {

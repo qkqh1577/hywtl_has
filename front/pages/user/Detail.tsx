@@ -107,7 +107,7 @@ const UserDetail = () => {
 
   return (
     <>
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -285,7 +285,7 @@ const UserDetail = () => {
         </Box>
       </Paper>
       {detail && (<PersonnelDetail />)}
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ mb: '20px' }}>
           <Grid container spacing={1}>
             <Grid item sm={12}>

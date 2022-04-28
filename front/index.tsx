@@ -17,6 +17,8 @@ const render = () => {
       fontFamily: [
         'inter'
       ].join(',')
+      ,
+      fontSize: 12
     },
     palette: {
       primary: {

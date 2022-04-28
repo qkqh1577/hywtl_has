@@ -73,7 +73,7 @@ const UserInviteForm = () => {
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -147,13 +147,13 @@ const UserInviteForm = () => {
                       </FormControl>
                     </Grid>
                     <Grid item sm={12}>
-                        <DepartmentSelector
-                          name="department"
-                          label="소속 부서"
-                          value={values.department}
-                          setFieldValue={setFieldValue}
-                          required
-                        />
+                      <DepartmentSelector
+                        name="department"
+                        label="소속 부서"
+                        value={values.department}
+                        setFieldValue={setFieldValue}
+                        required
+                      />
                     </Grid>
                     <Grid item sm={12}>
                       <Box sx={{

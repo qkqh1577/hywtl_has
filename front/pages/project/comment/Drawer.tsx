@@ -11,6 +11,7 @@ const ProjectCommentDrawer = styled(MuiDrawer, {
       whiteSpace: 'nowrap',
       width: `${commentDrawerWidth}px`,
       height: '100%',
+      borderLeft: '1px solid #0000001f',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,

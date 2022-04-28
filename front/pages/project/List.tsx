@@ -25,8 +25,8 @@ type TableCellProperty = {
 }
 
 const columns: TableCellProperty[] = [
-  { key: 'code', label: 'PN', style: { minWidth: 30 } },
-  { key: 'name', label: '아이디', style: { minWidth: 50 } },
+  { key: 'code', label: '프로젝트번호', style: { minWidth: 30 } },
+  { key: 'name', label: '프로젝트 이름', style: { minWidth: 50 } },
   { key: 'status', label: '상태', style: { minWidth: 50 } },
 ];
 
@@ -64,7 +64,7 @@ const ProjectList = () => {
   }, [filter, path]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '15px', mb: '30px' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '15px' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -80,24 +80,17 @@ const ProjectList = () => {
             isSubmitting,
             setFieldValue,
             handleSubmit,
-            resetForm
           }) => (
             <Grid container spacing={1}>
               <Grid item sm={9}>
                 <DataField
-                  variant="outlined"
                   name="keyword"
                   label="프로젝트명 또는 코드"
                   value={values.keyword}
                   setFieldValue={setFieldValue}
                 />
               </Grid>
-              <Grid item sm={3}
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'spacing-between',
-                }}>
+              <Grid item sm={3}>
                 <Button
                   color="primary"
                   variant="contained"
@@ -106,25 +99,8 @@ const ProjectList = () => {
                     handleSubmit();
                   }}
                   fullWidth
-                  sx={{
-                    height: 20
-                  }}
                 >
                   검색
-                </Button>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={() => {
-                    handler.clear();
-                    resetForm();
-                  }}
-                  fullWidth
-                  sx={{
-                    height: 20
-                  }}
-                >
-                  초기화
                 </Button>
               </Grid>
             </Grid>
@@ -134,23 +110,47 @@ const ProjectList = () => {
       <Divider variant="middle" />
       <Box sx={{
         display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'space-between',
         width: '100%',
-        maxHeight: 740,
         mb: '20px',
       }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
+        <TableContainer
+          sx={{
+            display: 'flex',
+            width: '100%',
+            mb: '20px',
+          }}
+        >
+          <Table
+            aria-label="sticky table"
+            sx={{
+              border: '1px solid #b9b9b9',
+              borderRadius: '4px',
+            }}
+            stickyHeader
+          >
             <TableHead>
               <TableRow>
-                {columns.map(({ label, ...props }) => (
-                  <TableCell {...props}>
+                {columns.map(({ label, ...props }, i) => (
+                  <TableCell
+                    {...props}
+                    sx={{
+                      textAlign: 'center',
+                      border: '1px solid #b9b9b9',
+                      backgroundColor: '#0000000D',
+                      fontWeight: 'bold',
+                      borderTopLeftRadius: i === 0 ? '4px' : 0,
+                      borderTopRightRadius: i === columns.length - 1 ? '4px' : 0,
+                    }}
+                  >
                     {label}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {page.content.map((item) => {
+              {page.content.map((item, i) => {
                 return (
                   <TableRow
                     role="checkbox"
@@ -158,8 +158,18 @@ const ProjectList = () => {
                     key={item.id}
                     hover
                   >
-                    <TableCell>{item.code}</TableCell>
-                    <TableCell>
+                    <TableCell
+                      sx={{
+                        textAlign: 'center',
+                        border: '1px solid #b9b9b9',
+                        borderBottomLeftRadius: i === page.content.length - 1 ? '4px' : 0,
+                      }}
+                    >{item.code}</TableCell>
+                    <TableCell
+                      sx={{
+                        border: '1px solid #b9b9b9',
+                      }}
+                    >
                       <Link
                         sx={{
                           cursor: 'pointer'
@@ -170,25 +180,37 @@ const ProjectList = () => {
                         {item.name}
                       </Link>
                     </TableCell>
-                    <TableCell>{projectStatusName(item.status)}</TableCell>
+                    <TableCell
+                      sx={{
+                        textAlign: 'center',
+                        border: '1px solid #b9b9b9',
+                        borderBottomRightRadius: i === page.content.length - 1 ? '4px' : 0,
+                      }}
+                    >
+                      {projectStatusName(item.status)}
+                    </TableCell>
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
-      <Box sx={{
-        float: 'bottom',
-        height: '30px',
-      }}>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={handler.addModal}
-        >
-          등록
-        </Button>
+        <Box
+          sx={{
+            width: '100%',
+            bottom: 0,
+            position: 'sticky',
+            height: '30px',
+          }}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handler.addModal}
+            fullWidth
+          >
+            등록
+          </Button>
+        </Box>
       </Box>
     </Paper>
   );

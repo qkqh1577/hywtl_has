@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Container,
   CssBaseline,
   Divider, Grid,
-  IconButton,
+  IconButton, Input, InputAdornment,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -20,23 +19,21 @@ import {
   ChevronRight as RightIcon,
   Logout as LogoutIcon,
   AccountCircle as AccountIcon,
+  FolderOpen as FolderOpenIcon,
   Search as SearchIcon
 } from '@mui/icons-material';
-import { Dashboard as DashboardIcon } from '@mui/icons-material';
+import { Formik, FormikHelpers } from 'formik';
 import Tree, { TreeNode } from 'rc-tree';
 import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
 import { EventDataNode, Key } from 'rc-tree/lib/interface';
 
 import { AppBar, AppDrawer } from 'layouts';
-import {
-  appDrawerWidth,
-  projectDrawerWidth,
-  iconWidth
-} from 'layouts/data';
 import { ProjectDrawer, ProjectList } from 'pages/project';
 import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
 import logo from 'assets/logo.png';
+import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
+import { DataField } from 'components';
 
 type Menu = {
   title: string;
@@ -53,29 +50,33 @@ const App = () => {
 
   const [openMenu, setOpenMenu] = useState(true);
   const [openProject, setOpenProject] = useState(true);
-  const [width, setWidth] = useState<number>(appDrawerWidth);
+  const [openComment, setOpenComment] = useState(false);
   const [menuData, setMenuData] = useState<Menu[]>([
+    {
+      title: '프로젝트 관리',
+      path: '/project',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '영업 관리',
+      path: '/sales',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '인사카드 관리',
+      path: '/hr/card',
+      icon: FolderOpenIcon
+    },
     {
       title: '부서 관리',
       path: '/department',
-      icon: DashboardIcon
-    }, {
+      icon: FolderOpenIcon
+    },
+    {
       title: '사용자 관리',
       path: '/user',
-      icon: DashboardIcon
-    }, {
-      title: '인사카드 관리',
-      path: '/hr/card',
-      icon: DashboardIcon
-    }, {
-      title: '영업 관리',
-      path: '/sales',
-      icon: DashboardIcon
-    }, {
-      title: '프로젝트 관리',
-      path: '/project',
-      icon: DashboardIcon
-    }
+      icon: FolderOpenIcon
+    },
   ]);
 
   const handler = {
@@ -84,6 +85,9 @@ const App = () => {
     },
     toggleProject: () => {
       setOpenProject(!openProject);
+    },
+    toggleComment: () => {
+      setOpenComment(!openComment);
     },
     dragStart: (info: NodeDragEventParams) => {
       console.log(info);
@@ -146,7 +150,7 @@ const App = () => {
         }
       }
 
-      setMenuData(data.map(menu => ({ ...menu, icon: DashboardIcon })));
+      setMenuData(data.map(menu => ({ ...menu, icon: FolderOpenIcon })));
     },
     logout: () => {
       if (window.confirm('로그아웃하시겠습니까?')) {
@@ -154,6 +158,10 @@ const App = () => {
         navigate('/login');
         return null;
       }
+    },
+    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      console.log(values);
+      setSubmitting(false);
     }
   };
 
@@ -167,22 +175,12 @@ const App = () => {
     }
   }, [path]);
 
-  useEffect(() => {
-    let tempWidth: number = 0;
-    tempWidth += openMenu ? appDrawerWidth : iconWidth;
-    if (path.startsWith('/project')) {
-      tempWidth += openProject ? projectDrawerWidth : iconWidth;
-    }
-    setWidth(tempWidth);
-  }, [path, openMenu, openProject]);
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%' }}>
       <CssBaseline />
       <AppBar
         position="absolute"
         color="transparent"
-        width={width}
       >
         <Toolbar
           sx={{
@@ -198,7 +196,7 @@ const App = () => {
             }}
           >
             <Grid item>
-              <img src={logo} width="auto" height="26" />
+              <img src={logo} width="auto" height="26" alt="한양풍동실험연구소_로고" />
             </Grid>
           </Grid>
           {login && (
@@ -208,6 +206,39 @@ const App = () => {
                 flexWrap: 'nowrap',
                 justifyContent: 'flex-end',
               }}>
+              <Formik
+                initialValues={{
+                  search: ''
+                }}
+                onSubmit={handler.search}
+              >
+                {({ values, setFieldValue, handleSubmit }) => (
+                  <Input
+                    placeholder="통합검색"
+                    onChange={(e) => {
+                      setFieldValue('search', e.target.value);
+                    }}
+                    sx={{
+                      width: '240px',
+                      paddingLeft: '10px',
+                      paddingRight: '10px',
+                      border: '1px solid #44527b',
+                      borderRadius: '8px',
+                      color: '#fff',
+                    }}
+                    endAdornment={
+                      <InputAdornment
+                        position="end"
+                        sx={{
+                          color: '#717ea8',
+                        }}
+                      >
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                )}
+              </Formik>
               <IconButton color="warning">
                 <NotificationsIcon />
                 <Typography color="white">
@@ -233,6 +264,7 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <AppDrawer variant="permanent" open={openMenu}>
+        <Toolbar />
         <Toolbar
           sx={{
             display: 'flex',
@@ -311,6 +343,7 @@ const App = () => {
       </AppDrawer>
       {path.startsWith('/project') && (
         <ProjectDrawer variant="permanent" open={openProject}>
+          <Toolbar />
           <Toolbar
             sx={{
               display: 'flex',
@@ -369,14 +402,68 @@ const App = () => {
           flexGrow: 1,
           height: '100vh',
           overflow: 'auto',
+          paddingLeft: 0,
+          paddingRight: 0,
         }}
       >
-        <Toolbar />
-        <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
-          <ReactRouter />
-        </Container>
+        <Toolbar sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+        }} />
+        <ReactRouter />
       </Box>
-
+      <Routes>
+        <Route path="/project/:id/*" element={
+          <ProjectCommentDrawer variant="permanent" open={openComment}>
+            <Toolbar />
+            <Toolbar
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                px: [1],
+              }}
+            >
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                width: '36px',
+                height: '36px',
+                backgroundColor: '#c4baf5',
+                borderRadius: '4px'
+              }}>
+                <IconButton
+                  color="primary"
+                  sx={{
+                    display: 'flex',
+                    width: '16.25px',
+                    height: '16.25px',
+                    backgroundColor: 'transparent',
+                    border: '2px solid #301a9a',
+                  }}
+                  onClick={handler.toggleComment}
+                >
+                  {openComment ? <RightIcon /> : <LeftIcon />}
+                </IconButton>
+              </Box>
+              {openComment && (
+                <Typography
+                  color="primary"
+                  sx={{
+                    ml: '19px',
+                    fontSize: '16px'
+                  }}
+                >
+                  메모
+                </Typography>
+              )}
+            </Toolbar>
+            <Divider />
+            {openComment && <ProjectCommentList />}
+          </ProjectCommentDrawer>
+        } />
+      </Routes>
     </Box>
   );
 };
