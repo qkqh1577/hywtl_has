@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  Badge,
   Box,
   Container,
   CssBaseline,
   Divider,
   IconButton,
-  Link,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -16,11 +14,13 @@ import {
   Typography
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
   Notifications as NotificationsIcon,
   FlightTakeoffSharp as FlightTakeoffSharpIcon,
   ChevronLeft as LeftIcon,
   ChevronRight as RightIcon,
+  Logout as LogoutIcon,
+  AccountCircle as AccountIcon,
+  Search as SearchIcon
 } from '@mui/icons-material';
 import { Dashboard as DashboardIcon } from '@mui/icons-material';
 import Tree, { TreeNode } from 'rc-tree';
@@ -158,66 +158,43 @@ const App = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
+      <AppBar position="absolute" open={open} color="transparent">
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
+            backgroundColor: '#3c3757'
           }}
         >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handler.toggle}
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h3"
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
-          >
-          </Typography>
+          />
           {login && (
             <>
-              <Typography
-                component={Link}
-                noWrap
-                sx={{
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  p: '10px',
-                }}
+              <IconButton color="warning">
+                <NotificationsIcon />
+                <Typography color="white">
+                  4
+                </Typography>
+              </IconButton>
+              <IconButton
+                color="info"
                 onClick={() => {
                   console.log(login);
                 }}
               >
-                {login.name} 님
-              </Typography>
-              <Typography
-                component={Link}
-                noWrap
-                sx={{
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  p: '10px',
-                }}
+                <AccountIcon />
+              </IconButton>
+              <IconButton
+                color="info"
                 onClick={handler.logout}
               >
-                로그아웃
-              </Typography>
+                <LogoutIcon />
+              </IconButton>
             </>
           )}
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
         </Toolbar>
       </AppBar>
       <AppDrawer variant="permanent" open={open}>
@@ -225,44 +202,77 @@ const App = () => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: open? 'space-between' : 'flex-end',
             px: [1],
           }}
         >
-          <IconButton onClick={handler.toggle}>
-            {open ? <LeftIcon /> : <RightIcon />}
-          </IconButton>
+          {open && (
+            <Typography
+              color="primary"
+              sx={{
+                ml: '24px',
+                fontSize: '16px'
+              }}
+            >
+              업무메뉴
+            </Typography>
+          )}
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            width: '36px',
+            height: '36px',
+            backgroundColor: '#c4baf5',
+            borderRadius: '4px'
+          }}>
+            <IconButton
+              color="primary"
+              sx={{
+                display: 'flex',
+                width: '16.25px',
+                height: '16.25px',
+                backgroundColor: 'transparent',
+                border: '2px solid #301a9a',
+              }}
+              onClick={handler.toggle}
+            >
+              {open ? <LeftIcon /> : <RightIcon />}
+            </IconButton>
+          </Box>
         </Toolbar>
         <Divider />
-        <Tree
-          onDragStart={handler.dragStart}
-          onDragEnter={handler.dragEnter}
-          onDrop={handler.drop}
-          draggable
-          defaultExpandAll
-        >
-          {menuData.map((menu) => (
-            <TreeNode
-              title={
-                <ListItem
-                  key={menu.path}
-                  onClick={() => {
-                    navigate(menu.path);
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    {React.createElement(menu.icon)}
-                  </ListItemIcon>
-                  <ListItemText primary={menu.title} />
-                </ListItem>
-              }
-              key={menu.path}
-              checkable={false}
-            />
-
-          ))}
-        </Tree>
+        {open && (
+          <Tree
+            onDragStart={handler.dragStart}
+            onDragEnter={handler.dragEnter}
+            onDrop={handler.drop}
+            draggable
+            defaultExpandAll
+          >
+            {menuData.map((menu) => (
+              <TreeNode
+                title={
+                  <ListItem
+                    key={menu.path}
+                    onClick={() => {
+                      navigate(menu.path);
+                    }}
+                    button
+                  >
+                    <ListItemIcon>
+                      {React.createElement(menu.icon)}
+                    </ListItemIcon>
+                    <ListItemText primary={menu.title} />
+                  </ListItem>
+                }
+                key={menu.path}
+                checkable={false}
+              />
+            ))}
+          </Tree>
+        )}
       </AppDrawer>
       <Box
         component="main"

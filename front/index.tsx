@@ -9,14 +9,31 @@ import App from './App';
 import { store } from 'services/common';
 import LoginForm from 'pages/user/LoginForm';
 import AuthenticationForm from 'pages/user/AuthenticationForm';
-import 'dayjs/locale/ko'
+import 'dayjs/locale/ko';
 
 const render = () => {
-
   const mdTheme = createTheme({
     palette: {
-      mode: 'light'
-    }
+      primary: {
+        main: '#301a9a',
+      },
+      secondary: {
+        main: '#3c3757',
+      },
+      warning: {
+        main: '#ffd130',
+      },
+      info: {
+        main: '#7685b2'
+      },
+      action: {
+        active: '#5470ff',
+        hover: '#5470FF38',
+        selected: '#5470ff',
+        disabled: '#494949',
+        disabledBackground: '#f1eaff',
+      }
+    },
   });
 
   ReactDOM.render(
