@@ -163,7 +163,7 @@ public class User {
         return instance;
     }
 
-    public static User load(
+    public static User loadByUsername(
         UserRepository repository,
         String username
     ) {
@@ -172,6 +172,17 @@ public class User {
         instance.repository = repository;
         return instance;
     }
+
+    public static User loadByEmail(
+        UserRepository repository,
+        String email
+    ) {
+        User instance = repository.findByEmailAndDeletedTimeIsNull(email)
+            .orElseThrow(NotFoundException::new);
+        instance.repository = repository;
+        return instance;
+    }
+
 
     //////////////////////////////////
     //// checker
@@ -256,8 +267,23 @@ public class User {
         this.save();
     }
 
+    public void lock() {
+        this.lockedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void validatePassword(String password) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(password, this.password)) {
+            throw new PasswordException(PasswordExceptionType.SAME);
+        }
+        this.setPassword(password);
+        this.save();
+    }
+
     public void delete() {
         this.deletedTime = LocalDateTime.now();
+        this.save();
     }
 
     private void save() {

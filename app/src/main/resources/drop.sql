@@ -13,4 +13,5 @@ drop table if exists project_basic;
 drop table if exists project_comment;
 drop table if exists user;
 drop table if exists user_invitation;
+drop table if exists password_reset;
 set FOREIGN_KEY_CHECKS = 1;

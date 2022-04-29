@@ -7,6 +7,7 @@ import {
   UserQuery
 } from './parameter';
 import User, { ListUser } from 'services/user/entity';
+import { PasswordChangeParameter } from 'services/user/password_reset/parameter';
 
 export class UserApi {
   async getPage(query: UserQuery): Promise<Page<ListUser>> {
@@ -29,8 +30,8 @@ export class UserApi {
     return data;
   }
 
-  async resetPassword(id: number): Promise<User> {
-    const { data } = await apiClient.post(`/users/${id}/password/reset`);
+  async validatePassword(params: PasswordChangeParameter): Promise<void> {
+    const { data } = await apiClient.post('/user/password-validate', params);
     return data;
   }
 

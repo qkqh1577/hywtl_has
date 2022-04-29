@@ -51,6 +51,15 @@ create table user_invitation
 	user_role int not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
+create table password_reset
+(
+	id bigint auto_increment primary key,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	email varchar(255) not null,
+	name varchar(255) not null
+)engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
 create table personnel
 (
   id bigint not null primary key,

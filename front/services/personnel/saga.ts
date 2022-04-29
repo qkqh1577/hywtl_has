@@ -31,7 +31,7 @@ function* update(action: ActionType<typeof personnelActions.update>) {
   }
 }
 
-export default function* saga() {
+export default function* personnelSaga() {
   yield takeLatest(PersonnelActionType.getPage, getPage);
   yield takeLatest(PersonnelActionType.getOne, getOne);
   yield takeLatest(PersonnelActionType.update, update);

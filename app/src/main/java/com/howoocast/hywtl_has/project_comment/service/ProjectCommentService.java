@@ -48,7 +48,7 @@ public class ProjectCommentService {
         return ProjectCommentView.assemble(ProjectComment.of(
                 projectCommentRepository,
                 Project.load(projectRepository, params.getProjectId()),
-                User.load(userRepository, username),
+                User.loadByUsername(userRepository, username),
                 params.getDescription()
             )
         );

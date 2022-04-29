@@ -4,8 +4,10 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
-import com.howoocast.hywtl_has.user.event.UserResetPasswordEvent;
+import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
+import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -39,9 +40,9 @@ public class UserService {
 
     private final UserInvitationRepository userInvitationRepository;
 
-    private final DepartmentRepository departmentRepository;
+    private final PasswordResetRepository passwordResetRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private final DepartmentRepository departmentRepository;
 
     @Transactional(readOnly = true)
     public Page<UserListView> page(
@@ -113,10 +114,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailView resetPassword(Long id) {
-        User user = User.load(userRepository, id);
-        eventPublisher.publishEvent(new UserResetPasswordEvent(user));
+    public UserDetailView validatePassword(UserValidatePasswordParameter params) {
+        PasswordReset passwordReset = PasswordReset.load(passwordResetRepository,
+            params.getEmail());
+        passwordReset.checkValid(invalidateDuration, params.getAuthKey());
+
+        User user = User.loadByEmail(userRepository, params.getEmail());
+        user.validatePassword(params.getPassword());
+        passwordReset.invalidate();
         return UserDetailView.assemble(user);
     }
-
 }

@@ -40,7 +40,7 @@ function* updateBasic(action: ActionType<typeof projectActions.updateBasic>) {
   }
 }
 
-export default function* saga() {
+export default function* projectSaga() {
   yield takeLatest(ProjectActionType.getPage, getPage);
   yield takeLatest(ProjectActionType.getOne, getOne);
   yield takeLatest(ProjectActionType.getBasic, getBasic);

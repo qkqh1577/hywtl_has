@@ -10,6 +10,8 @@ import { store } from 'services/common';
 import LoginForm from 'pages/user/LoginForm';
 import AuthenticationForm from 'pages/user/AuthenticationForm';
 import 'dayjs/locale/ko';
+import PasswordForgotForm from 'pages/user/PasswordForgotForm';
+import PasswordResetForm from 'pages/user/PasswordResetForm';
 
 const render = () => {
   const mdTheme = createTheme({
@@ -49,6 +51,8 @@ const render = () => {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/user/authenticate" element={<AuthenticationForm />} />
+          <Route path="/password-forgot" element={<PasswordForgotForm />} />
+          <Route path="/user/password-reset" element={<PasswordResetForm />} />
           <Route path="*" element={
             <Provider store={store}>
               <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">

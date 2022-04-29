@@ -2,11 +2,9 @@ package com.howoocast.hywtl_has.user_verification.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.department.domain.Department;
-import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user_verification.exception.UserVerificationAuthenticationFailureException;
 import com.howoocast.hywtl_has.user_verification.exception.UserVerificationAuthenticationFailureException.UserInvitationAuthenticationFailureExceptionType;
-import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,10 +22,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInvitation {
+public class PasswordReset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,14 +40,6 @@ public class UserInvitation {
     private String name; // 이름
 
     @NotNull
-    @ManyToOne
-    private Department department; // 소속 부서
-
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private UserRole userRole;
-
-    @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
@@ -60,21 +49,17 @@ public class UserInvitation {
     @Getter(AccessLevel.NONE)
     @JsonIgnore
     @Transient
-    private UserInvitationRepository repository;
+    private PasswordResetRepository repository;
 
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    protected UserInvitation(
+    protected PasswordReset(
         String email,
-        String name,
-        Department department,
-        UserRole userRole
+        String name
     ) {
         this.email = email;
         this.name = name;
-        this.department = department;
-        this.userRole = userRole;
         this.createdTime = LocalDateTime.now();
     }
 
@@ -94,18 +79,14 @@ public class UserInvitation {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static UserInvitation of(
-        UserInvitationRepository repository,
+    public static PasswordReset of(
+        PasswordResetRepository repository,
         String email,
-        String name,
-        Department department,
-        UserRole userRole
+        String name
     ) {
-        UserInvitation instance = new UserInvitation(
+        PasswordReset instance = new PasswordReset(
             email,
-            name,
-            department,
-            userRole
+            name
         );
         instance.repository = repository;
         instance.save();
@@ -115,11 +96,11 @@ public class UserInvitation {
     //////////////////////////////////
     //// finder
     //////////////////////////////////
-    public static UserInvitation load(
-        UserInvitationRepository repository,
+    public static PasswordReset load(
+        PasswordResetRepository repository,
         String email
     ) {
-        UserInvitation instance = repository
+        PasswordReset instance = repository
             .findByEmailAndDeletedTimeIsNull(email)
             .orElseThrow(NotFoundException::new);
         instance.repository = repository;
@@ -146,10 +127,10 @@ public class UserInvitation {
     //// modifier
     //////////////////////////////////
     public static void invalidateIfExists(
-        UserInvitationRepository repository,
+        PasswordResetRepository repository,
         String email
     ) {
-        repository.findByEmailAndDeletedTimeIsNull(email).ifPresent(UserInvitation::invalidate);
+        repository.findByEmailAndDeletedTimeIsNull(email).ifPresent(PasswordReset::invalidate);
     }
 
     public void invalidate() {
@@ -161,4 +142,3 @@ public class UserInvitation {
         repository.save(this);
     }
 }
-
