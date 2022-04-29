@@ -2,8 +2,12 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { projectActions } from 'services/project/actions';
-import Project, { ProjectBasic } from 'services/project/entity';
-import { ProjectBasicParameter, ProjectQuery } from 'services/project/parameter';
+import Project, { ProjectBasic, ProjectOrder } from 'services/project/entity';
+import {
+  ProjectBasicParameter,
+  ProjectOrderParameter,
+  ProjectQuery
+} from 'services/project/parameter';
 
 export default function useProject() {
   const projectState = useSelector((state: RootState) => state.project);
@@ -45,6 +49,24 @@ export default function useProject() {
     [dispatch]
   );
 
+  const getOrder = useCallback(
+    (projectId: number) =>
+      dispatch(projectActions.getOrder(projectId)),
+    [dispatch]
+  );
+
+  const setOrder = useCallback(
+    (data: ProjectOrder) =>
+      dispatch(projectActions.setOrder(data)),
+    [dispatch]
+  );
+
+  const clearOrder = useCallback(
+    () =>
+      dispatch(projectActions.setOrder(undefined)),
+    [dispatch]
+  );
+
   const add = useCallback(
     (params: ProjectBasicParameter, callback: (data?: Project) => void) =>
       dispatch(projectActions.add({ params, callback })),
@@ -57,15 +79,15 @@ export default function useProject() {
     [dispatch]
   );
 
-  const getAddModal = useCallback(
-    () =>
-      dispatch(projectActions.getAddModal()),
-    [dispatch],
+  const updateOrder = useCallback(
+    (projectId: number, params: ProjectOrderParameter, callback: (data?: ProjectOrder) => void) =>
+      dispatch(projectActions.updateOrder({ projectId, params, callback })),
+    [dispatch]
   );
 
   const setAddModal = useCallback(
-    (modal: boolean) =>
-      dispatch(projectActions.setAddModal(modal)),
+    (open: boolean) =>
+      dispatch(projectActions.setAddModal(open)),
     [dispatch]
   );
 
@@ -77,9 +99,12 @@ export default function useProject() {
     getBasic,
     setBasic,
     clearBasic,
+    getOrder,
+    setOrder,
+    clearOrder,
     add,
     updateBasic,
-    getAddModal,
+    updateOrder,
     setAddModal
   };
 }

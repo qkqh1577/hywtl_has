@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { ListUser } from 'services/user/entity';
 import userApi from 'services/user/api';
-import { DataField } from 'components/index';
+import { DataField, DataFieldProps } from 'components/index';
 
-type Props = {
-  name: string;
-  label: string;
-  value: string | number;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  required?: boolean;
-  disabled?: boolean;
-  helperText?: string | React.ReactNode;
-};
-const UserSelector = (props: Props) => {
+const UserSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
   const [userList, setUserList] = useState<ListUser[]>([]);
   useEffect(() => {
     userApi.getAll().then(setUserList);

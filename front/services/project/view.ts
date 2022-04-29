@@ -37,6 +37,14 @@ export type ProjectBasicView = {
   clientEmail: string;
 }
 
+export type ProjectOrderView = {
+  amount: number | '';
+  receivedDate: Date | null;
+  beginDate: Date | null;
+  closeDate: Date | null;
+  isOnGoing: string;
+}
+
 export const initProjectFilter: ProjectFilterView = {
   page: 0,
   size: 10,
@@ -63,4 +71,12 @@ export const initProjectBasic: ProjectBasicView = {
   clientManager: '',
   clientPhone: '',
   clientEmail: '',
+};
+
+export const initProjectOrder: ProjectOrderView = {
+  amount: '',
+  receivedDate: null,
+  beginDate: null,
+  closeDate: null,
+  isOnGoing: '',
 };

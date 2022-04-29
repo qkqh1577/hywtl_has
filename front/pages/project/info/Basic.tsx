@@ -170,7 +170,7 @@ const ProjectBasicDetail = () => {
         onSubmit={handler.submit}
         enableReinitialize
       >
-        {({ values, isSubmitting, dirty, setFieldValue, handleSubmit, resetForm }) => (
+        {({ values, errors, isSubmitting, dirty, setFieldValue, handleSubmit, resetForm }) => (
           <Form>
             <Box sx={{
               display: 'flex',
@@ -320,6 +320,7 @@ const ProjectBasicDetail = () => {
                     label="프로젝트 코드"
                     value={values.code}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     required
                   />
@@ -330,6 +331,7 @@ const ProjectBasicDetail = () => {
                     label="프로젝트명"
                     value={values.name}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     required
                   />
@@ -340,6 +342,8 @@ const ProjectBasicDetail = () => {
                     label="프로젝트 닉네임"
                     value={values.alias}
                     setFieldValue={setFieldValue}
+                    errors={errors}
+                    helperText="※최대 5글자"
                     disabled={!edit}
                   />
                 </Grid>
@@ -349,6 +353,7 @@ const ProjectBasicDetail = () => {
                     label="영업 담당자"
                     value={values.salesManagerId}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     required
                   />
@@ -359,6 +364,7 @@ const ProjectBasicDetail = () => {
                     label="주소"
                     value={values.address}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     required
                   />
@@ -369,6 +375,7 @@ const ProjectBasicDetail = () => {
                     label="건물 용도1"
                     value={values.purpose1}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -378,6 +385,7 @@ const ProjectBasicDetail = () => {
                     label="건물 용도1"
                     value={values.purpose2}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -387,6 +395,7 @@ const ProjectBasicDetail = () => {
                     label="담당 PM"
                     value={values.projectManagerId}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     required
                   />
@@ -398,6 +407,7 @@ const ProjectBasicDetail = () => {
                     label="총 동 수"
                     value={values.buildingCount}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -408,6 +418,7 @@ const ProjectBasicDetail = () => {
                     label="건물 당 세대 수"
                     value={values.householdCount}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -418,6 +429,7 @@ const ProjectBasicDetail = () => {
                     label="층 수"
                     value={values.floorCount}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -428,6 +440,7 @@ const ProjectBasicDetail = () => {
                     label="지하층 수"
                     value={values.baseCount}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -438,6 +451,7 @@ const ProjectBasicDetail = () => {
                     label="대지면적"
                     value={values.lotArea}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -448,6 +462,7 @@ const ProjectBasicDetail = () => {
                     label="연면적"
                     value={values.totalArea}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -458,6 +473,7 @@ const ProjectBasicDetail = () => {
                     label="업체"
                     value={values.clientName}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -468,6 +484,7 @@ const ProjectBasicDetail = () => {
                     label="업체 LH 여부"
                     value={values.isClientLH}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                     options={['예', '아니요']}
                   />
@@ -479,6 +496,7 @@ const ProjectBasicDetail = () => {
                     label="연면적"
                     value={values.totalArea}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -489,6 +507,7 @@ const ProjectBasicDetail = () => {
                     label="연면적"
                     value={values.totalArea}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -499,6 +518,7 @@ const ProjectBasicDetail = () => {
                     label="연면적"
                     value={values.totalArea}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -510,7 +530,6 @@ const ProjectBasicDetail = () => {
       <Divider />
     </Paper>
   );
-
 };
 
 export default ProjectBasicDetail;

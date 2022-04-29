@@ -77,6 +77,7 @@ const ProjectList = () => {
         >
           {({
             values,
+            errors,
             isSubmitting,
             setFieldValue,
             handleSubmit,
@@ -88,6 +89,7 @@ const ProjectList = () => {
                   label="프로젝트명 또는 코드"
                   value={values.keyword}
                   setFieldValue={setFieldValue}
+                  errors={errors}
                 />
               </Grid>
               <Grid item sm={3}>

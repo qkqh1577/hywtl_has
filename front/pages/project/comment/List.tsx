@@ -117,13 +117,14 @@ const ProjectCommentList = () => {
           onSubmit={handler.submit}
           enableReinitialize
         >
-          {({ values, isSubmitting, setFieldValue, handleSubmit }) => (
+          {({ values,errors, isSubmitting, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <DataField
                   name="description"
                   label="메모 내용"
                   setFieldValue={setFieldValue}
+                  errors={errors}
                   value={values.description}
                 />
               </Grid>
@@ -158,13 +159,14 @@ const ProjectCommentList = () => {
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({ values, setFieldValue, handleSubmit }) => (
+          {({ values,errors, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <DataField
                   name="keyword"
                   label="검색(작성자, 내용)"
                   setFieldValue={setFieldValue}
+                  errors={errors}
                   value={values.keyword}
                   onKeyDown={(e) => {
                     if (e.key.toLowerCase() === 'enter') {

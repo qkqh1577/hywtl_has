@@ -28,3 +28,11 @@ export type ProjectBasicParameter = {
   clientPhone?: string;
   clientEmail?: string;
 }
+
+export type ProjectOrderParameter = {
+  amount?: number;
+  receivedDate?: string;
+  beginDate?: string;
+  closeDate?: string;
+  isOnGoing?: boolean;
+}

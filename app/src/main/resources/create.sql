@@ -148,7 +148,7 @@ create table project
 	deleted_time datetime(6) null,
 	updated_time datetime(6) not null,
   basic_id bigint not null,
-  building_id bigint null
+	order_id bigint null
 );
 
 create table project_basic
@@ -180,6 +180,18 @@ create table project_basic
 	constraint UK_project_project_basic unique (code)
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
+create table project_order
+(
+	id bigint auto_increment primary key,
+	amount bigint null,
+	begin_date date null,
+	close_date date null,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	is_on_going bit null,
+	received_date date null,
+	updated_time datetime(6) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_comment
 (

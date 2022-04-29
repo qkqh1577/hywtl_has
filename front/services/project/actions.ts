@@ -1,7 +1,11 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
-import Project, { ListProject, ProjectBasic } from 'services/project/entity';
-import { ProjectBasicParameter, ProjectQuery } from 'services/project/parameter';
+import Project, { ListProject, ProjectBasic, ProjectOrder } from 'services/project/entity';
+import {
+  ProjectBasicParameter,
+  ProjectOrderParameter,
+  ProjectQuery
+} from 'services/project/parameter';
 
 export enum ProjectActionType {
   getPage = 'project/getPage',
@@ -10,9 +14,11 @@ export enum ProjectActionType {
   setOne = 'project/setOne',
   getBasic = 'project/getBasic',
   setBasic = 'project/setBasic',
+  getOrder = 'project/getOrder',
+  setOrder = 'project/setOrder',
   add = 'project/add',
   updateBasic = 'project/updateBasic',
-  getAddModal = 'project/getAddModal',
+  updateOrder = 'project/updateOrder',
   setAddModal = 'project/setAddModal',
 }
 
@@ -23,6 +29,8 @@ export const projectActions = {
   setOne: createAction(ProjectActionType.setOne)<Project | undefined>(),
   getBasic: createAction(ProjectActionType.getBasic)<number>(),
   setBasic: createAction(ProjectActionType.setBasic)<ProjectBasic | undefined>(),
+  getOrder: createAction(ProjectActionType.getOrder)<number>(),
+  setOrder: createAction(ProjectActionType.setOrder)<ProjectOrder | undefined>(),
   add: createAction(ProjectActionType.add)<{
     params: ProjectBasicParameter;
     callback: (data?: Project) => void;
@@ -32,6 +40,10 @@ export const projectActions = {
     params: ProjectBasicParameter;
     callback: (data?: ProjectBasic) => void;
   }>(),
-  getAddModal: createAction(ProjectActionType.getAddModal)(),
+  updateOrder: createAction(ProjectActionType.updateOrder)<{
+    projectId: number;
+    params: ProjectOrderParameter;
+    callback: (data?: ProjectOrder) => void;
+  }>(),
   setAddModal: createAction(ProjectActionType.setAddModal)<boolean>(),
 };
