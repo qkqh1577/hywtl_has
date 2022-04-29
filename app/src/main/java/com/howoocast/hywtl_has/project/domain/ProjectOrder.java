@@ -5,7 +5,6 @@ import com.howoocast.hywtl_has.project.repository.ProjectOrderRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -104,8 +103,6 @@ public class ProjectOrder {
         }
         instance.repository = repository;
         return instance;
-
-
     }
 
     //////////////////////////////////

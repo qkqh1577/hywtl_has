@@ -7,6 +7,7 @@ import { ProjectOrderParameter } from 'services/project/parameter';
 import { Box, Button, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { Edit as EditIcon, EditOff as ResetIcon, SaveAs as SaveIcon } from '@mui/icons-material';
 import { DataField, DateFormat, DatePicker } from 'components';
+import dayjs from 'dayjs';
 
 const ProjectOrderDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -43,9 +44,9 @@ const ProjectOrderDetail = () => {
         errors.amount = '금액은 음수가 될 수 없습니다.';
       }
 
-      const receivedDate: Date | undefined = values.receivedDate || undefined;
-      const beginDate: Date | undefined = values.beginDate || undefined;
-      const closeDate: Date | undefined = values.closeDate || undefined;
+      const receivedDate: string | undefined = values.receivedDate ? dayjs(values.receivedDate).format('YYYY-MM-DD') : undefined;
+      const beginDate: string | undefined = values.beginDate ? dayjs(values.beginDate).format('YYYY-MM-DD') : undefined;
+      const closeDate: string | undefined = values.closeDate ? dayjs(values.closeDate).format('YYYY-MM-DD') : undefined;
       const isOnGoing: boolean | undefined =
         typeof values.isOnGoing === 'string' && values.isOnGoing !== '' ?
           values.isOnGoing === '예' : undefined;
@@ -105,7 +106,7 @@ const ProjectOrderDetail = () => {
         onSubmit={handler.submit}
         enableReinitialize
       >
-        {({ values,errors, isSubmitting, dirty, setFieldValue, handleSubmit, resetForm }) => (
+        {({ values, errors, isSubmitting, dirty, setFieldValue, handleSubmit, resetForm }) => (
           <Form>
             <Box sx={{
               display: 'flex',
@@ -266,6 +267,7 @@ const ProjectOrderDetail = () => {
                     label="수주일"
                     value={values.receivedDate}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -275,6 +277,7 @@ const ProjectOrderDetail = () => {
                     label="착수일"
                     value={values.beginDate}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
@@ -284,6 +287,7 @@ const ProjectOrderDetail = () => {
                     label="마감일"
                     value={values.closeDate}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     disabled={!edit}
                   />
                 </Grid>

@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import dayjs from 'dayjs';
-import { ErrorMessage } from 'formik';
+import { ErrorMessage, FormikErrors, FormikValues } from 'formik';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = {
@@ -11,11 +11,14 @@ type Props = {
   name: string;
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  errors: FormikErrors<FormikValues>;
   required?: boolean;
   disabled?: boolean;
   format?: string;
   openTo?: CalendarPickerView;
   disableFuture?: boolean;
+  placeholder?: string;
+  helperText?: string | React.ReactNode;
 }
 
 const DatePicker = ({
@@ -23,14 +26,18 @@ const DatePicker = ({
   label,
   value,
   setFieldValue,
+  errors,
   required,
   disabled,
   format = 'YYYY-MM-DD',
   openTo = 'day',
-  disableFuture
+  disableFuture,
+  placeholder,
+  helperText,
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
-  const placeholder: string = `${label}(${format})${getObjectPostPosition(label)} 입력하세요`;
+  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
+
   return (
     <MuiDatePicker
       mask="____-__-__"
@@ -41,6 +48,9 @@ const DatePicker = ({
       openTo={openTo}
       onChange={(date) => {
         setFieldValue(name, date);
+        if (helperMessage !== helperText) {
+          setHelperMessage(helperText);
+        }
       }}
       onError={(reason) => {
         switch (reason) {
@@ -61,10 +71,14 @@ const DatePicker = ({
           name={name}
           value={value === null ? '' : dayjs(value).format(format)}
           label={label}
-          helperText={error ?? <ErrorMessage name={name} />}
-          placeholder={placeholder}
+          helperText={helperMessage}
+          placeholder={placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`}
           variant="standard"
           required={required === true}
+          error={typeof errors[name] === 'string' || typeof error === 'string'}
+          onError={() => {
+            setHelperMessage(<ErrorMessage name={name} />);
+          }}
           fullWidth
         >
         </TextField>

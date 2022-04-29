@@ -520,6 +520,7 @@ const PersonnelDetail = () => {
                         label="생년월일"
                         value={values.basic.birthDate}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         openTo="year"
                         required
                         disableFuture
@@ -593,6 +594,7 @@ const PersonnelDetail = () => {
                         label="입사일"
                         value={values.company.hiredDate}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         openTo="year"
                         required
                         disableFuture
@@ -815,6 +817,7 @@ const PersonnelDetail = () => {
                                 label="시작일"
                                 value={item.startDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                               />
@@ -825,6 +828,7 @@ const PersonnelDetail = () => {
                                 label="종료일"
                                 value={item.endDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                               />
@@ -894,6 +898,7 @@ const PersonnelDetail = () => {
                                 label="시작일"
                                 value={item.startDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -905,6 +910,7 @@ const PersonnelDetail = () => {
                                 label="종료일"
                                 value={item.endDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -1014,6 +1020,7 @@ const PersonnelDetail = () => {
                                 label="인가일"
                                 value={item.qualifiedDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -1122,6 +1129,7 @@ const PersonnelDetail = () => {
                                 label="취득일"
                                 value={item.certifiedDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture

@@ -31,8 +31,8 @@ export type ProjectBasicParameter = {
 
 export type ProjectOrderParameter = {
   amount?: number;
-  receivedDate?: Date;
-  beginDate?: Date;
-  closeDate?: Date;
+  receivedDate?: string;
+  beginDate?: string;
+  closeDate?: string;
   isOnGoing?: boolean;
 }

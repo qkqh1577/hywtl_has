@@ -130,7 +130,15 @@ const PersonnelPage = () => {
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit, resetForm }) => (
+          {({
+            values,
+            errors,
+            isSubmitting,
+            setFieldValue,
+            handleChange,
+            handleSubmit,
+            resetForm
+          }) => (
             <Grid container spacing={1}>
               <Grid item sm={10}>
                 <Form>
@@ -240,6 +248,7 @@ const PersonnelPage = () => {
                           label="시작일"
                           value={values.startDate ? dayjs(values.startDate).toDate() : null}
                           setFieldValue={setFieldValue}
+                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={4}>
@@ -248,6 +257,7 @@ const PersonnelPage = () => {
                           label="종료일"
                           value={values.endDate ? dayjs(values.endDate).toDate() : null}
                           setFieldValue={setFieldValue}
+                          errors={errors}
                         />
                       </Grid>
                     </Grid>

@@ -27,6 +27,13 @@ public class ProjectOrderService {
 
     @Transactional
     public void update(Long projectId, ProjectOrderParameter params) {
+        log.debug("[order] amount: {}, received date: {}, begin date: {}, close date: {}, is on going: {}",
+            params.getAmount(),
+            params.getReceivedDate(),
+            params.getBeginDate(),
+            params.getCloseDate(),
+            params.getIsOnGoing()
+        );
         ProjectOrder projectOrder = ProjectOrder.find(repository, projectId);
         if (Objects.isNull(projectOrder)) {
             projectOrder = ProjectOrder.of(

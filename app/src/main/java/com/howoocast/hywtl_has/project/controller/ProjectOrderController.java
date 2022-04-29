@@ -3,12 +3,14 @@ package com.howoocast.hywtl_has.project.controller;
 import com.howoocast.hywtl_has.project.parameter.ProjectOrderParameter;
 import com.howoocast.hywtl_has.project.service.ProjectOrderService;
 import com.howoocast.hywtl_has.project.view.ProjectOrderView;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -25,7 +27,7 @@ public class ProjectOrderController {
     }
 
     @PutMapping("/projects/{projectId}/order")
-    public ProjectOrderView update(@PathVariable Long projectId, ProjectOrderParameter params) {
+    public ProjectOrderView update(@PathVariable Long projectId, @Valid @RequestBody ProjectOrderParameter params) {
         projectOrderService.update(projectId, params);
         return projectOrderService.getOne(projectId);
     }

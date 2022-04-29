@@ -23,5 +23,4 @@ public class ProjectOrderParameter {
     private LocalDate closeDate;
 
     private Boolean isOnGoing;
-
 }

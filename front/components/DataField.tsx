@@ -150,7 +150,6 @@ const DataField = ({
     } else {
       setViewValue(value);
     }
-    console.log({ name, value });
   }, [value]);
 
   useEffect(() => {
@@ -159,12 +158,10 @@ const DataField = ({
     } else {
       setRawValue(viewValue);
     }
-    console.log({ name, viewValue });
   }, [viewValue]);
 
   useEffect(() => {
     setFieldValue(name, rawValue);
-    console.log({ name, rawValue });
   }, [rawValue]);
 
   useEffect(() => {
