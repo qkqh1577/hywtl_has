@@ -1,5 +1,5 @@
 import Page, { initial } from 'components/Page';
-import Project, { ListProject, ProjectBasic } from 'services/project/entity';
+import Project, { ListProject, ProjectBasic, ProjectOrder } from 'services/project/entity';
 import { createReducer } from 'typesafe-actions';
 import { ProjectActionType } from 'services/project/actions';
 
@@ -7,6 +7,7 @@ export type ProjectState = {
   page: Page<ListProject>;
   detail?: Project;
   basic?: ProjectBasic;
+  order?: ProjectOrder;
   addModal: boolean;
 }
 
@@ -28,10 +29,14 @@ const projectReducer = createReducer(initState, {
     ...state,
     basic: action.payload,
   }),
-  [ProjectActionType.setAddModal]: (state, action) => ({
+  [ProjectActionType.setOrder]: (state, action) => ({
     ...state,
-    addModal: action.payload,
+    order: action.payload,
   }),
+  [ProjectActionType.setAddModal]:(state, action) => ({
+    ...state,
+    addModal: action.payload
+  })
 });
 
 export default projectReducer;

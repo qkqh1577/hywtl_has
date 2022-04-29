@@ -33,7 +33,6 @@ import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
 import logo from 'assets/logo.png';
 import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
-import { DataField } from 'components';
 
 type Menu = {
   title: string;
@@ -212,7 +211,7 @@ const App = () => {
                 }}
                 onSubmit={handler.search}
               >
-                {({ values, setFieldValue, handleSubmit }) => (
+                {({ setFieldValue }) => (
                   <Input
                     placeholder="통합검색"
                     onChange={(e) => {

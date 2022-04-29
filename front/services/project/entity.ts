@@ -34,9 +34,19 @@ export type ProjectBasic = {
   updatedTime: Date;
 }
 
+export type ProjectOrder = {
+  amount?: number;
+  receivedDate?: Date;
+  beginDate?: Date;
+  closeDate?: Date;
+  isOnGoing?: boolean;
+  updatedTime?: Date;
+}
+
 type Project = {
   id: number;
   basic: ProjectBasic;
+  order?: ProjectOrder;
 }
 
 export default Project;

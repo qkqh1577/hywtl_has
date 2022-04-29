@@ -29,6 +29,10 @@ public class Project {
     @JoinColumn
     private ProjectBasic basic;
 
+    @OneToOne
+    @JoinColumn
+    private ProjectOrder order;
+
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
@@ -103,6 +107,11 @@ public class Project {
     //////////////////////////////////
     public void change(ProjectBasic basic) {
         this.basic = basic;
+        this.save();
+    }
+
+    public void change(ProjectOrder order) {
+        this.order = order;
         this.save();
     }
 

@@ -15,14 +15,11 @@ import {
   Toolbar, Typography
 } from '@mui/material';
 import {
-  ChevronLeft as LeftIcon,
-  ChevronRight as RightIcon,
   StarOutline as StarOutlineIcon,
   Star as StarFillIcon
 } from '@mui/icons-material';
 import useProject from 'services/project/hook';
 import { ProjectAddModal } from 'pages/project';
-import { ProjectCommentList, ProjectCommentDrawer } from 'pages/project/comment';
 import ProjectInfoDetail from 'pages/project/info';
 
 const ProjectContainer = () => {
@@ -37,23 +34,14 @@ const ProjectContainer = () => {
     projectState: { detail },
     getOne,
     clearOne,
-    setAddModal
   } = useProject();
 
-  const [openComment, setOpenComment] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<boolean>(false);
   const handler = {
-    toggleComment: () => {
-      setOpenComment(!openComment);
-    },
     toggleFavorite: () => {
       setFavorite(!favorite);
     },
   };
-
-  useEffect(() => {
-    setAddModal(false);
-  }, []);
 
   useEffect(() => {
     if (id) {

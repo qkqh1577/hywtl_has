@@ -12,6 +12,7 @@ type Props = {
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   required?: boolean;
+  disabled?: boolean;
   format?: string;
   openTo?: CalendarPickerView;
   disableFuture?: boolean;
@@ -23,6 +24,7 @@ const DatePicker = ({
   value,
   setFieldValue,
   required,
+  disabled,
   format = 'YYYY-MM-DD',
   openTo = 'day',
   disableFuture
@@ -69,6 +71,7 @@ const DatePicker = ({
       )}
       allowSameDateSelection
       disableFuture={disableFuture === true}
+      disabled={disabled === true}
     />
   );
 };

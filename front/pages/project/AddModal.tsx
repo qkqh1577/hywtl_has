@@ -105,7 +105,7 @@ const ProjectAddModal = () => {
             onSubmit={handler.submit}
             enableReinitialize
           >
-            {({ values, isSubmitting, setFieldValue, handleSubmit, }) => (
+            {({ values, errors, isSubmitting, setFieldValue, handleSubmit, }) => (
               <Form>
                 <Grid container spacing={2}>
                   <Grid item sm={12}>
@@ -114,6 +114,7 @@ const ProjectAddModal = () => {
                       label="프로젝트명"
                       value={values.name}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>
@@ -123,6 +124,7 @@ const ProjectAddModal = () => {
                       label="프로젝트 코드"
                       value={values.code}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>
@@ -132,6 +134,7 @@ const ProjectAddModal = () => {
                       label="프로젝트 닉네임"
                       value={values.alias}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       helperText="※최대 5글자"
                     />
                   </Grid>
@@ -141,6 +144,7 @@ const ProjectAddModal = () => {
                       label="영업 담당자"
                       value={values.salesManagerId}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>
@@ -150,6 +154,7 @@ const ProjectAddModal = () => {
                       label="담당 PM"
                       value={values.projectManagerId}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>

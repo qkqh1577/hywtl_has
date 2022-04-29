@@ -1,7 +1,11 @@
 import apiClient from 'services/common/api';
 import Page from 'components/Page';
-import Project, { ListProject, ProjectBasic } from 'services/project/entity';
-import { ProjectBasicParameter, ProjectQuery } from 'services/project/parameter';
+import Project, { ListProject, ProjectBasic, ProjectOrder } from 'services/project/entity';
+import {
+  ProjectBasicParameter,
+  ProjectOrderParameter,
+  ProjectQuery
+} from 'services/project/parameter';
 
 export class ProjectApi {
   async getPage(query: ProjectQuery): Promise<Page<ListProject>> {
@@ -19,6 +23,11 @@ export class ProjectApi {
     return data;
   }
 
+  async getOrder(projectId: number): Promise<ProjectOrder> {
+    const { data } = await apiClient.get(`/projects/${projectId}/order`);
+    return data;
+  }
+
   async add(params: ProjectBasicParameter): Promise<Project> {
     const { data } = await apiClient.post('/projects', params);
     return data;
@@ -26,6 +35,11 @@ export class ProjectApi {
 
   async updateBasic(projectId: number, params: ProjectBasicParameter): Promise<ProjectBasic> {
     const { data } = await apiClient.put(`/projects/${projectId}/basic`, params);
+    return data;
+  }
+
+  async updateOrder(projectId: number, params: ProjectOrderParameter): Promise<ProjectOrder> {
+    const { data } = await apiClient.put(`/projects/${projectId}/order`, params);
     return data;
   }
 }

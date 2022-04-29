@@ -38,7 +38,7 @@ public class ProjectBasic {
     private Project project;
 
     @NotBlank
-    @Column(nullable = false, updatable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String code; // 코드
 
     @NotBlank
@@ -157,7 +157,6 @@ public class ProjectBasic {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-
     public void change(
         String name,
         String code,
