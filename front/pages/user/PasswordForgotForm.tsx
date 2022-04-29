@@ -27,13 +27,20 @@ const PasswordForgotForm = () => {
       const params: PasswordResetParameter = {
         email,
       };
-      passwordResetApi.reset(params).then(() => {
-        window.alert('이메일이 발송되었습니다. 메일함을 확인하여 주시기 바랍니다.');
-        navigate('/');
+      passwordResetApi.reset(params).then((data) => {
+        if (data) {
+          window.alert('이메일이 발송되었습니다. 메일함을 확인하여 주시기 바랍니다.');
+          navigate('/login');
+        }
       }).catch((e) => {
         console.log(e);
+      }).finally(() => {
         setSubmitting(false);
       });
+
+    },
+    toLogin: () => {
+      navigate('/login');
     }
   };
 
@@ -84,10 +91,17 @@ const PasswordForgotForm = () => {
                 <Grid item sm={12}>
                   <Box sx={{
                     display: 'flex',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     width: '100%',
                     mt: '40px',
                   }}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={handler.toLogin}
+                    >
+                      돌아가기
+                    </Button>
                     <Button
                       color="primary"
                       variant="contained"

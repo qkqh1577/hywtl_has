@@ -26,7 +26,7 @@ export class UserApi {
   }
 
   async add(params: AddUserParameter): Promise<User> {
-    const { data } = await apiClient.post('/users', params);
+    const { data } = await apiClient.post('/user/invite', params);
     return data;
   }
 

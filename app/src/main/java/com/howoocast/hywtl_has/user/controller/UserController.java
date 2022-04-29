@@ -73,7 +73,7 @@ public class UserController {
         return userService.get(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user/invite")
     public UserDetailView add(@Valid @RequestBody UserAddParameter params) {
         return userService.add(params);
     }

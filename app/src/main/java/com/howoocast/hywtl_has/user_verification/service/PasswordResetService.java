@@ -42,6 +42,8 @@ public class PasswordResetService {
     public PasswordResetView reset(PasswordResetParameter params) {
         String email = params.getEmail();
 
+        PasswordReset.invalidateIfExists(repository, email);
+
         User user = User.loadByEmail(userRepository, email);
         user.lock();
         PasswordReset passwordReset = PasswordReset.of(
@@ -49,6 +51,8 @@ public class PasswordResetService {
             email,
             user.getName()
         );
+
+        // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset));
         return PasswordResetView.assemble(passwordReset);
     }

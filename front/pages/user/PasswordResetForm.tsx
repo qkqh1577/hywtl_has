@@ -24,7 +24,7 @@ const PasswordResetForm = () => {
     return (
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Grid item sm={12}>
-          <h2>계정 등록</h2>
+          <h2>오류</h2>
         </Grid>
         <> 잘못된 접근입니다.</>
       </Paper>
@@ -101,7 +101,7 @@ const PasswordResetForm = () => {
         height: '50px',
         mb: '40px',
       }}>
-        <h2>계정 등록</h2>
+        <h2>비밀번호 변경</h2>
       </Box>
       <Box sx={{
         display: 'flex',

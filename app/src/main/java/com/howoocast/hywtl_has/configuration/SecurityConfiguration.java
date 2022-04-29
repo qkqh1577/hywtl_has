@@ -46,10 +46,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(
                 HttpMethod.GET,
                 "/",
-                "/user-invitations/authenticate",
+                "/user-verification/user-invitation/authenticate",
+                "/user-verification/password-reset/authenticate",
+                "/user/authenticate",
+                "/user/password-reset",
                 "/users/login",
                 "/login",
                 "errors/*"
+            )
+            .permitAll()
+            .antMatchers(HttpMethod.POST,
+                "/user-verification/user-invitation",
+                "/user-verification/password-reset",
+                "/user/invite",
+                "/user/password-validate"
             )
             .permitAll()
             .antMatchers("/**")
