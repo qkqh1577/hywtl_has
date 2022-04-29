@@ -21,7 +21,7 @@ public class UserInvitationController {
 
     private final UserInvitationService userInvitationService;
 
-    @GetMapping("/user-invitations/authenticate")
+    @GetMapping("/user-verification/user-invitation/authenticate")
     public UserInvitationView authenticate(
         @RequestParam String email,
         @RequestParam String authKey
@@ -29,7 +29,7 @@ public class UserInvitationController {
         return userInvitationService.authenticate(email, authKey);
     }
 
-    @PostMapping("/user-invitations")
+    @PostMapping("/user-verification/user-invitation")
     public UserInvitationView invite(@Valid @RequestBody UserInviteParameter params) {
         return userInvitationService.invite(params);
     }

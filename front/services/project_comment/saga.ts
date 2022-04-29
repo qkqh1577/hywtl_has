@@ -40,7 +40,7 @@ function* remove(action: ActionType<typeof projectCommentActions.remove>) {
   }
 }
 
-export default function* saga() {
+export default function* projectCommentSaga() {
   yield takeLatest(ProjectCommentActionType.getPage, getPage);
   yield takeLatest(ProjectCommentActionType.add, add);
   yield takeLatest(ProjectCommentActionType.change, change);

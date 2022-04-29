@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPredicateBuilder;
+import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
 import com.howoocast.hywtl_has.user.view.UserDetailView;
 import com.howoocast.hywtl_has.user.view.UserListView;
@@ -72,14 +73,14 @@ public class UserController {
         return userService.get(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user/invite")
     public UserDetailView add(@Valid @RequestBody UserAddParameter params) {
         return userService.add(params);
     }
 
-    @PostMapping("/users/{id}/password/reset")
-    public UserDetailView resetPassword(@PathVariable Long id) {
-        return userService.resetPassword(id);
+    @PostMapping("/user/password-validate")
+    public UserDetailView validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
+        return userService.validatePassword(params);
     }
 
     @PatchMapping("/users/{id}")

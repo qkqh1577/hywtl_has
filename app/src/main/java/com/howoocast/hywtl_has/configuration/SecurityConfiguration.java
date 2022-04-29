@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.configuration;
 
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Value("${application.mail.invalidate-duration}")
+    private String invalidateDuration;
     private final UserRepository userRepository;
 
     @Override
@@ -33,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .formLogin()
             .loginPage("/login")
             .defaultSuccessUrl("/")
+            .successHandler(new LoginSuccessHandler(userRepository, invalidateDuration))
             .and()
             .logout()
             .logoutUrl("/logout")
@@ -42,10 +46,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(
                 HttpMethod.GET,
                 "/",
-                "/user-invitations/authenticate",
+                "/user-verification/user-invitation/authenticate",
+                "/user-verification/password-reset/authenticate",
+                "/user/authenticate",
+                "/user/password-reset",
                 "/users/login",
                 "/login",
                 "errors/*"
+            )
+            .permitAll()
+            .antMatchers(HttpMethod.POST,
+                "/user-verification/user-invitation",
+                "/user-verification/password-reset",
+                "/user/invite",
+                "/user/password-validate"
             )
             .permitAll()
             .antMatchers("/**")

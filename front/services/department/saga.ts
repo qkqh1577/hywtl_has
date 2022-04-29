@@ -53,7 +53,7 @@ function* changeTree(action: ActionType<typeof departmentActions.changeTree>) {
   }
 }
 
-export default function* saga() {
+export default function* departmentSaga() {
   yield takeLatest(DepartmentActionType.getAll, getAll);
   yield takeLatest(DepartmentActionType.getPage, getPage);
   yield takeLatest(DepartmentActionType.getOne, getOne);

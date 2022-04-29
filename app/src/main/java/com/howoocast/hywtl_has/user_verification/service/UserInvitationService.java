@@ -34,12 +34,12 @@ public class UserInvitationService {
 
     @Transactional(readOnly = true)
     public UserInvitationView authenticate(String email, String authKey) {
-        UserInvitation userInvitation = UserInvitation.load(
+        UserInvitation instance = UserInvitation.load(
             userInvitationRepository,
             email
         );
-        userInvitation.checkValid(invalidateDuration, authKey);
-        return UserInvitationView.assemble(userInvitation);
+        instance.checkValid(invalidateDuration, authKey);
+        return UserInvitationView.assemble(instance);
     }
 
     @Transactional

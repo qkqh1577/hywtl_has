@@ -20,6 +20,8 @@ import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 import PersonnelDetail from 'pages/hr/Detail';
 import { ListDepartment } from 'services/department/entity';
+import usePasswordReset from 'services/user/password_reset/hook';
+import { PasswordResetParameter } from 'services/user/password_reset/parameter';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -30,10 +32,13 @@ const UserDetail = () => {
       detail
     },
     getOne,
-    resetPassword,
     change,
     clearOne
   } = useUser();
+
+  const {
+    reset
+  } = usePasswordReset();
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
@@ -88,7 +93,10 @@ const UserDetail = () => {
         return;
       }
       if (window.confirm('해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?')) {
-        resetPassword(detail.id, (data) => {
+        const params: PasswordResetParameter = {
+          email: detail.email
+        };
+        reset(params, (data) => {
           if (data) {
             window.alert('비밀번호 변경 메일을 발송하였습니다.');
           }
