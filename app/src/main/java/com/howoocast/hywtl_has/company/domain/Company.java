@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -34,7 +35,6 @@ public class Company {
     @Column
     private String address; // 주소
 
-    @Column
     private String zipCode; // 우편번호
 
     @Column
@@ -69,11 +69,7 @@ public class Company {
     @Transient
     private CompanyRepository repository;
 
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-    protected Company(
-            CompanyRepository repository,
+    public static Company of(
             String name,
             String representativeName,
             String companyNumber,
@@ -81,9 +77,32 @@ public class Company {
             String zipCode,
             String phone,
             String memo,
-            List<Manager> managerList
+            List<Manager> managerList,
+            String createdBy
     ) {
-        this.repository = repository;
+        Company company = new Company();
+        company.name = name;
+        company.representativeName = representativeName;
+        company.companyNumber = companyNumber;
+        company.address = address;
+        company.zipCode = zipCode;
+        company.phone = phone;
+        company.memo = memo;
+        company.managerList = companySetManagerList(company,managerList);
+        company.createdBy = createdBy;
+        company.createdAt = LocalDateTime.now();
+        return company;
+    }
+
+    public void edit(String name,
+                     String representativeName,
+                     String companyNumber,
+                     String address,
+                     String zipCode,
+                     String phone,
+                     String memo,
+                     List<Manager> managerList,
+                     String modifiedBy) {
         this.name = name;
         this.representativeName = representativeName;
         this.companyNumber = companyNumber;
@@ -91,45 +110,22 @@ public class Company {
         this.zipCode = zipCode;
         this.phone = phone;
         this.memo = memo;
-        this.managerList = managerList;
-        this.createdAt = LocalDateTime.now();
+        this.managerList = companySetManagerList(this, managerList);
+        this.modifiedBy = modifiedBy;
+        this.modifiedAt = LocalDateTime.now();
     }
 
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
-    public static Company of(
-            CompanyRepository repository,
-            String name,
-            String representativeName,
-            String companyNumber,
-            String address,
-            String zipCode,
-            String phone,
-            String memo,
-            List<Manager> managerList
-    ) {
-        Company instance = new Company(
-                repository,
-                name,
-                representativeName,
-                companyNumber,
-                address,
-                zipCode,
-                phone,
-                memo,
-                managerList
-        );
-
-        instance.save();
-        return instance;
+    private static List<Manager> companySetManagerList(Company company,List<Manager> managerList) {
+        if(managerList == null){
+            return null;
+        }
+        return managerList.stream()
+                .peek(manager -> manager.setCompany(company))
+                .collect(Collectors.toList());
     }
 
-    public void delete() {
+    public void delete(String deletedBy) {
+        this.deletedBy = deletedBy;
         this.deletedAt = LocalDateTime.now();
-    }
-
-    private void save() {
-        repository.save(this);
     }
 }

@@ -20,7 +20,7 @@ public class Manager {
     @ManyToOne
     private Company company; // 업체
 
-    @Column
+    @Transient
     private String name; // 담당자명
 
     @Column
@@ -31,8 +31,6 @@ public class Manager {
 
     @Column
     private String phone; // 전화번호
-
-//    private List<String> meta; // 메타
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -51,4 +49,14 @@ public class Manager {
 
     @Column
     private String deletedBy;
+
+//    public static Manager of(){
+//        Manager manager = new Manager();
+//        return manager;
+//    }
+    public void setCompany(Company company){
+        this.company = company;
+    }
+
+
 }
