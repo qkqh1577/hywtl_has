@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project_comment.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_comment.repository.ProjectCommentRepository;
@@ -28,7 +27,6 @@ public class ProjectComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     private Project project;
 
@@ -51,7 +49,6 @@ public class ProjectComment {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private ProjectCommentRepository repository;
 

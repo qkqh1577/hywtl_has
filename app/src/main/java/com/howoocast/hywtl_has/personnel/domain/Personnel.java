@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
@@ -12,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -28,11 +29,11 @@ import lombok.NoArgsConstructor;
 public class Personnel {
 
     @Id
-    private Long id; // share user id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn
     private User user;
 
     @NotNull
@@ -67,7 +68,6 @@ public class Personnel {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private PersonnelRepository repository;
 
@@ -81,9 +81,6 @@ public class Personnel {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static Personnel create(Long id) {
-        return new Personnel(id);
-    }
 
 
     //////////////////////////////////

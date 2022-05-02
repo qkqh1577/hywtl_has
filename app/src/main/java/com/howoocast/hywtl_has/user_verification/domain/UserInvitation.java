@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user_verification.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
@@ -58,7 +57,6 @@ public class UserInvitation {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private UserInvitationRepository repository;
 

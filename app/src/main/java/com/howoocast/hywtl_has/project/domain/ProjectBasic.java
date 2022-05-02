@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
@@ -27,13 +26,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasic {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @OneToOne(mappedBy = "basic")
     private Project project;
 
@@ -103,7 +100,6 @@ public class ProjectBasic {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     protected ProjectBasicRepository repository;
 
@@ -137,7 +133,8 @@ public class ProjectBasic {
         instance.createdTime = LocalDateTime.now();
         instance.updatedTime = instance.createdTime;
         instance.repository = repository;
-        return repository.save(instance);
+        instance.save();
+        return instance;
     }
 
     //////////////////////////////////
@@ -201,7 +198,7 @@ public class ProjectBasic {
         this.save();
     }
 
-    public void save() {
+    private void save() {
         repository.save(this);
     }
 }

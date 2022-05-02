@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import java.time.LocalDateTime;
@@ -33,6 +32,10 @@ public class Project {
     @JoinColumn
     private ProjectOrder order;
 
+    @OneToOne
+    @JoinColumn
+    private ProjectTarget target;
+
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
@@ -46,7 +49,6 @@ public class Project {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private ProjectRepository repository;
 
@@ -112,6 +114,11 @@ public class Project {
 
     public void change(ProjectOrder order) {
         this.order = order;
+        this.save();
+    }
+
+    public void change(ProjectTarget target) {
+        this.target = target;
         this.save();
     }
 

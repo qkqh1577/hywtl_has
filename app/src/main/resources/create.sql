@@ -62,7 +62,7 @@ create table password_reset
 
 create table personnel
 (
-  id bigint not null primary key,
+  id bigint auto_increment primary key,
 	address varchar(255) null,
 	birth_date date null,
 	created_time datetime(6) not null,
@@ -76,7 +76,8 @@ create table personnel
 	phone varchar(255) null,
 	recommender varchar(255) null,
 	relationship varchar(255) null,
-	sex varchar(255) null
+	sex varchar(255) null,
+	user_id bigint null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table personnel_job
@@ -148,7 +149,8 @@ create table project
 	deleted_time datetime(6) null,
 	updated_time datetime(6) not null,
   basic_id bigint not null,
-	order_id bigint null
+	order_id bigint null,
+	target_id bigint null
 );
 
 create table project_basic
@@ -203,3 +205,26 @@ create table project_comment
     project_id bigint null,
     writer_id bigint null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_target
+(
+	id bigint auto_increment primary key,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	land_model_count int null,
+	updated_time datetime(6) not null
+);
+
+create table project_target_review_list
+(
+	project_target_id bigint not null,
+	review_list_id bigint not null,
+	constraint UK_project_target_project_target_review_list unique (review_list_id)
+);
+
+create table project_target_document_list
+(
+	project_target_id bigint not null,
+	document_list_id bigint not null,
+	constraint UK_project_target_project_target_document_list unique (document_list_id)
+);

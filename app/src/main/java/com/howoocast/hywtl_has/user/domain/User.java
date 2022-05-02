@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
@@ -47,7 +46,6 @@ public class User {
 
     @NotBlank
     @Column(nullable = false)
-    @JsonIgnore
     private String password; // 로그인 비밀번호
 
     @NotBlank
@@ -85,7 +83,6 @@ public class User {
     private LocalDateTime deletedTime; // 삭제일시
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private UserRepository repository;
 

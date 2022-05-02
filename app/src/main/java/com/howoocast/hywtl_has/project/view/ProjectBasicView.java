@@ -9,6 +9,8 @@ import lombok.Getter;
 @Getter
 public class ProjectBasicView {
 
+    private Long id;
+
     private String code;
 
     private String name;
@@ -53,6 +55,7 @@ public class ProjectBasicView {
 
     public static ProjectBasicView assemble(ProjectBasic source) {
         ProjectBasicView target = new ProjectBasicView();
+        target.id = source.getId();
         target.code = source.getCode();
         target.name = source.getName();
         target.alias = source.getAlias();

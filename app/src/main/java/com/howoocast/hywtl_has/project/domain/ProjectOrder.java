@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.project.repository.ProjectOrderRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,13 +22,11 @@ import org.springframework.lang.Nullable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectOrder {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @OneToOne(mappedBy = "order")
     private Project project;
 
@@ -56,7 +53,6 @@ public class ProjectOrder {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private ProjectOrderRepository repository;
 

@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 public class PersonnelView {
 
+    private Long id;
+
     private PersonnelBasicView basic;
 
     private PersonnelCompanyView company;
@@ -24,6 +26,7 @@ public class PersonnelView {
 
     public static PersonnelView assemble(Personnel source) {
         PersonnelView target = new PersonnelView();
+        target.id = source.getId();
         target.basic = PersonnelBasicView.assemble(source.getBasic());
         target.company = PersonnelCompanyView.assemble(source.getCompany());
         target.jobList = ListConvertor.make(source.getJobList(), PersonnelJobView::assemble);

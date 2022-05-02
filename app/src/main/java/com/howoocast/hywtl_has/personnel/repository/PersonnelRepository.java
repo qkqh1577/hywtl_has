@@ -45,7 +45,7 @@ public class PersonnelRepository {
         return queryFactory
             .selectFrom(personnel)
             .rightJoin(user)
-            .on(user.id.eq(personnel.id))
+            .on(user.id.eq(personnel.user.id))
             .where(predicate)
             .fetch();
     }
