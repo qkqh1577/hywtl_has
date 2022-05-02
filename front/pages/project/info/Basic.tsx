@@ -312,6 +312,18 @@ const ProjectBasicDetail = () => {
               display: 'flex',
               width: '100%',
               mb: '40px',
+              transition: (theme) => theme.transitions.create('height', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+              ...(!open && {
+                overflowY: 'hidden',
+                height: '0px',
+                transition: (theme) => theme.transitions.create('height', {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.leavingScreen,
+                })
+              })
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={2}>
@@ -366,7 +378,6 @@ const ProjectBasicDetail = () => {
                     setFieldValue={setFieldValue}
                     errors={errors}
                     disabled={!edit}
-                    required
                   />
                 </Grid>
                 <Grid item sm={2}>
@@ -491,10 +502,9 @@ const ProjectBasicDetail = () => {
                 </Grid>
                 <Grid item sm={2}>
                   <DataField
-                    type="number"
-                    name="totalArea"
-                    label="연면적"
-                    value={values.totalArea}
+                    name="clientManager"
+                    label="업체 담당자"
+                    value={values.clientManager}
                     setFieldValue={setFieldValue}
                     errors={errors}
                     disabled={!edit}
@@ -502,21 +512,19 @@ const ProjectBasicDetail = () => {
                 </Grid>
                 <Grid item sm={2}>
                   <DataField
-                    type="number"
-                    name="totalArea"
-                    label="연면적"
-                    value={values.totalArea}
+                    name="clientPhone"
+                    label="업체 담당자 핸드폰"
+                    value={values.clientPhone}
                     setFieldValue={setFieldValue}
                     errors={errors}
                     disabled={!edit}
                   />
                 </Grid>
-                <Grid item sm={2}>
+                <Grid item sm={3}>
                   <DataField
-                    type="number"
-                    name="totalArea"
-                    label="연면적"
-                    value={values.totalArea}
+                    name="clientEmail"
+                    label="업체 담당자 이메일"
+                    value={values.clientEmail}
                     setFieldValue={setFieldValue}
                     errors={errors}
                     disabled={!edit}

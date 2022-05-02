@@ -14,7 +14,7 @@ const UserSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
       type="select"
       options={userList.map((item) => ({
         key: item.id,
-        value: item.name,
+        text: item.name,
       }))}
       {...props}
     />

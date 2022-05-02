@@ -7,7 +7,7 @@ import { ErrorMessage, FormikErrors, FormikValues } from 'formik';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = {
-  value: Date | null;
+  value: Date |  null ;
   name: string;
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;

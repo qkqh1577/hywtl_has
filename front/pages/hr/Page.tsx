@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
-  FormGroup,
   FormLabel,
   Grid,
-  Input,
   Link,
   MenuItem,
   Paper,
@@ -31,7 +27,7 @@ import {
   sexList
 } from 'services/personnel/view';
 import dayjs from 'dayjs';
-import { DatePicker, DateFormat } from 'components';
+import { CheckboxField, DataField, DatePicker, DateFormat } from 'components';
 import { PersonnelQuery } from 'services/personnel/parameter';
 
 type TableCellProperty = {
@@ -67,7 +63,7 @@ const PersonnelPage = () => {
       setFilter({
         sex: arrangeList(values.sex, sexList),
         hiredType: arrangeList(values.hiredType, hiredTypeList),
-        keyword: values.keyword || undefined,
+        keyword: values.keyword,
         keywordType: arrangeList(values.keywordType, keywordTypeList),
         startDate: !values.startDate ? undefined : dayjs(values.startDate).format('YYYY-MM-DD'),
         endDate: !values.endDate ? undefined : dayjs(values.endDate).format('YYYY-MM-DD'),
@@ -126,7 +122,17 @@ const PersonnelPage = () => {
         mb: '40px',
       }}>
         <Formik
-          initialValues={filter}
+          initialValues={{
+            page: filter.page,
+            size: filter.size,
+            sex: filter.sex ?? sexList,
+            hiredType: filter.hiredType ?? hiredTypeList,
+            keyword: filter.keyword ?? '',
+            keywordType: filter.keywordType ?? keywordTypeList,
+            startDate: filter.startDate ?? null,
+            endDate: filter.endDate ?? null,
+            dateType: filter.dateType ?? dateTypeList,
+          }}
           onSubmit={handler.search}
           enableReinitialize
         >
@@ -144,46 +150,24 @@ const PersonnelPage = () => {
                 <Form>
                   <Grid container spacing={1}>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <FormLabel component="legend">성별</FormLabel>
-                        <FormGroup row>
-                          {sexList.map((item) => (
-                            <FormControlLabel
-                              key={item}
-                              control={
-                                <Checkbox
-                                  value={item}
-                                  checked={!values.sex || values.sex.includes(item)}
-                                  onChange={handleChange}
-                                  name="sex"
-                                />
-                              }
-                              label={item}
-                            />
-                          ))}
-                        </FormGroup>
-                      </FormControl>
+                      <CheckboxField
+                        name="sex"
+                        label="성별"
+                        value={values.sex}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={sexList}
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <FormLabel component="legend">입사 구분</FormLabel>
-                        <FormGroup row>
-                          {hiredTypeList.map((item) => (
-                            <FormControlLabel
-                              key={item}
-                              control={
-                                <Checkbox
-                                  value={item}
-                                  checked={!values.hiredType || values.hiredType.includes(item)}
-                                  onChange={handleChange}
-                                  name="hiredType"
-                                />
-                              }
-                              label={item}
-                            />
-                          ))}
-                        </FormGroup>
-                      </FormControl>
+                      <CheckboxField
+                        name="hiredType"
+                        label="입사 구분"
+                        value={values.hiredType}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={hiredTypeList}
+                      />
                     </Grid>
                     <Grid container spacing={1} item sm={12}>
                       <Grid item sm={4}>
@@ -208,16 +192,13 @@ const PersonnelPage = () => {
                         </FormControl>
                       </Grid>
                       <Grid item sm={8}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색어</FormLabel>
-                          <Input
-                            type="text"
-                            name="keyword"
-                            value={values.keyword ?? ''}
-                            onChange={handleChange}
-                            placeholder="검색어를 입력하세요"
-                          />
-                        </FormControl>
+                        <DataField
+                          name="keyword"
+                          label="검색어"
+                          value={values.keyword}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
                       </Grid>
                     </Grid>
                     <Grid container spacing={1} item sm={12}>

@@ -10,20 +10,18 @@ import org.springframework.lang.Nullable;
 
 public class UserPredicateBuilder {
 
-
     private static final QUser user = QUser.user;
 
     private final BooleanBuilder criteria = new BooleanBuilder();
 
     public UserPredicateBuilder role(@Nullable List<UserRole> roleList) {
-        if (Objects.nonNull(roleList) && !roleList.isEmpty()) {
+        if (Objects.nonNull(roleList)) {
             criteria.and(user.userRole.in(roleList));
         }
         return this;
     }
 
     public UserPredicateBuilder keyword(@Nullable String keywordType, @Nullable String keyword) {
-
         if (Objects.isNull(keyword) || keyword.trim().isEmpty()) {
             return this;
         }

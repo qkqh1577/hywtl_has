@@ -248,6 +248,18 @@ const ProjectOrderDetail = () => {
               display: 'flex',
               width: '100%',
               mb: '40px',
+              transition: (theme) => theme.transitions.create('height', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+              ...(!open && {
+                overflowY: 'hidden',
+                height: '0px',
+                transition: (theme) => theme.transitions.create('height', {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.leavingScreen,
+                })
+              })
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={3}>
