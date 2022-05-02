@@ -13,7 +13,6 @@ import {
   DeleteForever as DeleteIcon
 } from '@mui/icons-material';
 import {
-  ErrorMessage,
   Form,
   Formik,
   FormikHelpers
@@ -525,7 +524,6 @@ const PersonnelDetail = () => {
                         required
                         disableFuture
                       />
-                      <ErrorMessage name="basic.birthDate" />
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <DataField

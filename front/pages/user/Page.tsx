@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   Grid,
-  MenuItem,
-  Select,
   Paper,
   TableContainer,
   Table,
@@ -12,12 +10,14 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell, Checkbox, FormLabel, Box, FormControl, FormGroup, FormControlLabel, Input
+  TableCell,
+  Box
 } from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
 import useUser from 'services/user/hook';
 import { UserQuery } from 'services/user/parameter';
 import { userRoleName, userRoleList } from 'services/user/data';
+import { DataField, CheckboxField } from 'components';
 
 type TableCellProperty = {
   key: string;
@@ -100,62 +100,74 @@ const UserPage = () => {
         mb: '40px',
       }}>
         <Formik
-          initialValues={filter}
+          initialValues={{
+            page: filter.page,
+            size: filter.size,
+            role: filter.role ?? userRoleList,
+            keyword: filter.keyword ?? '',
+            keywordType: filter.keywordType ?? 'by_username',
+          }}
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({ values, isSubmitting, handleChange, handleSubmit, resetForm }) => (
+          {({
+            values,
+            errors,
+            setFieldValue,
+            isSubmitting,
+            handleSubmit,
+            resetForm
+          }) => (
             <Grid container spacing={1}>
               <Grid item sm={10}>
                 <Form>
                   <Grid container spacing={1}>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <FormLabel component="legend">권한</FormLabel>
-                        <FormGroup row>
-                          {userRoleList.map((item) => (
-                            <FormControlLabel
-                              key={item as string}
-                              control={
-                                <Checkbox
-                                  value={item}
-                                  checked={values.role.includes(item)}
-                                  onChange={handleChange}
-                                  name="role"
-                                />
-                              }
-                              label={userRoleName(item)}
-                            />
-                          ))}
-                        </FormGroup>
-                      </FormControl>
+                      <CheckboxField
+                        name="role"
+                        label="권한"
+                        value={userRoleList.map((item) =>
+                          item as string)
+                        }
+                        options={userRoleList.map((item) => ({
+                          key: item as string,
+                          text: userRoleName(item)
+                        }))}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                      />
                     </Grid>
                     <Grid container spacing={1} item sm={12}>
                       <Grid item sm={4}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색 대상</FormLabel>
-                          <Select
-                            value={values.keywordType}
-                            onChange={handleChange}
-                            name="keywordType"
-                          >
-                            <MenuItem value="by_username">아이디</MenuItem>
-                            <MenuItem value="by_name">이름</MenuItem>
-                            <MenuItem value="by_email">이메일</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <DataField
+                          type="select"
+                          name="keywordType"
+                          label="검색 대상"
+                          value={values.keywordType}
+                          options={[
+                            {
+                              key: 'by_username',
+                              text: '아이디'
+                            }, {
+                              key: 'by_name',
+                              text: '이름'
+                            }, {
+                              key: 'by_email',
+                              text: '이메일'
+                            }
+                          ]}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
                       </Grid>
                       <Grid item sm={8}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색어</FormLabel>
-                          <Input
-                            type="text"
-                            name="keyword"
-                            value={values.keyword}
-                            onChange={handleChange}
-                            placeholder="검색어를 입력하세요"
-                          />
-                        </FormControl>
+                        <DataField
+                          name="keyword"
+                          label="검색어"
+                          value={values.keyword}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
                       </Grid>
                     </Grid>
                   </Grid>

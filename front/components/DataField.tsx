@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { InputAdornment, MenuItem, TextField } from '@mui/material';
-import { OutlinedInputProps } from '@mui/material/OutlinedInput';
+import {
+  InputAdornment,
+  MenuItem,
+  TextField
+} from '@mui/material';
 import { ErrorMessage, FormikValues, FormikErrors } from 'formik';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
+import { toAmount, toAmountKor } from 'util/NumberUtil';
 
 export type DataFieldValue = string | number;
 
-type Option = {
+export type Option = {
   key: DataFieldValue;
-  value: DataFieldValue;
+  text: DataFieldValue;
 }
 
 export type DataFieldProps = {
-  type?: string;
+  type?: 'select' | 'amount' | 'number' | 'text' | 'password';
   variant?: 'standard' | 'filled' | 'outlined';
   name: string;
   label: string;
@@ -28,91 +32,22 @@ export type DataFieldProps = {
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  InputProps?: Partial<OutlinedInputProps>;
   size?: 'small';
 }
-
-const getAmount = (localeString: DataFieldValue): number | '' => {
-  if (typeof localeString === 'number' || localeString === '') {
-    return '';
+export const optionKey = (option: Option | DataFieldValue): DataFieldValue => {
+  if (typeof option === 'string' || typeof option === 'number') {
+    return option as DataFieldValue;
   }
-  const builder: string[] = [];
-  for (let i = 0; i < localeString.length; i++) {
-    const letter: string = localeString[i];
-    if (i === 0 && letter === '-') {
-      builder.push(letter);
-      continue;
-    }
-    if (letter === ' ' || letter === ',') {
-      continue;
-    }
-    if (Number.isNaN(+letter)) {
-      continue;
-    }
-    builder.push(letter);
-  }
-
-  if (builder.length === 0) {
-    return '';
-  }
-  const raw: string = builder.join('');
-  if (Number.isNaN(+raw)) {
-    return '';
-  }
-  return +raw;
+  const item: Option = option as Option;
+  return item.key;
 };
 
-const getAmountKor = (amount: number | ''): string | undefined => {
-  if (amount === '' || amount < 0) {
-    return;
+export const optionText = (option: Option | DataFieldValue): DataFieldValue => {
+  if (typeof option === 'string' || typeof option === 'number') {
+    return option as DataFieldValue;
   }
-  const releaseBuilder = (builder: string): string =>
-    `일금${builder}원정`;
-  const counter: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
-  const splitter: string[] = ['', '십', '백', '천'];
-  const unit: string[] = ['', '만', '억', '조', '경', '해'];
-
-  const amountStr = `${amount}`;
-
-  let breaker: boolean = false;
-  let result: string = '';
-
-  if (amountStr === '0') {
-    return releaseBuilder('영');
-  }
-  for (let i = 0; ; i++) {
-    let unitUsed: boolean = false;
-    for (let j = 0; j < splitter.length; j++) {
-      const index = i * splitter.length + j;
-      if (index === amountStr.length) {
-        breaker = true;
-        break;
-      }
-      const letter: string = amountStr[amountStr.length - 1 - index];
-      if (letter === '0') {
-        continue;
-      }
-      if (letter === '-') {
-        continue;
-      }
-      let str: string = counter[+letter];
-      str += splitter[j];
-      if (!unitUsed) {
-        if (i < unit.length) {
-          str += unit[i];
-          unitUsed = true;
-        }
-        result = str + result;
-      }
-      if (breaker) {
-        break;
-      }
-    }
-    if (breaker) {
-      break;
-    }
-  }
-  return releaseBuilder(result);
+  const item: Option = option as Option;
+  return item.text;
 };
 
 const DataField = ({
@@ -129,24 +64,31 @@ const DataField = ({
   options,
   helperText,
   sx,
-  InputProps,
   onFocus,
   onKeyDown,
   onKeyUp,
   size
 }: DataFieldProps) => {
+
+  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
+  useEffect(() => {
+    if (errors && typeof errors[name] === 'string') {
+      setHelperMessage(<ErrorMessage name={name} />);
+    } else if (helperMessage !== helperText) {
+      setHelperMessage(helperText);
+    }
+  }, [errors]);
+
   const [rawValue, setRawValue] = useState<DataFieldValue>(value);
   const [viewValue, setViewValue] = useState<DataFieldValue>(value);
   const [amount, setAmount] = useState<number | undefined>();
   const [amountKor, setAmountKor] = useState<string | undefined>();
-  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
 
   useEffect(() => {
-    if (typeof value === 'number') {
-      if (type === 'amount') {
-        setAmount(value);
-        setViewValue((value as number).toLocaleString());
-      }
+    if (type === 'amount' && typeof value === 'number') {
+      const amount = value as number;
+      setAmount(amount);
+      setViewValue(amount.toLocaleString());
     } else {
       setViewValue(value);
     }
@@ -154,7 +96,7 @@ const DataField = ({
 
   useEffect(() => {
     if (type === 'amount') {
-      setRawValue(getAmount(viewValue));
+      setRawValue(toAmount(viewValue));
     } else {
       setRawValue(viewValue);
     }
@@ -166,12 +108,14 @@ const DataField = ({
 
   useEffect(() => {
     if (type === 'amount' && typeof amount === 'number') {
-      setAmountKor(getAmountKor(amount));
+      setAmountKor(toAmountKor(amount));
     }
   }, [amount]);
 
   useEffect(() => {
-    setHelperMessage(amountKor);
+    if (type === 'amount' && typeof amountKor === 'string' && amountKor !== '일금원') {
+      setHelperMessage(amountKor);
+    }
   }, [amountKor]);
 
   return (
@@ -188,33 +132,24 @@ const DataField = ({
         setViewValue(e.target.value);
       }}
       error={typeof errors[name] === 'string'}
-      onError={() => {
-        setHelperMessage(<ErrorMessage name={name} />);
-      }}
       placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
       helperText={helperMessage}
       required={!(disabled === true) && required === true}
       disabled={disabled === true}
       sx={sx}
-      InputProps={{
-        ...InputProps,
+      InputProps={type !== 'select' ? {
         onFocus,
         onKeyDown,
         onKeyUp,
         startAdornment: type === 'amount'
           ? <InputAdornment position="start">₩</InputAdornment>
           : undefined,
-      }}
+      } : undefined}
       fullWidth
     >
-      {type === 'select' && options && options.map((option) => {
-        if (typeof option === 'string' || typeof option === 'number') {
-          const item: DataFieldValue = option as DataFieldValue;
-          return <MenuItem key={item} value={item}>{item}</MenuItem>;
-        }
-        const item: Option = option as Option;
-        return <MenuItem key={item.key} value={item.key}>{item.value}</MenuItem>;
-      })}
+      {type === 'select' && options && options.map((option) => (
+        <MenuItem key={optionKey(option)} value={optionKey(option)}>{optionText(option)}</MenuItem>
+      ))}
     </TextField>
   );
 };

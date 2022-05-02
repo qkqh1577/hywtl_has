@@ -3,15 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
-  FormControl,
   Grid,
-  Input,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
 import DepartmentSelector from 'components/DepartmentSelector';
 import useUser from 'services/user/hook';
@@ -22,6 +17,7 @@ import PersonnelDetail from 'pages/hr/Detail';
 import { ListDepartment } from 'services/department/entity';
 import usePasswordReset from 'services/user/password_reset/hook';
 import { PasswordResetParameter } from 'services/user/password_reset/parameter';
+import { DataField } from 'components';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -174,71 +170,64 @@ const UserDetail = () => {
                     ...detail,
                   }}
                   onSubmit={handler.submit}
+                  enableReinitialize
                 >
-                  {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit }) => (
+                  {({
+                    values,
+                    errors,
+                    dirty,
+                    isSubmitting,
+                    setFieldValue,
+                    handleSubmit
+                  }) => (
                     <Form>
                       <Grid container spacing={2}>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-username">아이디</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-username"
-                              name="username"
-                              value={values.username}
-                              disabled
-                            />
-                          </FormControl>
+                        <Grid item sm={3}>
+                          <DataField
+                            name="username"
+                            label="아이디"
+                            value={values.username}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            disabled
+                          />
                         </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-name">이름</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-name"
-                              name="name"
-                              value={values.name}
-                              onChange={handleChange}
-                              placeholder="이름을 입력하세요"
-                              required
-                            />
-                            <ErrorMessage name="name" />
-                          </FormControl>
+                        <Grid item sm={3}>
+                          <DataField
+                            name="name"
+                            label="이름"
+                            value={values.name}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            required
+                          />
                         </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-email">이메일</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-email"
-                              name="email"
-                              value={values.email}
-                              onChange={handleChange}
-                              placeholder="이메일을 입력하세요"
-                              required
-                            />
-                            <ErrorMessage name="email" />
-                          </FormControl>
+                        <Grid item sm={4}>
+                          <DataField
+                            name="email"
+                            label="이메일"
+                            value={values.email}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            required
+                          />
                         </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel id="params-role-label">권한</InputLabel>
-                            <Select
-                              labelId="params-userRole-label"
-                              id="params-userRole"
-                              name="userRole"
-                              value={values.userRole}
-                              onChange={handleChange}
-                              required
-                            >
-                              {userRoleList.map((item) => (
-                                <MenuItem key={item} value={item}>{userRoleName(item)} 권한</MenuItem>
-                              ))}
-                            </Select>
-                            <ErrorMessage name="userRole" />
-                          </FormControl>
+                        <Grid item sm={2}>
+                          <DataField
+                            type="select"
+                            name="userRole"
+                            label="권한"
+                            value={values.userRole}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            options={userRoleList.map((item) => ({
+                              key: item,
+                              text: userRoleName(item)
+                            }))}
+                            required
+                          />
                         </Grid>
-                        <Grid item sm={12}>
+                        <Grid item sm={3}>
                           <DepartmentSelector
                             name="department"
                             label="소속 부서"
@@ -257,6 +246,7 @@ const UserDetail = () => {
                             <Button
                               color="secondary"
                               variant="contained"
+                              disabled={dirty}
                               onClick={() => {
                                 navigate(-1);
                               }}
@@ -266,7 +256,7 @@ const UserDetail = () => {
                             <Button
                               color="primary"
                               variant="contained"
-                              disabled={isSubmitting}
+                              disabled={!dirty && isSubmitting}
                               onClick={() => {
                                 handleSubmit();
                               }}

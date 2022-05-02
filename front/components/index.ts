@@ -12,3 +12,5 @@ export { default as UserSelector } from './UserSelector';
 export * from './UserSelector';
 export { default as Divider } from './Divider';
 export * from './Divider';
+export { default as CheckboxField } from './CheckboxField';
+export * from './CheckboxField';
