@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.view;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.project.common.ProjectTargetReviewStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetReview;
 import com.howoocast.hywtl_has.user.view.UserListView;
@@ -10,6 +11,9 @@ import lombok.Getter;
 public class ProjectTargetReviewView {
 
     private Long id;
+
+    @JsonIgnore
+    private Long projectId;
 
     private ProjectTargetReviewStatus status;
 
@@ -26,6 +30,7 @@ public class ProjectTargetReviewView {
     public static ProjectTargetReviewView assemble(ProjectTargetReview source) {
         ProjectTargetReviewView target = new ProjectTargetReviewView();
         target.id = source.getId();
+        target.projectId = source.getProjectId();
         target.status = source.getStatus();
         target.confirmed = source.getConfirmed();
         target.title = source.getTitle();

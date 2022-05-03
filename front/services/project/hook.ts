@@ -129,6 +129,18 @@ export default function useProject() {
     [dispatch]
   );
 
+  const setTargetReviewList = useCallback(
+    (list: ProjectTargetReview[]) =>
+      dispatch(projectActions.setTargetReviewList(list)),
+    [dispatch],
+  );
+
+  const clearTargetReviewList = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReviewList(undefined)),
+    [dispatch],
+  );
+
   const addTargetReview = useCallback(
     (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ProjectTargetReview[]) => void) =>
       dispatch(projectActions.addTargetReview({ projectId, params, callback })),
@@ -136,7 +148,7 @@ export default function useProject() {
   );
 
   const confirmTargetReview = useCallback(
-    (id: number, callback: () => void) =>
+    (id: number, callback: (list?: ProjectTargetReview[]) => void) =>
       dispatch(projectActions.confirmTargetReview({ id, callback })),
     [dispatch]
   );
@@ -179,6 +191,8 @@ export default function useProject() {
     clearTarget,
     updateTarget,
     getTargetReviewList,
+    setTargetReviewList,
+    clearTargetReviewList,
     addTargetReview,
     confirmTargetReview,
     getTargetDocumentList,

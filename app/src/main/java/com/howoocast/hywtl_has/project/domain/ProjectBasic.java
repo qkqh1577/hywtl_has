@@ -3,7 +3,6 @@ package com.howoocast.hywtl_has.project.domain;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -92,7 +91,7 @@ public class ProjectBasic {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public void change(
+    public static ProjectBasic of(
         String name,
         String code,
         String alias,
@@ -107,6 +106,7 @@ public class ProjectBasic {
         instance.projectManager = projectManager;
         instance.status = ProjectStatus.TEMPLATE;
         instance.updatedTime = LocalDateTime.now();
+        return instance;
     }
 
     //////////////////////////////////
@@ -141,13 +141,11 @@ public class ProjectBasic {
         String clientPhone,
         String clientEmail
     ) {
-        this.change(
-            name,
-            code,
-            alias,
-            salesManager,
-            projectManager
-        );
+        this.name = name;
+        this.code = code;
+        this.alias = alias;
+        this.salesManager = salesManager;
+        this.projectManager = projectManager;
         this.address = address;
         this.purpose1 = purpose1;
         this.purpose2 = purpose2;

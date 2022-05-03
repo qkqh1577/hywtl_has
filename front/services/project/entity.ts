@@ -66,8 +66,6 @@ export type ProjectTargetReview = {
 
 export type ProjectTarget = {
   landModelCount?: number;
-  reviewList?: ProjectTargetReview[];
-  documentList?: ProjectTargetDocument[];
   updatedTime?: Date;
 }
 

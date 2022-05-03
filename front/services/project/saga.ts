@@ -95,10 +95,10 @@ function* addTargetReview(action: ActionType<typeof projectActions.addTargetRevi
 function* confirmTargetReview(action: ActionType<typeof projectActions.confirmTargetReview>) {
   const { id, callback } = action.payload;
   try {
-    yield projectApi.confirmTargetReview(id);
-    callback();
+    const list: ProjectTargetReview[] = yield projectApi.confirmTargetReview(id);
+    callback(list);
   } catch (e) {
-    // nothing to do
+    callback();
   }
 }
 
@@ -118,12 +118,12 @@ function* addTargetDocument(action: ActionType<typeof projectActions.addTargetDo
 }
 
 function* updateTargetDocument(action: ActionType<typeof projectActions.updateTargetDocument>) {
-  const { id, params, callback} = action.payload;
+  const { id, params, callback } = action.payload;
   try {
-    yield projectApi.updateTargetDocument(id, params);
-    callback();
+    const list: ProjectTargetDocument[] = yield projectApi.updateTargetDocument(id, params);
+    callback(list);
   } catch (e) {
-    // nothing to do
+    callback();
   }
 }
 

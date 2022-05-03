@@ -66,8 +66,9 @@ public class ProjectTargetController {
     }
 
     @PostMapping("/project/target/reviews/{id}/confirm")
-    public void confirmReview(@PathVariable Long id) {
-        projectTargetService.confirmReview(id);
+    public List<ProjectTargetReviewView> confirmReview(@PathVariable Long id) {
+        ProjectTargetReviewView source = projectTargetService.confirmReview(id);
+        return projectTargetService.getReviewList(source.getProjectId());
     }
 
     @PutMapping("/projects/{projectId}/target")
@@ -80,10 +81,11 @@ public class ProjectTargetController {
     }
 
     @PatchMapping("/project/target/documents/{id}")
-    public void changeDocument(
+    public List<ProjectTargetDocumentView> changeDocument(
         @PathVariable Long id,
         @Valid @RequestBody ProjectTargetDocumentChangeParameter params
     ) {
-        projectTargetService.updateDocument(id, params);
+        ProjectTargetDocumentView source = projectTargetService.updateDocument(id, params);
+        return projectTargetService.getDocumentList(source.getProjectId());
     }
 }

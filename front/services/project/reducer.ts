@@ -50,8 +50,6 @@ const projectReducer = createReducer(initState, {
   [ProjectActionType.setTarget]: (state, action) => ({
     ...state,
     target: action.payload,
-    reviewList: action.payload?.reviewList,
-    documentList: action.payload?.documentList,
   }),
   [ProjectActionType.setTargetReviewList]: (state, action) => ({
     ...state,

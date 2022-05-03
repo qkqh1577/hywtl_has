@@ -90,7 +90,7 @@ export const projectActions = {
   }>(),
   confirmTargetReview: createAction(ProjectActionType.confirmTargetReview)<{
     id: number;
-    callback: () => void;
+    callback: (list?: ProjectTargetReview[]) => void;
   }>(),
 
   getTargetDocumentList: createAction(ProjectActionType.getTargetDocumentList)<number>(),
@@ -103,6 +103,6 @@ export const projectActions = {
   updateTargetDocument: createAction(ProjectActionType.updateTargetDocument)<{
     id: number;
     params: ProjectTargetDocumentChangeParameter;
-    callback: () => void;
+    callback: (list?: ProjectTargetDocument[]) => void;
   }>(),
 };

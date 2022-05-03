@@ -76,6 +76,9 @@ public class ProjectTargetReview {
     //////////////////////////////////
     //// getter - setter
     //////////////////////////////////
+    public Long getProjectId() {
+        return project.getId();
+    }
 
     //////////////////////////////////
     //// builder

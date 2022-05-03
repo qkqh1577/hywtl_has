@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Typography
-} from '@mui/material';
-import {
-  Edit as EditIcon,
-  SaveAs as SaveIcon,
-  EditOff as ResetIcon,
-} from '@mui/icons-material';
-import { DateFormat, DataField, UserSelector } from 'components';
+import { Grid } from '@mui/material';
+import { Container, DataField, UserSelector } from 'components';
 import useProject from 'services/project/hook';
-import { Form, Formik, FormikHelpers } from 'formik';
 import { initProjectBasic, ProjectBasicView } from 'services/project/view';
 import { ProjectBasicParameter } from 'services/project/parameter';
 
@@ -34,22 +20,15 @@ const ProjectBasicDetail = () => {
     clearBasic: clearOne,
     updateBasic: update,
   } = useProject();
-  const [open, setOpen] = useState<boolean>(true);
   const [view, setView] = useState<ProjectBasicView>(initProjectBasic);
-  const [edit, setEdit] = useState<boolean>(false);
 
   const handler = {
-    toggle: () => {
-      setOpen(!open);
-    },
-    edit: () => {
-      setEdit(true);
-    },
-    submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      if (!projectId || !detail) {
-        return;
-      }
+    submit: (values: any, callback: () => void) => {
       const errors: any = {};
+      if (!projectId || !detail) {
+        errors.projectId = '프로젝트를 찾을 수 없습니다.';
+        throw errors;
+      }
 
       const name: string = values.name;
       if (!name) {
@@ -89,9 +68,7 @@ const ProjectBasicDetail = () => {
       const clientEmail: string | undefined = values.clientEmail || undefined;
 
       if (Object.keys(errors).length > 0) {
-        setErrors(errors);
-        setSubmitting(false);
-        return;
+        throw errors;
       }
 
       const params: ProjectBasicParameter = {
@@ -120,9 +97,8 @@ const ProjectBasicDetail = () => {
         if (data) {
           window.alert('수정하였습니다.');
           setOne(data);
-          setEdit(false);
+          callback();
         }
-        setSubmitting(false);
       });
     },
     updateView: () => {
@@ -164,380 +140,224 @@ const ProjectBasicDetail = () => {
   }, [detail]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
-      <Formik
-        initialValues={view}
-        onSubmit={handler.submit}
-        enableReinitialize
-      >
-        {({ values, errors, isSubmitting, dirty, setFieldValue, handleSubmit, resetForm }) => (
-          <Form>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-              mb: '40px',
-            }}>
-              <Grid container spacing={2} sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}>
-                <Grid item sx={{
-                  display: 'flex',
-                  flexWrap: 'nowrap',
-                  alignItems: 'center',
-                }}>
-                  <Typography
-                    sx={{
-                      fontWeight: 'bold',
-                      marginRight: '4px'
-                    }}
-                  >
-                    기본 정보
-                  </Typography>
-                  {open && edit && (
-                    <>
-                      <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: '4px'
-                      }}>
-                        <IconButton
-                          disabled={isSubmitting || !dirty}
-                          onClick={() => {
-                            handleSubmit();
-                          }}
-                          sx={{
-                            color: '#ffffff',
-                            maxHeight: '21px'
-                          }}>
-                          <SaveIcon />
-                        </IconButton>
-                      </Box>
-                      <Box color="primary" sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: '4px'
-                      }}>
-                        <IconButton
-                          onClick={() => {
-                            if (edit && dirty) {
-                              if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
-                                resetForm();
-                                handler.updateView();
-                                setEdit(false);
-                              }
-                            } else {
-                              setEdit(false);
-                            }
-                          }}
-                          sx={{
-                            color: '#ffffff',
-                            maxHeight: '21px'
-                          }}>
-                          <ResetIcon />
-                        </IconButton>
-                      </Box>
-                    </>
-                  )}
-                  {open && !edit && (
-                    <Box color="primary" sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      alignItems: 'center',
-                      width: '25px',
-                      height: '25px',
-                      backgroundColor: (theme) => theme.palette.primary.main,
-                      borderRadius: '4px'
-                    }}>
-                      <IconButton
-                        onClick={handler.edit}
-                        sx={{
-                          color: '#ffffff',
-                          maxHeight: '21px'
-                        }}>
-                        <EditIcon />
-                      </IconButton>
-                    </Box>
-                  )}
-                </Grid>
-                {!edit && (
-                  <Grid item sx={{
-                    display: 'flex',
-                    flexWrap: 'nowrap',
-                    alignItems: 'center',
-                  }}>
-                    <Typography
-                      sx={{
-                        fontWeight: 'bold',
-                        marginRight: '4px'
-                      }}
-                    >
-                      최종수정일시
-                    </Typography>
-                    <Typography
-                      sx={{
-                        marginRight: '8px'
-                      }}
-                    >
-                      <DateFormat date={detail?.updatedTime} format="YYYY-MM-DD HH:mm" />
-                    </Typography>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={handler.toggle}
-                      sx={{
-                        maxHeight: '30px'
-                      }}
-                    >
-                      {open ? '접기' : '펴기'}
-                    </Button>
-                  </Grid>
-                )}
-              </Grid>
-            </Box>
-            <Box sx={{
-              display: 'flex',
-              width: '100%',
-              mb: '40px',
-              transition: (theme) => theme.transitions.create('height', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-              ...(!open && {
-                overflowY: 'hidden',
-                height: '0px',
-                transition: (theme) => theme.transitions.create('height', {
-                  easing: theme.transitions.easing.sharp,
-                  duration: theme.transitions.duration.leavingScreen,
-                })
-              })
-            }}>
-              <Grid container spacing={2}>
-                <Grid item sm={2}>
-                  <DataField
-                    name="code"
-                    label="프로젝트 코드"
-                    value={values.code}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <DataField
-                    name="name"
-                    label="프로젝트명"
-                    value={values.name}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    name="alias"
-                    label="프로젝트 닉네임"
-                    value={values.alias}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    helperText="※최대 5글자"
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <UserSelector
-                    name="salesManagerId"
-                    label="영업 담당자"
-                    value={values.salesManagerId}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <DataField
-                    name="address"
-                    label="주소"
-                    value={values.address}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    name="purpose1"
-                    label="건물 용도1"
-                    value={values.purpose1}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    name="purpose2"
-                    label="건물 용도1"
-                    value={values.purpose2}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <UserSelector
-                    name="projectManagerId"
-                    label="담당 PM"
-                    value={values.projectManagerId}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="buildingCount"
-                    label="총 동 수"
-                    value={values.buildingCount}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="householdCount"
-                    label="건물 당 세대 수"
-                    value={values.householdCount}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="floorCount"
-                    label="층 수"
-                    value={values.floorCount}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="baseCount"
-                    label="지하층 수"
-                    value={values.baseCount}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="lotArea"
-                    label="대지면적"
-                    value={values.lotArea}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="number"
-                    name="totalArea"
-                    label="연면적"
-                    value={values.totalArea}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={3}>
-                  <DataField
-                    type="number"
-                    name="clientName"
-                    label="업체"
-                    value={values.clientName}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    type="select"
-                    name="isClientLH"
-                    label="업체 LH 여부"
-                    value={values.isClientLH}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                    options={['예', '아니요']}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    name="clientManager"
-                    label="업체 담당자"
-                    value={values.clientManager}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DataField
-                    name="clientPhone"
-                    label="업체 담당자 핸드폰"
-                    value={values.clientPhone}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-                <Grid item sm={3}>
-                  <DataField
-                    name="clientEmail"
-                    label="업체 담당자 이메일"
-                    value={values.clientEmail}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
-                    disabled={!edit}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Form>
-        )}
-      </Formik>
-      <Divider />
-    </Paper>
+    <Container
+      title="기본 정보"
+      view={view}
+      submit={handler.submit}
+      updateView={handler.updateView}
+    >
+      {({ values, errors, setFieldValue, edit }) => (
+        <Grid container spacing={2}>
+          <Grid item sm={2}>
+            <DataField
+              name="code"
+              label="프로젝트 코드"
+              value={values.code}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+              required
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <DataField
+              name="name"
+              label="프로젝트명"
+              value={values.name}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+              required
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              name="alias"
+              label="프로젝트 닉네임"
+              value={values.alias}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              helperText="※최대 5글자"
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <UserSelector
+              name="salesManagerId"
+              label="영업 담당자"
+              value={values.salesManagerId}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+              required
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <DataField
+              name="address"
+              label="주소"
+              value={values.address}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              name="purpose1"
+              label="건물 용도1"
+              value={values.purpose1}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              name="purpose2"
+              label="건물 용도1"
+              value={values.purpose2}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <UserSelector
+              name="projectManagerId"
+              label="담당 PM"
+              value={values.projectManagerId}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+              required
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="buildingCount"
+              label="총 동 수"
+              value={values.buildingCount}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="householdCount"
+              label="건물 당 세대 수"
+              value={values.householdCount}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="floorCount"
+              label="층 수"
+              value={values.floorCount}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="baseCount"
+              label="지하층 수"
+              value={values.baseCount}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="lotArea"
+              label="대지면적"
+              value={values.lotArea}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="number"
+              name="totalArea"
+              label="연면적"
+              value={values.totalArea}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <DataField
+              type="number"
+              name="clientName"
+              label="업체"
+              value={values.clientName}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              type="select"
+              name="isClientLH"
+              label="업체 LH 여부"
+              value={values.isClientLH}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+              options={['예', '아니요']}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              name="clientManager"
+              label="업체 담당자"
+              value={values.clientManager}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <DataField
+              name="clientPhone"
+              label="업체 담당자 핸드폰"
+              value={values.clientPhone}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <DataField
+              name="clientEmail"
+              label="업체 담당자 이메일"
+              value={values.clientEmail}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              disabled={!edit}
+            />
+          </Grid>
+        </Grid>
+      )}
+    </Container>
   );
+
+
 };
 
 export default ProjectBasicDetail;

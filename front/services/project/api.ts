@@ -68,12 +68,12 @@ export class ProjectApi {
     return data;
   }
 
-  async addTargetReview(projectId: number, params: ProjectTargetReviewAddParameter): Promise<ProjectTargetReview> {
+  async addTargetReview(projectId: number, params: ProjectTargetReviewAddParameter): Promise<ProjectTargetReview[]> {
     const { data } = await apiClient.post(`/projects/${projectId}/target/reviews`, params);
     return data;
   }
 
-  async confirmTargetReview(id: number): Promise<void> {
+  async confirmTargetReview(id: number): Promise<ProjectTargetReview[]> {
     const { data } = await apiClient.post(`/project/target/reviews/${id}/confirm`);
     return data;
   }
@@ -88,7 +88,7 @@ export class ProjectApi {
     return data;
   }
 
-  async updateTargetDocument(id: number, params: ProjectTargetDocumentChangeParameter): Promise<void> {
+  async updateTargetDocument(id: number, params: ProjectTargetDocumentChangeParameter): Promise<ProjectTargetDocument[]> {
     const { data } = await apiClient.patch(`/project/target/documents/${id}`, params);
     return data;
   }

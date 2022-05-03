@@ -6,7 +6,6 @@ import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -110,8 +109,7 @@ public class Project {
         User projectManager
     ) {
         Project instance = new Project();
-        instance.basic = new ProjectBasic();
-        instance.basic.change(
+        instance.basic = ProjectBasic.of(
             name,
             code,
             alias,

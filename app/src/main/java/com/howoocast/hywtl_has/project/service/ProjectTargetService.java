@@ -75,12 +75,17 @@ public class ProjectTargetService {
     }
 
     @Transactional
-    public void confirmReview(Long id) {
-        ProjectTargetReview.load(projectTargetReviewRepository, id).confirmOn();
+    public ProjectTargetReviewView confirmReview(Long id) {
+        ProjectTargetReview source = ProjectTargetReview.load(projectTargetReviewRepository, id);
+        source.confirmOn();
+        return ProjectTargetReviewView.assemble(source);
     }
 
     @Transactional
-    public void addDocument(Long projectId, String username, ProjectTargetDocumentAddParameter params) {
+    public void addDocument(
+        Long projectId, String username,
+        ProjectTargetDocumentAddParameter params
+    ) {
         ProjectTargetDocument.of(
             projectTargetDocumentRepository,
             Project.load(projectRepository, projectId),
@@ -92,8 +97,9 @@ public class ProjectTargetService {
     }
 
     @Transactional
-    public void updateDocument(Long id, ProjectTargetDocumentChangeParameter params) {
-        ProjectTargetDocument.load(projectTargetDocumentRepository, id)
-            .change(params.getMemo());
+    public ProjectTargetDocumentView updateDocument(Long id, ProjectTargetDocumentChangeParameter params) {
+        ProjectTargetDocument source = ProjectTargetDocument.load(projectTargetDocumentRepository, id);
+        source.change(params.getMemo());
+        return ProjectTargetDocumentView.assemble(source);
     }
 }

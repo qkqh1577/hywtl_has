@@ -68,6 +68,9 @@ public class ProjectTargetDocument {
     //////////////////////////////////
     //// getter - setter
     //////////////////////////////////
+    public Long getProjectId() {
+        return project.getId();
+    }
 
     //////////////////////////////////
     //// builder
