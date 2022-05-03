@@ -1,12 +1,12 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -28,10 +28,10 @@ import lombok.NoArgsConstructor;
 public class Personnel {
 
     @Id
-    private Long id; // share user id
+    private Long id;
 
-    @JsonIgnore
     @OneToOne
+    @NotNull
     @JoinColumn(name = "id")
     private User user;
 
@@ -64,26 +64,23 @@ public class Personnel {
     private LocalDateTime createdTime;
 
     @Column(insertable = false)
-    private LocalDateTime deletedTime;
+    private LocalDateTime updatedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private PersonnelRepository repository;
 
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    private Personnel(Long id) {
-        this.id = id;
+    private Personnel(User user) {
+        this.id = user.getId();
+        this.user = user;
     }
 
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static Personnel create(Long id) {
-        return new Personnel(id);
-    }
 
 
     //////////////////////////////////
@@ -93,16 +90,20 @@ public class Personnel {
         PersonnelRepository repository,
         Long id
     ) {
-        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        Personnel instance = repository
+            .findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(() -> new NotFoundException("personnel", id));
         instance.repository = repository;
         return instance;
     }
 
     public static Personnel find(
         PersonnelRepository repository,
-        Long id
+        User user
     ) {
-        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElse(new Personnel(id));
+        Personnel instance = repository
+            .findByIdAndDeletedTimeIsNull(user.getId())
+            .orElse(new Personnel(user));
         instance.repository = repository;
         return instance;
     }
@@ -126,7 +127,11 @@ public class Personnel {
         this.careerList = careerList;
         this.licenseList = licenseList;
         this.languageList = languageList;
-        this.createdTime = LocalDateTime.now();
+        if (Objects.isNull(this.createdTime)) {
+            this.createdTime = LocalDateTime.now();
+        } else {
+            this.updatedTime = LocalDateTime.now();
+        }
     }
 
 

@@ -1,18 +1,22 @@
-package com.howoocast.hywtl_has.project_comment.domain;
+package com.howoocast.hywtl_has.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.howoocast.hywtl_has.common.domain.FileItem;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project_comment.repository.ProjectCommentRepository;
+import com.howoocast.hywtl_has.project.repository.ProjectTargetDocumentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,28 +25,33 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectComment {
+public class ProjectTargetDocument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
+    @Getter(AccessLevel.NONE)
+    @NotNull
     @ManyToOne
     private Project project;
 
+    @NotNull
+    @OneToOne
+    @JoinColumn
+    private FileItem fileItem;
+
+    @NotNull
     @ManyToOne
     private User writer;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String description;
+    private String memo;
 
     @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @NotNull
-    @Column(nullable = false)
+    @Column(insertable = false)
     private LocalDateTime updatedTime;
 
     @Column(insertable = false)
@@ -50,57 +59,59 @@ public class ProjectComment {
 
     @Getter(AccessLevel.NONE)
     @Transient
-    private ProjectCommentRepository repository;
+    private ProjectTargetDocumentRepository repository;
 
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    protected ProjectComment(
-        Project project,
-        User writer,
-        String description
-    ) {
-        this.project = project;
-        this.writer = writer;
-        this.description = description;
-    }
 
     //////////////////////////////////
     //// getter - setter
     //////////////////////////////////
+    public Long getProjectId() {
+        return project.getId();
+    }
 
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static ProjectComment of(
-        ProjectCommentRepository repository,
+    public static ProjectTargetDocument of(
+        ProjectTargetDocumentRepository repository,
         Project project,
+        FileItem fileItem,
         User writer,
-        String description
+        String memo
     ) {
-        ProjectComment instance = new ProjectComment(
-            project,
-            writer,
-            description
-        );
-        instance.repository = repository;
+        ProjectTargetDocument instance = new ProjectTargetDocument();
+        instance.project = project;
+        instance.fileItem = fileItem;
+        instance.writer = writer;
+        instance.memo = memo;
         instance.createdTime = LocalDateTime.now();
-        instance.updatedTime = instance.createdTime;
-        return repository.save(instance);
+        instance.repository = repository;
+        instance.save();
+        return instance;
     }
 
     //////////////////////////////////
     //// finder
     //////////////////////////////////
-    public static ProjectComment load(
-        ProjectCommentRepository repository,
-        Long id
-    ) {
-        ProjectComment instance = repository
+    public static ProjectTargetDocument load(ProjectTargetDocumentRepository repository, Long id) {
+        ProjectTargetDocument instance = repository
             .findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(() -> new NotFoundException("project-comment", id));
+            .orElseThrow(() -> new NotFoundException("project.target.document", id));
         instance.repository = repository;
         return instance;
+    }
+
+    public static List<ProjectTargetDocument> loadByProjectId(
+        ProjectTargetDocumentRepository repository,
+        Long projectId
+    ) {
+        return repository
+            .findByProject_IdAndDeletedTimeIsNull(projectId).stream()
+            .peek(item -> item.repository = repository)
+            .collect(Collectors.toList());
     }
 
     //////////////////////////////////
@@ -110,18 +121,15 @@ public class ProjectComment {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-    public void changeDescription(String description) {
-        this.description = description;
+    public void change(
+        String memo
+    ) {
+        this.memo = memo;
         this.updatedTime = LocalDateTime.now();
         this.save();
     }
 
-    public void delete() {
-        this.deletedTime = LocalDateTime.now();
-        this.save();
-    }
-
-    public void save() {
+    private void save() {
         repository.save(this);
     }
 }

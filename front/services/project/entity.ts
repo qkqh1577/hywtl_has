@@ -1,6 +1,9 @@
 import { ListUser } from 'services/user/entity';
+import FileItem from 'services/common/file-item/entity';
 
 export type ProjectStatus = 'ON_GOING' | 'TEMPLATE';
+
+export type ProjectTargetReviewStatus = 'DRAFT' | 'RECONSIDER' | 'COMPLETE';
 
 export type ListProject = {
   id: number;
@@ -42,11 +45,35 @@ export type ProjectOrder = {
   isOnGoing?: boolean;
   updatedTime?: Date;
 }
+export type ProjectTargetDocument = {
+  id: number;
+  fileItem: FileItem;
+  writer: ListUser;
+  memo?: string;
+  createdTime: Date;
+  updatedTime?: Date;
+}
+export type ProjectTargetReview = {
+  id: number;
+  status: ProjectTargetReviewStatus;
+  confirmed: boolean;
+  title: string;
+  memo?: string;
+  writer: ListUser;
+  createdTime: Date;
+  updatedTime?: Date;
+}
+
+export type ProjectTarget = {
+  landModelCount?: number;
+  updatedTime?: Date;
+}
 
 type Project = {
   id: number;
   basic: ProjectBasic;
   order?: ProjectOrder;
+  target?: ProjectTarget;
 }
 
 export default Project;

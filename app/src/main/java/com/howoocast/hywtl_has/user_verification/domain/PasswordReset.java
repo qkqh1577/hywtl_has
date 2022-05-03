@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user_verification.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user_verification.exception.UserVerificationAuthenticationFailureException;
 import com.howoocast.hywtl_has.user_verification.exception.UserVerificationAuthenticationFailureException.UserInvitationAuthenticationFailureExceptionType;
@@ -47,7 +46,6 @@ public class PasswordReset {
     private LocalDateTime deletedTime;
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private PasswordResetRepository repository;
 
@@ -102,7 +100,8 @@ public class PasswordReset {
     ) {
         PasswordReset instance = repository
             .findByEmailAndDeletedTimeIsNull(email)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(
+                () -> new NotFoundException("user-verification.password-reset", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
     }

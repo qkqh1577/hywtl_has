@@ -27,7 +27,10 @@ public class ProjectBasicController {
     }
 
     @PutMapping("/projects/{projectId}/basic")
-    public ProjectBasicView putBasic(@PathVariable Long projectId, @Valid @RequestBody ProjectBasicParameter params) {
+    public ProjectBasicView putBasic(
+        @PathVariable Long projectId,
+        @Valid @RequestBody ProjectBasicParameter params
+    ) {
         projectBasicService.update(projectId, params);
         return projectBasicService.getOne(projectId);
     }

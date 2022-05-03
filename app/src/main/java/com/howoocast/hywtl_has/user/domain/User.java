@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
@@ -47,7 +46,6 @@ public class User {
 
     @NotBlank
     @Column(nullable = false)
-    @JsonIgnore
     private String password; // 로그인 비밀번호
 
     @NotBlank
@@ -85,7 +83,6 @@ public class User {
     private LocalDateTime deletedTime; // 삭제일시
 
     @Getter(AccessLevel.NONE)
-    @JsonIgnore
     @Transient
     private UserRepository repository;
 
@@ -158,7 +155,7 @@ public class User {
         Long id
     ) {
         User instance = repository.findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", id));
         instance.repository = repository;
         return instance;
     }
@@ -168,7 +165,7 @@ public class User {
         String username
     ) {
         User instance = repository.findByUsernameAndDeletedTimeIsNull(username)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
         instance.repository = repository;
         return instance;
     }
@@ -178,7 +175,7 @@ public class User {
         String email
     ) {
         User instance = repository.findByEmailAndDeletedTimeIsNull(email)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
     }
@@ -213,9 +210,6 @@ public class User {
     }
 
     private void checkCanLogin(String invalidatePeriod) {
-        if (Objects.nonNull(this.deletedTime)) {
-            throw new NotFoundException();
-        }
         if (Objects.nonNull(this.lockedTime)) {
             throw new UserLoginException(UserLoginExceptionType.LOCKED);
         }

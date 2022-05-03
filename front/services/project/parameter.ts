@@ -1,5 +1,5 @@
-// TODO: 주소 컴포넌트 개발 이후 변경
-// import { AddressParameter } from 'services/common/address/parameter';
+import FileItemParameter from 'services/common/file-item/parameter';
+import { ProjectTargetReviewStatus } from 'services/project/entity';
 
 export type ProjectQuery = {
   size: number;
@@ -35,4 +35,22 @@ export type ProjectOrderParameter = {
   beginDate?: string;
   closeDate?: string;
   isOnGoing?: boolean;
+}
+
+export type ProjectTargetDocumentAddParameter = {
+  fileItem: FileItemParameter;
+  memo?: string;
+}
+
+export type ProjectTargetDocumentChangeParameter = {
+  memo?: string;
+}
+
+export type ProjectTargetReviewAddParameter = {
+  title: string;
+  memo?: string;
+}
+
+export type ProjectTargetParameter = {
+  landModelCount?: number;
 }

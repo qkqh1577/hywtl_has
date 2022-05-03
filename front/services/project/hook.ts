@@ -2,11 +2,19 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { projectActions } from 'services/project/actions';
-import Project, { ProjectBasic, ProjectOrder } from 'services/project/entity';
+import Project, {
+  ProjectBasic,
+  ProjectOrder,
+  ProjectTarget, ProjectTargetDocument,
+  ProjectTargetReview
+} from 'services/project/entity';
 import {
   ProjectBasicParameter,
   ProjectOrderParameter,
-  ProjectQuery
+  ProjectQuery,
+  ProjectTargetDocumentAddParameter, ProjectTargetDocumentChangeParameter,
+  ProjectTargetParameter,
+  ProjectTargetReviewAddParameter
 } from 'services/project/parameter';
 
 export default function useProject() {
@@ -31,6 +39,18 @@ export default function useProject() {
     [dispatch]
   );
 
+  const add = useCallback(
+    (params: ProjectBasicParameter, callback: (data?: Project) => void) =>
+      dispatch(projectActions.add({ params, callback })),
+    [dispatch]
+  );
+
+  const setAddModal = useCallback(
+    (open: boolean) =>
+      dispatch(projectActions.setAddModal(open)),
+    [dispatch]
+  );
+
   const getBasic = useCallback(
     (projectId: number) =>
       dispatch(projectActions.getBasic(projectId)),
@@ -46,6 +66,12 @@ export default function useProject() {
   const clearBasic = useCallback(
     () =>
       dispatch(projectActions.setBasic(undefined)),
+    [dispatch]
+  );
+
+  const updateBasic = useCallback(
+    (projectId: number, params: ProjectBasicParameter, callback: (data?: ProjectBasic) => void) =>
+      dispatch(projectActions.updateBasic({ projectId, params, callback })),
     [dispatch]
   );
 
@@ -67,27 +93,81 @@ export default function useProject() {
     [dispatch]
   );
 
-  const add = useCallback(
-    (params: ProjectBasicParameter, callback: (data?: Project) => void) =>
-      dispatch(projectActions.add({ params, callback })),
-    [dispatch]
-  );
-
-  const updateBasic = useCallback(
-    (projectId: number, params: ProjectBasicParameter, callback: (data?: ProjectBasic) => void) =>
-      dispatch(projectActions.updateBasic({ projectId, params, callback })),
-    [dispatch]
-  );
-
   const updateOrder = useCallback(
     (projectId: number, params: ProjectOrderParameter, callback: (data?: ProjectOrder) => void) =>
       dispatch(projectActions.updateOrder({ projectId, params, callback })),
     [dispatch]
   );
 
-  const setAddModal = useCallback(
-    (open: boolean) =>
-      dispatch(projectActions.setAddModal(open)),
+  const getTarget = useCallback(
+    (projectId: number) =>
+      dispatch(projectActions.getTarget(projectId)),
+    [dispatch]
+  );
+
+  const setTarget = useCallback(
+    (data: ProjectTarget) =>
+      dispatch(projectActions.setTarget(data)),
+    [dispatch]
+  );
+
+  const clearTarget = useCallback(
+    () =>
+      dispatch(projectActions.setTarget(undefined)),
+    [dispatch]
+  );
+
+  const updateTarget = useCallback(
+    (projectId: number, params: ProjectTargetParameter, callback: (data?: ProjectTarget) => void) =>
+      dispatch(projectActions.updateTarget({ projectId, params, callback })),
+    [dispatch]
+  );
+
+  const getTargetReviewList = useCallback(
+    (projectId: number) =>
+      dispatch(projectActions.getTargetReviewList(projectId)),
+    [dispatch]
+  );
+
+  const setTargetReviewList = useCallback(
+    (list: ProjectTargetReview[]) =>
+      dispatch(projectActions.setTargetReviewList(list)),
+    [dispatch],
+  );
+
+  const clearTargetReviewList = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReviewList(undefined)),
+    [dispatch],
+  );
+
+  const addTargetReview = useCallback(
+    (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ProjectTargetReview[]) => void) =>
+      dispatch(projectActions.addTargetReview({ projectId, params, callback })),
+    [dispatch]
+  );
+
+  const confirmTargetReview = useCallback(
+    (id: number, callback: (list?: ProjectTargetReview[]) => void) =>
+      dispatch(projectActions.confirmTargetReview({ id, callback })),
+    [dispatch]
+  );
+
+  const getTargetDocumentList = useCallback(
+    (projectId: number) =>
+      dispatch(projectActions.getTargetDocumentList(projectId)),
+    [dispatch]
+  );
+
+  const addTargetDocument = useCallback(
+    (projectId: number, params: ProjectTargetDocumentAddParameter, callback: (list?: ProjectTargetDocument[]) => void) =>
+      dispatch(projectActions.addTargetDocument({ projectId, params, callback })),
+    [dispatch]
+  );
+
+  const updateTargetDocument = useCallback(
+    (id: number, params: ProjectTargetDocumentChangeParameter, callback: () => void) =>
+      dispatch(projectActions.updateTargetDocument({ id, params, callback })),
     [dispatch]
   );
 
@@ -96,15 +176,27 @@ export default function useProject() {
     getPage,
     getOne,
     clearOne,
+    add,
+    setAddModal,
     getBasic,
     setBasic,
     clearBasic,
+    updateBasic,
     getOrder,
     setOrder,
     clearOrder,
-    add,
-    updateBasic,
     updateOrder,
-    setAddModal
+    getTarget,
+    setTarget,
+    clearTarget,
+    updateTarget,
+    getTargetReviewList,
+    setTargetReviewList,
+    clearTargetReviewList,
+    addTargetReview,
+    confirmTargetReview,
+    getTargetDocumentList,
+    addTargetDocument,
+    updateTargetDocument,
   };
 }

@@ -1,41 +1,24 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
-import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasic {
-
-    @JsonIgnore
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Getter(AccessLevel.NONE)
-    @JsonIgnore
-    @OneToOne(mappedBy = "basic")
-    private Project project;
 
     @NotBlank
     @Column(nullable = false, unique = true)
@@ -52,12 +35,15 @@ public class ProjectBasic {
     @Column(nullable = false)
     private ProjectStatus status; // 상태
 
-    @ManyToOne
+
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "basic__sales_manager_id")
     private User salesManager; // 영업 당담자
 
-    @ManyToOne
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "basic__project_manager_id")
     private User projectManager; // 담당 PM
 
     // TODO: 주소 컴포넌트 개발 이후 변경
@@ -81,7 +67,6 @@ public class ProjectBasic {
 
     private String clientName; // 업체명
 
-    @Column(name = "is_client_lh")
     private Boolean isClientLH; // 업체 LH 여부
 
     private String clientManager; // 업체 담당자
@@ -91,21 +76,8 @@ public class ProjectBasic {
     private String clientEmail; // 업체 담당자 이메일
 
     @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
-
-    @NotNull
     @Column(nullable = false)
     private LocalDateTime updatedTime;
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private LocalDateTime deletedTime;
-
-    @Getter(AccessLevel.NONE)
-    @JsonIgnore
-    @Transient
-    protected ProjectBasicRepository repository;
 
     //////////////////////////////////
     //// constructor
@@ -120,7 +92,6 @@ public class ProjectBasic {
     //// builder
     //////////////////////////////////
     public static ProjectBasic of(
-        ProjectBasicRepository repository,
         String name,
         String code,
         String alias,
@@ -134,21 +105,13 @@ public class ProjectBasic {
         instance.salesManager = salesManager;
         instance.projectManager = projectManager;
         instance.status = ProjectStatus.TEMPLATE;
-        instance.createdTime = LocalDateTime.now();
-        instance.updatedTime = instance.createdTime;
-        instance.repository = repository;
-        return repository.save(instance);
+        instance.updatedTime = LocalDateTime.now();
+        return instance;
     }
 
     //////////////////////////////////
     //// finder
     //////////////////////////////////
-    public static ProjectBasic load(ProjectBasicRepository repository, Long projectId) {
-        ProjectBasic projectBasic = repository.findByProject_IdAndDeletedTimeIsNull(projectId)
-            .orElseThrow(NotFoundException::new);
-        projectBasic.repository = repository;
-        return projectBasic;
-    }
 
     //////////////////////////////////
     //// checker
@@ -197,11 +160,9 @@ public class ProjectBasic {
         this.clientManager = clientManager;
         this.clientPhone = clientPhone;
         this.clientEmail = clientEmail;
-        this.updatedTime = LocalDateTime.now();
-        this.save();
     }
 
-    public void save() {
-        repository.save(this);
+    public void change(ProjectStatus status) {
+        this.status = status;
     }
 }

@@ -1,4 +1,7 @@
-import { ProjectStatus } from 'services/project/entity';
+import {
+  ProjectStatus,
+  ProjectTargetReviewStatus
+} from 'services/project/entity';
 
 export const projectStatusName = (status: ProjectStatus): string => {
   if (status === 'ON_GOING') {
@@ -9,6 +12,20 @@ export const projectStatusName = (status: ProjectStatus): string => {
   }
   return '';
 };
+
+export const projectTargetReviewStatusName = (status: ProjectTargetReviewStatus): string => {
+  if (status === 'DRAFT') {
+    return '초안';
+  }
+  if (status === 'RECONSIDER') {
+    return '재검토';
+  }
+  if (status === 'COMPLETE') {
+    return '완료';
+  }
+  return '';
+};
+
 export type ProjectFilterView = {
   page: number;
   size: number;
@@ -43,6 +60,10 @@ export type ProjectOrderView = {
   beginDate: Date | null;
   closeDate: Date | null;
   isOnGoing: string;
+}
+
+export type ProjectTargetView = {
+  landModelCount: number | '';
 }
 
 export const initProjectFilter: ProjectFilterView = {
@@ -80,3 +101,8 @@ export const initProjectOrder: ProjectOrderView = {
   closeDate: null,
   isOnGoing: '',
 };
+
+export const initProjectTarget: ProjectTargetView = {
+  landModelCount: '',
+};
+
