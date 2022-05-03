@@ -88,7 +88,7 @@ public class Company {
         company.zipCode = zipCode;
         company.phone = phone;
         company.memo = memo;
-        company.managerList = companySetManagerList(company,managerList);
+        company.managerList = setManagerList(company, managerList);
         company.createdBy = createdBy;
         company.createdAt = LocalDateTime.now();
         return company;
@@ -110,13 +110,13 @@ public class Company {
         this.zipCode = zipCode;
         this.phone = phone;
         this.memo = memo;
-        this.managerList = companySetManagerList(this, managerList);
+        this.managerList = setManagerList(this, managerList);
         this.modifiedBy = modifiedBy;
         this.modifiedAt = LocalDateTime.now();
     }
 
-    private static List<Manager> companySetManagerList(Company company,List<Manager> managerList) {
-        if(managerList == null){
+    private static List<Manager> setManagerList(Company company, List<Manager> managerList) {
+        if(managerList == null) {
             return null;
         }
         return managerList.stream()

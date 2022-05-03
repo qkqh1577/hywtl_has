@@ -20,17 +20,23 @@ public class Manager {
     @ManyToOne
     private Company company; // 업체
 
-    @Transient
+    @Column
     private String name; // 담당자명
 
     @Column
-    private String email; // 이메일
+    private String position; // 호칭
 
     @Column
     private String mobile; // 핸드폰
 
     @Column
     private String phone; // 전화번호
+
+    @Column
+    private String email; // 이메일
+
+    @Column
+    private String state; // 상태
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -50,10 +56,24 @@ public class Manager {
     @Column
     private String deletedBy;
 
-//    public static Manager of(){
-//        Manager manager = new Manager();
-//        return manager;
-//    }
+    public static Manager of(
+            String name,
+            String position,
+            String mobile,
+            String phone,
+            String email,
+            String state
+    ){
+        Manager manager = new Manager();
+        manager.name = name;
+        manager.position = position;
+        manager.mobile = mobile;
+        manager.phone = phone;
+        manager.email = email;
+        manager.state = state;
+        return manager;
+    }
+
     public void setCompany(Company company){
         this.company = company;
     }

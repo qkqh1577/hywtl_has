@@ -1,23 +1,34 @@
 package com.howoocast.hywtl_has.company.service;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.company.domain.Company;
-import com.howoocast.hywtl_has.company.domain.Manager;
 import com.howoocast.hywtl_has.company.repository.CompanyRepository;
+import com.howoocast.hywtl_has.company.view.CompanyListView;
+import com.howoocast.hywtl_has.company.view.CompanyView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
 
-//    private final CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
+
+    @Transactional(readOnly = true)
+    public Page<CompanyListView> page(Pageable pageable) {
+        return companyRepository.findAll(pageable).map(CompanyListView::assemble);
+    }
+
+    @Transactional(readOnly = true)
+    public CompanyView get(Long id) {
+        Company company = companyRepository.findById(id).orElseThrow(NotFoundException::new);
+        return CompanyView.assemble(company);
+    }
 //
 //    @Transactional
 //    public Company create(CompanyParameter companyParameter){
