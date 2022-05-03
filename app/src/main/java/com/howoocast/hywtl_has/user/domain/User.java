@@ -155,7 +155,7 @@ public class User {
         Long id
     ) {
         User instance = repository.findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", id));
         instance.repository = repository;
         return instance;
     }
@@ -165,7 +165,7 @@ public class User {
         String username
     ) {
         User instance = repository.findByUsernameAndDeletedTimeIsNull(username)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
         instance.repository = repository;
         return instance;
     }
@@ -175,7 +175,7 @@ public class User {
         String email
     ) {
         User instance = repository.findByEmailAndDeletedTimeIsNull(email)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
     }
@@ -210,9 +210,6 @@ public class User {
     }
 
     private void checkCanLogin(String invalidatePeriod) {
-        if (Objects.nonNull(this.deletedTime)) {
-            throw new NotFoundException();
-        }
         if (Objects.nonNull(this.lockedTime)) {
             throw new UserLoginException(UserLoginExceptionType.LOCKED);
         }

@@ -9,11 +9,11 @@ export default function usePersonnel() {
   const personnelState = useSelector((state: RootState) => state.personnel);
   const dispatch = useDispatch();
 
-  const getPage =useCallback(
+  const getPage = useCallback(
     (query: PersonnelQuery) =>
       dispatch(personnelActions.getPage(query)),
     [dispatch]
-  )
+  );
 
   const getOne = useCallback(
     (id: number) =>

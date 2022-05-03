@@ -27,7 +27,7 @@ public class PersonnelRepository {
     public Optional<Personnel> findByIdAndDeletedTimeIsNull(Long id) {
         BooleanBuilder criteria = new BooleanBuilder();
         criteria.and(personnel.id.eq(id));
-        criteria.and(personnel.deletedTime.isNull());
+        criteria.and(user.deletedTime.isNull());
         return queryFactory
             .selectFrom(personnel)
             .where(criteria)

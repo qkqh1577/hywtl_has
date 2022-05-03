@@ -177,7 +177,7 @@ public class FileItem {
         outputStream.close();
     }
 
-    public void download(HttpServletResponse response) throws Exception {
+    public void download(HttpServletResponse response) {
         File file = new File(this.path);
         if (!file.exists() || !file.isFile()) {
             throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
@@ -206,7 +206,7 @@ public class FileItem {
         }
     }
 
-    public StreamingResponseBody streaming() throws Exception {
+    public StreamingResponseBody streaming() {
         File file = new File(this.path);
         if (!file.exists() || !file.isFile()) {
             throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);

@@ -100,7 +100,8 @@ public class PasswordReset {
     ) {
         PasswordReset instance = repository
             .findByEmailAndDeletedTimeIsNull(email)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(
+                () -> new NotFoundException("user-verification.password-reset", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
     }

@@ -77,7 +77,7 @@ create table personnel
 	recommender varchar(255) null,
 	relationship varchar(255) null,
 	sex varchar(255) null,
-	user_id bigint null
+	updated_time datetime(6) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table personnel_job
@@ -144,87 +144,65 @@ create table personnel_language_list
 
 create table project
 (
-	id bigint auto_increment primary key,
+	id bigint auto_increment
+		primary key,
+	basic__address varchar(255) null,
+	basic__alias varchar(255) null,
+	basic__base_count int null,
+	basic__building_count int null,
+	basic__client_email varchar(255) null,
+	basic__client_manager varchar(255) null,
+	basic__client_name varchar(255) null,
+	basic__client_phone varchar(255) null,
+	basic__code varchar(255) null,
+	basic__floor_count int null,
+	basic__household_count int null,
+	basic__is_client_lh bit null,
+	basic__lot_area double null,
+	basic__name varchar(255) null,
+	basic__project_manager_id bigint null,
+	basic__purpose1 varchar(255) null,
+	basic__purpose2 varchar(255) null,
+	basic__sales_manager_id bigint null,
+	basic__status varchar(255) null,
+	basic__total_area double null,
+	basic__updated_time datetime(6) null,
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
-	updated_time datetime(6) not null,
-  basic_id bigint not null,
-	order_id bigint null,
-	target_id bigint null
-);
+	order__amount bigint null,
+	order__begin_date date null,
+	order__close_date date null,
+	order__is_on_going bit null,
+	order__received_date date null,
+	order__updated_time datetime(6) null,
+	target__land_model_count int null,
+	target__updated_time datetime(6) null,
+	updated_time datetime(6) not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_basic
+create table project_target_document
 (
 	id bigint auto_increment primary key,
-	address varchar(255) null,
-	alias varchar(255) null,
-	base_count int null,
-	building_count int null,
-	client_email varchar(255) null,
-	client_manager varchar(255) null,
-	client_name varchar(255) null,
-	client_phone varchar(255) null,
-	code varchar(255) not null,
 	created_time datetime(6) not null,
 	deleted_time datetime(6) null,
-	floor_count int null,
-	household_count int null,
-	is_client_lh bit null,
-	lot_area double null,
-	name varchar(255) not null,
-	purpose1 varchar(255) null,
-	purpose2 varchar(255) null,
+	file_item_id bigint not null,
+	memo varchar(255) null,
+	project_id bigint not null,
+	updated_time datetime(6) null,
+	writer_id bigint not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_target_review
+(
+	id bigint auto_increment primary key,
+	confirmed bit null,
+	created_time datetime(6) not null,
+	deleted_time datetime(6) null,
+	memo varchar(255) null,
+	project_id bigint null,
 	status varchar(255) not null,
-	total_area double null,
-	updated_time datetime(6) not null,
-	project_manager_id bigint not null,
-	sales_manager_id bigint not null,
-	constraint UK_project_project_basic unique (code)
+	title varchar(255) not null,
+	updated_time datetime(6) null,
+	writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_order
-(
-	id bigint auto_increment primary key,
-	amount bigint null,
-	begin_date date null,
-	close_date date null,
-	created_time datetime(6) not null,
-	deleted_time datetime(6) null,
-	is_on_going bit null,
-	received_date date null,
-	updated_time datetime(6) not null
-) engine = InnoDB DEFAULT CHARSET = utf8mb4;
-
-create table project_comment
-(
-    id bigint auto_increment primary key,
-    created_time datetime(6) not null,
-    deleted_time datetime(6) null,
-    description  varchar(255) not null,
-    updated_time datetime(6) not null,
-    project_id bigint null,
-    writer_id bigint null
-) engine = InnoDB DEFAULT CHARSET = utf8mb4;
-
-create table project_target
-(
-	id bigint auto_increment primary key,
-	created_time datetime(6) not null,
-	deleted_time datetime(6) null,
-	land_model_count int null,
-	updated_time datetime(6) not null
-);
-
-create table project_target_review_list
-(
-	project_target_id bigint not null,
-	review_list_id bigint not null,
-	constraint UK_project_target_project_target_review_list unique (review_list_id)
-);
-
-create table project_target_document_list
-(
-	project_target_id bigint not null,
-	document_list_id bigint not null,
-	constraint UK_project_target_project_target_document_list unique (document_list_id)
-);

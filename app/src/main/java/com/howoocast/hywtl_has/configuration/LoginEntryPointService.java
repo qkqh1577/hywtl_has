@@ -24,6 +24,6 @@ public class LoginEntryPointService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getUserRole().name())
                 .build()
-        ).orElseThrow(NotFoundException::new);
+        ).orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
     }
 }

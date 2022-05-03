@@ -153,7 +153,9 @@ public class Department {
         DepartmentRepository repository,
         Long id
     ) {
-        Department instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        Department instance = repository
+            .findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(() -> new NotFoundException("department", id));
         instance.repository = repository;
         return instance;
     }

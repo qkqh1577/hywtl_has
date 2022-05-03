@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.personnel.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.common.util.ListConvertor;
 import com.howoocast.hywtl_has.department.domain.Department;
@@ -10,6 +9,7 @@ import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.personnel.view.PersonnelListView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
+import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.stream.Collectors;
@@ -49,12 +49,7 @@ public class PersonnelService {
 
     @Transactional
     public void update(Long id, PersonnelParameter params) {
-
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-
-        Personnel personnel = Personnel.find(personnelRepository, id);
+        Personnel personnel = Personnel.find(personnelRepository, User.load(userRepository, id));
         personnel.change(
             params.getBasic().imageItem(fileItemService.build(params.getBasic().getImage())).build(),
             params.getCompany().build(),

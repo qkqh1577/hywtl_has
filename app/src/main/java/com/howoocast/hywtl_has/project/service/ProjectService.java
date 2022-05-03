@@ -1,9 +1,7 @@
 package com.howoocast.hywtl_has.project.service;
 
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.domain.ProjectBasic;
 import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
-import com.howoocast.hywtl_has.project.repository.ProjectBasicRepository;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project.view.ProjectListView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
@@ -24,8 +22,6 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    private final ProjectBasicRepository projectBasicRepository;
-
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -44,17 +40,13 @@ public class ProjectService {
 
     @Transactional
     public ProjectView add(ProjectBasicParameter params) {
-        ProjectBasic basic = ProjectBasic.of(
-            projectBasicRepository,
+        Project project = Project.of(
+            projectRepository,
             params.getName(),
             params.getCode(),
             params.getAlias(),
             User.load(userRepository, params.getSalesManagerId()),
             User.load(userRepository, params.getProjectManagerId())
-        );
-        Project project = Project.of(
-            projectRepository,
-            basic
         );
         return ProjectView.assemble(project);
     }

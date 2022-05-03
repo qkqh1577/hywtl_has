@@ -71,7 +71,7 @@ public class UserService {
     public UserDetailView get(String username) {
         return UserDetailView.assemble(
             userRepository.findByUsernameAndDeletedTimeIsNull(username)
-                .orElseThrow(NotFoundException::new)
+                .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)))
         );
     }
 

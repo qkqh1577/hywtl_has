@@ -96,7 +96,9 @@ public class ProjectComment {
         ProjectCommentRepository repository,
         Long id
     ) {
-        ProjectComment instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
+        ProjectComment instance = repository
+            .findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(() -> new NotFoundException("project-comment", id));
         instance.repository = repository;
         return instance;
     }

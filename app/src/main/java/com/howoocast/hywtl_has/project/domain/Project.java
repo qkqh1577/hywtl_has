@@ -1,22 +1,30 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
 
     @Id
@@ -24,16 +32,46 @@ public class Project {
     private Long id;
 
     @NotNull
-    @OneToOne
-    @JoinColumn
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "code", column = @Column(name = "basic__code")),
+        @AttributeOverride(name = "name", column = @Column(name = "basic__name")),
+        @AttributeOverride(name = "alias", column = @Column(name = "basic__alias")),
+        @AttributeOverride(name = "status", column = @Column(name = "basic__status")),
+        @AttributeOverride(name = "address", column = @Column(name = "basic__address")),
+        @AttributeOverride(name = "purpose1", column = @Column(name = "basic__purpose1")),
+        @AttributeOverride(name = "purpose2", column = @Column(name = "basic__purpose2")),
+        @AttributeOverride(name = "lotArea", column = @Column(name = "basic__lot_area")),
+        @AttributeOverride(name = "totalArea", column = @Column(name = "basic__total_area")),
+        @AttributeOverride(name = "buildingCount", column = @Column(name = "basic__building_count")),
+        @AttributeOverride(name = "householdCount", column = @Column(name = "basic__household_count")),
+        @AttributeOverride(name = "floorCount", column = @Column(name = "basic__floor_count")),
+        @AttributeOverride(name = "baseCount", column = @Column(name = "basic__base_count")),
+        @AttributeOverride(name = "clientName", column = @Column(name = "basic__client_name")),
+        @AttributeOverride(name = "isClientLH", column = @Column(name = "basic__is_client_lh")),
+        @AttributeOverride(name = "clientManager", column = @Column(name = "basic__client_manager")),
+        @AttributeOverride(name = "clientPhone", column = @Column(name = "basic__client_phone")),
+        @AttributeOverride(name = "clientEmail", column = @Column(name = "basic__client_email")),
+        @AttributeOverride(name = "updatedTime", column = @Column(name = "basic__updated_time"))
+    })
     private ProjectBasic basic;
 
-    @OneToOne
-    @JoinColumn
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "order__amount")),
+        @AttributeOverride(name = "receivedDate", column = @Column(name = "order__received_date")),
+        @AttributeOverride(name = "beginDate", column = @Column(name = "order__begin_date")),
+        @AttributeOverride(name = "closeDate", column = @Column(name = "order__close_date")),
+        @AttributeOverride(name = "isOnGoing", column = @Column(name = "order__is_on_going")),
+        @AttributeOverride(name = "updatedTime", column = @Column(name = "order__updated_time"))
+    })
     private ProjectOrder order;
 
-    @OneToOne
-    @JoinColumn
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "landModelCount", column = @Column(name = "target__land_model_count")),
+        @AttributeOverride(name = "updatedTime", column = @Column(name = "target__updated_time"))
+    })
     private ProjectTarget target;
 
     @NotNull
@@ -55,19 +93,6 @@ public class Project {
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    protected Project() {
-        this.createdTime = LocalDateTime.now();
-        this.updatedTime = this.createdTime;
-    }
-
-    protected Project(Long id) {
-        this.id = id;
-    }
-
-    protected Project(ProjectBasic basic) {
-        this();
-        this.basic = basic;
-    }
 
     //////////////////////////////////
     //// getter - setter
@@ -78,13 +103,25 @@ public class Project {
     //////////////////////////////////
     public static Project of(
         ProjectRepository repository,
-        ProjectBasic basic
+        String name,
+        String code,
+        String alias,
+        User salesManager,
+        User projectManager
     ) {
-        Project instance = new Project(
-            basic
+        Project instance = new Project();
+        instance.basic = new ProjectBasic();
+        instance.basic.change(
+            name,
+            code,
+            alias,
+            salesManager,
+            projectManager
         );
+        instance.createdTime = LocalDateTime.now();
         instance.repository = repository;
-        return repository.save(instance);
+        instance.save();
+        return instance;
     }
 
     //////////////////////////////////
@@ -94,8 +131,9 @@ public class Project {
         ProjectRepository repository,
         Long id
     ) {
-        Project instance = repository.findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(NotFoundException::new);
+        Project instance = repository
+            .findByIdAndDeletedTimeIsNull(id)
+            .orElseThrow(() -> new NotFoundException("project", id));
         instance.repository = repository;
         return instance;
     }
@@ -107,18 +145,85 @@ public class Project {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-    public void change(ProjectBasic basic) {
-        this.basic = basic;
+
+    public void changeStatus(ProjectStatus status) {
+        this.basic.change(status);
         this.save();
     }
 
-    public void change(ProjectOrder order) {
-        this.order = order;
+    public void changeBasic(
+        String name,
+        String code,
+        String alias,
+        User salesManager,
+        User projectManager,
+        String address,
+        String purpose1,
+        String purpose2,
+        Double lotArea,
+        Double totalArea,
+        Integer buildingCount,
+        Integer householdCount,
+        Integer floorCount,
+        Integer baseCount,
+        String clientName,
+        Boolean isClientLH,
+        String clientManager,
+        String clientPhone,
+        String clientEmail) {
+        this.basic.change(
+            name,
+            code,
+            alias,
+            salesManager,
+            projectManager,
+            address,
+            purpose1,
+            purpose2,
+            lotArea,
+            totalArea,
+            buildingCount,
+            householdCount,
+            floorCount,
+            baseCount,
+            clientName,
+            isClientLH,
+            clientManager,
+            clientPhone,
+            clientEmail
+        );
         this.save();
     }
 
-    public void change(ProjectTarget target) {
-        this.target = target;
+    public void changeOrder(
+        Long amount,
+        LocalDate receivedDate,
+        LocalDate beginDate,
+        LocalDate closeDate,
+        Boolean isOnGoing
+    ) {
+        if (Objects.isNull(this.order)) {
+            this.order = new ProjectOrder();
+        }
+        this.order.change(
+            amount,
+            receivedDate,
+            beginDate,
+            closeDate,
+            isOnGoing
+        );
+        this.save();
+    }
+
+    public void changeTarget(
+        Integer landModelCount
+    ) {
+        if (Objects.isNull(this.target)) {
+            this.target = new ProjectTarget();
+        }
+        this.target.change(
+            landModelCount
+        );
         this.save();
     }
 
@@ -127,7 +232,8 @@ public class Project {
         this.save();
     }
 
-    public void save() {
+    private void save() {
+        this.updatedTime = LocalDateTime.now();
         repository.save(this);
     }
 }

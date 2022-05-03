@@ -119,7 +119,8 @@ public class UserInvitation {
     ) {
         UserInvitation instance = repository
             .findByEmailAndDeletedTimeIsNull(email)
-            .orElseThrow(NotFoundException::new);
+            .orElseThrow(
+                () -> new NotFoundException("user-verification.user-invitation", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
     }

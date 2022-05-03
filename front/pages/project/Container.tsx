@@ -20,7 +20,8 @@ import {
 } from '@mui/icons-material';
 import useProject from 'services/project/hook';
 import { ProjectAddModal } from 'pages/project';
-import ProjectInfoDetail from 'pages/project/info';
+import ProjectInfoContainer from 'pages/project/info';
+import ProjectTargetContainer from 'pages/project/target';
 
 const ProjectContainer = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -196,8 +197,8 @@ const ProjectContainer = () => {
         </Box>
       </Paper>
       <Routes>
-        <Route path="basic" element={<ProjectInfoDetail />} />
-        <Route path="building" element={<h2>building</h2>} />
+        <Route path="basic" element={<ProjectInfoContainer />} />
+        <Route path="building" element={<ProjectTargetContainer />} />
         <Route path="bid" element={<h2>bid</h2>} />
         <Route path="contract" element={<h2>contract</h2>} />
         <Route path="schedule" element={<h2>schedule</h2>} />
