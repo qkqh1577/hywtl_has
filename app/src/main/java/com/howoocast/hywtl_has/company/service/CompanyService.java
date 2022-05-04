@@ -41,8 +41,15 @@ public class CompanyService {
 
         //수정- entity.---
         List<Manager> managerList = params.getManagerList().stream()
-                .map(manager -> Manager.of(manager.getName(), manager.getPosition(), manager.getMobile(), manager.getPhone(), manager.getEmail(), manager.getState()))
+                .map(manager -> Manager.of(
+                        manager.getName(),
+                        manager.getPosition(),
+                        manager.getMobile(),
+                        manager.getPhone(),
+                        manager.getEmail(),
+                        manager.getState()))
                 .collect(Collectors.toList());
+
         Company company = Company.of(
                 params.getName(),
                 params.getRepresentativeName(),
