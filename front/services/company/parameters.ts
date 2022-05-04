@@ -1,5 +1,3 @@
-import {ManagerDetail} from "./entity";
-
 export type CompanyQuery = {
   page: number;
   size: number;

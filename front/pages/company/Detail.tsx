@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
-import {DataField} from "components";
 import {CompanyView, initCompanyView} from "services/company/view";
 import {useNavigate, useParams} from "react-router-dom";
 import useCompany from "services/company/hook";
@@ -19,8 +18,6 @@ const Page = () => {
   }
 
   const { companyState: { detail }, getOne } = useCompany();
-
-  const [view, setView] = useState<CompanyView>(initCompanyView);
 
   useEffect(() => {
     getOne(id);
