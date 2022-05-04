@@ -29,12 +29,13 @@ public class Company {
     @Column
     private String representativeName; // 대표명
 
-    @Column
+    @Column(nullable = false)
     private String companyNumber; // 사업자번호
 
     @Column
     private String address; // 주소
 
+    @Column
     private String zipCode; // 우편번호
 
     @Column
@@ -46,7 +47,7 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.PERSIST)
     private List<Manager> managerList = new ArrayList<>();
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Column

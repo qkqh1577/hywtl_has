@@ -1,14 +1,4 @@
-export type CompanyBasic = {
-  name: string;
-  representativeName?: string;
-  companyNumber?: string;
-  address?: string;
-  zipCode?: string;
-  phone?: string;
-  memo?: string;
-}
-
-export type ListCompany = {
+export type CompanyList = {
   id: number;
   name: string;
   representativeName?: string;
@@ -19,9 +9,47 @@ export type ListCompany = {
   memo?: string;
 }
 
-type Company = {
-  id: number;
-  basic: CompanyBasic;
+export type ManagerDetail = {
+  name?: string;
+  position?: string;
+  mobile?: string;
+  phone?: string;
+  email?: string;
+  meta?: string[];
+  state?: boolean;
+  projectCount?: number;
 }
 
-export default Company;
+type CompanyDetail = {
+  name: string;
+  representativeName?: string;
+  companyNumber: string;
+  address?: string;
+  zipCode?: string;
+  phone?: string;
+  memo?: string;
+  managerList?: ManagerDetail[];
+}
+
+type Manager = {
+  name?: string;
+  position?: string;
+  mobile?: string;
+  phone?: string;
+  email?: string;
+  meta?: string[];
+  state?: boolean;
+}
+
+export type Company = {
+  name: string;
+  representativeName?: string;
+  phone?: string;
+  companyNumber: string;
+  address?: string;
+  zipCode?: string;
+  memo?: string;
+  ManagerList: Manager[];
+}
+
+export default CompanyDetail;

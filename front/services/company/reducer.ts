@@ -1,11 +1,11 @@
-import Company, {ListCompany} from "./entity";
+import CompanyDetail, {CompanyList} from "./entity";
 import Page, { initial } from 'components/Page';
 import {createReducer} from "typesafe-actions";
 import {CompanyActionType} from "./actions";
 
 export type CompanyState = {
-  page: Page<ListCompany>
-  detail?: Company;
+  page: Page<CompanyList>
+  detail?: CompanyDetail;
 };
 
 export const initState: CompanyState = {

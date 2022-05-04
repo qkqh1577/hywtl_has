@@ -1,21 +1,47 @@
-export type CompanyBasicView = {
-  name: string;
-  representativeName?: string;
-  companyNumber?: string;
-  address?: string;
-  zipCode?: string;
-  phone?: string;
-  memo?: string;
+export type ManagerView = {
+  name?: string,
+  position?: string,
+  mobile?: string,
+  phone?: string,
+  email?: string,
+  state?: boolean
 }
 
-export const initCompanyBasicView = {
+export const initManagerView: ManagerView[] = [{
   name: '',
-}
+  position: '',
+  mobile: '',
+  phone: '',
+  email: '',
+  state: true,
+}]
+
 
 export type CompanyView = {
-  basic: CompanyBasicView,
+  name: string,
+  representativeName?: string,
+  companyNumber?: string,
+  address?: string,
+  zipCode?: string,
+  phone?: string,
+  memo?: string,
+  managerList?: ManagerView[]
 };
 
-export const initView: CompanyView = {
-  basic: initCompanyBasicView,
+export const initCompanyView: CompanyView = {
+  name: '',
+  representativeName: '',
+  companyNumber: '',
+  address: '',
+  zipCode: '',
+  phone: '',
+  memo: '',
+  managerList: [{
+    name: '',
+    position: '',
+    mobile: '',
+    phone: '',
+    email: '',
+    state: true
+  }]
 }

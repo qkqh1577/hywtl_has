@@ -36,7 +36,7 @@ public class Manager {
     private String email; // 이메일
 
     @Column
-    private String state; // 상태
+    private Boolean state; // 상태
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -62,7 +62,7 @@ public class Manager {
             String mobile,
             String phone,
             String email,
-            String state
+            Boolean state
     ){
         Manager manager = new Manager();
         manager.name = name;
@@ -71,6 +71,7 @@ public class Manager {
         manager.phone = phone;
         manager.email = email;
         manager.state = state;
+        manager.createdAt = LocalDateTime.now();
         return manager;
     }
 

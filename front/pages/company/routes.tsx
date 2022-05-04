@@ -1,7 +1,7 @@
 import React from 'react';
 import {AppRoutes} from "services/common/routes";
 import CompanyPage from './Page';
-import CompanyAddForm from "./AddForm";
+import CompanyForm from "./Form";
 import CompanyDetail from './Detail';
 
 const routes: AppRoutes[] = [
@@ -11,7 +11,11 @@ const routes: AppRoutes[] = [
   },
   {
     path: '/company/add',
-    element: <CompanyAddForm />
+    element: <CompanyForm />
+  },
+  {
+    path: '/company/modify/:id',
+    element: <CompanyForm />
   },
   {
     path: '/company/:id',
