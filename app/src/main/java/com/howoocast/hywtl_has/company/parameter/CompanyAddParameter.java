@@ -6,8 +6,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 public class CompanyAddParameter {
 
     @NotBlank(message = "업체명은 필수 입력 항목입니다.")

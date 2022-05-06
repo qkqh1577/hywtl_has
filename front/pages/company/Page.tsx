@@ -5,8 +5,20 @@ import {
   Grid,
   Paper,
   Link,
-  Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  FormControl,
+  FormLabel,
+  Select,
+  MenuItem,
+  Input
 } from "@mui/material";
+import { Formik, FormikHelpers, Form } from 'formik';
 import {useNavigate} from "react-router-dom";
 import useCompany from "services/company/hook";
 import {CompanyQuery} from "services/company/parameters";
@@ -33,6 +45,9 @@ const columns: TableCellProperty[] = [
 const initFilter: CompanyQuery = {
   page: 0,
   size: 10,
+  sort: 'id,DESC',
+  keywordType: 'by_name',
+  keyword: '',
 };
 
 const CompanyPage = () => {
@@ -45,6 +60,31 @@ const CompanyPage = () => {
     toAdd: () => {
       navigate('/company/add');
     },
+    page: (e: any, page: number) => {
+      setFilter({
+        ...filter,
+        page,
+      });
+    },
+    size: (e: any) => {
+      setFilter({
+        ...filter,
+        page: 0,
+        size: e.target.value
+      });
+    },
+    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      setFilter({
+        ...filter,
+        page: 0,
+        keywordType: values.keywordType ?? 'by_name',
+        keyword: values.keyword ?? undefined,
+      });
+      setSubmitting(false);
+    },
+    clear: () => {
+      setFilter(initFilter);
+    },
   };
 
   useEffect(() => {
@@ -55,16 +95,97 @@ const CompanyPage = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
+        justifyContent: 'space-between',
         width: '100%',
+        height: '50px',
         mb: '40px',
       }}>
+        <h2>업체 목록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
         width: '100%',
-        maxHeight: 740,
-        mb: '20px',
+        mb: '40px',
       }}>
+        <Formik
+          initialValues={filter}
+          onSubmit={handler.search}
+          enableReinitialize
+        >
+          {({ values, isSubmitting, handleChange, handleSubmit, resetForm }) => (
+            <Grid container spacing={1}>
+              <Grid item sm={10}>
+                <Form>
+                  <Grid container spacing={1}>
+                    <Grid container spacing={1} item sm={12}>
+                      <Grid item sm={4}>
+                        <FormControl variant="standard" fullWidth>
+                          <FormLabel component="legend">검색 대상</FormLabel>
+                          <Select
+                            value={values.keywordType}
+                            onChange={handleChange}
+                            name="keywordType"
+                          >
+                            <MenuItem value="by_name">업체명</MenuItem>
+                            <MenuItem value="by_representativeName">대표명</MenuItem>
+                            <MenuItem value="by_companyNumber">사업자번호</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item sm={8}>
+                        <FormControl variant="standard" fullWidth>
+                          <FormLabel component="legend">검색어</FormLabel>
+                          <Input
+                            type="text"
+                            name="keyword"
+                            value={values.keyword}
+                            onChange={handleChange}
+                            placeholder="검색어를 입력하세요"
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Form>
+              </Grid>
+              <Grid item sm={2} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end'
+              }}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  style={{width: '80px'}}
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  검색
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  style={{width: '80px', marginTop: '5px'}}
+                  onClick={() => {
+                    handler.clear();
+                    resetForm();
+                  }}
+                >
+                  초기화
+                </Button>
+              </Grid>
+            </Grid>
+          )}
+        </Formik>
+      </Box>
+        <Box sx={{
+          display: 'flex',
+          width: '100%',
+          maxHeight: 740,
+          mb: '20px',
+        }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -116,6 +237,15 @@ const CompanyPage = () => {
             display: 'flex',
             justifyContent: 'flex-start',
           }}>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={page.content.length}
+              rowsPerPage={filter.size}
+              page={filter.page}
+              onPageChange={handler.page}
+              onRowsPerPageChange={handler.size}
+            />
           </Grid>
           <Grid item sm={4}>
             <Box sx={{

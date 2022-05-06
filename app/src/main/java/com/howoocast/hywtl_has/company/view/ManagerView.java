@@ -10,7 +10,7 @@ public class ManagerView {
     String mobile; // 핸드폰
     String phone; // 전화번호
     String email; // 이메일
-    Boolean state; // 상태
+    String state; // 상태
 
     public static ManagerView assemble(Manager manager) {
         ManagerView target = new ManagerView();

@@ -1,7 +1,5 @@
 package com.howoocast.hywtl_has.company.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.company.repository.CompanyRepository;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,11 +63,6 @@ public class Company {
     @Column
     private String deletedBy;
 
-    @Getter(AccessLevel.NONE)
-    @JsonIgnore
-    @Transient
-    private CompanyRepository repository;
-
     public static Company of(
             String name,
             String representativeName,
@@ -129,4 +122,5 @@ public class Company {
         this.deletedBy = deletedBy;
         this.deletedAt = LocalDateTime.now();
     }
+
 }

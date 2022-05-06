@@ -30,8 +30,20 @@ function* add(action: ActionType<typeof companyActions.add>) {
   }
 }
 
+function* change(action: ActionType<typeof companyActions.change>) {
+  const { params, callback } = action.payload;
+  try {
+    const data: Company = yield companyApi.change(params);
+    yield put(companyActions.setOne(data));
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
 export default function* saga() {
   yield takeLatest(CompanyActionType.getPage, getPage);
   yield takeLatest(CompanyActionType.getOne, getOne);
   yield takeLatest(CompanyActionType.add, add);
+  yield takeLatest(CompanyActionType.change, change);
 }

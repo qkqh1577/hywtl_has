@@ -1,6 +1,6 @@
 import CompanyDetail, {Company, CompanyList} from "./entity";
 import apiClient from "services/common/api";
-import {CompanyAddParameter, CompanyQuery} from "./parameters";
+import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery} from "./parameters";
 import Page from "components/Page";
 
 export class CompanyApi {
@@ -16,6 +16,12 @@ export class CompanyApi {
 
   async add(params: CompanyAddParameter): Promise<Company> {
     const { data } = await apiClient.post('/companies', params);
+    return data;
+  }
+
+  async change(params: CompanyChangeParameter): Promise<Company> {
+    const { id, ...rest } = params;
+    const { data } = await apiClient.patch(`/companies/${id}`, rest);
     return data;
   }
 }

@@ -36,7 +36,7 @@ public class Manager {
     private String email; // 이메일
 
     @Column
-    private Boolean state; // 상태
+    private String state; // 상태
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -62,8 +62,9 @@ public class Manager {
             String mobile,
             String phone,
             String email,
-            Boolean state
-    ){
+            String state,
+            String createdBy
+    ) {
         Manager manager = new Manager();
         manager.name = name;
         manager.position = position;
@@ -71,8 +72,28 @@ public class Manager {
         manager.phone = phone;
         manager.email = email;
         manager.state = state;
+        manager.createdBy = createdBy;
         manager.createdAt = LocalDateTime.now();
         return manager;
+    }
+
+    public void change(
+            String name,
+            String position,
+            String mobile,
+            String phone,
+            String email,
+            String state,
+            String modifiedBy
+    ) {
+        this.name = name;
+        this.position = position;
+        this.mobile = mobile;
+        this.phone = phone;
+        this.email = email;
+        this.state = state;
+        this.modifiedBy = modifiedBy;
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public void setCompany(Company company){
@@ -80,4 +101,8 @@ public class Manager {
     }
 
 
+    public void delete(String deletedBy) {
+        this.deletedAt = LocalDateTime.now();
+        this.deletedBy = deletedBy;
+    }
 }

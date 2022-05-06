@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { RootState } from 'services/common/reducer';
 import {useCallback} from "react";
 import {companyActions} from "./actions";
-import {CompanyAddParameter, CompanyQuery} from "./parameters";
+import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery} from "./parameters";
 import {Company} from "./entity";
 
 export default function useCompany() {
@@ -24,7 +24,13 @@ export default function useCompany() {
 
   const add = useCallback(
     (params: CompanyAddParameter, callback: (data?: Company) => void) =>
-      dispatch(companyActions.add({params, callback})),
+      dispatch(companyActions.add({ params, callback })),
+    [dispatch]
+  )
+
+  const change = useCallback(
+    (params: CompanyChangeParameter, callback: (data?: Company) => void) =>
+      dispatch(companyActions.change({ params, callback })),
     [dispatch]
   )
 
@@ -32,6 +38,7 @@ export default function useCompany() {
     companyState,
     getPage,
     getOne,
-    add
+    add,
+    change
   };
 }

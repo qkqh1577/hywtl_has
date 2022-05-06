@@ -3,18 +3,22 @@ package com.howoocast.hywtl_has.company.service;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.company.domain.Company;
 import com.howoocast.hywtl_has.company.domain.Manager;
-import com.howoocast.hywtl_has.company.parameter.CompanyAddParameter;
+import com.howoocast.hywtl_has.company.parameter.CompanyParameter;
 import com.howoocast.hywtl_has.company.repository.CompanyRepository;
+import com.howoocast.hywtl_has.company.repository.ManagerRepository;
 import com.howoocast.hywtl_has.company.view.CompanyListView;
 import com.howoocast.hywtl_has.company.view.CompanyView;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,10 +27,14 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final ManagerRepository managerRepository;
 
     @Transactional(readOnly = true)
-    public Page<CompanyListView> page(Pageable pageable) {
-        return companyRepository.findAll(pageable).map(CompanyListView::assemble);
+    public Page<CompanyListView> page(@Nullable Predicate predicate, Pageable pageable) {
+        return Optional.ofNullable(predicate)
+                .map(p -> companyRepository.findAll(p, pageable))
+                .orElse(companyRepository.findAll(pageable))
+                .map(CompanyListView::assemble);
     }
 
     @Transactional(readOnly = true)
@@ -36,10 +44,8 @@ public class CompanyService {
     }
 
     @Transactional
-    public CompanyView add(CompanyAddParameter params){
-        //조회- repository.---
+    public CompanyView add(CompanyParameter params) {
 
-        //수정- entity.---
         List<Manager> managerList = params.getManagerList().stream()
                 .map(manager -> Manager.of(
                         manager.getName(),
@@ -47,7 +53,8 @@ public class CompanyService {
                         manager.getMobile(),
                         manager.getPhone(),
                         manager.getEmail(),
-                        manager.getState()))
+                        manager.getState(),
+                        "OOO"))
                 .collect(Collectors.toList());
 
         Company company = Company.of(
@@ -59,23 +66,55 @@ public class CompanyService {
                 params.getPhone(),
                 params.getMemo(),
                 managerList,
-                "123"
-            );
+                "OOO"
+        );
 
-        //저장- repository.---
         return CompanyView.assemble(companyRepository.save(company));
     }
 
-    /*
     @Transactional
-    public Company edit(CompanyParameter companyParameter){
-        //조회- repository.---
-        Company company = companyRepository.findById(companyParameter.getId()).orElseThrow(CompanyNotFoundException::new);
-        //수정- entity.---
-        company.edit(companyParameter.getName()....................);
-        //저장- repository.---
-        companyRepository.save(company);
+    public CompanyView change(Long id, CompanyParameter params) {
+        Company company = companyRepository.findById(id).orElseThrow(NotFoundException::new);
 
-        return company;
-    }*/
+
+
+//        company.change(
+//                params.getName(),
+//                params.getRepresentativeName(),
+//                params.getCompanyNumber(),
+//                params.getAddress(),
+//                params.getZipCode(),
+//                params.getPhone(),
+//                params.getMemo(),
+//                company.getManagerList(),
+//                "OOO"
+//        );
+
+
+//        List<Manager> managerList = params.getManagerList().stream()
+//                .map(manager -> Manager.of(
+//                        manager.getName(),
+//                        manager.getPosition(),
+//                        manager.getMobile(),
+//                        manager.getPhone(),
+//                        manager.getEmail(),
+//                        manager.getState(),
+//                        "OOO"
+//                ))
+//                .collect(Collectors.toList());
+
+//        company.change(
+//            params.getName(),
+//            params.getRepresentativeName(),
+//            params.getCompanyNumber(),
+//            params.getAddress(),
+//            params.getZipCode(),
+//            params.getPhone(),
+//            params.getMemo(),
+//            managerList,
+//            "OOO"
+//        );
+        //저장- repository.---
+        return CompanyView.assemble(companyRepository.save(company));
+    }
 }

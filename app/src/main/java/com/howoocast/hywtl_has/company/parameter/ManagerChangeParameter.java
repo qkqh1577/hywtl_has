@@ -3,10 +3,10 @@ package com.howoocast.hywtl_has.company.parameter;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class ManagerAddParameter {
-
+@Setter
+public class ManagerChangeParameter {
+    private Long id;
     private String name; // 담당자명
 
     private String position; // 호칭

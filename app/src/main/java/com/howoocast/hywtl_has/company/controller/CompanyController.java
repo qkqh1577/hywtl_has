@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.company.controller;
 
-import com.howoocast.hywtl_has.company.parameter.CompanyAddParameter;
+import com.howoocast.hywtl_has.company.parameter.CompanyParameter;
+import com.howoocast.hywtl_has.company.parameter.CompanyPredicateBuilder;
 import com.howoocast.hywtl_has.company.service.CompanyService;
 import com.howoocast.hywtl_has.company.view.CompanyListView;
 import com.howoocast.hywtl_has.company.view.CompanyView;
@@ -22,8 +23,18 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @GetMapping("/companies")
-    public Page<CompanyListView> page(Pageable pageable) {
-        return companyService.page(pageable);
+    public Page<CompanyListView> page(
+        @RequestParam(required = false) String keywordType,
+        @RequestParam(required = false) String keyword,
+        Pageable pageable
+    ) {
+
+        return companyService.page(
+            new CompanyPredicateBuilder()
+                .keyword(keywordType, keyword)
+                .build(),
+                pageable
+        );
     }
 
     @GetMapping("/companies/{id}")
@@ -32,7 +43,15 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
-    public CompanyView add(@Valid @RequestBody CompanyAddParameter params) {
+    public CompanyView add(@Valid @RequestBody CompanyParameter params) {
         return companyService.add(params);
+    }
+
+    @PatchMapping("/companies/{id}")
+    public CompanyView change(
+            @PathVariable Long id,
+            @Valid @RequestBody CompanyParameter params
+    ) {
+        return companyService.change(id, params);
     }
 }

@@ -29,7 +29,6 @@ const Page = () => {
       },
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-        console.log(values)
       const params: CompanyAddParameter = {
         name: values.name,
         representativeName: values.representativeName,

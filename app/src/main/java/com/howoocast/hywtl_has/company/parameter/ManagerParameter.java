@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class ManagerParameter {
 
+    private Long id;
+
     private String name;
 
     private String position;
@@ -17,5 +19,5 @@ public class ManagerParameter {
 
     private String email;
 
-    private String state; // 상태
+    private String state; //상태:  재직, 퇴사
 }
