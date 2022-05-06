@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  InputAdornment,
-  MenuItem,
+  InputAdornment, MenuItem,
   TextField
 } from '@mui/material';
 import { ErrorMessage, FormikValues, FormikErrors } from 'formik';
@@ -23,7 +22,7 @@ export type DataFieldProps = {
   placeholder?: string;
   value: DataFieldValue | '';
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  errors: FormikErrors<FormikValues>,
+  errors: FormikErrors<FormikValues>;
   required?: boolean;
   disabled?: boolean;
   options?: Option[] | DataFieldValue[];
@@ -61,8 +60,8 @@ const DataField = ({
   errors,
   required,
   disabled,
-  options,
   helperText,
+  options,
   sx,
   onFocus,
   onKeyDown,
@@ -121,9 +120,9 @@ const DataField = ({
   return (
     <TextField
       type={type === 'amount' ? 'string' : type}
+      select={type === 'select' || undefined}
       variant={variant}
       size={size}
-      select={type === 'select' ? true : undefined}
       id={`params-${name}`}
       name={name}
       value={viewValue}
@@ -147,8 +146,11 @@ const DataField = ({
       } : undefined}
       fullWidth
     >
-      {type === 'select' && options && options.map((option) => (
-        <MenuItem key={optionKey(option)} value={optionKey(option)}>{optionText(option)}</MenuItem>
+      {type === 'select' && options && options
+      .map((item) => (
+        <MenuItem key={optionKey(item)} value={optionKey(item)}>
+          {optionText(item)}
+        </MenuItem>
       ))}
     </TextField>
   );

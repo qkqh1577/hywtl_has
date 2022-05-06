@@ -2,31 +2,27 @@ import React from 'react';
 import {
   Box,
   Button,
-  FormControl,
   Grid,
-  Input,
-  InputLabel, MenuItem,
-  Paper, Select
+  Paper
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
+import { DataField, DepartmentSelector } from 'components';
 import { UserInvitationInviteParameter } from 'services/user/invitation/parameter';
 import { userRoleName, userRoleList } from 'services/user/data';
 import { UserRole } from 'services/user/entity';
 import useUserInvitation from 'services/user/invitation/hook';
-import DepartmentSelector from 'components/DepartmentSelector';
-import { ListDepartment } from 'services/department/entity';
 
 type Parameter = {
   name: string;
   email: string;
   userRole: UserRole | '';
-  department: ListDepartment | null;
+  departmentId: number | '';
 }
 const initialParameter: Parameter = {
   name: '',
   email: '',
   userRole: '',
-  department: null,
+  departmentId: '',
 };
 
 const UserInviteForm = () => {
@@ -94,63 +90,50 @@ const UserInviteForm = () => {
               initialValues={initialParameter}
               onSubmit={handler.submit}
             >
-              {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit }) => (
+              {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
                 <Form>
                   <Grid container spacing={1}>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-name">이름</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-name"
-                          name="name"
-                          value={values.name}
-                          onChange={handleChange}
-                          placeholder="이름을 입력하세요"
-                          required
-                        />
-                        <ErrorMessage name="name" />
-                      </FormControl>
+                      <DataField
+                        name="name"
+                        label="이름"
+                        value={values.name}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        required
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-email">이메일</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-email"
-                          name="email"
-                          value={values.email}
-                          onChange={handleChange}
-                          placeholder="이메일을 입력하세요"
-                          required
-                        />
-                        <ErrorMessage name="email" />
-                      </FormControl>
+                      <DataField
+                        name="email"
+                        label="이메일"
+                        value={values.email}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        required
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel id="params-role-label">권한</InputLabel>
-                        <Select
-                          labelId="params-userRole-label"
-                          id="params-userRole"
-                          name="userRole"
-                          label="권한"
-                          value={values.userRole}
-                          onChange={handleChange}
-                          required
-                        >
-                          {userRoleList.map((item) => (
-                            <MenuItem key={item} value={item}>{userRoleName(item)} 권한</MenuItem>
-                          ))}
-                        </Select>
-                        <ErrorMessage name="userRole" />
-                      </FormControl>
+                      <DataField
+                        type="select"
+                        name="userRole"
+                        label="권한"
+                        value={values.userRole}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={userRoleList.map(item => ({
+                          key: item,
+                          text: `${userRoleName(item)} 권한`
+                        }))}
+                        required
+                      />
                     </Grid>
                     <Grid item sm={12}>
                       <DepartmentSelector
-                        name="department"
+                        name="departmentId"
                         label="소속 부서"
-                        value={values.department}
+                        value={values.departmentId}
+                        errors={errors}
                         setFieldValue={setFieldValue}
                         required
                       />

@@ -8,16 +8,14 @@ import {
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
-import DepartmentSelector from 'components/DepartmentSelector';
 import useUser from 'services/user/hook';
 import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 import PersonnelDetail from 'pages/hr/Detail';
-import { ListDepartment } from 'services/department/entity';
 import usePasswordReset from 'services/user/password_reset/hook';
 import { PasswordResetParameter } from 'services/user/password_reset/parameter';
-import { DataField } from 'components';
+import { DepartmentSelector, DataField } from 'components';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -58,9 +56,9 @@ const UserDetail = () => {
         error.userRole = '권한 선택은 필수입니다.';
       }
 
-      const department: ListDepartment = values.department;
-      if (!department) {
-        error.department = '부서 선택은 필수입니다.';
+      const departmentId: number = values.departmentId;
+      if (!departmentId) {
+        error.departmentId = '부서 선택은 필수입니다.';
       }
 
       if (Object.keys(error).length > 0) {
@@ -73,7 +71,7 @@ const UserDetail = () => {
         name,
         email,
         userRole,
-        departmentId: department.id,
+        departmentId,
       };
 
       change(params, (data) => {
@@ -168,6 +166,7 @@ const UserDetail = () => {
                 <Formik
                   initialValues={{
                     ...detail,
+                    departmentId: detail.department.id,
                   }}
                   onSubmit={handler.submit}
                   enableReinitialize
@@ -229,10 +228,11 @@ const UserDetail = () => {
                         </Grid>
                         <Grid item sm={3}>
                           <DepartmentSelector
-                            name="department"
+                            name="departmentId"
                             label="소속 부서"
-                            value={values.department}
+                            value={values.departmentId}
                             setFieldValue={setFieldValue}
+                            errors={errors}
                             required
                           />
                         </Grid>

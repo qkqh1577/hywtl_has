@@ -46,7 +46,7 @@ export const toAmountKor = (amount: number | ''): string | undefined => {
   if (amountStr === '0') {
     return releaseBuilder('영');
   }
-  for (let i = 0; ; i++) {
+  for (let i = 0; i < unit.length; i++) {
     let unitUsed: boolean = false;
     for (let j = 0; j < splitter.length; j++) {
       const index = i * splitter.length + j;
@@ -64,15 +64,10 @@ export const toAmountKor = (amount: number | ''): string | undefined => {
       let str: string = counter[+letter];
       str += splitter[j];
       if (!unitUsed) {
-        if (i < unit.length) {
-          str += unit[i];
-          unitUsed = true;
-        }
-        result = str + result;
+        str += unit[i];
+        unitUsed = true;
       }
-      if (breaker) {
-        break;
-      }
+      result = str + result;
     }
     if (breaker) {
       break;
