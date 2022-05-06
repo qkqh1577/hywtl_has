@@ -31,7 +31,6 @@ const Page = () => {
   const [managerView, setManagerView] = useState<ManagerView[]>(initManagerView);
 
   const { companyState: {detail}, change, getOne } = useCompany();
-  console.log(detail)
 
   useEffect(() => {
     getOne(id);
@@ -54,6 +53,8 @@ const Page = () => {
         memo: values.memo,
         managerList: values.managerList,
       };
+
+      console.log(params)
 
       change(params, (data) => {
         if (data) {
@@ -85,6 +86,7 @@ const Page = () => {
                 zipCode: '',
                 memo: '',
                 managerList: [{
+                  id: undefined,
                   name: '',
                   position: '',
                   mobile: '',

@@ -7,6 +7,7 @@ export type CompanyQuery = {
 }
 
 export type ManagerAddParameter = {
+  id?: number;
   name?: string;
   position?: string;
   mobile?: string;

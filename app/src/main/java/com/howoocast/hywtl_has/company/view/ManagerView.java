@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ManagerView {
+    Long id;
     String name; // 담당자명
     String position; // 호칭
     String mobile; // 핸드폰
@@ -15,6 +16,7 @@ public class ManagerView {
     public static ManagerView assemble(Manager manager) {
         ManagerView target = new ManagerView();
 
+        target.id = manager.getId();
         target.name = manager.getName();
         target.position = manager.getPosition();
         target.mobile = manager.getMobile();

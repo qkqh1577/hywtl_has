@@ -57,6 +57,29 @@ public class Manager {
     private String deletedBy;
 
     public static Manager of(
+        String name,
+        String position,
+        String mobile,
+        String phone,
+        String email,
+        String state,
+        String createdBy
+    ) {
+        Manager manager = new Manager();
+        manager.name = name;
+        manager.position = position;
+        manager.mobile = mobile;
+        manager.phone = phone;
+        manager.email = email;
+        manager.state = state;
+        manager.createdBy = createdBy;
+        manager.createdAt = LocalDateTime.now();
+        return manager;
+    }
+
+
+    public static Manager of(
+            Long id,
             String name,
             String position,
             String mobile,
@@ -66,6 +89,7 @@ public class Manager {
             String createdBy
     ) {
         Manager manager = new Manager();
+        manager.id = id;
         manager.name = name;
         manager.position = position;
         manager.mobile = mobile;

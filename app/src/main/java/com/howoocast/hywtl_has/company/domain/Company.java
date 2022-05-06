@@ -88,15 +88,17 @@ public class Company {
         return company;
     }
 
-    public void edit(String name,
-                     String representativeName,
-                     String companyNumber,
-                     String address,
-                     String zipCode,
-                     String phone,
-                     String memo,
-                     List<Manager> managerList,
-                     String modifiedBy) {
+    public void change(
+            String name,
+            String representativeName,
+            String companyNumber,
+            String address,
+            String zipCode,
+            String phone,
+            String memo,
+            List<Manager> managerList,
+            String modifiedBy
+    ) {
         this.name = name;
         this.representativeName = representativeName;
         this.companyNumber = companyNumber;

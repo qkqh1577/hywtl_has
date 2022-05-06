@@ -15,7 +15,7 @@ public class CompanyView {
     String zipCode; // 우편번호
     String phone; // 대표 전화번호
     String memo; // 비고
-    List managerList;
+    List<ManagerView> managerList;
 
     public static CompanyView assemble(Company company){
         CompanyView target = new CompanyView();

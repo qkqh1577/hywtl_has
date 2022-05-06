@@ -10,6 +10,7 @@ export type CompanyList = {
 }
 
 export type ManagerDetail = {
+  id: number;
   name?: string;
   position?: string;
   mobile?: string;
