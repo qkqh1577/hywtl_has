@@ -17,8 +17,20 @@ export const projectTargetReviewStatusName = (status: ProjectTargetReviewStatus)
   if (status === 'DRAFT') {
     return '초안';
   }
+  if (status === 'DRAFT_CONFIRMED') {
+    return '초안확정';
+  }
+  if (status === 'SENT') {
+    return '전달';
+  }
   if (status === 'RECONSIDER') {
     return '재검토';
+  }
+  if (status === 'RECONSIDER_CONFIRMED') {
+    return '재검토확정';
+  }
+  if (status === 'RECONSIDER_SENT') {
+    return '재검토전달';
   }
   if (status === 'COMPLETE') {
     return '완료';
@@ -66,6 +78,27 @@ export type ProjectTargetView = {
   landModelCount: number | '';
 }
 
+export type ProjectTargetReviewDetailView = {
+  buildingName: string;
+  floorCount: number | '';
+  baseCount: number | '';
+  height: number | '';
+  area: number | '';
+  ratio: number | '';
+  specialWindLoadConditionList: string[];
+  testList: string[];
+  memo1: string;
+  memo2: string;
+}
+
+export type ProjectTargetReviewView = {
+  status: ProjectTargetReviewStatus | '';
+  confirmed: boolean | '';
+  title: string;
+  memo: string;
+  detailList: ProjectTargetReviewDetailView[];
+}
+
 export const initProjectFilter: ProjectFilterView = {
   page: 0,
   size: 10,
@@ -104,5 +137,26 @@ export const initProjectOrder: ProjectOrderView = {
 
 export const initProjectTarget: ProjectTargetView = {
   landModelCount: '',
+};
+
+export const initProjectTargetDetailReview: ProjectTargetReviewDetailView = {
+  buildingName: '',
+  floorCount: '',
+  baseCount: '',
+  height: '',
+  area: '',
+  ratio: '',
+  specialWindLoadConditionList: [],
+  testList: [],
+  memo1: '',
+  memo2: '',
+};
+
+export const initProjectTargetReview: ProjectTargetReviewView = {
+  status: '',
+  confirmed: '',
+  title: '',
+  memo: '',
+  detailList: [initProjectTargetDetailReview],
 };
 

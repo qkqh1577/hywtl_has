@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { projectActions } from 'services/project/actions';
 import Project, {
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget, ProjectTargetDocument,
+  ProjectTarget,
+  ProjectTargetDocument,
   ProjectTargetReview
 } from 'services/project/entity';
 import {
@@ -130,7 +132,7 @@ export default function useProject() {
   );
 
   const setTargetReviewList = useCallback(
-    (list: ProjectTargetReview[]) =>
+    (list: ListProjectTargetReview[]) =>
       dispatch(projectActions.setTargetReviewList(list)),
     [dispatch],
   );
@@ -142,13 +144,13 @@ export default function useProject() {
   );
 
   const addTargetReview = useCallback(
-    (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ProjectTargetReview[]) => void) =>
+    (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ListProjectTargetReview[]) => void) =>
       dispatch(projectActions.addTargetReview({ projectId, params, callback })),
     [dispatch]
   );
 
   const confirmTargetReview = useCallback(
-    (id: number, callback: (list?: ProjectTargetReview[]) => void) =>
+    (id: number, callback: (list?: ListProjectTargetReview[]) => void) =>
       dispatch(projectActions.confirmTargetReview({ id, callback })),
     [dispatch]
   );
@@ -162,6 +164,24 @@ export default function useProject() {
   const clearTargetReviewDetailModal = useCallback(
     () =>
       dispatch(projectActions.setTargetReviewDetailModal(undefined)),
+    [dispatch]
+  );
+
+  const getTargetReviewDetail = useCallback(
+    (reviewId: number) =>
+      dispatch(projectActions.getTargetReviewDetail(reviewId)),
+    [dispatch]
+  );
+
+  const setTargetReviewDetail = useCallback(
+    (data: ProjectTargetReview) =>
+      dispatch(projectActions.setTargetReviewDetail(data)),
+    [dispatch]
+  );
+
+  const clearTargetReviewDetail = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReviewDetail(undefined)),
     [dispatch]
   );
 
@@ -209,6 +229,9 @@ export default function useProject() {
     confirmTargetReview,
     setTargetReviewDetailModal,
     clearTargetReviewDetailModal,
+    getTargetReviewDetail,
+    setTargetReviewDetail,
+    clearTargetReviewDetail,
     getTargetDocumentList,
     addTargetDocument,
     updateTargetDocument,

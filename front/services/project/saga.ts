@@ -3,6 +3,7 @@ import { projectActions, ProjectActionType } from 'services/project/actions';
 import Page from 'components/Page';
 import Project, {
   ListProject,
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
   ProjectTarget,
@@ -78,14 +79,14 @@ function* updateTarget(action: ActionType<typeof projectActions.updateTarget>) {
 }
 
 function* getTargetReviewList(action: ActionType<typeof projectActions.getTargetReviewList>) {
-  const list: ProjectTargetReview[] = yield projectApi.getTargetReviewList(action.payload);
+  const list: ListProjectTargetReview[] = yield projectApi.getTargetReviewList(action.payload);
   yield put(projectActions.setTargetReviewList(list));
 }
 
 function* addTargetReview(action: ActionType<typeof projectActions.addTargetReview>) {
   const { projectId, params, callback } = action.payload;
   try {
-    const list: ProjectTargetReview[] = yield projectApi.addTargetReview(projectId, params);
+    const list: ListProjectTargetReview[] = yield projectApi.addTargetReview(projectId, params);
     callback(list);
   } catch (e) {
     callback();
@@ -95,7 +96,7 @@ function* addTargetReview(action: ActionType<typeof projectActions.addTargetRevi
 function* confirmTargetReview(action: ActionType<typeof projectActions.confirmTargetReview>) {
   const { id, callback } = action.payload;
   try {
-    const list: ProjectTargetReview[] = yield projectApi.confirmTargetReview(id);
+    const list: ListProjectTargetReview[] = yield projectApi.confirmTargetReview(id);
     callback(list);
   } catch (e) {
     callback();

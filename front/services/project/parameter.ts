@@ -1,5 +1,4 @@
 import FileItemParameter from 'services/common/file-item/parameter';
-import { ProjectTargetReviewStatus } from 'services/project/entity';
 
 export type ProjectQuery = {
   size: number;

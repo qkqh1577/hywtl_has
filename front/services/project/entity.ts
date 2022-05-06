@@ -3,7 +3,15 @@ import FileItem from 'services/common/file-item/entity';
 
 export type ProjectStatus = 'ON_GOING' | 'TEMPLATE';
 
-export type ProjectTargetReviewStatus = 'DRAFT' | 'RECONSIDER' | 'COMPLETE';
+export type ProjectTargetReviewStatus =
+  'DRAFT'
+  | 'DRAFT_CONFIRMED'
+  | 'SENT'
+  | 'RECONSIDER'
+  | 'RECONSIDER_CONFIRMED'
+  | 'RECONSIDER_SENT'
+  | 'COMPLETE'
+  ;
 
 export type ListProject = {
   id: number;
@@ -53,7 +61,7 @@ export type ProjectTargetDocument = {
   createdTime: Date;
   updatedTime?: Date;
 }
-export type ProjectTargetReview = {
+export type ListProjectTargetReview = {
   id: number;
   status: ProjectTargetReviewStatus;
   confirmed: boolean;
@@ -65,13 +73,20 @@ export type ProjectTargetReview = {
 }
 
 export type ProjectTargetReviewDetail = {
-  id: number;
-  building: string;
+  buildingName: string;
   floorCount: number;
+  baseCount?: number;
   height: number;
   area: number;
   ratio: number;
-  condition: string;
+  specialWindLoadConditionList?: string[];
+  testList: string[];
+  memo1?: string;
+  memo2?: string;
+}
+
+export type ProjectTargetReview = ListProjectTargetReview & {
+  detailList: ProjectTargetReviewDetail[];
 }
 
 export type ProjectTarget = {

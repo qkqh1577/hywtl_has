@@ -2,9 +2,12 @@ import apiClient from 'services/common/api';
 import Page from 'components/Page';
 import Project, {
   ListProject,
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget, ProjectTargetDocument, ProjectTargetReview
+  ProjectTarget,
+  ProjectTargetDocument,
+  ProjectTargetReview
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
@@ -63,17 +66,17 @@ export class ProjectApi {
     return data;
   }
 
-  async getTargetReviewList(projectId: number): Promise<ProjectTargetReview[]> {
+  async getTargetReviewList(projectId: number): Promise<ListProjectTargetReview[]> {
     const { data } = await apiClient.get(`/projects/${projectId}/target/reviews`);
     return data;
   }
 
-  async addTargetReview(projectId: number, params: ProjectTargetReviewAddParameter): Promise<ProjectTargetReview[]> {
+  async addTargetReview(projectId: number, params: ProjectTargetReviewAddParameter): Promise<ListProjectTargetReview[]> {
     const { data } = await apiClient.post(`/projects/${projectId}/target/reviews`, params);
     return data;
   }
 
-  async confirmTargetReview(id: number): Promise<ProjectTargetReview[]> {
+  async confirmTargetReview(id: number): Promise<ListProjectTargetReview[]> {
     const { data } = await apiClient.post(`/project/target/reviews/${id}/confirm`);
     return data;
   }

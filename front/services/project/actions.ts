@@ -1,16 +1,19 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
 import Project, {
-  ListProject,
+  ListProject, ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget, ProjectTargetDocument, ProjectTargetReview, ProjectTargetReviewDetail
+  ProjectTarget,
+  ProjectTargetDocument,
+  ProjectTargetReview,
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
   ProjectOrderParameter,
   ProjectQuery,
-  ProjectTargetDocumentAddParameter, ProjectTargetDocumentChangeParameter,
+  ProjectTargetDocumentAddParameter,
+  ProjectTargetDocumentChangeParameter,
   ProjectTargetParameter,
   ProjectTargetReviewAddParameter
 } from 'services/project/parameter';
@@ -85,18 +88,19 @@ export const projectActions = {
   }>(),
 
   getTargetReviewList: createAction(ProjectActionType.getTargetReviewList)<number>(),
-  setTargetReviewList: createAction(ProjectActionType.setTargetReviewList)<ProjectTargetReview[] | undefined>(),
+  setTargetReviewList: createAction(ProjectActionType.setTargetReviewList)<ListProjectTargetReview[] | undefined>(),
   addTargetReview: createAction(ProjectActionType.addTargetReview)<{
     projectId: number;
     params: ProjectTargetReviewAddParameter;
-    callback: (list?: ProjectTargetReview[]) => void;
+    callback: (list?: ListProjectTargetReview[]) => void;
   }>(),
   confirmTargetReview: createAction(ProjectActionType.confirmTargetReview)<{
     id: number;
-    callback: (list?: ProjectTargetReview[]) => void;
+    callback: (list?: ListProjectTargetReview[]) => void;
   }>(),
   setTargetReviewDetailModal: createAction(ProjectActionType.setTargetReviewDetailModal)<number | null | undefined>(),
   getTargetReviewDetail: createAction(ProjectActionType.getTargetReviewDetail)<number>(),
+  setTargetReviewDetail: createAction(ProjectActionType.setTargetReviewDetail)<ProjectTargetReview| undefined>(),
 
   getTargetDocumentList: createAction(ProjectActionType.getTargetDocumentList)<number>(),
   setTargetDocumentList: createAction(ProjectActionType.setTargetDocumentList)<ProjectTargetDocument[] | undefined>(),

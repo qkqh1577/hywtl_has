@@ -1,6 +1,7 @@
 import Page, { initial } from 'components/Page';
 import Project, {
   ListProject,
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
   ProjectTarget,
@@ -17,8 +18,9 @@ export type ProjectState = {
   order?: ProjectOrder;
   addModal: boolean;
   target?: ProjectTarget;
-  reviewList?: ProjectTargetReview[];
+  reviewList?: ListProjectTargetReview[];
   reviewDetailModal?: number | null;
+  reviewDetail?: ProjectTargetReview;
   documentList?: ProjectTargetDocument[];
 }
 
@@ -56,13 +58,17 @@ const projectReducer = createReducer(initState, {
     ...state,
     reviewList: action.payload,
   }),
-  [ProjectActionType.setTargetDocumentList]: (state, action) => ({
-    ...state,
-    documentList: action.payload,
-  }),
   [ProjectActionType.setTargetReviewDetailModal]: (state, action) => ({
     ...state,
     reviewDetailModal: action.payload,
+  }),
+  [ProjectActionType.setTargetReviewDetail]: (state, action) => ({
+    ...state,
+    reviewDetail: action.payload,
+  }),
+  [ProjectActionType.setTargetDocumentList]: (state, action) => ({
+    ...state,
+    documentList: action.payload,
   }),
 });
 
