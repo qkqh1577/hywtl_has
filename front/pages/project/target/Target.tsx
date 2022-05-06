@@ -9,7 +9,6 @@ import useProject from 'services/project/hook';
 import { ProjectTargetParameter } from 'services/project/parameter';
 
 const ProjectTargetDetail = () => {
-
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
@@ -73,8 +72,7 @@ const ProjectTargetDetail = () => {
       submit={handler.submit}
       updateView={handler.updateView}
       updatedTime={detail?.updatedTime}
-    >
-      {[
+      fields={[
         {
           sm: 2,
           type: 'number',
@@ -82,7 +80,7 @@ const ProjectTargetDetail = () => {
           label: '대지모형 개수',
         }
       ]}
-    </Container>
+    />
   );
 };
 export default ProjectTargetDetail;

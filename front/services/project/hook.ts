@@ -153,6 +153,18 @@ export default function useProject() {
     [dispatch]
   );
 
+  const setTargetReviewDetailModal = useCallback(
+    (reviewId: number | null) =>
+      dispatch(projectActions.setTargetReviewDetailModal(reviewId)),
+    [dispatch],
+  );
+
+  const clearTargetReviewDetailModal = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReviewDetailModal(undefined)),
+    [dispatch]
+  );
+
   const getTargetDocumentList = useCallback(
     (projectId: number) =>
       dispatch(projectActions.getTargetDocumentList(projectId)),
@@ -195,6 +207,8 @@ export default function useProject() {
     clearTargetReviewList,
     addTargetReview,
     confirmTargetReview,
+    setTargetReviewDetailModal,
+    clearTargetReviewDetailModal,
     getTargetDocumentList,
     addTargetDocument,
     updateTargetDocument,

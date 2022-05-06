@@ -4,7 +4,7 @@ import Project, {
   ListProject,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget, ProjectTargetDocument, ProjectTargetReview
+  ProjectTarget, ProjectTargetDocument, ProjectTargetReview, ProjectTargetReviewDetail
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
@@ -39,6 +39,9 @@ export enum ProjectActionType {
   setTargetReviewList = 'project/target/review/setList',
   addTargetReview = 'project/target/review/add',
   confirmTargetReview = 'project/target/review/confirm',
+  getTargetReviewDetail = 'project/target/review/getDetail',
+  setTargetReviewDetail = 'project/target/review/setDetail',
+  setTargetReviewDetailModal = 'project/target/review/setModal',
 
   getTargetDocumentList = 'project/target/document/getList',
   setTargetDocumentList = 'project/target/document/setList',
@@ -92,6 +95,8 @@ export const projectActions = {
     id: number;
     callback: (list?: ProjectTargetReview[]) => void;
   }>(),
+  setTargetReviewDetailModal: createAction(ProjectActionType.setTargetReviewDetailModal)<number | null | undefined>(),
+  getTargetReviewDetail: createAction(ProjectActionType.getTargetReviewDetail)<number>(),
 
   getTargetDocumentList: createAction(ProjectActionType.getTargetDocumentList)<number>(),
   setTargetDocumentList: createAction(ProjectActionType.setTargetDocumentList)<ProjectTargetDocument[] | undefined>(),

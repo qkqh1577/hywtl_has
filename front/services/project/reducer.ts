@@ -18,6 +18,7 @@ export type ProjectState = {
   addModal: boolean;
   target?: ProjectTarget;
   reviewList?: ProjectTargetReview[];
+  reviewDetailModal?: number | null;
   documentList?: ProjectTargetDocument[];
 }
 
@@ -58,6 +59,10 @@ const projectReducer = createReducer(initState, {
   [ProjectActionType.setTargetDocumentList]: (state, action) => ({
     ...state,
     documentList: action.payload,
+  }),
+  [ProjectActionType.setTargetReviewDetailModal]: (state, action) => ({
+    ...state,
+    reviewDetailModal: action.payload,
   }),
 });
 

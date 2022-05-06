@@ -145,8 +145,7 @@ const ProjectBasicDetail = () => {
       submit={handler.submit}
       updatedTime={detail?.updatedTime}
       updateView={handler.updateView}
-    >
-      {[
+      fields={[
         {
           sm: 2,
           name: 'code',
@@ -259,7 +258,7 @@ const ProjectBasicDetail = () => {
           label: '업체 담당자 이메일',
         }
       ]}
-    </Container>
+    />
   );
 
 

@@ -69,7 +69,8 @@ type Props = {
   updateView: () => void;
   updatedTime?: Date;
   readonly?: boolean;
-  children: FieldProps[] | ((state: State) => FieldProps[]);
+  fields: FieldProps[] | ((state: State) => FieldProps[]);
+  children?: React.ReactNode;
 }
 
 const Container = ({
@@ -79,6 +80,7 @@ const Container = ({
   updateView,
   updatedTime,
   readonly,
+  fields,
   children
 }: Props) => {
 
@@ -157,18 +159,11 @@ const Container = ({
       );
     }
     if (type === 'date') {
-      if (value instanceof Date || value === null) {
-        return (
-          <DatePicker
-            value={value}
-            {...props}
-          />
-        );
-      }
       return (
-        <>
-          ERROR: 'value' must be Date or null when type="date".
-        </>
+        <DatePicker
+          value={value}
+          {...props}
+        />
       );
     }
     if (Array.isArray(value)) {
@@ -401,14 +396,14 @@ const Container = ({
               }),
             }}>
               <Grid container spacing={2}>
-                {Array.isArray(children) &&
-                children.map((child, index) => mapper(child, index, {
+                {Array.isArray(fields) &&
+                fields.map((child, index) => mapper(child, index, {
                   values,
                   setFieldValue,
                   errors,
                 }))}
-                {typeof children === 'function' &&
-                children({ values })
+                {typeof fields === 'function' &&
+                fields({ values })
                 .map((child, index) => mapper(child, index, {
                   values,
                   setFieldValue,
@@ -421,6 +416,7 @@ const Container = ({
         )}
       </Formik>
       <Divider />
+      {children}
     </Paper>
   );
 };

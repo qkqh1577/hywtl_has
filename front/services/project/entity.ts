@@ -64,6 +64,16 @@ export type ProjectTargetReview = {
   updatedTime?: Date;
 }
 
+export type ProjectTargetReviewDetail = {
+  id: number;
+  building: string;
+  floorCount: number;
+  height: number;
+  area: number;
+  ratio: number;
+  condition: string;
+}
+
 export type ProjectTarget = {
   landModelCount?: number;
   updatedTime?: Date;

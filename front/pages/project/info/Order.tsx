@@ -93,8 +93,7 @@ const ProjectOrderDetail = () => {
       submit={handler.submit}
       updateView={handler.updateView}
       updatedTime={detail?.updatedTime}
-    >
-      {[
+      fields={[
         {
           sm: 3,
           type: 'amount',
@@ -128,7 +127,7 @@ const ProjectOrderDetail = () => {
           options: ['예', '아니요']
         }
       ]}
-    </Container>
+    />
   );
 };
 
