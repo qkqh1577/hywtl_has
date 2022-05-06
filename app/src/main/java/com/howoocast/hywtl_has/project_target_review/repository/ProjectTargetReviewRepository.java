@@ -1,6 +1,6 @@
-package com.howoocast.hywtl_has.project.repository;
+package com.howoocast.hywtl_has.project_target_review.repository;
 
-import com.howoocast.hywtl_has.project.domain.ProjectTargetReview;
+import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReview;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

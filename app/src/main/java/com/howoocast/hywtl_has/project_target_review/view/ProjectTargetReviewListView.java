@@ -1,14 +1,14 @@
-package com.howoocast.hywtl_has.project.view;
+package com.howoocast.hywtl_has.project_target_review.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.project.common.ProjectTargetReviewStatus;
-import com.howoocast.hywtl_has.project.domain.ProjectTargetReview;
+import com.howoocast.hywtl_has.project_target_review.common.ProjectTargetReviewStatus;
+import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReview;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class ProjectTargetReviewView {
+public class ProjectTargetReviewListView {
 
     private Long id;
 
@@ -27,8 +27,8 @@ public class ProjectTargetReviewView {
 
     private LocalDateTime updatedTime;
 
-    public static ProjectTargetReviewView assemble(ProjectTargetReview source) {
-        ProjectTargetReviewView target = new ProjectTargetReviewView();
+    public static ProjectTargetReviewListView assemble(ProjectTargetReview source) {
+        ProjectTargetReviewListView target = new ProjectTargetReviewListView();
         target.id = source.getId();
         target.projectId = source.getProjectId();
         target.status = source.getStatus();
