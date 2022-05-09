@@ -17,7 +17,7 @@ export type ManagerDetail = {
   phone?: string;
   email?: string;
   meta?: string[];
-  state?: boolean;
+  state?: string;
   projectCount?: number;
 }
 
@@ -39,7 +39,7 @@ type Manager = {
   phone?: string;
   email?: string;
   meta?: string[];
-  state?: boolean;
+  state?: string;
 }
 
 export type Company = {

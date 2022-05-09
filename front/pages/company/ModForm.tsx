@@ -54,8 +54,6 @@ const Page = () => {
         managerList: values.managerList,
       };
 
-      console.log(params)
-
       change(params, (data) => {
         if (data) {
           window.alert('수정하였습니다.');
@@ -93,7 +91,7 @@ const Page = () => {
                   phone: '',
                   email: '',
                   meta: '',
-                  state: true
+                  state: '재직'
                 }]
               }}
               enableReinitialize
@@ -336,11 +334,16 @@ const Page = () => {
                         <Grid item sm={6}>
                           <FormControl variant="standard" fullWidth>
                             <FormLabel>상태</FormLabel>
-                            <RadioGroup row aria-label="manager-state" name="manager.state" value={manager.state} >
-                              <FormControlLabel value={true} control={<Radio />} label="재직" />
-                              <FormControlLabel value={false} control={<Radio />} label="퇴사" />
+                            <RadioGroup
+                              row
+                              aria-label="params-manager-state"
+                              name={`managerList.${i}.state`}
+                              value={manager.state}
+                              onChange={handleChange}
+                            >
+                              <FormControlLabel value="재직" control={<Radio />} label="재직" />
+                              <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
                             </RadioGroup>
-                            <ErrorMessage name="manager-state" />
                           </FormControl>
                         </Grid>
                       </Grid>

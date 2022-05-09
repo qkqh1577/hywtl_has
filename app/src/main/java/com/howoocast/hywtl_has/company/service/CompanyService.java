@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -30,7 +29,6 @@ import java.util.stream.Stream;
 public class CompanyService {
 
   private final CompanyRepository companyRepository;
-  private final ManagerRepository managerRepository;
 
   @Transactional(readOnly = true)
   public Page<CompanyListView> page(@Nullable Predicate predicate, Pageable pageable) {
@@ -87,11 +85,11 @@ public class CompanyService {
               .findFirst().ifPresentOrElse(manager -> {
                 manager.change(
                     managerParameter.getName(),
-                    manager.getPosition(),
-                    manager.getMobile(),
-                    manager.getPhone(),
-                    manager.getEmail(),
-                    manager.getState(),
+                    managerParameter.getPosition(),
+                    managerParameter.getMobile(),
+                    managerParameter.getPhone(),
+                    managerParameter.getEmail(),
+                    managerParameter.getState(),
                     "OOO"
                 );
               }, () -> {
@@ -127,3 +125,5 @@ public class CompanyService {
     return CompanyView.assemble(companyRepository.save(company));
   }
 }
+
+

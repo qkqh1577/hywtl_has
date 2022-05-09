@@ -14,7 +14,7 @@ export type ManagerAddParameter = {
   phone?: string;
   email?: string;
   meta?: string[];
-  state?: boolean;
+  state?: string;
 }
 
 export type CompanyAddParameter = {

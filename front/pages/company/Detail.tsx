@@ -214,7 +214,7 @@ const Page = () => {
                     <TextField
                       name="manager.state"
                       label="상태"
-                      value={manager.state ? '재직' : '퇴사'}
+                      value={manager.state || ''}
                       variant="standard"
                       fullWidth
                       InputProps={{
