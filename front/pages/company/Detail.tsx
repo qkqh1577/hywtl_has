@@ -221,6 +221,18 @@ const Page = () => {
                       }}
                     />
                   </Grid>
+                  <Grid item sm={6} xs={12}>
+                    <TextField
+                      name=""
+                      label="담당 프로젝트"
+                      value={''}
+                      variant="standard"
+                      fullWidth
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
                 </Grid>
               <Divider sx={{ mt: '40px', mb: '40px' }} />
               </>

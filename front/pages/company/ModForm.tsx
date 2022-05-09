@@ -346,6 +346,19 @@ const Page = () => {
                             </RadioGroup>
                           </FormControl>
                         </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor="params-manager-project">담당 프로젝트</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-project"
+                              name=''
+                              value=''
+                              readOnly
+                            />
+                            <ErrorMessage name="manager-meta" />
+                          </FormControl>
+                        </Grid>
                       </Grid>
                     </>
                   ))}
