@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,7 +47,6 @@ public class ProjectTargetReviewDetail {
     @ElementCollection
     private List<String> specialWindLoadConditionList; // 특별풍하중 조건
 
-    @NotEmpty
     @ElementCollection
     private List<String> testList; // 실험 종류
 

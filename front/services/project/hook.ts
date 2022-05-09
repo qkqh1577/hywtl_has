@@ -14,9 +14,10 @@ import {
   ProjectBasicParameter,
   ProjectOrderParameter,
   ProjectQuery,
-  ProjectTargetDocumentAddParameter, ProjectTargetDocumentChangeParameter,
+  ProjectTargetDocumentAddParameter,
+  ProjectTargetDocumentChangeParameter,
   ProjectTargetParameter,
-  ProjectTargetReviewAddParameter
+  ProjectTargetReviewParameter
 } from 'services/project/parameter';
 
 export default function useProject() {
@@ -143,8 +144,26 @@ export default function useProject() {
     [dispatch],
   );
 
+  const getTargetReview = useCallback(
+    (reviewId: number) =>
+      dispatch(projectActions.getTargetReview(reviewId)),
+    [dispatch]
+  );
+
+  const setTargetReview = useCallback(
+    (data: ProjectTargetReview) =>
+      dispatch(projectActions.setTargetReview(data)),
+    [dispatch]
+  );
+
+  const clearTargetReview = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReview(undefined)),
+    [dispatch]
+  );
+
   const addTargetReview = useCallback(
-    (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ListProjectTargetReview[]) => void) =>
+    (projectId: number, params: ProjectTargetReviewParameter, callback: (data?: ProjectTargetReview) => void) =>
       dispatch(projectActions.addTargetReview({ projectId, params, callback })),
     [dispatch]
   );
@@ -155,33 +174,27 @@ export default function useProject() {
     [dispatch]
   );
 
-  const setTargetReviewDetailModal = useCallback(
+  const updateTargetReview = useCallback(
+    (id: number, params: ProjectTargetReviewParameter, callback: (data?: ProjectTargetReview) => void) =>
+      dispatch(projectActions.updateTargetReview({ id, params, callback })),
+    [dispatch]
+  );
+
+  const removeTargetReview = useCallback(
+    (id: number, callback: () => void) =>
+      dispatch(projectActions.removeTargetReview({ id, callback })),
+    [dispatch]
+  );
+
+  const setTargetReviewModal = useCallback(
     (reviewId: number | null) =>
-      dispatch(projectActions.setTargetReviewDetailModal(reviewId)),
+      dispatch(projectActions.setTargetReviewModal(reviewId)),
     [dispatch],
   );
 
-  const clearTargetReviewDetailModal = useCallback(
+  const clearTargetReviewModal = useCallback(
     () =>
-      dispatch(projectActions.setTargetReviewDetailModal(undefined)),
-    [dispatch]
-  );
-
-  const getTargetReviewDetail = useCallback(
-    (reviewId: number) =>
-      dispatch(projectActions.getTargetReviewDetail(reviewId)),
-    [dispatch]
-  );
-
-  const setTargetReviewDetail = useCallback(
-    (data: ProjectTargetReview) =>
-      dispatch(projectActions.setTargetReviewDetail(data)),
-    [dispatch]
-  );
-
-  const clearTargetReviewDetail = useCallback(
-    () =>
-      dispatch(projectActions.setTargetReviewDetail(undefined)),
+      dispatch(projectActions.setTargetReviewModal(undefined)),
     [dispatch]
   );
 
@@ -225,13 +238,15 @@ export default function useProject() {
     getTargetReviewList,
     setTargetReviewList,
     clearTargetReviewList,
+    getTargetReview,
+    setTargetReview,
+    clearTargetReview,
     addTargetReview,
     confirmTargetReview,
-    setTargetReviewDetailModal,
-    clearTargetReviewDetailModal,
-    getTargetReviewDetail,
-    setTargetReviewDetail,
-    clearTargetReviewDetail,
+    updateTargetReview,
+    removeTargetReview,
+    setTargetReviewModal,
+    clearTargetReviewModal,
     getTargetDocumentList,
     addTargetDocument,
     updateTargetDocument,

@@ -7,7 +7,7 @@ import Project, {
   ProjectBasic,
   ProjectOrder,
   ProjectTarget,
-  ProjectTargetDocument,
+  ProjectTargetDocument, ProjectTargetReview,
 } from 'services/project/entity';
 import projectApi from 'services/project/api';
 import { put, takeLatest } from 'redux-saga/effects';
@@ -82,11 +82,27 @@ function* getTargetReviewList(action: ActionType<typeof projectActions.getTarget
   yield put(projectActions.setTargetReviewList(list));
 }
 
+
+function* getTargetReview(action: ActionType<typeof projectActions.getTargetReview>) {
+  const data: ProjectTargetReview = yield projectApi.getTargetReview(action.payload);
+  yield put(projectActions.setTargetReview(data));
+}
+
 function* addTargetReview(action: ActionType<typeof projectActions.addTargetReview>) {
   const { projectId, params, callback } = action.payload;
   try {
-    const list: ListProjectTargetReview[] = yield projectApi.addTargetReview(projectId, params);
-    callback(list);
+    const data: ProjectTargetReview = yield projectApi.addTargetReview(projectId, params);
+    callback(data);
+  } catch (e) {
+    callback();
+  }
+}
+
+function* updateTargetReview(action: ActionType<typeof projectActions.updateTargetReview>) {
+  const { id, params, callback } = action.payload;
+  try {
+    const data: ProjectTargetReview = yield projectApi.updateTargetReview(id, params);
+    callback(data);
   } catch (e) {
     callback();
   }
@@ -99,6 +115,16 @@ function* confirmTargetReview(action: ActionType<typeof projectActions.confirmTa
     callback(list);
   } catch (e) {
     callback();
+  }
+}
+
+function* removeTargetReview(action: ActionType<typeof projectActions.removeTargetReview>) {
+  const { id, callback } = action.payload;
+  try {
+    yield projectApi.removeTargetReview(id);
+    callback();
+  } catch (e) {
+    // nothing to do
   }
 }
 
@@ -138,8 +164,11 @@ export default function* projectSaga() {
   yield takeLatest(ProjectActionType.getTarget, getTarget);
   yield takeLatest(ProjectActionType.updateTarget, updateTarget);
   yield takeLatest(ProjectActionType.getTargetReviewList, getTargetReviewList);
+  yield takeLatest(ProjectActionType.getTargetReview, getTargetReview);
   yield takeLatest(ProjectActionType.addTargetReview, addTargetReview);
+  yield takeLatest(ProjectActionType.updateTargetReview, updateTargetReview);
   yield takeLatest(ProjectActionType.confirmTargetReview, confirmTargetReview);
+  yield takeLatest(ProjectActionType.removeTargetReview, removeTargetReview);
   yield takeLatest(ProjectActionType.getTargetDocumentList, getTargetDocumentList);
   yield takeLatest(ProjectActionType.addTargetDocument, addTargetDocument);
   yield takeLatest(ProjectActionType.updateTargetDocument, updateTargetDocument);

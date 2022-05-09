@@ -19,7 +19,7 @@ export type ProjectState = {
   addModal: boolean;
   target?: ProjectTarget;
   reviewList?: ListProjectTargetReview[];
-  reviewDetailModal?: number | null;
+  reviewModal?: number | null;
   reviewDetail?: ProjectTargetReview;
   documentList?: ProjectTargetDocument[];
 }
@@ -58,11 +58,11 @@ const projectReducer = createReducer(initState, {
     ...state,
     reviewList: action.payload,
   }),
-  [ProjectActionType.setTargetReviewDetailModal]: (state, action) => ({
+  [ProjectActionType.setTargetReviewModal]: (state, action) => ({
     ...state,
-    reviewDetailModal: action.payload,
+    reviewModal: action.payload,
   }),
-  [ProjectActionType.setTargetReviewDetail]: (state, action) => ({
+  [ProjectActionType.setTargetReview]: (state, action) => ({
     ...state,
     reviewDetail: action.payload,
   }),

@@ -6,10 +6,13 @@ import {
   IconButton,
   Modal,
   Paper,
-  Table, TableBody, TableCell,
+  Table,
+  TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -24,13 +27,14 @@ import {
   ProjectTargetReviewView
 } from 'services/project/view';
 import {
+  projectSpecialWindLoadConditionName,
   projectTargetReviewStatusList,
   projectTargetReviewStatusName
 } from 'services/project/data';
 import { ProjectTargetReviewStatus } from 'services/project/entity';
 import {
-  ProjectTargetReviewAddParameter,
-  ProjectTargetReviewDetailAddParameter
+  ProjectTargetReviewParameter,
+  ProjectTargetReviewDetailParameter
 } from 'services/project/parameter';
 
 type TableCellProperty = {
@@ -47,6 +51,7 @@ const columns: TableCellProperty[] = [
   { key: 'area', label: '면적(㎡)', align: 'center', style: { minWidth: 25 } },
   { key: 'ratio', label: '형상비', style: { minWidth: 50 } },
   { key: 'specialWindLoadCondition', label: '특별풍하중 조건', style: { minWidth: 60 } },
+  { key: 'isMinimumTest', label: '최소 실험대상 여부', style: { minWidth: 60 } },
   { key: 'test', label: '실험 종류', align: 'center', style: { minWidth: 80 } },
   { key: 'memo1', label: '비고1', align: 'center', style: { minWidth: 30 } },
   { key: 'memo2', label: '비고2', align: 'center', style: { minWidth: 30 } },
@@ -57,18 +62,40 @@ const ProjectTargetReviewModal = () => {
   const {
     projectState: {
       detail: project,
-      reviewDetailModal: reviewId,
+      reviewModal: reviewId,
       reviewDetail: detail,
     },
-    clearTargetReviewDetailModal: clearModal,
-    getTargetReviewDetail: getOne,
-    clearTargetReviewDetail: clearOne,
+    clearTargetReviewModal: clearModal,
+    getTargetReview: getOne,
+    clearTargetReview: clearOne,
     addTargetReview: add,
+    updateTargetReview: update,
+    removeTargetReview: remove,
   } = useProject();
 
+  const [edit, setEdit] = useState<boolean>(false);
   const [view, setView] = useState<ProjectTargetReviewView>(initProjectTargetReview);
 
   const handler = {
+    edit: () => {
+      setEdit(true);
+    },
+    remove: () => {
+      if (!reviewId) {
+        window.alert('검토가 선택되지 않았습니다.');
+        return;
+      }
+      if (detail && detail.confirmed) {
+        window.alert('확정된 검토는 삭제할 수 없습니다.');
+        return;
+      }
+      if (window.confirm('해당 검토를 삭제하시겠습니까?')) {
+        remove(reviewId, () => {
+          window.alert('삭제하였습니다.');
+          handler.close();
+        });
+      }
+    },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       const projectId = project?.id;
       if (!projectId) {
@@ -96,7 +123,7 @@ const ProjectTargetReviewModal = () => {
 
       const memo: string | undefined = values.memo;
 
-      const detailList: ProjectTargetReviewDetailAddParameter[] = (values.detailList as any[])
+      const detailList: ProjectTargetReviewDetailParameter[] = (values.detailList as any[])
       .map((item, index) => {
         const detailErrors: any = {};
 
@@ -131,6 +158,8 @@ const ProjectTargetReviewModal = () => {
           detailErrors.area = '면적은 음수가 될 수 없습니다.';
         }
 
+        const ratio: number = height / Math.sqrt(area);
+
         const specialWindLoadConditionList: string[] = item.specialWindLoadConditionList;
 
         const testList: string[] = item.testList;
@@ -149,12 +178,13 @@ const ProjectTargetReviewModal = () => {
           }
           return null;
         }
-        const detail: ProjectTargetReviewDetailAddParameter = {
+        const detail: ProjectTargetReviewDetailParameter = {
           buildingName,
           floorCount,
           baseCount,
           height,
           area,
+          ratio,
           specialWindLoadConditionList,
           testList,
           memo1,
@@ -163,7 +193,7 @@ const ProjectTargetReviewModal = () => {
         return detail;
       })
       .filter(item => item != null)
-      .map(item => item as ProjectTargetReviewDetailAddParameter);
+      .map(item => item as ProjectTargetReviewDetailParameter);
 
       if (detailList.length === 0) {
         errors['detailList.size'] = '건축물 항목은 하나 이상 필수입니다.';
@@ -176,23 +206,23 @@ const ProjectTargetReviewModal = () => {
         return;
       }
 
-      const params: ProjectTargetReviewAddParameter = {
+      const params: ProjectTargetReviewParameter = {
         title,
         confirmed,
         status,
         memo,
         detailList,
       };
-      add(projectId, params, (list) => {
+      (reviewId ? update : add)((reviewId ?? projectId), params, (list) => {
         if (list) {
           window.alert('저장되었습니다.');
-          clearModal();
-          clearOne();
+          handler.close();
         }
         setSubmitting(false);
       });
     },
     close: () => {
+      setEdit(false);
       clearModal();
       clearOne();
     },
@@ -230,11 +260,17 @@ const ProjectTargetReviewModal = () => {
   useEffect(() => {
     if (typeof reviewId === 'number') {
       getOne(reviewId);
+    } else if (reviewId === null) {
+      setEdit(true);
     }
     return () => {
       clearOne();
     };
   }, [reviewId]);
+
+  useEffect(() => {
+    handler.updateView();
+  }, [detail]);
 
   return (
     <Modal
@@ -277,8 +313,10 @@ const ProjectTargetReviewModal = () => {
               values,
               errors,
               isSubmitting,
+              dirty,
               setFieldValue,
-              handleSubmit
+              handleSubmit,
+              resetForm
             }) => (
               <Form>
                 <Box sx={{
@@ -296,6 +334,7 @@ const ProjectTargetReviewModal = () => {
                         setFieldValue={setFieldValue}
                         errors={errors}
                         options={['Y', 'N']}
+                        disabled={!edit}
                         required
                       />
                     </Grid>
@@ -311,6 +350,7 @@ const ProjectTargetReviewModal = () => {
                           key: item as string,
                           text: projectTargetReviewStatusName(item),
                         }))}
+                        disabled={!edit}
                         required
                       />
                     </Grid>
@@ -321,6 +361,7 @@ const ProjectTargetReviewModal = () => {
                         value={values.title}
                         setFieldValue={setFieldValue}
                         errors={errors}
+                        disabled={!edit}
                         required
                       />
                     </Grid>
@@ -331,65 +372,88 @@ const ProjectTargetReviewModal = () => {
                         value={values.memo}
                         setFieldValue={setFieldValue}
                         errors={errors}
+                        disabled={!edit}
                       />
                     </Grid>
-                    <Grid item sm={1}>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
-                      >
-                        {isSubmitting ? '저장 중' : '저장'}
-                      </Button>
-                    </Grid>
+                    {edit && (
+                      <Grid item sm={1}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          disabled={isSubmitting}
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                        >
+                          {isSubmitting ? '저장 중' : '저장'}
+                        </Button>
+                        {reviewId && (
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            onClick={() => {
+                              if (!dirty || window.confirm('작성중인 내용을 취소하겠습니까?')) {
+                                setEdit(false);
+                                resetForm();
+                              }
+                            }}
+                          >
+                            취소
+                          </Button>
+                        )}
+                      </Grid>
+                    )}
                   </Grid>
                 </Box>
+                {edit && (
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                    p: '10px',
+                    backgroundColor: '#aaa',
+                    flexWrap: 'wrap',
+                  }}>
+                    <Typography variant="h5" sx={{
+                      width: '100%',
+                      mb: '15px'
+                    }}>
+                      KDS 41 10 10 15 건축구조기준 설계하중 (5.1.3 특별풍하중 조건)
+                    </Typography>
+                    <Typography variant="body1" sx={{
+                      width: '100%',
+                    }}>
+                      1) 풍진동의 영향을 고려해야 할 건축물 <br />
+                      2) 특수한 지붕 골조 <br />
+                      3) 골바람교화가 발생하는 건설지점 <br />
+                      4) 인접효과가 우려되는 건축물 <br />
+                      5) 비정형적 형상의 건축물 <br />
+                    </Typography>
+                  </Box>
+                )}
                 <Box sx={{
                   display: 'flex',
                   width: '100%',
                   mb: '40px',
-                  p: '10px',
-                  backgroundColor: '#aaa',
                   flexWrap: 'wrap',
                 }}>
-                  <Typography variant="h5" sx={{
-                    width: '100%',
-                    mb: '15px'
-                  }}>
-                    KDS 41 10 10 15 건축구조기준 설계하중 (5.1.3 특별풍하중 조건)
-                  </Typography>
-                  <Typography variant="body1" sx={{
-                    width: '100%',
-                  }}>
-                    1) 풍진동의 영향을 고려해야 할 건축물 <br />
-                    2) 특수한 지붕 골조 <br />
-                    3) 골바람교화가 발생하는 건설지점 <br />
-                    4) 인접효과가 우려되는 건축물 <br />
-                    5) 비정형적 형상의 건축물 <br />
-                  </Typography>
-                </Box>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                  flexWrap: 'wrap',
-                }}>
-                  <Typography variant="h6" sx={{
-                    width: '100%',
-                    color: '#0bd',
-                  }}>
-                    ※(1)조건은 높이와 면적 입력 후 계산 버튼을 클릭 시 자동으로 계산됩니다.
-                  </Typography>
+                  {edit && (
+                    <Typography variant="h6" sx={{
+                      width: '100%',
+                      color: '#0bd',
+                    }}>
+                      ※(1)조건은 높이와 면적 입력 후 계산 버튼을 클릭 시 자동으로 계산됩니다.
+                    </Typography>
+                  )}
                   <TableContainer sx={{
                     maxHeight: '400px'
                   }}>
                     <Table stickyHeader aria-label="sticky table">
                       <TableHead>
                         <TableRow>
-                          {columns.map(({ label, align, ...props }) => (
+                          {columns
+                          .filter(column => (!edit && column.key !== 'remove') || (edit && column.key !== 'isMinimumTest'))
+                          .map(({ label, align, ...props }) => (
                             <TableCell {...props} align="center">
                               {label}
                             </TableCell>
@@ -403,124 +467,151 @@ const ProjectTargetReviewModal = () => {
                             role="list"
                             tabIndex={-1}
                           >
-                            <TableCell>
+                            <TableCell align={columns[i].align}>
                               <DataField
                                 name={`detailList[${i}].buildingName`}
                                 label="건물(동)"
                                 value={values.detailList[i].buildingName}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                                 required
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align={columns[i].align}>
                               <DataField
+                                type="number"
                                 name={`detailList[${i}].floorCount`}
                                 label="층 수"
                                 value={values.detailList[i].floorCount}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                                 required
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align={columns[i].align}>
                               <DataField
+                                type="number"
                                 name={`detailList[${i}].baseCount`}
                                 label="지하층 수"
                                 value={values.detailList[i].baseCount}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align={columns[i].align}>
                               <DataField
+                                type="number"
                                 name={`detailList[${i}].height`}
                                 label="높이(m)"
                                 value={values.detailList[i].height}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                                 required
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align={columns[i].align}>
                               <DataField
+                                type="number"
                                 name={`detailList[${i}].area`}
                                 label="면적(㎡)"
                                 value={values.detailList[i].area}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                                 required
                               />
                             </TableCell>
-                            <TableCell>
-                              {(+values.detailList[i].ratio).toFixed(2)}
-                              <Button
-                                variant="contained"
-                                onClick={() => {
-                                  const height = values.detailList[i].height;
-                                  const area = values.detailList[i].area;
-                                  if (!height || !area) {
-                                    setFieldValue(`detailList[${i}].ratio`, '');
-                                    return;
-                                  }
-                                  const ratio: number = height / Math.sqrt(area);
-                                  setFieldValue(`detailList[${i}].ratio`, ratio);
-                                }}
-                              >
-                                계산
-                              </Button>
+                            <TableCell align={columns[i].align}>
+                              {!edit && (
+                                <DataField
+                                  type="number"
+                                  name={`detailList[${i}].ratio`}
+                                  label="형상비"
+                                  value={values.detailList[i].ratio}
+                                  setFieldValue={setFieldValue}
+                                  errors={errors}
+                                  labelDisabled
+                                  disabled
+                                />
+                              )}
+                              {edit && (
+                                <>
+                                  {(+values.detailList[i].ratio).toFixed(2)}
+                                  <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                      const height = values.detailList[i].height;
+                                      const area = values.detailList[i].area;
+                                      if (!height || !area) {
+                                        setFieldValue(`detailList[${i}].ratio`, '');
+                                        return;
+                                      }
+                                      const ratio: number = height / Math.sqrt(area);
+                                      setFieldValue(`detailList[${i}].ratio`, ratio);
+                                    }}
+                                  >
+                                    계산
+                                  </Button>
+                                </>
+                              )}
                             </TableCell>
-                            <TableCell>
-                              <CheckboxField
-                                name={`detailList[${i}].specialWindLoadConditionList`}
-                                label="특별풍하중 조건"
-                                value={values.detailList[i].specialWindLoadConditionList}
-                                setFieldValue={setFieldValue}
-                                errors={errors}
-                                options={[
-                                  {
-                                    key: '1',
-                                    text: '(1)',
-                                    tooltip: '1) 풍진동의 영향을 고려해야 할 건축물'
-                                  }, {
-                                    key: '2',
-                                    text: '(2)',
-                                    tooltip: '2) 특수한 지붕 골조'
-                                  }, {
-                                    key: '3',
-                                    text: '(3)',
-                                    tooltip: '3) 골바람교화가 발생하는 건설지점'
-                                  }, {
-                                    key: '4',
-                                    text: '(4)',
-                                    tooltip: '4) 인접효과가 우려되는 건축물'
-                                  }, {
-                                    key: '5',
-                                    text: '(5)',
-                                    tooltip: '5) 비정형적 형상의 건축물'
+                            <TableCell align={columns[i].align}>
+                              {!edit && values.detailList[i].specialWindLoadConditionList?.map(item => (
+                                <Tooltip key={item} title={projectSpecialWindLoadConditionName(item)}>
+                                  <>
+                                    {item}
+                                  </>
+                                </Tooltip>
+                              ))}
+                              {edit && (
+                                <CheckboxField
+                                  name={`detailList[${i}].specialWindLoadConditionList`}
+                                  label="특별풍하중 조건"
+                                  value={values.detailList[i].specialWindLoadConditionList}
+                                  setFieldValue={setFieldValue}
+                                  errors={errors}
+                                  options={
+                                    ['1', '2', '3', '4', '5']
+                                    .map(key => ({
+                                      key,
+                                      text: `(${key})`,
+                                      tooltip: projectSpecialWindLoadConditionName(key),
+                                    }))
                                   }
-                                ]}
-                                labelDisabled
-                                disabledAll
-                              />
+                                  labelDisabled
+                                  disabledAll
+                                />
+                              )}
                             </TableCell>
+                            {!edit && (
+                              <TableCell>
+                                {values.detailList[i].ratio >= 3.0 ? 'Y' : ''}
+                              </TableCell>
+                            )}
                             <TableCell>
-                              <CheckboxField
-                                name={`detailList[${i}].testList`}
-                                label="실험 종류"
-                                value={values.detailList[i].testList}
-                                setFieldValue={setFieldValue}
-                                errors={errors}
-                                options={['F', 'P', 'E', 'A', 'B', '구검']}
-                                labelDisabled
-                                disabledAll
-                                required
-                              />
+                              {!edit && values.detailList[i].testList?.join(', ')}
+                              {edit && (
+                                <CheckboxField
+                                  name={`detailList[${i}].testList`}
+                                  label="실험 종류"
+                                  value={values.detailList[i].testList}
+                                  setFieldValue={setFieldValue}
+                                  errors={errors}
+                                  options={['F', 'P', 'E', 'A', 'B', '구검']}
+                                  labelDisabled
+                                  disabledAll
+                                  required
+                                />
+                              )}
                             </TableCell>
                             <TableCell>
                               <DataField
@@ -529,6 +620,7 @@ const ProjectTargetReviewModal = () => {
                                 value={values.detailList[i].memo1}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                               />
                             </TableCell>
@@ -539,31 +631,34 @@ const ProjectTargetReviewModal = () => {
                                 value={values.detailList[i].memo2}
                                 setFieldValue={setFieldValue}
                                 errors={errors}
+                                disabled={!edit}
                                 labelDisabled
                               />
                             </TableCell>
-                            <TableCell>
-                              <Button
-                                color="warning"
-                                variant="contained"
-                                onClick={() => {
-                                  if (values.detailList.length === 1) {
-                                    window.alert('최소 1개의 건축물 항목이 필요합니다.');
-                                    return;
-                                  }
-                                  if (window.confirm(
-                                    `${values.detailList[i].buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`
-                                  )) {
-                                    setFieldValue('detailList', values.detailList
-                                      .filter((item, j) => i !== j)
-                                    );
-                                  }
-                                }}
-                                fullWidth
-                              >
-                                삭제
-                              </Button>
-                            </TableCell>
+                            {edit && (
+                              <TableCell>
+                                <Button
+                                  color="warning"
+                                  variant="contained"
+                                  onClick={() => {
+                                    if (values.detailList.length === 1) {
+                                      window.alert('최소 1개의 건축물 항목이 필요합니다.');
+                                      return;
+                                    }
+                                    if (window.confirm(
+                                      `${values.detailList[i].buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`
+                                    )) {
+                                      setFieldValue('detailList', values.detailList
+                                        .filter((item, j) => i !== j)
+                                      );
+                                    }
+                                  }}
+                                  fullWidth
+                                >
+                                  삭제
+                                </Button>
+                              </TableCell>
+                            )}
                           </TableRow>
                         ))}
                       </TableBody>
@@ -586,6 +681,36 @@ const ProjectTargetReviewModal = () => {
                     추가
                   </Button>
                 </Box>
+                {!edit && (
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                    justifyContent: 'space-around'
+                  }}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={handler.remove}
+                    >
+                      삭제
+                    </Button>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={handler.edit}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={handler.close}
+                    >
+                      닫기
+                    </Button>
+                  </Box>
+                )}
               </Form>
             )}
           </Formik>

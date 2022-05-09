@@ -7,14 +7,16 @@ import Project, {
   ProjectOrder,
   ProjectTarget,
   ProjectTargetDocument,
+  ProjectTargetReview,
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
   ProjectOrderParameter,
   ProjectQuery,
-  ProjectTargetDocumentAddParameter, ProjectTargetDocumentChangeParameter,
+  ProjectTargetDocumentAddParameter,
+  ProjectTargetDocumentChangeParameter,
   ProjectTargetParameter,
-  ProjectTargetReviewAddParameter
+  ProjectTargetReviewParameter
 } from 'services/project/parameter';
 
 export class ProjectApi {
@@ -70,13 +72,28 @@ export class ProjectApi {
     return data;
   }
 
-  async addTargetReview(projectId: number, params: ProjectTargetReviewAddParameter): Promise<ListProjectTargetReview[]> {
+  async addTargetReview(projectId: number, params: ProjectTargetReviewParameter): Promise<ListProjectTargetReview[]> {
     const { data } = await apiClient.post(`/projects/${projectId}/target/reviews`, params);
     return data;
   }
 
   async confirmTargetReview(id: number): Promise<ListProjectTargetReview[]> {
     const { data } = await apiClient.post(`/project/target/reviews/${id}/confirm`);
+    return data;
+  }
+
+  async updateTargetReview(id: number, params: ProjectTargetReviewParameter): Promise<ListProjectTargetReview[]> {
+    const { data } = await apiClient.patch(`/project/target/reviews/${id}`, params);
+    return data;
+  }
+
+  async removeTargetReview(id: number): Promise<void> {
+    const { data } = await apiClient.delete(`/project/target/reviews/${id}`);
+    return data;
+  }
+
+  async getTargetReview(id: number): Promise<ProjectTargetReview> {
+    const { data } = await apiClient.get(`/project/target/reviews/${id}`);
     return data;
   }
 

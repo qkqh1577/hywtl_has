@@ -41,11 +41,11 @@ const ProjectTargetReviewList = () => {
   const {
     projectState: {
       reviewList: list,
-      reviewDetailModal: modal,
+      reviewModal: modal,
     },
     getTargetReviewList: getList,
     clearTargetReviewList: clearList,
-    setTargetReviewDetailModal: setModal
+    setTargetReviewModal: setModal
   } = useProject();
 
   const handler = {

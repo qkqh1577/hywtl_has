@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project_target_review.service;
 
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReviewDetail;
-import com.howoocast.hywtl_has.project_target_review.parameter.ProjectTargetReviewAddParameter;
+import com.howoocast.hywtl_has.project_target_review.parameter.ProjectTargetReviewParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_target_review.repository.ProjectTargetReviewRepository;
 import com.howoocast.hywtl_has.project_target_review.view.ProjectTargetReviewListView;
@@ -38,8 +38,8 @@ public class ProjectTargetReviewService {
     }
 
     @Transactional
-    public void addReview(Long projectId, String username, ProjectTargetReviewAddParameter params) {
-        ProjectTargetReview.of(
+    public ProjectTargetReviewView addReview(Long projectId, String username, ProjectTargetReviewParameter params) {
+        return ProjectTargetReviewView.assemble(ProjectTargetReview.of(
             projectTargetReviewRepository,
             Project.load(projectRepository, projectId),
             params.getConfirmed(),
@@ -48,6 +48,33 @@ public class ProjectTargetReviewService {
             params.getMemo(),
             User.loadByUsername(userRepository, username),
             params.getDetailList().stream()
+                .map(detailParams -> ProjectTargetReviewDetail.of(
+                    detailParams.getBuildingName(),
+                    detailParams.getFloorCount(),
+                    detailParams.getBaseCount(),
+                    detailParams.getHeight(),
+                    detailParams.getArea(),
+                    detailParams.getSpecialWindLoadConditionList(),
+                    detailParams.getTestList(),
+                    detailParams.getMemo1(),
+                    detailParams.getMemo2()
+                ))
+                .collect(Collectors.toList())
+        ));
+    }
+
+    @Transactional
+    public void updateReview(Long id, ProjectTargetReviewParameter params) {
+        ProjectTargetReview instance = ProjectTargetReview.load(projectTargetReviewRepository, id);
+
+        instance.update(
+            params.getConfirmed(),
+            params.getStatus(),
+            params.getTitle(),
+            params.getMemo(),
+            params.getDetailList().stream()
+                .peek(detailParams ->
+                    log.debug("[Update] test list size: {}", detailParams.getTestList().size()))
                 .map(detailParams -> ProjectTargetReviewDetail.of(
                     detailParams.getBuildingName(),
                     detailParams.getFloorCount(),
@@ -70,4 +97,9 @@ public class ProjectTargetReviewService {
         return ProjectTargetReviewListView.assemble(source);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        ProjectTargetReview instance = ProjectTargetReview.load(projectTargetReviewRepository, id);
+        instance.delete();
+    }
 }

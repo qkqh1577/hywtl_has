@@ -1,7 +1,8 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
 import Project, {
-  ListProject, ListProjectTargetReview,
+  ListProject,
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
   ProjectTarget,
@@ -15,7 +16,7 @@ import {
   ProjectTargetDocumentAddParameter,
   ProjectTargetDocumentChangeParameter,
   ProjectTargetParameter,
-  ProjectTargetReviewAddParameter
+  ProjectTargetReviewParameter
 } from 'services/project/parameter';
 
 export enum ProjectActionType {
@@ -40,11 +41,13 @@ export enum ProjectActionType {
 
   getTargetReviewList = 'project/target/review/getList',
   setTargetReviewList = 'project/target/review/setList',
+  getTargetReview = 'project/target/review/getOne',
+  setTargetReview = 'project/target/review/setOne',
   addTargetReview = 'project/target/review/add',
+  updateTargetReview = 'project/target/review/update',
+  removeTargetReview = 'project/target/review/remove',
   confirmTargetReview = 'project/target/review/confirm',
-  getTargetReviewDetail = 'project/target/review/getDetail',
-  setTargetReviewDetail = 'project/target/review/setDetail',
-  setTargetReviewDetailModal = 'project/target/review/setModal',
+  setTargetReviewModal = 'project/target/review/setModal',
 
   getTargetDocumentList = 'project/target/document/getList',
   setTargetDocumentList = 'project/target/document/setList',
@@ -89,18 +92,27 @@ export const projectActions = {
 
   getTargetReviewList: createAction(ProjectActionType.getTargetReviewList)<number>(),
   setTargetReviewList: createAction(ProjectActionType.setTargetReviewList)<ListProjectTargetReview[] | undefined>(),
+  getTargetReview: createAction(ProjectActionType.getTargetReview)<number>(),
+  setTargetReview: createAction(ProjectActionType.setTargetReview)<ProjectTargetReview | undefined>(),
   addTargetReview: createAction(ProjectActionType.addTargetReview)<{
     projectId: number;
-    params: ProjectTargetReviewAddParameter;
-    callback: (list?: ListProjectTargetReview[]) => void;
+    params: ProjectTargetReviewParameter;
+    callback: (data?: ProjectTargetReview) => void;
   }>(),
   confirmTargetReview: createAction(ProjectActionType.confirmTargetReview)<{
     id: number;
     callback: (list?: ListProjectTargetReview[]) => void;
   }>(),
-  setTargetReviewDetailModal: createAction(ProjectActionType.setTargetReviewDetailModal)<number | null | undefined>(),
-  getTargetReviewDetail: createAction(ProjectActionType.getTargetReviewDetail)<number>(),
-  setTargetReviewDetail: createAction(ProjectActionType.setTargetReviewDetail)<ProjectTargetReview| undefined>(),
+  updateTargetReview: createAction(ProjectActionType.updateTargetReview)<{
+    id: number;
+    params: ProjectTargetReviewParameter;
+    callback: (data?: ProjectTargetReview) => void;
+  }>(),
+  removeTargetReview: createAction(ProjectActionType.removeTargetReview)<{
+    id: number;
+    callback: () => void;
+  }>(),
+  setTargetReviewModal: createAction(ProjectActionType.setTargetReviewModal)<number | null | undefined>(),
 
   getTargetDocumentList: createAction(ProjectActionType.getTargetDocumentList)<number>(),
   setTargetDocumentList: createAction(ProjectActionType.setTargetDocumentList)<ProjectTargetDocument[] | undefined>(),

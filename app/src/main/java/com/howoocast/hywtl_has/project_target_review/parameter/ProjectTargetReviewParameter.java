@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectTargetReviewAddParameter {
+public class ProjectTargetReviewParameter {
 
     @NotNull(message = "project.target.review.confirmed.not-null")
     private Boolean confirmed;

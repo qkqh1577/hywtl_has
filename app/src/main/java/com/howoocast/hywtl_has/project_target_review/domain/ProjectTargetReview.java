@@ -143,7 +143,6 @@ public class ProjectTargetReview {
     //////////////////////////////////
     //// checker
     //////////////////////////////////
-
     public static void checkConfirmed(ProjectTargetReviewRepository repository, Long projectId) {
         if (repository.findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(projectId).isPresent()) {
             throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.CONFIRMED_EXISTS);
@@ -170,6 +169,30 @@ public class ProjectTargetReview {
             .ifPresent(ProjectTargetReview::confirmOff);
         this.confirmed = Boolean.TRUE;
         this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void update(
+        Boolean confirmed,
+        ProjectTargetReviewStatus status,
+        String title,
+        String memo,
+        List<ProjectTargetReviewDetail> detailList
+    ) {
+        if (this.confirmed.equals(Boolean.FALSE) && confirmed.equals(Boolean.TRUE)) {
+            checkConfirmed(this.repository, this.getProjectId());
+        }
+        this.confirmed = confirmed;
+        this.status = status;
+        this.title = title;
+        this.memo = memo;
+        this.detailList = detailList;
+        this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void delete() {
+        this.deletedTime = LocalDateTime.now();
         this.save();
     }
 
