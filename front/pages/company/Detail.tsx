@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect } from "react";
 import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
-import {CompanyView, initCompanyView} from "services/company/view";
 import {useNavigate, useParams} from "react-router-dom";
 import useCompany from "services/company/hook";
 
@@ -71,6 +70,18 @@ const Page = () => {
               </Grid>
               <Grid item sm={6} xs={12}>
                 <TextField
+                  name="phone"
+                  label="대표 전화번호"
+                  value={detail?.phone || ''}
+                  variant="standard"
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item sm={12} xs={12}>
+                <TextField
                   name="companyNumber"
                   label="사업자번호"
                   value={detail?.companyNumber || ''}
@@ -98,18 +109,6 @@ const Page = () => {
                   name="zipCode"
                   label="우편번호"
                   value={detail?.zipCode || ''}
-                  variant="standard"
-                  fullWidth
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  name="phone"
-                  label="대표 전화번호"
-                  value={detail?.phone || ''}
                   variant="standard"
                   fullWidth
                   InputProps={{
