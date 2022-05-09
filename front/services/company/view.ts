@@ -4,7 +4,8 @@ export type ManagerView = {
   mobile?: string,
   phone?: string,
   email?: string,
-  state?: boolean
+  meta?: string[],
+  state?: string
 }
 
 export const initManagerView: ManagerView[] = [{
@@ -13,7 +14,8 @@ export const initManagerView: ManagerView[] = [{
   mobile: '',
   phone: '',
   email: '',
-  state: true,
+  meta: [''],
+  state: '재직',
 }]
 
 
@@ -42,6 +44,7 @@ export const initCompanyView: CompanyView = {
     mobile: '',
     phone: '',
     email: '',
-    state: true
+    meta: [''],
+    state: ''
   }]
 }

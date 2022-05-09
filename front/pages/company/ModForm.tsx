@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {useNavigate, useParams} from "react-router-dom";
-import {initManagerView, ManagerView} from "services/company/view";
+import {initCompanyView, initManagerView, ManagerView} from "services/company/view";
 import {CompanyChangeParameter} from "services/company/parameters";
 import useCompany from "services/company/hook";
 
@@ -64,7 +64,6 @@ const Page = () => {
     }
   };
 
-
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
@@ -75,25 +74,7 @@ const Page = () => {
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <Formik
-              initialValues={detail || {
-                name: '',
-                representativeName: '',
-                phone: '',
-                companyNumber: '',
-                address: '',
-                zipCode: '',
-                memo: '',
-                managerList: [{
-                  id: undefined,
-                  name: '',
-                  position: '',
-                  mobile: '',
-                  phone: '',
-                  email: '',
-                  meta: '',
-                  state: '재직'
-                }]
-              }}
+              initialValues={detail || initCompanyView}
               enableReinitialize
               onSubmit={handler.submit}
             >
@@ -231,9 +212,6 @@ const Page = () => {
                             variant="contained"
                             color="primary"
                             style={{marginRight: '5px'}}
-                            onClick={() => {
-                              setManagerView([...managerView, ...initManagerView])
-                            }}
                           >
                             추가
                           </Button>
