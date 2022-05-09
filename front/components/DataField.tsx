@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  InputAdornment,
-  MenuItem,
-  TextField
+  InputAdornment, MenuItem,
+  TextField, Tooltip
 } from '@mui/material';
-import { ErrorMessage, FormikValues, FormikErrors } from 'formik';
+import { FormikValues, FormikErrors } from 'formik';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 import { toAmount, toAmountKor } from 'util/NumberUtil';
 
@@ -13,6 +12,7 @@ export type DataFieldValue = string | number;
 export type Option = {
   key: DataFieldValue;
   text: DataFieldValue;
+  tooltip?: string;
 }
 
 export type DataFieldProps = {
@@ -21,9 +21,10 @@ export type DataFieldProps = {
   name: string;
   label: string;
   placeholder?: string;
+  tooltip?: string;
   value: DataFieldValue | '';
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  errors: FormikErrors<FormikValues>,
+  errors: FormikErrors<FormikValues>;
   required?: boolean;
   disabled?: boolean;
   options?: Option[] | DataFieldValue[];
@@ -33,6 +34,7 @@ export type DataFieldProps = {
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   size?: 'small';
+  labelDisabled?: boolean;
 }
 export const optionKey = (option: Option | DataFieldValue): DataFieldValue => {
   if (typeof option === 'string' || typeof option === 'number') {
@@ -50,30 +52,41 @@ export const optionText = (option: Option | DataFieldValue): DataFieldValue => {
   return item.text;
 };
 
+export const optionTooltip = (option: Option | DataFieldValue): string | undefined => {
+  if (typeof option === 'string' || typeof option === 'number') {
+    return undefined;
+  }
+  const item: Option = option as Option;
+  return item.tooltip;
+};
+
 const DataField = ({
   type = 'text',
   variant = 'standard',
   name,
   label,
   placeholder,
+  tooltip,
   value,
   setFieldValue,
   errors,
   required,
   disabled,
-  options,
   helperText,
+  options,
   sx,
   onFocus,
   onKeyDown,
   onKeyUp,
-  size
+  size,
+  labelDisabled
 }: DataFieldProps) => {
 
+  const [mouseEnter, setMouseEnter] = useState<boolean>(false);
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   useEffect(() => {
     if (errors && typeof errors[name] === 'string') {
-      setHelperMessage(<ErrorMessage name={name} />);
+      setHelperMessage(errors[name]);
     } else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
@@ -119,38 +132,57 @@ const DataField = ({
   }, [amountKor]);
 
   return (
-    <TextField
-      type={type === 'amount' ? 'string' : type}
-      variant={variant}
-      size={size}
-      select={type === 'select' ? true : undefined}
-      id={`params-${name}`}
-      name={name}
-      value={viewValue}
-      label={label}
-      onChange={(e) => {
-        setViewValue(e.target.value);
-      }}
-      error={typeof errors[name] === 'string'}
-      placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
-      helperText={helperMessage}
-      required={!(disabled === true) && required === true}
-      disabled={disabled === true}
-      sx={sx}
-      InputProps={type !== 'select' ? {
-        onFocus,
-        onKeyDown,
-        onKeyUp,
-        startAdornment: type === 'amount'
-          ? <InputAdornment position="start">₩</InputAdornment>
-          : undefined,
-      } : undefined}
-      fullWidth
+    <Tooltip
+      title={
+        disabled === true
+          ? label
+          : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
+      }
+      open={mouseEnter && viewValue !== '' && typeof tooltip === 'string' && type !== 'select'}
+      placement="bottom-start"
     >
-      {type === 'select' && options && options.map((option) => (
-        <MenuItem key={optionKey(option)} value={optionKey(option)}>{optionText(option)}</MenuItem>
-      ))}
-    </TextField>
+      <TextField
+        type={type === 'amount' ? 'string' : type}
+        select={type === 'select' || undefined}
+        variant={variant}
+        size={size}
+        id={`params-${name}`}
+        name={name}
+        value={viewValue}
+        label={labelDisabled ? undefined : label}
+        onChange={(e) => {
+          setViewValue(e.target.value);
+        }}
+        onMouseEnter={() => {
+          setMouseEnter(true);
+        }}
+        onMouseLeave={() => {
+          setMouseEnter(false);
+        }}
+        error={typeof errors[name] === 'string'}
+        placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
+        helperText={helperMessage}
+        required={!(disabled === true) && required === true}
+        disabled={disabled === true}
+        sx={sx}
+        InputProps={type !== 'select' ? {
+          onFocus,
+          onKeyDown,
+          onKeyUp,
+          startAdornment: type === 'amount'
+            ? <InputAdornment position="start">₩</InputAdornment>
+            : undefined,
+        } : undefined}
+        fullWidth
+      >
+        {type === 'select' && options && options
+        .map((item) => (
+          <MenuItem key={optionKey(item)} value={optionKey(item)}>
+            {optionText(item)}
+          </MenuItem>
+        ))}
+      </TextField>
+    </Tooltip>
   );
 };
 

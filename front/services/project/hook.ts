@@ -3,18 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import { projectActions } from 'services/project/actions';
 import Project, {
+  ListProjectTargetReview,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget, ProjectTargetDocument,
+  ProjectTarget,
+  ProjectTargetDocument,
   ProjectTargetReview
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
   ProjectOrderParameter,
   ProjectQuery,
-  ProjectTargetDocumentAddParameter, ProjectTargetDocumentChangeParameter,
+  ProjectTargetDocumentAddParameter,
+  ProjectTargetDocumentChangeParameter,
   ProjectTargetParameter,
-  ProjectTargetReviewAddParameter
+  ProjectTargetReviewParameter
 } from 'services/project/parameter';
 
 export default function useProject() {
@@ -130,7 +133,7 @@ export default function useProject() {
   );
 
   const setTargetReviewList = useCallback(
-    (list: ProjectTargetReview[]) =>
+    (list: ListProjectTargetReview[]) =>
       dispatch(projectActions.setTargetReviewList(list)),
     [dispatch],
   );
@@ -141,15 +144,57 @@ export default function useProject() {
     [dispatch],
   );
 
+  const getTargetReview = useCallback(
+    (reviewId: number) =>
+      dispatch(projectActions.getTargetReview(reviewId)),
+    [dispatch]
+  );
+
+  const setTargetReview = useCallback(
+    (data: ProjectTargetReview) =>
+      dispatch(projectActions.setTargetReview(data)),
+    [dispatch]
+  );
+
+  const clearTargetReview = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReview(undefined)),
+    [dispatch]
+  );
+
   const addTargetReview = useCallback(
-    (projectId: number, params: ProjectTargetReviewAddParameter, callback: (list?: ProjectTargetReview[]) => void) =>
+    (projectId: number, params: ProjectTargetReviewParameter, callback: (data?: ProjectTargetReview) => void) =>
       dispatch(projectActions.addTargetReview({ projectId, params, callback })),
     [dispatch]
   );
 
   const confirmTargetReview = useCallback(
-    (id: number, callback: (list?: ProjectTargetReview[]) => void) =>
+    (id: number, callback: (list?: ListProjectTargetReview[]) => void) =>
       dispatch(projectActions.confirmTargetReview({ id, callback })),
+    [dispatch]
+  );
+
+  const updateTargetReview = useCallback(
+    (id: number, params: ProjectTargetReviewParameter, callback: (data?: ProjectTargetReview) => void) =>
+      dispatch(projectActions.updateTargetReview({ id, params, callback })),
+    [dispatch]
+  );
+
+  const removeTargetReview = useCallback(
+    (id: number, callback: () => void) =>
+      dispatch(projectActions.removeTargetReview({ id, callback })),
+    [dispatch]
+  );
+
+  const setTargetReviewModal = useCallback(
+    (reviewId: number | null) =>
+      dispatch(projectActions.setTargetReviewModal(reviewId)),
+    [dispatch],
+  );
+
+  const clearTargetReviewModal = useCallback(
+    () =>
+      dispatch(projectActions.setTargetReviewModal(undefined)),
     [dispatch]
   );
 
@@ -193,8 +238,15 @@ export default function useProject() {
     getTargetReviewList,
     setTargetReviewList,
     clearTargetReviewList,
+    getTargetReview,
+    setTargetReview,
+    clearTargetReview,
     addTargetReview,
     confirmTargetReview,
+    updateTargetReview,
+    removeTargetReview,
+    setTargetReviewModal,
+    clearTargetReviewModal,
     getTargetDocumentList,
     addTargetDocument,
     updateTargetDocument,

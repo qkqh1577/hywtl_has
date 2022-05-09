@@ -1,14 +1,18 @@
-package com.howoocast.hywtl_has.project.domain;
+package com.howoocast.hywtl_has.project_target_review.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.common.ProjectTargetReviewStatus;
-import com.howoocast.hywtl_has.project.repository.ProjectTargetReviewRepository;
+import com.howoocast.hywtl_has.project_target_review.common.ProjectTargetReviewStatus;
+import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project_target_review.exception.ProjectTargetReviewException;
+import com.howoocast.hywtl_has.project_target_review.exception.ProjectTargetReviewException.ProjectTargetReviewExceptionType;
+import com.howoocast.hywtl_has.project_target_review.repository.ProjectTargetReviewRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,8 +21,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,6 +49,8 @@ public class ProjectTargetReview {
     @Column(nullable = false)
     private ProjectTargetReviewStatus status;
 
+    @NotNull
+    @Column(nullable = false)
     private Boolean confirmed;
 
     @NotBlank
@@ -54,6 +62,10 @@ public class ProjectTargetReview {
     @NotNull
     @ManyToOne
     private User writer;
+
+    @NotEmpty
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST})
+    private List<ProjectTargetReviewDetail> detailList;
 
     @NotNull
     @Column(nullable = false, updatable = false)
@@ -86,17 +98,25 @@ public class ProjectTargetReview {
     public static ProjectTargetReview of(
         ProjectTargetReviewRepository repository,
         Project project,
+        Boolean confirmed,
+        ProjectTargetReviewStatus status,
         String title,
         String memo,
-        User writer
+        User writer,
+        List<ProjectTargetReviewDetail> detailList
     ) {
+        if (Objects.equals(confirmed, Boolean.TRUE)) {
+            checkConfirmed(repository, project.getId());
+        }
+
         ProjectTargetReview instance = new ProjectTargetReview();
         instance.project = project;
+        instance.confirmed = confirmed;
+        instance.status = status;
         instance.title = title;
         instance.memo = memo;
         instance.writer = writer;
-        instance.status = ProjectTargetReviewStatus.DRAFT;
-        instance.confirmed = Boolean.FALSE;
+        instance.detailList = detailList;
         instance.createdTime = LocalDateTime.now();
         instance.repository = repository;
         instance.save();
@@ -123,13 +143,18 @@ public class ProjectTargetReview {
     //////////////////////////////////
     //// checker
     //////////////////////////////////
+    public static void checkConfirmed(ProjectTargetReviewRepository repository, Long projectId) {
+        if (repository.findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(projectId).isPresent()) {
+            throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.CONFIRMED_EXISTS);
+        }
+    }
 
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
     public void confirmOff() {
         if (this.confirmed.equals(Boolean.FALSE)) {
-            throw new IllegalRequestException("project.target.review.already-not-confirmed", "이미 확정 취소된 검토입니다.");
+            throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.ALREADY_UNCONFIRMED);
         }
         this.confirmed = Boolean.FALSE;
         this.updatedTime = LocalDateTime.now();
@@ -138,12 +163,36 @@ public class ProjectTargetReview {
 
     public void confirmOn() {
         if (this.confirmed.equals(Boolean.TRUE)) {
-            throw new IllegalRequestException("project.target.review.already-confirmed", "이미 확정된 검토입니다.");
+            throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.ALREADY_CONFIRMED);
         }
         this.repository.findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(this.project.getId())
             .ifPresent(ProjectTargetReview::confirmOff);
         this.confirmed = Boolean.TRUE;
         this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void update(
+        Boolean confirmed,
+        ProjectTargetReviewStatus status,
+        String title,
+        String memo,
+        List<ProjectTargetReviewDetail> detailList
+    ) {
+        if (this.confirmed.equals(Boolean.FALSE) && confirmed.equals(Boolean.TRUE)) {
+            checkConfirmed(this.repository, this.getProjectId());
+        }
+        this.confirmed = confirmed;
+        this.status = status;
+        this.title = title;
+        this.memo = memo;
+        this.detailList = detailList;
+        this.updatedTime = LocalDateTime.now();
+        this.save();
+    }
+
+    public void delete() {
+        this.deletedTime = LocalDateTime.now();
         this.save();
     }
 

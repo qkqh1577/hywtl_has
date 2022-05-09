@@ -9,7 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   SvgIcon,
-  Toolbar,
+  Toolbar, Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -238,26 +238,32 @@ const App = () => {
                   />
                 )}
               </Formik>
-              <IconButton color="warning">
-                <NotificationsIcon />
-                <Typography color="white">
-                  4
-                </Typography>
-              </IconButton>
-              <IconButton
-                color="info"
-                onClick={() => {
-                  console.log(login);
-                }}
-              >
-                <AccountIcon />
-              </IconButton>
-              <IconButton
-                color="info"
-                onClick={handler.logout}
-              >
-                <LogoutIcon />
-              </IconButton>
+              <Tooltip title="알림" placement="bottom">
+                <IconButton color="warning">
+                  <NotificationsIcon />
+                  <Typography color="white">
+                    4
+                  </Typography>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="계정 정보" placement="bottom">
+                <IconButton
+                  color="info"
+                  onClick={() => {
+                    console.log(login);
+                  }}
+                >
+                  <AccountIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="로그아웃" placement="bottom">
+                <IconButton
+                  color="info"
+                  onClick={handler.logout}
+                >
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
           )}
         </Toolbar>

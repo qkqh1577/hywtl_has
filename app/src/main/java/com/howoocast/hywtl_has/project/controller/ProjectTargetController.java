@@ -3,10 +3,8 @@ package com.howoocast.hywtl_has.project.controller;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetDocumentAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetDocumentChangeParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetParameter;
-import com.howoocast.hywtl_has.project.parameter.ProjectTargetReviewAddParameter;
 import com.howoocast.hywtl_has.project.service.ProjectTargetService;
 import com.howoocast.hywtl_has.project.view.ProjectTargetDocumentView;
-import com.howoocast.hywtl_has.project.view.ProjectTargetReviewView;
 import com.howoocast.hywtl_has.project.view.ProjectTargetView;
 import java.util.List;
 import javax.validation.Valid;
@@ -35,24 +33,9 @@ public class ProjectTargetController {
         return projectTargetService.getOne(projectId);
     }
 
-    @GetMapping("/projects/{projectId}/target/reviews")
-    public List<ProjectTargetReviewView> getReviewList(@PathVariable Long projectId) {
-        return projectTargetService.getReviewList(projectId);
-    }
-
     @GetMapping("/projects/{projectId}/target/documents")
     public List<ProjectTargetDocumentView> getDocumentList(@PathVariable Long projectId) {
         return projectTargetService.getDocumentList(projectId);
-    }
-
-    @PostMapping("/projects/{projectId}/target/reviews")
-    public List<ProjectTargetReviewView> addReview(
-        @PathVariable Long projectId,
-        Authentication authentication,
-        @Valid @RequestBody ProjectTargetReviewAddParameter params
-    ) {
-        projectTargetService.addReview(projectId, authentication.getName(), params);
-        return projectTargetService.getReviewList(projectId);
     }
 
     @PostMapping("/projects/{projectId}/target/documents")
@@ -63,12 +46,6 @@ public class ProjectTargetController {
     ) {
         projectTargetService.addDocument(projectId, authentication.getName(), params);
         return projectTargetService.getDocumentList(projectId);
-    }
-
-    @PostMapping("/project/target/reviews/{id}/confirm")
-    public List<ProjectTargetReviewView> confirmReview(@PathVariable Long id) {
-        ProjectTargetReviewView source = projectTargetService.confirmReview(id);
-        return projectTargetService.getReviewList(source.getProjectId());
     }
 
     @PutMapping("/projects/{projectId}/target")

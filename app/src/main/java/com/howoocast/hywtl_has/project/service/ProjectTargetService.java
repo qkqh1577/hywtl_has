@@ -5,16 +5,12 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemEx
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetDocument;
-import com.howoocast.hywtl_has.project.domain.ProjectTargetReview;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetDocumentAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetDocumentChangeParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetParameter;
-import com.howoocast.hywtl_has.project.parameter.ProjectTargetReviewAddParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project.repository.ProjectTargetDocumentRepository;
-import com.howoocast.hywtl_has.project.repository.ProjectTargetReviewRepository;
 import com.howoocast.hywtl_has.project.view.ProjectTargetDocumentView;
-import com.howoocast.hywtl_has.project.view.ProjectTargetReviewView;
 import com.howoocast.hywtl_has.project.view.ProjectTargetView;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
@@ -31,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectTargetService {
 
-    private final ProjectTargetReviewRepository projectTargetReviewRepository;
     private final ProjectTargetDocumentRepository projectTargetDocumentRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
@@ -43,11 +38,6 @@ public class ProjectTargetService {
         return ProjectTargetView.assemble(Project.load(projectRepository, projectId).getTarget());
     }
 
-    @Transactional(readOnly = true)
-    public List<ProjectTargetReviewView> getReviewList(Long projectId) {
-        return ProjectTargetReview.loadByProjectId(projectTargetReviewRepository, projectId).stream()
-            .map(ProjectTargetReviewView::assemble).collect(Collectors.toList());
-    }
 
     @Transactional(readOnly = true)
     public List<ProjectTargetDocumentView> getDocumentList(Long projectId) {
@@ -63,23 +53,6 @@ public class ProjectTargetService {
             );
     }
 
-    @Transactional
-    public void addReview(Long projectId, String username, ProjectTargetReviewAddParameter params) {
-        ProjectTargetReview.of(
-            projectTargetReviewRepository,
-            Project.load(projectRepository, projectId),
-            params.getTitle(),
-            params.getMemo(),
-            User.loadByUsername(userRepository, username)
-        );
-    }
-
-    @Transactional
-    public ProjectTargetReviewView confirmReview(Long id) {
-        ProjectTargetReview source = ProjectTargetReview.load(projectTargetReviewRepository, id);
-        source.confirmOn();
-        return ProjectTargetReviewView.assemble(source);
-    }
 
     @Transactional
     public void addDocument(

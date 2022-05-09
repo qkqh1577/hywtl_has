@@ -45,7 +45,6 @@ import {
   initLanguageView,
 } from 'services/personnel/view';
 import FileItemParameter from 'services/common/file-item/parameter';
-import { ListDepartment } from 'services/department/entity';
 
 const PersonnelDetail = () => {
   const navigate = useNavigate();
@@ -138,9 +137,9 @@ const PersonnelDetail = () => {
       .map((item, index) => {
         const jobErrors: any = {};
 
-        const department: ListDepartment = item.department;
-        if (!department) {
-          jobErrors.department = '부서 선택은 필수입니다.';
+        const departmentId: number = item.departmentId;
+        if (!departmentId) {
+          jobErrors.departmentId = '부서 선택은 필수입니다.';
         }
 
         const jobTitle: string = item.jobTitle;
@@ -166,7 +165,7 @@ const PersonnelDetail = () => {
           return null;
         }
         const job: PersonnelJobParameter = {
-          departmentId: department.id,
+          departmentId,
           jobTitle,
           jobType,
           jobPosition,
@@ -416,7 +415,7 @@ const PersonnelDetail = () => {
             recommender: detail.company.recommender ?? view.company.recommender,
           },
           jobList: detail.jobList.map((job) => ({
-            department: job.department,
+            departmentId: job.department.id,
             jobTitle: job.jobTitle,
             jobType: job.jobType,
             jobPosition: job.jobPosition,
@@ -652,10 +651,11 @@ const PersonnelDetail = () => {
                           <Grid container spacing={2} wrap="nowrap">
                             <Grid item sm={4}>
                               <DepartmentSelector
-                                name={`jobList[${i}].department`}
+                                name={`jobList[${i}].departmentId`}
                                 label="소속 부서"
-                                value={item.department}
+                                value={item.departmentId}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>

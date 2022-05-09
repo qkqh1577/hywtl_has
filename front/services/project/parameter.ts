@@ -45,10 +45,25 @@ export type ProjectTargetDocumentAddParameter = {
 export type ProjectTargetDocumentChangeParameter = {
   memo?: string;
 }
+export type ProjectTargetReviewDetailParameter = {
+  buildingName: string;
+  floorCount: number;
+  baseCount?: number;
+  height: number;
+  area: number;
+  ratio: number;
+  specialWindLoadConditionList: string[];
+  testList: string[];
+  memo1?: string;
+  memo2?: string;
+}
 
-export type ProjectTargetReviewAddParameter = {
+export type ProjectTargetReviewParameter = {
   title: string;
+  confirmed: boolean;
+  status: ProjectTargetReviewStatus;
   memo?: string;
+  detailList: ProjectTargetReviewDetailParameter[];
 }
 
 export type ProjectTargetParameter = {

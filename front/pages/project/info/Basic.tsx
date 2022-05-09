@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { Container, DataField, UserSelector } from 'components';
+import { Container } from 'components';
 import useProject from 'services/project/hook';
 import { initProjectBasic, ProjectBasicView } from 'services/project/view';
 import { ProjectBasicParameter } from 'services/project/parameter';
@@ -144,217 +143,122 @@ const ProjectBasicDetail = () => {
       title="기본 정보"
       view={view}
       submit={handler.submit}
+      updatedTime={detail?.updatedTime}
       updateView={handler.updateView}
-    >
-      {({ values, errors, setFieldValue, edit }) => (
-        <Grid container spacing={2}>
-          <Grid item sm={2}>
-            <DataField
-              name="code"
-              label="프로젝트 코드"
-              value={values.code}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-              required
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <DataField
-              name="name"
-              label="프로젝트명"
-              value={values.name}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-              required
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              name="alias"
-              label="프로젝트 닉네임"
-              value={values.alias}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              helperText="※최대 5글자"
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <UserSelector
-              name="salesManagerId"
-              label="영업 담당자"
-              value={values.salesManagerId}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-              required
-            />
-          </Grid>
-          <Grid item sm={6}>
-            <DataField
-              name="address"
-              label="주소"
-              value={values.address}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              name="purpose1"
-              label="건물 용도1"
-              value={values.purpose1}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              name="purpose2"
-              label="건물 용도1"
-              value={values.purpose2}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <UserSelector
-              name="projectManagerId"
-              label="담당 PM"
-              value={values.projectManagerId}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-              required
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="buildingCount"
-              label="총 동 수"
-              value={values.buildingCount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="householdCount"
-              label="건물 당 세대 수"
-              value={values.householdCount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="floorCount"
-              label="층 수"
-              value={values.floorCount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="baseCount"
-              label="지하층 수"
-              value={values.baseCount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="lotArea"
-              label="대지면적"
-              value={values.lotArea}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="totalArea"
-              label="연면적"
-              value={values.totalArea}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <DataField
-              type="number"
-              name="clientName"
-              label="업체"
-              value={values.clientName}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="select"
-              name="isClientLH"
-              label="업체 LH 여부"
-              value={values.isClientLH}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-              options={['예', '아니요']}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              name="clientManager"
-              label="업체 담당자"
-              value={values.clientManager}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              name="clientPhone"
-              label="업체 담당자 핸드폰"
-              value={values.clientPhone}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <DataField
-              name="clientEmail"
-              label="업체 담당자 이메일"
-              value={values.clientEmail}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-        </Grid>
-      )}
-    </Container>
+      fields={[
+        {
+          sm: 2,
+          name: 'code',
+          label: '프로젝트 코드',
+          required: true
+        },
+        {
+          sm: 6,
+          name: 'name',
+          label: '프로젝트명',
+          required: true,
+        },
+        {
+          sm: 2,
+          name: 'alias',
+          label: '프로젝트 닉네임',
+          helperText: '※최대 5글자',
+        },
+        {
+          sm: 2,
+          type: 'user',
+          name: 'salesManagerId',
+          label: '영업 담당자',
+          required: true,
+        },
+        {
+          sm: 6,
+          name: 'address',
+          label: '주소',
+        },
+        {
+          sm: 2,
+          name: 'purpose1',
+          label: '건물 용도1',
+        },
+        {
+          sm: 2,
+          name: 'purpose2',
+          label: '건물 용도1',
+        },
+        {
+          sm: 2,
+          type: 'user',
+          name: 'projectManagerId',
+          label: '담당 PM',
+          required: true,
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'buildingCount',
+          label: '총 동 수',
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'householdCount',
+          label: '건물 당 세대 수',
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'floorCount',
+          label: '층 수',
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'baseCount',
+          label: '지하층 수',
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'lotArea',
+          label: '대지면적',
+        },
+        {
+          sm: 2,
+          type: 'number',
+          name: 'totalArea',
+          label: '연면적',
+        },
+        {
+          sm: 3,
+          type: 'number',
+          name: 'clientName',
+          label: '업체',
+        },
+        {
+          sm: 2,
+          type: 'select',
+          name: 'isClientLH',
+          label: '업체 LH 여부',
+          options: ['예', '아니요'],
+        },
+        {
+          sm: 2,
+          name: 'clientManager',
+          label: '업체 담당자',
+        },
+        {
+          sm: 2,
+          name: 'clientPhone',
+          label: '업체 담당자 핸드폰',
+        },
+        {
+          sm: 3,
+          name: 'clientEmail',
+          label: '업체 담당자 이메일',
+        }
+      ]}
+    />
   );
 
 

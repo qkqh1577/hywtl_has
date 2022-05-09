@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReview;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;

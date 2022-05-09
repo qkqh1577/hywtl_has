@@ -1,17 +1,14 @@
-import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { DataField } from 'components';
+import { Container } from 'components';
 import {
   initProjectTarget,
   ProjectTargetView
 } from 'services/project/view';
 import useProject from 'services/project/hook';
 import { ProjectTargetParameter } from 'services/project/parameter';
-import Container from 'components/Container';
 
 const ProjectTargetDetail = () => {
-
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
@@ -75,23 +72,15 @@ const ProjectTargetDetail = () => {
       submit={handler.submit}
       updateView={handler.updateView}
       updatedTime={detail?.updatedTime}
-    >
-      {({ values, errors, setFieldValue, edit }) => (
-        <Grid container spacing={2}>
-          <Grid item sm={2}>
-            <DataField
-              type="number"
-              name="landModelCount"
-              label="대지모형 개수"
-              value={values.landModelCount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-        </Grid>
-      )}
-    </Container>
+      fields={[
+        {
+          sm: 2,
+          type: 'number',
+          name: 'landModelCount',
+          label: '대지모형 개수',
+        }
+      ]}
+    />
   );
 };
 export default ProjectTargetDetail;

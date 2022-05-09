@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import useProject from 'services/project/hook';
 import { initProjectOrder, ProjectOrderView } from 'services/project/view';
 import { ProjectOrderParameter } from 'services/project/parameter';
-import { Grid } from '@mui/material';
-import { Container, DataField, DatePicker } from 'components';
+import { Container } from 'components';
 import dayjs from 'dayjs';
 
 const ProjectOrderDetail = () => {
@@ -93,65 +92,42 @@ const ProjectOrderDetail = () => {
       view={view}
       submit={handler.submit}
       updateView={handler.updateView}
-    >
-      {({ values, errors, setFieldValue, edit }) => (
-        <Grid container spacing={2}>
-          <Grid item sm={3}>
-            <DataField
-              type="amount"
-              name="amount"
-              label="총 수주 금액"
-              value={values.amount}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DatePicker
-              name="receivedDate"
-              label="수주일"
-              value={values.receivedDate}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DatePicker
-              name="beginDate"
-              label="착수일"
-              value={values.beginDate}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DatePicker
-              name="closeDate"
-              label="마감일"
-              value={values.closeDate}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              disabled={!edit}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <DataField
-              type="select"
-              name="isOnGoing"
-              label="수주 적용 여부"
-              value={values.isOnGoing}
-              setFieldValue={setFieldValue}
-              errors={errors}
-              options={['예', '아니요']}
-              disabled={!edit}
-            />
-          </Grid>
-        </Grid>
-      )}
-    </Container>
+      updatedTime={detail?.updatedTime}
+      fields={[
+        {
+          sm: 3,
+          type: 'amount',
+          name: 'amount',
+          label: '총 수주 금액',
+
+        },
+        {
+          sm: 2,
+          type: 'date',
+          name: 'receivedDate',
+          label: '수주일',
+        },
+        {
+          sm: 2,
+          type: 'date',
+          name: 'beginDate',
+          label: '착수일',
+        },
+        {
+          sm: 2,
+          type: 'date',
+          name: 'closeDate',
+          label: '마감일',
+        },
+        {
+          sm: 2,
+          type: 'select',
+          name: 'isOnGoing',
+          label: '수주 적용 여부',
+          options: ['예', '아니요']
+        }
+      ]}
+    />
   );
 };
 

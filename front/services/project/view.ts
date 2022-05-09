@@ -1,30 +1,6 @@
 import {
-  ProjectStatus,
   ProjectTargetReviewStatus
 } from 'services/project/entity';
-
-export const projectStatusName = (status: ProjectStatus): string => {
-  if (status === 'ON_GOING') {
-    return '진행중';
-  }
-  if (status === 'TEMPLATE') {
-    return '가등록';
-  }
-  return '';
-};
-
-export const projectTargetReviewStatusName = (status: ProjectTargetReviewStatus): string => {
-  if (status === 'DRAFT') {
-    return '초안';
-  }
-  if (status === 'RECONSIDER') {
-    return '재검토';
-  }
-  if (status === 'COMPLETE') {
-    return '완료';
-  }
-  return '';
-};
 
 export type ProjectFilterView = {
   page: number;
@@ -66,6 +42,27 @@ export type ProjectTargetView = {
   landModelCount: number | '';
 }
 
+export type ProjectTargetReviewDetailView = {
+  buildingName: string;
+  floorCount: number | '';
+  baseCount: number | '';
+  height: number | '';
+  area: number | '';
+  ratio: number | '';
+  specialWindLoadConditionList: string[];
+  testList: string[];
+  memo1: string;
+  memo2: string;
+}
+
+export type ProjectTargetReviewView = {
+  status: ProjectTargetReviewStatus | '';
+  confirmed: 'Y' | 'N' | '';
+  title: string;
+  memo: string;
+  detailList: ProjectTargetReviewDetailView[];
+}
+
 export const initProjectFilter: ProjectFilterView = {
   page: 0,
   size: 10,
@@ -104,5 +101,26 @@ export const initProjectOrder: ProjectOrderView = {
 
 export const initProjectTarget: ProjectTargetView = {
   landModelCount: '',
+};
+
+export const initProjectTargetDetailReview: ProjectTargetReviewDetailView = {
+  buildingName: '',
+  floorCount: '',
+  baseCount: '',
+  height: '',
+  area: '',
+  ratio: '',
+  specialWindLoadConditionList: [],
+  testList: [],
+  memo1: '',
+  memo2: '',
+};
+
+export const initProjectTargetReview: ProjectTargetReviewView = {
+  status: '',
+  confirmed: '',
+  title: '',
+  memo: '',
+  detailList: [initProjectTargetDetailReview],
 };
 

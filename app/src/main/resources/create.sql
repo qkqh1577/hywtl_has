@@ -8,7 +8,7 @@ create table file_item
 	filename varchar(255) not null,
 	path varchar(255) not null,
 	size bigint not null,
-	constraint UK_file_item_file_key unique (file_key)
+	constraint UK_file_item__file_key unique (file_key)
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table department
@@ -95,7 +95,7 @@ create table personnel_job_list
 (
 	personnel_id bigint not null,
 	job_list_id bigint not null,
-	constraint UK_personnel_job_personnel_job_list unique (job_list_id)
+	constraint UK_personnel_job_list__job_list_id unique (job_list_id)
 );
 
 create table personnel_academic_list
@@ -206,3 +206,34 @@ create table project_target_review
 	writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
+create table project_target_review_detail
+(
+	id bigint auto_increment primary key,
+	area double not null,
+	base_count int null,
+	building_name varchar(255) not null,
+	floor_count int not null,
+	height double not null,
+	memo1 varchar(255) null,
+	memo2 varchar(255) null,
+	ratio double not null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_target_review_detail_list
+(
+	project_target_review_id bigint not null,
+	detail_list_id bigint not null,
+	constraint UK_project_target_review_detail_list__detail_list_id unique (detail_list_id)
+);
+
+create table project_target_review_detail_special_wind_load_condition_list
+(
+	project_target_review_detail_id bigint not null,
+	special_wind_load_condition_list varchar(255) null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_target_review_detail_test_list
+(
+	project_target_review_detail_id bigint not null,
+	test_list varchar(255) null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;

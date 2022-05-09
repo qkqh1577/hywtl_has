@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Tooltip } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import dayjs from 'dayjs';
-import { ErrorMessage, FormikErrors, FormikValues } from 'formik';
+import { FormikErrors, FormikValues } from 'formik';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = {
-  value: Date |  null ;
+  value: Date | null;
   name: string;
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
@@ -19,6 +19,7 @@ type Props = {
   disableFuture?: boolean;
   placeholder?: string;
   helperText?: string | React.ReactNode;
+  labelDisabled?: boolean;
 }
 
 const DatePicker = ({
@@ -34,6 +35,7 @@ const DatePicker = ({
   disableFuture,
   placeholder,
   helperText,
+  labelDisabled
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
@@ -65,23 +67,32 @@ const DatePicker = ({
         }
       }}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          id={`params-${name}`}
-          name={name}
-          value={value === null ? '' : dayjs(value).format(format)}
-          label={label}
-          helperText={helperMessage}
-          placeholder={placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`}
-          variant="standard"
-          required={required === true}
-          error={typeof errors[name] === 'string' || typeof error === 'string'}
-          onError={() => {
-            setHelperMessage(<ErrorMessage name={name} />);
-          }}
-          fullWidth
+        <Tooltip
+          title={
+            disabled === true
+              ? label
+              : (placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`)
+          }
+          placement="bottom-end"
         >
-        </TextField>
+          <TextField
+            {...params}
+            id={`params-${name}`}
+            name={name}
+            value={value === null ? '' : dayjs(value).format(format)}
+            label={labelDisabled ? undefined : label}
+            helperText={helperMessage}
+            placeholder={placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`}
+            variant="standard"
+            required={required === true}
+            error={typeof errors[name] === 'string' || typeof error === 'string'}
+            onError={() => {
+              setHelperMessage(error ?? errors[name]);
+            }}
+            fullWidth
+          >
+          </TextField>
+        </Tooltip>
       )}
       allowSameDateSelection
       disableFuture={disableFuture === true}
