@@ -39,22 +39,22 @@ public class ProjectTargetReviewDetail {
 
     @NotNull
     @Column(nullable = false)
-    private Double area; // 면적(m^2)
+    private Double area; // 면적(㎡)
 
     @NotNull
     @Column(nullable = false)
     private Double ratio; // 형상비
 
     @ElementCollection
-    private List<String> specialWindLoadConditionList;
+    private List<String> specialWindLoadConditionList; // 특별풍하중 조건
 
     @NotEmpty
     @ElementCollection
-    private List<String> testList;
+    private List<String> testList; // 실험 종류
 
-    private String memo1;
+    private String memo1; // 비고1
 
-    private String memo2;
+    private String memo2; // 비고2
 
     //////////////////////////////////
     //// constructor

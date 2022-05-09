@@ -6,12 +6,15 @@ import {
   FormikProps
 } from 'formik';
 import {
+  Accordion, AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Divider,
   Grid,
   IconButton,
   Paper,
+  Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -19,18 +22,18 @@ import {
   EditOff as ResetIcon,
   SaveAs as SaveIcon
 } from '@mui/icons-material';
+import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import {
   CheckboxField,
   DataField,
+  DataSelector,
   DataFieldValue,
   DateFormat,
   DatePicker,
+  DepartmentSelector,
   Option,
   UserSelector
 } from 'components/index';
-import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
-import DataSelector from 'components/DataSelector';
-import DepartmentSelector from 'components/DepartmentSelector';
 
 type State = {
   values: any;
@@ -238,7 +241,8 @@ const Container = ({
   );
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
+    <Paper
+      sx={{ width: '100%', boxSizing: 'border-box', padding: '30px' }}>
       <Formik
         initialValues={view}
         onSubmit={handler.submit}
@@ -246,177 +250,199 @@ const Container = ({
       >
         {({ isSubmitting, dirty, handleSubmit, resetForm, values, errors, setFieldValue }) => (
           <Form>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-              mb: '40px',
-            }}>
-              <Grid container spacing={2} sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}>
-                <Grid item sx={{
+            <Accordion
+              expanded={open}
+              onChange={() => {
+                setOpen(!open);
+              }}
+            >
+              <AccordionSummary>
+                <Box sx={{
                   display: 'flex',
-                  flexWrap: 'nowrap',
-                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
                 }}>
-                  <Typography
-                    sx={{
-                      fontWeight: 'bold',
-                      marginRight: '4px'
-                    }}
-                  >
-                    {title}
-                  </Typography>
-                  {open && edit && (
-                    <>
-                      <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: '4px'
-                      }}>
-                        <IconButton
-                          disabled={isSubmitting || !dirty}
-                          onClick={() => {
-                            handleSubmit();
-                          }}
-                          sx={{
-                            color: '#ffffff',
-                            maxHeight: '21px'
-                          }}>
-                          <SaveIcon />
-                        </IconButton>
-                      </Box>
-                      <Box color="primary" sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        width: '25px',
-                        height: '25px',
-                        backgroundColor: (theme) => theme.palette.primary.main,
-                        borderRadius: '4px'
-                      }}>
-                        <IconButton
-                          onClick={() => {
-                            if (edit && dirty) {
-                              if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
-                                resetForm();
-                                handler.updateView();
-                                setEdit(false);
-                              }
-                            } else {
-                              setEdit(false);
-                            }
-                          }}
-                          sx={{
-                            color: '#ffffff',
-                            maxHeight: '21px'
-                          }}>
-                          <ResetIcon />
-                        </IconButton>
-                      </Box>
-                    </>
-                  )}
-                  {open && !edit && (
-                    <Box color="primary" sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      alignItems: 'center',
-                      width: '25px',
-                      height: '25px',
-                      backgroundColor: (theme) => theme.palette.primary.main,
-                      borderRadius: '4px'
-                    }}>
-                      <IconButton
-                        onClick={handler.edit}
-                        sx={{
-                          color: '#ffffff',
-                          maxHeight: '21px'
-                        }}>
-                        <EditIcon />
-                      </IconButton>
-                    </Box>
-                  )}
-                </Grid>
-                {!edit && (
-                  <Grid item sx={{
+                  <Grid container spacing={2} sx={{
                     display: 'flex',
-                    flexWrap: 'nowrap',
-                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
                   }}>
-                    {updatedTime && (
-                      <>
-                        <Typography
+                    <Grid item sx={{
+                      display: 'flex',
+                      flexWrap: 'nowrap',
+                      alignItems: 'center',
+                    }}>
+                      <Typography
+                        sx={{
+                          fontWeight: 'bold',
+                          marginRight: '4px'
+                        }}
+                      >
+                        {title}
+                      </Typography>
+                      {open && edit && (
+                        <>
+                          <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            width: '25px',
+                            height: '25px',
+                            backgroundColor: (theme) => theme.palette.primary.main,
+                            borderRadius: '4px'
+                          }}>
+                            <Tooltip title="수정 내용 저장" placement="bottom">
+                              <IconButton
+                                disabled={isSubmitting || !dirty}
+                                onClick={() => {
+                                  handleSubmit();
+                                }}
+                                sx={{
+                                  color: '#ffffff',
+                                  maxHeight: '21px'
+                                }}>
+                                <SaveIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
+                          <Box color="primary" sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            width: '25px',
+                            height: '25px',
+                            backgroundColor: (theme) => theme.palette.primary.main,
+                            borderRadius: '4px'
+                          }}>
+                            <Tooltip title="수정 취소" placement="bottom">
+                              <IconButton
+                                onClick={() => {
+                                  if (edit && dirty) {
+                                    if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
+                                      resetForm();
+                                      handler.updateView();
+                                      setEdit(false);
+                                    }
+                                  } else {
+                                    setEdit(false);
+                                  }
+                                }}
+                                sx={{
+                                  color: '#ffffff',
+                                  maxHeight: '21px'
+                                }}>
+                                <ResetIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
+                        </>
+                      )}
+                      {open && !edit && (
+                        <Box color="primary" sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignContent: 'center',
+                          alignItems: 'center',
+                          width: '25px',
+                          height: '25px',
+                          backgroundColor: (theme) => theme.palette.primary.main,
+                          borderRadius: '4px'
+                        }}>
+                          <Tooltip title="내용 수정">
+                            <IconButton
+                              onClick={handler.edit}
+                              sx={{
+                                color: '#ffffff',
+                                maxHeight: '21px'
+                              }}>
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </Grid>
+                    {!edit && (
+                      <Grid item sx={{
+                        display: 'flex',
+                        flexWrap: 'nowrap',
+                        alignItems: 'center',
+                      }}>
+                        {updatedTime && (
+                          <>
+                            <Typography
+                              sx={{
+                                fontWeight: 'bold',
+                                marginRight: '4px'
+                              }}
+                            >
+                              최종수정일시
+                            </Typography>
+                            <Typography
+                              sx={{
+                                marginRight: '8px'
+                              }}
+                            >
+                              <DateFormat date={updatedTime} format="YYYY-MM-DD HH:mm" />
+                            </Typography>
+                          </>
+                        )}
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={handler.toggle}
                           sx={{
-                            fontWeight: 'bold',
-                            marginRight: '4px'
+                            maxHeight: '30px'
                           }}
                         >
-                          최종수정일시
-                        </Typography>
-                        <Typography
-                          sx={{
-                            marginRight: '8px'
-                          }}
-                        >
-                          <DateFormat date={updatedTime} format="YYYY-MM-DD HH:mm" />
-                        </Typography>
-                      </>
+                          {open ? '접기' : '펴기'}
+                        </Button>
+                      </Grid>
                     )}
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={handler.toggle}
-                      sx={{
-                        maxHeight: '30px'
-                      }}
-                    >
-                      {open ? '접기' : '펴기'}
-                    </Button>
                   </Grid>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box sx={{
+                  display: 'flex',
+                  width: '100%',
+                  mb: '40px',
+                }}>
+                  <Grid container spacing={2}>
+                    {Array.isArray(fields) &&
+                    fields.map((child, index) => mapper(child, index, {
+                      values,
+                      setFieldValue,
+                      errors,
+                    }))}
+                    {typeof fields === 'function' &&
+                    fields({ values })
+                    .map((child, index) => mapper(child, index, {
+                      values,
+                      setFieldValue,
+                      errors,
+                    }))
+                    }
+                  </Grid>
+                </Box>
+                {children && (
+                  <>
+                    <Divider />
+                    <Box sx={{
+                      display: 'flex',
+                      width: '100%',
+                      mb: '40px',
+                    }}>
+                      {children}
+                    </Box>
+                  </>
                 )}
-              </Grid>
-            </Box>
-            <Box sx={{
-              display: 'flex',
-              width: '100%',
-              mb: '40px',
-              transition: (theme) => theme.transitions.create('height', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-            }}>
-              <Grid container spacing={2}>
-                {Array.isArray(fields) &&
-                fields.map((child, index) => mapper(child, index, {
-                  values,
-                  setFieldValue,
-                  errors,
-                }))}
-                {typeof fields === 'function' &&
-                fields({ values })
-                .map((child, index) => mapper(child, index, {
-                  values,
-                  setFieldValue,
-                  errors,
-                }))
-                }
-              </Grid>
-            </Box>
+              </AccordionDetails>
+            </Accordion>
           </Form>
         )}
       </Formik>
-      <Divider />
-      {children}
     </Paper>
   );
 };

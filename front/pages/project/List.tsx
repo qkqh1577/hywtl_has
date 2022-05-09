@@ -15,7 +15,8 @@ import {
 import { Formik, FormikHelpers } from 'formik';
 import { Divider, DataField } from 'components';
 import useProject from 'services/project/hook';
-import { initProjectFilter, ProjectFilterView, projectStatusName } from 'services/project/view';
+import { initProjectFilter, ProjectFilterView } from 'services/project/view';
+import { projectStatusName } from 'services/project/data';
 
 type TableCellProperty = {
   key: string;

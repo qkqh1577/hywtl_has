@@ -8,7 +8,6 @@ import Project, {
   ProjectOrder,
   ProjectTarget,
   ProjectTargetDocument,
-  ProjectTargetReview
 } from 'services/project/entity';
 import projectApi from 'services/project/api';
 import { put, takeLatest } from 'redux-saga/effects';

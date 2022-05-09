@@ -3,13 +3,20 @@ import { useParams } from 'react-router-dom';
 import {
   Box,
   Button,
-  Grid, Link,
-  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Grid,
+  Link,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography
 } from '@mui/material';
 import { DateFormat } from 'components';
 import useProject from 'services/project/hook';
-import { projectTargetReviewStatusName } from 'services/project/view';
+import { projectTargetReviewStatusName } from 'services/project/data';
 
 type TableCellProperty = {
   key: string;
@@ -34,12 +41,10 @@ const ProjectTargetReviewList = () => {
   const {
     projectState: {
       reviewList: list,
+      reviewDetailModal: modal,
     },
     getTargetReviewList: getList,
-    setTargetReviewList: setList,
     clearTargetReviewList: clearList,
-    addTargetReview: add,
-    confirmTargetReview: confirm,
     setTargetReviewDetailModal: setModal
   } = useProject();
 
@@ -53,13 +58,13 @@ const ProjectTargetReviewList = () => {
   };
 
   useEffect(() => {
-    if (projectId) {
+    if (!modal && projectId) {
       getList(projectId);
     }
     return () => {
       clearList();
     };
-  }, [projectId]);
+  }, [modal, projectId]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>

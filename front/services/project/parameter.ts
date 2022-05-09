@@ -1,4 +1,5 @@
 import FileItemParameter from 'services/common/file-item/parameter';
+import { ProjectTargetReviewStatus } from 'services/project/entity';
 
 export type ProjectQuery = {
   size: number;
@@ -44,10 +45,24 @@ export type ProjectTargetDocumentAddParameter = {
 export type ProjectTargetDocumentChangeParameter = {
   memo?: string;
 }
+export type ProjectTargetReviewDetailAddParameter = {
+  buildingName: string;
+  floorCount: number;
+  baseCount?: number;
+  height: number;
+  area: number;
+  specialWindLoadConditionList: string[];
+  testList: string[];
+  memo1?: string;
+  memo2?: string;
+}
 
 export type ProjectTargetReviewAddParameter = {
   title: string;
+  confirmed: boolean;
+  status: ProjectTargetReviewStatus;
   memo?: string;
+  detailList: ProjectTargetReviewDetailAddParameter[];
 }
 
 export type ProjectTargetParameter = {

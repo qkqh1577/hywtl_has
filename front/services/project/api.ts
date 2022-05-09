@@ -7,7 +7,6 @@ import Project, {
   ProjectOrder,
   ProjectTarget,
   ProjectTargetDocument,
-  ProjectTargetReview
 } from 'services/project/entity';
 import {
   ProjectBasicParameter,
