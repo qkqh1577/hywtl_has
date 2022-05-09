@@ -1,6 +1,7 @@
 import {
   ProjectTargetReviewStatus
 } from 'services/project/entity';
+import FileItemView from 'services/common/file-item/view';
 
 export type ProjectFilterView = {
   page: number;
@@ -63,6 +64,11 @@ export type ProjectTargetReviewView = {
   detailList: ProjectTargetReviewDetailView[];
 }
 
+export type ProjectTargetDocumentView = {
+  fileItem: FileItemView | null;
+  memo: string;
+}
+
 export const initProjectFilter: ProjectFilterView = {
   page: 0,
   size: 10,
@@ -122,5 +128,10 @@ export const initProjectTargetReview: ProjectTargetReviewView = {
   title: '',
   memo: '',
   detailList: [initProjectTargetDetailReview],
+};
+
+export const initProjectTargetDocument: ProjectTargetDocumentView = {
+  fileItem: null,
+  memo: '',
 };
 

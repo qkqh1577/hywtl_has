@@ -204,15 +204,51 @@ export default function useProject() {
     [dispatch]
   );
 
+  const clearTargetDocumentList = useCallback(
+    () =>
+      dispatch(projectActions.setTargetDocumentList(undefined)),
+    [dispatch]
+  );
+
+  const getTargetDocument = useCallback(
+    (id: number) =>
+      dispatch(projectActions.getTargetDocument(id)),
+    [dispatch]
+  );
+
+  const clearTargetDocument = useCallback(
+    () =>
+      dispatch(projectActions.setTargetDocument(undefined)),
+    [dispatch]
+  );
+
   const addTargetDocument = useCallback(
-    (projectId: number, params: ProjectTargetDocumentAddParameter, callback: (list?: ProjectTargetDocument[]) => void) =>
+    (projectId: number, params: ProjectTargetDocumentAddParameter, callback: (data?: ProjectTargetDocument) => void) =>
       dispatch(projectActions.addTargetDocument({ projectId, params, callback })),
     [dispatch]
   );
 
   const updateTargetDocument = useCallback(
-    (id: number, params: ProjectTargetDocumentChangeParameter, callback: () => void) =>
+    (id: number, params: ProjectTargetDocumentChangeParameter, callback: (data?: ProjectTargetDocument) => void) =>
       dispatch(projectActions.updateTargetDocument({ id, params, callback })),
+    [dispatch]
+  );
+
+  const removeTargetDocument = useCallback(
+    (id: number, callback: () => void) =>
+      dispatch(projectActions.removeTargetDocument({ id, callback })),
+    [dispatch]
+  );
+
+  const setTargetDocumentModal = useCallback(
+    (documentId: number | null) =>
+      dispatch(projectActions.setTargetDocumentModal(documentId)),
+    [dispatch]
+  );
+
+  const clearTargetDocumentModal = useCallback(
+    () =>
+      dispatch(projectActions.setTargetDocumentModal(undefined)),
     [dispatch]
   );
 
@@ -248,7 +284,13 @@ export default function useProject() {
     setTargetReviewModal,
     clearTargetReviewModal,
     getTargetDocumentList,
+    clearTargetDocumentList,
+    getTargetDocument,
+    clearTargetDocument,
     addTargetDocument,
     updateTargetDocument,
+    removeTargetDocument,
+    setTargetDocumentModal,
+    clearTargetDocumentModal
   };
 }

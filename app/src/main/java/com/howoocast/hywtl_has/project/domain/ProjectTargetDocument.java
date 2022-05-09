@@ -129,6 +129,11 @@ public class ProjectTargetDocument {
         this.save();
     }
 
+    public void delete() {
+        this.deletedTime = LocalDateTime.now();
+        this.save();
+    }
+
     private void save() {
         repository.save(this);
     }

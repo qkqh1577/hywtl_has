@@ -538,9 +538,12 @@ const PersonnelDetail = () => {
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <FileInput
-                        id="basic.image"
-                        fileItem={values.basic.image}
+                        name="basic.image"
+                        label="프로필 사진"
+                        value={values.basic.image}
                         setFieldValue={setFieldValue}
+                        errors={errors}
+                        labelDisabled
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
