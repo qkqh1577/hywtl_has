@@ -1,14 +1,16 @@
 export type ManagerView = {
-  name?: string,
-  position?: string,
-  mobile?: string,
-  phone?: string,
-  email?: string,
-  meta?: string[],
-  state?: string
+  id?: number;
+  name?: string;
+  position?: string;
+  mobile?: string;
+  phone?: string;
+  email?: string;
+  meta?: string[];
+  state?: string;
 }
 
 export const initManagerView: ManagerView[] = [{
+  id: undefined,
   name: '',
   position: '',
   mobile: '',
@@ -20,13 +22,13 @@ export const initManagerView: ManagerView[] = [{
 
 
 export type CompanyView = {
-  name: string,
-  representativeName?: string,
-  companyNumber?: string,
-  address?: string,
-  zipCode?: string,
-  phone?: string,
-  memo?: string,
+  name: string;
+  representativeName?: string;
+  companyNumber: string;
+  address?: string;
+  zipCode?: string;
+  phone?: string;
+  memo?: string;
   managerList?: ManagerView[]
 };
 

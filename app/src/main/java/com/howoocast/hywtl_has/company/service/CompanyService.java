@@ -78,6 +78,12 @@ public class CompanyService {
     Company company = companyRepository.findById(id).orElseThrow(NotFoundException::new);
 
     List<Manager> newManagers = new ArrayList<>();
+
+    company.getManagerList()
+        .removeIf(manager -> params.getManagerList().stream()
+            .filter(managerParameter -> managerParameter.getId() != null)
+            .noneMatch(managerParameter -> manager.getId().equals(managerParameter.getId())));
+
     params.getManagerList().stream()
         .forEach(managerParameter -> {
           company.getManagerList().stream()
@@ -106,9 +112,6 @@ public class CompanyService {
               });
         });
     company.getManagerList().addAll(newManagers);
-    company.getManagerList()
-        .removeIf(manager -> params.getManagerList().stream()
-            .noneMatch(managerParameter -> manager.getId().equals(managerParameter.getId())));
 
     company.change(
         params.getName(),

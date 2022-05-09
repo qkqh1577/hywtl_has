@@ -15,6 +15,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {initCompanyView, initManagerView, ManagerView} from "services/company/view";
 import {CompanyChangeParameter} from "services/company/parameters";
 import useCompany from "services/company/hook";
+import CompanyDetail, {ManagerDetail} from "../../services/company/entity";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -28,17 +29,35 @@ const Page = () => {
     return null;
   }
 
-  const [managerView, setManagerView] = useState<ManagerView[]>(initManagerView);
-
   const { companyState: {detail}, change, getOne } = useCompany();
+
+  const [company, setCompany] = useState<CompanyDetail>(initCompanyView as CompanyDetail);
 
   useEffect(() => {
     getOne(id);
-  }, [id])
+  }, [id]);
+
+  useEffect(() => {
+    setCompany(detail as CompanyDetail);
+  }, [detail]);
 
   const handler = {
     toPage: () => {
       navigate('/company');
+    },
+
+    addManager: (i: number) => {
+      let {managerList, ...rest} = company;
+      const addedManager: ManagerView = {
+        name: '',
+        position: '',
+        mobile: '',
+        phone: '',
+        email: '',
+        state: '재직'
+      }
+      managerList = [...managerList as ManagerDetail[], {...addedManager} as ManagerDetail];
+      setCompany({...rest, managerList});
     },
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
@@ -74,7 +93,7 @@ const Page = () => {
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <Formik
-              initialValues={detail || initCompanyView}
+              initialValues={company || initCompanyView}
               enableReinitialize
               onSubmit={handler.submit}
             >
@@ -212,6 +231,7 @@ const Page = () => {
                             variant="contained"
                             color="primary"
                             style={{marginRight: '5px'}}
+                            onClick={() => {handler.addManager(i)}}
                           >
                             추가
                           </Button>

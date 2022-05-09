@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import useCompany from "services/company/hook";
