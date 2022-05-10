@@ -9,7 +9,7 @@ type FileItemView = {
   multipartFile?: File;
 }
 
-const toReadableSize = (size: number, toBinary?: boolean): string => {
+export const toReadableSize = (size: number, toBinary?: boolean): string => {
   const unit: string[] = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
   const divider: number = toBinary ? 1024 : 1000;
   const memory: number[] = [size];
@@ -20,10 +20,10 @@ const toReadableSize = (size: number, toBinary?: boolean): string => {
     }
     memory.push(temp / divider);
   }
-  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length]}`;
+  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length]}B`;
 };
 
-const getExtension = (filename: string | undefined): string => {
+export const getExtension = (filename: string | undefined): string => {
   if (!filename || !filename.includes('.')) {
     return '';
   }

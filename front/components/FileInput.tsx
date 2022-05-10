@@ -1,43 +1,89 @@
-import { Box, Button, FormControl, Grid, Input, InputLabel } from '@mui/material';
-import { ErrorMessage } from 'formik';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+  Tooltip
+} from '@mui/material';
+import { FormikErrors, FormikValues } from 'formik';
 import React, { useState, createRef, useEffect } from 'react';
 import FileItem from 'services/common/file-item/entity';
 import FileItemParameter from 'services/common/file-item/parameter';
+import FileItemView from 'services/common/file-item/view';
+import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 export type FileInputProps = {
-  id: string;
-  fileItem?: FileItem;
+  variant?: 'standard' | 'filled' | 'outlined';
+  name: string;
+  label: string;
+  placeholder?: string;
+  tooltip?: string;
+  value?: FileItem | FileItemView | null;
   setFieldValue: (field: string, value: any) => void;
+  errors: FormikErrors<FormikValues>;
+  required?: boolean;
+  disabled?: boolean;
+  helperText?: string | React.ReactNode;
+  sx?: any;
+  size?: 'small';
+  labelDisabled?: boolean;
 }
 
-const FileInput = (props: FileInputProps) => {
-  const { id, fileItem, setFieldValue } = props;
+const FileInput = ({
+  variant = 'standard',
+  name,
+  label,
+  placeholder,
+  tooltip,
+  value,
+  setFieldValue,
+  errors,
+  required,
+  disabled,
+  helperText,
+  sx,
+  size,
+  labelDisabled
+}: FileInputProps) => {
+  const [mouseEnter, setMouseEnter] = useState<boolean>(false);
+  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const [params, setParams] = useState<FileItemParameter | undefined>();
   const ref = createRef<HTMLInputElement>();
 
   useEffect(() => {
-    if (fileItem) {
+    if (value) {
       setParams({
-        id: fileItem.id,
+        id: value.id,
       });
     }
-  }, [fileItem]);
+  }, [value]);
 
   useEffect(() => {
     if (params) {
-      setFieldValue(`${id}-temp`, params);
+      setFieldValue(`${name}-temp`, params);
     } else {
-      if (typeof fileItem === 'undefined') {
-        setFieldValue(`${id}-temp`, undefined);
+      if (!value) {
+        setFieldValue(`${name}-temp`, undefined);
       } else {
-        setFieldValue(`${id}`, undefined);
-        setFieldValue(`${id}-temp`, {
-          id: fileItem.id,
+        setFieldValue(`${name}`, undefined);
+        setFieldValue(`${name}-temp`, {
+          id: value.id,
           requestDelete: true,
         });
       }
     }
   }, [params]);
+
+  useEffect(() => {
+    if (errors && typeof errors[name] === 'string') {
+      setHelperMessage(errors[name]);
+    } else if (helperMessage !== helperText) {
+      setHelperMessage(helperText);
+    }
+  }, [errors]);
 
   return (
     <Box
@@ -47,18 +93,52 @@ const FileInput = (props: FileInputProps) => {
         height: '100%',
       }}>
       <Grid container spacing={1} display="flex">
-        <Grid item sm={(fileItem || params) ? 8 : 10}>
-          <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor={`params-${id}-label`}>프로필 사진</InputLabel>
-            <Input
-              type="text"
-              id={`params-${id}.filename`}
-              value={params?.multipartFile?.name ?? fileItem?.filename ?? ''}
-              placeholder="이미지 파일을 선택하세요"
-              disabled
-            />
-            <ErrorMessage name={`params-${id}`} />
-          </FormControl>
+        <Grid item sm={(value || params) ? 8 : 10}>
+          <Tooltip
+            title={
+              disabled === true
+                ? label
+                : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
+            }
+            open={mouseEnter && !!value && typeof tooltip === 'string'}
+            placement="bottom-start"
+          >
+            <FormControl
+              id={`params-${name}`}
+              variant={variant}
+              size={size}
+              required={!(disabled === true) && required === true}
+              disabled={disabled === true}
+              sx={sx}
+              fullWidth
+            >
+              <InputLabel
+                htmlFor={`params-${name}-label`}
+                error={typeof errors[name] === 'string'}
+              >
+                {labelDisabled ? undefined : label}
+              </InputLabel>
+              <Input
+                type="text"
+                id={`params-${name}.filename`}
+                value={params?.multipartFile?.name ?? value?.filename ?? ''}
+                onMouseEnter={() => {
+                  setMouseEnter(true);
+                }}
+                onMouseLeave={() => {
+                  setMouseEnter(false);
+                }}
+                error={typeof errors[name] === 'string'}
+                placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
+                disabled
+              />
+              <FormHelperText
+                error={typeof errors[name] === 'string'}
+              >
+                {helperMessage}
+              </FormHelperText>
+            </FormControl>
+          </Tooltip>
           <input
             type="file"
             accept="image/*"
@@ -90,10 +170,10 @@ const FileInput = (props: FileInputProps) => {
             }}
             fullWidth
           >
-            {fileItem ? '변경' : '추가'}
+            {value ? '변경' : '추가'}
           </Button>
         </Grid>
-        {(fileItem || params) && (
+        {(value || params) && (
           <Grid item sm={2} display="flex">
             <Button
               color="secondary"

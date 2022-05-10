@@ -22,6 +22,8 @@ export type ProjectState = {
   reviewModal?: number | null;
   reviewDetail?: ProjectTargetReview;
   documentList?: ProjectTargetDocument[];
+  documentModal?: number | null;
+  documentDetail?: ProjectTargetDocument;
 }
 
 export const initState: ProjectState = {
@@ -70,6 +72,14 @@ const projectReducer = createReducer(initState, {
     ...state,
     documentList: action.payload,
   }),
+  [ProjectActionType.setTargetDocument]: (state, action) => ({
+    ...state,
+    documentDetail: action.payload,
+  }),
+  [ProjectActionType.setTargetDocumentModal]: (state, action) => ({
+    ...state,
+    documentModal: action.payload,
+  })
 });
 
 export default projectReducer;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,34 +13,43 @@ import {
   MenuItem,
   Paper,
   Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
   TablePagination,
-  TableRow,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { Table, TableCellProperty } from 'components';
 import useDepartment from 'services/department/hook';
 import { DepartmentQuery } from 'services/department/parameter';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ListDepartment } from 'services/department/entity';
 
-type TableCellProperty = {
-  key: string;
-  label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  style?: any;
-}
-
-const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'name', label: '부서명', style: { minWidth: 100 } },
-  { key: 'category', label: '유형', style: { minWidth: 100 } },
-  { key: 'parent', label: '상위 부서', style: { minWidth: 100 } },
-  { key: 'userCount', label: '소속 유저 수', style: { minWidth: 100 } },
-  { key: 'childrenCount', label: '하위 부서 수', style: { minWidth: 100 } },
+const columns: TableCellProperty<ListDepartment>[] = [
+  {
+    label: 'No.',
+    renderCell: (item, i) => i + 1,
+  },
+  {
+    label: '부서명',
+    renderCell: (item) =>
+      <Link to={`/department/${item.id}`}>
+        {item.name}
+      </Link>
+  },
+  {
+    label: '유형',
+    renderCell: (item) => departmentCategoryName(item.category)
+  },
+  {
+    label: '상위 부서',
+    renderCell: (item) => item.parent ? item.parent.name : '-'
+  },
+  {
+    label: '소속 유저 수',
+    renderCell: (item) => item.userCount ?? '-',
+  },
+  {
+    label: '하위 부서 수',
+    renderCell: (item) => item.childrenCount ?? '-',
+  },
 ];
 
 const initFilter: DepartmentQuery = {
@@ -220,38 +230,10 @@ const DepartmentPage = () => {
         maxHeight: 740,
         mb: '20px',
       }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map(({ label, ...props }) => (
-                  <TableCell {...props}>
-                    {label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {page.content.map((item, i) => {
-                const no: number = i + 1;
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
-                    <TableCell>{no}</TableCell>
-                    <TableCell>
-                      <Link to={`/department/${item.id}`}>
-                        {item.name}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{departmentCategoryName(item.category)}</TableCell>
-                    <TableCell>{item.parent ? item.parent.name : '-'}</TableCell>
-                    <TableCell>{item.userCount ?? '-'}</TableCell>
-                    <TableCell>{item.childrenCount ?? '-'}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Table
+          columns={columns}
+          list={page.content}
+        />
       </Box>
       <Box sx={{
         display: 'flex',

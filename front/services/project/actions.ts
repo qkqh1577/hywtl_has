@@ -51,8 +51,12 @@ export enum ProjectActionType {
 
   getTargetDocumentList = 'project/target/document/getList',
   setTargetDocumentList = 'project/target/document/setList',
+  getTargetDocument = 'project/target/document/getOne',
+  setTargetDocument = 'project/target/document/setOne',
   addTargetDocument = 'project/target/document/add',
   updateTargetDocument = 'project/target/document/update',
+  removeTargetDocument = 'project/target/document/remove',
+  setTargetDocumentModal = 'project/target/document/setModal',
 }
 
 export const projectActions = {
@@ -116,14 +120,21 @@ export const projectActions = {
 
   getTargetDocumentList: createAction(ProjectActionType.getTargetDocumentList)<number>(),
   setTargetDocumentList: createAction(ProjectActionType.setTargetDocumentList)<ProjectTargetDocument[] | undefined>(),
+  getTargetDocument: createAction(ProjectActionType.getTargetDocument)<number>(),
+  setTargetDocument: createAction(ProjectActionType.setTargetDocument)<ProjectTargetDocument | undefined>(),
   addTargetDocument: createAction(ProjectActionType.addTargetDocument)<{
     projectId: number;
     params: ProjectTargetDocumentAddParameter;
-    callback: (list?: ProjectTargetDocument[]) => void;
+    callback: (data?: ProjectTargetDocument) => void;
   }>(),
   updateTargetDocument: createAction(ProjectActionType.updateTargetDocument)<{
     id: number;
     params: ProjectTargetDocumentChangeParameter;
-    callback: (list?: ProjectTargetDocument[]) => void;
+    callback: (data?: ProjectTargetDocument) => void;
   }>(),
+  removeTargetDocument: createAction(ProjectActionType.removeTargetDocument)<{
+    id: number;
+    callback: () => void;
+  }>(),
+  setTargetDocumentModal: createAction(ProjectActionType.setTargetDocumentModal)<number | null | undefined>(),
 };

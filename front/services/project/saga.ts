@@ -133,11 +133,16 @@ function* getTargetDocumentList(action: ActionType<typeof projectActions.getTarg
   yield put(projectActions.setTargetDocumentList(list));
 }
 
+function* getTargetDocument(action: ActionType<typeof projectActions.getTargetDocument>) {
+  const data: ProjectTargetDocument = yield projectApi.getTargetDocument(action.payload);
+  yield put(projectActions.setTargetDocument(data));
+}
+
 function* addTargetDocument(action: ActionType<typeof projectActions.addTargetDocument>) {
   const { projectId, params, callback } = action.payload;
   try {
-    const list: ProjectTargetDocument[] = yield projectApi.addTargetDocument(projectId, params);
-    callback(list);
+    const data: ProjectTargetDocument = yield projectApi.addTargetDocument(projectId, params);
+    callback(data);
   } catch (e) {
     callback();
   }
@@ -146,10 +151,20 @@ function* addTargetDocument(action: ActionType<typeof projectActions.addTargetDo
 function* updateTargetDocument(action: ActionType<typeof projectActions.updateTargetDocument>) {
   const { id, params, callback } = action.payload;
   try {
-    const list: ProjectTargetDocument[] = yield projectApi.updateTargetDocument(id, params);
-    callback(list);
+    const data: ProjectTargetDocument = yield projectApi.updateTargetDocument(id, params);
+    callback(data);
   } catch (e) {
     callback();
+  }
+}
+
+function* removeTargetDocument(action: ActionType<typeof projectActions.removeTargetDocument>) {
+  const { id, callback } = action.payload;
+  try {
+    yield projectApi.removeTargetDocument(id);
+    callback();
+  } catch (e) {
+    // nothing to do
   }
 }
 
@@ -170,6 +185,8 @@ export default function* projectSaga() {
   yield takeLatest(ProjectActionType.confirmTargetReview, confirmTargetReview);
   yield takeLatest(ProjectActionType.removeTargetReview, removeTargetReview);
   yield takeLatest(ProjectActionType.getTargetDocumentList, getTargetDocumentList);
+  yield takeLatest(ProjectActionType.getTargetDocument, getTargetDocument);
   yield takeLatest(ProjectActionType.addTargetDocument, addTargetDocument);
   yield takeLatest(ProjectActionType.updateTargetDocument, updateTargetDocument);
+  yield takeLatest(ProjectActionType.removeTargetDocument, removeTargetDocument);
 }

@@ -53,6 +53,7 @@ export type ProjectOrder = {
   isOnGoing?: boolean;
   updatedTime?: Date;
 }
+
 export type ProjectTargetDocument = {
   id: number;
   fileItem: FileItem;
@@ -61,6 +62,7 @@ export type ProjectTargetDocument = {
   createdTime: Date;
   updatedTime?: Date;
 }
+
 export type ListProjectTargetReview = {
   id: number;
   status: ProjectTargetReviewStatus;

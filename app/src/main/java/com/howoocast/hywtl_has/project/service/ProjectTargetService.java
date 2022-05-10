@@ -32,17 +32,22 @@ public class ProjectTargetService {
     private final UserRepository userRepository;
     private final FileItemService fileItemService;
 
-
     @Transactional(readOnly = true)
     public ProjectTargetView getOne(Long projectId) {
         return ProjectTargetView.assemble(Project.load(projectRepository, projectId).getTarget());
     }
 
-
     @Transactional(readOnly = true)
     public List<ProjectTargetDocumentView> getDocumentList(Long projectId) {
         return ProjectTargetDocument.loadByProjectId(projectTargetDocumentRepository, projectId).stream()
             .map(ProjectTargetDocumentView::assemble).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ProjectTargetDocumentView getDocument(Long documentId) {
+        return ProjectTargetDocumentView.assemble(
+            ProjectTargetDocument.load(projectTargetDocumentRepository, documentId)
+        );
     }
 
     @Transactional
@@ -53,26 +58,31 @@ public class ProjectTargetService {
             );
     }
 
-
     @Transactional
-    public void addDocument(
+    public ProjectTargetDocumentView addDocument(
         Long projectId, String username,
         ProjectTargetDocumentAddParameter params
     ) {
-        ProjectTargetDocument.of(
-            projectTargetDocumentRepository,
-            Project.load(projectRepository, projectId),
-            Optional.ofNullable(fileItemService.build(params.getFileItem()))
-                .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.IO_EXCEPTION)),
-            User.loadByUsername(userRepository, username),
-            params.getMemo()
+        return ProjectTargetDocumentView.assemble(
+            ProjectTargetDocument.of(
+                projectTargetDocumentRepository,
+                Project.load(projectRepository, projectId),
+                Optional.ofNullable(fileItemService.build(params.getFileItem()))
+                    .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.IO_EXCEPTION)),
+                User.loadByUsername(userRepository, username),
+                params.getMemo()
+            )
         );
     }
 
     @Transactional
-    public ProjectTargetDocumentView updateDocument(Long id, ProjectTargetDocumentChangeParameter params) {
-        ProjectTargetDocument source = ProjectTargetDocument.load(projectTargetDocumentRepository, id);
+    public void updateDocument(Long documentId, ProjectTargetDocumentChangeParameter params) {
+        ProjectTargetDocument source = ProjectTargetDocument.load(projectTargetDocumentRepository, documentId);
         source.change(params.getMemo());
-        return ProjectTargetDocumentView.assemble(source);
+    }
+
+    @Transactional
+    public void deleteDocument(Long documentId) {
+        ProjectTargetDocument.load(projectTargetDocumentRepository, documentId).delete();
     }
 }
