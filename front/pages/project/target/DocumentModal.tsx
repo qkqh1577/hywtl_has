@@ -148,6 +148,9 @@ const ProjectTargetDocumentModal = () => {
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
+          flexWrap:'wrap',
+          alignContent: 'center',
+          alignItems: 'center',
           width: '100%',
           height: '50px',
           mb: '40px',
@@ -170,10 +173,8 @@ const ProjectTargetDocumentModal = () => {
               values,
               errors,
               isSubmitting,
-              dirty,
               setFieldValue,
               handleSubmit,
-              resetForm
             }) => (
               <Form>
                 <Box sx={{

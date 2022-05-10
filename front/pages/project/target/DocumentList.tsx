@@ -5,31 +5,52 @@ import {
   Button,
   Grid,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography
 } from '@mui/material';
-import { DateFormat } from 'components';
-import { fileItemToView } from 'services/common/file-item/view';
+import { DateFormat, Table, TableCellProperty } from 'components';
+import { toReadableSize } from 'services/common/file-item/view';
 import useProject from 'services/project/hook';
+import { ProjectTargetDocument } from 'services/project/entity';
 
-type TableCellProperty = {
-  key: string;
-  label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  style?: any;
-}
+const columns: TableCellProperty<ProjectTargetDocument>[] = [
+  {
+    label: '등록일시',
+    align: 'center',
+    width: 150,
+    renderCell: (item) =>
+      <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
+  },
+  {
+    label: '파일명',
+    width: 200,
+    renderCell: (item) => {
+      const size: string = toReadableSize(item.fileItem.size);
+      return `${item.fileItem.filename} (${size})`;
+    }
+  },
+  {
+    label: '다운로드',
+    align: 'center',
+    renderCell: (item) =>
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => {
 
-const columns: TableCellProperty[] = [
-  { key: 'createdTime', label: '등록일시', align: 'center', style: { minWidth: 150 } },
-  { key: 'filename', label: '파일명', style: { minWidth: 150 } },
-  { key: 'download', label: '다운로드', align: 'center', style: { minWidth: 50 } },
-  { key: 'memo', label: '비고', style: { minWidth: 100 } },
-  { key: 'userName', label: '등록자', style: { minWidth: 70 } },
+          window.open(`/file-items/${item.fileItem.id}`, '_blank');
+        }}
+      >
+        다운로드
+      </Button>
+  },
+  {
+    label: '비고',
+    renderCell: item => item.memo
+  },
+  {
+    label: '등록자',
+    renderCell: item => item.writer.name
+  },
 ];
 
 const ProjectTargetDocumentList = () => {
@@ -38,6 +59,7 @@ const ProjectTargetDocumentList = () => {
   const {
     projectState: {
       documentList: list,
+      documentModal: modal,
     },
     getTargetDocumentList: getList,
     clearTargetDocumentList: clearList,
@@ -51,13 +73,13 @@ const ProjectTargetDocumentList = () => {
   };
 
   useEffect(() => {
-    if (projectId) {
+    if (projectId && typeof modal === 'undefined') {
       getList(projectId);
     }
     return () => {
       clearList();
     };
-  }, [projectId]);
+  }, [projectId, modal]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
@@ -110,53 +132,11 @@ const ProjectTargetDocumentList = () => {
         maxHeight: 740,
         mb: '20px',
       }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map(({ label, align, ...props }) => (
-                  <TableCell {...props} align="center">
-                    {label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {list?.map(item => ({
-                ...item,
-                fileItem: fileItemToView(item.fileItem)
-              })).map((item, i) => (
-                <TableRow
-                  key={i}
-                  role="list"
-                  tabIndex={-1}
-                  hover
-                >
-                  <TableCell align={columns[i].align}>
-                    <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {`${item.fileItem.filename} (${item.fileItem.readableSize})`}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                    >
-                      TBD
-                    </Button>
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {item.memo}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {item.writer.name}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Table
+          columns={columns}
+          list={list}
+          hover
+        />
       </Box>
     </Paper>
   );

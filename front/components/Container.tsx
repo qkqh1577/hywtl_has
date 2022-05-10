@@ -6,7 +6,8 @@ import {
   FormikProps
 } from 'formik';
 import {
-  Accordion, AccordionDetails,
+  Accordion,
+  AccordionDetails,
   AccordionSummary,
   Box,
   Button,
@@ -252,9 +253,6 @@ const Container = ({
           <Form>
             <Accordion
               expanded={open}
-              onChange={() => {
-                setOpen(!open);
-              }}
             >
               <AccordionSummary>
                 <Box sx={{
@@ -306,16 +304,19 @@ const Container = ({
                               </IconButton>
                             </Tooltip>
                           </Box>
-                          <Box color="primary" sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            alignItems: 'center',
-                            width: '25px',
-                            height: '25px',
-                            backgroundColor: (theme) => theme.palette.primary.main,
-                            borderRadius: '4px'
-                          }}>
+                          <Box
+                            color="primary"
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignContent: 'center',
+                              alignItems: 'center',
+                              width: '25px',
+                              height: '25px',
+                              backgroundColor: (theme) => theme.palette.primary.main,
+                              borderRadius: '4px'
+                            }}
+                          >
                             <Tooltip title="수정 취소" placement="bottom">
                               <IconButton
                                 onClick={() => {
@@ -332,7 +333,8 @@ const Container = ({
                                 sx={{
                                   color: '#ffffff',
                                   maxHeight: '21px'
-                                }}>
+                                }}
+                              >
                                 <ResetIcon />
                               </IconButton>
                             </Tooltip>
@@ -411,18 +413,18 @@ const Container = ({
                 }}>
                   <Grid container spacing={2}>
                     {Array.isArray(fields) &&
-                    fields.map((child, index) => mapper(child, index, {
-                      values,
-                      setFieldValue,
-                      errors,
-                    }))}
+                      fields.map((child, index) => mapper(child, index, {
+                        values,
+                        setFieldValue,
+                        errors,
+                      }))}
                     {typeof fields === 'function' &&
-                    fields({ values })
-                    .map((child, index) => mapper(child, index, {
-                      values,
-                      setFieldValue,
-                      errors,
-                    }))
+                      fields({ values })
+                      .map((child, index) => mapper(child, index, {
+                        values,
+                        setFieldValue,
+                        errors,
+                      }))
                     }
                   </Grid>
                 </Box>
