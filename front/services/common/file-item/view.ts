@@ -20,7 +20,7 @@ export const toReadableSize = (size: number, toBinary?: boolean): string => {
     }
     memory.push(temp / divider);
   }
-  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length]}`;
+  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length]}B`;
 };
 
 export const getExtension = (filename: string | undefined): string => {

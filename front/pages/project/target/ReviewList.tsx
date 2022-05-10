@@ -62,7 +62,9 @@ const ProjectTargetReviewList = () => {
       getList(projectId);
     }
     return () => {
-      clearList();
+      if (typeof projectId === 'undefined') {
+        clearList();
+      }
     };
   }, [modal, projectId]);
 

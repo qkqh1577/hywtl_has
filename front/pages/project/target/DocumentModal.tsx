@@ -22,7 +22,7 @@ import {
   ProjectTargetDocumentAddParameter,
   ProjectTargetDocumentChangeParameter
 } from 'services/project/parameter';
-import { fileItemToView } from 'services/common/file-item/view';
+import { fileItemToView, toReadableSize } from 'services/common/file-item/view';
 import FileItemParameter from 'services/common/file-item/parameter';
 
 const ProjectTargetDocumentModal = () => {
@@ -148,7 +148,7 @@ const ProjectTargetDocumentModal = () => {
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          flexWrap:'wrap',
+          flexWrap: 'wrap',
           alignContent: 'center',
           alignItems: 'center',
           width: '100%',
@@ -177,21 +177,23 @@ const ProjectTargetDocumentModal = () => {
               handleSubmit,
             }) => (
               <Form>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                  p: '10px',
-                  backgroundColor: '#aaa',
-                  flexWrap: 'wrap',
-                }}>
-                  <Typography variant="body1" sx={{
+                {!documentId && (
+                  <Box sx={{
+                    display: 'flex',
                     width: '100%',
+                    mb: '40px',
+                    p: '10px',
+                    backgroundColor: '#aaa',
+                    flexWrap: 'wrap',
                   }}>
-                    * 파일 크기는 각 10MB를 초과할 수 없습니다.<br />
-                    * 등록 가능한 파일 양식: jpg, webp, png, pdf, ppt(x) doc(x), xls(x), hwp<br />
-                  </Typography>
-                </Box>
+                    <Typography variant="body1" sx={{
+                      width: '100%',
+                    }}>
+                      * 파일 크기는 각 10MB를 초과할 수 없습니다.<br />
+                      * 등록 가능한 파일 양식: jpg, webp, png, pdf, ppt(x) doc(x), xls(x), hwp<br />
+                    </Typography>
+                  </Box>
+                )}
                 <Box sx={{
                   display: 'flex',
                   width: '100%',
@@ -199,14 +201,21 @@ const ProjectTargetDocumentModal = () => {
                 }}>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <FileInput
-                        name="fileItem"
-                        label="파일"
-                        value={values.fileItem}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        required
-                      />
+                      {!documentId && (
+                        <FileInput
+                          name="fileItem"
+                          label="파일"
+                          value={values.fileItem}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          required
+                        />
+                      )}
+                      {documentId && values.fileItem && (
+                        <>
+                          {`${values.fileItem.filename} (${toReadableSize(values.fileItem.size)})`}
+                        </>
+                      )}
                     </Grid>
                     <Grid item sm={3}>
                       <DataField
