@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FileItemRepository extends JpaRepository<FileItem, Long> {
 
-    Optional<FileItem> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<FileItem> findByIdAndDeletedAtIsNull(Long id);
 
-    Optional<FileItem> findByFileKeyAndDeletedTimeIsNull(String fileKey);
+    Optional<FileItem> findByFileKeyAndDeletedAtIsNull(String fileKey);
 }

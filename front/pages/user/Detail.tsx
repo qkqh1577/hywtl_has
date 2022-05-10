@@ -138,7 +138,7 @@ const UserDetail = () => {
                 생성일시
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.createdTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.createdAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -146,7 +146,7 @@ const UserDetail = () => {
                 최근접속일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.loginTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.loginAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -154,7 +154,7 @@ const UserDetail = () => {
                 비밀번호 변경일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.passwordChangedTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.passwordChangedAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
           </Grid>

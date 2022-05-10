@@ -8,14 +8,14 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
 
-    boolean existsByIdAndDeletedTimeIsNull(Long id);
+    boolean existsByIdAndDeletedAtIsNull(Long id);
 
-    List<User> findByDeletedTimeIsNull();
+    List<User> findByDeletedAtIsNull();
 
-    Optional<User> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<User> findByIdAndDeletedAtIsNull(Long id);
 
-    Optional<User> findByUsernameAndDeletedTimeIsNull(String username);
+    Optional<User> findByUsernameAndDeletedAtIsNull(String username);
 
-    Optional<User> findByEmailAndDeletedTimeIsNull(String email);
+    Optional<User> findByEmailAndDeletedAtIsNull(String email);
 
 }

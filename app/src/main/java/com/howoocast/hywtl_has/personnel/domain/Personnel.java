@@ -21,6 +21,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @Entity
@@ -59,12 +63,28 @@ public class Personnel {
     @ElementCollection
     private List<PersonnelLanguage> languageList; // 어학 자격 목록
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime updatedTime;
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
+
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -91,7 +111,7 @@ public class Personnel {
         Long id
     ) {
         Personnel instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("personnel", id));
         instance.repository = repository;
         return instance;
@@ -102,7 +122,7 @@ public class Personnel {
         User user
     ) {
         Personnel instance = repository
-            .findByIdAndDeletedTimeIsNull(user.getId())
+            .findByIdAndDeletedAtIsNull(user.getId())
             .orElse(new Personnel(user));
         instance.repository = repository;
         return instance;
@@ -127,11 +147,6 @@ public class Personnel {
         this.careerList = careerList;
         this.licenseList = licenseList;
         this.languageList = languageList;
-        if (Objects.isNull(this.createdTime)) {
-            this.createdTime = LocalDateTime.now();
-        } else {
-            this.updatedTime = LocalDateTime.now();
-        }
     }
 
 

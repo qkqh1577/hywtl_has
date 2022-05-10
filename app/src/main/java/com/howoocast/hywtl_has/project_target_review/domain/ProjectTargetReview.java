@@ -29,6 +29,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
@@ -67,15 +71,27 @@ public class ProjectTargetReview {
     @OneToMany(cascade = {CascadeType.ALL, CascadeType.PERSIST})
     private List<ProjectTargetReviewDetail> detailList;
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
-    @Column(insertable = false)
-    private LocalDateTime updatedTime;
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
 
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime deletedTime;
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -117,7 +133,6 @@ public class ProjectTargetReview {
         instance.memo = memo;
         instance.writer = writer;
         instance.detailList = detailList;
-        instance.createdTime = LocalDateTime.now();
         instance.repository = repository;
         instance.save();
         return instance;
@@ -128,14 +143,14 @@ public class ProjectTargetReview {
     //////////////////////////////////
     public static ProjectTargetReview load(ProjectTargetReviewRepository repository, Long id) {
         ProjectTargetReview instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("project.target.review", id));
         instance.repository = repository;
         return instance;
     }
 
     public static List<ProjectTargetReview> loadByProjectId(ProjectTargetReviewRepository repository, Long projectId) {
-        return repository.findByProject_IdAndDeletedTimeIsNull(projectId).stream()
+        return repository.findByProject_IdAndDeletedAtIsNull(projectId).stream()
             .peek(item -> item.repository = repository)
             .collect(Collectors.toList());
     }
@@ -144,7 +159,7 @@ public class ProjectTargetReview {
     //// checker
     //////////////////////////////////
     public static void checkConfirmed(ProjectTargetReviewRepository repository, Long projectId) {
-        if (repository.findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(projectId).isPresent()) {
+        if (repository.findByProject_IdAndConfirmedIsTrueAndDeletedAtIsNull(projectId).isPresent()) {
             throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.CONFIRMED_EXISTS);
         }
     }
@@ -157,7 +172,6 @@ public class ProjectTargetReview {
             throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.ALREADY_UNCONFIRMED);
         }
         this.confirmed = Boolean.FALSE;
-        this.updatedTime = LocalDateTime.now();
         this.save();
     }
 
@@ -165,10 +179,9 @@ public class ProjectTargetReview {
         if (this.confirmed.equals(Boolean.TRUE)) {
             throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.ALREADY_CONFIRMED);
         }
-        this.repository.findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(this.project.getId())
+        this.repository.findByProject_IdAndConfirmedIsTrueAndDeletedAtIsNull(this.project.getId())
             .ifPresent(ProjectTargetReview::confirmOff);
         this.confirmed = Boolean.TRUE;
-        this.updatedTime = LocalDateTime.now();
         this.save();
     }
 
@@ -187,12 +200,11 @@ public class ProjectTargetReview {
         this.title = title;
         this.memo = memo;
         this.detailList = detailList;
-        this.updatedTime = LocalDateTime.now();
         this.save();
     }
 
     public void delete() {
-        this.deletedTime = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
         this.save();
     }
 

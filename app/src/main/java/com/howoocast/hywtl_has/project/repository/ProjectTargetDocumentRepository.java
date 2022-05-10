@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjectTargetDocumentRepository extends JpaRepository<ProjectTargetDocument, Long> {
 
-    List<ProjectTargetDocument> findByProject_IdAndDeletedTimeIsNull(Long projectId);
+    List<ProjectTargetDocument> findByProject_IdAndDeletedAtIsNull(Long projectId);
 
-    Optional<ProjectTargetDocument> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<ProjectTargetDocument> findByIdAndDeletedAtIsNull(Long id);
 }

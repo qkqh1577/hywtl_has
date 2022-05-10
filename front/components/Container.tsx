@@ -71,7 +71,7 @@ type Props = {
   view: any;
   submit: (values: any, callback: () => void) => void;
   updateView: () => void;
-  updatedTime?: Date;
+  modifiedAt?: Date;
   readonly?: boolean;
   fields: FieldProps[] | ((state: State) => FieldProps[]);
   children?: React.ReactNode;
@@ -82,7 +82,7 @@ const Container = ({
   view,
   submit,
   updateView,
-  updatedTime,
+  modifiedAt,
   readonly,
   fields,
   children
@@ -371,7 +371,7 @@ const Container = ({
                         flexWrap: 'nowrap',
                         alignItems: 'center',
                       }}>
-                        {updatedTime && (
+                        {modifiedAt && (
                           <>
                             <Typography
                               sx={{
@@ -386,7 +386,7 @@ const Container = ({
                                 marginRight: '8px'
                               }}
                             >
-                              <DateFormat date={updatedTime} format="YYYY-MM-DD HH:mm" />
+                              <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
                             </Typography>
                           </>
                         )}

@@ -12,8 +12,8 @@ public class ProjectCommentView {
     private Long projectId;
     private UserListView writer;
     private String description;
-    private LocalDateTime createdTime;
-    private LocalDateTime updatedTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public static ProjectCommentView assemble(ProjectComment source) {
         ProjectCommentView target = new ProjectCommentView();
@@ -21,8 +21,8 @@ public class ProjectCommentView {
         target.projectId = source.getProject().getId();
         target.writer = UserListView.assemble(source.getWriter());
         target.description = source.getDescription();
-        target.createdTime = source.getCreatedTime();
-        target.updatedTime = source.getUpdatedTime();
+        target.createdAt = source.getCreatedAt();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

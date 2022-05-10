@@ -25,11 +25,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -62,25 +68,35 @@ public class User {
     private UserRole userRole;
 
     @Column(insertable = false)
-    private LocalDateTime loginTime; // 최근 접속일시
+    private LocalDateTime loginAt; // 최근 접속일시
 
     @Column(insertable = false)
-    private LocalDateTime lockedTime; // 잠김 처리일시
+    private LocalDateTime lockedAt; // 잠김 처리일시
 
     @Column(nullable = false)
-    private LocalDateTime passwordChangedTime; // 비밀번호 변경일시
+    private LocalDateTime passwordChangedAt; // 비밀번호 변경일시
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private final LocalDateTime createdTime; // 생성일시
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
-    @NotNull
-    @Column(nullable = false)
-    private final LocalDateTime updatedTime; // 변경일시
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
 
     @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime deletedTime; // 삭제일시
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -89,10 +105,6 @@ public class User {
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    protected User() {
-        this.createdTime = LocalDateTime.now();
-        this.updatedTime = this.createdTime;
-    }
 
     protected User(
         String username,
@@ -116,8 +128,8 @@ public class User {
     //////////////////////////////////
     private void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
-        this.passwordChangedTime = LocalDateTime.now();
-        this.lockedTime = null;
+        this.passwordChangedAt = LocalDateTime.now();
+        this.lockedAt = null;
     }
 
     //////////////////////////////////
@@ -154,7 +166,7 @@ public class User {
         UserRepository repository,
         Long id
     ) {
-        User instance = repository.findByIdAndDeletedTimeIsNull(id)
+        User instance = repository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("user", id));
         instance.repository = repository;
         return instance;
@@ -164,8 +176,9 @@ public class User {
         UserRepository repository,
         String username
     ) {
-        User instance = repository.findByUsernameAndDeletedTimeIsNull(username)
-            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
+        User instance = repository.findByUsernameAndDeletedAtIsNull(username)
+            .orElseThrow(
+                () -> new NotFoundException("user", String.format("username: %s", username)));
         instance.repository = repository;
         return instance;
     }
@@ -174,7 +187,7 @@ public class User {
         UserRepository repository,
         String email
     ) {
-        User instance = repository.findByEmailAndDeletedTimeIsNull(email)
+        User instance = repository.findByEmailAndDeletedAtIsNull(email)
             .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
         instance.repository = repository;
         return instance;
@@ -188,13 +201,13 @@ public class User {
         UserRepository repository,
         String email
     ) {
-        if (repository.findByEmailAndDeletedTimeIsNull(email).isPresent()) {
+        if (repository.findByEmailAndDeletedAtIsNull(email).isPresent()) {
             throw new DuplicatedValueException("email", email);
         }
     }
 
     private void checkEmailUsed() {
-        repository.findByEmailAndDeletedTimeIsNull(this.email).ifPresent(target -> {
+        repository.findByEmailAndDeletedAtIsNull(this.email).ifPresent(target -> {
             if (!Objects.equals(this.id, target.id)) {
                 throw new DuplicatedValueException("email", this.email);
             }
@@ -202,7 +215,7 @@ public class User {
     }
 
     private void checkUsernameUsed() {
-        repository.findByUsernameAndDeletedTimeIsNull(this.username).ifPresent(target -> {
+        repository.findByUsernameAndDeletedAtIsNull(this.username).ifPresent(target -> {
             if (!Objects.equals(this.id, target.id)) {
                 throw new DuplicatedValueException("username", this.username);
             }
@@ -210,11 +223,11 @@ public class User {
     }
 
     private void checkCanLogin(String invalidatePeriod) {
-        if (Objects.nonNull(this.lockedTime)) {
+        if (Objects.nonNull(this.lockedAt)) {
             throw new UserLoginException(UserLoginExceptionType.LOCKED);
         }
 
-        LocalDateTime limitTime = this.passwordChangedTime.plus(Duration.parse(invalidatePeriod));
+        LocalDateTime limitTime = this.passwordChangedAt.plus(Duration.parse(invalidatePeriod));
         if (limitTime.isBefore(LocalDateTime.now())) {
             throw new PasswordException(PasswordExceptionType.EXPIRED);
         }
@@ -257,12 +270,12 @@ public class User {
         String invalidatePeriod
     ) {
         this.checkCanLogin(invalidatePeriod);
-        this.loginTime = LocalDateTime.now();
+        this.loginAt = LocalDateTime.now();
         this.save();
     }
 
     public void lock() {
-        this.lockedTime = LocalDateTime.now();
+        this.lockedAt = LocalDateTime.now();
         this.save();
     }
 
@@ -276,7 +289,7 @@ public class User {
     }
 
     public void delete() {
-        this.deletedTime = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
         this.save();
     }
 

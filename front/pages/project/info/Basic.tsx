@@ -143,7 +143,7 @@ const ProjectBasicDetail = () => {
       title="기본 정보"
       view={view}
       submit={handler.submit}
-      updatedTime={detail?.updatedTime}
+      modifiedAt={detail?.modifiedAt}
       updateView={handler.updateView}
       fields={[
         {

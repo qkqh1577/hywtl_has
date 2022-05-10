@@ -33,13 +33,13 @@ public class FileItemService {
 
     @Transactional(readOnly = true)
     public FileItem get(Long id) {
-        return fileItemRepository.findByIdAndDeletedTimeIsNull(id)
+        return fileItemRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
     public FileItem getByFileKey(String fileKey) {
-        return fileItemRepository.findByFileKeyAndDeletedTimeIsNull(fileKey)
+        return fileItemRepository.findByFileKeyAndDeletedAtIsNull(fileKey)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
@@ -48,7 +48,8 @@ public class FileItemService {
         if (Objects.isNull(params)) {
             return null;
         }
-        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete()) && Objects.isNull(
+        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete())
+            && Objects.isNull(
             params.getMultipartFile())) {
             // 요청이 전부 빈 경우
             throw new FileSystemException(FileSystemExceptionType.ILLEGAL_REQUEST);
@@ -56,13 +57,15 @@ public class FileItemService {
 
         if (Objects.nonNull(params.getId())) {
             // 요청에 파일 id가 있는 경우
-            Optional<FileItem> optional = fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId());
+            Optional<FileItem> optional = fileItemRepository.findByIdAndDeletedAtIsNull(
+                params.getId());
             if (Objects.isNull(params.getRequestDelete()) || !params.getRequestDelete()) {
                 // 기존 파일을 그대로 사용 시
-                return optional.orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
+                return optional.orElseThrow(
+                    () -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId()).ifPresent(fileItem -> {
+            fileItemRepository.findByIdAndDeletedAtIsNull(params.getId()).ifPresent(fileItem -> {
                 fileItem.deleteFile();
                 fileItemRepository.save(fileItem);
             });

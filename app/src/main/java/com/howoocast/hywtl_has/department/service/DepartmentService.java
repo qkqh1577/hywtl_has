@@ -36,7 +36,7 @@ public class DepartmentService {
 
     @Transactional(readOnly = true)
     public List<DepartmentListView> list() {
-        return departmentRepository.findByDeletedTimeIsNull().stream()
+        return departmentRepository.findByDeletedAtIsNull().stream()
             .map(DepartmentListView::assemble)
             .collect(Collectors.toList());
     }

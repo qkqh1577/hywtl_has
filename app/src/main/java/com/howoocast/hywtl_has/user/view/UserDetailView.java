@@ -15,9 +15,9 @@ public class UserDetailView {
     private String name;
     private DepartmentView department;
     private UserRole userRole;
-    private LocalDateTime createdTime;
-    private LocalDateTime loginTime;
-    private LocalDateTime passwordChangedTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime loginAt;
+    private LocalDateTime passwordChangedAt;
 
     public static UserDetailView assemble(User source) {
         UserDetailView target = new UserDetailView();
@@ -27,9 +27,9 @@ public class UserDetailView {
         target.name = source.getName();
         target.department = DepartmentView.assemble(source.getDepartment());
         target.userRole = source.getUserRole();
-        target.createdTime = source.getCreatedTime();
-        target.loginTime = source.getLoginTime();
-        target.passwordChangedTime = source.getPasswordChangedTime();
+        target.createdAt = source.getCreatedAt();
+        target.loginAt = source.getLoginAt();
+        target.passwordChangedAt = source.getPasswordChangedAt();
         return target;
     }
 }

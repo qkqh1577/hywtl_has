@@ -200,7 +200,7 @@ const ProjectCommentList = () => {
                     textAlign: 'center'
                   }}
                 >
-                  <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
+                  <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                 </Typography>
                 <Typography>
                   {item.writer.name}

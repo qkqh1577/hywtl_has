@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjectTargetReviewRepository extends JpaRepository<ProjectTargetReview, Long> {
 
-    List<ProjectTargetReview> findByProject_IdAndDeletedTimeIsNull(Long projectId);
+    List<ProjectTargetReview> findByProject_IdAndDeletedAtIsNull(Long projectId);
 
-    Optional<ProjectTargetReview> findByProject_IdAndConfirmedIsTrueAndDeletedTimeIsNull(Long projectId);
+    Optional<ProjectTargetReview> findByProject_IdAndConfirmedIsTrueAndDeletedAtIsNull(Long projectId);
 
-    Optional<ProjectTargetReview> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<ProjectTargetReview> findByIdAndDeletedAtIsNull(Long id);
 }

@@ -7,6 +7,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface ProjectRepository extends JpaRepository<Project, Long>, QuerydslPredicateExecutor<Project> {
 
-    Optional<Project> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<Project> findByIdAndDeletedAtIsNull(Long id);
 
 }

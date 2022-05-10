@@ -31,6 +31,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 @Slf4j
@@ -62,12 +66,27 @@ public class Department {
 
     private String memo; // 설명
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    protected LocalDateTime createdTime = LocalDateTime.now(); // 생성 일자
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    protected LocalDateTime deletedTime; // 삭제 일자
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @JsonManagedReference
     @OneToMany(mappedBy = "parent")
@@ -114,7 +133,7 @@ public class Department {
 
     private void setNextSeq() {
         this.seq = 1 + repository
-            .countByParent_IdAndDeletedTimeIsNull(
+            .countByParent_IdAndDeletedAtIsNull(
                 Objects.isNull(this.parent)
                     ? null
                     : this.parent.id
@@ -154,7 +173,7 @@ public class Department {
         Long id
     ) {
         Department instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("department", id));
         instance.repository = repository;
         return instance;
@@ -165,7 +184,7 @@ public class Department {
         DepartmentRepository repository,
         Long id
     ) {
-        Department instance = repository.findByIdAndDeletedTimeIsNull(id).orElse(null);
+        Department instance = repository.findByIdAndDeletedAtIsNull(id).orElse(null);
         if (Objects.nonNull(instance)) {
             instance.repository = repository;
         }
@@ -177,7 +196,7 @@ public class Department {
     //////////////////////////////////
 
     private void checkName() {
-        repository.findByNameAndCategoryAndDeletedTimeIsNull(this.name, this.category)
+        repository.findByNameAndCategoryAndDeletedAtIsNull(this.name, this.category)
             .ifPresent(department -> {
                 if (Objects.isNull(this.id) || !Objects.equals(this.id, department.id)) {
                     throw new DepartmentNameDuplicatedException();
@@ -190,7 +209,7 @@ public class Department {
             // 최상위를 선택한 경우
             return;
         }
-        List<Department> list = repository.findByDeletedTimeIsNull();
+        List<Department> list = repository.findByDeletedAtIsNull();
         list.stream()
             .map(item -> getAncestorIdList(item, new ArrayList<>()))
             .filter(idList -> !idList.contains(this.id))
@@ -246,7 +265,7 @@ public class Department {
         @Nullable Long parentId,
         Long childId
     ) {
-        List<Department> childrenList = repository.findByParent_IdAndDeletedTimeIsNullOrderBySeq(parentId).stream()
+        List<Department> childrenList = repository.findByParent_IdAndDeletedAtIsNullOrderBySeq(parentId).stream()
             .filter(item -> !Objects.equals(item.id, childId))
             .collect(Collectors.toList());
         if (childrenList.isEmpty()) {

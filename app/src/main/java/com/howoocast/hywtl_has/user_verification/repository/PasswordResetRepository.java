@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PasswordResetRepository extends JpaRepository<PasswordReset, Long> {
 
-    Optional<PasswordReset> findByEmailAndDeletedTimeIsNull(String email);
+    Optional<PasswordReset> findByEmailAndDeletedAtIsNull(String email);
 }

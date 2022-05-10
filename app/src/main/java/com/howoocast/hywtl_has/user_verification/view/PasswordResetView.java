@@ -9,12 +9,12 @@ public class PasswordResetView {
 
     private String email;
 
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
     public static PasswordResetView assemble(PasswordReset source) {
         PasswordResetView target = new PasswordResetView();
         target.email = source.getEmail();
-        target.createdTime = source.getCreatedTime();
+        target.createdAt = source.getCreatedAt();
         return target;
     }
 }

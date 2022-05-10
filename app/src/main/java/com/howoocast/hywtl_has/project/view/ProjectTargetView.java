@@ -11,7 +11,7 @@ public class ProjectTargetView {
 
     private Integer landModelCount;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public static ProjectTargetView assemble(@Nullable ProjectTarget source) {
         ProjectTargetView target = new ProjectTargetView();
@@ -19,7 +19,7 @@ public class ProjectTargetView {
             return target;
         }
         target.landModelCount = source.getLandModelCount();
-        target.updatedTime = source.getUpdatedTime();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

@@ -5,8 +5,8 @@ type ProjectComment = {
   projectId: number;
   writer: ListUser;
   description: string;
-  createdTime: Date;
-  updatedTime: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export default ProjectComment;

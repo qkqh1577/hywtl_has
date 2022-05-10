@@ -8,5 +8,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 public interface ProjectCommentRepository extends JpaRepository<ProjectComment, Long>,
     QuerydslPredicateExecutor<ProjectComment> {
 
-    Optional<ProjectComment> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<ProjectComment> findByIdAndDeletedAtIsNull(Long id);
 }

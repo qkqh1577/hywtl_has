@@ -24,10 +24,10 @@ public class PersonnelRepository {
     private static final QPersonnel personnel = QPersonnel.personnel;
     private static final QUser user = QUser.user;
 
-    public Optional<Personnel> findByIdAndDeletedTimeIsNull(Long id) {
+    public Optional<Personnel> findByIdAndDeletedAtIsNull(Long id) {
         BooleanBuilder criteria = new BooleanBuilder();
         criteria.and(personnel.id.eq(id));
-        criteria.and(user.deletedTime.isNull());
+        criteria.and(user.deletedAt.isNull());
         return queryFactory
             .selectFrom(personnel)
             .where(criteria)

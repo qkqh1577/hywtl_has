@@ -49,7 +49,7 @@ public class ProjectBasicView {
 
     private String clientEmail;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public static ProjectBasicView assemble(ProjectBasic source) {
         ProjectBasicView target = new ProjectBasicView();
@@ -73,7 +73,7 @@ public class ProjectBasicView {
         target.clientManager = source.getClientManager();
         target.clientPhone = source.getClientPhone();
         target.clientEmail = source.getClientEmail();
-        target.updatedTime = source.getUpdatedTime();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

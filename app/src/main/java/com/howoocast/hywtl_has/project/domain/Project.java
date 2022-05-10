@@ -20,6 +20,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @Entity
@@ -51,7 +55,7 @@ public class Project {
         @AttributeOverride(name = "clientManager", column = @Column(name = "basic__client_manager")),
         @AttributeOverride(name = "clientPhone", column = @Column(name = "basic__client_phone")),
         @AttributeOverride(name = "clientEmail", column = @Column(name = "basic__client_email")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "basic__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "basic__modified_at"))
     })
     private ProjectBasic basic;
 
@@ -62,28 +66,38 @@ public class Project {
         @AttributeOverride(name = "beginDate", column = @Column(name = "order__begin_date")),
         @AttributeOverride(name = "closeDate", column = @Column(name = "order__close_date")),
         @AttributeOverride(name = "isOnGoing", column = @Column(name = "order__is_on_going")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "order__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "order__modified_at"))
     })
     private ProjectOrder order;
 
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "landModelCount", column = @Column(name = "target__land_model_count")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "target__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "target__modified_at"))
     })
     private ProjectTarget target;
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime updatedTime;
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
 
     @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime deletedTime;
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -116,7 +130,6 @@ public class Project {
             salesManager,
             projectManager
         );
-        instance.createdTime = LocalDateTime.now();
         instance.repository = repository;
         instance.save();
         return instance;
@@ -130,7 +143,7 @@ public class Project {
         Long id
     ) {
         Project instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("project", id));
         instance.repository = repository;
         return instance;
@@ -226,12 +239,11 @@ public class Project {
     }
 
     public void delete() {
-        this.deletedTime = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
         this.save();
     }
 
     private void save() {
-        this.updatedTime = LocalDateTime.now();
         repository.save(this);
     }
 }

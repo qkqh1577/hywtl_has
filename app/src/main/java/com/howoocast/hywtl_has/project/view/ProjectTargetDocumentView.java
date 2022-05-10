@@ -21,9 +21,9 @@ public class ProjectTargetDocumentView {
 
     private String memo;
 
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public static ProjectTargetDocumentView assemble(ProjectTargetDocument source) {
         ProjectTargetDocumentView target = new ProjectTargetDocumentView();
@@ -32,8 +32,8 @@ public class ProjectTargetDocumentView {
         target.fileItem = FileItemView.assemble(source.getFileItem());
         target.writer = UserListView.assemble(source.getWriter());
         target.memo = source.getMemo();
-        target.createdTime = source.getCreatedTime();
-        target.updatedTime = source.getUpdatedTime();
+        target.createdAt = source.getCreatedAt();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

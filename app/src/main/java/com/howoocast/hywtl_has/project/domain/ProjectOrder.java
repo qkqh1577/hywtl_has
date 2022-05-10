@@ -26,7 +26,7 @@ public class ProjectOrder {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     //////////////////////////////////
     //// constructor
@@ -63,6 +63,6 @@ public class ProjectOrder {
         this.beginDate = beginDate;
         this.closeDate = closeDate;
         this.isOnGoing = isOnGoing;
-        this.updatedTime = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 }

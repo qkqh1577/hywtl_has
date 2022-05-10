@@ -44,7 +44,7 @@ public class PasswordResetEventHandler {
             frontUrl,
             URLEncoder.encode(data.getEmail(), StandardCharsets.UTF_8),
             URLEncoder.encode(data.getAuthKey(), StandardCharsets.UTF_8),
-            data.getCreatedTime().plus(Duration.parse(invalidateDuration)).format(formatter)
+            data.getCreatedAt().plus(Duration.parse(invalidateDuration)).format(formatter)
         );
         mailService.send(
             data.getEmail(),

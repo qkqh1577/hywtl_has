@@ -71,7 +71,7 @@ const ProjectTargetDetail = () => {
       view={view}
       submit={handler.submit}
       updateView={handler.updateView}
-      updatedTime={detail?.updatedTime}
+      modifiedAt={detail?.modifiedAt}
       fields={[
         {
           sm: 2,

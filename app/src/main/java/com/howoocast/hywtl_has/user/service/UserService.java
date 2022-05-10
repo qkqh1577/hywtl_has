@@ -70,7 +70,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDetailView get(String username) {
         return UserDetailView.assemble(
-            userRepository.findByUsernameAndDeletedTimeIsNull(username)
+            userRepository.findByUsernameAndDeletedAtIsNull(username)
                 .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)))
         );
     }

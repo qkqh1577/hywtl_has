@@ -42,7 +42,7 @@ export type ProjectBasic = {
   clientManager?: string;
   clientPhone?: string;
   clientEmail?: string;
-  updatedTime: Date;
+  modifiedAt: Date;
 }
 
 export type ProjectOrder = {
@@ -51,7 +51,7 @@ export type ProjectOrder = {
   beginDate?: Date;
   closeDate?: Date;
   isOnGoing?: boolean;
-  updatedTime?: Date;
+  modifiedAt?: Date;
 }
 
 export type ProjectTargetDocument = {
@@ -59,8 +59,8 @@ export type ProjectTargetDocument = {
   fileItem: FileItem;
   writer: ListUser;
   memo?: string;
-  createdTime: Date;
-  updatedTime?: Date;
+  createdAt: Date;
+  modifiedAt?: Date;
 }
 
 export type ListProjectTargetReview = {
@@ -70,8 +70,8 @@ export type ListProjectTargetReview = {
   title: string;
   memo?: string;
   writer: ListUser;
-  createdTime: Date;
-  updatedTime?: Date;
+  createdAt: Date;
+  modifiedAt?: Date;
 }
 
 export type ProjectTargetReviewDetail = {
@@ -93,7 +93,7 @@ export type ProjectTargetReview = ListProjectTargetReview & {
 
 export type ProjectTarget = {
   landModelCount?: number;
-  updatedTime?: Date;
+  modifiedAt?: Date;
 }
 
 type Project = {

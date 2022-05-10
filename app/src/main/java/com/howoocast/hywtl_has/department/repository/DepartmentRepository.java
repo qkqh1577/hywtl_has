@@ -10,13 +10,13 @@ import org.springframework.lang.Nullable;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long>, QuerydslPredicateExecutor<Department> {
 
-    Integer countByParent_IdAndDeletedTimeIsNull(@Nullable Long parentId);
+    Integer countByParent_IdAndDeletedAtIsNull(@Nullable Long parentId);
 
-    Optional<Department> findByNameAndCategoryAndDeletedTimeIsNull(String name, DepartmentCategory category);
+    Optional<Department> findByNameAndCategoryAndDeletedAtIsNull(String name, DepartmentCategory category);
 
-    Optional<Department> findByIdAndDeletedTimeIsNull(Long id);
+    Optional<Department> findByIdAndDeletedAtIsNull(Long id);
 
-    List<Department> findByDeletedTimeIsNull();
+    List<Department> findByDeletedAtIsNull();
 
-    List<Department> findByParent_IdAndDeletedTimeIsNullOrderBySeq(@Nullable Long id);
+    List<Department> findByParent_IdAndDeletedAtIsNullOrderBySeq(@Nullable Long id);
 }

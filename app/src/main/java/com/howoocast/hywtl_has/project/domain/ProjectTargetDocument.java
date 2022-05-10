@@ -21,6 +21,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
@@ -47,15 +51,27 @@ public class ProjectTargetDocument {
     private User writer;
     private String memo;
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
-    @Column(insertable = false)
-    private LocalDateTime updatedTime;
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
 
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime deletedTime;
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -87,7 +103,6 @@ public class ProjectTargetDocument {
         instance.fileItem = fileItem;
         instance.writer = writer;
         instance.memo = memo;
-        instance.createdTime = LocalDateTime.now();
         instance.repository = repository;
         instance.save();
         return instance;
@@ -98,7 +113,7 @@ public class ProjectTargetDocument {
     //////////////////////////////////
     public static ProjectTargetDocument load(ProjectTargetDocumentRepository repository, Long id) {
         ProjectTargetDocument instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("project.target.document", id));
         instance.repository = repository;
         return instance;
@@ -109,7 +124,7 @@ public class ProjectTargetDocument {
         Long projectId
     ) {
         return repository
-            .findByProject_IdAndDeletedTimeIsNull(projectId).stream()
+            .findByProject_IdAndDeletedAtIsNull(projectId).stream()
             .peek(item -> item.repository = repository)
             .collect(Collectors.toList());
     }
@@ -125,12 +140,11 @@ public class ProjectTargetDocument {
         String memo
     ) {
         this.memo = memo;
-        this.updatedTime = LocalDateTime.now();
         this.save();
     }
 
     public void delete() {
-        this.deletedTime = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
         this.save();
     }
 

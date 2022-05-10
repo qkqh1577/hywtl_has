@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserInvitationRepository extends JpaRepository<UserInvitation, Long> {
 
-    Optional<UserInvitation> findByEmailAndDeletedTimeIsNull(String email);
+    Optional<UserInvitation> findByEmailAndDeletedAtIsNull(String email);
 }

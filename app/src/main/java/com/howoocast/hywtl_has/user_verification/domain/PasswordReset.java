@@ -18,6 +18,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,12 +42,27 @@ public class PasswordReset {
     @Column(nullable = false, updatable = false)
     private String name; // 이름
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 생성일시
 
+    @CreatedBy
+    @Column(updatable = false)
+    private Long createdBy; // 생성자
+
+    @LastModifiedDate
+    private LocalDateTime modifiedAt; // 변경일시
+
+    @LastModifiedBy
+    private Long modifiedBy; // 변경자
+
+    @Getter(AccessLevel.NONE)
     @Column(insertable = false)
-    private LocalDateTime deletedTime;
+    private LocalDateTime deletedAt; // 삭제일시
+
+    @Getter(AccessLevel.NONE)
+    @Column(insertable = false)
+    private Long deletedBy; // 삭제자
 
     @Getter(AccessLevel.NONE)
     @Transient
@@ -58,7 +77,6 @@ public class PasswordReset {
     ) {
         this.email = email;
         this.name = name;
-        this.createdTime = LocalDateTime.now();
     }
 
     //////////////////////////////////
@@ -70,7 +88,7 @@ public class PasswordReset {
     }
 
     private String getRawKey() {
-        return this.createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
+        return this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
             + this.email;
     }
 
@@ -99,7 +117,7 @@ public class PasswordReset {
         String email
     ) {
         PasswordReset instance = repository
-            .findByEmailAndDeletedTimeIsNull(email)
+            .findByEmailAndDeletedAtIsNull(email)
             .orElseThrow(
                 () -> new NotFoundException("user-verification.password-reset", String.format("email: %s", email)));
         instance.repository = repository;
@@ -110,7 +128,7 @@ public class PasswordReset {
     //// checker
     //////////////////////////////////
     public void checkValid(String invalidatePeriod, String authKey) {
-        LocalDateTime limitTime = this.getCreatedTime().plus(Duration.parse(invalidatePeriod));
+        LocalDateTime limitTime = this.getCreatedAt().plus(Duration.parse(invalidatePeriod));
         if (limitTime.isBefore(LocalDateTime.now())) {
             throw new UserVerificationAuthenticationFailureException(
                 UserInvitationAuthenticationFailureExceptionType.EXPIRED);
@@ -129,11 +147,11 @@ public class PasswordReset {
         PasswordResetRepository repository,
         String email
     ) {
-        repository.findByEmailAndDeletedTimeIsNull(email).ifPresent(PasswordReset::invalidate);
+        repository.findByEmailAndDeletedAtIsNull(email).ifPresent(PasswordReset::invalidate);
     }
 
     public void invalidate() {
-        this.deletedTime = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
         this.save();
     }
 
