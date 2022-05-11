@@ -16,14 +16,15 @@ import useDepartment from 'services/department/hook';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
 import { DepartmentCategory, ListDepartment } from 'services/department/entity';
 import { DepartmentChangeParameter } from 'services/department/parameter';
+import useDialog from 'components/Dialog';
 
 const DepartmentDetail = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   if (typeof id === 'undefined' || Number.isNaN(id)) {
-    window.alert('잘못된 접근입니다.');
-    navigate('/department');
+    dialog.error('잘못된 접근입니다.', '/department');
     return null;
   }
 
@@ -41,7 +42,7 @@ const DepartmentDetail = () => {
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       if (!detail) {
-        window.alert('잘못된 접근입니다.');
+        dialog.error('잘못된 접근입니다.', '/department');
         return;
       }
 
@@ -55,9 +56,6 @@ const DepartmentDetail = () => {
         errors.category = '부서 유형 선택은 필수입니다.';
       }
       const parentId: number | undefined = values.parentId === 'root' ? undefined : values.parentId;
-      if (!values.parentId) {
-        errors.parentId = '상위 부서 선택은 필수입니다.';
-      }
       const memo: string | undefined = values.memo || undefined;
 
       if (Object.keys(errors).length > 0) {
@@ -75,10 +73,10 @@ const DepartmentDetail = () => {
       };
 
       change(params, (data) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.', '/department');
+        }
       });
     }
   };

@@ -160,7 +160,7 @@ const DataField = ({
           setMouseEnter(false);
         }}
         error={typeof errors[name] === 'string'}
-        placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
+        placeholder={disabled === true ? '' : (placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)}
         helperText={helperMessage}
         required={!(disabled === true) && required === true}
         disabled={disabled === true}

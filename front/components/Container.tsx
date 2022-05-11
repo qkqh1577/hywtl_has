@@ -35,6 +35,7 @@ import {
   Option,
   UserSelector
 } from 'components/index';
+import useDialog from 'components/Dialog';
 
 type State = {
   values: any;
@@ -87,6 +88,8 @@ const Container = ({
   fields,
   children
 }: Props) => {
+
+  const dialog = useDialog();
 
   const [open, setOpen] = useState<boolean>(true);
   const [edit, setEdit] = useState<boolean>(false);
@@ -321,11 +324,11 @@ const Container = ({
                               <IconButton
                                 onClick={() => {
                                   if (edit && dirty) {
-                                    if (window.confirm('수정을 취소하겠습니까? 작성 중인 내용은 사라집니다.')) {
+                                    dialog.rollback('수정을 취소하겠습니까? 변경 사항은 사라집니다.', () => {
                                       resetForm();
                                       handler.updateView();
                                       setEdit(false);
-                                    }
+                                    });
                                   } else {
                                     setEdit(false);
                                   }
@@ -413,18 +416,18 @@ const Container = ({
                 }}>
                   <Grid container spacing={2}>
                     {Array.isArray(fields) &&
-                      fields.map((child, index) => mapper(child, index, {
-                        values,
-                        setFieldValue,
-                        errors,
-                      }))}
+                    fields.map((child, index) => mapper(child, index, {
+                      values,
+                      setFieldValue,
+                      errors,
+                    }))}
                     {typeof fields === 'function' &&
-                      fields({ values })
-                      .map((child, index) => mapper(child, index, {
-                        values,
-                        setFieldValue,
-                        errors,
-                      }))
+                    fields({ values })
+                    .map((child, index) => mapper(child, index, {
+                      values,
+                      setFieldValue,
+                      errors,
+                    }))
                     }
                   </Grid>
                 </Box>

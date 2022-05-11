@@ -33,6 +33,7 @@ import {
   DepartmentChangeTreeParameter,
   DepartmentTreeParameter
 } from 'services/department/parameter';
+import useDialog from 'components/Dialog';
 
 const useStyle = makeStyles(() => ({
   tree: {
@@ -118,6 +119,7 @@ const DepartmentTreeView = () => {
   const treeRef = createRef<Tree>();
   const navigate = useNavigate();
   const location = useLocation();
+  const dialog = useDialog();
   const {
     departmentState: { list },
     getAll,
@@ -144,42 +146,46 @@ const DepartmentTreeView = () => {
   const initRoot = () => list.filter(item => !item.parentId).map(toNode);
   const handler = {
     cancel: () => {
-      if (window.confirm('작업을 취소하겠습니까? 변경 사항은 사라집니다.')) {
+      dialog.rollback('수정을 취소하겠습니까? 변경 사항은 사라집니다.', () => {
         setRoot(initRoot);
-      }
+      });
     },
     submit: () => {
-      if (window.confirm('현재 부서 구조를 저장하겠습니까?')) {
-        type Param = DepartmentTreeParameter & {
-          children?: DepartmentTreeParameter[]
-        }
-        const loop = (item: Node, index: number, parentId?: number): Param => ({
-          id: item.key as number,
-          seq: index + 1,
-          parentId,
-          children: item.children ? item.children.map((child, i) => loop(child, i, item.key as number)) : undefined
-        });
+      dialog.confirm({
+        children: '현재 부서 구조를 저장하겠습니까?',
+        confirmText: '저장',
+        afterConfirm: () => {
+          type Param = DepartmentTreeParameter & {
+            children?: DepartmentTreeParameter[]
+          }
+          const loop = (item: Node, index: number, parentId?: number): Param => ({
+            id: item.key as number,
+            seq: index + 1,
+            parentId,
+            children: item.children ? item.children.map((child, i) => loop(child, i, item.key as number)) : undefined
+          });
 
-        const flatLoop = (itemList: Param[], temp: Param[][] = []): DepartmentTreeParameter[] => {
-          temp.push(itemList.map(item => ({ ...item, children: undefined })));
-          itemList.forEach(item => {
-            if (item.children && item.children.length > 0) {
-              flatLoop(item.children, temp);
+          const flatLoop = (itemList: Param[], temp: Param[][] = []): DepartmentTreeParameter[] => {
+            temp.push(itemList.map(item => ({ ...item, children: undefined })));
+            itemList.forEach(item => {
+              if (item.children && item.children.length > 0) {
+                flatLoop(item.children, temp);
+              }
+            });
+            const result: DepartmentTreeParameter[] = [];
+            temp.forEach(item => item.forEach(child => result.push(child)));
+            return result.sort((a, b) => a.id > b.id ? 1 : -1);
+          };
+          const params: DepartmentChangeTreeParameter = {
+            list: flatLoop(root.map((item, i) => loop(item, i)))
+          };
+          changeTree(params, (list) => {
+            if (list) {
+              dialog.alert('저장하였습니다.');
             }
           });
-          const result: DepartmentTreeParameter[] = [];
-          temp.forEach(item => item.forEach(child => result.push(child)));
-          return result.sort((a, b) => a.id > b.id ? 1 : -1);
-        };
-        const params: DepartmentChangeTreeParameter = {
-          list: flatLoop(root.map((item, i) => loop(item, i)))
-        };
-        changeTree(params, (list) => {
-          if (list) {
-            window.alert('저장하였습니다.');
-          }
-        });
-      }
+        }
+      });
     }
   };
 

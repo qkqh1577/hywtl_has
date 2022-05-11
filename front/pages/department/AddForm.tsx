@@ -16,9 +16,11 @@ import useDepartment from 'services/department/hook';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
 import { DepartmentCategory } from 'services/department/entity';
 import { DepartmentAddParameter } from 'services/department/parameter';
+import useDialog from 'components/Dialog';
 
 const DepartmentAddForm = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const {
     departmentState: {
       list
@@ -58,11 +60,10 @@ const DepartmentAddForm = () => {
       };
 
       add(params, (data) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-          navigate('/department');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.', '/department');
+        }
       });
     }
   };

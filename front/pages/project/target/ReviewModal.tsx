@@ -36,6 +36,7 @@ import {
   ProjectTargetReviewParameter,
   ProjectTargetReviewDetailParameter
 } from 'services/project/parameter';
+import useDialog from 'components/Dialog';
 
 type TableCellProperty = {
   key: string;
@@ -59,6 +60,7 @@ const columns: TableCellProperty[] = [
 ];
 
 const ProjectTargetReviewModal = () => {
+  const dialog = useDialog();
   const {
     projectState: {
       detail: project,
@@ -82,29 +84,28 @@ const ProjectTargetReviewModal = () => {
     },
     remove: () => {
       if (!reviewId) {
-        window.alert('검토가 선택되지 않았습니다.');
+        dialog.alert('검토가 선택되지 않았습니다.');
         return;
       }
       if (detail && detail.confirmed) {
-        window.alert('확정된 검토는 삭제할 수 없습니다.');
+        dialog.alert('확정된 검토는 삭제할 수 없습니다.');
         return;
       }
-      if (window.confirm('해당 검토를 삭제하시겠습니까?')) {
+      dialog.remove('해당 검토를 삭제하시겠습니까?', () => {
         remove(reviewId, () => {
-          window.alert('삭제하였습니다.');
+          dialog.alert('삭제하였습니다.');
           handler.close();
         });
-      }
+      });
     },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       const projectId = project?.id;
       if (!projectId) {
-        window.alert('프로젝트가 선택되지 않았습니다.');
+        dialog.alert('프로젝트가 선택되지 않았습니다.');
         setSubmitting(false);
         return;
       }
       const errors: any = {};
-
 
       const confirmed: boolean = values.confirmed === 'Y';
       if (values.confirmed === '') {
@@ -213,18 +214,19 @@ const ProjectTargetReviewModal = () => {
         memo,
         detailList,
       };
-      (reviewId ? update : add)((reviewId ?? projectId), params, (list) => {
-        if (list) {
-          window.alert('저장되었습니다.');
+      (reviewId ? update : add)((reviewId ?? projectId), params, (data) => {
+        setSubmitting(false);
+        if (data) {
+          dialog.alert('저장되었습니다.');
           handler.close();
         }
-        setSubmitting(false);
       });
     },
     close: () => {
       setEdit(false);
       clearModal();
       clearOne();
+      setView(initProjectTargetReview);
     },
     updateView: () => {
       const getConfirmed = (confirmed: boolean | undefined) => {
@@ -263,9 +265,6 @@ const ProjectTargetReviewModal = () => {
     } else if (reviewId === null) {
       setEdit(true);
     }
-    return () => {
-      clearOne();
-    };
   }, [reviewId]);
 
   useEffect(() => {
@@ -283,7 +282,6 @@ const ProjectTargetReviewModal = () => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '90%',
-        maxHeight: '70%',
         overflow: 'hidden',
         bgColor: '#777',
         p: 4,
@@ -325,12 +323,12 @@ const ProjectTargetReviewModal = () => {
                   mb: '40px',
                 }}>
                   <Grid container spacing={2}>
-                    <Grid item sm={2}>
+                    <Grid item sm={1}>
                       <DataField
                         type="select"
                         name="confirmed"
                         label="확정 여부"
-                        value={values.confirmed === '' ? '' : (values.confirmed ? 'Y' : 'N')}
+                        value={values.confirmed}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         options={['Y', 'N']}
@@ -387,20 +385,27 @@ const ProjectTargetReviewModal = () => {
                         >
                           {isSubmitting ? '저장 중' : '저장'}
                         </Button>
-                        {reviewId && (
-                          <Button
-                            color="secondary"
-                            variant="contained"
-                            onClick={() => {
-                              if (!dirty || window.confirm('작성중인 내용을 취소하겠습니까?')) {
+                      </Grid>
+                    )}
+                    {edit && reviewId && (
+                      <Grid item sm={1}>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => {
+                            if (dirty) {
+                              dialog.rollback('작성중인 내용을 취소하겠습니까?', () => {
                                 setEdit(false);
                                 resetForm();
-                              }
-                            }}
-                          >
-                            취소
-                          </Button>
-                        )}
+                              });
+                            } else {
+                              setEdit(false);
+                              resetForm();
+                            }
+                          }}
+                        >
+                          취소
+                        </Button>
                       </Grid>
                     )}
                   </Grid>
@@ -642,16 +647,14 @@ const ProjectTargetReviewModal = () => {
                                   variant="contained"
                                   onClick={() => {
                                     if (values.detailList.length === 1) {
-                                      window.alert('최소 1개의 건축물 항목이 필요합니다.');
+                                      dialog.alert('최소 1개의 건축물 항목이 필요합니다.');
                                       return;
                                     }
-                                    if (window.confirm(
-                                      `${values.detailList[i].buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`
-                                    )) {
+                                    dialog.remove(`${values.detailList[i].buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`, () => {
                                       setFieldValue('detailList', values.detailList
                                         .filter((item, j) => i !== j)
                                       );
-                                    }
+                                    });
                                   }}
                                   fullWidth
                                 >
@@ -665,22 +668,24 @@ const ProjectTargetReviewModal = () => {
                     </Table>
                   </TableContainer>
                 </Box>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                  flexDirection: 'row-reverse'
-                }}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => {
-                      setFieldValue('detailList', [...values.detailList, initProjectTargetDetailReview]);
-                    }}
-                  >
-                    추가
-                  </Button>
-                </Box>
+                {edit && (
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                    flexDirection: 'row-reverse'
+                  }}>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={() => {
+                        setFieldValue('detailList', [...values.detailList, initProjectTargetDetailReview]);
+                      }}
+                    >
+                      추가
+                    </Button>
+                  </Box>
+                )}
                 {!edit && (
                   <Box sx={{
                     display: 'flex',

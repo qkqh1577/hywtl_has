@@ -37,7 +37,8 @@ import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
 import { ProjectDrawer, ProjectList } from 'pages/project';
 import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
-import { Alert } from 'components';
+import { Alert, Confirm } from 'components';
+import useDialog from 'components/Dialog';
 
 type Menu = {
   title: string;
@@ -49,8 +50,9 @@ type Menu = {
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const path = location.pathname;
+  const dialog = useDialog();
   const { userState: { login }, getLogin, logout } = useUser();
+  const path = location.pathname;
 
   const [openMenu, setOpenMenu] = useState(true);
   const [openProject, setOpenProject] = useState(true);
@@ -157,11 +159,14 @@ const App = () => {
       setMenuData(data.map(menu => ({ ...menu, icon: FolderOpenIcon })));
     },
     logout: () => {
-      if (window.confirm('로그아웃하시겠습니까?')) {
-        logout();
-        navigate('/login');
-        return null;
-      }
+      dialog.confirm({
+        children: '로그아웃하시겠습니까?',
+        confirmText: '로그아웃',
+        afterConfirm: () => {
+          logout();
+          navigate('/login');
+        }
+      });
     },
     search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
       console.log(values);
@@ -477,6 +482,7 @@ const App = () => {
         </Routes>
       </Box>
       <Alert />
+      <Confirm />
     </>
   );
 };

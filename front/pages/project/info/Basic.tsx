@@ -4,12 +4,14 @@ import { Container } from 'components';
 import useProject from 'services/project/hook';
 import { initProjectBasic, ProjectBasicView } from 'services/project/view';
 import { ProjectBasicParameter } from 'services/project/parameter';
+import useDialog from 'components/Dialog';
 
 const ProjectBasicDetail = () => {
 
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 
+  const dialog = useDialog();
   const {
     projectState: {
       basic: detail
@@ -94,9 +96,10 @@ const ProjectBasicDetail = () => {
 
       update(projectId, params, (data) => {
         if (data) {
-          window.alert('수정하였습니다.');
-          setOne(data);
-          callback();
+          dialog.alert('수정하였습니다.', () => {
+            setOne(data);
+            callback();
+          });
         }
       });
     },

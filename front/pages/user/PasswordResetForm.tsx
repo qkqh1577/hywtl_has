@@ -120,7 +120,7 @@ const PasswordResetForm = () => {
             }}
             onSubmit={handler.submit}
           >
-            {({ values, isSubmitting, setFieldValue, handleSubmit }) => (
+            {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
               <Form>
                 <Grid container spacing={1}>
                   <Grid item sm={12}>
@@ -130,6 +130,7 @@ const PasswordResetForm = () => {
                       label="비밀번호"
                       value={values.password}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>
@@ -140,6 +141,7 @@ const PasswordResetForm = () => {
                       label="비밀번호 확인"
                       value={values.passwordCheck}
                       setFieldValue={setFieldValue}
+                      errors={errors}
                       required
                     />
                   </Grid>

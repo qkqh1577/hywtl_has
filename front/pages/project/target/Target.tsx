@@ -7,10 +7,13 @@ import {
 } from 'services/project/view';
 import useProject from 'services/project/hook';
 import { ProjectTargetParameter } from 'services/project/parameter';
+import useDialog from 'components/Dialog';
 
 const ProjectTargetDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
+
+  const dialog = useDialog();
   const {
     projectState: {
       target: detail,
@@ -39,7 +42,7 @@ const ProjectTargetDetail = () => {
       };
       update(projectId, params, (data) => {
         if (data) {
-          window.alert('저장되었습니다.');
+          dialog.alert('저장되었습니다.');
           setOne(data);
           callback();
         }

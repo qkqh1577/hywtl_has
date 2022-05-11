@@ -44,7 +44,6 @@ const ProjectTargetReviewList = () => {
       reviewModal: modal,
     },
     getTargetReviewList: getList,
-    clearTargetReviewList: clearList,
     setTargetReviewModal: setModal
   } = useProject();
 
@@ -61,11 +60,6 @@ const ProjectTargetReviewList = () => {
     if (!modal && projectId) {
       getList(projectId);
     }
-    return () => {
-      if (typeof projectId === 'undefined') {
-        clearList();
-      }
-    };
   }, [modal, projectId]);
 
   return (

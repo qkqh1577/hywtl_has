@@ -24,8 +24,10 @@ import {
 } from 'services/project/parameter';
 import { fileItemToView, toReadableSize } from 'services/common/file-item/view';
 import FileItemParameter from 'services/common/file-item/parameter';
+import useDialog from 'components/Dialog';
 
 const ProjectTargetDocumentModal = () => {
+  const dialog = useDialog();
   const {
     projectState: {
       detail: project,
@@ -45,20 +47,20 @@ const ProjectTargetDocumentModal = () => {
   const handler = {
     remove: () => {
       if (!documentId) {
-        window.alert('자료가 선택되지 않았습니다.');
+        dialog.alert('자료가 선택되지 않았습니다.');
         return;
       }
-      if (window.confirm('해당 자료를 삭제하시겠습니까?')) {
+      dialog.remove('해당 자료를 삭제하시겠습니까?', () => {
         remove(documentId, () => {
-          window.alert('삭제하였습니다.');
+          dialog.alert('삭제하였습니다.');
           handler.close();
         });
-      }
+      });
     },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       const projectId = project?.id;
       if (!projectId) {
-        window.alert('프로젝트가 선택되지 않았습니다.');
+        dialog.alert('프로젝트가 선택되지 않았습니다.');
         setSubmitting(false);
         return;
       }
@@ -82,11 +84,11 @@ const ProjectTargetDocumentModal = () => {
           memo,
         };
         update(documentId, params, (data) => {
+          setSubmitting(false);
           if (data) {
-            window.alert('변경하였습니다.');
+            dialog.alert('변경하였습니다.');
             handler.close();
           }
-          setSubmitting(false);
         });
       } else {
         // add
@@ -95,11 +97,11 @@ const ProjectTargetDocumentModal = () => {
           memo,
         };
         add(projectId, params, (data) => {
+          setSubmitting(false);
           if (data) {
-            window.alert('저장하였습니다.');
+            dialog.alert('저장하였습니다.');
             handler.close();
           }
-          setSubmitting(false);
         });
 
       }

@@ -5,11 +5,13 @@ import { initProjectOrder, ProjectOrderView } from 'services/project/view';
 import { ProjectOrderParameter } from 'services/project/parameter';
 import { Container } from 'components';
 import dayjs from 'dayjs';
+import useDialog from 'components/Dialog';
 
 const ProjectOrderDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 
+  const dialog = useDialog();
   const {
     projectState: {
       order: detail
@@ -55,9 +57,10 @@ const ProjectOrderDetail = () => {
 
       update(projectId, params, ((data) => {
         if (data) {
-          window.alert('수정하였습니다.');
-          setOne(data);
-          callback();
+          dialog.alert('수정하였습니다.', () => {
+            setOne(data);
+            callback();
+          });
         }
       }));
     },
