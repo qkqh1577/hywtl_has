@@ -19,7 +19,7 @@ public class PersonnelParameter {
     @NotNull(message = "personnel.company.not-null")
     private PersonnelCompanyParameter company;
 
-    @NotEmpty(message = "personnel.jobList.not-empty")
+    @NotEmpty(message = "personnel.job.list.not-empty")
     private List<PersonnelJobParameter> jobList;
 
     private List<PersonnelAcademicParameter> academicList;

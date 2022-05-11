@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DepartmentAddParameter {
+public class DepartmentParameter {
 
     @NotBlank(message = "department.name.not-blank")
     private String name;

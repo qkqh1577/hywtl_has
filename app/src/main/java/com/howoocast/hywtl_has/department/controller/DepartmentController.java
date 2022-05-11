@@ -1,9 +1,8 @@
 package com.howoocast.hywtl_has.department.controller;
 
 import com.howoocast.hywtl_has.department.common.DepartmentCategory;
-import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
-import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
+import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentPredicateBuilder;
 import com.howoocast.hywtl_has.department.service.DepartmentService;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
@@ -64,7 +63,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments")
-    public DepartmentView add(@Valid @RequestBody DepartmentAddParameter params) {
+    public DepartmentView add(@Valid @RequestBody DepartmentParameter params) {
         return departmentService.add(params);
     }
 
@@ -75,7 +74,7 @@ public class DepartmentController {
     }
 
     @PatchMapping("/departments/{id}")
-    public DepartmentView change(@PathVariable Long id, @Valid @RequestBody DepartmentChangeParameter params) {
+    public DepartmentView change(@PathVariable Long id, @Valid @RequestBody DepartmentParameter params) {
         departmentService.change(id, params);
         return departmentService.get(id);
     }

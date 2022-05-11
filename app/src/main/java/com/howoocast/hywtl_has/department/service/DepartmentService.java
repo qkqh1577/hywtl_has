@@ -1,9 +1,8 @@
 package com.howoocast.hywtl_has.department.service;
 
 import com.howoocast.hywtl_has.department.domain.Department;
-import com.howoocast.hywtl_has.department.parameter.DepartmentAddParameter;
-import com.howoocast.hywtl_has.department.parameter.DepartmentChangeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
+import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
@@ -47,7 +46,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public DepartmentView add(DepartmentAddParameter params) {
+    public DepartmentView add(DepartmentParameter params) {
         return DepartmentView.assemble(
             Department.of(
                 departmentRepository,
@@ -60,7 +59,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public void change(Long id, DepartmentChangeParameter params) {
+    public void change(Long id, DepartmentParameter params) {
         Department
             .load(departmentRepository, id)
             .change(
