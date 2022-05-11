@@ -8,7 +8,7 @@ import {
   Input,
   InputLabel,
   Paper,
-  Radio, RadioGroup,
+  Radio, RadioGroup, TextField,
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {useNavigate, useParams} from "react-router-dom";
@@ -46,17 +46,18 @@ const Page = () => {
       navigate('/company');
     },
 
+    removeManager: (i: number) => {
+      let {managerList, ...rest} = company;
+      const removedManagerList: ManagerView[] | undefined = managerList?.filter((manager, index) => index !== i);
+      managerList = removedManagerList as ManagerDetail[];
+      setCompany({...rest, managerList});
+    },
+
+
     addManager: (i: number) => {
       let {managerList, ...rest} = company;
-      const addedManager: ManagerView = {
-        name: '',
-        position: '',
-        mobile: '',
-        phone: '',
-        email: '',
-        state: '재직'
-      }
-      managerList = [...managerList as ManagerDetail[], {...addedManager} as ManagerDetail];
+      const addedManager: ManagerView = initManagerView[0];
+      managerList = [...managerList as ManagerDetail[], addedManager as ManagerDetail];
       setCompany({...rest, managerList});
     },
 
@@ -220,6 +221,7 @@ const Page = () => {
                         mb: '40px',
                       }}>
                         <h2>담당자 정보</h2>
+
                         <Box sx={{
                           display: 'flex',
                           justifyContent: 'flex-end',
@@ -227,21 +229,25 @@ const Page = () => {
                           height: '50px',
                           mb: '40px',
                         }}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            style={{marginRight: '5px'}}
-                            onClick={() => {handler.addManager(i)}}
-                          >
-                            추가
-                          </Button>
+                          {i+1 === values.managerList?.length && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {handler.addManager(i)}}
+                            >
+                              추가
+                            </Button>
+                          )}
                           <Button
                             variant="contained"
                             color="secondary"
+                            style={{marginLeft: '5px'}}
+                            onClick={() => {handler.removeManager(i)}}
                           >
                             삭제
                           </Button>
                         </Box>
+
                       </Box>
                       <Grid container spacing={3}>
                         <Grid item sm={6}>
@@ -344,6 +350,143 @@ const Page = () => {
                             </RadioGroup>
                           </FormControl>
                         </Grid>
+                      </Grid>
+                    </>
+                  ))}
+                  {values.managerList?.length === 0 && (
+                    <>
+                      <Divider sx={{ mt: '40px', mb: '40px' }} />
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        height: '50px',
+                        mb: '40px',
+                      }}>
+                        <h2>담당자 정보</h2>
+                        <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
+                          height: '50px',
+                          mb: '40px',
+                        }}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={{marginRight: '5px'}}
+                          >
+                            추가
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                          >
+                            삭제
+                          </Button>
+                        </Box>
+                      </Box>
+                      <Grid container spacing={3}>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor="params-manager-name">담당자명</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-name"
+                              name={`managerList.${0}.name`}
+                              value={''}
+                              onChange={handleChange}
+                              required
+                              placeholder="입력"
+                            />
+                            <ErrorMessage name="manager-name" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel id="params-manager-position">호칭</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-position"
+                              name={`managerList.${0}.position`}
+                              value={''}
+                              onChange={handleChange}
+                              placeholder="입력"
+                            />
+                            <ErrorMessage name="manager-position" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel id="params-manager-mobile">핸드폰</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-mobile"
+                              name={`managerList.${0}.mobile`}
+                              value={''}
+                              onChange={handleChange}
+                              placeholder="-를 제외하고 입력"
+                            />
+                            <ErrorMessage name="manager-mobile" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor="params-companyNumber">전화번호</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-phone"
+                              name={`managerList.${0}.phone`}
+                              value={''}
+                              onChange={handleChange}
+                              placeholder="-를 제외하고 입력"
+                            />
+                            <ErrorMessage name="manager-phone" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor="params-manager-email">이메일</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-email"
+                              name={`managerList.${0}.email`}
+                              value={''}
+                              onChange={handleChange}
+                              placeholder="입력"
+                            />
+                            <ErrorMessage name="manager-manager-email" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <InputLabel htmlFor="params-manager-meta">메타</InputLabel>
+                            <Input
+                              type="text"
+                              id="params-manager-meta"
+                              name={`managerList.${0}.meta`}
+                              value={''}
+                              onChange={handleChange}
+                              placeholder="입력"
+                            />
+                            <ErrorMessage name="manager-meta" />
+                          </FormControl>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <FormControl variant="standard" fullWidth>
+                            <FormLabel>상태</FormLabel>
+                            <RadioGroup
+                              row
+                              aria-label="params-manager-state"
+                              name={`managerList.${0}.state`}
+                              value={''}
+                              onChange={handleChange}
+                            >
+                              <FormControlLabel value="재직" control={<Radio />} label="재직" />
+                              <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
+                            </RadioGroup>
+                          </FormControl>
+                        </Grid>
                         <Grid item sm={6}>
                           <FormControl variant="standard" fullWidth>
                             <InputLabel htmlFor="params-manager-project">담당 프로젝트</InputLabel>
@@ -359,7 +502,7 @@ const Page = () => {
                         </Grid>
                       </Grid>
                     </>
-                  ))}
+                  )}
                   <Box sx={{
                     display: 'flex',
                     justifyContent: 'center',

@@ -35,10 +35,10 @@ export type CompanyView = {
 export const initCompanyView: CompanyView = {
   name: '',
   representativeName: '',
+  phone: '',
   companyNumber: '',
   address: '',
   zipCode: '',
-  phone: '',
   memo: '',
   managerList: [{
     name: '',

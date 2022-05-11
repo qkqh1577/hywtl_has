@@ -31,15 +31,15 @@ type TableCellProperty = {
 }
 
 const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'name', label: '업체명', style: { minWidth: 100 } },
-  { key: 'representativeName', label: '대표명', style: { minWidth: 100 } },
-  { key: 'companyNumber', label: '사업자번호', style: { minWidth: 100 } },
-  { key: 'address', label: '주소', style: { minWidth: 100 } },
-  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 } },
-  { key: 'managerCount', label: '담당자', style: { minWidth: 100 } },
-  { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 } },
-  { key: 'memo', label: '비고', style: { minWidth: 100 } },
+  { key: 'no', label: 'No.', style: { minWidth: 50 }, align: "center" },
+  { key: 'name', label: '업체명', style: { minWidth: 100 }, align: "center" },
+  { key: 'representativeName', label: '대표명', style: { minWidth: 100 }, align: "center" },
+  { key: 'companyNumber', label: '사업자번호', style: { minWidth: 100 }, align: "center" },
+  { key: 'address', label: '주소', style: { minWidth: 100 }, align: "center" },
+  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 }, align: "center" },
+  { key: 'managerCount', label: '담당자', style: { minWidth: 100 }, align: "center" },
+  { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 }, align: "center" },
+  { key: 'memo', label: '비고', style: { minWidth: 100 }, align: "center" },
 ];
 
 const initFilter: CompanyQuery = {
@@ -202,8 +202,8 @@ const CompanyPage = () => {
                 const no: number = i + 1;
                 return (
                   <TableRow>
-                    <TableCell>{no}</TableCell>
-                    <TableCell>
+                    <TableCell align="center">{no}</TableCell>
+                    <TableCell  align="center">
                       <Link
                         sx={{
                           cursor: 'pointer'
@@ -212,13 +212,13 @@ const CompanyPage = () => {
                         {company.name}
                       </Link>
                     </TableCell>
-                    <TableCell>{company.representativeName}</TableCell>
-                    <TableCell>{company.companyNumber}</TableCell>
-                    <TableCell>{company.address}</TableCell>
-                    <TableCell>{company.phone}</TableCell>
-                    <TableCell>{company.managerCount}명</TableCell>
-                    <TableCell>{}</TableCell>
-                    <TableCell>{company.memo}</TableCell>
+                    <TableCell align="center">{company.representativeName}</TableCell>
+                    <TableCell align="center">{company.companyNumber}</TableCell>
+                    <TableCell align="center">{company.address}</TableCell>
+                    <TableCell align="center">{company.phone}</TableCell>
+                    <TableCell align="center">{company.managerCount}명</TableCell>
+                    <TableCell align="center">{}</TableCell>
+                    <TableCell align="center">{company.memo}</TableCell>
                   </TableRow>
                 )
               })}

@@ -121,7 +121,7 @@ public class CompanyService {
         params.getZipCode(),
         params.getPhone(),
         params.getMemo(),
-        newManagers,
+        company.getManagerList(),
         "OOO"
     );
     //저장- repository.---
