@@ -79,23 +79,25 @@ public class UserController {
     }
 
     @PostMapping("/user/password-validate")
-    public UserDetailView validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
-        return userService.validatePassword(params);
+    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
+        userService.validatePassword(params);
     }
 
     @PatchMapping("/users/{id}")
     public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
-        return userService.change(id, params);
+        userService.change(id, params);
+        return userService.get(id);
     }
 
     @PatchMapping("/users/{id}/password")
     public UserDetailView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
-        return userService.changePassword(id, params);
+        userService.changePassword(id, params);
+        return userService.get(id);
     }
 
     @DeleteMapping("/users/{id}")
     public void delete(@PathVariable Long id) {
-
+        userService.delete(id);
     }
 
 

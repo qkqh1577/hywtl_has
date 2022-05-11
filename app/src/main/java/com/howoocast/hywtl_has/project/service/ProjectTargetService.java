@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.service;
 
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetDocument;
@@ -12,7 +13,6 @@ import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project.repository.ProjectTargetDocumentRepository;
 import com.howoocast.hywtl_has.project.view.ProjectTargetDocumentView;
 import com.howoocast.hywtl_has.project.view.ProjectTargetView;
-import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -28,34 +28,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectTargetService {
 
     private final ProjectTargetDocumentRepository projectTargetDocumentRepository;
-    private final ProjectRepository projectRepository;
+    private final ProjectRepository repository;
     private final UserRepository userRepository;
     private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
     public ProjectTargetView getOne(Long projectId) {
-        return ProjectTargetView.assemble(Project.load(projectRepository, projectId).getTarget());
+        Project instance = this.load(projectId);
+        return ProjectTargetView.assemble(instance.getTarget());
     }
 
     @Transactional(readOnly = true)
     public List<ProjectTargetDocumentView> getDocumentList(Long projectId) {
-        return ProjectTargetDocument.loadByProjectId(projectTargetDocumentRepository, projectId).stream()
-            .map(ProjectTargetDocumentView::assemble).collect(Collectors.toList());
+        return projectTargetDocumentRepository.findByProject_Id(projectId)
+            .stream().map(ProjectTargetDocumentView::assemble)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProjectTargetDocumentView getDocument(Long documentId) {
-        return ProjectTargetDocumentView.assemble(
-            ProjectTargetDocument.load(projectTargetDocumentRepository, documentId)
-        );
+        return ProjectTargetDocumentView.assemble(loadDocument(documentId));
     }
 
     @Transactional
     public void update(Long projectId, ProjectTargetParameter params) {
-        Project.load(projectRepository, projectId)
-            .changeTarget(
-                params.getLandModelCount()
-            );
+        Project instance = this.load(projectId);
+        instance.changeTarget(params.getLandModelCount());
     }
 
     @Transactional
@@ -63,26 +61,41 @@ public class ProjectTargetService {
         Long projectId, String username,
         ProjectTargetDocumentAddParameter params
     ) {
+        ProjectTargetDocument instance = ProjectTargetDocument.of(
+            this.load(projectId),
+            Optional.ofNullable(fileItemService.build(params.getFileItem()))
+                .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.IO_EXCEPTION)),
+            userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username))),
+            params.getMemo()
+        );
         return ProjectTargetDocumentView.assemble(
-            ProjectTargetDocument.of(
-                projectTargetDocumentRepository,
-                Project.load(projectRepository, projectId),
-                Optional.ofNullable(fileItemService.build(params.getFileItem()))
-                    .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.IO_EXCEPTION)),
-                User.loadByUsername(userRepository, username),
-                params.getMemo()
-            )
+            projectTargetDocumentRepository.save(instance)
         );
     }
 
     @Transactional
     public void updateDocument(Long documentId, ProjectTargetDocumentChangeParameter params) {
-        ProjectTargetDocument source = ProjectTargetDocument.load(projectTargetDocumentRepository, documentId);
+        ProjectTargetDocument source = loadDocument(documentId);
         source.change(params.getMemo());
     }
 
     @Transactional
     public void deleteDocument(Long documentId) {
-        ProjectTargetDocument.load(projectTargetDocumentRepository, documentId).delete();
+        projectTargetDocumentRepository.findById(documentId)
+            .ifPresent(instance -> {
+                fileItemService.delete(instance.getFileItem());
+                projectTargetDocumentRepository.deleteById(instance.getId());
+            });
+    }
+
+    private ProjectTargetDocument loadDocument(Long documentId) {
+        return projectTargetDocumentRepository
+            .findById(documentId)
+            .orElseThrow(() -> new NotFoundException("project-target-document", documentId));
+    }
+
+    private Project load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project", id));
     }
 }

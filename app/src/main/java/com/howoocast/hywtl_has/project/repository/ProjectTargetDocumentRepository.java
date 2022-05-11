@@ -1,13 +1,11 @@
 package com.howoocast.hywtl_has.project.repository;
 
+import com.howoocast.hywtl_has.common.repository.CustomRepository;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetDocument;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProjectTargetDocumentRepository extends JpaRepository<ProjectTargetDocument, Long> {
+public interface ProjectTargetDocumentRepository extends CustomRepository<ProjectTargetDocument> {
 
-    List<ProjectTargetDocument> findByProject_IdAndDeletedAtIsNull(Long projectId);
+    List<ProjectTargetDocument> findByProject_Id(Long projectId);
 
-    Optional<ProjectTargetDocument> findByIdAndDeletedAtIsNull(Long id);
 }

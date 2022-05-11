@@ -1,46 +1,43 @@
 package com.howoocast.hywtl_has.user.domain;
 
-import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
 import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
 import com.howoocast.hywtl_has.user.exception.UserLoginException;
 import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Slf4j
 @Getter
 @Entity
+@Table(name = "user")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update user set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends CustomEntity {
 
     @NotBlank
     @Column(nullable = false)
@@ -76,36 +73,9 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime passwordChangedAt; // 비밀번호 변경일시
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt; // 생성일시
-
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy; // 생성자
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt; // 변경일시
-
-    @LastModifiedBy
-    private Long modifiedBy; // 변경자
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private LocalDateTime deletedAt; // 삭제일시
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private Long deletedBy; // 삭제자
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private UserRepository repository;
-
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-
     protected User(
         String username,
         String password,
@@ -114,7 +84,6 @@ public class User {
         Department department,
         UserRole userRole
     ) {
-        this();
         this.username = username;
         this.name = name;
         this.email = email;
@@ -136,7 +105,6 @@ public class User {
     //// builder
     //////////////////////////////////
     public static User of(
-        UserRepository repository,
         String username,
         String password,
         String name,
@@ -144,7 +112,7 @@ public class User {
         Department department,
         UserRole userRole
     ) {
-        User instance = new User(
+        return new User(
             username,
             password,
             name,
@@ -152,74 +120,6 @@ public class User {
             department,
             userRole
         );
-        instance.repository = repository;
-        instance.checkEmailUsed();
-        instance.checkUsernameUsed();
-        instance.save();
-        return instance;
-    }
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static User load(
-        UserRepository repository,
-        Long id
-    ) {
-        User instance = repository.findByIdAndDeletedAtIsNull(id)
-            .orElseThrow(() -> new NotFoundException("user", id));
-        instance.repository = repository;
-        return instance;
-    }
-
-    public static User loadByUsername(
-        UserRepository repository,
-        String username
-    ) {
-        User instance = repository.findByUsernameAndDeletedAtIsNull(username)
-            .orElseThrow(
-                () -> new NotFoundException("user", String.format("username: %s", username)));
-        instance.repository = repository;
-        return instance;
-    }
-
-    public static User loadByEmail(
-        UserRepository repository,
-        String email
-    ) {
-        User instance = repository.findByEmailAndDeletedAtIsNull(email)
-            .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
-        instance.repository = repository;
-        return instance;
-    }
-
-
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
-    public static void checkEmail(
-        UserRepository repository,
-        String email
-    ) {
-        if (repository.findByEmailAndDeletedAtIsNull(email).isPresent()) {
-            throw new DuplicatedValueException("email", email);
-        }
-    }
-
-    private void checkEmailUsed() {
-        repository.findByEmailAndDeletedAtIsNull(this.email).ifPresent(target -> {
-            if (!Objects.equals(this.id, target.id)) {
-                throw new DuplicatedValueException("email", this.email);
-            }
-        });
-    }
-
-    private void checkUsernameUsed() {
-        repository.findByUsernameAndDeletedAtIsNull(this.username).ifPresent(target -> {
-            if (!Objects.equals(this.id, target.id)) {
-                throw new DuplicatedValueException("username", this.username);
-            }
-        });
     }
 
     private void checkCanLogin(String invalidatePeriod) {
@@ -246,9 +146,6 @@ public class User {
         this.email = email;
         this.userRole = userRole;
         this.department = department;
-
-        this.checkEmailUsed();
-        this.save();
     }
 
     public void changePassword(
@@ -263,7 +160,6 @@ public class User {
             throw new PasswordException(PasswordExceptionType.SAME);
         }
         this.setPassword(newPassword);
-        this.save();
     }
 
     public void login(
@@ -271,12 +167,10 @@ public class User {
     ) {
         this.checkCanLogin(invalidatePeriod);
         this.loginAt = LocalDateTime.now();
-        this.save();
     }
 
     public void lock() {
         this.lockedAt = LocalDateTime.now();
-        this.save();
     }
 
     public void validatePassword(String password) {
@@ -285,15 +179,10 @@ public class User {
             throw new PasswordException(PasswordExceptionType.SAME);
         }
         this.setPassword(password);
-        this.save();
     }
 
     public void delete() {
         this.deletedAt = LocalDateTime.now();
-        this.save();
     }
 
-    private void save() {
-        repository.save(this);
-    }
 }

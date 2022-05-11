@@ -33,13 +33,13 @@ public class FileItemService {
 
     @Transactional(readOnly = true)
     public FileItem get(Long id) {
-        return fileItemRepository.findByIdAndDeletedAtIsNull(id)
+        return fileItemRepository.findById(id)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
     public FileItem getByFileKey(String fileKey) {
-        return fileItemRepository.findByFileKeyAndDeletedAtIsNull(fileKey)
+        return fileItemRepository.findByFileKey(fileKey)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
@@ -57,7 +57,7 @@ public class FileItemService {
 
         if (Objects.nonNull(params.getId())) {
             // 요청에 파일 id가 있는 경우
-            Optional<FileItem> optional = fileItemRepository.findByIdAndDeletedAtIsNull(
+            Optional<FileItem> optional = fileItemRepository.findById(
                 params.getId());
             if (Objects.isNull(params.getRequestDelete()) || !params.getRequestDelete()) {
                 // 기존 파일을 그대로 사용 시
@@ -65,10 +65,9 @@ public class FileItemService {
                     () -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            fileItemRepository.findByIdAndDeletedAtIsNull(params.getId()).ifPresent(fileItem -> {
-                fileItem.deleteFile();
-                fileItemRepository.save(fileItem);
-            });
+            fileItemRepository.findById(params.getId()).ifPresent(fileItem ->
+                fileItemRepository.deleteById(fileItem.getId())
+            );
         }
 
         if (Objects.isNull(params.getMultipartFile())) {
@@ -82,5 +81,9 @@ public class FileItemService {
             extensionList,
             maxSizeLimit
         ));
+    }
+
+    public void delete(FileItem instance) {
+        fileItemRepository.deleteById(instance.getId());
     }
 }

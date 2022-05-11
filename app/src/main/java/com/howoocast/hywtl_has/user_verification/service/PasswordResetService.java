@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.user_verification.service;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
@@ -30,10 +31,10 @@ public class PasswordResetService {
 
     @Transactional(readOnly = true)
     public PasswordResetView authenticate(String email, String authKey) {
-        PasswordReset instance = PasswordReset.load(
-            repository,
-            email
-        );
+        PasswordReset instance = repository.findByEmail(email)
+            .orElseThrow(
+                () -> new NotFoundException("user-verification.password-reset", String.format("email: %s", email))
+            );
         instance.checkValid(invalidateDuration, authKey);
         return PasswordResetView.assemble(instance);
     }
@@ -42,18 +43,20 @@ public class PasswordResetService {
     public PasswordResetView reset(PasswordResetParameter params) {
         String email = params.getEmail();
 
-        PasswordReset.invalidateIfExists(repository, email);
+        // 기존 코드 무효화
+        repository.findByEmail(email)
+            .ifPresent(instance -> repository.deleteById(instance.getId()));
 
-        User user = User.loadByEmail(userRepository, email);
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
         user.lock();
         PasswordReset passwordReset = PasswordReset.of(
-            repository,
             email,
             user.getName()
         );
 
         // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset));
-        return PasswordResetView.assemble(passwordReset);
+        return PasswordResetView.assemble(repository.save(passwordReset));
     }
 }

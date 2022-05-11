@@ -1,13 +1,18 @@
 package com.howoocast.hywtl_has.department.service;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.department.exception.DepartmentNameDuplicatedException;
+import com.howoocast.hywtl_has.department.exception.DepartmentViolationParentException;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -23,58 +28,126 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DepartmentService {
 
-    private final DepartmentRepository departmentRepository;
+    private final DepartmentRepository repository;
 
     @Transactional(readOnly = true)
     public Page<DepartmentListView> page(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
-            .map(p -> departmentRepository.findAll(p, pageable))
-            .orElse(departmentRepository.findAll(pageable))
+            .map(p -> repository.findAll(p, pageable))
+            .orElse(repository.findAll(pageable))
             .map(DepartmentListView::assemble);
     }
 
     @Transactional(readOnly = true)
     public List<DepartmentListView> list() {
-        return departmentRepository.findByDeletedAtIsNull().stream()
+        return repository.findAll().stream()
             .map(DepartmentListView::assemble)
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public DepartmentView get(Long id) {
-        return DepartmentView.assemble(Department.load(departmentRepository, id));
-    }
-
-    @Transactional
-    public DepartmentView add(DepartmentParameter params) {
         return DepartmentView.assemble(
-            Department.of(
-                departmentRepository,
-                params.getName(),
-                params.getCategory(),
-                Department.find(departmentRepository, params.getParentId()),
-                params.getMemo()
-            )
+            repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("department", id))
         );
     }
 
     @Transactional
+    public DepartmentView add(DepartmentParameter params) {
+        Department instance = Department.of(
+            params.getName(),
+            params.getCategory(),
+            repository.findById(params.getParentId()).orElse(null),
+            repository.countByParent_Id(params.getParentId()) + 1,
+            params.getMemo()
+        );
+        this.checkName(instance);
+        this.checkParent(instance);
+        return DepartmentView.assemble(repository.save(instance));
+    }
+
+    @Transactional
     public void change(Long id, DepartmentParameter params) {
-        Department
-            .load(departmentRepository, id)
-            .change(
-                params.getName(),
-                params.getCategory(),
-                Department.find(departmentRepository, params.getParentId()),
-                params.getMemo()
-            );
+        Department instance = this.load(id);
+        Long parentId = instance.getParentId();
+        instance.change(
+            params.getName(),
+            params.getCategory(),
+            this.find(params.getParentId()),
+            repository.countByParent_Id(params.getParentId()) + 1,
+            params.getMemo()
+        );
+        this.checkName(instance);
+        this.checkParent(instance);
+        arrangeChildrenSeq(parentId, instance.getId());
     }
 
     @Transactional
     public void changeTree(DepartmentChangeTreeParameter params) {
-        params.getList().forEach(item -> Department.load(departmentRepository, item.getId()).changeParent(
-            Department.find(departmentRepository, item.getParentId()),
+        params.getList().forEach(item -> this.load(item.getId()).changeParent(
+            this.find(item.getParentId()),
             item.getSeq()
         ));
+    }
+
+    private Department load(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("department", id));
+    }
+
+    @Nullable
+    private Department find(Long id) {
+        return repository.findById(id)
+            .orElse(null);
+    }
+
+    private void checkName(Department instance) {
+        repository.findByNameAndCategory(instance.getName(), instance.getCategory())
+            .ifPresent(department -> {
+                if (Objects.isNull(instance.getId()) || !Objects.equals(instance.getId(), department.getId())) {
+                    throw new DepartmentNameDuplicatedException();
+                }
+            });
+    }
+
+    private List<Long> getAncestorIdList(Department instance, @Nullable List<Long> list) {
+        if (Objects.isNull(list)) {
+            list = new ArrayList<>();
+        }
+        list.add(instance.getId());
+        if (Objects.isNull(instance.getParent())) {
+            return list;
+        }
+        return getAncestorIdList(instance.getParent(), list);
+    }
+
+    private void checkParent(Department instance) {
+        if (Objects.isNull(instance.getParent())) {
+            // 최상위를 선택한 경우
+            return;
+        }
+        List<Department> list = repository.findAll();
+        list.stream()
+            .map(item -> getAncestorIdList(item, new ArrayList<>()))
+            .filter(idList -> !idList.contains(instance.getId()))
+            .peek(idList -> log.debug("[Id List] start: {}, size: {}", idList.get(0), idList.size()))
+            .peek(idList -> idList.forEach(id -> log.debug("[Id] parent: {}", id)))
+            .map(idList -> idList.get(0))
+            .filter(id -> Objects.equals(instance.getParent().getId(), id))
+            .findFirst()
+            .orElseThrow(DepartmentViolationParentException::new);
+    }
+
+    private void arrangeChildrenSeq(@Nullable Long parentId, Long childId) {
+        List<Department> childrenList = repository.findByParent_IdOrderBySeq(parentId).stream()
+            .filter(item -> !Objects.equals(item.getId(), childId))
+            .collect(Collectors.toList());
+        if (childrenList.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < childrenList.size(); i++) {
+            childrenList.get(i).changeSeq(i + 1);
+        }
     }
 }

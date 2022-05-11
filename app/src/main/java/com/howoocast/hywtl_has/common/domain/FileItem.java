@@ -22,9 +22,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,22 +31,21 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Slf4j
 @Getter
 @Entity
+@Table(name = "file_item")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update file_item set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FileItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class FileItem extends CustomEntity {
 
     @NotBlank
     @Column(nullable = false, updatable = false)
@@ -68,28 +66,6 @@ public class FileItem {
     @NotBlank
     @Column(nullable = false, unique = true, updatable = false)
     private String fileKey;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt; // 생성일시
-
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy; // 생성자
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt; // 변경일시
-
-    @LastModifiedBy
-    private Long modifiedBy; // 변경자
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private LocalDateTime deletedAt; // 삭제일시
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private Long deletedBy; // 삭제자
 
     public static FileItem of(
         MultipartFile multipartFile,
@@ -131,21 +107,9 @@ public class FileItem {
         try {
             instance.saveFile(multipartFile);
         } catch (Exception e) {
-            instance.deleteFile();
+            e.printStackTrace();
         }
         return instance;
-    }
-
-    public void deleteFile() {
-        File file = new File(this.path);
-        if (!file.exists()) {
-            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
-        }
-        if (!file.isFile()) {
-            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
-        }
-        this.deletedAt = LocalDateTime.now();
-        // TODO: deletedBy
     }
 
     private void setExt(final List<String> extWhiteList) {

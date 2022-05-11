@@ -78,6 +78,4 @@ public class DepartmentController {
         departmentService.change(id, params);
         return departmentService.get(id);
     }
-
-
 }

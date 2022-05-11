@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class DepartmentView {
 
     private Long id;

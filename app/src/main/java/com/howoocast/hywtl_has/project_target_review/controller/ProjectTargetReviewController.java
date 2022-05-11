@@ -46,9 +46,8 @@ public class ProjectTargetReviewController {
     }
 
     @PostMapping("/project/target/reviews/{id}/confirm")
-    public List<ProjectTargetReviewListView> projectTargetReviewService(@PathVariable Long id) {
-        ProjectTargetReviewListView source = projectTargetReviewService.confirmReview(id);
-        return projectTargetReviewService.getReviewList(source.getProjectId());
+    public void projectTargetReviewService(@PathVariable Long id) {
+        projectTargetReviewService.confirmReview(id);
     }
 
     @PatchMapping("/project/target/reviews/{id}")

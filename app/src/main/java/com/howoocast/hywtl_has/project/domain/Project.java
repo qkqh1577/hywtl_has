@@ -1,38 +1,35 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Slf4j
 @Getter
 @Entity
+@Table(name = "project")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update project set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Project {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Project extends CustomEntity {
 
     @NotNull
     @Embedded
@@ -77,45 +74,10 @@ public class Project {
     })
     private ProjectTarget target;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt; // 생성일시
-
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy; // 생성자
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt; // 변경일시
-
-    @LastModifiedBy
-    private Long modifiedBy; // 변경자
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private LocalDateTime deletedAt; // 삭제일시
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private Long deletedBy; // 삭제자
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private ProjectRepository repository;
-
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
-
     //////////////////////////////////
     //// builder
     //////////////////////////////////
     public static Project of(
-        ProjectRepository repository,
         String name,
         String code,
         String alias,
@@ -130,36 +92,14 @@ public class Project {
             salesManager,
             projectManager
         );
-        instance.repository = repository;
-        instance.save();
         return instance;
     }
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static Project load(
-        ProjectRepository repository,
-        Long id
-    ) {
-        Project instance = repository
-            .findByIdAndDeletedAtIsNull(id)
-            .orElseThrow(() -> new NotFoundException("project", id));
-        instance.repository = repository;
-        return instance;
-    }
-
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
 
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-
     public void changeStatus(ProjectStatus status) {
         this.basic.change(status);
-        this.save();
     }
 
     public void changeBasic(
@@ -203,7 +143,6 @@ public class Project {
             clientPhone,
             clientEmail
         );
-        this.save();
     }
 
     public void changeOrder(
@@ -223,7 +162,6 @@ public class Project {
             closeDate,
             isOnGoing
         );
-        this.save();
     }
 
     public void changeTarget(
@@ -235,15 +173,5 @@ public class Project {
         this.target.change(
             landModelCount
         );
-        this.save();
-    }
-
-    public void delete() {
-        this.deletedAt = LocalDateTime.now();
-        this.save();
-    }
-
-    private void save() {
-        repository.save(this);
     }
 }

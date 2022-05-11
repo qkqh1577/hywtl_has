@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.configuration;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     private final String invalidatePeriod;
 
@@ -21,7 +22,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         HttpServletResponse response,
         Authentication authentication
     ) {
-        User.loadByUsername(userRepository, authentication.getName())
-            .login(invalidatePeriod);
+        User instance = repository.findByUsername(authentication.getName())
+            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", authentication.getName())));
+        instance.login(invalidatePeriod);
     }
 }

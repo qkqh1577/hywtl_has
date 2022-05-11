@@ -24,7 +24,7 @@ public class PersonnelRepository {
     private static final QPersonnel personnel = QPersonnel.personnel;
     private static final QUser user = QUser.user;
 
-    public Optional<Personnel> findByIdAndDeletedAtIsNull(Long id) {
+    public Optional<Personnel> findById(Long id) {
         BooleanBuilder criteria = new BooleanBuilder();
         criteria.and(personnel.id.eq(id));
         criteria.and(user.deletedAt.isNull());
