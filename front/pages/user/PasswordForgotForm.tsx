@@ -76,7 +76,7 @@ const PasswordForgotForm = () => {
         }}
           onSubmit={handler.submit}
         >
-          {({ values, isSubmitting, setFieldValue, handleSubmit }) => (
+          {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
             <Form>
               <Grid container spacing={1}>
                 <Grid item sm={12}>
@@ -85,6 +85,7 @@ const PasswordForgotForm = () => {
                     label="이메일"
                     value={values.email}
                     setFieldValue={setFieldValue}
+                    errors={errors}
                     required
                   />
                 </Grid>

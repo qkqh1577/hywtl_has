@@ -9,9 +9,11 @@ import { UserSelector, DataField } from 'components';
 import { initProjectBasic } from 'services/project/view';
 import useProject from 'services/project/hook';
 import { ProjectBasicParameter } from 'services/project/parameter';
+import useDialog from 'components/Dialog';
 
 const ProjectAddModal = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const {
     projectState: { addModal },
     add,
@@ -56,12 +58,13 @@ const ProjectAddModal = () => {
         projectManagerId,
       };
       add(params, (data?) => {
-        if (data) {
-          window.alert('등록되었습니다.');
-          setAddModal(false);
-          navigate(`/project/${data.id}/basic`);
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('등록되었습니다.', () => {
+            setAddModal(false);
+            navigate(`/project/${data.id}/basic`);
+          });
+        }
       });
     },
     close: () => {

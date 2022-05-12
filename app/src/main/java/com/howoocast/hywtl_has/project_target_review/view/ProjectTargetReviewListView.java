@@ -23,9 +23,9 @@ public class ProjectTargetReviewListView {
 
     private UserListView writer;
 
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public static ProjectTargetReviewListView assemble(ProjectTargetReview source) {
         ProjectTargetReviewListView target = new ProjectTargetReviewListView();
@@ -35,8 +35,8 @@ public class ProjectTargetReviewListView {
         target.confirmed = source.getConfirmed();
         target.title = source.getTitle();
         target.writer = UserListView.assemble(source.getWriter());
-        target.createdTime = source.getCreatedTime();
-        target.updatedTime = source.getUpdatedTime();
+        target.createdAt = source.getCreatedAt();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

@@ -1,34 +1,36 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Slf4j
 @Getter
 @Entity
+@Table(name = "personnel")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update personnel set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Personnel {
-
-    @Id
-    private Long id;
+public class Personnel extends CustomEntity {
 
     @OneToOne
     @NotNull
@@ -59,17 +61,6 @@ public class Personnel {
     @ElementCollection
     private List<PersonnelLanguage> languageList; // 어학 자격 목록
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
-
-    @Column(insertable = false)
-    private LocalDateTime updatedTime;
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private PersonnelRepository repository;
-
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
@@ -81,31 +72,8 @@ public class Personnel {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static Personnel load(
-        PersonnelRepository repository,
-        Long id
-    ) {
-        Personnel instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(() -> new NotFoundException("personnel", id));
-        instance.repository = repository;
-        return instance;
-    }
-
-    public static Personnel find(
-        PersonnelRepository repository,
-        User user
-    ) {
-        Personnel instance = repository
-            .findByIdAndDeletedTimeIsNull(user.getId())
-            .orElse(new Personnel(user));
-        instance.repository = repository;
-        return instance;
+    public static Personnel of(User user) {
+        return new Personnel(user);
     }
 
     //////////////////////////////////
@@ -127,12 +95,5 @@ public class Personnel {
         this.careerList = careerList;
         this.licenseList = licenseList;
         this.languageList = languageList;
-        if (Objects.isNull(this.createdTime)) {
-            this.createdTime = LocalDateTime.now();
-        } else {
-            this.updatedTime = LocalDateTime.now();
-        }
     }
-
-
 }

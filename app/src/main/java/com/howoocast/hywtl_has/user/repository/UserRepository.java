@@ -1,21 +1,14 @@
 package com.howoocast.hywtl_has.user.repository;
 
+import com.howoocast.hywtl_has.common.repository.CustomRepository;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
+public interface UserRepository extends CustomRepository<User>, QuerydslPredicateExecutor<User> {
 
-    boolean existsByIdAndDeletedTimeIsNull(Long id);
+    Optional<User> findByUsername(String username);
 
-    List<User> findByDeletedTimeIsNull();
-
-    Optional<User> findByIdAndDeletedTimeIsNull(Long id);
-
-    Optional<User> findByUsernameAndDeletedTimeIsNull(String username);
-
-    Optional<User> findByEmailAndDeletedTimeIsNull(String email);
+    Optional<User> findByEmail(String email);
 
 }

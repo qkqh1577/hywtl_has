@@ -9,10 +9,10 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Typography,
 } from '@mui/material';
 import { RootState } from 'services/common/reducer';
 import { Close as CloseIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 type AlertStatus = 'ok' | 'warn' | 'error';
 type AlertProps = {
@@ -24,9 +24,8 @@ type AlertProps = {
 };
 
 type ConfirmProps = AlertProps & {
-  afterConfirm?: () => void;
-  confirmText?: string;
-  isDangerous?: boolean;
+  afterConfirm: () => void;
+  confirmText: string;
 }
 
 enum DialogActionType {
@@ -36,7 +35,7 @@ enum DialogActionType {
 }
 
 const dialogActions = {
-  openAlert: createAction(DialogActionType.openAlert)<AlertProps>(),
+  openAlert: createAction(DialogActionType.openAlert)<AlertProps | string>(),
   openConfirm: createAction(DialogActionType.openConfirm)<ConfirmProps>(),
   close: createAction(DialogActionType.close)(),
 };
@@ -51,10 +50,15 @@ const initState: DialogState = {};
 export const dialogReducer = createReducer(initState, {
   [DialogActionType.openAlert]: (state, action) => {
     const { payload: props } = action;
+    const init: AlertProps = {
+      title: 'ALERT',
+      status: 'ok',
+      closeText: '닫기',
+    };
     const alertProps = {
-      title: props.title ?? 'ALERT',
-      status: props.status ?? 'ok',
-      closeText: props.closeText ?? '닫기',
+      title: props.title ?? init.title,
+      status: props.status ?? init.status,
+      closeText: props.closeText ?? init.closeText,
       afterClose: props.afterClose,
       children: props.children,
     };
@@ -98,17 +102,61 @@ const getColor = (status: AlertStatus | undefined) => {
 
 function useDialog() {
   const state = useSelector((state: RootState) => state.dialog);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const openAlert = useCallback(
-    (props: AlertProps) =>
-      dispatch(dialogActions.openAlert(props)),
+  const alert = useCallback(
+    (props: AlertProps | string, afterClose?: (() => void) | string) => {
+      if (typeof props === 'string') {
+        return dispatch(dialogActions.openAlert({
+          children: props,
+          afterClose: typeof afterClose === 'string' ? () => {
+            navigate(afterClose);
+          } : afterClose
+        }));
+      }
+      return dispatch(dialogActions.openAlert(props));
+    },
     [dispatch]
   );
 
-  const openConfirm = useCallback(
+  const error = useCallback(
+    (message: string, afterClose?: (() => void) | string) =>
+      dispatch(dialogActions.openAlert({
+        children: message,
+        status: 'error',
+        afterClose: typeof afterClose === 'string' ? () => {
+          navigate(afterClose);
+        } : afterClose
+      })),
+    [dispatch]
+  );
+
+  const confirm = useCallback(
     (props: ConfirmProps) =>
       dispatch(dialogActions.openConfirm(props)),
     [dispatch],
+  );
+
+  const rollback = useCallback(
+    (message: string, afterConfirm: () => void) =>
+      dispatch(dialogActions.openConfirm({
+        children: message,
+        confirmText: '작업 취소',
+        status: 'warn',
+        afterConfirm,
+      })),
+    [dispatch]
+  );
+
+  const remove = useCallback(
+    (message: string, afterConfirm: () => void) =>
+      dispatch(dialogActions.openConfirm({
+        children: message,
+        confirmText: '삭제',
+        status: 'error',
+        afterConfirm,
+      })),
+    [dispatch]
   );
 
   const close = useCallback(
@@ -119,8 +167,11 @@ function useDialog() {
 
   return {
     state,
-    openAlert,
-    openConfirm,
+    alert,
+    error,
+    confirm,
+    rollback,
+    remove,
     close,
   };
 }
@@ -200,6 +251,99 @@ export const Alert = () => {
           onClick={handleClose}
         >
           {alertProps?.closeText}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+export const Confirm = () => {
+  const {
+    state: {
+      confirmProps
+    },
+    close,
+  } = useDialog();
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClose = () => {
+    if (confirmProps && confirmProps.afterClose) {
+      confirmProps.afterClose();
+    }
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    if (confirmProps && confirmProps.afterConfirm) {
+      confirmProps.afterConfirm();
+    }
+    handleClose();
+  };
+
+  useEffect(() => {
+    if (!open && confirmProps) {
+      setOpen(true);
+    }
+  }, [confirmProps]);
+
+  useEffect(() => {
+    if (!open && confirmProps) {
+      close();
+    }
+  }, [open]);
+
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+    >
+      <DialogTitle
+        sx={{
+          minWidth: '20vw',
+        }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+          height: '50px',
+          flexWrap: 'wrap',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}>
+          <h2>
+            {confirmProps?.title}
+          </h2>
+          <IconButton
+            color="primary"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+      <DialogContent
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '100%',
+          alignContent: 'center',
+          alignItems: 'center',
+        }}>
+        {confirmProps?.children}
+      </DialogContent>
+      <DialogActions>
+        <Button
+          color={getColor(confirmProps?.status)}
+          variant="contained"
+          onClick={handleConfirm}
+        >
+          {confirmProps?.confirmText}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleClose}
+        >
+          {confirmProps?.closeText}
         </Button>
       </DialogActions>
     </Dialog>

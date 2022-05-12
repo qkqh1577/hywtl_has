@@ -77,15 +77,7 @@ public class ProjectBasic {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime updatedTime;
-
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
+    private LocalDateTime modifiedAt;
 
 
     //////////////////////////////////
@@ -105,17 +97,9 @@ public class ProjectBasic {
         instance.salesManager = salesManager;
         instance.projectManager = projectManager;
         instance.status = ProjectStatus.TEMPLATE;
-        instance.updatedTime = LocalDateTime.now();
+        instance.modifiedAt = LocalDateTime.now();
         return instance;
     }
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
 
     //////////////////////////////////
     //// modifier

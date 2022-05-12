@@ -1,10 +1,10 @@
-package com.howoocast.hywtl_has.common.service;
+package com.howoocast.hywtl_has.file.service;
 
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
-import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
-import com.howoocast.hywtl_has.common.repository.FileItemRepository;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
+import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,13 +33,13 @@ public class FileItemService {
 
     @Transactional(readOnly = true)
     public FileItem get(Long id) {
-        return fileItemRepository.findByIdAndDeletedTimeIsNull(id)
+        return fileItemRepository.findById(id)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
     public FileItem getByFileKey(String fileKey) {
-        return fileItemRepository.findByFileKeyAndDeletedTimeIsNull(fileKey)
+        return fileItemRepository.findByFileKey(fileKey)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
     }
 
@@ -48,7 +48,8 @@ public class FileItemService {
         if (Objects.isNull(params)) {
             return null;
         }
-        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete()) && Objects.isNull(
+        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete())
+            && Objects.isNull(
             params.getMultipartFile())) {
             // 요청이 전부 빈 경우
             throw new FileSystemException(FileSystemExceptionType.ILLEGAL_REQUEST);
@@ -56,16 +57,17 @@ public class FileItemService {
 
         if (Objects.nonNull(params.getId())) {
             // 요청에 파일 id가 있는 경우
-            Optional<FileItem> optional = fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId());
+            Optional<FileItem> optional = fileItemRepository.findById(
+                params.getId());
             if (Objects.isNull(params.getRequestDelete()) || !params.getRequestDelete()) {
                 // 기존 파일을 그대로 사용 시
-                return optional.orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
+                return optional.orElseThrow(
+                    () -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            fileItemRepository.findByIdAndDeletedTimeIsNull(params.getId()).ifPresent(fileItem -> {
-                fileItem.deleteFile();
-                fileItemRepository.save(fileItem);
-            });
+            fileItemRepository.findById(params.getId()).ifPresent(fileItem ->
+                fileItemRepository.deleteById(fileItem.getId())
+            );
         }
 
         if (Objects.isNull(params.getMultipartFile())) {
@@ -79,5 +81,9 @@ public class FileItemService {
             extensionList,
             maxSizeLimit
         ));
+    }
+
+    public void delete(FileItem instance) {
+        fileItemRepository.deleteById(instance.getId());
     }
 }

@@ -8,10 +8,8 @@ import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DepartmentListView {
 
@@ -41,9 +39,5 @@ public class DepartmentListView {
         target.userCount = Optional.ofNullable(source.getUserList()).map(List::size).orElse(0);
         target.childrenCount = Optional.ofNullable(source.getChildrenList()).map(List::size).orElse(0);
         return target;
-    }
-
-    public Long getParentId() {
-        return Objects.isNull(this.parent) ? null : this.parent.id;
     }
 }

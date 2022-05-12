@@ -45,14 +45,15 @@ import {
   initLanguageView,
 } from 'services/personnel/view';
 import FileItemParameter from 'services/common/file-item/parameter';
+import useDialog from 'components/Dialog';
 
 const PersonnelDetail = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   if (typeof id === 'undefined' || Number.isNaN(id)) {
-    window.alert('잘못된 접근입니다.');
-    navigate('/personnel');
+    dialog.error('잘못된 접근입니다.', '/hr/card');
     return null;
   }
 
@@ -389,10 +390,10 @@ const PersonnelDetail = () => {
       };
 
       update(params, (data?) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.');
+        }
       });
     },
     detail: (detail?: Personnel) => {
@@ -718,7 +719,7 @@ const PersonnelDetail = () => {
                             onClick={() => {
                               const { jobList, ...rest } = values;
                               if (jobList.length === 1) {
-                                window.alert('하나 이상의 소속 정보가 필요합니다.');
+                                dialog.error('하나 이상의 소속 정보가 필요합니다.');
                                 return;
                               }
                               setView({

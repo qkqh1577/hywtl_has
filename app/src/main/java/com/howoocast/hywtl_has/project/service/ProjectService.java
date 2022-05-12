@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.service;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectRepository repository;
 
     private final UserRepository userRepository;
 
@@ -29,25 +30,32 @@ public class ProjectService {
         Predicate predicate,
         Pageable pageable
     ) {
-        return projectRepository.findAll(predicate, pageable)
+        return repository.findAll(predicate, pageable)
             .map(ProjectListView::assemble);
     }
 
     @Transactional(readOnly = true)
     public ProjectView getOne(Long id) {
-        return ProjectView.assemble(Project.load(projectRepository, id));
+        return ProjectView.assemble(this.load(id));
     }
 
     @Transactional
     public ProjectView add(ProjectBasicParameter params) {
-        Project project = Project.of(
-            projectRepository,
+        Project instance = Project.of(
             params.getName(),
             params.getCode(),
             params.getAlias(),
-            User.load(userRepository, params.getSalesManagerId()),
-            User.load(userRepository, params.getProjectManagerId())
+            this.loadUser(params.getSalesManagerId()),
+            this.loadUser(params.getProjectManagerId())
         );
-        return ProjectView.assemble(project);
+        return ProjectView.assemble(repository.save(instance));
+    }
+
+    private Project load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project", id));
+    }
+
+    private User loadUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user", id));
     }
 }

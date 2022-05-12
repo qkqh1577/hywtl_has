@@ -16,11 +16,13 @@ import PersonnelDetail from 'pages/hr/Detail';
 import usePasswordReset from 'services/user/password_reset/hook';
 import { PasswordResetParameter } from 'services/user/password_reset/parameter';
 import { DepartmentSelector, DataField } from 'components';
+import useDialog from 'components/Dialog';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   const navigate = useNavigate();
+  const dialog = useDialog();
   const {
     userState: {
       detail
@@ -37,7 +39,7 @@ const UserDetail = () => {
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       if (!detail) {
-        window.alert('잘못된 접근입니다.');
+        dialog.alert('잘못된 접근입니다.');
         return;
       }
       const error: any = {};
@@ -75,27 +77,31 @@ const UserDetail = () => {
       };
 
       change(params, (data) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.');
+        }
       });
     },
     password: () => {
       if (!detail) {
-        window.alert('잘못된 접근입니다.');
+        dialog.alert('잘못된 접근입니다.');
         return;
       }
-      if (window.confirm('해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?')) {
-        const params: PasswordResetParameter = {
-          email: detail.email
-        };
-        reset(params, (data) => {
-          if (data) {
-            window.alert('비밀번호 변경 메일을 발송하였습니다.');
-          }
-        });
-      }
+      dialog.confirm({
+        children: '해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?',
+        confirmText: '발송',
+        afterConfirm: () => {
+          const params: PasswordResetParameter = {
+            email: detail.email
+          };
+          reset(params, (data) => {
+            if (data) {
+              dialog.alert('비밀번호 변경 메일을 발송하였습니다.');
+            }
+          });
+        }
+      });
     },
   };
   useEffect(() => {
@@ -138,7 +144,7 @@ const UserDetail = () => {
                 생성일시
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.createdTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.createdAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -146,7 +152,7 @@ const UserDetail = () => {
                 최근접속일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.loginTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.loginAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -154,7 +160,7 @@ const UserDetail = () => {
                 비밀번호 변경일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.passwordChangedTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.passwordChangedAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
           </Grid>

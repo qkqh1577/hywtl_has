@@ -38,7 +38,7 @@ const ProjectTargetDocumentList = () => {
       align: 'center',
       width: 150,
       renderCell: (item) =>
-        <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
+        <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
     },
     {
       label: '파일명',

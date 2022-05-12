@@ -26,27 +26,7 @@ public class ProjectOrder {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime updatedTime;
-
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
+    private LocalDateTime modifiedAt;
 
     //////////////////////////////////
     //// modifier
@@ -63,6 +43,6 @@ public class ProjectOrder {
         this.beginDate = beginDate;
         this.closeDate = closeDate;
         this.isOnGoing = isOnGoing;
-        this.updatedTime = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 }

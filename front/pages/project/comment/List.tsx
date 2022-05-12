@@ -15,12 +15,15 @@ import {
 import useProjectComment from 'services/project_comment/hook';
 import useUser from 'services/user/hook';
 import ProjectComment from 'services/project_comment/entity';
+import useDialog from 'components/Dialog';
 
 
 const ProjectCommentList = () => {
+  const dialog = useDialog();
   const { id: idString } = useParams<{ id: string | undefined }>();
   const id: number | undefined = !idString || Number.isNaN(+idString) ? undefined : +idString;
   if (!id) {
+    dialog.error('프로젝트가 선택되지 않았습니다.');
     return null;
   }
 
@@ -72,13 +75,14 @@ const ProjectCommentList = () => {
           description,
         };
         change(params, (data) => {
-          if (data) {
-            window.alert('메모가 수정되었습니다.');
-            setFilter(initFilter);
-            setSelected(undefined);
-            resetForm();
-          }
           setSubmitting(false);
+          if (data) {
+            dialog.alert('메모가 수정되었습니다.', () => {
+              setFilter(initFilter);
+              setSelected(undefined);
+              resetForm();
+            });
+          }
         });
       } else {
         const params: ProjectCommentAddParameter = {
@@ -86,12 +90,13 @@ const ProjectCommentList = () => {
           description,
         };
         add(params, (data) => {
-          if (data) {
-            window.alert('메모가 등록되었습니다.');
-            setFilter(initFilter);
-            resetForm();
-          }
           setSubmitting(false);
+          if (data) {
+            dialog.alert('메모가 등록되었습니다.', () => {
+              setFilter(initFilter);
+              resetForm();
+            });
+          }
         });
       }
     },
@@ -117,7 +122,7 @@ const ProjectCommentList = () => {
           onSubmit={handler.submit}
           enableReinitialize
         >
-          {({ values,errors, isSubmitting, setFieldValue, handleSubmit }) => (
+          {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <DataField
@@ -159,7 +164,7 @@ const ProjectCommentList = () => {
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({ values,errors, setFieldValue, handleSubmit }) => (
+          {({ values, errors, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
                 <DataField
@@ -200,7 +205,7 @@ const ProjectCommentList = () => {
                     textAlign: 'center'
                   }}
                 >
-                  <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
+                  <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                 </Typography>
                 <Typography>
                   {item.writer.name}
@@ -218,13 +223,14 @@ const ProjectCommentList = () => {
                     <IconButton
                       color="secondary"
                       onClick={() => {
-                        if (window.confirm('해당 메모를 삭제하시겠습니까?')) {
+                        dialog.remove('해당 메모를 삭제하시겠습니까?', () => {
                           remove(item.id, () => {
-                            window.alert('삭제되었습니다.');
-                            setSelected(undefined);
-                            setFilter(initFilter);
+                            dialog.alert('삭제되었습니다.', () => {
+                              setSelected(undefined);
+                              setFilter(initFilter);
+                            });
                           });
-                        }
+                        });
                       }}
                     >
                       <DeleteIcon />
@@ -236,9 +242,9 @@ const ProjectCommentList = () => {
                     <IconButton
                       color="secondary"
                       onClick={() => {
-                        if (window.confirm('수정을 취소하시겠습니까?')) {
+                        dialog.rollback('수정을 취소하시겠습니까?', () => {
                           setSelected(undefined);
-                        }
+                        });
                       }}
                     >
                       <ResetIcon />

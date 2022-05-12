@@ -25,23 +25,23 @@ public class ProjectTarget {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "project")
-    @OrderBy("createdTime desc")
+    @OrderBy("createdAt desc")
     private List<ProjectTargetReview> reviewList; // 검토 목록
 
     @JsonManagedReference
     @OneToMany(mappedBy = "project")
-    @OrderBy("createdTime desc")
+    @OrderBy("createdAt desc")
     private List<ProjectTargetDocument> documentList; // 검토 자료
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public void change(
         Integer landModelCount
     ) {
         this.landModelCount = landModelCount;
-        this.updatedTime = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public void confirmReview(Long id) {

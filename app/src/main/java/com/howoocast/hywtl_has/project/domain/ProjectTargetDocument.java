@@ -1,35 +1,33 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.howoocast.hywtl_has.common.domain.FileItem;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.repository.ProjectTargetDocumentRepository;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
+@Slf4j
 @Getter
+@Entity
+@Table(name = "project_target_document")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update project_target_document set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectTargetDocument {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ProjectTargetDocument extends CustomEntity {
 
     @JsonBackReference
     @Getter(AccessLevel.NONE)
@@ -47,20 +45,6 @@ public class ProjectTargetDocument {
     private User writer;
     private String memo;
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
-
-    @Column(insertable = false)
-    private LocalDateTime updatedTime;
-
-    @Column(insertable = false)
-    private LocalDateTime deletedTime;
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private ProjectTargetDocumentRepository repository;
-
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
@@ -76,7 +60,6 @@ public class ProjectTargetDocument {
     //// builder
     //////////////////////////////////
     public static ProjectTargetDocument of(
-        ProjectTargetDocumentRepository repository,
         Project project,
         FileItem fileItem,
         User writer,
@@ -87,31 +70,7 @@ public class ProjectTargetDocument {
         instance.fileItem = fileItem;
         instance.writer = writer;
         instance.memo = memo;
-        instance.createdTime = LocalDateTime.now();
-        instance.repository = repository;
-        instance.save();
         return instance;
-    }
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static ProjectTargetDocument load(ProjectTargetDocumentRepository repository, Long id) {
-        ProjectTargetDocument instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(() -> new NotFoundException("project.target.document", id));
-        instance.repository = repository;
-        return instance;
-    }
-
-    public static List<ProjectTargetDocument> loadByProjectId(
-        ProjectTargetDocumentRepository repository,
-        Long projectId
-    ) {
-        return repository
-            .findByProject_IdAndDeletedTimeIsNull(projectId).stream()
-            .peek(item -> item.repository = repository)
-            .collect(Collectors.toList());
     }
 
     //////////////////////////////////
@@ -125,16 +84,6 @@ public class ProjectTargetDocument {
         String memo
     ) {
         this.memo = memo;
-        this.updatedTime = LocalDateTime.now();
-        this.save();
     }
 
-    public void delete() {
-        this.deletedTime = LocalDateTime.now();
-        this.save();
-    }
-
-    private void save() {
-        repository.save(this);
-    }
 }

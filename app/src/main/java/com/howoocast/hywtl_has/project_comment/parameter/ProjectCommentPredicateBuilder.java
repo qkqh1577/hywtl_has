@@ -28,7 +28,7 @@ public class ProjectCommentPredicateBuilder {
     }
 
     public Predicate build() {
-        criteria.and(projectComment.deletedTime.isNull());
+        criteria.and(projectComment.deletedAt.isNull());
         return criteria;
     }
 }

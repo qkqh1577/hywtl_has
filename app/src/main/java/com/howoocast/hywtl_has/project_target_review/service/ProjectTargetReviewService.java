@@ -1,14 +1,15 @@
 package com.howoocast.hywtl_has.project_target_review.service;
 
-import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReviewDetail;
+import com.howoocast.hywtl_has.project_target_review.exception.ProjectTargetReviewException;
+import com.howoocast.hywtl_has.project_target_review.exception.ProjectTargetReviewException.ProjectTargetReviewExceptionType;
 import com.howoocast.hywtl_has.project_target_review.parameter.ProjectTargetReviewParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_target_review.repository.ProjectTargetReviewRepository;
 import com.howoocast.hywtl_has.project_target_review.view.ProjectTargetReviewListView;
 import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReview;
 import com.howoocast.hywtl_has.project_target_review.view.ProjectTargetReviewView;
-import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,31 +23,33 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectTargetReviewService {
 
+    private final ProjectTargetReviewRepository repository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-    private final ProjectTargetReviewRepository projectTargetReviewRepository;
 
     @Transactional(readOnly = true)
     public List<ProjectTargetReviewListView> getReviewList(Long projectId) {
-        return ProjectTargetReview.loadByProjectId(projectTargetReviewRepository, projectId).stream()
-            .map(ProjectTargetReviewListView::assemble).collect(Collectors.toList());
+        return repository.findByProject_Id(projectId).stream()
+            .map(ProjectTargetReviewListView::assemble)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProjectTargetReviewView getOne(Long id) {
-        return ProjectTargetReviewView.assemble(ProjectTargetReview.load(projectTargetReviewRepository, id));
+        ProjectTargetReview instance = this.load(id);
+        return ProjectTargetReviewView.assemble(instance);
     }
 
     @Transactional
     public ProjectTargetReviewView addReview(Long projectId, String username, ProjectTargetReviewParameter params) {
-        return ProjectTargetReviewView.assemble(ProjectTargetReview.of(
-            projectTargetReviewRepository,
-            Project.load(projectRepository, projectId),
+        ProjectTargetReview instance = ProjectTargetReview.of(
+            projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException("project", projectId)),
             params.getConfirmed(),
             params.getStatus(),
             params.getTitle(),
             params.getMemo(),
-            User.loadByUsername(userRepository, username),
+            userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username))),
             params.getDetailList().stream()
                 .map(detailParams -> ProjectTargetReviewDetail.of(
                     detailParams.getBuildingName(),
@@ -60,21 +63,25 @@ public class ProjectTargetReviewService {
                     detailParams.getMemo2()
                 ))
                 .collect(Collectors.toList())
-        ));
+        );
+        if (instance.getConfirmed()) {
+            this.checkConfirmed(instance.getProjectId());
+        }
+        return ProjectTargetReviewView.assemble(repository.save(instance));
     }
 
     @Transactional
     public void updateReview(Long id, ProjectTargetReviewParameter params) {
-        ProjectTargetReview instance = ProjectTargetReview.load(projectTargetReviewRepository, id);
-
+        ProjectTargetReview instance = this.load(id);
+        if (!instance.getConfirmed() && params.getConfirmed()) {
+            checkConfirmed(instance.getProjectId());
+        }
         instance.update(
             params.getConfirmed(),
             params.getStatus(),
             params.getTitle(),
             params.getMemo(),
             params.getDetailList().stream()
-                .peek(detailParams ->
-                    log.debug("[Update] test list size: {}", detailParams.getTestList().size()))
                 .map(detailParams -> ProjectTargetReviewDetail.of(
                     detailParams.getBuildingName(),
                     detailParams.getFloorCount(),
@@ -91,15 +98,25 @@ public class ProjectTargetReviewService {
     }
 
     @Transactional
-    public ProjectTargetReviewListView confirmReview(Long id) {
-        ProjectTargetReview source = ProjectTargetReview.load(projectTargetReviewRepository, id);
-        source.confirmOn();
-        return ProjectTargetReviewListView.assemble(source);
+    public void confirmReview(Long id) {
+        ProjectTargetReview instance = this.load(id);
+        repository.findByProject_IdAndConfirmedIsTrue(instance.getProjectId())
+                .ifPresent(ProjectTargetReview::confirmOff);
+        instance.confirmOn();
     }
 
     @Transactional
     public void delete(Long id) {
-        ProjectTargetReview instance = ProjectTargetReview.load(projectTargetReviewRepository, id);
-        instance.delete();
+        repository.findById(id).ifPresent(instance -> repository.deleteById(instance.getId()));
+    }
+
+    private ProjectTargetReview load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project-target-review", id));
+    }
+
+    private void checkConfirmed(Long projectId) {
+        if (repository.findByProject_IdAndConfirmedIsTrue(projectId).isPresent()) {
+            throw new ProjectTargetReviewException(ProjectTargetReviewExceptionType.CONFIRMED_EXISTS);
+        }
     }
 }

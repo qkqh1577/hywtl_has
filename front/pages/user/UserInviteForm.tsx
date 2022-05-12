@@ -60,10 +60,10 @@ const UserInviteForm = () => {
 
       const params: UserInvitationInviteParameter = { name, email, userRole, departmentId };
       invite(params, (data) => {
+        setSubmitting(false);
         if (data) {
           window.alert('유저에게 이메일을 발송하였습니다.');
         }
-        setSubmitting(false);
       });
     }
   };

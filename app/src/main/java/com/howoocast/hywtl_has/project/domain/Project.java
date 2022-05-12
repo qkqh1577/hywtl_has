@@ -1,34 +1,35 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Slf4j
 @Getter
 @Entity
+@Table(name = "project")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update project set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Project {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Project extends CustomEntity {
 
     @NotNull
     @Embedded
@@ -51,7 +52,7 @@ public class Project {
         @AttributeOverride(name = "clientManager", column = @Column(name = "basic__client_manager")),
         @AttributeOverride(name = "clientPhone", column = @Column(name = "basic__client_phone")),
         @AttributeOverride(name = "clientEmail", column = @Column(name = "basic__client_email")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "basic__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "basic__modified_at"))
     })
     private ProjectBasic basic;
 
@@ -62,46 +63,21 @@ public class Project {
         @AttributeOverride(name = "beginDate", column = @Column(name = "order__begin_date")),
         @AttributeOverride(name = "closeDate", column = @Column(name = "order__close_date")),
         @AttributeOverride(name = "isOnGoing", column = @Column(name = "order__is_on_going")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "order__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "order__modified_at"))
     })
     private ProjectOrder order;
 
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "landModelCount", column = @Column(name = "target__land_model_count")),
-        @AttributeOverride(name = "updatedTime", column = @Column(name = "target__updated_time"))
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "target__modified_at"))
     })
     private ProjectTarget target;
-
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
-
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime updatedTime;
-
-    @Getter(AccessLevel.NONE)
-    @Column(insertable = false)
-    private LocalDateTime deletedTime;
-
-    @Getter(AccessLevel.NONE)
-    @Transient
-    private ProjectRepository repository;
-
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
 
     //////////////////////////////////
     //// builder
     //////////////////////////////////
     public static Project of(
-        ProjectRepository repository,
         String name,
         String code,
         String alias,
@@ -116,37 +92,14 @@ public class Project {
             salesManager,
             projectManager
         );
-        instance.createdTime = LocalDateTime.now();
-        instance.repository = repository;
-        instance.save();
         return instance;
     }
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static Project load(
-        ProjectRepository repository,
-        Long id
-    ) {
-        Project instance = repository
-            .findByIdAndDeletedTimeIsNull(id)
-            .orElseThrow(() -> new NotFoundException("project", id));
-        instance.repository = repository;
-        return instance;
-    }
-
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
 
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-
     public void changeStatus(ProjectStatus status) {
         this.basic.change(status);
-        this.save();
     }
 
     public void changeBasic(
@@ -190,7 +143,6 @@ public class Project {
             clientPhone,
             clientEmail
         );
-        this.save();
     }
 
     public void changeOrder(
@@ -210,7 +162,6 @@ public class Project {
             closeDate,
             isOnGoing
         );
-        this.save();
     }
 
     public void changeTarget(
@@ -222,16 +173,5 @@ public class Project {
         this.target.change(
             landModelCount
         );
-        this.save();
-    }
-
-    public void delete() {
-        this.deletedTime = LocalDateTime.now();
-        this.save();
-    }
-
-    private void save() {
-        this.updatedTime = LocalDateTime.now();
-        repository.save(this);
     }
 }

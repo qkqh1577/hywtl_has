@@ -20,7 +20,7 @@ public class ProjectOrderView {
 
     private Boolean isOnGoing;
 
-    private LocalDateTime updatedTime;
+    private LocalDateTime modifiedAt;
 
     public static ProjectOrderView assemble(@Nullable ProjectOrder source) {
         ProjectOrderView target = new ProjectOrderView();
@@ -33,7 +33,7 @@ public class ProjectOrderView {
         target.beginDate = source.getBeginDate();
         target.closeDate = source.getCloseDate();
         target.isOnGoing = source.getIsOnGoing();
-        target.updatedTime = source.getUpdatedTime();
+        target.modifiedAt = source.getModifiedAt();
         return target;
     }
 }

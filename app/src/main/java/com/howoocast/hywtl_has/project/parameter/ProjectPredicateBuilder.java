@@ -23,7 +23,7 @@ public class ProjectPredicateBuilder {
     }
 
     public Predicate build() {
-        this.criteria.and(project.deletedTime.isNull());
+        this.criteria.and(project.deletedAt.isNull());
         return this.criteria;
     }
 

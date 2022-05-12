@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.common.parameter;
+package com.howoocast.hywtl_has.file.parameter;
 
 import lombok.Getter;
 import lombok.Setter;

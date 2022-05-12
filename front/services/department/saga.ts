@@ -20,21 +20,10 @@ function* getOne(action: ActionType<typeof departmentActions.getOne>) {
   yield put(departmentActions.setOne(data));
 }
 
-function* add(action: ActionType<typeof departmentActions.add>) {
+function* upsert(action: ActionType<typeof departmentActions.upsert>) {
   const { params, callback } = action.payload;
   try {
-    const data: Department = yield departmentApi.add(params);
-    yield put(departmentActions.setOne(data));
-    callback(data);
-  } catch (e) {
-    callback();
-  }
-}
-
-function* change(action: ActionType<typeof departmentActions.change>) {
-  const { params, callback } = action.payload;
-  try {
-    const data: Department = yield departmentApi.change(params);
+    const data: Department = yield departmentApi.upsert(params);
     yield put(departmentActions.setOne(data));
     callback(data);
   } catch (e) {
@@ -57,7 +46,6 @@ export default function* departmentSaga() {
   yield takeLatest(DepartmentActionType.getAll, getAll);
   yield takeLatest(DepartmentActionType.getPage, getPage);
   yield takeLatest(DepartmentActionType.getOne, getOne);
-  yield takeLatest(DepartmentActionType.add, add);
-  yield takeLatest(DepartmentActionType.change, change);
+  yield takeLatest(DepartmentActionType.upsert, upsert);
   yield takeLatest(DepartmentActionType.changeTree, changeTree);
 }

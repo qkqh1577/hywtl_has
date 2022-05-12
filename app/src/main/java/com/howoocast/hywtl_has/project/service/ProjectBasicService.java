@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.service;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusParameter;
@@ -17,44 +18,53 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectBasicService {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectRepository repository;
 
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public ProjectBasicView getOne(Long projectId) {
-        return ProjectBasicView.assemble(Project.load(projectRepository, projectId).getBasic());
+        Project instance = this.load(projectId);
+        return ProjectBasicView.assemble(instance.getBasic());
     }
 
     @Transactional
     public void update(Long projectId, ProjectBasicParameter params) {
-        Project.load(projectRepository, projectId)
-            .changeBasic(
-                params.getName(),
-                params.getCode(),
-                params.getAlias(),
-                User.load(userRepository, params.getSalesManagerId()),
-                User.load(userRepository, params.getProjectManagerId()),
-                params.getAddress(),
-                params.getPurpose1(),
-                params.getPurpose2(),
-                params.getLotArea(),
-                params.getTotalArea(),
-                params.getBuildingCount(),
-                params.getHouseholdCount(),
-                params.getFloorCount(),
-                params.getBaseCount(),
-                params.getClientName(),
-                params.getIsClientLH(),
-                params.getClientManager(),
-                params.getClientPhone(),
-                params.getClientEmail()
-            );
+        Project instance = this.load(projectId);
+        instance.changeBasic(
+            params.getName(),
+            params.getCode(),
+            params.getAlias(),
+            this.loadUser(params.getSalesManagerId()),
+            this.loadUser(params.getProjectManagerId()),
+            params.getAddress(),
+            params.getPurpose1(),
+            params.getPurpose2(),
+            params.getLotArea(),
+            params.getTotalArea(),
+            params.getBuildingCount(),
+            params.getHouseholdCount(),
+            params.getFloorCount(),
+            params.getBaseCount(),
+            params.getClientName(),
+            params.getIsClientLH(),
+            params.getClientManager(),
+            params.getClientPhone(),
+            params.getClientEmail()
+        );
     }
 
     @Transactional
     public void update(Long projectId, ProjectStatusParameter params) {
-        Project.load(projectRepository, projectId)
-            .changeStatus(params.getStatus());
+        Project instance = this.load(projectId);
+        instance.changeStatus(params.getStatus());
+    }
+
+    private Project load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project", id));
+    }
+
+    private User loadUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("user", id));
     }
 }

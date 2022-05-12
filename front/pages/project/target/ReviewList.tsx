@@ -25,7 +25,7 @@ type TableCellProperty = {
   style?: any;
 }
 const columns: TableCellProperty[] = [
-  { key: 'createdTime', label: '등록일시', align: 'center', style: { minWidth: 150 } },
+  { key: 'createdAt', label: '등록일시', align: 'center', style: { minWidth: 150 } },
   { key: 'confirmed', label: '확정여부', align: 'center', style: { minWidth: 50 } },
   { key: 'status', label: '상태', align: 'center', style: { minWidth: 50 } },
   { key: 'title', label: '제목', style: { minWidth: 150 } },
@@ -44,7 +44,6 @@ const ProjectTargetReviewList = () => {
       reviewModal: modal,
     },
     getTargetReviewList: getList,
-    clearTargetReviewList: clearList,
     setTargetReviewModal: setModal
   } = useProject();
 
@@ -61,11 +60,6 @@ const ProjectTargetReviewList = () => {
     if (!modal && projectId) {
       getList(projectId);
     }
-    return () => {
-      if (typeof projectId === 'undefined') {
-        clearList();
-      }
-    };
   }, [modal, projectId]);
 
   return (
@@ -139,11 +133,11 @@ const ProjectTargetReviewList = () => {
                   hover
                 >
                   <TableCell align={columns[i].align}>
-                    <DateFormat date={item.createdTime} format="YYYY-MM-DD HH:mm" />
-                    {item.updatedTime && (
+                    <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
+                    {item.modifiedAt && (
                       <>
                         (
-                        <DateFormat date={item.updatedTime} format="YYYY-MM-DD HH:mm" />
+                        <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
                         수정됨)
                       </>
                     )}
