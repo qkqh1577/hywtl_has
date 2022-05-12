@@ -82,7 +82,11 @@ const App = () => {
       title: '사용자 관리',
       path: '/user',
       icon: FolderOpenIcon
-    },
+    }, {
+      title: '업체 관리',
+      path: '/company',
+      icon: FolderOpenIcon
+    }
   ]);
 
   const handler = {
