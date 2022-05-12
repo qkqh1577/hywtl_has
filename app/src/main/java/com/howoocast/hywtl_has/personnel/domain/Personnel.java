@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -32,9 +33,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Personnel extends CustomEntity {
 
+    @JsonBackReference
     @OneToOne
     @NotNull
-    @JoinColumn(name = "id")
+    @JoinColumn
     private User user;
 
     @NotNull
@@ -65,7 +67,6 @@ public class Personnel extends CustomEntity {
     //// constructor
     //////////////////////////////////
     private Personnel(User user) {
-        this.id = user.getId();
         this.user = user;
     }
 

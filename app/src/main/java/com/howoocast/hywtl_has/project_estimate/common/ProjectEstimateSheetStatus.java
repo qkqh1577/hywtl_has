@@ -1,9 +1,9 @@
-package com.howoocast.hywtl_has.project_target_review.common;
+package com.howoocast.hywtl_has.project_estimate.common;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ProjectTargetReviewStatus {
+public enum ProjectEstimateSheetStatus {
 
     DRAFT("초안"),
     DRAFT_CONFIRMED("초안확정"),
@@ -13,7 +13,6 @@ public enum ProjectTargetReviewStatus {
     RECONSIDER_SENT("재검토전달"),
     COMPLETE("완료");
     private final String message;
-
 
     public String message() {
         return message;

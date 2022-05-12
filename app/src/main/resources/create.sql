@@ -65,7 +65,8 @@ create table personnel
  deleted_by bigint null,
  modified_at datetime(6) null,
  modified_by bigint null,
- image_id bigint null
+ image_id bigint null,
+ user_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table personnel_academic_list

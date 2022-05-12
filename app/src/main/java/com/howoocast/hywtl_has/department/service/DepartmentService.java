@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.department.service;
 
-import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.exception.DepartmentNameDuplicatedException;

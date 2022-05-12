@@ -34,7 +34,7 @@ import org.springframework.lang.Nullable;
 @Table(name = "department")
 @DynamicUpdate
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update department set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@SQLDelete(sql = "update department set deleted_at = now() where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Department extends CustomEntity {
