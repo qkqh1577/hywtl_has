@@ -43,6 +43,7 @@ type Manager = {
 }
 
 export type Company = {
+  id: number,
   name: string;
   representativeName?: string;
   phone?: string;

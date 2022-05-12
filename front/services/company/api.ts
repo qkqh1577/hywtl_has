@@ -1,6 +1,6 @@
 import CompanyDetail, {Company, CompanyList} from "./entity";
 import apiClient from "services/common/api";
-import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery} from "./parameters";
+import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery, CompanyQueryForModal} from "./parameters";
 import Page from "components/Page";
 
 export class CompanyApi {
@@ -11,6 +11,11 @@ export class CompanyApi {
 
   async getOne(id: number): Promise<CompanyDetail> {
     const { data } = await apiClient.get(`/companies/${id}`);
+    return data;
+  }
+
+  async getAll(query: CompanyQueryForModal): Promise<Company[]> {
+    const { data } = await apiClient.get('/companies/all', query);
     return data;
   }
 

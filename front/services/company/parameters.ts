@@ -6,6 +6,11 @@ export type CompanyQuery = {
   keyword?: string;
 }
 
+export type CompanyQueryForModal = {
+  keywordType?: string;
+  keyword?: string;
+}
+
 export type ManagerAddParameter = {
   id?: number;
   name?: string;

@@ -32,6 +32,23 @@ public class CompanyPredicateBuilder {
         return this;
     }
 
+    public CompanyPredicateBuilder keywordForModal(@Nullable String keywordType, @Nullable String keyword) {
+
+        if (Objects.isNull(keyword) || keyword.trim().isEmpty()) {
+            return this;
+        }
+
+        final String keywordStr = keyword.trim();
+
+        if (Objects.isNull(keywordType) || Objects.equals(keywordType, "by_name")) {
+            criteria.and(company.name.containsIgnoreCase(keywordStr));
+        } else if (Objects.equals(keywordType, "by_representativeName")) {
+            criteria.and(company.representativeName.containsIgnoreCase(keywordStr));
+        }
+
+        return this;
+    }
+
     @Nullable
     public Predicate build() {
         return criteria.getValue();

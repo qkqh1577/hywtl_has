@@ -211,7 +211,13 @@ const Page = () => {
                               color="secondary"
                               style={{marginLeft: '5px'}}
                               onClick={() => {
+                                const { managerList } = values;
+                                const removedManagerList = managerList?.filter((manager, index) => index !== i);
+                                values.managerList = removedManagerList;
 
+                                const copiedManagerView = [...managerView]
+                                copiedManagerView.pop();
+                                setManagerView(copiedManagerView);
                               }}
                             >
                               삭제

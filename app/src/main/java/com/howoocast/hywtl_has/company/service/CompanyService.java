@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
@@ -37,6 +38,29 @@ public class CompanyService {
         .orElse(companyRepository.findAll(pageable))
         .map(CompanyListView::assemble);
   }
+
+  @Transactional(readOnly = true)
+  public List<CompanyView> getList(@Nullable Predicate predicate) {
+//    List<Company> companyList =  companyRepository.findAll();
+
+//    return companyList.stream().map(company -> CompanyView.assemble(company)).collect(Collectors.toList());
+    Pageable pageable = Pageable.ofSize(Integer.MAX_VALUE);
+    return Optional.ofNullable(predicate)
+        .map(p -> companyRepository.findAll(p, pageable))
+        .orElse(companyRepository.findAll(pageable))
+        .map(CompanyView::assemble)
+        .getContent();
+
+
+
+//    Iterable<Company> companyIterable = Optional.ofNullable(predicate)
+//        .map(companyRepository::findAll)
+//        .orElse(companyRepository.findAll());
+//    return StreamSupport.stream(companyIterable.spliterator(), false)
+//        .map(CompanyView::assemble)
+//        .collect(Collectors.toList());
+  }
+
 
   @Transactional(readOnly = true)
   public CompanyView get(Long id) {

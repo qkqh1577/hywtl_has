@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { RootState } from 'services/common/reducer';
 import {useCallback} from "react";
 import {companyActions} from "./actions";
-import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery} from "./parameters";
+import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery, CompanyQueryForModal} from "./parameters";
 import {Company} from "./entity";
 
 export default function useCompany() {
@@ -15,6 +15,12 @@ export default function useCompany() {
     },
     [dispatch]
   );
+
+  const getAll = useCallback(
+    (query: CompanyQueryForModal) => {
+      dispatch(companyActions.getAll(query))
+    },
+    [dispatch])
 
   const getOne = useCallback(
     (id: number) =>
@@ -37,6 +43,7 @@ export default function useCompany() {
   return {
     companyState,
     getPage,
+    getAll,
     getOne,
     add,
     change

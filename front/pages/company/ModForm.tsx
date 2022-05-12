@@ -48,6 +48,7 @@ const Page = () => {
 
     removeManager: (i: number) => {
       let {managerList, ...rest} = company;
+      console.log(managerList)
       const removedManagerList: ManagerView[] | undefined = managerList?.filter((manager, index) => index !== i);
       managerList = removedManagerList as ManagerDetail[];
       setCompany({...rest, managerList});
@@ -242,7 +243,14 @@ const Page = () => {
                             variant="contained"
                             color="secondary"
                             style={{marginLeft: '5px'}}
-                            onClick={() => {handler.removeManager(i)}}
+                            onClick={() => {
+                              const { managerList: managerVluesList } = values;
+                              const removedManagerList = managerVluesList?.filter((manager, index) => index !== i);
+                              values.managerList = removedManagerList;
+
+                              const { managerList } = company;
+
+                            }}
                           >
                             삭제
                           </Button>

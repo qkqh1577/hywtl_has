@@ -1,11 +1,12 @@
-import CompanyDetail, {CompanyList} from "./entity";
+import CompanyDetail, {Company, CompanyList} from "./entity";
 import Page, { initial } from 'components/Page';
 import {createReducer} from "typesafe-actions";
 import {CompanyActionType} from "./actions";
 
 export type CompanyState = {
   page: Page<CompanyList>
-  detail?: CompanyDetail;
+  list?: Company[]
+  detail?: CompanyDetail
 };
 
 export const initState: CompanyState = {
@@ -20,6 +21,10 @@ const companyReducer = createReducer(initState, {
   [CompanyActionType.setOne]: (state, action) => ({
     ...state,
     detail: action.payload
+  }),
+  [CompanyActionType.setAll]: (state, action) => ({
+    ...state,
+    list: action.payload
   })
 })
 

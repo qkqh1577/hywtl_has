@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery} from "./parameters";
+import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery, CompanyQueryForModal} from "./parameters";
 import Page from "components/Page";
 import CompanyDetail, {Company, CompanyList} from "./entity";
 
@@ -9,7 +9,9 @@ export enum CompanyActionType {
   getOne = 'company/getOne',
   setOne = 'company/setOne',
   add = 'company/add',
-  change = 'company/change'
+  change = 'company/change',
+  getAll = 'company/getAll',
+  setAll = 'company/setAll',
 }
 
 export const companyActions = {
@@ -17,6 +19,8 @@ export const companyActions = {
   setPage: createAction(CompanyActionType.setPage)<Page<CompanyList>>(),
   getOne: createAction(CompanyActionType.getOne)<number>(),
   setOne: createAction(CompanyActionType.setOne)<CompanyDetail | undefined>(),
+  getAll: createAction(CompanyActionType.getAll)<CompanyQueryForModal>(),
+  setAll: createAction(CompanyActionType.setAll)<Company[]>(),
   add: createAction(CompanyActionType.add)<{
     params: CompanyAddParameter;
     callback: (data?: Company) => void;

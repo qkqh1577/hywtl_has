@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Validated
@@ -34,6 +35,18 @@ public class CompanyController {
                 .keyword(keywordType, keyword)
                 .build(),
                 pageable
+        );
+    }
+
+    @GetMapping("/companies/all")
+    public List<CompanyView> getList(
+        @RequestParam(required = false) String keywordType,
+        @RequestParam(required = false) String keyword
+    ) {
+        return companyService.getList(
+            new CompanyPredicateBuilder()
+                .keywordForModal(keywordType, keyword)
+                .build()
         );
     }
 
