@@ -7,8 +7,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface UserRepository extends CustomRepository<User>, QuerydslPredicateExecutor<User> {
 
-    boolean existsById(Long id);
-
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);

@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;

@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.view.FileItemView;
+import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetDocument;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import java.time.LocalDateTime;

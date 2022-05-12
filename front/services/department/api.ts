@@ -2,8 +2,8 @@ import Page from 'components/Page';
 import apiClient from 'services/common/api';
 import Department, { ListDepartment } from 'services/department/entity';
 import {
-  DepartmentAddParameter,
-  DepartmentChangeParameter, DepartmentChangeTreeParameter,
+  DepartmentParameter,
+  DepartmentChangeTreeParameter,
   DepartmentQuery
 } from './parameter';
 
@@ -23,14 +23,8 @@ export class DepartmentApi {
     return data;
   }
 
-  async add(params: DepartmentAddParameter): Promise<Department> {
-    const { data } = await apiClient.post('/departments', params);
-    return data;
-  }
-
-  async change(params: DepartmentChangeParameter): Promise<Department> {
-    const { id } = params;
-    const { data } = await apiClient.patch(`/departments/${id}`, params);
+  async upsert(params: DepartmentParameter): Promise<Department> {
+    const { data } = await apiClient.put(`/departments${params.id ? `/${params.id}` : ''}`, params);
     return data;
   }
 

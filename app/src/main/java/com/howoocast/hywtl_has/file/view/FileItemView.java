@@ -1,6 +1,6 @@
-package com.howoocast.hywtl_has.common.view;
+package com.howoocast.hywtl_has.file.view;
 
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import java.util.Objects;
 import lombok.Getter;
 import org.springframework.lang.Nullable;

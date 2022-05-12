@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

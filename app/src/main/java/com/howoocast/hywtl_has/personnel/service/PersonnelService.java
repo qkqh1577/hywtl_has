@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.personnel.service;
 
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.common.service.FileItemService;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.common.util.ListConvertor;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;

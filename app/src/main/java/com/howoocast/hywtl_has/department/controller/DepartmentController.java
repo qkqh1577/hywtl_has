@@ -17,9 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,20 +62,17 @@ public class DepartmentController {
         return departmentService.get(id);
     }
 
-    @PostMapping("/departments")
-    public DepartmentView add(@Valid @RequestBody DepartmentParameter params) {
-        return departmentService.add(params);
+    @PutMapping({"/departments", "/departments/{id}"})
+    public DepartmentView put(
+        @PathVariable(required = false) Long id,
+        @Valid @RequestBody DepartmentParameter params
+    ) {
+        return departmentService.upsert(id, params);
     }
 
     @PostMapping("/departments/tree")
     public List<DepartmentListView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter params) {
         departmentService.changeTree(params);
         return list();
-    }
-
-    @PatchMapping("/departments/{id}")
-    public DepartmentView change(@PathVariable Long id, @Valid @RequestBody DepartmentParameter params) {
-        departmentService.change(id, params);
-        return departmentService.get(id);
     }
 }

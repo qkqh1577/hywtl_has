@@ -1,10 +1,10 @@
-package com.howoocast.hywtl_has.common.service;
+package com.howoocast.hywtl_has.file.service;
 
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
-import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
-import com.howoocast.hywtl_has.common.repository.FileItemRepository;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
+import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

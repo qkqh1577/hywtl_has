@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.personnel.view;
 
-import com.howoocast.hywtl_has.common.view.FileItemView;
+import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import java.time.LocalDate;
 import java.util.Objects;

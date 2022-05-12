@@ -15,7 +15,7 @@ import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import useDepartment from 'services/department/hook';
 import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
 import { DepartmentCategory, ListDepartment } from 'services/department/entity';
-import { DepartmentChangeParameter } from 'services/department/parameter';
+import { DepartmentParameter } from 'services/department/parameter';
 import useDialog from 'components/Dialog';
 
 const DepartmentDetail = () => {
@@ -36,7 +36,7 @@ const DepartmentDetail = () => {
     getAll,
     getOne,
     clearOne,
-    change,
+    upsert,
   } = useDepartment();
 
   const handler = {
@@ -64,7 +64,7 @@ const DepartmentDetail = () => {
         return;
       }
 
-      const params: DepartmentChangeParameter = {
+      const params: DepartmentParameter = {
         id: detail.id,
         name,
         category,
@@ -72,7 +72,7 @@ const DepartmentDetail = () => {
         memo,
       };
 
-      change(params, (data) => {
+      upsert(params, (data) => {
         setSubmitting(false);
         if (data) {
           dialog.alert('저장하였습니다.', '/department');

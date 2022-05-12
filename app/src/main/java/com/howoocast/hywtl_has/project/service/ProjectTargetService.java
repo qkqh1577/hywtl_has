@@ -3,7 +3,7 @@ package com.howoocast.hywtl_has.project.service;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.common.service.FileItemService;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectTargetDocument;
 import com.howoocast.hywtl_has.project.parameter.ProjectTargetDocumentAddParameter;

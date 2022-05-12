@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.project.parameter;
 
-import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

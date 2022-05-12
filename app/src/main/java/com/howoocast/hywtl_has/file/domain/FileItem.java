@@ -1,5 +1,6 @@
-package com.howoocast.hywtl_has.common.domain;
+package com.howoocast.hywtl_has.file.domain;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException;

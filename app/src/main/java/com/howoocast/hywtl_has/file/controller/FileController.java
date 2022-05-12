@@ -1,6 +1,6 @@
-package com.howoocast.hywtl_has.common.controller;
+package com.howoocast.hywtl_has.file.controller;
 
-import com.howoocast.hywtl_has.common.service.FileItemService;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

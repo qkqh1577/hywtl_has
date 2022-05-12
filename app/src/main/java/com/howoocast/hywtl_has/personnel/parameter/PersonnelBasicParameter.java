@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
-import com.howoocast.hywtl_has.common.domain.FileItem;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.common.parameter.CustomParameter;
-import com.howoocast.hywtl_has.common.parameter.FileItemParameter;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;

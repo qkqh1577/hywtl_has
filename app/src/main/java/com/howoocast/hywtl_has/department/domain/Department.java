@@ -22,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,6 +32,7 @@ import org.springframework.lang.Nullable;
 @Getter
 @Entity
 @Table(name = "department")
+@DynamicUpdate
 @Where(clause = "deleted_at is null")
 @SQLDelete(sql = "update department set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
 @EntityListeners(AuditingEntityListener.class)
@@ -66,23 +68,6 @@ public class Department extends CustomEntity {
     @OrderBy("id")
     private List<User> userList; // 소속 유저 리스트
 
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
-    protected Department(
-        String name,
-        DepartmentCategory category,
-        @Nullable Department parent,
-        Integer seq,
-        String memo
-    ) {
-        this.name = name;
-        this.category = category;
-        this.parent = parent;
-        this.seq = seq;
-        this.memo = memo;
-    }
-
     @Nullable
     public Long getParentId() {
         return Optional.ofNullable(this.parent).map(Department::getId).orElse(null);
@@ -91,20 +76,8 @@ public class Department extends CustomEntity {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static Department of(
-        String name,
-        DepartmentCategory category,
-        @Nullable Department parent,
-        Integer seq,
-        String memo
-    ) {
-        return new Department(
-            name,
-            category,
-            parent,
-            seq,
-            memo
-        );
+    public static Department of() {
+        return new Department();
     }
 
     //////////////////////////////////
@@ -114,7 +87,7 @@ public class Department extends CustomEntity {
     //////////////////////////////////
     //// modifier
     //////////////////////////////////
-    public void change(
+    public void update(
         String name,
         DepartmentCategory category,
         @Nullable Department parent,

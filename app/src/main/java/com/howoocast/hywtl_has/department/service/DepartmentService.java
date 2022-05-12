@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.department.service;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.exception.DepartmentNameDuplicatedException;
@@ -47,41 +48,35 @@ public class DepartmentService {
 
     @Transactional(readOnly = true)
     public DepartmentView get(Long id) {
-        return DepartmentView.assemble(
-            repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("department", id))
-        );
+        return DepartmentView.assemble(this.load(id));
     }
 
     @Transactional
-    public DepartmentView add(DepartmentParameter params) {
-        Department instance = Department.of(
+    public DepartmentView upsert(@Nullable Long id, DepartmentParameter params) {
+
+        Department parent = this.find(params.getParentId());
+        Integer seq = repository.countByParent_Id(params.getParentId()) + 1;
+
+        Department instance = Optional.ofNullable(id)
+            .map(this::load)
+            .orElse(Department.of());
+
+        instance.update(
             params.getName(),
             params.getCategory(),
-            repository.findById(params.getParentId()).orElse(null),
-            repository.countByParent_Id(params.getParentId()) + 1,
+            parent,
+            seq,
             params.getMemo()
         );
+        if (Objects.isNull(id)) {
+            instance = repository.save(instance);
+        }
         this.checkName(instance);
         this.checkParent(instance);
-        return DepartmentView.assemble(repository.save(instance));
+        arrangeChildrenSeq(params.getParentId());
+        return DepartmentView.assemble(instance);
     }
 
-    @Transactional
-    public void change(Long id, DepartmentParameter params) {
-        Department instance = this.load(id);
-        Long parentId = instance.getParentId();
-        instance.change(
-            params.getName(),
-            params.getCategory(),
-            this.find(params.getParentId()),
-            repository.countByParent_Id(params.getParentId()) + 1,
-            params.getMemo()
-        );
-        this.checkName(instance);
-        this.checkParent(instance);
-        arrangeChildrenSeq(parentId, instance.getId());
-    }
 
     @Transactional
     public void changeTree(DepartmentChangeTreeParameter params) {
@@ -97,9 +92,9 @@ public class DepartmentService {
     }
 
     @Nullable
-    private Department find(Long id) {
-        return repository.findById(id)
-            .orElse(null);
+    private Department find(@Nullable Long id) {
+        return Optional.ofNullable(id)
+            .map(this::load).orElse(null);
     }
 
     private void checkName(Department instance) {
@@ -139,10 +134,8 @@ public class DepartmentService {
             .orElseThrow(DepartmentViolationParentException::new);
     }
 
-    private void arrangeChildrenSeq(@Nullable Long parentId, Long childId) {
-        List<Department> childrenList = repository.findByParent_IdOrderBySeq(parentId).stream()
-            .filter(item -> !Objects.equals(item.getId(), childId))
-            .collect(Collectors.toList());
+    private void arrangeChildrenSeq(@Nullable Long parentId) {
+        List<Department> childrenList = repository.findByParent_IdOrderBySeq(parentId);
         if (childrenList.isEmpty()) {
             return;
         }

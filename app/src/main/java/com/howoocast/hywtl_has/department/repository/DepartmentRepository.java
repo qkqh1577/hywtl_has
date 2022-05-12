@@ -14,5 +14,5 @@ public interface DepartmentRepository extends CustomRepository<Department>, Quer
 
     Optional<Department> findByNameAndCategory(String name, DepartmentCategory category);
 
-    List<Department> findByParent_IdOrderBySeq(@Nullable Long id);
+    List<Department> findByParent_IdOrderBySeq(@Nullable Long parentId);
 }
