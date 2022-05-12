@@ -256,7 +256,7 @@ const UserPage = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={page.content.length}
+              count={page.totalElements}
               rowsPerPage={filter.size}
               page={filter.page}
               onPageChange={handler.page}

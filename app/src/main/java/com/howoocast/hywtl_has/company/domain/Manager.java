@@ -1,60 +1,38 @@
 package com.howoocast.hywtl_has.company.domain;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
+@Slf4j
 @Getter
+@Entity
+@Table(name = "manager")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update manager set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Manager {
+public class Manager extends CustomEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    private Company company; // 업체
-
-    @Column
     private String name; // 담당자명
 
-    @Column
     private String position; // 호칭
 
-    @Column
     private String mobile; // 핸드폰
 
-    @Column
     private String phone; // 전화번호
 
-    @Column
     private String email; // 이메일
 
-    @Column
     private String state; // 상태
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column
-    private String createdBy;
-
-    @Column
-    private LocalDateTime modifiedAt;
-
-    @Column(insertable = false)
-    private String modifiedBy;
-
-    @Column(insertable = false)
-    private LocalDateTime deletedAt;
-
-    @Column
-    private String deletedBy;
 
     public static Manager of(
         String name,
@@ -62,8 +40,7 @@ public class Manager {
         String mobile,
         String phone,
         String email,
-        String state,
-        String createdBy
+        String state
     ) {
         Manager manager = new Manager();
         manager.name = name;
@@ -72,8 +49,6 @@ public class Manager {
         manager.phone = phone;
         manager.email = email;
         manager.state = state;
-        manager.createdBy = createdBy;
-        manager.createdAt = LocalDateTime.now();
         return manager;
     }
 
@@ -83,8 +58,7 @@ public class Manager {
             String mobile,
             String phone,
             String email,
-            String state,
-            String modifiedBy
+            String state
     ) {
         this.name = name;
         this.position = position;
@@ -92,17 +66,5 @@ public class Manager {
         this.phone = phone;
         this.email = email;
         this.state = state;
-        this.modifiedBy = modifiedBy;
-        this.modifiedAt = LocalDateTime.now();
-    }
-
-    public void setCompany(Company company){
-        this.company = company;
-    }
-
-
-    public void delete(String deletedBy) {
-        this.deletedAt = LocalDateTime.now();
-        this.deletedBy = deletedBy;
     }
 }

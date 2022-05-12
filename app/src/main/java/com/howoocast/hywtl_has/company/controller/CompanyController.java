@@ -29,12 +29,11 @@ public class CompanyController {
         @RequestParam(required = false) String keyword,
         Pageable pageable
     ) {
-
         return companyService.page(
             new CompanyPredicateBuilder()
                 .keyword(keywordType, keyword)
                 .build(),
-                pageable
+            pageable
         );
     }
 
@@ -62,9 +61,10 @@ public class CompanyController {
 
     @PatchMapping("/companies/{id}")
     public CompanyView change(
-            @PathVariable Long id,
-            @Valid @RequestBody CompanyParameter params
+        @PathVariable Long id,
+        @Valid @RequestBody CompanyParameter params
     ) {
-        return companyService.change(id, params);
+        companyService.change(id, params);
+        return companyService.get(id);
     }
 }

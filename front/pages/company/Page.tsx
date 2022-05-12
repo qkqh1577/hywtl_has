@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -17,11 +17,11 @@ import {
   Select,
   MenuItem,
   Input
-} from "@mui/material";
+} from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
-import {useNavigate} from "react-router-dom";
-import useCompany from "services/company/hook";
-import {CompanyQuery} from "services/company/parameters";
+import { useNavigate } from 'react-router-dom';
+import useCompany from 'services/company/hook';
+import { CompanyQuery } from 'services/company/parameters';
 
 type TableCellProperty = {
   key: string;
@@ -31,15 +31,15 @@ type TableCellProperty = {
 }
 
 const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 }, align: "center" },
-  { key: 'name', label: '업체명', style: { minWidth: 100 }, align: "center" },
-  { key: 'representativeName', label: '대표명', style: { minWidth: 100 }, align: "center" },
-  { key: 'companyNumber', label: '사업자번호', style: { minWidth: 100 }, align: "center" },
-  { key: 'address', label: '주소', style: { minWidth: 100 }, align: "center" },
-  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 }, align: "center" },
-  { key: 'managerCount', label: '담당자', style: { minWidth: 100 }, align: "center" },
-  { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 }, align: "center" },
-  { key: 'memo', label: '비고', style: { minWidth: 100 }, align: "center" },
+  { key: 'no', label: 'No.', style: { minWidth: 50 }, align: 'center' },
+  { key: 'name', label: '업체명', style: { minWidth: 100 }, align: 'center' },
+  { key: 'representativeName', label: '대표명', style: { minWidth: 100 }, align: 'center' },
+  { key: 'companyNumber', label: '사업자번호', style: { minWidth: 100 }, align: 'center' },
+  { key: 'address', label: '주소', style: { minWidth: 100 }, align: 'center' },
+  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 }, align: 'center' },
+  { key: 'managerCount', label: '담당자', style: { minWidth: 100 }, align: 'center' },
+  { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 }, align: 'center' },
+  { key: 'memo', label: '비고', style: { minWidth: 100 }, align: 'center' },
 ];
 
 const initFilter: CompanyQuery = {
@@ -89,7 +89,7 @@ const CompanyPage = () => {
 
   useEffect(() => {
     getPage(filter);
-  }, [filter])
+  }, [filter]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
@@ -156,7 +156,7 @@ const CompanyPage = () => {
                 <Button
                   color="primary"
                   variant="contained"
-                  style={{width: '80px'}}
+                  style={{ width: '80px' }}
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
@@ -167,7 +167,7 @@ const CompanyPage = () => {
                 <Button
                   color="secondary"
                   variant="contained"
-                  style={{width: '80px', marginTop: '5px'}}
+                  style={{ width: '80px', marginTop: '5px' }}
                   onClick={() => {
                     handler.clear();
                     resetForm();
@@ -180,12 +180,12 @@ const CompanyPage = () => {
           )}
         </Formik>
       </Box>
-        <Box sx={{
-          display: 'flex',
-          width: '100%',
-          maxHeight: 740,
-          mb: '20px',
-        }}>
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        maxHeight: 740,
+        mb: '20px',
+      }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -199,16 +199,18 @@ const CompanyPage = () => {
             </TableHead>
             <TableBody>
               {page.content.map((company, i) => {
-                const no: number = i + 1;
+                const no: number = i + 1 + page.number * page.size;
                 return (
                   <TableRow>
                     <TableCell align="center">{no}</TableCell>
-                    <TableCell  align="center">
+                    <TableCell align="center">
                       <Link
                         sx={{
                           cursor: 'pointer'
                         }}
-                        onClick={() => {navigate(`/company/${company.id}`)}}>
+                        onClick={() => {
+                          navigate(`/company/${company.id}`);
+                        }}>
                         {company.name}
                       </Link>
                     </TableCell>
@@ -220,7 +222,7 @@ const CompanyPage = () => {
                     <TableCell align="center">{}</TableCell>
                     <TableCell align="center">{company.memo}</TableCell>
                   </TableRow>
-                )
+                );
               })}
             </TableBody>
           </Table>
@@ -240,7 +242,7 @@ const CompanyPage = () => {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={page.content.length}
+              count={page.totalElements}
               rowsPerPage={filter.size}
               page={filter.page}
               onPageChange={handler.page}
@@ -266,7 +268,7 @@ const CompanyPage = () => {
         </Grid>
       </Box>
     </Paper>
-  )
-}
+  );
+};
 
 export default CompanyPage;

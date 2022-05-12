@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from 'react';
 import {
   Box,
   Button,
@@ -9,22 +9,23 @@ import {
   InputLabel,
   Paper,
   Radio, RadioGroup,
-} from "@mui/material";
-import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
-import {useNavigate} from "react-router-dom";
-import {CompanyAddParameter} from "services/company/parameters";
-import useCompany from "services/company/hook";
+} from '@mui/material';
+import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { CompanyAddParameter } from 'services/company/parameters';
+import useCompany from 'services/company/hook';
 
-
-const initManagerListValue = [{
-  name: '',
-  position: '',
-  mobile: '',
-  phone: '',
-  email: '',
-  meta: [''],
-  state: ''
-}];
+const initManagerListValue = [
+  {
+    name: '',
+    position: '',
+    mobile: '',
+    phone: '',
+    email: '',
+    meta: [],
+    state: ''
+  }
+];
 
 const initCompanyValue = {
   name: '',
@@ -49,6 +50,15 @@ const Page = () => {
     },
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+      const managerList = values.managerList.filter(
+        (manager: any) => manager.name
+          || manager.position
+          || manager.mobile
+          || manager.phone
+          || manager.email
+          || manager.meta.length > 0
+          || manager.state
+      );
       const params: CompanyAddParameter = {
         name: values.name,
         representativeName: values.representativeName,
@@ -57,7 +67,7 @@ const Page = () => {
         address: values.address,
         zipCode: values.zipCode,
         memo: values.memo,
-        managerList: values.managerList,
+        managerList: managerList.length === 0 ? undefined : managerList,
       };
 
       add(params, (data) => {
@@ -208,40 +218,43 @@ const Page = () => {
                         mb: '40px',
                       }}>
                         <h2>담당자 정보</h2>
-                          <Box sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
-                            height: '50px',
-                            mb: '40px',
-                          }}>
-                            {i+1 === values.managerList.length && (
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => {
-                                  const {managerList, ...rest} = values;
-                                  setValues({...rest, managerList: [...managerList, ...initManagerListValue]});
-                                }}
-                              >
-                                추가
-                              </Button>
-                            )}
-                            {values.managerList?.length !== 1 && (
+                        <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
+                          height: '50px',
+                          mb: '40px',
+                        }}>
+                          {i + 1 === values.managerList.length && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => {
+                                const { managerList, ...rest } = values;
+                                setValues({
+                                  ...rest,
+                                  managerList: [...managerList, ...initManagerListValue]
+                                });
+                              }}
+                            >
+                              추가
+                            </Button>
+                          )}
+                          {values.managerList?.length !== 1 && (
                             <Button
                               variant="contained"
                               color="secondary"
-                              style={{marginLeft: '5px'}}
+                              style={{ marginLeft: '5px' }}
                               onClick={() => {
-                                const {managerList, ...rest} = values;
-                                const removedManagerList = managerList.filter((manager, index) => index !== i)
-                                setValues({...rest, managerList: removedManagerList});
+                                const { managerList, ...rest } = values;
+                                const removedManagerList = managerList.filter((manager, index) => index !== i);
+                                setValues({ ...rest, managerList: removedManagerList });
                               }}
                             >
                               삭제
                             </Button>
-                              )}
-                          </Box>
+                          )}
+                        </Box>
                       </Box>
                       <Grid container spacing={3}>
                         <Grid item sm={6}>
@@ -358,7 +371,7 @@ const Page = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      style={{marginRight: '5px'}}
+                      style={{ marginRight: '5px' }}
                       disabled={isSubmitting}
                       onClick={() => {
                         handleSubmit();
@@ -381,7 +394,7 @@ const Page = () => {
         </Grid>
       </Box>
     </Paper>
-  )
-}
+  );
+};
 
 export default Page;
