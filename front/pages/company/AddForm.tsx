@@ -12,14 +12,33 @@ import {
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {useNavigate} from "react-router-dom";
-import {initCompanyView, initManagerView, ManagerView} from "services/company/view";
 import {CompanyAddParameter} from "services/company/parameters";
 import useCompany from "services/company/hook";
 
+
+const initManagerListValue = [{
+  name: '',
+  position: '',
+  mobile: '',
+  phone: '',
+  email: '',
+  meta: [''],
+  state: ''
+}];
+
+const initCompanyValue = {
+  name: '',
+  representativeName: '',
+  phone: '',
+  companyNumber: '',
+  address: '',
+  zipCode: '',
+  memo: '',
+  managerList: initManagerListValue
+};
+
 const Page = () => {
   const navigate = useNavigate();
-
-  const [managerView, setManagerView] = useState<ManagerView[]>(initManagerView);
 
   const { add } = useCompany();
 
@@ -49,6 +68,7 @@ const Page = () => {
         setSubmitting(false);
       });
     }
+
   };
 
   return (
@@ -61,11 +81,11 @@ const Page = () => {
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <Formik
-              initialValues={initCompanyView}
+              initialValues={initCompanyValue}
               enableReinitialize
               onSubmit={handler.submit}
             >
-              {({ values, isSubmitting, handleChange, handleSubmit }) => (
+              {({ values, isSubmitting, handleChange, handleSubmit, setValues }) => (
                 <Form>
                   <Box sx={{
                     display: 'flex',
@@ -177,7 +197,7 @@ const Page = () => {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  {managerView?.map((manager, i) => (
+                  {values.managerList?.map((manager, i) => (
                     <>
                       <Divider sx={{ mt: '40px', mb: '40px' }} />
                       <Box sx={{
@@ -195,33 +215,32 @@ const Page = () => {
                             height: '50px',
                             mb: '40px',
                           }}>
-                            {i+1 === managerView.length && (
+                            {i+1 === values.managerList.length && (
                               <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={() => {
-                                  setManagerView([...managerView, ...initManagerView]);
+                                  const {managerList, ...rest} = values;
+                                  setValues({...rest, managerList: [...managerList, ...initManagerListValue]});
                                 }}
                               >
                                 추가
                               </Button>
                             )}
+                            {values.managerList?.length !== 1 && (
                             <Button
                               variant="contained"
                               color="secondary"
                               style={{marginLeft: '5px'}}
                               onClick={() => {
-                                const { managerList } = values;
-                                const removedManagerList = managerList?.filter((manager, index) => index !== i);
-                                values.managerList = removedManagerList;
-
-                                const copiedManagerView = [...managerView]
-                                copiedManagerView.pop();
-                                setManagerView(copiedManagerView);
+                                const {managerList, ...rest} = values;
+                                const removedManagerList = managerList.filter((manager, index) => index !== i)
+                                setValues({...rest, managerList: removedManagerList});
                               }}
                             >
                               삭제
                             </Button>
+                              )}
                           </Box>
                       </Box>
                       <Grid container spacing={3}>

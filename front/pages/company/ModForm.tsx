@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {
   Box,
   Button,
@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {useNavigate, useParams} from "react-router-dom";
-import {initCompanyView, initManagerView, ManagerView} from "services/company/view";
 import {CompanyChangeParameter} from "services/company/parameters";
 import useCompany from "services/company/hook";
-import CompanyDetail, {ManagerDetail} from "../../services/company/entity";
+import {ManagerDetail} from "../../services/company/entity";
+
 
 const Page = () => {
   const navigate = useNavigate();
@@ -29,40 +29,44 @@ const Page = () => {
     return null;
   }
 
-  const { companyState: {detail}, change, getOne } = useCompany();
+  const { companyState: { detail }, change, getOne } = useCompany();
 
-  const [company, setCompany] = useState<CompanyDetail>(initCompanyView as CompanyDetail);
+  const initManagerListValue = [{
+    id: undefined,
+    name: '',
+    position: '',
+    mobile: '',
+    phone: '',
+    email: '',
+    meta: [''],
+    state: ''
+  }]
+
+  const initCompanyValue = {
+    name: detail?.name || '',
+    representativeName: detail?.representativeName || '',
+    phone: detail?.phone || '',
+    companyNumber: detail?.companyNumber || '',
+    address: detail?.address || '',
+    zipCode: detail?.zipCode || '',
+    memo: detail?.memo || '',
+    managerList: detail?.managerList?.length ? detail?.managerList : initManagerListValue
+  }
 
   useEffect(() => {
     getOne(id);
   }, [id]);
 
-  useEffect(() => {
-    setCompany(detail as CompanyDetail);
-  }, [detail]);
 
   const handler = {
     toPage: () => {
       navigate('/company');
     },
 
-    removeManager: (i: number) => {
-      let {managerList, ...rest} = company;
-      console.log(managerList)
-      const removedManagerList: ManagerView[] | undefined = managerList?.filter((manager, index) => index !== i);
-      managerList = removedManagerList as ManagerDetail[];
-      setCompany({...rest, managerList});
-    },
-
-
-    addManager: (i: number) => {
-      let {managerList, ...rest} = company;
-      const addedManager: ManagerView = initManagerView[0];
-      managerList = [...managerList as ManagerDetail[], addedManager as ManagerDetail];
-      setCompany({...rest, managerList});
-    },
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+      //validation
+
       const params: CompanyChangeParameter = {
         id,
         name: values.name,
@@ -95,11 +99,11 @@ const Page = () => {
         <Grid container spacing={1}>
           <Grid item sm={12}>
             <Formik
-              initialValues={company || initCompanyView}
+              initialValues={ initCompanyValue }
               enableReinitialize
               onSubmit={handler.submit}
             >
-              {({ values, isSubmitting, handleChange, handleSubmit }) => (
+              {({ values, isSubmitting, handleChange, handleSubmit, setValues }) => (
                 <Form>
                   <Box sx={{
                     display: 'flex',
@@ -230,32 +234,32 @@ const Page = () => {
                           height: '50px',
                           mb: '40px',
                         }}>
-                          {i+1 === values.managerList?.length && (
+                          {i+1 === values.managerList.length && (
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={() => {handler.addManager(i)}}
+                              onClick={() => {
+                                const {managerList, ...rest} = values;
+                                setValues({...rest, managerList: [...managerList, ...initManagerListValue]});
+                              }}
                             >
                               추가
                             </Button>
                           )}
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            style={{marginLeft: '5px'}}
-                            onClick={() => {
-                              const { managerList: managerValuesList } = values;
-                              const removedManagerList = managerValuesList?.filter((manager, index) => index !== i);
-                              values.managerList = removedManagerList;
-
-                              const { managerList, ...rest } = company;
-                              const copiedManagerList: ManagerDetail[] = managerList ? [...managerList] : [];
-                              copiedManagerList.pop();
-                              setCompany({...rest, managerList: [...copiedManagerList]});
-                            }}
-                          >
-                            삭제
-                          </Button>
+                          {values.managerList?.length !== 1 && (
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              style={{marginLeft: '5px'}}
+                              onClick={() => {
+                                const {managerList, ...rest} = values;
+                                const removedManagerList = [...managerList].filter((manager, index) => index !== i);
+                                setValues({...rest, managerList: removedManagerList});
+                              }}
+                            >
+                              삭제
+                            </Button>
+                            )}
                         </Box>
 
                       </Box>
@@ -267,7 +271,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-name"
                               name={`managerList.${i}.name`}
-                              value={manager?.name}
+                              value={values?.managerList?.[i]?.name}
                               onChange={handleChange}
                               required
                               placeholder="입력"
@@ -282,7 +286,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-position"
                               name={`managerList.${i}.position`}
-                              value={manager?.position}
+                              value={values?.managerList?.[i]?.position}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -296,7 +300,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-mobile"
                               name={`managerList.${i}.mobile`}
-                              value={manager.mobile}
+                              value={values?.managerList?.[i]?.mobile}
                               onChange={handleChange}
                               placeholder="-를 제외하고 입력"
                             />
@@ -310,7 +314,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-phone"
                               name={`managerList.${i}.phone`}
-                              value={manager.phone}
+                              value={values?.managerList?.[i]?.phone}
                               onChange={handleChange}
                               placeholder="-를 제외하고 입력"
                             />
@@ -324,7 +328,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-email"
                               name={`managerList.${i}.email`}
-                              value={manager.email}
+                              value={values?.managerList?.[i]?.email}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -338,7 +342,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-meta"
                               name={`managerList.${i}.meta`}
-                              value={manager.meta}
+                              value={values?.managerList?.[i]?.meta}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -352,7 +356,7 @@ const Page = () => {
                               row
                               aria-label="params-manager-state"
                               name={`managerList.${i}.state`}
-                              value={manager.state}
+                              value={values?.managerList?.[i]?.state}
                               onChange={handleChange}
                             >
                               <FormControlLabel value="재직" control={<Radio />} label="재직" />
@@ -363,7 +367,7 @@ const Page = () => {
                       </Grid>
                     </>
                   ))}
-                  {values.managerList?.length === 0 && (
+                  {!values.managerList.length && (
                     <>
                       <Divider sx={{ mt: '40px', mb: '40px' }} />
                       <Box sx={{
@@ -384,15 +388,12 @@ const Page = () => {
                           <Button
                             variant="contained"
                             color="primary"
-                            style={{marginRight: '5px'}}
+                            onClick={() => {
+                              const {managerList, ...rest} = values;
+                              setValues({...rest, managerList: [...initManagerListValue]});
+                            }}
                           >
                             추가
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                          >
-                            삭제
                           </Button>
                         </Box>
                       </Box>
@@ -404,7 +405,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-name"
                               name={`managerList.${0}.name`}
-                              value={''}
+                              value={values?.managerList?.[0]?.name}
                               onChange={handleChange}
                               required
                               placeholder="입력"
@@ -419,7 +420,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-position"
                               name={`managerList.${0}.position`}
-                              value={''}
+                              value={values?.managerList?.[0]?.position}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -433,7 +434,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-mobile"
                               name={`managerList.${0}.mobile`}
-                              value={''}
+                              value={values?.managerList?.[0]?.mobile}
                               onChange={handleChange}
                               placeholder="-를 제외하고 입력"
                             />
@@ -447,7 +448,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-phone"
                               name={`managerList.${0}.phone`}
-                              value={''}
+                              value={values?.managerList?.[0]?.phone}
                               onChange={handleChange}
                               placeholder="-를 제외하고 입력"
                             />
@@ -461,7 +462,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-email"
                               name={`managerList.${0}.email`}
-                              value={''}
+                              value={values?.managerList?.[0]?.email}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -475,7 +476,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-meta"
                               name={`managerList.${0}.meta`}
-                              value={''}
+                              value={values?.managerList?.[0]?.meta}
                               onChange={handleChange}
                               placeholder="입력"
                             />
@@ -489,25 +490,12 @@ const Page = () => {
                               row
                               aria-label="params-manager-state"
                               name={`managerList.${0}.state`}
-                              value={''}
+                              value={values?.managerList?.[0]?.state}
                               onChange={handleChange}
                             >
                               <FormControlLabel value="재직" control={<Radio />} label="재직" />
                               <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
                             </RadioGroup>
-                          </FormControl>
-                        </Grid>
-                        <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-manager-project">담당 프로젝트</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-project"
-                              name=''
-                              value=''
-                              readOnly
-                            />
-                            <ErrorMessage name="manager-meta" />
                           </FormControl>
                         </Grid>
                       </Grid>
