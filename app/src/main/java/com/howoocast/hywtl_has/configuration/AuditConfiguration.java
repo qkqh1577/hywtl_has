@@ -4,6 +4,8 @@ import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.Objects;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuditConfiguration {
 
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
     @Bean
     public AuditorAware<Long> auditorProvider() {
@@ -26,8 +29,11 @@ public class AuditConfiguration {
             if (Objects.isNull(authentication)) {
                 return Optional.empty();
             }
-            return userRepository.findByUsername(authentication.getName())
+            entityManager.setFlushMode(FlushModeType.COMMIT);
+            Optional<Long> result = userRepository.findByUsername(authentication.getName())
                 .map(User::getId);
+            entityManager.setFlushMode(FlushModeType.AUTO);
+            return result;
         };
     }
 }
