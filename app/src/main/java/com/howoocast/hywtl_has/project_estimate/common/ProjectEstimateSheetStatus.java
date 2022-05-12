@@ -8,9 +8,9 @@ public enum ProjectEstimateSheetStatus {
     DRAFT("초안"),
     DRAFT_CONFIRMED("초안확정"),
     SENT("전달"),
-    RECONSIDER("재검토"),
-    RECONSIDER_CONFIRMED("재검토확정"),
-    RECONSIDER_SENT("재검토전달"),
+    RECONSIDER("재견적"),
+    RECONSIDER_CONFIRMED("재견적확정"),
+    RECONSIDER_SENT("재견적전달"),
     COMPLETE("완료");
     private final String message;
 

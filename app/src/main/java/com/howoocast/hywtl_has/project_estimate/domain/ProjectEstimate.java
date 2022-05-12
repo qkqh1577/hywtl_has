@@ -1,36 +1,22 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import com.howoocast.hywtl_has.project.domain.Project;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Slf4j
 @Getter
-@Entity
-@Table(name = "project_estimate")
-@Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_estimate set deleted_at = now() where id = ?")
-@EntityListeners(AuditingEntityListener.class)
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectEstimate extends CustomEntity {
-
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Project project;
+public class ProjectEstimate {
 
     private LocalDate receivedDate; // 견적 의뢰 접수일
 
@@ -40,23 +26,17 @@ public class ProjectEstimate extends CustomEntity {
 
     private String reportLevel; // 평가 난이도
 
-    public static ProjectEstimate of(
-        Project project,
-        LocalDate receivedDate,
-        String figureLevel,
-        String testLevel,
-        String reportLevel
-    ) {
-        ProjectEstimate instance = new ProjectEstimate();
-        instance.project = project;
-        instance.id = project.getId();
-        instance.change(
-            receivedDate,
-            figureLevel,
-            testLevel,
-            reportLevel
-        );
-        return instance;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "project")
+    @OrderBy("createdAt desc")
+    private List<ProjectEstimateSheet> sheetList; //시스템 견적서 목록
+
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime modifiedAt;
+
+    public static ProjectEstimate of() {
+        return new ProjectEstimate();
     }
 
     public void change(
@@ -69,5 +49,6 @@ public class ProjectEstimate extends CustomEntity {
         this.figureLevel = figureLevel;
         this.testLevel = testLevel;
         this.reportLevel = reportLevel;
+        this.modifiedAt = LocalDateTime.now();
     }
 }

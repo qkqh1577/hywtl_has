@@ -15,8 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
 @Getter
+@Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasic {
 
@@ -144,9 +144,11 @@ public class ProjectBasic {
         this.clientManager = clientManager;
         this.clientPhone = clientPhone;
         this.clientEmail = clientEmail;
+        this.modifiedAt = LocalDateTime.now();
     }
 
     public void change(ProjectStatus status) {
         this.status = status;
+        this.modifiedAt = LocalDateTime.now();
     }
 }

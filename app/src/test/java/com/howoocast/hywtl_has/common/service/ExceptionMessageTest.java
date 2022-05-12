@@ -16,6 +16,30 @@ public class ExceptionMessageTest {
     void test() {
 
         Set<String> codeList = new HashSet<>();
+        codeList.add("project.estimate.sheet.detail.title.not-blank");
+        codeList.add("project.estimate.sheet.detail.sub-title-list.not-empty");
+        codeList.add("project.estimate.sheet.detail.seq.not-null");
+        codeList.add("project.estimate.sheet.detail.seq.positive");
+        codeList.add("project.estimate.sheet.detail.unit.not-blank");
+        codeList.add("project.estimate.sheet.detail.count.not-null");
+        codeList.add("project.estimate.sheet.detail.count.positive");
+        codeList.add("project.estimate.sheet.detail.unit-price.not-null");
+        codeList.add("project.estimate.sheet.detail.unit-price.positive");
+        codeList.add("project.estimate.sheet.detail.total-price.not-null");
+        codeList.add("project.estimate.sheet.detail.total-price.positive");
+        codeList.add("project.estimate.sheet.detail.is-included.not-null");
+        codeList.add("project.estimate.sheet.confirm.not-null");
+        codeList.add("project.estimate.sheet.status.not-null");
+        codeList.add("project.estimate.sheet.title.not-blank");
+        codeList.add("project.estimate.sheet.estimate-date.not-null");
+        codeList.add("project.estimate.sheet.sales-team-leader-id.not-null");
+        codeList.add("project.estimate.sheet.project.target.review-id.not-null");
+        codeList.add("project.estimate.sheet.detail-list.not-empty");
+        codeList.add("project.estimate.sheet.comment-list.not-empty");
+        codeList.add("project.estimate.sheet.comment.seq.not-null");
+        codeList.add("project.estimate.sheet.comment.description.not-blank");
+        codeList.add("project.estimate.sheet.comment.in-use.not-null");
+
         codeList.add("address.depth1.not-blank");
         codeList.add("address.depth2.not-blank");
         codeList.add("address.latitude.not-null");

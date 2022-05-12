@@ -5,8 +5,10 @@ import java.util.HashMap;
 public class Dictionary extends HashMap<String, String> {
 
     public Dictionary() {
+        this.put("-count", "수");
         this.put("-id", " 지정");
         this.put("-key", "키");
+        this.put("-leader", "장");
         this.put("-name", "명");
         this.put("-number", "번호");
         this.put("academic", "학력 정보");
@@ -34,7 +36,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("code", "코드");
         this.put("company", "회사");
         this.put("confirmed", "확정 여부");
-        this.put("count", "수");
+        this.put("count", "수량");
         this.put("date", "일자");
         this.put("department", "부서");
         this.put("department.name", "부서명");
@@ -46,11 +48,18 @@ public class Dictionary extends HashMap<String, String> {
         this.put("end-date", "종료일");
         this.put("eng", "영문");
         this.put("eng-name", "영문명");
+        this.put("estimate", "견적");
+        this.put("estimate.custom-sheet", "커스텀 견적서");
+        this.put("estimate.sheet", "시스템 견적서");
+        this.put("estimate.sheet.comment-list", "문구 항목");
+        this.put("estimate.sheet.detail-list", "용역 항목");
         this.put("file-item", "파일");
         this.put("floor", "층");
         this.put("height", "높이");
         this.put("hired", "고용");
         this.put("id", "고유 번호");
+        this.put("in-use", "사용 여부");
+        this.put("is-included", "포함 여부");
         this.put("job-position", "직종");
         this.put("job-title", "직함");
         this.put("job-type", "성별");
@@ -76,6 +85,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("personnel", "인사");
         this.put("personnel.id", "유저");
         this.put("personnel.job", "소속 정보");
+        this.put("price", "가격");
         this.put("project", "프로젝트");
         this.put("project-comment", "프로젝트 메모");
         this.put("project.basic", "프로젝트 기본 정보");
@@ -83,9 +93,9 @@ public class Dictionary extends HashMap<String, String> {
         this.put("project.basic.status", "프로젝트 상태");
         this.put("project.target", "프로젝트 실험 대상");
         this.put("project.target.document", "실험 대상 형상비 검토 자료");
+        this.put("project.target.review", "실험 대상 형상비 검토");
         this.put("qualified", "승인");
         this.put("review", "검토");
-        this.put("test-list", "실험 종류");
         this.put("role", "권한");
         this.put("sales", "영업");
         this.put("seq", "정렬 순서");
@@ -93,9 +103,14 @@ public class Dictionary extends HashMap<String, String> {
         this.put("start", "시작");
         this.put("start-date", "시작일");
         this.put("status", "상태");
+        this.put("sub-title", "부제");
+        this.put("test-list", "실험 종류");
         this.put("title", "제목");
+        this.put("total-price", "총액");
         this.put("tree", "구조");
         this.put("type", "구분");
+        this.put("unit", "단위");
+        this.put("unit-price", "단가");
         this.put("user", "유저");
         this.put("username", "아이디");
         this.put("verification", "인증");
