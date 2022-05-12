@@ -244,12 +244,14 @@ const Page = () => {
                             color="secondary"
                             style={{marginLeft: '5px'}}
                             onClick={() => {
-                              const { managerList: managerVluesList } = values;
-                              const removedManagerList = managerVluesList?.filter((manager, index) => index !== i);
+                              const { managerList: managerValuesList } = values;
+                              const removedManagerList = managerValuesList?.filter((manager, index) => index !== i);
                               values.managerList = removedManagerList;
 
-                              const { managerList } = company;
-
+                              const { managerList, ...rest } = company;
+                              const copiedManagerList: ManagerDetail[] = managerList ? [...managerList] : [];
+                              copiedManagerList.pop();
+                              setCompany({...rest, managerList: [...copiedManagerList]});
                             }}
                           >
                             삭제
@@ -265,7 +267,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-name"
                               name={`managerList.${i}.name`}
-                              value={manager.name}
+                              value={manager?.name}
                               onChange={handleChange}
                               required
                               placeholder="입력"
@@ -280,7 +282,7 @@ const Page = () => {
                               type="text"
                               id="params-manager-position"
                               name={`managerList.${i}.position`}
-                              value={manager.position}
+                              value={manager?.position}
                               onChange={handleChange}
                               placeholder="입력"
                             />
