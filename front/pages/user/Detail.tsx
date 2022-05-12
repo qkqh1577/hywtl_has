@@ -3,42 +3,43 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
-  FormControl,
   Grid,
-  Input,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import DateFormat from 'components/DateFormat';
-import DepartmentSelector from 'components/DepartmentSelector';
 import useUser from 'services/user/hook';
 import { UserRole } from 'services/user/entity';
 import { userRoleList, userRoleName } from 'services/user/data';
 import { ChangeUserParameter } from 'services/user/parameter';
 import PersonnelDetail from 'pages/hr/Detail';
-import { ListDepartment } from 'services/department/entity';
+import usePasswordReset from 'services/user/password_reset/hook';
+import { PasswordResetParameter } from 'services/user/password_reset/parameter';
+import { DepartmentSelector, DataField } from 'components';
+import useDialog from 'components/Dialog';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   const navigate = useNavigate();
+  const dialog = useDialog();
   const {
     userState: {
       detail
     },
     getOne,
-    resetPassword,
     change,
     clearOne
   } = useUser();
 
+  const {
+    reset
+  } = usePasswordReset();
+
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       if (!detail) {
-        window.alert('잘못된 접근입니다.');
+        dialog.alert('잘못된 접근입니다.');
         return;
       }
       const error: any = {};
@@ -57,9 +58,9 @@ const UserDetail = () => {
         error.userRole = '권한 선택은 필수입니다.';
       }
 
-      const department: ListDepartment = values.department;
-      if (!department) {
-        error.department = '부서 선택은 필수입니다.';
+      const departmentId: number = values.departmentId;
+      if (!departmentId) {
+        error.departmentId = '부서 선택은 필수입니다.';
       }
 
       if (Object.keys(error).length > 0) {
@@ -72,28 +73,35 @@ const UserDetail = () => {
         name,
         email,
         userRole,
-        departmentId: department.id,
+        departmentId,
       };
 
       change(params, (data) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.');
+        }
       });
     },
     password: () => {
       if (!detail) {
-        window.alert('잘못된 접근입니다.');
+        dialog.alert('잘못된 접근입니다.');
         return;
       }
-      if (window.confirm('해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?')) {
-        resetPassword(detail.id, (data) => {
-          if (data) {
-            window.alert('비밀번호 변경 메일을 발송하였습니다.');
-          }
-        });
-      }
+      dialog.confirm({
+        children: '해당 유저의 비밀번호를 변경할 수 있게 메일을 발송하겠습니까?',
+        confirmText: '발송',
+        afterConfirm: () => {
+          const params: PasswordResetParameter = {
+            email: detail.email
+          };
+          reset(params, (data) => {
+            if (data) {
+              dialog.alert('비밀번호 변경 메일을 발송하였습니다.');
+            }
+          });
+        }
+      });
     },
   };
   useEffect(() => {
@@ -107,7 +115,7 @@ const UserDetail = () => {
 
   return (
     <>
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -136,7 +144,7 @@ const UserDetail = () => {
                 생성일시
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.createdTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.createdAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -144,7 +152,7 @@ const UserDetail = () => {
                 최근접속일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.loginTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.loginAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
             <Grid container spacing={3} item sm={6} xs={12}>
@@ -152,7 +160,7 @@ const UserDetail = () => {
                 비밀번호 변경일
               </Grid>
               <Grid item sm={8}>
-                <DateFormat date={detail?.passwordChangedTime} format="YYYY-MM-DD HH:mm" />
+                <DateFormat date={detail?.passwordChangedAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
           </Grid>
@@ -164,78 +172,73 @@ const UserDetail = () => {
                 <Formik
                   initialValues={{
                     ...detail,
+                    departmentId: detail.department.id,
                   }}
                   onSubmit={handler.submit}
+                  enableReinitialize
                 >
-                  {({ values, isSubmitting, setFieldValue, handleChange, handleSubmit }) => (
+                  {({
+                    values,
+                    errors,
+                    dirty,
+                    isSubmitting,
+                    setFieldValue,
+                    handleSubmit
+                  }) => (
                     <Form>
                       <Grid container spacing={2}>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-username">아이디</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-username"
-                              name="username"
-                              value={values.username}
-                              disabled
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-name">이름</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-name"
-                              name="name"
-                              value={values.name}
-                              onChange={handleChange}
-                              placeholder="이름을 입력하세요"
-                              required
-                            />
-                            <ErrorMessage name="name" />
-                          </FormControl>
-                        </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-email">이메일</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-email"
-                              name="email"
-                              value={values.email}
-                              onChange={handleChange}
-                              placeholder="이메일을 입력하세요"
-                              required
-                            />
-                            <ErrorMessage name="email" />
-                          </FormControl>
-                        </Grid>
-                        <Grid item sm={12}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel id="params-role-label">권한</InputLabel>
-                            <Select
-                              labelId="params-userRole-label"
-                              id="params-userRole"
-                              name="userRole"
-                              value={values.userRole}
-                              onChange={handleChange}
-                              required
-                            >
-                              {userRoleList.map((item) => (
-                                <MenuItem key={item} value={item}>{userRoleName(item)} 권한</MenuItem>
-                              ))}
-                            </Select>
-                            <ErrorMessage name="userRole" />
-                          </FormControl>
-                        </Grid>
-                        <Grid item sm={12}>
-                          <DepartmentSelector
-                            name="department"
-                            label="소속 부서"
-                            value={values.department}
+                        <Grid item sm={3}>
+                          <DataField
+                            name="username"
+                            label="아이디"
+                            value={values.username}
                             setFieldValue={setFieldValue}
+                            errors={errors}
+                            disabled
+                          />
+                        </Grid>
+                        <Grid item sm={3}>
+                          <DataField
+                            name="name"
+                            label="이름"
+                            value={values.name}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            required
+                          />
+                        </Grid>
+                        <Grid item sm={4}>
+                          <DataField
+                            name="email"
+                            label="이메일"
+                            value={values.email}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            required
+                          />
+                        </Grid>
+                        <Grid item sm={2}>
+                          <DataField
+                            type="select"
+                            name="userRole"
+                            label="권한"
+                            value={values.userRole}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            options={userRoleList.map((item) => ({
+                              key: item,
+                              text: userRoleName(item)
+                            }))}
+                            required
+                          />
+                        </Grid>
+                        <Grid item sm={3}>
+                          <DepartmentSelector
+                            name="departmentId"
+                            label="소속 부서"
+                            value={values.departmentId}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
                             required
                           />
                         </Grid>
@@ -249,6 +252,7 @@ const UserDetail = () => {
                             <Button
                               color="secondary"
                               variant="contained"
+                              disabled={dirty}
                               onClick={() => {
                                 navigate(-1);
                               }}
@@ -258,7 +262,7 @@ const UserDetail = () => {
                             <Button
                               color="primary"
                               variant="contained"
-                              disabled={isSubmitting}
+                              disabled={!dirty && isSubmitting}
                               onClick={() => {
                                 handleSubmit();
                               }}
@@ -284,8 +288,8 @@ const UserDetail = () => {
           </Grid>
         </Box>
       </Paper>
-      {detail && (<PersonnelDetail id={detail.id} />)}
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+      {detail && (<PersonnelDetail />)}
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ mb: '20px' }}>
           <Grid container spacing={1}>
             <Grid item sm={12}>

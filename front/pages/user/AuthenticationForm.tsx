@@ -24,9 +24,9 @@ const UserAuthenticationForm = () => {
 
   if (!email || !authKey) {
     return (
-      <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Grid item sm={12}>
-          <h2>계정 등록</h2>
+          <h2>오류</h2>
         </Grid>
         <> 잘못된 접근입니다.</>
       </Paper>

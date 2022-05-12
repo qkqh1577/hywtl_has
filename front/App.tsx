@@ -1,34 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Badge,
   Box,
-  Container,
   CssBaseline,
   Divider,
+  Grid,
   IconButton,
-  Link,
+  Input,
+  InputAdornment,
   ListItem,
   ListItemIcon,
   ListItemText,
   SvgIcon,
   Toolbar,
+  Tooltip,
   Typography
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
   Notifications as NotificationsIcon,
-  ChevronLeft as ChevronLeftIcon,
   FlightTakeoffSharp as FlightTakeoffSharpIcon,
+  ChevronLeft as LeftIcon,
+  ChevronRight as RightIcon,
+  Logout as LogoutIcon,
+  AccountCircle as AccountIcon,
+  FolderOpen as FolderOpenIcon,
+  Search as SearchIcon
 } from '@mui/icons-material';
-import { Dashboard as DashboardIcon } from '@mui/icons-material';
+import { Formik, FormikHelpers } from 'formik';
 import Tree, { TreeNode } from 'rc-tree';
 import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
 import { EventDataNode, Key } from 'rc-tree/lib/interface';
 
+import logo from 'assets/logo.png';
 import { AppBar, AppDrawer } from 'layouts';
 import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
+import { ProjectDrawer, ProjectList } from 'pages/project';
+import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
+import { Alert, Confirm } from 'components';
+import useDialog from 'components/Dialog';
 
 type Menu = {
   title: string;
@@ -40,41 +50,54 @@ type Menu = {
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const path = location.pathname;
+  const dialog = useDialog();
   const { userState: { login }, getLogin, logout } = useUser();
+  const path = location.pathname;
 
-  const [open, setOpen] = useState(true);
+  const [openMenu, setOpenMenu] = useState(true);
+  const [openProject, setOpenProject] = useState(true);
+  const [openComment, setOpenComment] = useState(false);
   const [menuData, setMenuData] = useState<Menu[]>([
     {
-      title: 'Department',
-      path: '/department',
-      icon: DashboardIcon
-    }, {
-      title: 'User',
-      path: '/user',
-      icon: DashboardIcon
-    }, {
-      title: 'HR',
-      path: '/hr/card',
-      icon: DashboardIcon
-    }, {
-      title: 'SALES',
-      path: '/sales',
-      icon: DashboardIcon
-    }, {
-      title: 'PROJECT',
+      title: '프로젝트 관리',
       path: '/project',
-      icon: DashboardIcon
+      icon: FolderOpenIcon
+    },
+    {
+      title: '영업 관리',
+      path: '/sales',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '인사카드 관리',
+      path: '/hr/card',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '부서 관리',
+      path: '/department',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '사용자 관리',
+      path: '/user',
+      icon: FolderOpenIcon
     }, {
-      title: 'COMPANY',
+      title: '업체 관리',
       path: '/company',
-      icon: DashboardIcon
+      icon: FolderOpenIcon
     }
   ]);
 
   const handler = {
-    toggle: () => {
-      setOpen(!open);
+    toggleMenu: () => {
+      setOpenMenu(!openMenu);
+    },
+    toggleProject: () => {
+      setOpenProject(!openProject);
+    },
+    toggleComment: () => {
+      setOpenComment(!openComment);
     },
     dragStart: (info: NodeDragEventParams) => {
       console.log(info);
@@ -137,14 +160,21 @@ const App = () => {
         }
       }
 
-      setMenuData(data.map(menu => ({ ...menu, icon: DashboardIcon })));
+      setMenuData(data.map(menu => ({ ...menu, icon: FolderOpenIcon })));
     },
     logout: () => {
-      if (window.confirm('로그아웃하시겠습니까?')) {
-        logout();
-        navigate('/login');
-        return null;
-      }
+      dialog.confirm({
+        children: '로그아웃하시겠습니까?',
+        confirmText: '로그아웃',
+        afterConfirm: () => {
+          logout();
+          navigate('/login');
+        }
+      });
+    },
+    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      console.log(values);
+      setSubmitting(false);
     }
   };
 
@@ -159,132 +189,305 @@ const App = () => {
   }, [path]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: '24px', // keep right padding when drawer closed
-          }}
+    <>
+      <Box sx={{ display: 'flex', width: '100%' }}>
+        <CssBaseline />
+        <AppBar
+          position="absolute"
+          color="transparent"
         >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handler.toggle}
+          <Toolbar
             sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' }),
+              backgroundColor: '#3c3757'
             }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h3"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
+            <Grid container spacing={2} wrap="nowrap"
+              sx={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                alignContent: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Grid item>
+                <img src={logo} width="auto" height="26" alt="한양풍동실험연구소_로고" />
+              </Grid>
+            </Grid>
+            {login && (
+              <Grid item
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'flex-end',
+                }}>
+                <Formik
+                  initialValues={{
+                    search: ''
+                  }}
+                  onSubmit={handler.search}
+                >
+                  {({ setFieldValue }) => (
+                    <Input
+                      placeholder="통합검색"
+                      onChange={(e) => {
+                        setFieldValue('search', e.target.value);
+                      }}
+                      sx={{
+                        width: '240px',
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
+                        border: '1px solid #44527b',
+                        borderRadius: '8px',
+                        color: '#fff',
+                      }}
+                      endAdornment={
+                        <InputAdornment
+                          position="end"
+                          sx={{
+                            color: '#717ea8',
+                          }}
+                        >
+                          <SearchIcon />
+                        </InputAdornment>
+                      }
+                    />
+                  )}
+                </Formik>
+                <Tooltip title="알림" placement="bottom">
+                  <IconButton color="warning">
+                    <NotificationsIcon />
+                    <Typography color="white">
+                      4
+                    </Typography>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="계정 정보" placement="bottom">
+                  <IconButton
+                    color="info"
+                    onClick={() => {
+                      console.log(login);
+                    }}
+                  >
+                    <AccountIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="로그아웃" placement="bottom">
+                  <IconButton
+                    color="info"
+                    onClick={handler.logout}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            )}
+          </Toolbar>
+        </AppBar>
+        <AppDrawer variant="permanent" open={openMenu}>
+          <Toolbar />
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: openMenu ? 'space-between' : 'flex-end',
+              px: [1],
+            }}
           >
-          </Typography>
-          {login && (
-            <>
+            {openMenu && (
               <Typography
-                component={Link}
-                noWrap
+                color="primary"
                 sx={{
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  p: '10px',
-                }}
-                onClick={() => {
-                  console.log(login);
+                  ml: '24px',
+                  fontSize: '16px'
                 }}
               >
-                {login.name} 님
+                업무메뉴
               </Typography>
-              <Typography
-                component={Link}
-                noWrap
+            )}
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              width: '36px',
+              height: '36px',
+              backgroundColor: '#c4baf5',
+              borderRadius: '4px'
+            }}>
+              <IconButton
+                color="primary"
                 sx={{
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  p: '10px',
+                  display: 'flex',
+                  width: '16.25px',
+                  height: '16.25px',
+                  backgroundColor: 'transparent',
+                  border: '2px solid #301a9a',
                 }}
-                onClick={handler.logout}
+                onClick={handler.toggleMenu}
               >
-                로그아웃
-              </Typography>
-            </>
+                {openMenu ? <LeftIcon /> : <RightIcon />}
+              </IconButton>
+            </Box>
+          </Toolbar>
+          <Divider />
+          {openMenu && (
+            <Tree
+              onDragStart={handler.dragStart}
+              onDragEnter={handler.dragEnter}
+              onDrop={handler.drop}
+              draggable
+              defaultExpandAll
+            >
+              {menuData.map((menu) => (
+                <TreeNode
+                  title={
+                    <ListItem
+                      key={menu.path}
+                      onClick={() => {
+                        navigate(menu.path);
+                      }}
+                      button
+                    >
+                      <ListItemIcon>
+                        {React.createElement(menu.icon)}
+                      </ListItemIcon>
+                      <ListItemText primary={menu.title} />
+                    </ListItem>
+                  }
+                  key={menu.path}
+                  checkable={false}
+                />
+              ))}
+            </Tree>
           )}
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <AppDrawer variant="permanent" open={open}>
-        <Toolbar
+        </AppDrawer>
+        {path.startsWith('/project') && (
+          <ProjectDrawer variant="permanent" open={openProject}>
+            <Toolbar />
+            <Toolbar
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: openProject ? 'space-between' : 'flex-end',
+                px: [1],
+              }}
+            >
+              {openProject && (
+                <Typography
+                  color="primary"
+                  sx={{
+                    ml: '19px',
+                    fontSize: '16px'
+                  }}
+                >
+                  프로젝트 목록
+                </Typography>
+              )}
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                width: '36px',
+                height: '36px',
+                backgroundColor: '#c4baf5',
+                borderRadius: '4px'
+              }}>
+                <IconButton
+                  color="primary"
+                  sx={{
+                    display: 'flex',
+                    width: '16.25px',
+                    height: '16.25px',
+                    backgroundColor: 'transparent',
+                    border: '2px solid #301a9a',
+                  }}
+                  onClick={handler.toggleProject}
+                >
+                  {openProject ? <LeftIcon /> : <RightIcon />}
+                </IconButton>
+              </Box>
+            </Toolbar>
+            <Divider />
+            {openProject && <ProjectList />}
+          </ProjectDrawer>
+        )}
+        <Box
+          component="main"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            px: [1],
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+            paddingLeft: 0,
+            paddingRight: 0,
           }}
         >
-          <IconButton onClick={handler.toggle}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <Tree
-          onDragStart={handler.dragStart}
-          onDragEnter={handler.dragEnter}
-          onDrop={handler.drop}
-          draggable
-          defaultExpandAll
-        >
-          {menuData.map((menu) => (
-            <TreeNode
-              title={
-                <ListItem
-                  key={menu.path}
-                  onClick={() => {
-                    navigate(menu.path);
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    {React.createElement(menu.icon)}
-                  </ListItemIcon>
-                  <ListItemText primary={menu.title} />
-                </ListItem>
-              }
-              key={menu.path}
-              checkable={false}
-            />
-
-          ))}
-        </Tree>
-      </AppDrawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Toolbar sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }} />
           <ReactRouter />
-        </Container>
+        </Box>
+        <Routes>
+          <Route path="/project/:id/*" element={
+            <ProjectCommentDrawer variant="permanent" open={openComment}>
+              <Toolbar />
+              <Toolbar
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  px: [1],
+                }}
+              >
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  width: '36px',
+                  height: '36px',
+                  backgroundColor: '#c4baf5',
+                  borderRadius: '4px'
+                }}>
+                  <IconButton
+                    color="primary"
+                    sx={{
+                      display: 'flex',
+                      width: '16.25px',
+                      height: '16.25px',
+                      backgroundColor: 'transparent',
+                      border: '2px solid #301a9a',
+                    }}
+                    onClick={handler.toggleComment}
+                  >
+                    {openComment ? <RightIcon /> : <LeftIcon />}
+                  </IconButton>
+                </Box>
+                {openComment && (
+                  <Typography
+                    color="primary"
+                    sx={{
+                      ml: '19px',
+                      fontSize: '16px'
+                    }}
+                  >
+                    메모
+                  </Typography>
+                )}
+              </Toolbar>
+              <Divider />
+              {openComment && <ProjectCommentList />}
+            </ProjectCommentDrawer>
+          } />
+        </Routes>
       </Box>
-    </Box>
+      <Alert />
+      <Confirm />
+    </>
   );
 };
 

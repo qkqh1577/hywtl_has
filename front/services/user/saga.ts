@@ -86,7 +86,7 @@ function* logout() {
   yield put(userActions.setLogin(undefined));
 }
 
-export default function* saga() {
+export default function* userSaga() {
   yield takeLatest(UserActionType.getPage, getPage);
   yield takeLatest(UserActionType.getOne, getOne);
   yield takeLatest(UserActionType.add, add);

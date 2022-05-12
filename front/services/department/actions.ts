@@ -1,8 +1,8 @@
 import { createAction } from 'typesafe-actions';
 import Department, { ListDepartment } from 'services/department/entity';
 import {
-  DepartmentAddParameter,
-  DepartmentChangeParameter, DepartmentChangeTreeParameter,
+  DepartmentChangeTreeParameter,
+  DepartmentParameter,
   DepartmentQuery
 } from './parameter';
 import Page from 'components/Page';
@@ -14,8 +14,7 @@ export enum DepartmentActionType {
   setPage = 'department/setPage',
   getOne = 'department/getOne',
   setOne = 'department/setOne',
-  add = 'department/add',
-  change = 'department/change',
+  upsert = 'department/upsert',
   changeTree = 'department/changeTree',
 }
 
@@ -26,12 +25,8 @@ export const departmentActions = {
   setPage: createAction(DepartmentActionType.setPage)<Page<ListDepartment>>(),
   getOne: createAction(DepartmentActionType.getOne)<number>(),
   setOne: createAction(DepartmentActionType.setOne)<Department | undefined>(),
-  add: createAction(DepartmentActionType.add)<{
-    params: DepartmentAddParameter;
-    callback: (data?: Department) => void;
-  }>(),
-  change: createAction(DepartmentActionType.change)<{
-    params: DepartmentChangeParameter;
+  upsert: createAction(DepartmentActionType.upsert)<{
+    params: DepartmentParameter;
     callback: (data?: Department) => void;
   }>(),
   changeTree: createAction(DepartmentActionType.changeTree)<{

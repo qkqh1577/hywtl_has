@@ -15,15 +15,11 @@ function* invite(action: ActionType<typeof userInvitationActions.invite>) {
 }
 
 function* getOne(action: ActionType<typeof userInvitationActions.getOne>) {
-  try {
-    const data: UserInvitation = yield userInvitationApi.getOne(action.payload);
-    yield put(userInvitationActions.setOne(data));
-  } catch(e) {
-    yield put(userInvitationActions.setOne(undefined));
-  }
+  const data: UserInvitation = yield userInvitationApi.getOne(action.payload);
+  yield put(userInvitationActions.setOne(data));
 }
 
-export default function* saga() {
+export default function* userInvitationSaga() {
   yield takeLatest(UserInvitationType.invite, invite);
   yield takeLatest(UserInvitationType.getOne, getOne);
 }

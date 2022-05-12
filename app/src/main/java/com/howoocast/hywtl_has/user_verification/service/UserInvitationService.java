@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.user_verification.service;
 
-import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
-import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.event.UserInvitationAddEvent;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
@@ -24,7 +24,7 @@ public class UserInvitationService {
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
-    private final UserInvitationRepository userInvitationRepository;
+    private final UserInvitationRepository repository;
 
     private final UserRepository userRepository;
 
@@ -34,34 +34,35 @@ public class UserInvitationService {
 
     @Transactional(readOnly = true)
     public UserInvitationView authenticate(String email, String authKey) {
-        UserInvitation userInvitation = UserInvitation.load(
-            userInvitationRepository,
-            email
-        );
-        userInvitation.checkValid(invalidateDuration, authKey);
-        return UserInvitationView.assemble(userInvitation);
+        UserInvitation instance = repository.findByEmail(email)
+            .orElseThrow(
+                () -> new NotFoundException("user-verification.user-invitation", String.format("email: %s", email)));
+        instance.checkValid(invalidateDuration, authKey);
+        return UserInvitationView.assemble(instance);
     }
 
     @Transactional
     public UserInvitationView invite(UserInviteParameter params) {
         String email = params.getEmail();
-
         // 기 가입자 이메일 사용 체크
-        User.checkEmail(userRepository, email);
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new DuplicatedValueException("email", email);
+        }
 
-        // 기존 초대 코드 무효화
-        UserInvitation.invalidateIfExists(userInvitationRepository, email);
+        // 기존 코드 무효화
+        repository.findByEmail(email)
+            .ifPresent(instance -> repository.deleteById(instance.getId()));
 
         UserInvitation userInvitation = UserInvitation.of(
-            userInvitationRepository,
             email,
             params.getName(),
-            Department.load(departmentRepository, params.getDepartmentId()),
+            departmentRepository.findById(params.getDepartmentId())
+                .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId())),
             params.getUserRole()
         );
 
         // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new UserInvitationAddEvent(userInvitation));
-        return UserInvitationView.assemble(userInvitation);
+        return UserInvitationView.assemble(repository.save(userInvitation));
     }
 }

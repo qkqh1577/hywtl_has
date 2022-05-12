@@ -13,7 +13,6 @@ import {
   DeleteForever as DeleteIcon
 } from '@mui/icons-material';
 import {
-  ErrorMessage,
   Form,
   Formik,
   FormikHelpers
@@ -46,15 +45,15 @@ import {
   initLanguageView,
 } from 'services/personnel/view';
 import FileItemParameter from 'services/common/file-item/parameter';
-import { ListDepartment } from 'services/department/entity';
+import useDialog from 'components/Dialog';
 
 const PersonnelDetail = () => {
   const navigate = useNavigate();
+  const dialog = useDialog();
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
   if (typeof id === 'undefined' || Number.isNaN(id)) {
-    window.alert('잘못된 접근입니다.');
-    navigate('/personnel');
+    dialog.error('잘못된 접근입니다.', '/hr/card');
     return null;
   }
 
@@ -139,9 +138,9 @@ const PersonnelDetail = () => {
       .map((item, index) => {
         const jobErrors: any = {};
 
-        const department: ListDepartment = item.department;
-        if (!department) {
-          jobErrors.department = '부서 선택은 필수입니다.';
+        const departmentId: number = item.departmentId;
+        if (!departmentId) {
+          jobErrors.departmentId = '부서 선택은 필수입니다.';
         }
 
         const jobTitle: string = item.jobTitle;
@@ -167,7 +166,7 @@ const PersonnelDetail = () => {
           return null;
         }
         const job: PersonnelJobParameter = {
-          departmentId: department.id,
+          departmentId,
           jobTitle,
           jobType,
           jobPosition,
@@ -391,10 +390,10 @@ const PersonnelDetail = () => {
       };
 
       update(params, (data?) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-        }
         setSubmitting(false);
+        if (data) {
+          dialog.alert('저장하였습니다.');
+        }
       });
     },
     detail: (detail?: Personnel) => {
@@ -417,7 +416,7 @@ const PersonnelDetail = () => {
             recommender: detail.company.recommender ?? view.company.recommender,
           },
           jobList: detail.jobList.map((job) => ({
-            department: job.department,
+            departmentId: job.department.id,
             jobTitle: job.jobTitle,
             jobType: job.jobType,
             jobPosition: job.jobPosition,
@@ -470,7 +469,7 @@ const PersonnelDetail = () => {
   }, [detail]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px', mb: '30px' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -494,6 +493,7 @@ const PersonnelDetail = () => {
             >
               {({
                 values,
+                errors,
                 isSubmitting,
                 setFieldValue,
                 handleSubmit,
@@ -509,6 +509,7 @@ const PersonnelDetail = () => {
                         label="영문명"
                         value={values.basic.engName}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         required
                       />
                     </Grid>
@@ -518,11 +519,11 @@ const PersonnelDetail = () => {
                         label="생년월일"
                         value={values.basic.birthDate}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         openTo="year"
                         required
                         disableFuture
                       />
-                      <ErrorMessage name="basic.birthDate" />
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <DataField
@@ -531,15 +532,19 @@ const PersonnelDetail = () => {
                         label="성별"
                         value={values.basic.sex}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         options={['남', '여']}
                         required
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
                       <FileInput
-                        id="basic.image"
-                        fileItem={values.basic.image}
+                        name="basic.image"
+                        label="프로필 사진"
+                        value={values.basic.image}
                         setFieldValue={setFieldValue}
+                        errors={errors}
+                        labelDisabled
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -548,6 +553,7 @@ const PersonnelDetail = () => {
                         label="연락처"
                         value={values.basic.phone}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -556,6 +562,7 @@ const PersonnelDetail = () => {
                         label="비상연락망"
                         value={values.basic.emergencyPhone}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -564,6 +571,7 @@ const PersonnelDetail = () => {
                         label="비상연락망 - 사원과의관계"
                         value={values.basic.relationship}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={6} xs={12}>
@@ -572,6 +580,7 @@ const PersonnelDetail = () => {
                         label="개인 이메일"
                         value={values.basic.personalEmail}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                       />
                     </Grid>
                   </Grid>
@@ -586,6 +595,7 @@ const PersonnelDetail = () => {
                         label="입사일"
                         value={values.company.hiredDate}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         openTo="year"
                         required
                         disableFuture
@@ -598,6 +608,7 @@ const PersonnelDetail = () => {
                         label="입사 구분"
                         value={values.company.hiredType}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                         options={['신입', '경력']}
                         required
                       />
@@ -608,6 +619,7 @@ const PersonnelDetail = () => {
                         label="추천자"
                         value={values.company.recommender}
                         setFieldValue={setFieldValue}
+                        errors={errors}
                       />
                     </Grid>
                   </Grid>
@@ -643,10 +655,11 @@ const PersonnelDetail = () => {
                           <Grid container spacing={2} wrap="nowrap">
                             <Grid item sm={4}>
                               <DepartmentSelector
-                                name={`jobList[${i}].department`}
+                                name={`jobList[${i}].departmentId`}
                                 label="소속 부서"
-                                value={item.department}
+                                value={item.departmentId}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -656,6 +669,7 @@ const PersonnelDetail = () => {
                                 name={`jobList[${i}].jobTitle`}
                                 value={item.jobTitle}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -665,6 +679,7 @@ const PersonnelDetail = () => {
                                 name={`jobList[${i}].jobType`}
                                 value={item.jobType}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -674,6 +689,7 @@ const PersonnelDetail = () => {
                                 name={`jobList[${i}].jobPosition`}
                                 value={item.jobPosition}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -683,6 +699,7 @@ const PersonnelDetail = () => {
                                 name={`jobList[${i}].jobClass`}
                                 value={item.jobClass}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -691,6 +708,7 @@ const PersonnelDetail = () => {
                                 name={`jobList[${i}].jobDuty`}
                                 value={item.jobDuty}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                           </Grid>
@@ -701,7 +719,7 @@ const PersonnelDetail = () => {
                             onClick={() => {
                               const { jobList, ...rest } = values;
                               if (jobList.length === 1) {
-                                window.alert('하나 이상의 소속 정보가 필요합니다.');
+                                dialog.error('하나 이상의 소속 정보가 필요합니다.');
                                 return;
                               }
                               setView({
@@ -753,6 +771,7 @@ const PersonnelDetail = () => {
                                 name={`academicList[${i}].academyName`}
                                 value={item.academyName}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -762,6 +781,7 @@ const PersonnelDetail = () => {
                                 name={`academicList[${i}].major`}
                                 value={item.major}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -771,6 +791,7 @@ const PersonnelDetail = () => {
                                 name={`academicList[${i}].degree`}
                                 value={item.degree}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -779,6 +800,7 @@ const PersonnelDetail = () => {
                                 name={`academicList[${i}].state`}
                                 value={item.state}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -788,6 +810,7 @@ const PersonnelDetail = () => {
                                 name={`academicList[${i}].grade`}
                                 value={item.grade}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -796,6 +819,7 @@ const PersonnelDetail = () => {
                                 label="시작일"
                                 value={item.startDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                               />
@@ -806,6 +830,7 @@ const PersonnelDetail = () => {
                                 label="종료일"
                                 value={item.endDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                               />
@@ -865,6 +890,7 @@ const PersonnelDetail = () => {
                                 name={`careerList[${i}].companyName`}
                                 value={item.companyName}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -874,6 +900,7 @@ const PersonnelDetail = () => {
                                 label="시작일"
                                 value={item.startDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -885,6 +912,7 @@ const PersonnelDetail = () => {
                                 label="종료일"
                                 value={item.endDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -896,6 +924,7 @@ const PersonnelDetail = () => {
                                 name={`careerList[${i}].majorJob`}
                                 value={item.majorJob}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -954,6 +983,7 @@ const PersonnelDetail = () => {
                                 name={`licenseList[${i}].name`}
                                 value={item.name}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -963,6 +993,7 @@ const PersonnelDetail = () => {
                                 name={`licenseList[${i}].type`}
                                 value={item.type}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -971,6 +1002,7 @@ const PersonnelDetail = () => {
                                 name={`licenseList[${i}].organizationName`}
                                 value={item.organizationName}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -980,6 +1012,7 @@ const PersonnelDetail = () => {
                                 name={`licenseList[${i}].qualifiedNumber`}
                                 value={item.qualifiedNumber}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -989,6 +1022,7 @@ const PersonnelDetail = () => {
                                 label="인가일"
                                 value={item.qualifiedDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -1000,6 +1034,7 @@ const PersonnelDetail = () => {
                                 name={`licenseList[${i}].memo`}
                                 value={item.memo}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                           </Grid>
@@ -1057,6 +1092,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].name`}
                                 value={item.name}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -1066,6 +1102,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].type`}
                                 value={item.type}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -1075,6 +1112,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].grade`}
                                 value={item.grade}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -1083,6 +1121,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].organizationName`}
                                 value={item.organizationName}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 required
                               />
                             </Grid>
@@ -1092,6 +1131,7 @@ const PersonnelDetail = () => {
                                 label="취득일"
                                 value={item.certifiedDate}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                                 openTo="year"
                                 required
                                 disableFuture
@@ -1103,6 +1143,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].expiryPeriod`}
                                 value={item.expiryPeriod}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                             <Grid item>
@@ -1111,6 +1152,7 @@ const PersonnelDetail = () => {
                                 name={`languageList[${i}].trainingPeriod`}
                                 value={item.trainingPeriod}
                                 setFieldValue={setFieldValue}
+                                errors={errors}
                               />
                             </Grid>
                           </Grid>

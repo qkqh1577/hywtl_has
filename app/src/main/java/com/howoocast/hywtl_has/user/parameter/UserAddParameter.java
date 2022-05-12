@@ -8,20 +8,18 @@ import lombok.Setter;
 @Getter
 public class UserAddParameter {
 
-    @NotBlank(message = "아이디는 필수 항목입니다.")
+    @NotBlank(message = "user.username.not-blank")
     private String username;
 
-    @NotBlank(message = "비밀번호는 필수 항목입니다.")
+    @NotBlank(message = "user.password.not-blank")
     private String password;
 
-    @NotBlank(message = "이름은 필수 항목입니다.")
+    @NotBlank(message = "user.name.not-blank")
     private String name;
 
-    @Getter
-    @NotBlank(message = "인증에 실패하였습니다.")
+    @NotBlank(message = "user.email.not-blank")
     private String email;
 
-    @Getter
-    @NotBlank(message = "인증에 실패하였습니다.")
+    @NotBlank(message = "user.auth-key.not-blank")
     private String authKey;
 }

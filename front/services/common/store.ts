@@ -4,7 +4,10 @@ import { all } from 'redux-saga/effects';
 import departmentSaga from 'services/department/saga';
 import userSaga from 'services/user/saga';
 import userInvitationSaga from 'services/user/invitation/saga';
+import passwordResetSaga from 'services/user/password_reset/saga';
 import personnelSaga from 'services/personnel/saga';
+import projectSaga from 'services/project/saga';
+import projectCommentSaga from 'services/project_comment/saga';
 import companySaga from 'services/company/saga';
 import reducer from 'services/common/reducer';
 
@@ -16,6 +19,9 @@ function* saga() {
     userSaga(),
     userInvitationSaga(),
     personnelSaga(),
+    projectSaga(),
+    projectCommentSaga(),
+    passwordResetSaga(),
     companySaga(),
   ]);
 }

@@ -54,7 +54,7 @@ spring:
 application:
     front-url: http://localhost:8080
     mail:
-        invalidate-duration: PT1H
+        invalidate-duration: P180D
         username: caster@howoocast.com
         password: zozo@123123
         host: smtp.office365.com
@@ -88,4 +88,4 @@ application:
             - webm
             - zip  # extra
         max-size-limit: 5242880 # 5 * 1024(KB) * 1024(MB)
-        root-path: C:/Users/young/work/hywtl_has
+        root-path: E:/work/hywtl_has

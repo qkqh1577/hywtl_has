@@ -18,12 +18,12 @@ public class LoginEntryPointService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("[Entry] username: {}", username);
-        return userRepository.findByUsernameAndDeletedTimeIsNull(username).map(user ->
+        return userRepository.findByUsername(username).map(user ->
             User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .roles(user.getUserRole().name())
                 .build()
-        ).orElseThrow(NotFoundException::new);
+        ).orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
     }
 }

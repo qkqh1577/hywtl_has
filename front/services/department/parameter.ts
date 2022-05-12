@@ -9,13 +9,16 @@ export type DepartmentQuery = {
   keyword?: string;
 }
 
-export type DepartmentChangeParameter = Omit<Department, 'seq' | 'childrenList' | 'userList'>;
-export type DepartmentAddParameter = Omit<DepartmentChangeParameter, 'id'>;
+export type DepartmentParameter = Omit<Department, 'id' | 'seq' | 'childrenList' | 'userList'> & {
+  id?: number;
+};
+
 export type DepartmentTreeParameter = {
   id: number;
   parentId?: number;
   seq: number;
 };
+
 export type DepartmentChangeTreeParameter = {
   list: DepartmentTreeParameter[];
 };

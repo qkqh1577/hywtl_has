@@ -6,9 +6,9 @@ import {
 import UserInvitation from 'services/user/invitation/UserInvitation';
 
 export enum UserInvitationType {
-  getOne = 'userInvitation/getOne',
-  setOne = 'userInvitation/setOne',
-  invite = 'userInvitation/invite',
+  getOne = 'user-invitation/getOne',
+  setOne = 'user-invitation/setOne',
+  invite = 'user-invitation/invite',
 }
 
 export const userInvitationActions = {

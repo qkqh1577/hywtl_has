@@ -19,31 +19,36 @@ module.exports = {
     }
   },
   module: {
-    rules: [{
-      test: /\.(js|ts)x?$/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            '@babel/preset-env',
-            '@babel/preset-react',
-            '@babel/preset-typescript',
-          ],
-          plugins: [
-            '@babel/plugin-transform-runtime'
-          ]
+    rules: [
+      {
+        test: /\.(js|ts)x?$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
+            ],
+            plugins: [
+              '@babel/plugin-transform-runtime'
+            ]
+          },
         },
+        exclude: /node_modules/,
       },
-      exclude: /node_modules/,
-    },
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg)$/i,
+        loader: 'file-loader',
       }
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.png', '.jpg'],
     modules: [ROOT, './node_modules']
   },
   output: {

@@ -1,9 +1,8 @@
 package com.howoocast.hywtl_has.personnel.service;
 
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.common.service.FileItemService;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.common.util.ListConvertor;
-import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersonnelService {
 
-    private final PersonnelRepository personnelRepository;
+    private final PersonnelRepository repository;
 
     private final DepartmentRepository departmentRepository;
 
@@ -38,29 +37,26 @@ public class PersonnelService {
         Predicate predicate,
         Pageable pageable
     ) {
-        return personnelRepository.findAll(predicate, pageable)
+        return repository.findAll(predicate, pageable)
             .map(PersonnelListView::assemble);
     }
 
     @Transactional(readOnly = true)
     public PersonnelView get(Long id) {
-        return PersonnelView.assemble(Personnel.load(personnelRepository, id));
+        Personnel instance = this.load(id);
+        return PersonnelView.assemble(instance);
     }
 
     @Transactional
     public void update(Long id, PersonnelParameter params) {
-
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-
-        Personnel personnel = Personnel.find(personnelRepository, id);
+        Personnel personnel = this.find(id);
         personnel.change(
             params.getBasic().imageItem(fileItemService.build(params.getBasic().getImage())).build(),
             params.getCompany().build(),
             ListConvertor.make(params.getJobList().stream()
                 .peek(item -> item.setDepartment(
-                    Department.load(departmentRepository, item.getDepartmentId()))
+                    departmentRepository.findById(item.getDepartmentId())
+                        .orElseThrow(() -> new NotFoundException("department", item.getDepartmentId())))
                 )
                 .collect(Collectors.toList())
             ),
@@ -71,4 +67,18 @@ public class PersonnelService {
         );
     }
 
+    private Personnel load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("personnel", id));
+    }
+
+    private Personnel find(Long id) {
+        return repository
+            .findById(id)
+            .orElse(
+                Personnel.of(
+                    userRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException("user", id))
+                )
+            );
+    }
 }

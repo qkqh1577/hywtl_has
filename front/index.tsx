@@ -9,14 +9,40 @@ import App from './App';
 import { store } from 'services/common';
 import LoginForm from 'pages/user/LoginForm';
 import AuthenticationForm from 'pages/user/AuthenticationForm';
-import 'dayjs/locale/ko'
+import 'dayjs/locale/ko';
+import PasswordForgotForm from 'pages/user/PasswordForgotForm';
+import PasswordResetForm from 'pages/user/PasswordResetForm';
 
 const render = () => {
-
   const mdTheme = createTheme({
+    typography: {
+      fontFamily: [
+        'inter'
+      ].join(',')
+      ,
+      fontSize: 12
+    },
     palette: {
-      mode: 'light'
-    }
+      primary: {
+        main: '#301a9a',
+      },
+      secondary: {
+        main: '#3c3757',
+      },
+      warning: {
+        main: '#ffd130',
+      },
+      info: {
+        main: '#7685b2'
+      },
+      action: {
+        active: '#5470ff',
+        hover: '#5470FF38',
+        selected: '#5470ff',
+        disabled: '#494949',
+        disabledBackground: '#f1eaff',
+      },
+    },
   });
 
   ReactDOM.render(
@@ -25,6 +51,8 @@ const render = () => {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/user/authenticate" element={<AuthenticationForm />} />
+          <Route path="/password-forgot" element={<PasswordForgotForm />} />
+          <Route path="/user/password-reset" element={<PasswordResetForm />} />
           <Route path="*" element={
             <Provider store={store}>
               <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">

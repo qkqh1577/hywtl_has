@@ -11,17 +11,17 @@ import lombok.Setter;
 @Setter
 public class PersonnelJobParameter extends CustomParameter<PersonnelJob> {
 
-    @NotNull(message = "부서는 필수 항목입니다.")
+    @NotNull(message = "personnel.job.department-id.not-null")
     @Getter
     private Long departmentId;
 
-    @NotBlank(message = "직함은 필수 항목입니다.")
+    @NotBlank(message = "personnel.job.job-title.not-blank")
     private String jobTitle;
 
-    @NotBlank(message = "직종은 필수 항목입니다.")
+    @NotBlank(message = "personnel.job.job-type.not-blank")
     private String jobType;
 
-    @NotBlank(message = "직위는 필수 항목입니다.")
+    @NotBlank(message = "personnel.job.job-position.not-blank")
     private String jobPosition;
 
     private String jobClass;

@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 import Department, { ListDepartment } from 'services/department/entity';
 import { departmentActions } from './actions';
 import {
-  DepartmentAddParameter,
-  DepartmentChangeParameter, DepartmentChangeTreeParameter,
+  DepartmentParameter,
+  DepartmentChangeTreeParameter,
   DepartmentQuery
 } from './parameter';
 
@@ -35,15 +35,9 @@ export default function useDepartment() {
     [dispatch]
   );
 
-  const add = useCallback(
-    (params: DepartmentAddParameter, callback: (data?: Department) => void) =>
-      dispatch(departmentActions.add({ params, callback })),
-    [dispatch]
-  );
-
-  const change = useCallback(
-    (params: DepartmentChangeParameter, callback: (data?: Department) => void) =>
-      dispatch(departmentActions.change({ params, callback })),
+  const upsert = useCallback(
+    (params: DepartmentParameter, callback: (data?: Department) => void) =>
+      dispatch(departmentActions.upsert({ params, callback })),
     [dispatch]
   );
 
@@ -59,8 +53,7 @@ export default function useDepartment() {
     getPage,
     getOne,
     clearOne,
-    add,
-    change,
+    upsert,
     changeTree,
   };
 }

@@ -12,11 +12,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelCompanyParameter extends CustomParameter<PersonnelCompany> {
 
-    @NotNull(message = "입사일은 필수 항목입니다.")
+    @NotNull(message = "personnel.company.hired-date.not-null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate hiredDate;
 
-    @NotBlank(message = "입사 구분은 필수 항목입니다.")
+    @NotBlank(message = "personnel.company.hired-type.not-blank")
     @Pattern(message = "입사 구분은 이하 중 하나만 가능합니다. (신입, 경력)", regexp = "신입|경력")
     private String hiredType;
 

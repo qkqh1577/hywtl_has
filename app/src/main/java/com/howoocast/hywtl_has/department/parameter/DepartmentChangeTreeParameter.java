@@ -9,19 +9,19 @@ import lombok.Setter;
 @Setter
 public class DepartmentChangeTreeParameter {
 
-    @NotNull(message = "부서 항목은 필수입니다.")
+    @NotNull(message = "department.tree.list.not-null")
     private List<DepartmentTreeParameter> list;
 
     @Getter
     @Setter
     public static class DepartmentTreeParameter {
 
-        @NotNull(message = "아이디는 필수입니다.")
+        @NotNull(message = "department.tree.id.not-null")
         private Long id;
 
         private Long parentId;
 
-        @NotNull(message = "순서는 필수입니다.")
+        @NotNull(message = "department.tree.seq.not-null")
         private Integer seq;
     }
 

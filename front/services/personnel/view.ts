@@ -1,5 +1,4 @@
 import FileItem from 'services/common/file-item/entity';
-import { ListDepartment } from 'services/department/entity';
 
 export type PersonnelFilterView = {
   sex: string[];
@@ -32,7 +31,7 @@ export type PersonnelCompanyView = {
 }
 
 export type PersonnelJobView = {
-  department: ListDepartment | null;
+  departmentId: number | '';
   jobTitle: string;
   jobType: string;
   jobPosition: string;
@@ -121,7 +120,7 @@ export const initCompanyView: PersonnelCompanyView = {
 };
 
 export const initJobView: PersonnelJobView = {
-  department: null,
+  departmentId: '',
   jobTitle: '',
   jobType: '',
   jobPosition: '',

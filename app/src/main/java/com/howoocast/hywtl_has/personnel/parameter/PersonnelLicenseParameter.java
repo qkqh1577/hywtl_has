@@ -10,18 +10,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelLicenseParameter extends CustomParameter<PersonnelLicense> {
 
-    @NotBlank(message = "면허명은 필수입니다.")
+    @NotBlank(message = "personnel.license.name.not-blank")
     private String name;
 
     private String type;
 
-    @NotBlank(message = "발급기관명은 필수입니다.")
+    @NotBlank(message = "personnel.license.organization-name.not-blank")
     private String organizationName;
 
-    @NotBlank(message = "승인 번호는 필수입니다.")
+    @NotBlank(message = "personnel.license.qualified-number.not-blank")
     private String qualifiedNumber;
 
-    @NotBlank(message = "승인 일자는 필수입니다.")
+    @NotBlank(message = "personnel.license.qualified-date.not-null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate qualifiedDate;
 

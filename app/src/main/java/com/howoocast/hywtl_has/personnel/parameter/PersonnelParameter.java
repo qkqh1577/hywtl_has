@@ -10,16 +10,16 @@ import lombok.Setter;
 @Setter
 public class PersonnelParameter {
 
-    @NotNull(message = "유저 선택은 필수입니다.")
+    @NotNull(message = "personnel.id.not-null")
     private Long id;
 
-    @NotNull(message = "유저 기본 정보는 필수입니다.")
+    @NotNull(message = "personnel.basic.not-null")
     private PersonnelBasicParameter basic;
 
-    @NotNull(message = "유저 회사 정보는 필수입니다.")
+    @NotNull(message = "personnel.company.not-null")
     private PersonnelCompanyParameter company;
 
-    @NotEmpty(message = "직함 정보는 하나 이상 필수 항목입니다.")
+    @NotEmpty(message = "personnel.job.list.not-empty")
     private List<PersonnelJobParameter> jobList;
 
     private List<PersonnelAcademicParameter> academicList;

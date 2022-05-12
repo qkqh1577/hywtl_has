@@ -1,37 +1,39 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Slf4j
 @Getter
 @Entity
+@Table(name = "personnel")
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update personnel set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Personnel {
+public class Personnel extends CustomEntity {
 
-    @Id
-    private Long id; // share user id
-
-    @SuppressWarnings("unused")
-    @JsonIgnore
     @OneToOne
+    @NotNull
     @JoinColumn(name = "id")
     private User user;
 
@@ -43,6 +45,7 @@ public class Personnel {
     @Embedded
     private PersonnelCompany company;
 
+    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<PersonnelJob> jobList; // 직함 목록
 
@@ -58,53 +61,19 @@ public class Personnel {
     @ElementCollection
     private List<PersonnelLanguage> languageList; // 어학 자격 목록
 
-    @NotNull
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdTime;
-
-    @SuppressWarnings("unused")
-    @Column(insertable = false)
-    private LocalDateTime deletedTime;
-
-    @Getter(AccessLevel.NONE)
-    @JsonIgnore
-    @Transient
-    private PersonnelRepository repository;
-
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
-    private Personnel(Long id) {
-        this.id = id;
+    private Personnel(User user) {
+        this.id = user.getId();
+        this.user = user;
     }
 
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static Personnel create(Long id) {
-        return new Personnel(id);
-    }
-
-
-    //////////////////////////////////
-    //// finder
-    //////////////////////////////////
-    public static Personnel load(
-        PersonnelRepository repository,
-        Long id
-    ) {
-        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElseThrow(NotFoundException::new);
-        instance.repository = repository;
-        return instance;
-    }
-
-    public static Personnel find(
-        PersonnelRepository repository,
-        Long id
-    ) {
-        Personnel instance = repository.findByIdAndDeletedTimeIsNull(id).orElse(new Personnel(id));
-        instance.repository = repository;
-        return instance;
+    public static Personnel of(User user) {
+        return new Personnel(user);
     }
 
     //////////////////////////////////
@@ -126,8 +95,5 @@ public class Personnel {
         this.careerList = careerList;
         this.licenseList = licenseList;
         this.languageList = languageList;
-        this.createdTime = LocalDateTime.now();
     }
-
-
 }

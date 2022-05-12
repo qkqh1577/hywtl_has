@@ -42,10 +42,11 @@ const LoginForm = () => {
         const prevLocation = localStorage.getItem('path') ?? '/';
         navigate(prevLocation);
       }).catch((e) => {
-        console.log(e);
-      }).finally(() => {
         setSubmitting(false);
       });
+    },
+    toPasswordForget: () => {
+      navigate('/password-forgot');
     }
   };
 
@@ -128,10 +129,17 @@ const LoginForm = () => {
                 <Grid item sm={12}>
                   <Box sx={{
                     display: 'flex',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     width: '100%',
                     mt: '40px',
                   }}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={handler.toPasswordForget}
+                    >
+                      비밀번호 초기화
+                    </Button>
                     <Button
                       color="primary"
                       variant="contained"

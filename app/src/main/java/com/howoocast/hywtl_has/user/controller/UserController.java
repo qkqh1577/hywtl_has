@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPredicateBuilder;
+import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
 import com.howoocast.hywtl_has.user.view.UserDetailView;
 import com.howoocast.hywtl_has.user.view.UserListView;
@@ -51,6 +52,11 @@ public class UserController {
         );
     }
 
+    @GetMapping("/users/all")
+    public List<UserListView> getAll() {
+        return userService.getAll();
+    }
+
     @GetMapping("/users/login")
     public UserDetailView getLogin(Authentication authentication) {
         try {
@@ -67,29 +73,31 @@ public class UserController {
         return userService.get(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user/invite")
     public UserDetailView add(@Valid @RequestBody UserAddParameter params) {
         return userService.add(params);
     }
 
-    @PostMapping("/users/{id}/password/reset")
-    public UserDetailView resetPassword(@PathVariable Long id) {
-        return userService.resetPassword(id);
+    @PostMapping("/user/password-validate")
+    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
+        userService.validatePassword(params);
     }
 
     @PatchMapping("/users/{id}")
     public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
-        return userService.change(id, params);
+        userService.change(id, params);
+        return userService.get(id);
     }
 
     @PatchMapping("/users/{id}/password")
     public UserDetailView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
-        return userService.changePassword(id, params);
+        userService.changePassword(id, params);
+        return userService.get(id);
     }
 
     @DeleteMapping("/users/{id}")
     public void delete(@PathVariable Long id) {
-
+        userService.delete(id);
     }
 
 

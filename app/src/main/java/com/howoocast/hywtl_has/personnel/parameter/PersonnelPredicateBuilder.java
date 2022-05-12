@@ -103,8 +103,7 @@ public class PersonnelPredicateBuilder {
     }
 
     public Predicate build() {
-        criteria.and(personnel.deletedTime.isNull());
-        criteria.and(personnel.user.deletedTime.isNull());
+        criteria.and(personnel.user.deletedAt.isNull());
         return criteria.getValue();
     }
 

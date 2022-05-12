@@ -1,11 +1,13 @@
 package com.howoocast.hywtl_has.user.service;
 
+import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
-import com.howoocast.hywtl_has.user.event.UserResetPasswordEvent;
+import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
+import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
@@ -14,11 +16,13 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.view.UserDetailView;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import com.querydsl.core.types.Predicate;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -33,13 +37,13 @@ public class UserService {
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     private final UserInvitationRepository userInvitationRepository;
 
-    private final DepartmentRepository departmentRepository;
+    private final PasswordResetRepository passwordResetRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
+    private final DepartmentRepository departmentRepository;
 
     @Transactional(readOnly = true)
     public Page<UserListView> page(
@@ -47,31 +51,42 @@ public class UserService {
         Pageable pageable
     ) {
         return Optional.ofNullable(predicate)
-            .map(p -> userRepository.findAll(p, pageable))
-            .orElse(userRepository.findAll(pageable))
+            .map(p -> repository.findAll(p, pageable))
+            .orElse(repository.findAll(pageable))
             .map(UserListView::assemble);
     }
 
     @Transactional(readOnly = true)
+    public List<UserListView> getAll() {
+        return repository.findAll().stream()
+            .map(UserListView::assemble)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public UserDetailView get(Long id) {
-        return UserDetailView.assemble(User.load(userRepository, id));
+        User instance = this.load(id);
+        return UserDetailView.assemble(instance);
     }
 
     @Transactional(readOnly = true)
     public UserDetailView get(String username) {
-        return UserDetailView.assemble(
-            userRepository.findByUsernameAndDeletedTimeIsNull(username)
-                .orElseThrow(NotFoundException::new)
-        );
+        User instance = repository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
+        return UserDetailView.assemble(instance);
     }
 
     @Transactional
     public UserDetailView add(UserAddParameter params) {
-        UserInvitation userInvitation = UserInvitation.load(userInvitationRepository, params.getEmail());
+        String email = params.getEmail();
+        UserInvitation userInvitation = userInvitationRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException(
+                "user-verification.user-invitation",
+                String.format("email: %s", email)
+            ));
         userInvitation.checkValid(invalidateDuration, params.getAuthKey());
 
-        User user = User.of(
-            userRepository,
+        User instance = User.of(
             params.getUsername(),
             params.getPassword(),
             params.getName(),
@@ -79,34 +94,75 @@ public class UserService {
             userInvitation.getDepartment(),
             userInvitation.getUserRole()
         );
-        userInvitation.invalidate();
-        return UserDetailView.assemble(user);
+        this.checkEmailUsed(instance);
+        this.checkUsernameUsed(instance);
+        userInvitationRepository.deleteById(userInvitation.getId());
+        return UserDetailView.assemble(repository.save(instance));
     }
 
     @Transactional
-    public UserDetailView change(Long id, UserChangeParameter params) {
-        User user = User.load(userRepository, id);
-        user.change(
+    public void change(Long id, UserChangeParameter params) {
+        User instance = this.load(id);
+        instance.change(
             params.getName(),
             params.getEmail(),
             params.getUserRole(),
-            Department.load(departmentRepository, params.getDepartmentId())
+            departmentRepository.findById(params.getDepartmentId())
+                .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId()))
         );
-        return UserDetailView.assemble(user);
+        this.checkEmailUsed(instance);
     }
 
     @Transactional
-    public UserDetailView changePassword(Long id, UserPasswordChangeParameter params) {
-        User user = User.load(userRepository, id);
-        user.changePassword(params.getNowPassword(), params.getNewPassword());
-        return UserDetailView.assemble(user);
+    public void changePassword(Long id, UserPasswordChangeParameter params) {
+        User instance = this.load(id);
+        instance.changePassword(params.getNowPassword(), params.getNewPassword());
     }
 
     @Transactional
-    public UserDetailView resetPassword(Long id) {
-        User user = User.load(userRepository, id);
-        eventPublisher.publishEvent(new UserResetPasswordEvent(user));
-        return UserDetailView.assemble(user);
+    public void validatePassword(UserValidatePasswordParameter params) {
+        PasswordReset passwordReset = passwordResetRepository.findByEmail(params.getEmail())
+            .orElseThrow(() -> new NotFoundException("user-verification.password-reset",
+                String.format("email: %s", params.getEmail())));
+        passwordReset.checkValid(invalidateDuration, params.getAuthKey());
+
+        User instance = repository.findByEmail(params.getEmail())
+            .orElseThrow(
+                () -> new NotFoundException(
+                    "user",
+                    String.format("email: %s", (params.getEmail()))
+                )
+            );
+        instance.validatePassword(params.getPassword());
+        passwordResetRepository.deleteById(passwordReset.getId());
     }
 
+    @Transactional
+    public void delete(Long id) {
+        repository.findById(id).ifPresent(instance ->
+            repository.deleteById(id)
+        );
+    }
+
+    private User load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("user", id));
+    }
+
+    private void checkEmailUsed(User instance) {
+        String email = instance.getEmail();
+        repository.findByEmail(email).ifPresent(target -> {
+            if (!Objects.equals(instance.getId(), target.getId())) {
+                throw new DuplicatedValueException("email", email);
+            }
+        });
+    }
+
+    private void checkUsernameUsed(User instance) {
+        String username = instance.getUsername();
+        repository.findByUsername(username).ifPresent(target -> {
+            if (!Objects.equals(instance.getId(), target.getId())) {
+                throw new DuplicatedValueException("username", username);
+            }
+        });
+    }
 }

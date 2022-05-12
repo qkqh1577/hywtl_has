@@ -24,10 +24,10 @@ public class PersonnelRepository {
     private static final QPersonnel personnel = QPersonnel.personnel;
     private static final QUser user = QUser.user;
 
-    public Optional<Personnel> findByIdAndDeletedTimeIsNull(Long id) {
+    public Optional<Personnel> findById(Long id) {
         BooleanBuilder criteria = new BooleanBuilder();
         criteria.and(personnel.id.eq(id));
-        criteria.and(personnel.deletedTime.isNull());
+        criteria.and(user.deletedAt.isNull());
         return queryFactory
             .selectFrom(personnel)
             .where(criteria)
@@ -45,7 +45,7 @@ public class PersonnelRepository {
         return queryFactory
             .selectFrom(personnel)
             .rightJoin(user)
-            .on(user.id.eq(personnel.id))
+            .on(user.id.eq(personnel.user.id))
             .where(predicate)
             .fetch();
     }

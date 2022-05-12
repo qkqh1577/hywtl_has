@@ -50,7 +50,8 @@ export class HttpClient {
   };
 
   delete = async function (url: string, params?: any, config?: any) {
-    return await axios.patch(url, params, {
+    return await axios.delete(url, {
+      params: params,
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {
           arrayFormat: 'brackets',
