@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect} from "react";
 import {
   Box,
   Button,
@@ -8,13 +8,13 @@ import {
   Input,
   InputLabel,
   Paper,
-  Radio, RadioGroup, TextField,
+  Radio,
+  RadioGroup,
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {useNavigate, useParams} from "react-router-dom";
 import {CompanyChangeParameter} from "services/company/parameters";
 import useCompany from "services/company/hook";
-import {ManagerDetail} from "../../services/company/entity";
 
 
 const Page = () => {
