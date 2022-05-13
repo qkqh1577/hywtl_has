@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
+import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import useCompany from "services/company/hook";
 
@@ -230,6 +230,17 @@ const Page = () => {
                       fullWidth
                       InputProps={{
                         readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              sx={{marginBottom: '15px'}}
+                            >
+                              상세
+                            </Button>
+                          </InputAdornment>
+                        )
                       }}
                     />
                   </Grid>

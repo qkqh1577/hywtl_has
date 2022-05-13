@@ -13,6 +13,7 @@ export * from './UserSelector';
 export { default as CheckboxField } from './CheckboxField';
 export { default as Container } from './Container';
 export { default as DataField } from './DataField';
+export { default as DataFieldWithButton } from './DataFieldWithButton';
 export { default as DataSelector } from './DataSelector';
 export { default as DateFormat } from './DateFormat';
 export { default as DatePicker } from './DatePicker';
