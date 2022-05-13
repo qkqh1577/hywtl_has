@@ -133,7 +133,7 @@ const Page = () => {
             {detail?.managerList?.map((manager, i) => {
               return (
                 <>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} bgcolor={manager.state === '퇴사' ? '#e5e5e5' : ''}>
                   <Grid item sm={12}>
                     <h2>담당자 정보</h2>
                   </Grid>
