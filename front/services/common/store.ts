@@ -7,6 +7,7 @@ import userInvitationSaga from 'services/user/invitation/saga';
 import passwordResetSaga from 'services/user/password_reset/saga';
 import personnelSaga from 'services/personnel/saga';
 import projectSaga from 'services/project/saga';
+import projectEstimateSaga from 'services/project_estimate/saga';
 import projectCommentSaga from 'services/project_comment/saga';
 import companySaga from 'services/company/saga';
 import reducer from 'services/common/reducer';
@@ -20,6 +21,7 @@ function* saga() {
     userInvitationSaga(),
     personnelSaga(),
     projectSaga(),
+    projectEstimateSaga(),
     projectCommentSaga(),
     passwordResetSaga(),
     companySaga(),

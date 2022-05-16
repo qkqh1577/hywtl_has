@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container } from 'components';
+import { Container,useDialog } from 'components';
 import {
   initProjectTarget,
   ProjectTargetView
 } from 'services/project/view';
 import useProject from 'services/project/hook';
 import { ProjectTargetParameter } from 'services/project/parameter';
-import useDialog from 'components/Dialog';
 
 const ProjectTargetDetail = () => {
   const { id: idString } = useParams<{ id: string }>();

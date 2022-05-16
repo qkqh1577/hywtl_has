@@ -82,6 +82,7 @@ public class ProjectEstimateSheet extends CustomEntity {
 
     @NotEmpty
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
+    @OrderBy("seq")
     private List<ProjectEstimateSheetDetail> detailList; // 용역 항목 목록
 
     private Long specialDiscount; // 특별 할인
