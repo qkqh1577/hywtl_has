@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DepartmentListView {
+public class DepartmentListView extends DepartmentItemView {
 
     private Long id;
     private String name;

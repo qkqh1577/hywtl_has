@@ -53,7 +53,7 @@ const initFilter: PersonnelQuery = {
 const PersonnelPage = () => {
   const navigate = useNavigate();
   const {
-    personnelState: { page },
+    state: { page },
     getPage
   } = usePersonnel();
   const [filter, setFilter] = useState<PersonnelQuery>(initFilter);

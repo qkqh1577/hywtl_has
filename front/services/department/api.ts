@@ -8,8 +8,10 @@ import {
 } from './parameter';
 
 export class DepartmentApi {
-  async getAll(): Promise<ListDepartment[]> {
-    const { data } = await apiClient.get('/departments/all');
+  async getAll(type?: string): Promise<ListDepartment[]> {
+    const { data } = await apiClient.get('/departments', {
+      type: type ?? 'as-list'
+    });
     return data;
   }
 

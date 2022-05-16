@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParamete
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentPredicateBuilder;
 import com.howoocast.hywtl_has.department.service.DepartmentService;
+import com.howoocast.hywtl_has.department.view.DepartmentItemView;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import java.util.List;
@@ -52,9 +53,12 @@ public class DepartmentController {
         );
     }
 
-    @GetMapping(value = "/departments/all")
-    public List<DepartmentListView> list() {
-        return departmentService.list();
+    @GetMapping(value = "/departments", params = "type")
+    public List<? extends DepartmentItemView> list(@RequestParam String type) {
+        if (type.equals("as-list")) {
+            return departmentService.list();
+        }
+        return departmentService.itemList();
     }
 
     @GetMapping("/departments/{id}")
@@ -71,8 +75,8 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments/tree")
-    public List<DepartmentListView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter params) {
+    public List<? extends DepartmentItemView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter params) {
         departmentService.changeTree(params);
-        return list();
+        return departmentService.list();
     }
 }

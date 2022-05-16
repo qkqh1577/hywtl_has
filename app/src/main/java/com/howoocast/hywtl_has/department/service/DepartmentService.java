@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.department.exception.DepartmentViolationParentExc
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.department.view.DepartmentItemView;
 import com.howoocast.hywtl_has.department.view.DepartmentListView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
@@ -42,6 +43,13 @@ public class DepartmentService {
     public List<DepartmentListView> list() {
         return repository.findAll().stream()
             .map(DepartmentListView::assemble)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<DepartmentItemView> itemList() {
+        return repository.findAll().stream()
+            .map(DepartmentItemView::assemble)
             .collect(Collectors.toList());
     }
 

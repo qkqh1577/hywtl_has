@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppRoutes } from 'services/common/routes';
 import PersonnelPage from './Page';
-import PersonnelDetail from './Detail';
+import PersonnelDetail from './Detail/index';
 
 const routes: AppRoutes[] = [
   {

@@ -17,7 +17,7 @@ export { default as DataSelector } from './DataSelector';
 export { default as DateFormat } from './DateFormat';
 export { default as DatePicker } from './DatePicker';
 export { default as DepartmentSelector } from './DepartmentSelector';
-export { default as Dialog } from './Dialog';
+export { default as useDialog } from './Dialog';
 export { default as Divider } from './Divider';
 export { default as FileInput } from './FileInput';
 export { default as Table } from './Table';

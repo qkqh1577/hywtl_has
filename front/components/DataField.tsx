@@ -92,7 +92,6 @@ const DataField = ({
     }
   }, [errors]);
 
-  const [rawValue, setRawValue] = useState<DataFieldValue>(value);
   const [viewValue, setViewValue] = useState<DataFieldValue>(value);
   const [amount, setAmount] = useState<number | undefined>();
   const [amountKor, setAmountKor] = useState<string | undefined>();
@@ -109,15 +108,11 @@ const DataField = ({
 
   useEffect(() => {
     if (type === 'amount') {
-      setRawValue(toAmount(viewValue));
+      setFieldValue(name, toAmount(viewValue));
     } else {
-      setRawValue(viewValue);
+      setFieldValue(name, viewValue);
     }
   }, [viewValue]);
-
-  useEffect(() => {
-    setFieldValue(name, rawValue);
-  }, [rawValue]);
 
   useEffect(() => {
     if (type === 'amount' && typeof amount === 'number') {

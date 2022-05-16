@@ -168,8 +168,8 @@ export const initView: PersonnelView = {
   basic: initBasicView,
   company: initCompanyView,
   jobList: [initJobView],
-  academicList: [initAcademicView],
-  careerList: [initCareerView],
-  licenseList: [initLicenseView],
-  languageList: [initLanguageView],
+  academicList: [],
+  careerList: [],
+  licenseList: [],
+  languageList: [],
 };

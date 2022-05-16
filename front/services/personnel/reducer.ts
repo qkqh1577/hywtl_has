@@ -1,11 +1,22 @@
-import Personnel, { ListPersonnel } from 'services/personnel/entity';
+import {
+  ListPersonnel, PersonnelAcademic,
+  PersonnelBasic, PersonnelCareer,
+  PersonnelCompany, PersonnelJob, PersonnelLanguage, PersonnelLicense
+} from 'services/personnel/entity';
 import { createReducer } from 'typesafe-actions';
 import { PersonnelActionType } from 'services/personnel/actions';
 import Page, { initial } from 'components/Page';
 
 export type PersonnelState = {
   page: Page<ListPersonnel>;
-  detail?: Personnel;
+  basic?: PersonnelBasic;
+  company?: PersonnelCompany;
+  job?: PersonnelJob;
+  jobList?: PersonnelJob[];
+  academicList?: PersonnelAcademic[];
+  careerList?: PersonnelCareer[];
+  licenseList?: PersonnelLicense[];
+  languageList?: PersonnelLanguage[];
 }
 
 export const initState: PersonnelState = {
@@ -17,9 +28,46 @@ const personnelReducer = createReducer(initState, {
     ...state,
     page: action.payload,
   }),
-  [PersonnelActionType.setOne]: (state, action) => ({
+  [PersonnelActionType.setBasic]: (state, action) => ({
     ...state,
-    detail: action.payload,
+    basic: action.payload,
+  }),
+  [PersonnelActionType.setCompany]: (state, action) => ({
+    ...state,
+    company: action.payload,
+  }),
+  [PersonnelActionType.setJob]: (state, action) => ({
+    ...state,
+    job: action.payload,
+  }),
+  [PersonnelActionType.setJobList]: (state, action) => ({
+    ...state,
+    jobList: action.payload,
+  }),
+  [PersonnelActionType.setAcademicList]: (state, action) => ({
+    ...state,
+    academicList: action.payload,
+  }),
+  [PersonnelActionType.setCareerList]: (state, action) => ({
+    ...state,
+    careerList: action.payload,
+  }),
+  [PersonnelActionType.setLicenseList]: (state, action) => ({
+    ...state,
+    licenseList: action.payload,
+  }),
+  [PersonnelActionType.setLanguageList]: (state, action) => ({
+    ...state,
+    languageList: action.payload,
+  }),
+  [PersonnelActionType.clearOne]: (state) => ({
+    ...state,
+    basic: undefined,
+    company: undefined,
+    jobList: undefined,
+    academicList: undefined,
+    careerList: undefined,
+    languageList: undefined
   }),
 });
 

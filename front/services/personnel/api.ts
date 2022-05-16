@@ -9,8 +9,43 @@ export class PersonnelApi {
     return data;
   }
 
-  async getOne(id: number): Promise<Personnel> {
-    const { data } = await apiClient.get(`/personnels/${id}`);
+  async getBasic(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/basic`);
+    return data;
+  }
+
+  async getCompany(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/company`);
+    return data;
+  }
+
+  async getJob(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/job`);
+    return data;
+  }
+
+  async getJobList(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/job-list`);
+    return data;
+  }
+
+  async getAcademicList(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/academic-list`);
+    return data;
+  }
+
+  async getCareerList(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/career-list`);
+    return data;
+  }
+
+  async getLicenseList(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/license-list`);
+    return data;
+  }
+
+  async getLanguageList(id: number): Promise<Personnel> {
+    const { data } = await apiClient.get(`/personnels/${id}/language-list`);
     return data;
   }
 

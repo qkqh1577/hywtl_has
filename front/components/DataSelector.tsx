@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { ErrorMessage } from 'formik';
 import { DataFieldProps, DataFieldValue, Option } from 'components/DataField';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
@@ -34,7 +33,7 @@ const DataSelector = (props: Props) => {
 
   useEffect(() => {
     if (errors && typeof errors[name] === 'string') {
-      setHelperMessage(<ErrorMessage name={name} />);
+      setHelperMessage(errors[name]);
     } else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
@@ -71,7 +70,7 @@ const DataSelector = (props: Props) => {
     <Autocomplete
       id={`params-${name}`}
       options={optionList ?? []}
-      loading={optionList === null}
+      loading={optionList === null || value === null}
       loadingText="불러오는 중"
       noOptionsText="검색 결과가 없습니다."
       placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}

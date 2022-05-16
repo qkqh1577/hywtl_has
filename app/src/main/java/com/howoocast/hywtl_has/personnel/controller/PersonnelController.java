@@ -3,8 +3,13 @@ package com.howoocast.hywtl_has.personnel.controller;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelPredicateBuilder;
 import com.howoocast.hywtl_has.personnel.service.PersonnelService;
+import com.howoocast.hywtl_has.personnel.view.PersonnelAcademicView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelBasicView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelCareerView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelCompanyView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelJobView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelLicenseView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelListView;
-import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
@@ -51,17 +56,51 @@ public class PersonnelController {
         );
     }
 
-    @GetMapping("/personnels/{id}")
-    public PersonnelView get(@PathVariable Long id) {
-        return personnelService.get(id);
+    @GetMapping("/personnels/{id}/basic")
+    public PersonnelBasicView basic(@PathVariable Long id) {
+        return personnelService.get(id).getBasic();
+    }
+
+    @GetMapping("/personnels/{id}/company")
+    public PersonnelCompanyView company(@PathVariable Long id) {
+        return personnelService.get(id).getCompany();
+    }
+
+    @GetMapping("/personnels/{id}/job")
+    public PersonnelJobView job(@PathVariable Long id) {
+        return personnelService.get(id).getJobList().get(0);
+    }
+
+    @GetMapping("/personnels/{id}/job-list")
+    public List<PersonnelJobView> jobList(@PathVariable Long id) {
+        return personnelService.get(id).getJobList();
+    }
+
+    @GetMapping("/personnels/{id}/academic-list")
+    public List<PersonnelAcademicView> academicList(@PathVariable Long id) {
+        return personnelService.get(id).getAcademicList();
+    }
+
+    @GetMapping("/personnels/{id}/career-list")
+    public List<PersonnelCareerView> careerList(@PathVariable Long id) {
+        return personnelService.get(id).getCareerList();
+    }
+
+    @GetMapping("/personnels/{id}/license-list")
+    public List<PersonnelLicenseView> licenseList(@PathVariable Long id) {
+        return personnelService.get(id).getLicenseList();
+    }
+
+    @GetMapping("/personnels/{id}/language-list")
+    public List<PersonnelLicenseView> languageList(@PathVariable Long id) {
+        return personnelService.get(id).getLicenseList();
     }
 
     @PutMapping("/personnels/{id}")
-    public PersonnelView update(
+    public void update(
         @PathVariable Long id,
         @Valid @ModelAttribute PersonnelParameter params
     ) {
         personnelService.update(id, params);
-        return personnelService.get(id);
     }
 }
