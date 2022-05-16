@@ -1,0 +1,25 @@
+# 작성법: 한글단어,영문단어
+# 다수의한글단어가 하나의 영문단어를 지칭할 경우: 단어1;단어2;단어3,영문단어
+# 영문단어가 하나의 명사로 1:1 정의되는 경우 >> 예시) 그림,picture
+# 영문단어가 두개 이상의 단어조합으로 정의되는 경우 >> 예시) 작성일,createdDate
+# 단어는 수식어를 쓰지 않는다 >> 예시) 예쁜꽃 X --> 꽃
+
+업체식별자;담당자식별자,id
+업체명,name
+대표명,representativeName
+사업자번호,companyNumber
+주소,address
+우편번호,zipCode
+대표전화번호;전화번호,phone
+비고,memo
+생성일,createdTime
+생성자,createdBy
+수정일,updatedTime
+수정자,updatedBy
+삭제일,removedTime
+삭제자,removedBy
+담당자업체식별자,companyId
+담당자명,name
+담당자이메일,email
+담당자핸드폰,mobile
+메타,meta

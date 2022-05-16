@@ -1,6 +1,9 @@
 set FOREIGN_KEY_CHECKS = 0;
+drop table if exists company;
+drop table if exists company_manager_list;
 drop table if exists department;
 drop table if exists file_item;
+drop table if exists manager;
 drop table if exists password_reset;
 drop table if exists personnel;
 drop table if exists personnel_academic_list;

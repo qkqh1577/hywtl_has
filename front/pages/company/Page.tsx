@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import {
+  Box,
   Button,
   Grid,
   Paper,
-  TableContainer,
+  Link,
   Table,
-  TablePagination,
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
-  Box
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  FormControl,
+  FormLabel,
+  Select,
+  MenuItem,
+  Input
 } from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
-import useUser from 'services/user/hook';
-import { UserQuery } from 'services/user/parameter';
-import { userRoleName, userRoleList } from 'services/user/data';
-import { DataField, CheckboxField } from 'components';
+import { useNavigate } from 'react-router-dom';
+import useCompany from 'services/company/hook';
+import { CompanyQuery } from 'services/company/parameters';
 
 type TableCellProperty = {
   key: string;
@@ -25,31 +29,36 @@ type TableCellProperty = {
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
   style?: any;
 }
+
 const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'userId', label: '아이디', style: { minWidth: 100 } },
-  { key: 'name', label: '이름', style: { minWidth: 100 } },
-  { key: 'email', label: '이메일', style: { minWidth: 100 } },
-  { key: 'role', label: '권한', style: { minWidth: 100 } },
-  { key: 'department', label: '소속', style: { minWidth: 100 } },
+  { key: 'no', label: 'No.', style: { minWidth: 50 }, align: 'center' },
+  { key: 'name', label: '업체명', style: { minWidth: 100 }, align: 'center' },
+  { key: 'representativeName', label: '대표명', style: { minWidth: 100 }, align: 'center' },
+  { key: 'companyNumber', label: '사업자번호', style: { minWidth: 100 }, align: 'center' },
+  { key: 'address', label: '주소', style: { minWidth: 100 }, align: 'center' },
+  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 }, align: 'center' },
+  { key: 'managerCount', label: '담당자', style: { minWidth: 100 }, align: 'center' },
+  { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 }, align: 'center' },
+  { key: 'memo', label: '비고', style: { minWidth: 100 }, align: 'center' },
 ];
 
-const initQuery: UserQuery = {
+const initFilter: CompanyQuery = {
   page: 0,
   size: 10,
   sort: 'id,DESC',
-  role: userRoleList,
-  keywordType: 'by_username'
+  keywordType: 'by_name',
+  keyword: '',
 };
 
-const UserPage = () => {
+const CompanyPage = () => {
   const navigate = useNavigate();
-  const { userState: { page }, getPage } = useUser();
-  const [filter, setFilter] = useState<UserQuery>(initQuery);
+
+  const { companyState: { page }, getPage } = useCompany();
+  const [filter, setFilter] = useState<CompanyQuery>(initFilter);
 
   const handler = {
     toAdd: () => {
-      navigate('/user/add');
+      navigate('/company/add');
     },
     page: (e: any, page: number) => {
       setFilter({
@@ -64,19 +73,18 @@ const UserPage = () => {
         size: e.target.value
       });
     },
-    clear: () => {
-      setFilter(initQuery);
-    },
     search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
       setFilter({
         ...filter,
         page: 0,
-        role: values.role,
-        keywordType: values.keywordType ?? 'by_username',
+        keywordType: values.keywordType ?? 'by_name',
         keyword: values.keyword ?? undefined,
       });
       setSubmitting(false);
-    }
+    },
+    clear: () => {
+      setFilter(initFilter);
+    },
   };
 
   useEffect(() => {
@@ -84,7 +92,7 @@ const UserPage = () => {
   }, [filter]);
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -92,7 +100,7 @@ const UserPage = () => {
         height: '50px',
         mb: '40px',
       }}>
-        <h2>유저 목록</h2>
+        <h2>업체 목록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
@@ -100,74 +108,41 @@ const UserPage = () => {
         mb: '40px',
       }}>
         <Formik
-          initialValues={{
-            page: filter.page,
-            size: filter.size,
-            role: filter.role ?? userRoleList,
-            keyword: filter.keyword ?? '',
-            keywordType: filter.keywordType ?? 'by_username',
-          }}
+          initialValues={filter}
           onSubmit={handler.search}
           enableReinitialize
         >
-          {({
-            values,
-            errors,
-            setFieldValue,
-            isSubmitting,
-            handleSubmit,
-            resetForm
-          }) => (
+          {({ values, isSubmitting, handleChange, handleSubmit, resetForm }) => (
             <Grid container spacing={1}>
               <Grid item sm={10}>
                 <Form>
                   <Grid container spacing={1}>
-                    <Grid item sm={12}>
-                      <CheckboxField
-                        name="role"
-                        label="권한"
-                        value={userRoleList.map((item) =>
-                          item as string)
-                        }
-                        options={userRoleList.map((item) => ({
-                          key: item as string,
-                          text: userRoleName(item)
-                        }))}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                      />
-                    </Grid>
                     <Grid container spacing={1} item sm={12}>
                       <Grid item sm={4}>
-                        <DataField
-                          type="select"
-                          name="keywordType"
-                          label="검색 대상"
-                          value={values.keywordType}
-                          options={[
-                            {
-                              key: 'by_username',
-                              text: '아이디'
-                            }, {
-                              key: 'by_name',
-                              text: '이름'
-                            }, {
-                              key: 'by_email',
-                              text: '이메일'
-                            }
-                          ]}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                        />
+                        <FormControl variant="standard" fullWidth>
+                          <FormLabel component="legend">검색 대상</FormLabel>
+                          <Select
+                            value={values.keywordType}
+                            onChange={handleChange}
+                            name="keywordType"
+                          >
+                            <MenuItem value="by_name">업체명</MenuItem>
+                            <MenuItem value="by_representativeName">대표명</MenuItem>
+                            <MenuItem value="by_companyNumber">사업자번호</MenuItem>
+                          </Select>
+                        </FormControl>
                       </Grid>
                       <Grid item sm={8}>
-                        <DataField
-                          name="keyword"
-                          label="검색어"
-                          value={values.keyword}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                        />
+                        <FormControl variant="standard" fullWidth>
+                          <FormLabel component="legend">검색어</FormLabel>
+                          <Input
+                            type="text"
+                            name="keyword"
+                            value={values.keyword}
+                            onChange={handleChange}
+                            placeholder="검색어를 입력하세요"
+                          />
+                        </FormControl>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -176,12 +151,12 @@ const UserPage = () => {
               <Grid item sm={2} sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-around',
-                alignContent: 'center'
+                alignItems: 'flex-end'
               }}>
                 <Button
                   color="primary"
                   variant="contained"
+                  style={{ width: '80px' }}
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
@@ -192,6 +167,7 @@ const UserPage = () => {
                 <Button
                   color="secondary"
                   variant="contained"
+                  style={{ width: '80px', marginTop: '5px' }}
                   onClick={() => {
                     handler.clear();
                     resetForm();
@@ -222,20 +198,29 @@ const UserPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {page.content.map((user, i) => {
-                const no: number = i + 1;
+              {page.content.map((company, i) => {
+                const no: number = i + 1 + page.number * page.size;
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
-                    <TableCell>{no}</TableCell>
-                    <TableCell>
-                      <Link to={`/user/${user.id}`}>
-                        {user.username}
+                  <TableRow>
+                    <TableCell align="center">{no}</TableCell>
+                    <TableCell align="center">
+                      <Link
+                        sx={{
+                          cursor: 'pointer'
+                        }}
+                        onClick={() => {
+                          navigate(`/company/${company.id}`);
+                        }}>
+                        {company.name}
                       </Link>
                     </TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{userRoleName(user.userRole)}</TableCell>
-                    <TableCell>{user.departmentName}</TableCell>
+                    <TableCell align="center">{company.representativeName}</TableCell>
+                    <TableCell align="center">{company.companyNumber}</TableCell>
+                    <TableCell align="center">{company.address}</TableCell>
+                    <TableCell align="center">{company.phone}</TableCell>
+                    <TableCell align="center">{company.managerCount}명</TableCell>
+                    <TableCell align="center">{}</TableCell>
+                    <TableCell align="center">{company.memo}</TableCell>
                   </TableRow>
                 );
               })}
@@ -246,7 +231,8 @@ const UserPage = () => {
       <Box sx={{
         display: 'flex',
         width: '100%',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        mb: '20px',
       }}>
         <Grid container spacing={1}>
           <Grid item sm={8} sx={{
@@ -285,4 +271,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default CompanyPage;

@@ -3,7 +3,7 @@ type Page<T> = {
   totalPages: number;
   totalElements: number;
   size: number;
-  page: number;
+  number: number;
 }
 
 export const initial: Page<any> = {
@@ -11,7 +11,7 @@ export const initial: Page<any> = {
   totalPages: 0,
   totalElements: 0,
   size: 0,
-  page: 0,
+  number: 0,
 };
 
 export default Page;
