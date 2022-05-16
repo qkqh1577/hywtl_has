@@ -6,34 +6,11 @@ import {
   Grid,
   Link,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography
 } from '@mui/material';
-import { DateFormat } from 'components';
+import { Table, DateFormat, UserFormat } from 'components';
 import useProject from 'services/project/hook';
 import { projectTargetReviewStatusName } from 'services/project/data';
-
-type TableCellProperty = {
-  key: string;
-  label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  style?: any;
-}
-const columns: TableCellProperty[] = [
-  { key: 'createdAt', label: '등록일시', align: 'center', style: { minWidth: 150 } },
-  { key: 'confirmed', label: '확정여부', align: 'center', style: { minWidth: 50 } },
-  { key: 'status', label: '상태', align: 'center', style: { minWidth: 50 } },
-  { key: 'title', label: '제목', style: { minWidth: 150 } },
-  { key: 'download', label: 'PDF 다운로드', align: 'center', style: { minWidth: 50 } },
-  { key: 'memo', label: '비고', style: { minWidth: 100 } },
-  { key: 'userName', label: '등록자', style: { minWidth: 70 } },
-  { key: 'copy', label: '복사', align: 'center', style: { minWidth: 50 } },
-];
 
 const ProjectTargetReviewList = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -113,82 +90,88 @@ const ProjectTargetReviewList = () => {
         maxHeight: 740,
         mb: '20px',
       }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map(({ label, align, ...props }) => (
-                  <TableCell {...props} align="center">
-                    {label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {list?.map((item, i) => (
-                <TableRow
-                  key={i}
-                  role="list"
-                  tabIndex={-1}
-                  hover
+        <Table
+          columns={[
+            {
+              label: '등록일시',
+              renderCell: (item) => (
+                <>
+                  <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
+                  {item.modifiedAt && (
+                    <DateFormat
+                      date={item.modifiedAt}
+                      format="YYYY-MM-DD HH:mm"
+                      prefix="("
+                      postfix=" 수정됨)"
+                    />
+                  )}
+                </>
+              )
+            },
+            {
+              label: '확정 여부',
+              renderCell: (item) => item.confirmed ? 'Y' : 'N',
+              cellStyle: (item) => ({
+                backgroundColor: item.confirmed ? '#c4baf5' : 'inherit'
+              })
+            },
+            {
+              label: '상태',
+              renderCell: (item) => projectTargetReviewStatusName(item.status),
+            },
+            {
+              label: '제목',
+              renderCell: (item) => (
+                <Link
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    handler.detailModal(item.id);
+                  }}
                 >
-                  <TableCell align={columns[i].align}>
-                    <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
-                    {item.modifiedAt && (
-                      <>
-                        (
-                        <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
-                        수정됨)
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell align={columns[i].align} sx={{
-                    backgroundColor: item.confirmed ? '#c4baf5' : 'inherit'
+                  {item.title}
+                </Link>
+              )
+            },
+            {
+              label: 'PDF 다운로드',
+              renderCell: () => (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    // download pdf
                   }}>
-                    {item.confirmed ? 'Y' : 'N'}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {projectTargetReviewStatusName(item.status)}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    <Link
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        handler.detailModal(item.id);
-                      }}
-                    >
-                      {item.title}
-                    </Link>
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                    >
-                      TBD
-                    </Button>
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {item.memo}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    {item.writer.name}
-                  </TableCell>
-                  <TableCell align={columns[i].align}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                    >
-                      TBD
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                  다운로드
+                </Button>
+              )
+            },
+            {
+              label: '비고',
+              renderCell: (item) => item.memo
+            },
+            {
+              label: '등록자',
+              renderCell: (item) => (<UserFormat user={item.writer} />),
+            },
+            {
+              label: '복사',
+              renderCell: () => (
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={() => {
+                    // copy
+                  }}
+                >
+                  복사
+                </Button>
+              )
+            },
+          ]}
+          list={list}
+        />
       </Box>
     </Paper>
   );

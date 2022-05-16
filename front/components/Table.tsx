@@ -14,24 +14,27 @@ export type TableCellProperty<T> = {
   key?: string | number;
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
   width?: number;
-  style?: any;
+  style?: object;
+  cellStyle?: ((item: T, index: number) => object) | object;
 }
 export type TableProps<T> = {
   columns: TableCellProperty<T>[];
   list?: T[];
   onRowClick?: (item: T) => void;
   hover?: boolean;
+  sx?: object;
 };
 const Table = <T, >({
   columns,
   list,
   onRowClick,
   hover,
+  sx
 }: TableProps<T>) => {
 
 
   return (
-    <TableContainer>
+    <TableContainer sx={sx}>
       <MuiTable stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
@@ -70,11 +73,21 @@ const Table = <T, >({
               }}
               hover={hover === true}
             >
-              {columns.map((column, j) => (
-                <TableCell key={j} align={column.align}>
-                  {column.renderCell(item, i)}
-                </TableCell>
-              ))}
+              {columns.map((column, j) => {
+                const { cellStyle, align, renderCell } = column;
+                const style: object | undefined = cellStyle ?
+                  (typeof cellStyle === 'function' ? cellStyle(item, i) : cellStyle)
+                  : undefined;
+                return (
+                  <TableCell
+                    key={j}
+                    align={align}
+                    style={style}
+                  >
+                    {renderCell(item, i)}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           ))}
         </TableBody>

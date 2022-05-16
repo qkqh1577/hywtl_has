@@ -10,7 +10,6 @@ import { ProjectEstimateParameter } from 'services/project_estimate/parameter';
 import dayjs from 'dayjs';
 
 const ProjectEstimateDetail = () => {
-
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 

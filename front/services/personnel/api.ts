@@ -1,5 +1,9 @@
 import apiClient from 'services/common/api';
-import Personnel, { ListPersonnel } from 'services/personnel/entity';
+import Personnel, {
+  ListPersonnel, PersonnelAcademic,
+  PersonnelBasic, PersonnelCareer,
+  PersonnelCompany, PersonnelJob, PersonnelLanguage, PersonnelLicense
+} from 'services/personnel/entity';
 import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
 import Page from 'components/Page';
 
@@ -9,42 +13,42 @@ export class PersonnelApi {
     return data;
   }
 
-  async getBasic(id: number): Promise<Personnel> {
+  async getBasic(id: number): Promise<PersonnelBasic> {
     const { data } = await apiClient.get(`/personnels/${id}/basic`);
     return data;
   }
 
-  async getCompany(id: number): Promise<Personnel> {
+  async getCompany(id: number): Promise<PersonnelCompany> {
     const { data } = await apiClient.get(`/personnels/${id}/company`);
     return data;
   }
 
-  async getJob(id: number): Promise<Personnel> {
+  async getJob(id: number): Promise<PersonnelJob> {
     const { data } = await apiClient.get(`/personnels/${id}/job`);
     return data;
   }
 
-  async getJobList(id: number): Promise<Personnel> {
+  async getJobList(id: number): Promise<PersonnelJob[]> {
     const { data } = await apiClient.get(`/personnels/${id}/job-list`);
     return data;
   }
 
-  async getAcademicList(id: number): Promise<Personnel> {
+  async getAcademicList(id: number): Promise<PersonnelAcademic[]> {
     const { data } = await apiClient.get(`/personnels/${id}/academic-list`);
     return data;
   }
 
-  async getCareerList(id: number): Promise<Personnel> {
+  async getCareerList(id: number): Promise<PersonnelCareer[]> {
     const { data } = await apiClient.get(`/personnels/${id}/career-list`);
     return data;
   }
 
-  async getLicenseList(id: number): Promise<Personnel> {
+  async getLicenseList(id: number): Promise<PersonnelLicense[]> {
     const { data } = await apiClient.get(`/personnels/${id}/license-list`);
     return data;
   }
 
-  async getLanguageList(id: number): Promise<Personnel> {
+  async getLanguageList(id: number): Promise<PersonnelLanguage[]> {
     const { data } = await apiClient.get(`/personnels/${id}/language-list`);
     return data;
   }

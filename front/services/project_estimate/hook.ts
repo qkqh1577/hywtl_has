@@ -27,10 +27,24 @@ export default function useProjectEstimate() {
     [dispatch]
   );
 
+  const getSheetList = useCallback(
+    (projectId: number) =>
+      dispatch(projectEstimateActions.getSheetList(projectId)),
+    [dispatch]
+  );
+
+  const clearSheetList = useCallback(
+    () =>
+      dispatch(projectEstimateActions.setSheetList(undefined)),
+    [dispatch]
+  )
+
   return {
     state,
     getOne,
     clearOne,
     upsert,
+    getSheetList,
+    clearSheetList,
   };
 }

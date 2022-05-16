@@ -10,15 +10,10 @@ import {
   MenuItem,
   Paper,
   Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
   TablePagination,
-  TableRow
 } from '@mui/material';
 import { Formik, Form, FormikHelpers } from 'formik';
+import dayjs from 'dayjs';
 import { usePersonnel } from 'services/personnel';
 import {
   dateTypeList,
@@ -26,24 +21,8 @@ import {
   keywordTypeList,
   sexList
 } from 'services/personnel/view';
-import dayjs from 'dayjs';
-import { CheckboxField, DataField, DatePicker, DateFormat } from 'components';
+import { Table, CheckboxField, DataField, DatePicker, DateFormat } from 'components';
 import { PersonnelQuery } from 'services/personnel/parameter';
-
-type TableCellProperty = {
-  key: string;
-  label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  style?: any;
-}
-const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'name', label: '이름', style: { minWidth: 100 } },
-  { key: 'sex', label: '성별', style: { minWidth: 50 } },
-  { key: 'birthDate', label: '생년월일', style: { minWidth: 100 } },
-  { key: 'hiredType', label: '입사 구분', style: { minWidth: 50 } },
-  { key: 'hiredDate', label: '입사일', style: { minWidth: 100 } },
-];
 
 const initFilter: PersonnelQuery = {
   size: 10,
@@ -282,48 +261,45 @@ const PersonnelPage = () => {
         maxHeight: 740,
         mb: '20px',
       }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map(({ label, ...props }) => (
-                  <TableCell {...props}>
-                    {label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {page.content.map((personnel, i) => {
-                const no: number = i + 1;
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={personnel.id}>
-                    <TableCell>{no}</TableCell>
-                    <TableCell>
-                      <Link
-                        sx={{
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => {
-                          navigate(`/hr/card/${personnel.id}`, { state: { filter } });
-                        }}>
-                        {personnel.name}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{personnel.basic.sex}</TableCell>
-                    <TableCell>
-                      <DateFormat date={personnel.basic.birthDate} />
-                    </TableCell>
-                    <TableCell>{personnel.company.hiredType}</TableCell>
-                    <TableCell>
-                      <DateFormat date={personnel.company.hiredDate} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Table
+          columns={[
+            {
+              label: 'No.',
+              renderCell: (item, i) => (page.number * page.size) + i + 1,
+            },
+            {
+              label: '이름',
+              renderCell: (item) => (
+                <Link
+                  sx={{
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    navigate(`/hr/card/${item.id}`, { state: { filter } });
+                  }}>
+                  {item.name}
+                </Link>
+              )
+            },
+            {
+              label: '성별',
+              renderCell: (item) => item.basic.sex
+            },
+            {
+              label: '생년월일',
+              renderCell: (item) => (<DateFormat date={item.basic.birthDate} />)
+            },
+            {
+              label: '입사 구분',
+              renderCell: (item) => item.company.hiredType
+            },
+            {
+              label: '입사일',
+              renderCell: (item) => (<DateFormat date={item.company.hiredDate} />)
+            },
+          ]}
+          list={page.content}
+        />
       </Box>
       <Box sx={{
         display: 'flex',
