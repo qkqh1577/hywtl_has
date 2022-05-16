@@ -16,9 +16,13 @@ export enum ProjectEstimateType {
 
   getSheetList = 'project/estimate/sheet/getList',
   setSheetList = 'project/estimate/sheet/setList',
+
   getSheetOne = 'project/estimate/sheet/getOne',
   setSheetOne = 'project/estimate/sheet/setOne',
+
   addSheet = 'project/estimate/sheet/add',
+
+  setSheetId = 'project/estimate/sheet/setId',
 }
 
 export const projectEstimateActions = {
@@ -31,10 +35,14 @@ export const projectEstimateActions = {
 
   getSheetList: createAction(ProjectEstimateType.getSheetList)<number>(),
   setSheetList: createAction(ProjectEstimateType.setSheetList)<ListProjectEstimateSheet[] | undefined>(),
+
   getSheetOne: createAction(ProjectEstimateType.getSheetOne)<number>(),
   setSheetOne: createAction(ProjectEstimateType.setSheetOne)<ProjectEstimateSheet | undefined>(),
+
   addSheet: createAction(ProjectEstimateType.addSheet)<{
     params: ProjectEstimateSheetAddParameter;
     callback: () => void;
   }>(),
+
+  setSheetId: createAction(ProjectEstimateType.setSheetId)<number | null | undefined>(),
 };

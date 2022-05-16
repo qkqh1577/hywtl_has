@@ -10,6 +10,7 @@ export type ProjectEstimateState = {
   detail?: ProjectEstimate;
   sheetList?: ListProjectEstimateSheet[];
   sheetDetail?: ProjectEstimateSheet;
+  sheetId?: number | null;
 }
 
 const initState: ProjectEstimateState = {};
@@ -26,6 +27,10 @@ const projectEstimateReducer = createReducer(initState, {
   [ProjectEstimateType.setSheetOne]: (state, action) => ({
     ...state,
     sheetDetail: action.payload,
+  }),
+  [ProjectEstimateType.setSheetId]: (state, action) => ({
+    ...state,
+    sheetId: action.payload,
   })
 });
 

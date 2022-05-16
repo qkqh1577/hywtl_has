@@ -34,7 +34,9 @@ const Table = <T, >({
 
 
   return (
-    <TableContainer sx={sx}>
+    <TableContainer sx={sx ?? {
+      width: '100%'
+    }}>
       <MuiTable stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>

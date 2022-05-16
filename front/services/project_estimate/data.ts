@@ -17,11 +17,20 @@ export const projectEstimateSheetStatusName = (status: ProjectEstimateSheetStatu
     return '재견적확정';
   }
   if (status === 'RECONSIDER_SENT') {
-    return '재견적전달"';
+    return '재견적전달';
   }
   if (status === 'COMPLETE') {
     return '완료';
   }
   return '-';
-
 };
+
+export const projectEstimateSheetStatusList: ProjectEstimateSheetStatus[] = [
+  'DRAFT',
+  'DRAFT_CONFIRMED',
+  'SENT',
+  'RECONSIDER',
+  'RECONSIDER_CONFIRMED',
+  'RECONSIDER_SENT',
+  'COMPLETE',
+];

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Container, Table, DateFormat, UserFormat } from 'components';
 import useProjectEstimate from 'services/project_estimate/hook';
 import { projectEstimateSheetStatusName } from 'services/project_estimate/data';
-import { Button, Link } from '@mui/material';
+import { Box, Button, Link } from '@mui/material';
 
 const maxDate = (a: Date | undefined, b: Date | undefined): Date | undefined => {
   if (typeof a === 'undefined' && typeof b === 'undefined') {
@@ -28,9 +28,15 @@ const ProjectEstimateSheetList = () => {
     },
     getSheetList: getList,
     clearSheetList: clearList,
-
+    setSheetId,
   } = useProjectEstimate();
   const [modifiedAt, setModifiedAt] = useState<Date | undefined>();
+
+  const handler = {
+    addModal: () => {
+      setSheetId(null);
+    },
+  };
 
   useEffect(() => {
     if (projectId) {
@@ -58,6 +64,22 @@ const ProjectEstimateSheetList = () => {
       title="시스템 견적서"
       modifiedAt={modifiedAt}
     >
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row-reverse'
+      }}>
+        <Button
+          color="primary"
+          variant="contained"
+          sx={{
+            maxHeight: '30px'
+          }}
+          onClick={handler.addModal}
+        >
+          등록
+        </Button>
+      </Box>
       <Table
         columns={[
           {

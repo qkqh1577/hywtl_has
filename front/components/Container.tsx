@@ -177,6 +177,7 @@ const Container = (props: ChildrenProps | SubmitProps) => {
             <Box sx={{
               display: 'flex',
               width: '100%',
+              flexWrap:'wrap',
               mb: '40px',
             }}>
               {children}

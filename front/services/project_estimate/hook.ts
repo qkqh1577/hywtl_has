@@ -37,6 +37,29 @@ export default function useProjectEstimate() {
     () =>
       dispatch(projectEstimateActions.setSheetList(undefined)),
     [dispatch]
+  );
+
+  const getSheetOne = useCallback(
+    (sheetId: number) =>
+      dispatch(projectEstimateActions.getSheetOne(sheetId)),
+    [dispatch]
+  );
+  const clearSheetOne = useCallback(
+    () =>
+      dispatch(projectEstimateActions.setSheetOne(undefined)),
+    [dispatch]
+  );
+
+  const setSheetId = useCallback(
+    (sheetId: number | null) =>
+      dispatch(projectEstimateActions.setSheetId(sheetId)),
+    [dispatch]
+  );
+
+  const clearSheetId = useCallback(
+    () =>
+      dispatch(projectEstimateActions.setSheetId(undefined)),
+    [dispatch],
   )
 
   return {
@@ -46,5 +69,9 @@ export default function useProjectEstimate() {
     upsert,
     getSheetList,
     clearSheetList,
+    getSheetOne,
+    clearSheetOne,
+    setSheetId,
+    clearSheetId,
   };
 }
