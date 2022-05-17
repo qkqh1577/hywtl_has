@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker, FileInput } from 'components';
 import {
-  PersonnelBasicView as View,
-  usePersonnel
+  initBasicView as initView,
+  usePersonnel,
 } from 'services/personnel';
 
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'basic';
 const PersonnelDetailBasic = ({
   id,
   values,
@@ -25,30 +26,24 @@ const PersonnelDetailBasic = ({
     state: {
       basic: detail
     },
-    getBasic: getOne
+    getBasic: getOne,
   } = usePersonnel();
-
-  const [view, setView] = useState<View>(values);
 
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('basic', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView({
-      engName: detail?.engName ?? view.engName,
-      birthDate: detail?.birthDate ?? view.birthDate,
-      sex: detail?.sex ?? view.sex,
-      image: detail?.image ?? view.image,
-      address: detail?.address ?? view.address,
-      phone: detail?.phone ?? view.phone,
-      emergencyPhone: detail?.emergencyPhone ?? view.emergencyPhone,
-      relationship: detail?.relationship ?? view.relationship,
-      personalEmail: detail?.personalEmail ?? view.personalEmail,
+    setFieldValue(FIELD_NAME, {
+      engName: detail?.engName ?? initView.engName,
+      birthDate: detail?.birthDate ?? initView.birthDate,
+      sex: detail?.sex ?? initView.sex,
+      image: detail?.image ?? initView.image,
+      address: detail?.address ?? initView.address,
+      phone: detail?.phone ?? initView.phone,
+      emergencyPhone: detail?.emergencyPhone ?? initView.emergencyPhone,
+      relationship: detail?.relationship ?? initView.relationship,
+      personalEmail: detail?.personalEmail ?? initView.personalEmail,
     });
   }, [detail]);
 
@@ -59,9 +54,9 @@ const PersonnelDetailBasic = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="basic.engName"
+          name={`${FIELD_NAME}.engName`}
           label="영문명"
-          value={view.engName}
+          value={values.engName}
           setFieldValue={setFieldValue}
           errors={errors}
           required
@@ -69,9 +64,9 @@ const PersonnelDetailBasic = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <DatePicker
-          name="basic.birthDate"
+          name={`${FIELD_NAME}.birthDate`}
           label="생년월일"
-          value={view.birthDate}
+          value={values.birthDate}
           setFieldValue={setFieldValue}
           errors={errors}
           openTo="year"
@@ -82,9 +77,9 @@ const PersonnelDetailBasic = ({
       <Grid item sm={6} xs={12}>
         <DataField
           type="select"
-          name="basic.sex"
+          name={`${FIELD_NAME}.sex`}
           label="성별"
-          value={view.sex}
+          value={values.sex}
           setFieldValue={setFieldValue}
           errors={errors}
           options={['남', '여']}
@@ -93,9 +88,9 @@ const PersonnelDetailBasic = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <FileInput
-          name="basic.image"
+          name={`${FIELD_NAME}.image`}
           label="프로필 사진"
-          value={view.image}
+          value={values.image}
           setFieldValue={setFieldValue}
           errors={errors}
           labelDisabled
@@ -103,36 +98,36 @@ const PersonnelDetailBasic = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="basic.phone"
+          name={`${FIELD_NAME}.phone`}
           label="연락처"
-          value={view.phone}
+          value={values.phone}
           setFieldValue={setFieldValue}
           errors={errors}
         />
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="basic.emergencyPhone"
+          name={`${FIELD_NAME}.emergencyPhone`}
           label="비상연락망"
-          value={view.emergencyPhone}
+          value={values.emergencyPhone}
           setFieldValue={setFieldValue}
           errors={errors}
         />
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="basic.relationship"
+          name={`${FIELD_NAME}.relationship`}
           label="비상연락망 - 사원과의관계"
-          value={view.relationship}
+          value={values.relationship}
           setFieldValue={setFieldValue}
           errors={errors}
         />
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="basic.personalEmail"
+          name={`${FIELD_NAME}.personalEmail`}
           label="개인 이메일"
-          value={view.personalEmail}
+          value={values.personalEmail}
           setFieldValue={setFieldValue}
           errors={errors}
         />

@@ -318,7 +318,6 @@ const Container = (props: ChildrenProps | SubmitProps) => {
     );
   };
 
-
   const mapper = ({
       xl = false,
       lg = false,
@@ -341,7 +340,6 @@ const Container = (props: ChildrenProps | SubmitProps) => {
       {buildField(rest, formikProps)}
     </Grid>
   );
-
 
   return (
     <Paper

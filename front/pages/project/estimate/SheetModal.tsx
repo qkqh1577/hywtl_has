@@ -6,13 +6,13 @@ import {
   Grid,
   IconButton,
   Modal,
-  Paper
+  Paper,
 } from '@mui/material';
 import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField, DatePicker, UserSelector } from 'components';
+import { DataField, DataSelector, DatePicker, UserSelector } from 'components';
 import {
   ProjectEstimateSheetView as View,
   initProjectEstimateSheetView as initView,
@@ -20,6 +20,7 @@ import {
   projectEstimateSheetStatusName,
   useProjectEstimate,
 } from 'services/project_estimate';
+import { projectTargetReviewStatusName, useProjectTarget } from 'services/project_target';
 
 const ProjectEstimateSheetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -33,7 +34,18 @@ const ProjectEstimateSheetModal = () => {
     clearSheetOne: clearOne,
     clearSheetId,
   } = useProjectEstimate();
+  const {
+    state: {
+      reviewList,
+      reviewDetail,
+    },
+    getReviewList,
+    getReview,
+    clearReviewList,
+    clearReview,
+  } = useProjectTarget();
   const [view, setView] = useState<View>(initView);
+  const [reviewId, setReviewId] = useState<number | undefined>();
 
   const handler = {
     close: (event: object, reason?: string) => {
@@ -45,15 +57,17 @@ const ProjectEstimateSheetModal = () => {
     },
     submit: (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
 
-    }
+    },
   };
 
   useEffect(() => {
     if (projectId) {
-
+      getReviewList(projectId);
     }
+    return () => {
+      clearReviewList();
+    };
   }, [projectId]);
-
 
   useEffect(() => {
     if (sheetId) {
@@ -62,6 +76,15 @@ const ProjectEstimateSheetModal = () => {
       // TODO: 용역 항목 리스트 불러오기
     }
   }, [sheetId]);
+
+  useEffect(() => {
+    if (reviewId) {
+      getReview(reviewId);
+    }
+    return () => {
+      clearReview();
+    };
+  }, [reviewId]);
 
   return (
     <Modal
@@ -192,8 +215,44 @@ const ProjectEstimateSheetModal = () => {
                   mb: '40px',
                 }}>
                   <Grid container spacing={2}>
-                    <Grid item sm={3}>
-                      형상비 TBD
+                    <Grid item sm={3} sx={{
+                      display: 'flex',
+                      width: '100%',
+                      flexWrap: 'wrap',
+                    }}>
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        mb: '20px',
+                      }}>
+                        <DataSelector
+                          name="reviewId"
+                          label="형상비 검토"
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={reviewList?.map(item => ({
+                            key: item.id,
+                            text: `${item.title}(${projectTargetReviewStatusName(item.status)})`,
+                          })) ?? null}
+                          value={values.reviewId}
+                          onChange={(data) => {
+                            const value: number | undefined
+                              = data !== '' && Number.isNaN(+data)
+                              ? +data
+                              : undefined;
+                            setReviewId(value);
+                          }}
+                        />
+                      </Box>
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        mb: '40px',
+                      }}>
+
+                      </Box>
                     </Grid>
                     <Grid item sm={9}>
                       <Box sx={{
