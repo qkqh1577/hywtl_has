@@ -40,13 +40,7 @@ const initCompanyValue = {
 const Page = () => {
   const navigate = useNavigate();
 
-  const { add } = useCompany();
-
-  const { companyState: { list }, getAll } = useCompany();
-
-  useEffect(() => {
-    getAll({});
-  }, []);
+  const { companyState: { list }, add } = useCompany();
 
   const handler = {
 
