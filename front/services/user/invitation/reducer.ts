@@ -1,12 +1,14 @@
-import UserInvitation from 'services/user/invitation/UserInvitation';
 import { createReducer } from 'typesafe-actions';
-import { UserInvitationType } from 'services/user/invitation/actions';
+import {
+  UserInvitation,
+  UserInvitationType,
+} from 'services/user/invitation';
 
 export type UserInvitationState = {
   detail?: UserInvitation;
 }
 
-export const initState: UserInvitationState = {};
+const initState: UserInvitationState = {};
 
 const userInvitationReducer = createReducer(initState, {
   [UserInvitationType.setOne]: (state, action) => ({

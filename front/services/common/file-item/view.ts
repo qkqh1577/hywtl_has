@@ -1,6 +1,6 @@
-import FileItem from 'services/common/file-item/entity';
+import { FileItem } from 'services/common/file-item';
 
-type FileItemView = {
+export type FileItemView = {
   id?: number;
   filename: string;
   ext: string;
@@ -51,5 +51,3 @@ export const fileToView = (file: File): FileItemView => {
     readableSize: toReadableSize(file.size),
   };
 };
-
-export default FileItemView;

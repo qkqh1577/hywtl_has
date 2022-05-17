@@ -1,4 +1,4 @@
-import FileItem from 'services/common/file-item/entity';
+import { FileItem } from 'services/common/file-item';
 
 export type PersonnelFilterView = {
   sex: string[];
@@ -168,8 +168,8 @@ export const initView: PersonnelView = {
   basic: initBasicView,
   company: initCompanyView,
   jobList: [initJobView],
-  academicList: [initAcademicView],
-  careerList: [initCareerView],
-  licenseList: [initLicenseView],
-  languageList: [initLanguageView],
+  academicList: [],
+  careerList: [],
+  licenseList: [],
+  languageList: [],
 };

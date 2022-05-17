@@ -1,7 +1,6 @@
-import CompanyDetail, {Company, CompanyList} from "./entity";
+import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
-import {createReducer} from "typesafe-actions";
-import {CompanyActionType} from "./actions";
+import { CompanyDetail, Company, CompanyList, CompanyActionType } from 'services/company';
 
 export type CompanyState = {
   page: Page<CompanyList>
@@ -26,6 +25,6 @@ const companyReducer = createReducer(initState, {
     ...state,
     list: action.payload
   })
-})
+});
 
 export default companyReducer;

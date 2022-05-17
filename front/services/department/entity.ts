@@ -1,8 +1,8 @@
-import User from 'services/user/entity';
+import { User } from 'services/user';
 
 export type DepartmentCategory = 'COMPANY' | 'HQ' | 'TEAM' | 'PART' | 'PERSON' | 'EXTRA';
 
-type Department = {
+export type Department = {
   id: number;
   name: string;
   category: DepartmentCategory;
@@ -22,5 +22,3 @@ export type ListDepartment = {
   userCount?: number;
   childrenCount?: number;
 }
-
-export default Department;

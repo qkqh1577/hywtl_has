@@ -15,7 +15,6 @@ import {
   Grid,
   IconButton,
   Paper,
-  Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -27,15 +26,16 @@ import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import {
   CheckboxField,
   DataField,
-  DataSelector,
   DataFieldValue,
+  DataSelector,
   DateFormat,
   DatePicker,
   DepartmentSelector,
   Option,
-  UserSelector
-} from 'components/index';
-import useDialog from 'components/Dialog';
+  Tooltip,
+  UserSelector,
+  useDialog,
+} from 'components';
 
 type State = {
   values: any;
@@ -57,7 +57,7 @@ type FieldProps = {
   disabled?: boolean;
   options?: Option[] | DataFieldValue[];
   helperText?: string | React.ReactNode;
-  sx?: any;
+  sx?: object;
   size?: 'small';
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
@@ -69,35 +69,132 @@ type FieldProps = {
 
 type Props = {
   title: string;
+  modifiedAt?: Date;
+  readonly?: boolean;
+}
+type SubmitProps = Props & {
   view: any;
   submit: (values: any, callback: () => void) => void;
   updateView: () => void;
-  modifiedAt?: Date;
-  readonly?: boolean;
   fields: FieldProps[] | ((state: State) => FieldProps[]);
   children?: React.ReactNode;
 }
 
-const Container = ({
-  title,
-  view,
-  submit,
-  updateView,
-  modifiedAt,
-  readonly,
-  fields,
-  children
-}: Props) => {
+type ChildrenProps = Props & {
+  children: React.ReactNode;
+}
+
+const Container = (props: ChildrenProps | SubmitProps) => {
+  const {
+    title,
+    modifiedAt,
+    readonly,
+    ...rest
+  } = props;
 
   const dialog = useDialog();
 
   const [open, setOpen] = useState<boolean>(true);
   const [edit, setEdit] = useState<boolean>(false);
 
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
+  if (typeof (rest as any).submit === 'undefined') {
+    // ChildrenProps
+    const { children } = props as ChildrenProps;
+    return (
+      <Paper
+        sx={{ width: '100%', boxSizing: 'border-box', padding: '30px' }}>
+        <Accordion
+          expanded={open}
+        >
+          <AccordionSummary>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+              <Grid container spacing={2} sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}>
+                <Grid item sx={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  alignItems: 'center',
+                }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      marginRight: '4px'
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                </Grid>
+                <Grid item sx={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  alignItems: 'center',
+                }}>
+                  {modifiedAt && (
+                    <>
+                      <Typography
+                        sx={{
+                          fontWeight: 'bold',
+                          marginRight: '4px'
+                        }}
+                      >
+                        최종수정일시
+                      </Typography>
+                      <Typography
+                        sx={{
+                          marginRight: '8px'
+                        }}
+                      >
+                        <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
+                      </Typography>
+                    </>
+                  )}
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={handleToggle}
+                    sx={{
+                      maxHeight: '30px'
+                    }}
+                  >
+                    {open ? '접기' : '펴기'}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              flexWrap: 'wrap',
+              mb: '40px',
+            }}>
+              {children}
+            </Box>
+          </AccordionDetails>
+        </Accordion>
+      </Paper>
+    );
+  }
+  const {
+    view,
+    submit,
+    updateView,
+    fields,
+    children,
+  } = props as SubmitProps;
   const handler = {
-    toggle: () => {
-      setOpen(!open);
-    },
     edit: () => {
       setEdit(true);
     },
@@ -112,7 +209,7 @@ const Container = ({
         setSubmitting(false);
       }
     },
-    updateView,
+    updateView
   };
 
   const buildField = ({
@@ -221,6 +318,7 @@ const Container = ({
     );
   };
 
+
   const mapper = ({
       xl = false,
       lg = false,
@@ -243,6 +341,7 @@ const Container = ({
       {buildField(rest, formikProps)}
     </Grid>
   );
+
 
   return (
     <Paper
@@ -281,7 +380,7 @@ const Container = ({
                       >
                         {title}
                       </Typography>
-                      {open && edit && (
+                      {open && edit && submit && (
                         <>
                           <Box sx={{
                             display: 'flex',
@@ -293,7 +392,7 @@ const Container = ({
                             backgroundColor: (theme) => theme.palette.primary.main,
                             borderRadius: '4px'
                           }}>
-                            <Tooltip title="수정 내용 저장" placement="bottom">
+                            <Tooltip title="수정 내용 저장">
                               <IconButton
                                 disabled={isSubmitting || !dirty}
                                 onClick={() => {
@@ -344,7 +443,7 @@ const Container = ({
                           </Box>
                         </>
                       )}
-                      {open && !edit && (
+                      {open && !edit && submit && (
                         <Box color="primary" sx={{
                           display: 'flex',
                           justifyContent: 'center',
@@ -396,7 +495,7 @@ const Container = ({
                         <Button
                           color="primary"
                           variant="contained"
-                          onClick={handler.toggle}
+                          onClick={handleToggle}
                           sx={{
                             maxHeight: '30px'
                           }}

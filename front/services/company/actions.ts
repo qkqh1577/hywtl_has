@@ -1,7 +1,14 @@
-import { createAction } from 'typesafe-actions';
-import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery, CompanyQueryForModal} from "./parameters";
-import Page from "components/Page";
-import CompanyDetail, {Company, CompanyList} from "./entity";
+import { createAction } from 'typesafe-actions';;
+import Page from 'components/Page';
+import {
+  Company,
+  CompanyAddParameter,
+  CompanyChangeParameter,
+  CompanyDetail,
+  CompanyList,
+  CompanyQuery,
+  CompanyQueryForModal,
+} from 'services/company'
 
 export enum CompanyActionType {
   getPage = 'company/getPage',

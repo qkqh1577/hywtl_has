@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container } from 'components';
+import { Container, useDialog } from 'components';
 import {
+  ProjectTargetParameter,
+  ProjectTargetView,
   initProjectTarget,
-  ProjectTargetView
-} from 'services/project/view';
-import useProject from 'services/project/hook';
-import { ProjectTargetParameter } from 'services/project/parameter';
-import useDialog from 'components/Dialog';
+  useProjectTarget,
+} from 'services/project_target';
 
 const ProjectTargetDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -15,14 +14,13 @@ const ProjectTargetDetail = () => {
 
   const dialog = useDialog();
   const {
-    projectState: {
-      target: detail,
+    state: {
+      detail,
     },
-    getTarget: getOne,
-    setTarget: setOne,
-    clearTarget: clearOne,
-    updateTarget: update,
-  } = useProject();
+    getOne,
+    clearOne,
+    update,
+  } = useProjectTarget();
   const [view, setView] = useState<ProjectTargetView>(initProjectTarget);
 
   const handler = {
@@ -40,13 +38,10 @@ const ProjectTargetDetail = () => {
       const params: ProjectTargetParameter = {
         landModelCount,
       };
-      update(projectId, params, (data) => {
-        if (data) {
-          dialog.alert('저장되었습니다.');
-          setOne(data);
-          callback();
-        }
+      update(projectId, params, () => {
+        dialog.alert('저장되었습니다.');
       });
+      callback();
     },
     updateView: () => {
       setView({

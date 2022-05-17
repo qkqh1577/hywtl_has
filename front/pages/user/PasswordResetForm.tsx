@@ -8,10 +8,12 @@ import {
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { DataField } from 'components';
-import { PasswordChangeParameter } from 'services/user/password_reset/parameter';
-import PasswordReset from 'services/user/password_reset/entity';
-import passwordResetApi from 'services/user/password_reset/api';
-import userApi from 'services/user/api';
+import {
+  PasswordChangeParameter,
+  PasswordReset,
+  passwordResetApi
+} from 'services/user/password_reset';
+import { userApi } from 'services/user';
 
 const PasswordResetForm = () => {
   const navigate = useNavigate();

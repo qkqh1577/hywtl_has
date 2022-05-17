@@ -43,9 +43,8 @@ public class PersonnelRepository {
 
     public List<Personnel> findAll(Predicate predicate) {
         return queryFactory
-            .selectFrom(personnel)
-            .rightJoin(user)
-            .on(user.id.eq(personnel.user.id))
+            .select(user.personnel)
+            .from(user)
             .where(predicate)
             .fetch();
     }

@@ -1,15 +1,18 @@
 import Page from 'components/Page';
 import apiClient from 'services/common/api';
-import Department, { ListDepartment } from 'services/department/entity';
 import {
-  DepartmentParameter,
+  Department,
   DepartmentChangeTreeParameter,
-  DepartmentQuery
-} from './parameter';
+  DepartmentParameter,
+  DepartmentQuery,
+  ListDepartment,
+} from 'services/department';
 
 export class DepartmentApi {
-  async getAll(): Promise<ListDepartment[]> {
-    const { data } = await apiClient.get('/departments/all');
+  async getAll(type?: string): Promise<ListDepartment[]> {
+    const { data } = await apiClient.get('/departments', {
+      type: type ?? 'as-list'
+    });
     return data;
   }
 

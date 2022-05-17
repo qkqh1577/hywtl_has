@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useProject from 'services/project/hook';
-import { initProjectOrder, ProjectOrderView } from 'services/project/view';
-import { ProjectOrderParameter } from 'services/project/parameter';
-import { Container } from 'components';
 import dayjs from 'dayjs';
-import useDialog from 'components/Dialog';
+import { Container, useDialog } from 'components';
+import {
+  ProjectOrderParameter,
+  ProjectOrderView,
+  initProjectOrder,
+  useProject,
+} from 'services/project';
 
 const ProjectOrderDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -13,7 +15,7 @@ const ProjectOrderDetail = () => {
 
   const dialog = useDialog();
   const {
-    projectState: {
+    state: {
       order: detail
     },
     getOrder: getOne,

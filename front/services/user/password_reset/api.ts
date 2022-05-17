@@ -1,6 +1,9 @@
 import apiClient from 'services/common/api';
-import PasswordReset from 'services/user/password_reset/entity';
-import { PasswordResetParameter, PasswordResetQuery } from 'services/user/password_reset/parameter';
+import {
+  PasswordReset,
+  PasswordResetParameter,
+  PasswordResetQuery,
+} from 'services/user/password_reset';
 
 class PasswordResetApi {
   async getOne(query: PasswordResetQuery): Promise<PasswordReset> {

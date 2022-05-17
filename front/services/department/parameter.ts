@@ -1,4 +1,4 @@
-import Department, { DepartmentCategory } from 'services/department/entity';
+import { Department, DepartmentCategory } from 'services/department';
 
 export type DepartmentQuery = {
   page: number;
@@ -22,4 +22,3 @@ export type DepartmentTreeParameter = {
 export type DepartmentChangeTreeParameter = {
   list: DepartmentTreeParameter[];
 };
-

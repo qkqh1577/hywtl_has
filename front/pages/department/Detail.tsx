@@ -12,24 +12,29 @@ import {
   Select
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import useDepartment from 'services/department/hook';
-import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { DepartmentCategory, ListDepartment } from 'services/department/entity';
-import { DepartmentParameter } from 'services/department/parameter';
-import useDialog from 'components/Dialog';
+import { useDialog } from 'components';
+import {
+  DepartmentCategory,
+  DepartmentParameter,
+  ListDepartment,
+  departmentCategoryList,
+  departmentCategoryName,
+  useDepartment,
+} from 'services/department';
 
 const DepartmentDetail = () => {
-  const navigate = useNavigate();
-  const dialog = useDialog();
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
+
+  const navigate = useNavigate();
+  const dialog = useDialog();
   if (typeof id === 'undefined' || Number.isNaN(id)) {
     dialog.error('잘못된 접근입니다.', '/department');
     return null;
   }
 
   const {
-    departmentState: {
+    state: {
       list,
       detail
     },

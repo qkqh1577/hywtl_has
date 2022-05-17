@@ -1,4 +1,4 @@
-import Department from 'services/department/entity';
+import { Department } from 'services/department';
 
 export type UserRole = 'NORMAL' | 'ADMIN' | 'MASTER';
 
@@ -12,10 +12,9 @@ export type ListUser = {
   departmentName: string;
 }
 
-type User = Omit<ListUser, 'departmentId' | 'departmentName'> & {
+export type User = Omit<ListUser, 'departmentId' | 'departmentName'> & {
   department: Department;
   createdAt: Date;
   loginAt?: Date;
   passwordChangedAt?: Date;
 }
-export default User;

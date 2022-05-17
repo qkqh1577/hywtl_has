@@ -21,7 +21,7 @@ export type ManagerDetail = {
   projectCount?: number;
 }
 
-type CompanyDetail = {
+export type CompanyDetail = {
   name: string;
   representativeName?: string;
   companyNumber: string;
@@ -53,5 +53,3 @@ export type Company = {
   memo?: string;
   ManagerList: Manager[];
 }
-
-export default CompanyDetail;

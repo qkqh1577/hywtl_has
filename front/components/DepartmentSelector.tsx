@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ListDepartment } from 'services/department/entity';
-import departmentApi from 'services/department/api';
-import DataSelector from 'components/DataSelector';
-import { DataFieldProps } from 'components/DataField';
+import {
+  DataFieldProps,
+  DataSelector,
+} from 'components';
+import { ListDepartment, departmentApi } from 'services/department';
 
 const DepartmentSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
+
   const [list, setList] = useState<ListDepartment[] | null>(null);
 
   useEffect(() => {
-    departmentApi.getAll().then(setList).catch(() => setList(null));
+    departmentApi.getAll('as-item')
+    .then(setList);
   }, []);
 
   return (

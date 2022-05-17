@@ -1,11 +1,12 @@
 import { createAction } from 'typesafe-actions';
-import Department, { ListDepartment } from 'services/department/entity';
+import Page from 'components/Page';
 import {
+  Department,
   DepartmentChangeTreeParameter,
   DepartmentParameter,
-  DepartmentQuery
-} from './parameter';
-import Page from 'components/Page';
+  DepartmentQuery,
+  ListDepartment,
+} from 'services/department';
 
 export enum DepartmentActionType {
   getAll = 'department/getAll',
@@ -19,7 +20,7 @@ export enum DepartmentActionType {
 }
 
 export const departmentActions = {
-  getAll: createAction(DepartmentActionType.getAll)(),
+  getAll: createAction(DepartmentActionType.getAll)<string | undefined>(),
   setAll: createAction(DepartmentActionType.setAll)<ListDepartment[]>(),
   getPage: createAction(DepartmentActionType.getPage)<DepartmentQuery>(),
   setPage: createAction(DepartmentActionType.setPage)<Page<ListDepartment>>(),

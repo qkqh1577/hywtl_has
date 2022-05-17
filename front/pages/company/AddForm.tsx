@@ -1,19 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   Divider,
-  FormControl, FormControlLabel, FormLabel,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
-  Input,
-  InputLabel,
   Paper,
-  Radio, RadioGroup,
+  Radio,
+  RadioGroup,
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import { CompanyAddParameter } from 'services/company/parameters';
-import useCompany from 'services/company/hook';
+import { DataField, DataFieldWithButton } from "components";
+import {
+  CompanyAddParameter,
+  useCompany
+} from 'services/company';
 
 const initManagerListValue = [
   {
@@ -43,13 +47,48 @@ const Page = () => {
 
   const { add } = useCompany();
 
+  const { state: { list }, getAll } = useCompany();
+
+  useEffect(() => {
+    getAll({});
+  }, []);
+
   const handler = {
 
     toPage: () => {
       navigate('/company');
     },
 
+    checkCompanyNumber: (companyNumber: string): void => {
+      if (!companyNumber.length) {
+         alert('사업자번호를 입력해 주세요.');
+        return;
+      }
+
+      const duplicatedCompany = list?.find(company => company.companyNumber === companyNumber);
+      if(duplicatedCompany) {
+        alert('이미 등록되어 있는 사업자번호 입니다.');
+        return;
+      }
+
+      alert('등록 가능한 사업자번호 입니다.');
+    },
+
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+      const errors: any = {
+        name: {},
+        representativeName: {},
+        phone: {},
+        companyNumber: {},
+        address: {},
+        zipCode: {},
+        memo: {},
+      };
+
+      if (values.name === '') {
+        errors.name = '업체명은 필수 입력 항목입니다.';
+      }
+
       const managerList = values.managerList.filter(
         (manager: any) => manager.name
           || manager.position
@@ -59,6 +98,7 @@ const Page = () => {
           || manager.meta.length > 0
           || manager.state
       );
+
       const params: CompanyAddParameter = {
         name: values.name,
         representativeName: values.representativeName,
@@ -95,7 +135,7 @@ const Page = () => {
               enableReinitialize
               onSubmit={handler.submit}
             >
-              {({ values, isSubmitting, handleChange, handleSubmit, setValues }) => (
+              {({ values, errors, isSubmitting, setFieldValue, handleChange, handleSubmit, setValues }) => (
                 <Form>
                   <Box sx={{
                     display: 'flex',
@@ -108,103 +148,82 @@ const Page = () => {
                   </Box>
                   <Grid container spacing={3}>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-name">업체명</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-name"
-                          name="name"
-                          value={values.name}
-                          onChange={handleChange}
-                          required
-                          placeholder="입력"
-                        />
-                        <ErrorMessage name="name" />
-                      </FormControl>
+                      <DataField
+                        name="name"
+                        label="업체명"
+                        value={values.name}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="입력"
+                        required
+                      />
                     </Grid>
                     <Grid item sm={6}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel id="params-representativeName">대표명</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-representativeName"
-                          name="representativeName"
-                          value={values.representativeName}
-                          onChange={handleChange}
-                          placeholder="입력"
-                        />
-                        <ErrorMessage name="representativeName" />
-                      </FormControl>
+                      <DataField
+                        name="representativeName"
+                        label="대표명"
+                        value={values.representativeName}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="입력"
+                      />
                     </Grid>
                     <Grid item sm={6}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel id="params-phone">대표 전화번호</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-phone"
-                          name="phone"
-                          value={values.phone}
-                          onChange={handleChange}
-                          placeholder="-를 제외하고 입력"
-                        />
-                        <ErrorMessage name="phone" />
-                      </FormControl>
+                      <DataField
+                        name="phone"
+                        label="대표 전화번호"
+                        value={values.phone}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="-를 제외하고 입력"
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-companyNumber">사업자번호</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-companyNumber"
-                          name="companyNumber"
-                          value={values.companyNumber}
-                          onChange={handleChange}
-                          placeholder="입력"
-                        />
-                        <ErrorMessage name="companyNumber" />
-                      </FormControl>
+                      <DataFieldWithButton
+                        type="check"
+                        buttonName="중복 조회"
+                        name="companyNumber"
+                        label="사업자번호"
+                        value={values.companyNumber}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="입력"
+                        onClick={() => {handler.checkCompanyNumber(values.companyNumber)}}
+                        required
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-address">주소</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-address"
-                          name="address"
-                          value={values.address}
-                          onChange={handleChange}
-                          placeholder="주소 검색 후 상세 주소 입력"
-                        />
-                        <ErrorMessage name="address" />
-                      </FormControl>
+                      <DataFieldWithButton
+                        type="check"
+                        buttonName="주소 검색"
+                        name="address"
+                        label="주소"
+                        value={values.address}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="주소 검색 후 상세 주소 입력"
+                        required
+                      />
                     </Grid>
                     <Grid item sm={6}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-zipCode">우편번호</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-zipCode"
-                          name="zipCode"
-                          value={values.zipCode}
-                          onChange={handleChange}
-                          placeholder="입력"
-                        />
-                        <ErrorMessage name="zipCode" />
-                      </FormControl>
+                      <DataField
+                        name="zipCode"
+                        label="우편번호"
+                        value={values.zipCode}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="입력"
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel htmlFor="params-memo">비고</InputLabel>
-                        <Input
-                          type="text"
-                          id="params-memo"
-                          name="memo"
-                          value={values.memo}
-                          onChange={handleChange}
-                          placeholder="입력"
-                        />
-                        <ErrorMessage name="memo" />
-                      </FormControl>
+                      <DataField
+                        name="memo"
+                        label="비고"
+                        value={values.memo}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        placeholder="입력"
+                      />
                     </Grid>
                   </Grid>
                   {values.managerList?.map((manager, i) => (
@@ -258,89 +277,64 @@ const Page = () => {
                       </Box>
                       <Grid container spacing={3}>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-manager-name">담당자명</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-name"
-                              name={`managerList.${i}.name`}
-                              value={values?.managerList?.[i]?.name}
-                              onChange={handleChange}
-                              required
-                              placeholder="입력"
-                            />
-                            <ErrorMessage name="manager-name" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.name`}
+                            label="담당자명"
+                            value={manager.name}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel id="params-manager-position">호칭</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-position"
-                              name={`managerList.${i}.position`}
-                              value={values?.managerList?.[i]?.position}
-                              onChange={handleChange}
-                              placeholder="입력"
-                            />
-                            <ErrorMessage name="manager-position" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.position`}
+                            label="호칭"
+                            value={manager.position}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel id="params-manager-mobile">핸드폰</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-mobile"
-                              name={`managerList.${i}.mobile`}
-                              value={values?.managerList?.[i]?.mobile}
-                              onChange={handleChange}
-                              placeholder="-를 제외하고 입력"
-                            />
-                            <ErrorMessage name="manager-mobile" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.mobile`}
+                            label="핸드폰"
+                            value={manager.mobile}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="-를 제외하고 입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-companyNumber">전화번호</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-phone"
-                              name={`managerList.${i}.phone`}
-                              value={values?.managerList?.[i]?.phone}
-                              onChange={handleChange}
-                              placeholder="-를 제외하고 입력"
-                            />
-                            <ErrorMessage name="manager-phone" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.phone`}
+                            label="전화번호"
+                            value={manager.phone}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="-를 제외하고 입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-manager-email">이메일</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-email"
-                              name={`managerList.${i}.email`}
-                              value={values?.managerList?.[i]?.email}
-                              onChange={handleChange}
-                              placeholder="입력"
-                            />
-                            <ErrorMessage name="manager-manager-email" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.email`}
+                            label="이메일"
+                            value={manager.email}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel htmlFor="params-manager-meta">메타</InputLabel>
-                            <Input
-                              type="text"
-                              id="params-manager-meta"
-                              name={`managerList.${i}.meta`}
-                              value={values?.managerList?.[i]?.meta}
-                              onChange={handleChange}
-                              placeholder="입력"
-                            />
-                            <ErrorMessage name="manager-meta" />
-                          </FormControl>
+                          <DataField
+                            name={`managerList.${i}.meta`}
+                            label="메타"
+                            value={''}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
+                            placeholder="입력"
+                          />
                         </Grid>
                         <Grid item sm={6}>
                           <FormControl variant="standard" fullWidth>

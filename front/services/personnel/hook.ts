@@ -1,12 +1,15 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import { useCallback } from 'react';
-import { personnelActions } from 'services/personnel/actions';
-import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
-import Personnel from 'services/personnel/entity';
+import {
+  Personnel,
+  PersonnelParameter,
+  PersonnelQuery,
+  personnelActions,
+} from 'services/personnel';
 
 export default function usePersonnel() {
-  const personnelState = useSelector((state: RootState) => state.personnel);
+  const state = useSelector((state: RootState) => state.personnel);
   const dispatch = useDispatch();
 
   const getPage = useCallback(
@@ -15,15 +18,57 @@ export default function usePersonnel() {
     [dispatch]
   );
 
-  const getOne = useCallback(
+  const getBasic = useCallback(
     (id: number) =>
-      dispatch(personnelActions.getOne(id)),
+      dispatch(personnelActions.getBasic(id)),
+    [dispatch]
+  );
+
+  const getCompany = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getCompany(id)),
+    [dispatch]
+  );
+
+  const getJob = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getJob(id)),
+    [dispatch]
+  );
+
+  const getJobList = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getJobList(id)),
+    [dispatch]
+  );
+
+  const getAcademicList = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getAcademicList(id)),
+    [dispatch]
+  );
+
+  const getCareerList = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getCareerList(id)),
+    [dispatch]
+  );
+
+  const getLicenseList = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getLicenseList(id)),
+    [dispatch]
+  );
+
+  const getLanguageList = useCallback(
+    (id: number) =>
+      dispatch(personnelActions.getLanguageList(id)),
     [dispatch]
   );
 
   const clearOne = useCallback(
     () =>
-      dispatch(personnelActions.setOne(undefined)),
+      dispatch(personnelActions.clearOne()),
     [dispatch]
   );
 
@@ -34,9 +79,16 @@ export default function usePersonnel() {
   );
 
   return {
-    personnelState,
+    state,
     getPage,
-    getOne,
+    getBasic,
+    getCompany,
+    getJob,
+    getJobList,
+    getAcademicList,
+    getCareerList,
+    getLicenseList,
+    getLanguageList,
     clearOne,
     update,
   };

@@ -1,7 +1,10 @@
-import User, { ListUser } from 'services/user/entity';
-import Page, { initial } from 'components/Page';
 import { createReducer } from 'typesafe-actions';
-import { UserActionType } from './actions';
+import Page, { initial } from 'components/Page';
+import {
+  ListUser,
+  User,
+  UserActionType,
+} from 'services/user';
 
 export type UserState = {
   page: Page<ListUser>;
@@ -10,7 +13,7 @@ export type UserState = {
   selectedId?: number;
 }
 
-export const initState: UserState = {
+const initState: UserState = {
   page: initial,
 };
 

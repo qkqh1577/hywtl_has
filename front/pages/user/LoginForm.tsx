@@ -1,9 +1,16 @@
 import React, { KeyboardEvent, useEffect } from 'react';
-import { Box, Button, FormControl, Grid, Input, InputLabel, Paper } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { LoginParameter } from 'services/user/parameter';
-import userApi from 'services/user/api';
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  Paper
+} from '@mui/material';
+import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { LoginParameter, userApi } from 'services/user';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -41,7 +48,7 @@ const LoginForm = () => {
       userApi.login(params).then(() => {
         const prevLocation = localStorage.getItem('path') ?? '/';
         navigate(prevLocation);
-      }).catch((e) => {
+      }).catch(() => {
         setSubmitting(false);
       });
     },

@@ -1,6 +1,8 @@
-import PasswordReset from 'services/user/password_reset/entity';
 import { createReducer } from 'typesafe-actions';
-import { PasswordResetActionType } from 'services/user/password_reset/actions';
+import {
+  PasswordReset,
+  PasswordResetActionType,
+} from 'services/user/password_reset';
 
 export type PasswordResetState = {
   detail?: PasswordReset;

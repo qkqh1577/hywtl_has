@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import UserInvitation from 'services/user/invitation/UserInvitation';
 import {
+  UserInvitation,
   UserInvitationInviteParameter,
-  UserInvitationQuery
-} from 'services/user/invitation/parameter';
-import { userInvitationActions } from 'services/user/invitation/actions';
+  UserInvitationQuery,
+  userInvitationActions
+} from 'services/user/invitation';
 
 export default function useUserInvitation() {
-  const userInvitationState = useSelector((state: RootState) => state.userInvitation);
+  const state = useSelector((state: RootState) => state.userInvitation);
   const dispatch = useDispatch();
 
   const getOne = useCallback(
@@ -31,7 +31,7 @@ export default function useUserInvitation() {
   );
 
   return {
-    userInvitationState,
+    state,
     getOne,
     clearOne,
     invite,

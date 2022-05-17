@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -73,6 +74,16 @@ public class Project extends CustomEntity {
         @AttributeOverride(name = "modifiedAt", column = @Column(name = "target__modified_at"))
     })
     private ProjectTarget target;
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "receivedDate", column = @Column(name = "estimate__received_date")),
+        @AttributeOverride(name = "figureLevel", column = @Column(name = "estimate__figure_level")),
+        @AttributeOverride(name = "testLevel", column = @Column(name = "estimate__test_level")),
+        @AttributeOverride(name = "reportLevel", column = @Column(name = "estimate__report_level")),
+        @AttributeOverride(name = "modifiedAt", column = @Column(name = "estimate__modified_at"))
+    })
+    private ProjectEstimate estimate;
 
     //////////////////////////////////
     //// builder
@@ -172,6 +183,23 @@ public class Project extends CustomEntity {
         }
         this.target.change(
             landModelCount
+        );
+    }
+
+    public void changeEstimate(
+        LocalDate receivedDate,
+        String figureLevel,
+        String testLevel,
+        String reportLevel
+    ) {
+        if (Objects.isNull(this.estimate)) {
+            this.estimate = ProjectEstimate.of();
+        }
+        this.estimate.change(
+            receivedDate,
+            figureLevel,
+            testLevel,
+            reportLevel
         );
     }
 }

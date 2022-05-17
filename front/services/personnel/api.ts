@@ -1,7 +1,18 @@
 import apiClient from 'services/common/api';
-import Personnel, { ListPersonnel } from 'services/personnel/entity';
-import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
 import Page from 'components/Page';
+import {
+  ListPersonnel,
+  Personnel,
+  PersonnelAcademic,
+  PersonnelBasic,
+  PersonnelCareer,
+  PersonnelCompany,
+  PersonnelJob,
+  PersonnelLanguage,
+  PersonnelLicense,
+  PersonnelParameter,
+  PersonnelQuery,
+} from 'services/personnel';
 
 export class PersonnelApi {
   async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {
@@ -9,8 +20,43 @@ export class PersonnelApi {
     return data;
   }
 
-  async getOne(id: number): Promise<Personnel> {
-    const { data } = await apiClient.get(`/personnels/${id}`);
+  async getBasic(id: number): Promise<PersonnelBasic> {
+    const { data } = await apiClient.get(`/personnels/${id}/basic`);
+    return data;
+  }
+
+  async getCompany(id: number): Promise<PersonnelCompany> {
+    const { data } = await apiClient.get(`/personnels/${id}/company`);
+    return data;
+  }
+
+  async getJob(id: number): Promise<PersonnelJob> {
+    const { data } = await apiClient.get(`/personnels/${id}/job`);
+    return data;
+  }
+
+  async getJobList(id: number): Promise<PersonnelJob[]> {
+    const { data } = await apiClient.get(`/personnels/${id}/job-list`);
+    return data;
+  }
+
+  async getAcademicList(id: number): Promise<PersonnelAcademic[]> {
+    const { data } = await apiClient.get(`/personnels/${id}/academic-list`);
+    return data;
+  }
+
+  async getCareerList(id: number): Promise<PersonnelCareer[]> {
+    const { data } = await apiClient.get(`/personnels/${id}/career-list`);
+    return data;
+  }
+
+  async getLicenseList(id: number): Promise<PersonnelLicense[]> {
+    const { data } = await apiClient.get(`/personnels/${id}/license-list`);
+    return data;
+  }
+
+  async getLanguageList(id: number): Promise<PersonnelLanguage[]> {
+    const { data } = await apiClient.get(`/personnels/${id}/language-list`);
     return data;
   }
 

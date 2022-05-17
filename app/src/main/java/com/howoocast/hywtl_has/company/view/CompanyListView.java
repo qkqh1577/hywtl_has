@@ -3,6 +3,9 @@ package com.howoocast.hywtl_has.company.view;
 import com.howoocast.hywtl_has.company.domain.Company;
 import lombok.Getter;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Getter
 public class CompanyListView {
 
@@ -24,7 +27,10 @@ public class CompanyListView {
         target.companyNumber = source.getCompanyNumber();
         target.address = source.getAddress();
         target.phone = source.getPhone();
-        target.managerCount = source.getManagerList().size();
+        target.managerCount = source.getManagerList().stream().filter(
+            manager -> !(manager.getState().equals("퇴사")))
+            .collect(Collectors.toList())
+            .size();
         target.memo = source.getMemo();
         return target;
     }

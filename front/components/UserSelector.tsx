@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ListUser } from 'services/user/entity';
-import userApi from 'services/user/api';
-import { DataFieldProps } from 'components/index';
-import DataSelector from 'components/DataSelector';
+import { DataFieldProps, DataSelector } from 'components';
+import { ListUser, userApi } from 'services/user';
 
 const UserSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
   const [list, setList] = useState<ListUser[] | null>(null);

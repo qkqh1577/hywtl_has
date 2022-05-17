@@ -8,7 +8,6 @@ export type ManagerView = {
   state?: string;
 }
 
-
 export type CompanyView = {
   name: string;
   representativeName?: string;

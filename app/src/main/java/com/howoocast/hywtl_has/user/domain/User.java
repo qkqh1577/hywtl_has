@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
 import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
@@ -16,6 +18,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -72,6 +75,11 @@ public class User extends CustomEntity {
 
     @Column(nullable = false)
     private LocalDateTime passwordChangedAt; // 비밀번호 변경일시
+
+    @JsonManagedReference
+    @Getter(AccessLevel.NONE)
+    @OneToOne(mappedBy = "user")
+    private Personnel personnel;
 
     //////////////////////////////////
     //// constructor

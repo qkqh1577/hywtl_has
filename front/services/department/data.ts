@@ -1,4 +1,4 @@
-import { DepartmentCategory } from 'services/department/entity';
+import { DepartmentCategory } from 'services/department';
 
 export const departmentCategoryList: DepartmentCategory[] = [
   'COMPANY',

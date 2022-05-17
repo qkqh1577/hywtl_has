@@ -1,5 +1,8 @@
 package com.howoocast.hywtl_has.project_target_review.common;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum ProjectTargetReviewStatus {
 
     DRAFT("초안"),
@@ -11,9 +14,6 @@ public enum ProjectTargetReviewStatus {
     COMPLETE("완료");
     private final String message;
 
-    ProjectTargetReviewStatus(String message) {
-        this.message = message;
-    }
 
     public String message() {
         return message;

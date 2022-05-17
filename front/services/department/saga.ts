@@ -1,9 +1,13 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import Page from 'components/Page';
-import Department, { ListDepartment } from 'services/department/entity';
-import departmentApi from './api';
-import { departmentActions, DepartmentActionType } from './actions';
+import {
+  Department,
+  DepartmentActionType,
+  ListDepartment,
+  departmentActions,
+  departmentApi,
+} from 'services/department';
 
 function* getAll() {
   const list: ListDepartment[] = yield departmentApi.getAll();

@@ -11,6 +11,7 @@ import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
 import com.howoocast.hywtl_has.user.view.UserDetailView;
 import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordResetService passwordResetService;
 
     @GetMapping("/users")
     public Page<UserListView> page(
@@ -81,6 +83,11 @@ public class UserController {
     @PostMapping("/user/password-validate")
     public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
         userService.validatePassword(params);
+    }
+
+    @PostMapping("/users/{id}/reset-password")
+    public void resetPassword(@PathVariable Long id) {
+        passwordResetService.reset(id);
     }
 
     @PatchMapping("/users/{id}")

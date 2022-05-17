@@ -1,8 +1,11 @@
 import { ActionType } from 'typesafe-actions';
-import { userInvitationActions, UserInvitationType } from 'services/user/invitation/actions';
-import UserInvitation from 'services/user/invitation/UserInvitation';
-import userInvitationApi from 'services/user/invitation/api';
 import { put, takeLatest } from 'redux-saga/effects';
+import {
+  UserInvitation,
+  UserInvitationType,
+  userInvitationActions,
+  userInvitationApi,
+} from 'services/user/invitation';
 
 function* invite(action: ActionType<typeof userInvitationActions.invite>) {
   const { params, callback } = action.payload;

@@ -1,15 +1,12 @@
+import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
-import Project, {
+import {
   ListProject,
-  ListProjectTargetReview,
+  Project,
+  ProjectActionType,
   ProjectBasic,
   ProjectOrder,
-  ProjectTarget,
-  ProjectTargetDocument,
-  ProjectTargetReview
-} from 'services/project/entity';
-import { createReducer } from 'typesafe-actions';
-import { ProjectActionType } from 'services/project/actions';
+} from 'services/project';
 
 export type ProjectState = {
   page: Page<ListProject>;
@@ -17,16 +14,9 @@ export type ProjectState = {
   basic?: ProjectBasic;
   order?: ProjectOrder;
   addModal: boolean;
-  target?: ProjectTarget;
-  reviewList?: ListProjectTargetReview[];
-  reviewModal?: number | null;
-  reviewDetail?: ProjectTargetReview;
-  documentList?: ProjectTargetDocument[];
-  documentModal?: number | null;
-  documentDetail?: ProjectTargetDocument;
 }
 
-export const initState: ProjectState = {
+const initState: ProjectState = {
   page: initial,
   addModal: false,
 };
@@ -52,34 +42,6 @@ const projectReducer = createReducer(initState, {
     ...state,
     order: action.payload,
   }),
-  [ProjectActionType.setTarget]: (state, action) => ({
-    ...state,
-    target: action.payload,
-  }),
-  [ProjectActionType.setTargetReviewList]: (state, action) => ({
-    ...state,
-    reviewList: action.payload,
-  }),
-  [ProjectActionType.setTargetReviewModal]: (state, action) => ({
-    ...state,
-    reviewModal: action.payload,
-  }),
-  [ProjectActionType.setTargetReview]: (state, action) => ({
-    ...state,
-    reviewDetail: action.payload,
-  }),
-  [ProjectActionType.setTargetDocumentList]: (state, action) => ({
-    ...state,
-    documentList: action.payload,
-  }),
-  [ProjectActionType.setTargetDocument]: (state, action) => ({
-    ...state,
-    documentDetail: action.payload,
-  }),
-  [ProjectActionType.setTargetDocumentModal]: (state, action) => ({
-    ...state,
-    documentModal: action.payload,
-  })
 });
 
 export default projectReducer;

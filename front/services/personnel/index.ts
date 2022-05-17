@@ -1,2 +1,9 @@
+export * from './actions';
+export * from './entity';
+export * from './reducer';
+export * from './parameter';
+export * from './view';
+export { default as personnelApi } from './api';
+export { default as personnelReducer } from './reducer';
 export { default as usePersonnel } from './hook';
-export type { default as Personnel }  from './entity';
+export { default as personnelSaga } from './saga';

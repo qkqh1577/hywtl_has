@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {Box, Button, Divider, Grid, Paper, TextField} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
-import useCompany from "services/company/hook";
+import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField} from "@mui/material";
+import { useCompany } from "services/company";
 
 
 const Page = () => {
@@ -16,7 +16,7 @@ const Page = () => {
     return null;
   }
 
-  const { companyState: { detail }, getOne } = useCompany();
+  const { state: { detail }, getOne } = useCompany();
 
   useEffect(() => {
     getOne(id);
@@ -133,7 +133,7 @@ const Page = () => {
             {detail?.managerList?.map((manager, i) => {
               return (
                 <>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} bgcolor={manager.state === '퇴사' ? '#e5e5e5' : ''}>
                   <Grid item sm={12}>
                     <h2>담당자 정보</h2>
                   </Grid>
@@ -230,6 +230,17 @@ const Page = () => {
                       fullWidth
                       InputProps={{
                         readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              sx={{marginBottom: '15px'}}
+                            >
+                              상세
+                            </Button>
+                          </InputAdornment>
+                        )
                       }}
                     />
                   </Grid>
