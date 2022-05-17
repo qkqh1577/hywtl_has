@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -45,13 +45,7 @@ const initCompanyValue = {
 const Page = () => {
   const navigate = useNavigate();
 
-  const { add } = useCompany();
-
-  const { state: { list }, getAll } = useCompany();
-
-  useEffect(() => {
-    getAll({});
-  }, []);
+  const { state: { list }, add } = useCompany();
 
   const handler = {
 
