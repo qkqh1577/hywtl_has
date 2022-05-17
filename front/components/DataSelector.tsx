@@ -114,6 +114,7 @@ const DataSelector = (props: Props) => {
           />
         );
       }}
+      fullWidth
     />
   );
 };
