@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Tooltip } from '@mui/material';
+import { TextField } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import dayjs from 'dayjs';
 import { FormikErrors, FormikValues } from 'formik';
+import { Tooltip } from 'components';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = {

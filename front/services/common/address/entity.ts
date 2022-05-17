@@ -1,4 +1,4 @@
-type Address = {
+export type Address = {
   depth1: string;
   depth2: string;
   road: string;
@@ -9,5 +9,3 @@ type Address = {
   longitude: number;
   full: string;
 }
-
-export default Address;

@@ -1,11 +1,18 @@
 import apiClient from 'services/common/api';
-import Personnel, {
-  ListPersonnel, PersonnelAcademic,
-  PersonnelBasic, PersonnelCareer,
-  PersonnelCompany, PersonnelJob, PersonnelLanguage, PersonnelLicense
-} from 'services/personnel/entity';
-import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
 import Page from 'components/Page';
+import {
+  ListPersonnel,
+  Personnel,
+  PersonnelAcademic,
+  PersonnelBasic,
+  PersonnelCareer,
+  PersonnelCompany,
+  PersonnelJob,
+  PersonnelLanguage,
+  PersonnelLicense,
+  PersonnelParameter,
+  PersonnelQuery,
+} from 'services/personnel';
 
 export class PersonnelApi {
   async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {

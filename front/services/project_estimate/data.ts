@@ -1,4 +1,4 @@
-import { ProjectEstimateSheetStatus } from 'services/project_estimate/entity';
+import { ProjectEstimateSheetStatus } from 'services/project_estimate';
 
 export const projectEstimateSheetStatusName = (status: ProjectEstimateSheetStatus): string => {
   if (status === 'DRAFT') {

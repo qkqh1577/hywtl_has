@@ -15,7 +15,6 @@ import {
   Grid,
   IconButton,
   Paper,
-  Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -27,15 +26,16 @@ import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import {
   CheckboxField,
   DataField,
-  DataSelector,
   DataFieldValue,
+  DataSelector,
   DateFormat,
   DatePicker,
   DepartmentSelector,
   Option,
-  UserSelector
-} from 'components/index';
-import useDialog from 'components/Dialog';
+  Tooltip,
+  UserSelector,
+  useDialog,
+} from 'components';
 
 type State = {
   values: any;
@@ -57,7 +57,7 @@ type FieldProps = {
   disabled?: boolean;
   options?: Option[] | DataFieldValue[];
   helperText?: string | React.ReactNode;
-  sx?: any;
+  sx?: object;
   size?: 'small';
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
@@ -177,7 +177,7 @@ const Container = (props: ChildrenProps | SubmitProps) => {
             <Box sx={{
               display: 'flex',
               width: '100%',
-              flexWrap:'wrap',
+              flexWrap: 'wrap',
               mb: '40px',
             }}>
               {children}
@@ -392,7 +392,7 @@ const Container = (props: ChildrenProps | SubmitProps) => {
                             backgroundColor: (theme) => theme.palette.primary.main,
                             borderRadius: '4px'
                           }}>
-                            <Tooltip title="수정 내용 저장" placement="bottom">
+                            <Tooltip title="수정 내용 저장">
                               <IconButton
                                 disabled={isSubmitting || !dirty}
                                 onClick={() => {

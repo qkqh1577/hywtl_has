@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  Paper,
+  Typography
+} from '@mui/material';
 import {
   Edit as EditIcon,
   DeleteForever as DeleteIcon,
   EditOff as ResetIcon,
 } from '@mui/icons-material';
 import { Formik, FormikHelpers } from 'formik';
-import { DataField, DateFormat } from 'components';
+import { DataField, DateFormat, useDialog } from 'components';
 import {
-  ProjectCommentAddParameter, ProjectCommentChangeParameter,
-  ProjectCommentQuery
-} from 'services/project_comment/parameter';
-import useProjectComment from 'services/project_comment/hook';
-import useUser from 'services/user/hook';
-import ProjectComment from 'services/project_comment/entity';
-import useDialog from 'components/Dialog';
+  ProjectComment,
+  ProjectCommentAddParameter,
+  ProjectCommentChangeParameter,
+  ProjectCommentQuery,
+  useProjectComment,
+} from 'services/project_comment';
+import { useUser } from 'services/user';
 
 
 const ProjectCommentList = () => {
@@ -34,14 +42,14 @@ const ProjectCommentList = () => {
   };
 
   const {
-    projectCommentState: { page },
+    state: { page },
     getPage,
     add,
     change,
     remove,
   } = useProjectComment();
   const {
-    userState: { login }
+    state: { login }
   } = useUser();
   const [filter, setFilter] = useState<ProjectCommentQuery>(initFilter);
   const [selected, setSelected] = useState<ProjectComment | undefined>();

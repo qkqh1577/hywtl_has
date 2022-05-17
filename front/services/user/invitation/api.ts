@@ -1,9 +1,9 @@
 import apiClient from 'services/common/api';
-import UserInvitation from 'services/user/invitation/UserInvitation';
 import {
+  UserInvitation,
   UserInvitationInviteParameter,
   UserInvitationQuery
-} from 'services/user/invitation/parameter';
+} from 'services/user/invitation';
 
 export class UserInvitationApi {
   async invite(params: UserInvitationInviteParameter): Promise<UserInvitation> {

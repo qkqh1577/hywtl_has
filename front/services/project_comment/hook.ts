@@ -1,15 +1,16 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import { useCallback } from 'react';
 import {
-  ProjectCommentAddParameter, ProjectCommentChangeParameter,
-  ProjectCommentQuery
-} from 'services/project_comment/parameter';
-import { projectCommentActions } from 'services/project_comment/actions';
-import ProjectComment from 'services/project_comment/entity';
+  ProjectComment,
+  ProjectCommentAddParameter,
+  ProjectCommentChangeParameter,
+  ProjectCommentQuery,
+  projectCommentActions,
+} from 'services/project_comment';
 
 export default function useProjectComment() {
-  const projectCommentState = useSelector((state: RootState) => state.projectComment);
+  const state = useSelector((state: RootState) => state.projectComment);
   const dispatch = useDispatch();
 
   const getPage = useCallback(
@@ -50,7 +51,7 @@ export default function useProjectComment() {
 
 
   return {
-    projectCommentState,
+    state,
     getPage,
     getOne,
     clearOne,

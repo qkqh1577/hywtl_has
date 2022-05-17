@@ -1,12 +1,14 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
-import User, { ListUser } from 'services/user/entity';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter, LoginParameter,
-  UserQuery
-} from './parameter';
+  ChangeUserPasswordParameter,
+  ListUser,
+  LoginParameter,
+  User,
+  UserQuery,
+} from 'services/user';
 
 export enum UserActionType {
   getPage = 'user/getPage',

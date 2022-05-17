@@ -1,3 +1,4 @@
+import React, { useState, createRef, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -5,14 +6,15 @@ import {
   FormHelperText,
   Grid,
   Input,
-  InputLabel,
-  Tooltip
+  InputLabel
 } from '@mui/material';
 import { FormikErrors, FormikValues } from 'formik';
-import React, { useState, createRef, useEffect } from 'react';
-import FileItem from 'services/common/file-item/entity';
-import FileItemParameter from 'services/common/file-item/parameter';
-import FileItemView from 'services/common/file-item/view';
+import { Tooltip } from 'components';
+import {
+  FileItem,
+  FileItemParameter,
+  FileItemView
+} from 'services/common/file-item';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 export type FileInputProps = {
@@ -27,7 +29,7 @@ export type FileInputProps = {
   required?: boolean;
   disabled?: boolean;
   helperText?: string | React.ReactNode;
-  sx?: any;
+  sx?: object;
   size?: 'small';
   labelDisabled?: boolean;
 }

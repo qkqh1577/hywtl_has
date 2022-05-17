@@ -1,14 +1,16 @@
-import Page, { initial } from 'components/Page';
-import ProjectComment from 'services/project_comment/entity';
 import { createReducer } from 'typesafe-actions';
-import { ProjectCommentActionType } from 'services/project_comment/actions';
+import Page, { initial } from 'components/Page';
+import {
+  ProjectComment,
+  ProjectCommentActionType,
+} from 'services/project_comment';
 
 export type ProjectCommentState = {
   page: Page<ProjectComment>;
   detail?: ProjectComment;
 }
 
-export const initState: ProjectCommentState = {
+const initState: ProjectCommentState = {
   page: initial,
 };
 

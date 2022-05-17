@@ -7,24 +7,33 @@ import {
   Paper,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import DateFormat from 'components/DateFormat';
-import useUser from 'services/user/hook';
-import { UserRole } from 'services/user/entity';
-import { userRoleList, userRoleName } from 'services/user/data';
-import { ChangeUserParameter } from 'services/user/parameter';
+import {
+  DataField,
+  DateFormat,
+  DepartmentSelector,
+  useDialog,
+} from 'components';
+import {
+  ChangeUserParameter,
+  UserRole,
+  useUser,
+  userRoleList,
+  userRoleName,
+} from 'services/user';
+import {
+  PasswordResetParameter,
+  usePasswordReset,
+} from 'services/user/password_reset';
 import PersonnelDetail from 'pages/hr/Detail';
-import usePasswordReset from 'services/user/password_reset/hook';
-import { PasswordResetParameter } from 'services/user/password_reset/parameter';
-import { DepartmentSelector, DataField } from 'components';
-import useDialog from 'components/Dialog';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
   const id = idString ? +idString : undefined;
+
   const navigate = useNavigate();
   const dialog = useDialog();
   const {
-    userState: {
+    state: {
       detail
     },
     getOne,

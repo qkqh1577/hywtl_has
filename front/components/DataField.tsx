@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  InputAdornment, MenuItem,
-  TextField, Tooltip
+  InputAdornment,
+  MenuItem,
+  TextField
 } from '@mui/material';
 import { FormikValues, FormikErrors } from 'formik';
+import { Tooltip } from 'components';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 import { toAmount, toAmountKor } from 'util/NumberUtil';
 

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAction, createReducer } from 'typesafe-actions';
 import {
@@ -10,9 +11,8 @@ import {
   DialogTitle,
   IconButton,
 } from '@mui/material';
-import { RootState } from 'services/common/reducer';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { RootState } from 'services/common/reducer';
 
 type AlertStatus = 'ok' | 'warn' | 'error';
 type AlertProps = {

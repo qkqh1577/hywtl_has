@@ -1,9 +1,12 @@
 import { ActionType } from 'typesafe-actions';
-import { projectCommentActions, ProjectCommentActionType } from 'services/project_comment/actions';
-import Page from 'components/Page';
-import ProjectComment from 'services/project_comment/entity';
-import projectCommentApi from 'services/project_comment/api';
 import { put, takeLatest } from 'redux-saga/effects';
+import Page from 'components/Page';
+import {
+  ProjectComment,
+  ProjectCommentActionType,
+  projectCommentActions,
+  projectCommentApi,
+} from 'services/project_comment';
 
 function* getPage(action: ActionType<typeof projectCommentActions.getPage>) {
   const page: Page<ProjectComment> = yield projectCommentApi.getPage(action.payload);

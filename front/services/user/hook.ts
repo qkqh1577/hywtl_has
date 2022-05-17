@@ -1,17 +1,18 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import User from 'services/user/entity';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter, LoginParameter,
-  UserQuery
-} from './parameter';
-import { userActions } from './actions';
+  ChangeUserPasswordParameter,
+  LoginParameter,
+  User,
+  UserQuery,
+  userActions,
+} from 'services/user';
 
 export default function useUser() {
-  const userState = useSelector((state: RootState) => state.user);
+  const state = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const getPage = useCallback(
@@ -86,7 +87,7 @@ export default function useUser() {
   );
 
   return {
-    userState,
+    state,
     getPage,
     getOne,
     clearOne,

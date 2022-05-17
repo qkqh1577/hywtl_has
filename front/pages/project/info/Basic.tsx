@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container } from 'components';
+import { Container, useDialog } from 'components';
 import useProject from 'services/project/hook';
-import { initProjectBasic, ProjectBasicView } from 'services/project/view';
-import { ProjectBasicParameter } from 'services/project/parameter';
-import useDialog from 'components/Dialog';
+import {
+  ProjectBasicParameter,
+  ProjectBasicView,
+  initProjectBasic,
+} from 'services/project';
 
 const ProjectBasicDetail = () => {
 
@@ -13,7 +15,7 @@ const ProjectBasicDetail = () => {
 
   const dialog = useDialog();
   const {
-    projectState: {
+    state: {
       basic: detail
     },
     getBasic: getOne,

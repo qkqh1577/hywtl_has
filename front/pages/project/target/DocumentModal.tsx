@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,35 +13,37 @@ import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField, FileInput } from 'components';
-import useProject from 'services/project/hook';
+import { DataField, FileInput, useDialog } from 'components';
 import {
-  initProjectTargetDocument,
-  ProjectTargetDocumentView
-} from 'services/project/view';
+  FileItemParameter,
+  fileItemToView,
+  toReadableSize,
+} from 'services/common/file-item';
 import {
   ProjectTargetDocumentAddParameter,
-  ProjectTargetDocumentChangeParameter
-} from 'services/project/parameter';
-import { fileItemToView, toReadableSize } from 'services/common/file-item/view';
-import FileItemParameter from 'services/common/file-item/parameter';
-import useDialog from 'components/Dialog';
+  ProjectTargetDocumentChangeParameter,
+  ProjectTargetDocumentView,
+  initProjectTargetDocument,
+  useProjectTarget,
+} from 'services/project_target';
 
 const ProjectTargetDocumentModal = () => {
+  const { id: idString } = useParams<{ id: string }>();
+  const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
+
   const dialog = useDialog();
   const {
-    projectState: {
-      detail: project,
-      documentModal: documentId,
+    state: {
       documentDetail: detail,
+      documentId,
     },
-    clearTargetDocumentModal: clearModal,
-    getTargetDocument: getOne,
-    clearTargetDocument: clearOne,
-    addTargetDocument: add,
-    updateTargetDocument: update,
-    removeTargetDocument: remove,
-  } = useProject();
+    clearDocumentId: clearModal,
+    getDocument: getOne,
+    clearDocument: clearOne,
+    addDocument: add,
+    updateDocument: update,
+    removeDocument: remove,
+  } = useProjectTarget();
 
   const [view, setView] = useState<ProjectTargetDocumentView>(initProjectTargetDocument);
 
@@ -58,7 +61,6 @@ const ProjectTargetDocumentModal = () => {
       });
     },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      const projectId = project?.id;
       if (!projectId) {
         dialog.alert('프로젝트가 선택되지 않았습니다.');
         setSubmitting(false);
@@ -83,12 +85,9 @@ const ProjectTargetDocumentModal = () => {
         const params: ProjectTargetDocumentChangeParameter = {
           memo,
         };
-        update(documentId, params, (data) => {
-          setSubmitting(false);
-          if (data) {
-            dialog.alert('변경하였습니다.');
-            handler.close();
-          }
+        update(documentId, params, () => {
+          dialog.alert('변경하였습니다.');
+          handler.close();
         });
       } else {
         // add
@@ -96,17 +95,17 @@ const ProjectTargetDocumentModal = () => {
           fileItem,
           memo,
         };
-        add(projectId, params, (data) => {
-          setSubmitting(false);
-          if (data) {
-            dialog.alert('저장하였습니다.');
-            handler.close();
-          }
+        add(projectId, params, () => {
+          dialog.alert('저장하였습니다.');
+          handler.close();
         });
-
       }
+      setSubmitting(false);
     },
-    close: () => {
+    close: (event?: object, reason?: string) => {
+      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+        return;
+      }
       clearModal();
       clearOne();
     },

@@ -1,4 +1,5 @@
 import { createAction } from 'typesafe-actions';
+import Page from 'components/Page';
 import {
   ListPersonnel,
   PersonnelAcademic,
@@ -7,10 +8,10 @@ import {
   PersonnelCompany,
   PersonnelJob,
   PersonnelLanguage,
-  PersonnelLicense
-} from 'services/personnel/entity';
-import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
-import Page from 'components/Page';
+  PersonnelLicense,
+  PersonnelParameter,
+  PersonnelQuery,
+} from 'services/personnel';
 
 export enum PersonnelActionType {
   getPage = 'personnel/getPage',

@@ -1,9 +1,13 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import Page from 'components/Page';
-import User, { ListUser } from 'services/user/entity';
-import userApi from './api';
-import { userActions, UserActionType } from './actions';
+import {
+  ListUser,
+  User,
+  UserActionType,
+  userActions,
+  userApi,
+} from 'services/user';
 
 function* getPage(action: ActionType<typeof userActions.getPage>) {
   const page: Page<ListUser> = yield userApi.getPage(action.payload);

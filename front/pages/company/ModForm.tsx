@@ -1,9 +1,12 @@
 import React, {useEffect} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import {
   Box,
   Button,
   Divider,
-  FormControl, FormControlLabel, FormLabel,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
   Input,
   InputLabel,
@@ -12,11 +15,11 @@ import {
   RadioGroup,
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
-import {useNavigate, useParams} from "react-router-dom";
-import {CompanyChangeParameter} from "services/company/parameters";
-import useCompany from "services/company/hook";
-import {DataField, DataFieldWithButton} from "../../components";
-
+import {DataField, DataFieldWithButton} from "components";
+import {
+  CompanyChangeParameter,
+  useCompany,
+} from "services/company";
 
 const Page = () => {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ const Page = () => {
     return null;
   }
 
-  const { companyState: { detail }, change, getOne } = useCompany();
+  const { state: { detail }, change, getOne } = useCompany();
 
   const initManagerListValue = [{
     id: undefined,

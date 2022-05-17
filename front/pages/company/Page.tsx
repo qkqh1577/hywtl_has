@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -19,9 +20,7 @@ import {
   Input
 } from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import useCompany from 'services/company/hook';
-import { CompanyQuery } from 'services/company/parameters';
+import { CompanyQuery,useCompany } from 'services/company';
 
 type TableCellProperty = {
   key: string;
@@ -53,7 +52,7 @@ const initFilter: CompanyQuery = {
 const CompanyPage = () => {
   const navigate = useNavigate();
 
-  const { companyState: { page }, getPage } = useCompany();
+  const { state: { page }, getPage } = useCompany();
   const [filter, setFilter] = useState<CompanyQuery>(initFilter);
 
   const handler = {

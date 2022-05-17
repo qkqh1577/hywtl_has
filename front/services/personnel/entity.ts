@@ -1,5 +1,5 @@
-import FileItem from 'services/common/file-item/entity';
-import { ListDepartment } from 'services/department/entity';
+import { FileItem } from 'services/common/file-item';
+import { ListDepartment } from 'services/department';
 
 export type PersonnelBasic = {
   engName: string;
@@ -78,7 +78,7 @@ export type ListPersonnel = {
   languageCount?: number;
 }
 
-type Personnel = {
+export type Personnel = {
   id: number;
   basic: PersonnelBasic;
   company: PersonnelCompany;
@@ -89,4 +89,3 @@ type Personnel = {
   languageList?: PersonnelLanguage[];
 }
 
-export default Personnel;

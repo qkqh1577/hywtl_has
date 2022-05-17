@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
-import { usePersonnel } from 'services/personnel';
 import {
   PersonnelCompanyView as View,
-} from 'services/personnel/view';
+  usePersonnel
+} from 'services/personnel';
 
 type Props = {
   id: number;

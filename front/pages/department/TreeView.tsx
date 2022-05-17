@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import produce from 'immer';
 import {
   Box,
   Button,
@@ -24,16 +23,18 @@ import {
   ArrowDownwardSharp as ArrowDownwardIcon
 } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import produce from 'immer';
 import Tree from 'rc-tree';
 import { DataNode, EventDataNode, IconType, Key } from 'rc-tree/lib/interface';
-import useDepartment from 'services/department/hook';
-import { DepartmentCategory, ListDepartment } from 'services/department/entity';
 import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
+import { useDialog } from 'components';
 import {
+  DepartmentCategory,
   DepartmentChangeTreeParameter,
-  DepartmentTreeParameter
-} from 'services/department/parameter';
-import useDialog from 'components/Dialog';
+  DepartmentTreeParameter,
+  ListDepartment,
+  useDepartment,
+} from 'services/department';
 
 const useStyle = makeStyles(() => ({
   tree: {
@@ -121,7 +122,7 @@ const DepartmentTreeView = () => {
   const location = useLocation();
   const dialog = useDialog();
   const {
-    departmentState: { list },
+    state: { list },
     getAll,
     changeTree
   } = useDepartment();

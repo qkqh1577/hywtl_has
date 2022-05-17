@@ -14,15 +14,21 @@ import {
 } from '@mui/material';
 import { Formik, Form, FormikHelpers } from 'formik';
 import dayjs from 'dayjs';
-import { usePersonnel } from 'services/personnel';
 import {
+  CheckboxField,
+  DataField,
+  DateFormat,
+  DatePicker,
+  Table,
+} from 'components';
+import {
+  PersonnelQuery,
   dateTypeList,
   hiredTypeList,
   keywordTypeList,
-  sexList
-} from 'services/personnel/view';
-import { Table, CheckboxField, DataField, DatePicker, DateFormat } from 'components';
-import { PersonnelQuery } from 'services/personnel/parameter';
+  sexList,
+  usePersonnel,
+} from 'services/personnel';
 
 const initFilter: PersonnelQuery = {
   size: 10,

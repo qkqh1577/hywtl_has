@@ -40,9 +40,18 @@ public class PasswordResetService {
     }
 
     @Transactional
-    public PasswordResetView reset(PasswordResetParameter params) {
-        String email = params.getEmail();
+    public void reset(PasswordResetParameter params) {
+        this.resetByEmail(params.getEmail());
+    }
 
+    @Transactional
+    public void reset(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new NotFoundException("user", userId));
+        this.resetByEmail(user.getEmail());
+    }
+
+    private void resetByEmail(String email) {
         // 기존 코드 무효화
         repository.findByEmail(email)
             .ifPresent(instance -> repository.deleteById(instance.getId()));
@@ -57,6 +66,5 @@ public class PasswordResetService {
 
         // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset));
-        return PasswordResetView.assemble(repository.save(passwordReset));
     }
 }

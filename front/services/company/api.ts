@@ -1,7 +1,14 @@
-import CompanyDetail, {Company, CompanyList} from "./entity";
-import apiClient from "services/common/api";
-import {CompanyAddParameter, CompanyChangeParameter, CompanyQuery, CompanyQueryForModal} from "./parameters";
-import Page from "components/Page";
+import apiClient from 'services/common/api';
+import Page from 'components/Page';
+import {
+  Company,
+  CompanyAddParameter,
+  CompanyChangeParameter,
+  CompanyDetail,
+  CompanyList,
+  CompanyQuery,
+  CompanyQueryForModal,
+} from 'services/company';
 
 export class CompanyApi {
   async getPage(query: CompanyQuery): Promise<Page<CompanyList>> {

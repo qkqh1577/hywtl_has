@@ -1,7 +1,10 @@
 import { createReducer } from 'typesafe-actions';
-import { DepartmentActionType } from './actions';
-import Department, { ListDepartment } from 'services/department/entity';
 import Page, { initial } from 'components/Page';
+import {
+  Department,
+  DepartmentActionType,
+  ListDepartment,
+} from 'services/department';
 
 export type DepartmentState = {
   list: ListDepartment[];

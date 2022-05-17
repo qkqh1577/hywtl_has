@@ -1,5 +1,5 @@
-import { ListUser } from 'services/user/entity';
-import { ProjectTargetReview } from 'services/project/entity';
+import { ListUser } from 'services/user';
+import { ProjectTargetReview } from 'services/project_target';
 
 export type ProjectEstimateSheetStatus = 'DRAFT'
   | 'DRAFT_CONFIRMED'

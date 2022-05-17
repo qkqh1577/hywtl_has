@@ -1,10 +1,10 @@
+import { createReducer } from 'typesafe-actions';
 import {
   ListProjectEstimateSheet,
   ProjectEstimate,
-  ProjectEstimateSheet
-} from 'services/project_estimate/entity';
-import { createReducer } from 'typesafe-actions';
-import { ProjectEstimateType } from 'services/project_estimate/actions';
+  ProjectEstimateSheet,
+  ProjectEstimateType,
+} from 'services/project_estimate';
 
 export type ProjectEstimateState = {
   detail?: ProjectEstimate;

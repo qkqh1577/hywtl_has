@@ -12,17 +12,20 @@ import {
   Select
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import useDepartment from 'services/department/hook';
-import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { DepartmentCategory } from 'services/department/entity';
-import { DepartmentParameter } from 'services/department/parameter';
-import useDialog from 'components/Dialog';
+import { useDialog } from 'components';
+import {
+  DepartmentCategory,
+  DepartmentParameter,
+  departmentCategoryList,
+  departmentCategoryName ,
+  useDepartment,
+} from 'services/department';
 
 const DepartmentAddForm = () => {
   const navigate = useNavigate();
   const dialog = useDialog();
   const {
-    departmentState: {
+    state: {
       list
     },
     getAll,

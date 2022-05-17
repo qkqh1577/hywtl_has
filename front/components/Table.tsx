@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Table as MuiTable,
   TableBody,
@@ -6,7 +7,6 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import React from 'react';
 
 export type TableCellProperty<T> = {
   label: string;
@@ -31,7 +31,6 @@ const Table = <T, >({
   hover,
   sx
 }: TableProps<T>) => {
-
 
   return (
     <TableContainer sx={sx ?? {

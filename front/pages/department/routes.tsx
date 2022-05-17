@@ -11,7 +11,7 @@ const routes: AppRoutes[] = [
     element: <DepartmentPage />
   },
   {
-    path: '//department-tree',
+    path: '/department-tree',
     element: <DepartmentTreeView />
   },
   {

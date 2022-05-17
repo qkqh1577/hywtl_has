@@ -1,4 +1,4 @@
-import FileItemParameter from 'services/common/file-item/parameter';
+import { FileItemParameter } from 'services/common/file-item';
 
 export type PersonnelQuery = {
   sex?: string[];

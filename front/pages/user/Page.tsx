@@ -14,10 +14,13 @@ import {
   Box
 } from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
-import useUser from 'services/user/hook';
-import { UserQuery } from 'services/user/parameter';
-import { userRoleName, userRoleList } from 'services/user/data';
 import { DataField, CheckboxField } from 'components';
+import {
+  useUser,
+  UserQuery,
+  userRoleName,
+  userRoleList,
+} from 'services/user';
 
 type TableCellProperty = {
   key: string;
@@ -44,7 +47,7 @@ const initQuery: UserQuery = {
 
 const UserPage = () => {
   const navigate = useNavigate();
-  const { userState: { page }, getPage } = useUser();
+  const { state: { page }, getPage } = useUser();
   const [filter, setFilter] = useState<UserQuery>(initQuery);
 
   const handler = {

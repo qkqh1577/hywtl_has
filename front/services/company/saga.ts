@@ -1,9 +1,14 @@
 import { ActionType } from 'typesafe-actions';
-import CompanyDetail, {Company, CompanyList} from "./entity";
-import {companyActions, CompanyActionType} from "./actions";
-import companyApi from "./api";
-import {put, takeLatest} from "redux-saga/effects";
-import Page from "components/Page";
+import { put, takeLatest } from 'redux-saga/effects';
+import Page from 'components/Page';
+import {
+  Company,
+  CompanyActionType,
+  CompanyDetail,
+  CompanyList,
+  companyActions,
+  companyApi,
+} from 'services/company';
 
 function* getPage(action: ActionType<typeof companyActions.getPage>) {
   const page: Page<CompanyList> = yield companyApi.getPage(action.payload);
@@ -46,7 +51,7 @@ function* change(action: ActionType<typeof companyActions.change>) {
   }
 }
 
-export default function* saga() {
+export default function* companySaga() {
   yield takeLatest(CompanyActionType.getPage, getPage);
   yield takeLatest(CompanyActionType.getAll, getAll);
   yield takeLatest(CompanyActionType.getOne, getOne);

@@ -1,10 +1,11 @@
-import {
-  ProjectCommentAddParameter, ProjectCommentChangeParameter,
-  ProjectCommentQuery
-} from 'services/project_comment/parameter';
-import Page from 'components/Page';
-import ProjectComment from 'services/project_comment/entity';
 import apiClient from 'services/common/api';
+import Page from 'components/Page';
+import {
+  ProjectComment,
+  ProjectCommentAddParameter,
+  ProjectCommentChangeParameter,
+  ProjectCommentQuery,
+} from 'services/project_comment';
 
 export class ProjectCommentApi {
   async getPage(query: ProjectCommentQuery): Promise<Page<ProjectComment>> {

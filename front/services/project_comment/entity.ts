@@ -1,6 +1,6 @@
-import { ListUser } from 'services/user/entity';
+import { ListUser } from 'services/user';
 
-type ProjectComment = {
+export type ProjectComment = {
   id: number;
   projectId: number;
   writer: ListUser;
@@ -8,5 +8,3 @@ type ProjectComment = {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export default ProjectComment;

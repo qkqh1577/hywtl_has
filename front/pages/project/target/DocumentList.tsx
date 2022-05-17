@@ -8,82 +8,31 @@ import {
   Paper,
   Typography
 } from '@mui/material';
-import { DateFormat, Table, TableCellProperty } from 'components';
-import { toReadableSize } from 'services/common/file-item/view';
-import useProject from 'services/project/hook';
-import { ProjectTargetDocument } from 'services/project/entity';
+import { DateFormat, Table } from 'components';
+import { toReadableSize } from 'services/common/file-item';
+import { useProjectTarget } from 'services/project_target';
 
 const ProjectTargetDocumentList = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
-    projectState: {
+    state: {
       documentList: list,
-      documentModal: modal,
+      documentId,
     },
-    getTargetDocumentList: getList,
-    clearTargetDocumentList: clearList,
-    setTargetDocumentModal: setModal,
-  } = useProject();
+    getDocumentList: getList,
+    clearDocumentList: clearList,
+    setDocumentId: setId,
+  } = useProjectTarget();
 
   const handler = {
     addModal: () => {
-      setModal(null);
+      setId(null);
     }
   };
 
-  const columns: TableCellProperty<ProjectTargetDocument>[] = [
-    {
-      label: '등록일시',
-      align: 'center',
-      width: 150,
-      renderCell: (item) =>
-        <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
-    },
-    {
-      label: '파일명',
-      width: 200,
-      renderCell: (item) => {
-        const size: string = toReadableSize(item.fileItem.size);
-        return <Link
-          sx={{
-            cursor: 'pointer'
-          }}
-          onClick={() => {
-            setModal(item.id);
-          }}
-        >
-          {`${item.fileItem.filename} (${size})`}
-        </Link>;
-      }
-    },
-    {
-      label: '다운로드',
-      align: 'center',
-      renderCell: (item) =>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-
-            window.open(`/file-items/${item.fileItem.id}`, '_blank');
-          }}
-        >
-          다운로드
-        </Button>
-    },
-    {
-      label: '비고',
-      renderCell: item => item.memo
-    },
-    {
-      label: '등록자',
-      renderCell: item => item.writer.name
-    },
-  ];
-
   useEffect(() => {
-    if (!modal && projectId) {
+    if (!documentId && projectId) {
       getList(projectId);
     }
     return () => {
@@ -91,7 +40,7 @@ const ProjectTargetDocumentList = () => {
         clearList();
       }
     };
-  }, [modal, projectId]);
+  }, [documentId, projectId]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
@@ -145,7 +94,55 @@ const ProjectTargetDocumentList = () => {
         mb: '20px',
       }}>
         <Table
-          columns={columns}
+          columns={[
+            {
+              label: '등록일시',
+              align: 'center',
+              width: 150,
+              renderCell: (item) =>
+                <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
+            },
+            {
+              label: '파일명',
+              width: 200,
+              renderCell: (item) => {
+                const size: string = toReadableSize(item.fileItem.size);
+                return <Link
+                  sx={{
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    setId(item.id);
+                  }}
+                >
+                  {`${item.fileItem.filename} (${size})`}
+                </Link>;
+              }
+            },
+            {
+              label: '다운로드',
+              align: 'center',
+              renderCell: (item) =>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+
+                    window.open(`/file-items/${item.fileItem.id}`, '_blank');
+                  }}
+                >
+                  다운로드
+                </Button>
+            },
+            {
+              label: '비고',
+              renderCell: item => item.memo
+            },
+            {
+              label: '등록자',
+              renderCell: item => item.writer.name
+            },
+          ]}
           list={list}
           hover
         />

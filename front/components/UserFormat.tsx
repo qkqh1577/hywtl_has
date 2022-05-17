@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import userApi from 'services/user/api';
-import { ListUser } from 'services/user/entity';
-import personnelApi from 'services/personnel/api';
-import { Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Tooltip } from 'components';
+import { ListUser, userApi } from 'services/user';
+import { personnelApi } from 'services/personnel';
 
 type User = {
   id: number;

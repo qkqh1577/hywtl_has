@@ -1,11 +1,11 @@
 import { ActionType } from 'typesafe-actions';
-import {
-  passwordResetActions,
-  PasswordResetActionType
-} from 'services/user/password_reset/actions';
-import PasswordReset from 'services/user/password_reset/entity';
-import passwordResetApi from 'services/user/password_reset/api';
 import { put, takeLatest } from 'redux-saga/effects';
+import {
+  PasswordReset,
+  PasswordResetActionType,
+  passwordResetActions,
+  passwordResetApi,
+} from 'services/user/password_reset';
 
 function* getOne(action: ActionType<typeof passwordResetActions.getOne>) {
   const data: PasswordReset = yield passwordResetApi.getOne(action.payload);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,31 +13,32 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography
 } from '@mui/material';
 import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { CheckboxField, DataField } from 'components';
-import useProject from 'services/project/hook';
 import {
+  CheckboxField,
+  DataField,
+  Tooltip,
+  useDialog
+} from 'components';
+import {
+  ProjectTargetReviewDetailParameter,
+  ProjectTargetReviewParameter,
+  ProjectTargetReviewStatus,
+  ProjectTargetReviewView,
   initProjectTargetDetailReview,
   initProjectTargetReview,
-  ProjectTargetReviewView
-} from 'services/project/view';
-import {
-  projectSpecialWindLoadConditionName,
   projectTargetReviewStatusList,
-  projectTargetReviewStatusName
-} from 'services/project/data';
-import { ProjectTargetReviewStatus } from 'services/project/entity';
+  projectTargetReviewStatusName,
+  useProjectTarget,
+} from 'services/project_target';
 import {
-  ProjectTargetReviewParameter,
-  ProjectTargetReviewDetailParameter
-} from 'services/project/parameter';
-import useDialog from 'components/Dialog';
+  projectSpecialWindLoadConditionName
+} from 'services/project';
 
 type TableCellProperty = {
   key: string;
@@ -60,20 +62,22 @@ const columns: TableCellProperty[] = [
 ];
 
 const ProjectTargetReviewModal = () => {
+  const { id: idString } = useParams<{ id: string }>();
+  const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
+
   const dialog = useDialog();
   const {
-    projectState: {
-      detail: project,
-      reviewModal: reviewId,
+    state: {
+      reviewId,
       reviewDetail: detail,
     },
-    clearTargetReviewModal: clearModal,
-    getTargetReview: getOne,
-    clearTargetReview: clearOne,
-    addTargetReview: add,
-    updateTargetReview: update,
-    removeTargetReview: remove,
-  } = useProject();
+    clearReviewId: clearModal,
+    getReview: getOne,
+    clearReview: clearOne,
+    addReview: add,
+    updateReview: update,
+    removeReview: remove,
+  } = useProjectTarget();
 
   const [edit, setEdit] = useState<boolean>(false);
   const [view, setView] = useState<ProjectTargetReviewView>(initProjectTargetReview);
@@ -99,7 +103,6 @@ const ProjectTargetReviewModal = () => {
       });
     },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      const projectId = project?.id;
       if (!projectId) {
         dialog.alert('프로젝트가 선택되지 않았습니다.');
         setSubmitting(false);
@@ -214,15 +217,16 @@ const ProjectTargetReviewModal = () => {
         memo,
         detailList,
       };
-      (reviewId ? update : add)((reviewId ?? projectId), params, (data) => {
-        setSubmitting(false);
-        if (data) {
-          dialog.alert('저장되었습니다.');
-          handler.close();
-        }
+      (reviewId ? update : add)((reviewId ?? projectId), params, () => {
+        dialog.alert('저장되었습니다.');
+        handler.close();
       });
+      setSubmitting(false);
     },
-    close: () => {
+    close: (event?: object, reason?: string) => {
+      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+        return;
+      }
       setEdit(false);
       clearModal();
       clearOne();

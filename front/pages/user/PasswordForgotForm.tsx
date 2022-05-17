@@ -1,10 +1,14 @@
 import React from 'react';
-import { Box, Button, Grid, Paper } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { PasswordResetParameter } from 'services/user/password_reset/parameter';
-import passwordResetApi from 'services/user/password_reset/api';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper
+} from '@mui/material';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { DataField } from 'components';
+import { PasswordResetParameter, passwordResetApi } from 'services/user/password_reset';
 
 const PasswordForgotForm = () => {
   const navigate = useNavigate();

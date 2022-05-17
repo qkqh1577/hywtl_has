@@ -13,7 +13,6 @@ import {
   ListItemText,
   SvgIcon,
   Toolbar,
-  Tooltip,
   Typography
 } from '@mui/material';
 import {
@@ -33,12 +32,11 @@ import { EventDataNode, Key } from 'rc-tree/lib/interface';
 
 import logo from 'assets/logo.png';
 import { AppBar, AppDrawer } from 'layouts';
+import { Alert, Confirm, Tooltip, useDialog } from 'components';
 import { routes as ReactRouter } from 'services/common';
 import useUser from 'services/user/hook';
 import { ProjectDrawer, ProjectList } from 'pages/project';
 import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
-import { Alert, Confirm } from 'components';
-import useDialog from 'components/Dialog';
 
 type Menu = {
   title: string;

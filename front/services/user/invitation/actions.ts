@@ -1,9 +1,9 @@
 import { createAction } from 'typesafe-actions';
 import {
+  UserInvitation,
+  UserInvitationInviteParameter,
   UserInvitationQuery,
-  UserInvitationInviteParameter
-} from 'services/user/invitation/parameter';
-import UserInvitation from 'services/user/invitation/UserInvitation';
+} from 'services/user/invitation';
 
 export enum UserInvitationType {
   getOne = 'user-invitation/getOne',

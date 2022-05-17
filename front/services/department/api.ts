@@ -1,11 +1,12 @@
 import Page from 'components/Page';
 import apiClient from 'services/common/api';
-import Department, { ListDepartment } from 'services/department/entity';
 import {
-  DepartmentParameter,
+  Department,
   DepartmentChangeTreeParameter,
-  DepartmentQuery
-} from './parameter';
+  DepartmentParameter,
+  DepartmentQuery,
+  ListDepartment,
+} from 'services/department';
 
 export class DepartmentApi {
   async getAll(type?: string): Promise<ListDepartment[]> {

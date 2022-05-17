@@ -3,11 +3,11 @@ import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
-import { usePersonnel } from 'services/personnel';
 import {
   PersonnelLicenseView as View,
   initLicenseView as initView,
-} from 'services/personnel/view';
+  usePersonnel
+} from 'services/personnel';
 
 type Props = {
   id: number;

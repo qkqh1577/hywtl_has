@@ -6,10 +6,16 @@ import {
   FormGroup,
   FormHelperText,
   FormLabel,
-  Tooltip
 } from '@mui/material';
-import { DataFieldValue, Option, optionKey, optionText, optionTooltip } from 'components/DataField';
 import { FormikErrors, FormikValues } from 'formik';
+import {
+  DataFieldValue,
+  Option,
+  Tooltip,
+  optionKey,
+  optionText,
+  optionTooltip
+} from 'components';
 
 export type CheckboxFieldProps = {
   variant?: 'standard' | 'filled' | 'outlined';
@@ -22,7 +28,7 @@ export type CheckboxFieldProps = {
   disabled?: boolean;
   options: Option[] | DataFieldValue[];
   helperText?: string | React.ReactNode;
-  sx?: any;
+  sx?: object;
   size?: 'small';
   labelDisabled?: boolean;
   disabledAll?: boolean;

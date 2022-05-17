@@ -9,35 +9,34 @@ import {
   Typography
 } from '@mui/material';
 import { Table, DateFormat, UserFormat } from 'components';
-import useProject from 'services/project/hook';
-import { projectTargetReviewStatusName } from 'services/project/data';
+import { projectTargetReviewStatusName, useProjectTarget } from 'services/project_target';
 
 const ProjectTargetReviewList = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
-    projectState: {
+    state: {
       reviewList: list,
-      reviewModal: modal,
+      reviewId,
     },
-    getTargetReviewList: getList,
-    setTargetReviewModal: setModal
-  } = useProject();
+    getReviewList: getList,
+    setReviewId: setId,
+  } = useProjectTarget();
 
   const handler = {
     addModal: () => {
-      setModal(null);
+      setId(null);
     },
     detailModal: (id: number) => {
-      setModal(id);
+      setId(id);
     }
   };
 
   useEffect(() => {
-    if (!modal && projectId) {
+    if (!reviewId && projectId) {
       getList(projectId);
     }
-  }, [modal, projectId]);
+  }, [reviewId, projectId]);
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>

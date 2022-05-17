@@ -1,6 +1,9 @@
 import { createAction } from 'typesafe-actions';
-import { PasswordResetParameter, PasswordResetQuery } from 'services/user/password_reset/parameter';
-import PasswordReset from 'services/user/password_reset/entity';
+import {
+  PasswordReset,
+  PasswordResetParameter,
+  PasswordResetQuery,
+} from 'services/user/password_reset';
 
 export enum PasswordResetActionType {
   getOne = 'password-reset/getOne',

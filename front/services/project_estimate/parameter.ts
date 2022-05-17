@@ -1,4 +1,4 @@
-import { ProjectEstimateSheetStatus } from 'services/project_estimate/entity';
+import { ProjectEstimateSheetStatus } from 'services/project_estimate';
 
 export type ProjectEstimateParameter = {
   projectId: number;

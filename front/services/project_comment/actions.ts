@@ -1,10 +1,11 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
-import ProjectComment from 'services/project_comment/entity';
 import {
-  ProjectCommentAddParameter, ProjectCommentChangeParameter,
+  ProjectComment,
+  ProjectCommentAddParameter,
+  ProjectCommentChangeParameter,
   ProjectCommentQuery
-} from 'services/project_comment/parameter';
+} from 'services/project_comment';
 
 export enum ProjectCommentActionType {
   getPage = 'project-comment/getPage',

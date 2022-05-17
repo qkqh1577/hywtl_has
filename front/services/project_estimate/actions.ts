@@ -2,12 +2,10 @@ import { createAction } from 'typesafe-actions';
 import {
   ListProjectEstimateSheet,
   ProjectEstimate,
-  ProjectEstimateSheet
-} from 'services/project_estimate/entity';
-import {
   ProjectEstimateParameter,
-  ProjectEstimateSheetAddParameter
-} from 'services/project_estimate/parameter';
+  ProjectEstimateSheet,
+  ProjectEstimateSheetAddParameter,
+} from 'services/project_estimate';
 
 export enum ProjectEstimateType {
   getOne = 'project/estimate/getOne',

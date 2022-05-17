@@ -1,13 +1,11 @@
+import apiClient from 'services/common/api';
 import {
   ListProjectEstimateSheet,
   ProjectEstimate,
-  ProjectEstimateSheet
-} from 'services/project_estimate/entity';
-import apiClient from 'services/common/api';
-import {
   ProjectEstimateParameter,
-  ProjectEstimateSheetAddParameter
-} from 'services/project_estimate/parameter';
+  ProjectEstimateSheet,
+  ProjectEstimateSheetAddParameter,
+} from 'services/project_estimate';
 
 export class ProjectEstimateApi {
   async getOne(projectId: number): Promise<ProjectEstimate> {

@@ -17,10 +17,13 @@ import {
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { Table, TableCellProperty } from 'components';
-import useDepartment from 'services/department/hook';
-import { DepartmentQuery } from 'services/department/parameter';
-import { departmentCategoryList, departmentCategoryName } from 'services/department/data';
-import { ListDepartment } from 'services/department/entity';
+import {
+  DepartmentQuery,
+  ListDepartment,
+  departmentCategoryList,
+  departmentCategoryName,
+  useDepartment,
+} from 'services/department';
 
 const columns: TableCellProperty<ListDepartment>[] = [
   {
@@ -64,7 +67,7 @@ const DepartmentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const {
-    departmentState: {
+    state: {
       page,
     },
     getPage,

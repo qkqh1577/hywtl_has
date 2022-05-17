@@ -1,4 +1,4 @@
-import { UserRole } from 'services/user/entity';
+import { UserRole } from 'services/user';
 
 export type UserQuery = {
   page: number;

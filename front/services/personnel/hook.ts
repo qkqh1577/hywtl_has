@@ -1,9 +1,12 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import { useCallback } from 'react';
-import { personnelActions } from 'services/personnel/actions';
-import { PersonnelParameter, PersonnelQuery } from 'services/personnel/parameter';
-import Personnel from 'services/personnel/entity';
+import {
+  Personnel,
+  PersonnelParameter,
+  PersonnelQuery,
+  personnelActions,
+} from 'services/personnel';
 
 export default function usePersonnel() {
   const state = useSelector((state: RootState) => state.personnel);

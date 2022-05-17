@@ -1,11 +1,12 @@
 import { createAction } from 'typesafe-actions';
-import Department, { ListDepartment } from 'services/department/entity';
+import Page from 'components/Page';
 import {
+  Department,
   DepartmentChangeTreeParameter,
   DepartmentParameter,
-  DepartmentQuery
-} from './parameter';
-import Page from 'components/Page';
+  DepartmentQuery,
+  ListDepartment,
+} from 'services/department';
 
 export enum DepartmentActionType {
   getAll = 'department/getAll',

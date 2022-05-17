@@ -1,4 +1,4 @@
-import FileItem from 'services/common/file-item/entity';
+import { FileItem } from 'services/common/file-item';
 
 export type PersonnelFilterView = {
   sex: string[];

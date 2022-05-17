@@ -1,20 +1,21 @@
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
-import { useCallback } from 'react';
-import Department, { ListDepartment } from 'services/department/entity';
-import { departmentActions } from './actions';
 import {
-  DepartmentParameter,
+  Department,
   DepartmentChangeTreeParameter,
-  DepartmentQuery
-} from './parameter';
+  DepartmentParameter,
+  DepartmentQuery,
+  ListDepartment,
+  departmentActions,
+} from 'services/department';
 
 export default function useDepartment() {
-  const departmentState = useSelector((state: RootState) => state.department);
+  const state = useSelector((state: RootState) => state.department);
   const dispatch = useDispatch();
 
   const getAll = useCallback(
-    () => dispatch(departmentActions.getAll()),
+    (type?: string) => dispatch(departmentActions.getAll(type)),
     [dispatch]
   );
 
@@ -48,7 +49,7 @@ export default function useDepartment() {
   );
 
   return {
-    departmentState,
+    state,
     getAll,
     getPage,
     getOne,

@@ -12,4 +12,3 @@ export type PasswordChangeParameter = {
   password: string;
   authKey: string;
 }
-

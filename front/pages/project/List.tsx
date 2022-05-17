@@ -3,20 +3,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Grid, Link,
+  Grid,
+  Link,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from '@mui/material';
 import { Formik, FormikHelpers } from 'formik';
 import { Divider, DataField } from 'components';
-import useProject from 'services/project/hook';
-import { initProjectFilter, ProjectFilterView } from 'services/project/view';
-import { projectStatusName } from 'services/project/data';
+import {
+  ProjectFilterView,
+  initProjectFilter,
+  projectStatusName,
+  useProject,
+} from 'services/project';
 
 type TableCellProperty = {
   key: string;
@@ -36,7 +40,7 @@ const ProjectList = () => {
   const location = useLocation();
   const path = location.pathname;
   const {
-    projectState: { page },
+    state: { page },
     getPage,
     setAddModal
   } = useProject();

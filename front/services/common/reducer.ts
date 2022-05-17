@@ -1,14 +1,15 @@
 import { combineReducers, Reducer } from 'redux';
-import departmentReducer, { DepartmentState } from 'services/department/reducer';
-import userReducer, { UserState } from 'services/user/reducer';
-import userInvitationReducer, { UserInvitationState } from 'services/user/invitation/reducer';
-import personnelReducer, { PersonnelState } from 'services/personnel/reducer';
-import projectReducer, { ProjectState } from 'services/project/reducer';
-import projectEstimateReducer, { ProjectEstimateState } from 'services/project_estimate/reducer';
-import projectCommentReducer, { ProjectCommentState } from 'services/project_comment/reducer';
-import passwordResetReducer, { PasswordResetState } from 'services/user/password_reset/reducer';
-import companyReducer, { CompanyState } from 'services/company/reducer';
-import { dialogReducer, DialogState } from 'components/Dialog';
+import { departmentReducer, DepartmentState } from 'services/department';
+import { userReducer, UserState } from 'services/user';
+import { userInvitationReducer, UserInvitationState } from 'services/user/invitation';
+import { personnelReducer, PersonnelState } from 'services/personnel';
+import { projectReducer, ProjectState } from 'services/project';
+import { projectTargetReducer, ProjectTargetState } from 'services/project_target';
+import { projectEstimateReducer, ProjectEstimateState } from 'services/project_estimate';
+import { projectCommentReducer, ProjectCommentState } from 'services/project_comment';
+import { passwordResetReducer, PasswordResetState } from 'services/user/password_reset';
+import { companyReducer, CompanyState } from 'services/company';
+import { dialogReducer, DialogState } from 'components';
 
 export type RootState = {
   department: DepartmentState;
@@ -17,6 +18,7 @@ export type RootState = {
   passwordReset: PasswordResetState;
   personnel: PersonnelState;
   project: ProjectState;
+  projectTarget: ProjectTargetState;
   projectEstimate: ProjectEstimateState;
   projectComment: ProjectCommentState;
   company: CompanyState;
@@ -30,6 +32,7 @@ const reducer = combineReducers<RootState>({
   passwordReset: passwordResetReducer,
   personnel: personnelReducer,
   project: projectReducer,
+  projectTarget: projectTargetReducer,
   projectEstimate: projectEstimateReducer,
   projectComment: projectCommentReducer,
   company: companyReducer,

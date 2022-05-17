@@ -10,10 +10,14 @@ import {
   Paper,
 } from '@mui/material';
 import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { AddUserParameter } from 'services/user/parameter';
-import UserInvitation from 'services/user/invitation/UserInvitation';
-import userApi from 'services/user/api';
-import userInvitationApi from 'services/user/invitation/api';
+import {
+  AddUserParameter,
+  userApi
+} from 'services/user';
+import {
+  UserInvitation,
+  userInvitationApi
+} from 'services/user/invitation';
 
 const UserAuthenticationForm = () => {
   const location = useLocation();

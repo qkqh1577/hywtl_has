@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { DataFieldProps, DataFieldValue, Option } from 'components/DataField';
+import { DataFieldProps, DataFieldValue, Option } from 'components';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = Omit<DataFieldProps, 'type' | 'options' | 'value'> & {

@@ -1,11 +1,16 @@
-import {
-  ListPersonnel, PersonnelAcademic,
-  PersonnelBasic, PersonnelCareer,
-  PersonnelCompany, PersonnelJob, PersonnelLanguage, PersonnelLicense
-} from 'services/personnel/entity';
 import { createReducer } from 'typesafe-actions';
-import { PersonnelActionType } from 'services/personnel/actions';
 import Page, { initial } from 'components/Page';
+import {
+  ListPersonnel,
+  PersonnelAcademic,
+  PersonnelActionType,
+  PersonnelBasic,
+  PersonnelCareer,
+  PersonnelCompany,
+  PersonnelJob,
+  PersonnelLanguage,
+  PersonnelLicense,
+} from 'services/personnel';
 
 export type PersonnelState = {
   page: Page<ListPersonnel>;
@@ -19,7 +24,7 @@ export type PersonnelState = {
   languageList?: PersonnelLanguage[];
 }
 
-export const initState: PersonnelState = {
+const initState: PersonnelState = {
   page: initial
 };
 

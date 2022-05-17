@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Grid, IconButton, Modal, Paper } from '@mui/material';
-import useProjectEstimate from 'services/project_estimate/hook';
-import { Close as CloseIcon } from '@mui/icons-material';
-import { Form, Formik, FormikHelpers } from 'formik';
 import {
-  initProjectEstimateSheetView as initView,
-  ProjectEstimateSheetView as View
-} from 'services/project_estimate/view';
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Modal,
+  Paper
+} from '@mui/material';
+import {
+  Close as CloseIcon
+} from '@mui/icons-material';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { DataField, DatePicker, UserSelector } from 'components';
 import {
+  ProjectEstimateSheetView as View,
+  initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
-  projectEstimateSheetStatusName
-} from 'services/project_estimate/data';
+  projectEstimateSheetStatusName,
+  useProjectEstimate,
+} from 'services/project_estimate';
 
 const ProjectEstimateSheetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -29,7 +36,10 @@ const ProjectEstimateSheetModal = () => {
   const [view, setView] = useState<View>(initView);
 
   const handler = {
-    close: () => {
+    close: (event: object, reason?: string) => {
+      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+        return;
+      }
       clearOne();
       clearSheetId();
     },
@@ -37,6 +47,12 @@ const ProjectEstimateSheetModal = () => {
 
     }
   };
+
+  useEffect(() => {
+    if (projectId) {
+
+    }
+  }, [projectId]);
 
 
   useEffect(() => {
@@ -46,10 +62,6 @@ const ProjectEstimateSheetModal = () => {
       // TODO: 용역 항목 리스트 불러오기
     }
   }, [sheetId]);
-
-  useEffect(() => {
-
-  }, []);
 
   return (
     <Modal

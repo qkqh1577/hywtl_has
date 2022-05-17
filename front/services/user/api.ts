@@ -3,11 +3,13 @@ import Page from 'components/Page';
 import {
   AddUserParameter,
   ChangeUserParameter,
-  ChangeUserPasswordParameter, LoginParameter,
-  UserQuery
-} from './parameter';
-import User, { ListUser } from 'services/user/entity';
-import { PasswordChangeParameter } from 'services/user/password_reset/parameter';
+  ChangeUserPasswordParameter,
+  ListUser,
+  LoginParameter,
+  User,
+  UserQuery,
+} from 'services/user';
+import { PasswordChangeParameter } from 'services/user/password_reset';
 
 export class UserApi {
   async getPage(query: UserQuery): Promise<Page<ListUser>> {
@@ -32,6 +34,11 @@ export class UserApi {
 
   async validatePassword(params: PasswordChangeParameter): Promise<void> {
     const { data } = await apiClient.post('/user/password-validate', params);
+    return data;
+  }
+
+  async resetPassword(id: number): Promise<void> {
+    const { data } = await apiClient.post(`/users/${id}/reset-password`);
     return data;
   }
 

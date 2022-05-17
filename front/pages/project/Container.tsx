@@ -12,13 +12,14 @@ import {
   Divider,
   IconButton,
   Paper,
-  Toolbar, Typography
+  Toolbar,
+  Typography
 } from '@mui/material';
 import {
   StarOutline as StarOutlineIcon,
   Star as StarFillIcon
 } from '@mui/icons-material';
-import useProject from 'services/project/hook';
+import { useProject } from 'services/project';
 import { ProjectAddModal } from 'pages/project';
 import ProjectInfoContainer from 'pages/project/info';
 import ProjectTargetContainer from 'pages/project/target';
@@ -33,7 +34,7 @@ const ProjectContainer = () => {
   const path: string = location.pathname;
 
   const {
-    projectState: { detail },
+    state: { detail },
     getOne,
     clearOne,
   } = useProject();

@@ -1,6 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import dayjs from 'dayjs';
 import {
   Box,
   Button,
@@ -14,10 +13,10 @@ import {
   Formik,
   FormikHelpers
 } from 'formik';
+import dayjs from 'dayjs';
 import {
   useDialog
 } from 'components';
-import { usePersonnel } from 'services/personnel';
 import {
   PersonnelAcademicParameter,
   PersonnelBasicParameter,
@@ -26,10 +25,11 @@ import {
   PersonnelJobParameter,
   PersonnelLanguageParameter,
   PersonnelLicenseParameter,
-  PersonnelParameter
-} from 'services/personnel/parameter';
-import { initView } from 'services/personnel/view';
-import FileItemParameter from 'services/common/file-item/parameter';
+  PersonnelParameter,
+  initView,
+  usePersonnel,
+} from 'services/personnel';
+import { FileItemParameter } from 'services/common/file-item';
 
 const PersonnelDetailBasic = React.lazy(() => import('./Basic'));
 const PersonnelDetailCompany = React.lazy(() => import('./Company'));

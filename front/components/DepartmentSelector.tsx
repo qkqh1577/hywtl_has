@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import DataSelector from 'components/DataSelector';
-import { DataFieldProps } from 'components/DataField';
-import { ListDepartment } from 'services/department/entity';
-import departmentApi from 'services/department/api';
+import {
+  DataFieldProps,
+  DataSelector,
+} from 'components';
+import { ListDepartment, departmentApi } from 'services/department';
 
 const DepartmentSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
 

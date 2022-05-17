@@ -1,18 +1,19 @@
 import { ActionType } from 'typesafe-actions';
-import { personnelActions, PersonnelActionType } from 'services/personnel/actions';
-import personnelApi from 'services/personnel/api';
+import { put, takeLatest } from 'redux-saga/effects';
+import Page from 'components/Page';
 import {
   ListPersonnel,
   PersonnelAcademic,
+  PersonnelActionType,
   PersonnelBasic,
   PersonnelCareer,
   PersonnelCompany,
   PersonnelJob,
   PersonnelLanguage,
-  PersonnelLicense
-} from 'services/personnel/entity';
-import { put, takeLatest } from 'redux-saga/effects';
-import Page from 'components/Page';
+  PersonnelLicense,
+  personnelActions,
+  personnelApi,
+} from 'services/personnel';
 
 function* getPage(action: ActionType<typeof personnelActions.getPage>) {
   const page: Page<ListPersonnel> = yield personnelApi.getPage(action.payload);

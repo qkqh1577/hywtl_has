@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
-import useCompany from "services/company/hook";
+import {Box, Button, Divider, Grid, InputAdornment, Paper, TextField} from "@mui/material";
+import { useCompany } from "services/company";
 
 
 const Page = () => {
@@ -16,7 +16,7 @@ const Page = () => {
     return null;
   }
 
-  const { companyState: { detail }, getOne } = useCompany();
+  const { state: { detail }, getOne } = useCompany();
 
   useEffect(() => {
     getOne(id);
