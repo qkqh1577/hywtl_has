@@ -6,7 +6,7 @@ import {
   Grid,
   IconButton,
   Modal,
-  Paper,
+  Paper, Table, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material';
 import {
   Close as CloseIcon
@@ -61,13 +61,13 @@ const ProjectEstimateSheetModal = () => {
   };
 
   useEffect(() => {
-    if (projectId) {
+    if (typeof sheetId !== 'undefined' && projectId) {
       getReviewList(projectId);
     }
     return () => {
       clearReviewList();
     };
-  }, [projectId]);
+  }, [projectId, sheetId]);
 
   useEffect(() => {
     if (sheetId) {
@@ -251,7 +251,17 @@ const ProjectEstimateSheetModal = () => {
                         flexWrap: 'wrap',
                         mb: '40px',
                       }}>
-
+                        <TableContainer>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell variant="head">
+                                  대지 모형 개수
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                          </Table>
+                        </TableContainer>
                       </Box>
                     </Grid>
                     <Grid item sm={9}>
