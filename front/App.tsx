@@ -34,7 +34,7 @@ import logo from 'assets/logo.png';
 import { AppBar, AppDrawer } from 'layouts';
 import { Alert, Confirm, Tooltip, useDialog } from 'components';
 import { routes as ReactRouter } from 'services/common';
-import useUser from 'services/user/hook';
+import { useUser } from 'services/user';
 import { ProjectDrawer, ProjectList } from 'pages/project';
 import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
 
@@ -49,7 +49,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dialog = useDialog();
-  const { userState: { login }, getLogin, logout } = useUser();
+  const { state: { login }, getLogin, logout } = useUser();
   const path = location.pathname;
 
   const [openMenu, setOpenMenu] = useState(true);
