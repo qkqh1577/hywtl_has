@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
 import {
-  PersonnelLanguageView as View,
-  initLanguageView as initView,
+  PersonnelLanguageView,
+  initLanguageView,
+  initView,
   usePersonnel
 } from 'services/personnel';
 
@@ -16,6 +17,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'languageList';
 const PersonnelDetailLanguageList = ({
   id,
   values,
@@ -29,26 +31,20 @@ const PersonnelDetailLanguageList = ({
     getLanguageList: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View[]>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('languageList', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView(detail?.map((item) => ({
-      name: item.name,
-      type: item.type,
-      grade: item.grade ?? '',
-      organizationName: item.organizationName,
-      certifiedDate: item.certifiedDate,
-      expiryPeriod: item.expiryPeriod ?? '',
-      trainingPeriod: item.trainingPeriod ?? '',
-    })) ?? view);
+    setFieldValue(FIELD_NAME, detail?.map((item) => ({
+      name: item.name ?? initLanguageView.name,
+      type: item.type ?? initLanguageView.type,
+      grade: item.grade ?? initLanguageView.grade,
+      organizationName: item.organizationName ?? initLanguageView.organizationName,
+      certifiedDate: item.certifiedDate ?? initLanguageView.certifiedDate,
+      expiryPeriod: item.expiryPeriod ?? initLanguageView.expiryPeriod,
+      trainingPeriod: item.trainingPeriod ?? initLanguageView.trainingPeriod,
+    })) ?? initView.languageList);
   }, [detail]);
 
   return (
@@ -63,13 +59,18 @@ const PersonnelDetailLanguageList = ({
           variant="contained"
           style={{ height: '36px' }}
           onClick={() => {
-            setView([...view, initView]);
+            if (Array.isArray(values)) {
+              setFieldValue(FIELD_NAME, [...values, initLanguageView]);
+            } else {
+              setFieldValue(FIELD_NAME, [initLanguageView]);
+            }
           }}
         >
           추가
         </Button>
       </Grid>
-      {view && view.map((item, i) => (
+      {Array.isArray(values) && (values as PersonnelLanguageView[])
+      .map((item, i) => (
         <Grid key={i} item sm={12}>
           <Box sx={{
             display: 'flex',
@@ -79,8 +80,8 @@ const PersonnelDetailLanguageList = ({
             <Grid container spacing={2} wrap="nowrap">
               <Grid item>
                 <DataField
+                  name={`${FIELD_NAME}[${i}].name`}
                   label="자격증명"
-                  name={`languageList[${i}].name`}
                   value={item.name}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -89,8 +90,8 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DataField
+                  name={`${FIELD_NAME}[${i}].type`}
                   label="대상 언어"
-                  name={`languageList[${i}].type`}
                   value={item.type}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -99,8 +100,8 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DataField
+                  name={`${FIELD_NAME}[${i}].grade`}
                   label="급수, 종류"
-                  name={`languageList[${i}].grade`}
                   value={item.grade}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -108,8 +109,8 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DataField
+                  name={`${FIELD_NAME}[${i}].organizationName`}
                   label="발급기관명"
-                  name={`languageList[${i}].organizationName`}
                   value={item.organizationName}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -118,7 +119,7 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`languageList[${i}].certifiedDate`}
+                  name={`${FIELD_NAME}[${i}].certifiedDate`}
                   label="취득일"
                   value={item.certifiedDate}
                   setFieldValue={setFieldValue}
@@ -130,8 +131,8 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DataField
+                  name={`${FIELD_NAME}[${i}].expiryPeriod`}
                   label="유효 기간"
-                  name={`languageList[${i}].expiryPeriod`}
                   value={item.expiryPeriod}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -139,8 +140,8 @@ const PersonnelDetailLanguageList = ({
               </Grid>
               <Grid item>
                 <DataField
-                  label="연수 기간"
                   name={`languageList[${i}].trainingPeriod`}
+                  label="연수 기간"
                   value={item.trainingPeriod}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -152,7 +153,8 @@ const PersonnelDetailLanguageList = ({
               color="secondary"
               aria-label="삭제"
               onClick={() => {
-                setView(view.filter((item, j) => i !== j));
+                const list = (values as PersonnelLanguageView[]);
+                setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
               }}
             >
               <DeleteIcon />

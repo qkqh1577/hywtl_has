@@ -7,6 +7,7 @@ type Props = Omit<DataFieldProps, 'type' | 'options' | 'value'> & {
   options: Option[] | DataFieldValue[] | null;
   value: DataFieldValue;
   multiple?: boolean;
+  onChange?: (data: DataFieldValue) => void;
 };
 
 const DataSelector = (props: Props) => {
@@ -24,7 +25,8 @@ const DataSelector = (props: Props) => {
     options,
     helperText,
     sx,
-    size
+    size,
+    onChange,
   } = props;
 
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
@@ -83,10 +85,16 @@ const DataSelector = (props: Props) => {
       }}
       onChange={(e, newValue) => {
         setFieldValue(name, newValue?.key ?? '');
+        if (onChange) {
+          onChange(newValue?.key ?? '');
+        }
       }}
       onInputChange={(e, value, reason) => {
         if (reason === 'clear') {
           setFieldValue(name, '');
+          if (onChange) {
+            onChange('');
+          }
         }
       }}
       getOptionLabel={(option) => `${option.text}`}
@@ -106,6 +114,7 @@ const DataSelector = (props: Props) => {
           />
         );
       }}
+      fullWidth
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
@@ -6,7 +6,6 @@ import {
   Divider,
   Grid,
   Paper,
-  Typography,
 } from '@mui/material';
 import {
   Form,
@@ -30,14 +29,13 @@ import {
   usePersonnel,
 } from 'services/personnel';
 import { FileItemParameter } from 'services/common/file-item';
-
-const PersonnelDetailBasic = React.lazy(() => import('./Basic'));
-const PersonnelDetailCompany = React.lazy(() => import('./Company'));
-const PersonnelDetailJobList = React.lazy(() => import('./JobList'));
-const PersonnelDetailAcademicList = React.lazy(() => import('./AcademicList'));
-const PersonnelDetailCareerList = React.lazy(() => import('./CareerList'));
-const PersonnelDetailLicenseList = React.lazy(() => import('./LicenseList'));
-const PersonnelDetailLanguageList = React.lazy(() => import('./LanguageList'));
+import PersonnelDetailBasic from './Basic';
+import PersonnelDetailCompany from './Company';
+import PersonnelDetailJobList from './JobList';
+import PersonnelDetailCareerList from './CareerList';
+import PersonnelDetailAcademicList from './AcademicList';
+import PersonnelDetailLicenseList from './LicenseList';
+import PersonnelDetailLanguageList from './LanguageList';
 
 const PersonnelDetail = () => {
   const navigate = useNavigate();
@@ -422,96 +420,54 @@ const PersonnelDetail = () => {
                 handleSubmit,
               }) => (
                 <Form>
-                  <Suspense fallback={
-                    <Typography>
-                      기본 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailBasic
-                      id={id}
-                      values={values.basic}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailBasic
+                    id={id}
+                    values={values.basic}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      입사 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailCompany
-                      id={id}
-                      values={values.company}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailCompany
+                    id={id}
+                    values={values.company}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      소속 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailJobList
-                      id={id}
-                      values={values.jobList}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailJobList
+                    id={id}
+                    values={values.jobList}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      학력 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailAcademicList
-                      id={id}
-                      values={values.academicList}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailAcademicList
+                    id={id}
+                    values={values.academicList}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      경력 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailCareerList
-                      id={id}
-                      values={values.careerList}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailCareerList
+                    id={id}
+                    values={values.careerList}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      면허 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailLicenseList
-                      id={id}
-                      values={values.licenseList}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailLicenseList
+                    id={id}
+                    values={values.licenseList}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
-                  <Suspense fallback={
-                    <Typography>
-                      어학 정보를 불러오고 있습니다.
-                    </Typography>
-                  }>
-                    <PersonnelDetailLanguageList
-                      id={id}
-                      values={values.languageList}
-                      errors={errors}
-                      setFieldValue={setFieldValue}
-                    />
-                  </Suspense>
+                  <PersonnelDetailLanguageList
+                    id={id}
+                    values={values.languageList}
+                    errors={errors}
+                    setFieldValue={setFieldValue}
+                  />
 
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>

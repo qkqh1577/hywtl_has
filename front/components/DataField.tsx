@@ -105,16 +105,10 @@ const DataField = ({
       setViewValue(amount.toLocaleString());
     } else {
       setViewValue(value);
+      setAmount(undefined);
+      setAmountKor(undefined);
     }
   }, [value]);
-
-  useEffect(() => {
-    if (type === 'amount') {
-      setFieldValue(name, toAmount(viewValue));
-    } else {
-      setFieldValue(name, viewValue);
-    }
-  }, [viewValue]);
 
   useEffect(() => {
     if (type === 'amount' && typeof amount === 'number') {
@@ -125,6 +119,8 @@ const DataField = ({
   useEffect(() => {
     if (type === 'amount' && typeof amountKor === 'string' && amountKor !== '일금원') {
       setHelperMessage(amountKor);
+    } else if (typeof amountKor === 'undefined') {
+      setHelperMessage(helperText);
     }
   }, [amountKor]);
 
@@ -135,7 +131,7 @@ const DataField = ({
           ? label
           : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
       }
-      open={mouseEnter && viewValue !== '' && typeof tooltip === 'string' && type !== 'select'}
+      open={mouseEnter && viewValue !== '' && type !== 'select'}
       placement="bottom-start"
     >
       <TextField
@@ -148,13 +144,25 @@ const DataField = ({
         value={viewValue}
         label={labelDisabled ? undefined : label}
         onChange={(e) => {
-          setViewValue(e.target.value);
+          const rawValue = e.target.value ?? '';
+          if (type === 'amount') {
+            setAmount(toAmount(rawValue) || undefined);
+          }
+          setViewValue(rawValue);
         }}
         onMouseEnter={() => {
           setMouseEnter(true);
         }}
         onMouseLeave={() => {
           setMouseEnter(false);
+        }}
+        onBlur={() => {
+          if (type === 'amount') {
+            setViewValue(toAmount(viewValue).toLocaleString());
+            setFieldValue(name, toAmount(viewValue));
+          } else {
+            setFieldValue(name, viewValue);
+          }
         }}
         error={typeof errors[name] === 'string'}
         placeholder={disabled === true ? '' : (placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)}

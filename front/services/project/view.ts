@@ -34,13 +34,13 @@ export type ProjectOrderView = {
   isOnGoing: string;
 }
 
-export const initProjectFilter: ProjectFilterView = {
+export const initProjectFilterView: ProjectFilterView = {
   page: 0,
   size: 10,
   keyword: '',
 };
 
-export const initProjectBasic: ProjectBasicView = {
+export const initProjectBasicView: ProjectBasicView = {
   name: '',
   code: '',
   alias: '',
@@ -62,7 +62,7 @@ export const initProjectBasic: ProjectBasicView = {
   clientEmail: '',
 };
 
-export const initProjectOrder: ProjectOrderView = {
+export const initProjectOrderView: ProjectOrderView = {
   amount: '',
   receivedDate: null,
   beginDate: null,

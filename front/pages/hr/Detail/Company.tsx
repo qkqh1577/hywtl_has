@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
 import {
-  PersonnelCompanyView as View,
+  initCompanyView as initView,
   usePersonnel
 } from 'services/personnel';
 
@@ -14,6 +14,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'company';
 const PersonnelDetailCompany = ({
   id,
   values,
@@ -28,23 +29,17 @@ const PersonnelDetailCompany = ({
     getCompany: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setView({
-      hiredDate: detail?.hiredDate ?? view.hiredDate,
-      hiredType: detail?.hiredType ?? view.hiredType,
-      recommender: detail?.recommender ?? view.recommender,
-    })
+    setFieldValue(FIELD_NAME, {
+      hiredDate: detail?.hiredDate ?? initView.hiredDate,
+      hiredType: detail?.hiredType ?? initView.hiredType,
+      recommender: detail?.recommender ?? initView.recommender,
+    });
   }, [detail]);
-
-  useEffect(() => {
-    setFieldValue('company', view);
-  }, [view]);
 
   return (
     <Grid container spacing={2}>
@@ -53,9 +48,9 @@ const PersonnelDetailCompany = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <DatePicker
-          name="company.hiredDate"
+          name={`${FIELD_NAME}.hiredDate`}
           label="입사일"
-          value={view.hiredDate}
+          value={values.hiredDate}
           setFieldValue={setFieldValue}
           errors={errors}
           openTo="year"
@@ -66,9 +61,9 @@ const PersonnelDetailCompany = ({
       <Grid item sm={6} xs={12}>
         <DataField
           type="select"
-          name="company.hiredType"
+          name={`${FIELD_NAME}.hiredType`}
           label="입사 구분"
-          value={view.hiredType}
+          value={values.hiredType}
           setFieldValue={setFieldValue}
           errors={errors}
           options={['신입', '경력']}
@@ -77,9 +72,9 @@ const PersonnelDetailCompany = ({
       </Grid>
       <Grid item sm={6} xs={12}>
         <DataField
-          name="company.recommender"
+          name={`${FIELD_NAME}.recommender`}
           label="추천자"
-          value={view.recommender}
+          value={values.recommender}
           setFieldValue={setFieldValue}
           errors={errors}
         />

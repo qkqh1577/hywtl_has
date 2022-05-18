@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DepartmentSelector, DataField, useDialog } from 'components';
 import {
-  PersonnelJobView as View,
-  initJobView as initView,
+  PersonnelJobView,
+  initJobView,
+  initView,
   usePersonnel,
 } from 'services/personnel';
 
@@ -16,6 +17,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'jobList';
 const PersonnelDetailJobList = ({
   id,
   values,
@@ -31,25 +33,19 @@ const PersonnelDetailJobList = ({
     getJobList: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View[]>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('jobList', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView(detail?.map((job) => ({
-      departmentId: job.department.id,
-      jobTitle: job.jobTitle,
-      jobType: job.jobType,
-      jobPosition: job.jobPosition,
-      jobClass: job.jobClass ?? '',
-      jobDuty: job.jobDuty ?? '',
-    })) ?? view);
+    setFieldValue(FIELD_NAME, detail?.map((item) => ({
+      departmentId: item.department.id ?? initJobView.departmentId,
+      jobTitle: item.jobTitle ?? initJobView.jobTitle,
+      jobType: item.jobType ?? initJobView.jobType,
+      jobPosition: item.jobPosition ?? initJobView.jobPosition,
+      jobClass: item.jobClass ?? initJobView.jobClass,
+      jobDuty: item.jobDuty ?? initJobView.jobDuty,
+    })) ?? initView.jobList);
   }, [detail]);
 
   return (
@@ -64,13 +60,18 @@ const PersonnelDetailJobList = ({
           variant="contained"
           style={{ height: '36px' }}
           onClick={() => {
-            setView([...view, initView]);
+            if (Array.isArray(values)) {
+              setFieldValue(FIELD_NAME, [...values, initJobView]);
+            } else {
+              setFieldValue(FIELD_NAME, [initJobView]);
+            }
           }}
         >
           추가
         </Button>
       </Grid>
-      {view.map((item, i) => (
+      {Array.isArray(values) && (values as PersonnelJobView[])
+      .map((item, i) => (
         <Grid key={i} item sm={12}>
           <Box sx={{
             display: 'flex',
@@ -80,7 +81,7 @@ const PersonnelDetailJobList = ({
             <Grid container spacing={2} wrap="nowrap">
               <Grid item sm={4}>
                 <DepartmentSelector
-                  name={`jobList[${i}].departmentId`}
+                  name={`${FIELD_NAME}[${i}].departmentId`}
                   label="소속 부서"
                   value={item.departmentId}
                   setFieldValue={setFieldValue}
@@ -91,7 +92,7 @@ const PersonnelDetailJobList = ({
               <Grid item>
                 <DataField
                   label="직함"
-                  name={`jobList[${i}].jobTitle`}
+                  name={`${FIELD_NAME}[${i}].jobTitle`}
                   value={item.jobTitle}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -101,7 +102,7 @@ const PersonnelDetailJobList = ({
               <Grid item>
                 <DataField
                   label="직종"
-                  name={`jobList[${i}].jobType`}
+                  name={`${FIELD_NAME}[${i}].jobType`}
                   value={item.jobType}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -111,7 +112,7 @@ const PersonnelDetailJobList = ({
               <Grid item>
                 <DataField
                   label="직위"
-                  name={`jobList[${i}].jobPosition`}
+                  name={`${FIELD_NAME}[${i}].jobPosition`}
                   value={item.jobPosition}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -121,7 +122,7 @@ const PersonnelDetailJobList = ({
               <Grid item>
                 <DataField
                   label="직급"
-                  name={`jobList[${i}].jobClass`}
+                  name={`${FIELD_NAME}[${i}].jobClass`}
                   value={item.jobClass}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -130,7 +131,7 @@ const PersonnelDetailJobList = ({
               <Grid item>
                 <DataField
                   label="직책"
-                  name={`jobList[${i}].jobDuty`}
+                  name={`${FIELD_NAME}[${i}].jobDuty`}
                   value={item.jobDuty}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -142,12 +143,12 @@ const PersonnelDetailJobList = ({
               color="secondary"
               aria-label="삭제"
               onClick={() => {
-                if (view.length === 1) {
+                const list = (values as PersonnelJobView[]);
+                if (list.length === 1) {
                   dialog.error('하나 이상의 소속 정보가 필요합니다.');
                   return;
                 }
-                setView(view.filter((item, j) => i !== j)
-                );
+                setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
               }}
             >
               <DeleteIcon />

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
 import {
-  PersonnelLicenseView as View,
-  initLicenseView as initView,
+  PersonnelLicenseView,
+  initLicenseView,
+  initView,
   usePersonnel
 } from 'services/personnel';
 
@@ -16,6 +17,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'licenseList';
 const PersonnelDetailLicenseList = ({
   id,
   values,
@@ -29,25 +31,19 @@ const PersonnelDetailLicenseList = ({
     getLicenseList: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View[]>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('licenseList', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView(detail?.map((item) => ({
-      name: item.name,
-      type: item.type ?? '',
-      organizationName: item.organizationName,
-      qualifiedNumber: item.qualifiedNumber,
-      qualifiedDate: item.qualifiedDate,
-      memo: item.memo ?? '',
-    })) ?? view);
+    setFieldValue(FIELD_NAME, detail?.map((item) => ({
+      name: item.name ?? initLicenseView.name,
+      type: item.type ?? initLicenseView.type,
+      organizationName: item.organizationName ?? initLicenseView.organizationName,
+      qualifiedNumber: item.qualifiedNumber ?? initLicenseView.qualifiedNumber,
+      qualifiedDate: item.qualifiedDate ?? initLicenseView.qualifiedDate,
+      memo: item.memo ?? initLicenseView.memo,
+    })) ?? initView.licenseList);
   }, [detail]);
 
   return (
@@ -62,13 +58,18 @@ const PersonnelDetailLicenseList = ({
           variant="contained"
           style={{ height: '36px' }}
           onClick={() => {
-            setView([...view, initView]);
+            if (Array.isArray(values)) {
+              setFieldValue(FIELD_NAME, [...values, initLicenseView]);
+            } else {
+              setFieldValue(FIELD_NAME, [initLicenseView]);
+            }
           }}
         >
           추가
         </Button>
       </Grid>
-      {view && view.map((item, i) => (
+      {Array.isArray(values) && (values as PersonnelLicenseView[])
+      .map((item, i) => (
         <Grid key={i} item sm={12}>
           <Box sx={{
             display: 'flex',
@@ -79,7 +80,7 @@ const PersonnelDetailLicenseList = ({
               <Grid item>
                 <DataField
                   label="면허명"
-                  name={`licenseList[${i}].name`}
+                  name={`${FIELD_NAME}[${i}].name`}
                   value={item.name}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -89,7 +90,7 @@ const PersonnelDetailLicenseList = ({
               <Grid item>
                 <DataField
                   label="종별"
-                  name={`licenseList[${i}].type`}
+                  name={`${FIELD_NAME}[${i}].type`}
                   value={item.type}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -98,7 +99,7 @@ const PersonnelDetailLicenseList = ({
               <Grid item>
                 <DataField
                   label="발급기관명"
-                  name={`licenseList[${i}].organizationName`}
+                  name={`${FIELD_NAME}[${i}].organizationName`}
                   value={item.organizationName}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -108,7 +109,7 @@ const PersonnelDetailLicenseList = ({
               <Grid item>
                 <DataField
                   label="인가 번호"
-                  name={`licenseList[${i}].qualifiedNumber`}
+                  name={`${FIELD_NAME}[${i}].qualifiedNumber`}
                   value={item.qualifiedNumber}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -117,7 +118,7 @@ const PersonnelDetailLicenseList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`licenseList[${i}].qualifiedDate`}
+                  name={`${FIELD_NAME}[${i}].qualifiedDate`}
                   label="인가일"
                   value={item.qualifiedDate}
                   setFieldValue={setFieldValue}
@@ -130,7 +131,7 @@ const PersonnelDetailLicenseList = ({
               <Grid item>
                 <DataField
                   label="비고"
-                  name={`licenseList[${i}].memo`}
+                  name={`${FIELD_NAME}[${i}].memo`}
                   value={item.memo}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -142,7 +143,8 @@ const PersonnelDetailLicenseList = ({
               color="secondary"
               aria-label="삭제"
               onClick={() => {
-                setView(view.filter((item, j) => i !== j));
+                const list = (values as PersonnelLicenseView[]);
+                setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
               }}
             >
               <DeleteIcon />
