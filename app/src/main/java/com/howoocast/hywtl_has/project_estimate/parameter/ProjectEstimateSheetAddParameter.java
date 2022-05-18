@@ -37,7 +37,7 @@ public class ProjectEstimateSheetAddParameter {
 
     private Long salesManagementLeaderId;
 
-    @NotNull(message = "project.estimate.sheet.project.target.review-id.not-null")
+    @NotNull(message = "project.estimate.sheet.project-target-review-id.not-null")
     private Long reviewId;
 
     @NotEmpty(message = "project.estimate.sheet.detail-list.not-empty")

@@ -20,7 +20,7 @@ public class CompanyTest {
         String memo = "memo";
         List<Manager> arrayList = new ArrayList<>();
         String createdBy = "createdBy";
-        Company company = Company.of(name, representativeName, companyNumber, address, zipcode, phone, memo, arrayList, createdBy);
+        Company company = Company.of(name, representativeName, companyNumber, address, zipcode, phone, memo, arrayList);
         assertEquals(company.getRepresentativeName(),representativeName);
         assertEquals(company.getName(),name);
         assertEquals(company.getName(),name);

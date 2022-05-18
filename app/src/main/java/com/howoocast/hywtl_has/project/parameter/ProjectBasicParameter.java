@@ -9,18 +9,18 @@ import lombok.Setter;
 @Setter
 public class ProjectBasicParameter {
 
-    @NotBlank(message = "project.basic.name.not-blank")
+    @NotBlank(message = "project-basic.name.not-blank")
     private String name;
 
-    @NotBlank(message = "project.basic.code.not-blank")
+    @NotBlank(message = "project-basic.code.not-blank")
     private String code;
 
     private String alias;
 
-    @NotNull(message = "project.basic.sales-manager-id.not-null")
+    @NotNull(message = "project-basic.sales-manager-id.not-null")
     private Long salesManagerId;
 
-    @NotNull(message = "project.basic.project-manager-id.not-null")
+    @NotNull(message = "project-basic.project-manager-id.not-null")
     private Long projectManagerId;
 
     private String address;
