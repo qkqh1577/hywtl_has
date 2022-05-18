@@ -10,8 +10,8 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetAd
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
-import com.howoocast.hywtl_has.project_target_review.domain.ProjectTargetReview;
-import com.howoocast.hywtl_has.project_target_review.repository.ProjectTargetReviewRepository;
+import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
+import com.howoocast.hywtl_has.project_target.repository.ProjectTargetReviewRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
@@ -62,7 +62,7 @@ public class ProjectEstimateSheetService {
             .orElse(null);
 
         ProjectTargetReview review = projectTargetReviewRepository.findById(params.getReviewId())
-            .orElseThrow(() -> new NotFoundException("project.target.review", params.getReviewId()));
+            .orElseThrow(() -> new NotFoundException("project-target-review", params.getReviewId()));
 
         ProjectEstimateSheet instance = ProjectEstimateSheet.of(
             project,

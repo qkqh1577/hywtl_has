@@ -171,9 +171,7 @@ order__begin_date date null,
 order__close_date date null,
 order__is_on_going bit null,
 order__modified_at datetime(6) null,
-order__received_date date null,
-target__land_model_count int null,
-target__modified_at datetime(6) null
+order__received_date date null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_comment
@@ -192,76 +190,76 @@ writer_id bigint null
 
 create table project_estimate_custom_sheet
 (
-	id bigint auto_increment primary key,
-	created_at datetime(6) null,
-	created_by bigint null,
-	deleted_at datetime(6) null,
-	deleted_by bigint null,
-	modified_at datetime(6) null,
-	modified_by bigint null
+id bigint auto_increment primary key,
+created_at datetime(6) null,
+created_by bigint null,
+deleted_at datetime(6) null,
+deleted_by bigint null,
+modified_at datetime(6) null,
+modified_by bigint null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_estimate_sheet
 (
-	id bigint auto_increment primary key,
-	confirmed bit not null,
-	created_at datetime(6) null,
-	created_by bigint null,
-	deleted_at datetime(6) null,
-	deleted_by bigint null,
-	estimate_date date not null,
-	expected_start_month date null,
-	memo varchar(255) null,
-	modified_at datetime(6) null,
-	modified_by bigint null,
-	project_id bigint not null,
-	review_id bigint not null,
-	sales_management_leader_id bigint null,
-	sales_team_leader_id bigint not null,
-	special_discount bigint null,
-	status int not null,
-	title varchar(255) not null,
-	writer_id bigint not null
+id bigint auto_increment primary key,
+confirmed bit not null,
+created_at datetime(6) null,
+created_by bigint null,
+deleted_at datetime(6) null,
+deleted_by bigint null,
+estimate_date date not null,
+expected_start_month date null,
+memo varchar(255) null,
+modified_at datetime(6) null,
+modified_by bigint null,
+project_id bigint not null,
+review_id bigint not null,
+sales_management_leader_id bigint null,
+sales_team_leader_id bigint not null,
+special_discount bigint null,
+status int not null,
+title varchar(255) not null,
+writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_estimate_sheet_comment_list
 (
-	project_estimate_sheet_id bigint not null,
-	description varchar(255) not null,
-	in_use bit not null,
-	seq int not null
+project_estimate_sheet_id bigint not null,
+description varchar(255) not null,
+in_use bit not null,
+seq int not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_estimate_sheet_detail
 (
-	id bigint auto_increment primary key,
-	created_at datetime(6) null,
-	created_by bigint null,
-	deleted_at datetime(6) null,
-	deleted_by bigint null,
-	modified_at datetime(6) null,
-	modified_by bigint null,
-	count int not null,
-	is_included bit not null,
-	memo varchar(255) null,
-	seq int not null,
-	title varchar(255) not null,
-	total_price bigint not null,
-	unit varchar(255) not null,
-	unit_price bigint not null
+id bigint auto_increment primary key,
+created_at datetime(6) null,
+created_by bigint null,
+deleted_at datetime(6) null,
+deleted_by bigint null,
+modified_at datetime(6) null,
+modified_by bigint null,
+count int not null,
+is_included bit not null,
+memo varchar(255) null,
+seq int not null,
+title varchar(255) not null,
+total_price bigint not null,
+unit varchar(255) not null,
+unit_price bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_estimate_sheet_detail_list
 (
-	project_estimate_sheet_id bigint not null,
-	detail_list_id bigint not null,
-	constraint UK_project_estimate_sheet_detail_list__detail_list_id unique (detail_list_id)
+project_estimate_sheet_id bigint not null,
+detail_list_id bigint not null,
+constraint UK_project_estimate_sheet_detail_list__detail_list_id unique (detail_list_id)
 );
 
 create table project_estimate_sheet_detail_sub_title_list
 (
-	project_estimate_sheet_detail_id bigint not null,
-	sub_title_list varchar(255) null
+project_estimate_sheet_detail_id bigint not null,
+sub_title_list varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table project_target_document
@@ -282,17 +280,16 @@ writer_id bigint not null
 create table project_target_review
 (
 id bigint auto_increment primary key,
-confirmed bit not null,
+code varchar(255) not null,
 created_at datetime(6) null,
 created_by bigint null,
 deleted_at datetime(6) null,
 deleted_by bigint null,
-memo varchar(255) null,
+land_figure_count int null,
 modified_at datetime(6) null,
 modified_by bigint null,
-status varchar(255) not null,
-title varchar(255) not null,
 project_id bigint null,
+status varchar(255) not null,
 writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -302,10 +299,16 @@ id bigint auto_increment primary key,
 area double not null,
 base_count int null,
 building_name varchar(255) not null,
+created_at datetime(6) null,
+created_by bigint null,
+deleted_at datetime(6) null,
+deleted_by bigint null,
 floor_count int not null,
 height double not null,
 memo1 varchar(255) null,
 memo2 varchar(255) null,
+modified_at datetime(6) null,
+modified_by bigint null,
 ratio double not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -326,6 +329,19 @@ create table project_target_review_detail_test_list
 (
 project_target_review_detail_id bigint not null,
 test_list varchar(255) null
+) engine = InnoDB DEFAULT CHARSET = utf8mb4;
+
+create table project_target_review_file_list
+(
+	project_target_review_id bigint not null,
+	file_list_id bigint not null,
+	constraint UK_project_target_review_file_list__file_list_id unique (file_list_id)
+);
+
+create table project_target_review_test_list
+(
+	project_target_review_id bigint not null,
+	test_list varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
 create table user

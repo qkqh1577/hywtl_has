@@ -3,20 +3,33 @@ import queryString from 'qs';
 
 export class HttpClient {
 
-  get = async function (url: string, params?: any, config?: any) {
-    return await axios.get(url, {
+  private client;
+
+  constructor() {
+    this.client = axios.create({
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {
           arrayFormat: 'brackets',
           encode: true,
-        }),
+        })
+    });
+  }
+
+  get = async (url: string, params?: any, config?: any) => {
+    return await this.client.get(url, {
       params,
       ...config,
     });
   };
 
-  post = async function (url: string, params?: FormData | any, config?: any) {
-    return await axios.post(url, params, {
+  post = async (url: string, params?: FormData | any, config?: any) => {
+    return await this.client.post(url, params, {
+      ...config,
+    });
+  };
+
+  put = async (url: string, params?: FormData | any, config?: any) => {
+    return await this.client.put(url, params, {
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {
           arrayFormat: 'brackets',
@@ -26,19 +39,8 @@ export class HttpClient {
     });
   };
 
-  put = async function (url: string, params?: FormData | any, config?: any) {
-    return await axios.put(url, params, {
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
-          arrayFormat: 'brackets',
-          encode: true,
-        }),
-      ...config,
-    });
-  };
-
-  patch = async function (url: string, params?: FormData | any, config?: any) {
-    return await axios.patch(url, params, {
+  patch = async (url: string, params?: FormData | any, config?: any) => {
+    return await this.client.patch(url, params, {
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {
           arrayFormat: 'brackets',
@@ -49,8 +51,8 @@ export class HttpClient {
     });
   };
 
-  delete = async function (url: string, params?: any, config?: any) {
-    return await axios.delete(url, {
+  delete = async (url: string, params?: any, config?: any) => {
+    return await this.client.delete(url, {
       params: params,
       paramsSerializer: (params: any) =>
         queryString.stringify(params, {

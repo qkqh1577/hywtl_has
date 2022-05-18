@@ -2,10 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import {
-  ProjectTarget,
   ProjectTargetDocumentAddParameter,
   ProjectTargetDocumentChangeParameter,
-  ProjectTargetParameter,
   ProjectTargetReviewParameter,
   projectTargetActions,
 } from 'services/project_target';
@@ -13,30 +11,6 @@ import {
 export default function useProjectTarget() {
   const state = useSelector((state: RootState) => state.projectTarget);
   const dispatch = useDispatch();
-
-  const getOne = useCallback(
-    (projectId: number) =>
-      dispatch(projectTargetActions.getOne(projectId)),
-    [dispatch]
-  );
-
-  const setOne = useCallback(
-    (data: ProjectTarget) =>
-      dispatch(projectTargetActions.setOne(data)),
-    [dispatch]
-  );
-
-  const clearOne = useCallback(
-    () =>
-      dispatch(projectTargetActions.setOne(undefined)),
-    [dispatch]
-  );
-
-  const update = useCallback(
-    (projectId: number, params: ProjectTargetParameter, callback: () => void) =>
-      dispatch(projectTargetActions.update({ projectId, params, callback })),
-    [dispatch]
-  );
 
   const getReviewList = useCallback(
     (projectId: number) =>
@@ -155,10 +129,6 @@ export default function useProjectTarget() {
 
   return {
     state,
-    getOne,
-    setOne,
-    clearOne,
-    update,
     getReviewList,
     clearReviewList,
     getReview,

@@ -1,20 +1,14 @@
 import { createAction } from 'typesafe-actions';
 import {
   ListProjectTargetReview,
-  ProjectTarget,
   ProjectTargetDocument,
   ProjectTargetDocumentAddParameter,
   ProjectTargetDocumentChangeParameter,
-  ProjectTargetParameter,
   ProjectTargetReview,
   ProjectTargetReviewParameter,
 } from 'services/project_target';
 
 export enum ProjectTargetActionType {
-  getOne = 'project/target/getOne',
-  setOne = 'project/target/setOne',
-  update = 'project/target/update',
-
   getReviewList = 'project/target/review/getList',
   setReviewList = 'project/target/review/setList',
   getReview = 'project/target/review/getOne',
@@ -36,14 +30,6 @@ export enum ProjectTargetActionType {
 }
 
 export const projectTargetActions = {
-  getOne: createAction(ProjectTargetActionType.getOne)<number>(),
-  setOne: createAction(ProjectTargetActionType.setOne)<ProjectTarget | undefined>(),
-  update: createAction(ProjectTargetActionType.update)<{
-    projectId: number;
-    params: ProjectTargetParameter;
-    callback: () => void;
-  }>(),
-
   getReviewList: createAction(ProjectTargetActionType.getReviewList)<number>(),
   setReviewList: createAction(ProjectTargetActionType.setReviewList)<ListProjectTargetReview[] | undefined>(),
   getReview: createAction(ProjectTargetActionType.getReview)<number>(),

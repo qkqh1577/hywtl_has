@@ -29,9 +29,9 @@ import {
   ProjectTargetReviewDetailParameter,
   ProjectTargetReviewParameter,
   ProjectTargetReviewStatus,
-  ProjectTargetReviewView,
-  initProjectTargetDetailReview,
-  initProjectTargetReview,
+  ProjectTargetReviewView as View,
+  initProjectTargetDetailReview as initDetailView,
+  initProjectTargetReview as initView,
   projectTargetReviewStatusList,
   projectTargetReviewStatusName,
   useProjectTarget,
@@ -39,6 +39,7 @@ import {
 import {
   projectSpecialWindLoadConditionName
 } from 'services/project';
+import { FileItemParameter, fileItemToView, FileItemView } from 'services/common/file-item';
 
 type TableCellProperty = {
   key: string;
@@ -80,7 +81,7 @@ const ProjectTargetReviewModal = () => {
   } = useProjectTarget();
 
   const [edit, setEdit] = useState<boolean>(false);
-  const [view, setView] = useState<ProjectTargetReviewView>(initProjectTargetReview);
+  const [view, setView] = useState<View>(initView);
 
   const handler = {
     edit: () => {
@@ -110,22 +111,18 @@ const ProjectTargetReviewModal = () => {
       }
       const errors: any = {};
 
-      const confirmed: boolean = values.confirmed === 'Y';
-      if (values.confirmed === '') {
-        errors.confirmed = '확정 여부 선택은 필수입니다.';
-      }
-
       const status: ProjectTargetReviewStatus = values.status;
       if (!status) {
         errors.status = '형상비 검토 상태 선택은 필수입니다.';
       }
 
-      const title: string = values.title;
-      if (!title) {
-        errors.title = '제목 입력은 필수입니다.';
+      const code: string = values.code;
+      if (!code) {
+        errors.code = '형상비 번호 입력은 필수입니다.';
       }
 
-      const memo: string | undefined = values.memo;
+      const landFigureCount: number | undefined = values.landFigureCount || undefined;
+      const testList: string[] | undefined = Array.isArray(values.testList) && values.testList.length > 0 ? values.testList : undefined;
 
       const detailList: ProjectTargetReviewDetailParameter[] = (values.detailList as any[])
       .map((item, index) => {
@@ -203,6 +200,13 @@ const ProjectTargetReviewModal = () => {
         errors['detailList.size'] = '건축물 항목은 하나 이상 필수입니다.';
       }
 
+      const fileList: FileItemParameter[] | undefined = Array.isArray(values.fileList) && values.fileList.length > 0 ?
+        values.fileList.map((item: FileItemView) => ({
+          id: item.id,
+          multipartFile: item.multipartFile,
+          requestDelete: typeof item.id === 'undefined' ? undefined : (item.id && item.multipartFile),
+        })) : undefined;
+
       if (Object.keys(errors).length > 0
       ) {
         setSubmitting(false);
@@ -211,54 +215,62 @@ const ProjectTargetReviewModal = () => {
       }
 
       const params: ProjectTargetReviewParameter = {
-        title,
-        confirmed,
         status,
-        memo,
+        code,
+        landFigureCount,
+        testList,
         detailList,
+        fileList,
       };
       (reviewId ? update : add)((reviewId ?? projectId), params, () => {
         dialog.alert('저장되었습니다.');
-        handler.close();
+        handler.init();
       });
       setSubmitting(false);
+    },
+    init: () => {
+      setEdit(false);
+      clearModal();
+      clearOne();
+      handler.updateView();
     },
     close: (event?: object, reason?: string) => {
       if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
         return;
       }
-      setEdit(false);
-      clearModal();
-      clearOne();
-      setView(initProjectTargetReview);
+      if (edit) {
+        dialog.rollback('작성 중인 내용이 전부 사라집니다. 취소하시겠습니까?', handler.init);
+      } else {
+        handler.init();
+      }
     },
     updateView: () => {
       const getConfirmed = (confirmed: boolean | undefined) => {
         if (typeof confirmed === 'undefined') {
-          return view.confirmed;
+          return initView.confirmed;
         }
         return confirmed ? 'Y' : 'N';
       };
       setView({
         confirmed: getConfirmed(detail?.confirmed),
-        status: detail?.status ?? view.status,
-        title: detail?.title ?? view.title,
-        memo: detail?.memo ?? view.memo,
-        detailList: detail?.detailList.map(item => {
-          const initial = initProjectTargetDetailReview;
-          return {
-            buildingName: item.buildingName ?? initial.buildingName,
-            floorCount: item.floorCount ?? initial.floorCount,
-            baseCount: item.baseCount ?? initial.baseCount,
-            height: item.height ?? initial.height,
-            area: item.area ?? initial.area,
-            ratio: item.ratio ?? initial.ratio,
-            specialWindLoadConditionList: item.specialWindLoadConditionList ?? initial.specialWindLoadConditionList,
-            testList: item.testList ?? initial.testList,
-            memo1: item.memo1 ?? initial.memo1,
-            memo2: item.memo2 ?? initial.memo2,
-          };
-        }) ?? view.detailList
+        status: detail?.status ?? initView.status,
+        code: detail?.code ?? initView.code,
+        landFigureCount: detail?.landFigureCount ?? initView.landFigureCount,
+        detailList: detail?.detailList.map((item) => ({
+          id: item.id,
+          buildingName: item.buildingName ?? initDetailView.buildingName,
+          floorCount: item.floorCount ?? initDetailView.floorCount,
+          baseCount: item.baseCount ?? initDetailView.baseCount,
+          height: item.height ?? initDetailView.height,
+          area: item.area ?? initDetailView.area,
+          ratio: item.ratio ?? initDetailView.ratio,
+          specialWindLoadConditionList: item.specialWindLoadConditionList ?? initDetailView.specialWindLoadConditionList,
+          testList: item.testList ?? initDetailView.testList,
+          memo1: item.memo1 ?? initDetailView.memo1,
+          memo2: item.memo2 ?? initDetailView.memo2,
+        })) ?? initView.detailList,
+        testList: detail?.testList ?? initView.testList,
+        fileList: detail?.fileList?.map(fileItemToView) ?? initView.fileList,
       });
     }
   };
@@ -331,13 +343,12 @@ const ProjectTargetReviewModal = () => {
                       <DataField
                         type="select"
                         name="confirmed"
-                        label="확정 여부"
+                        label="견적 여부"
                         value={values.confirmed}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         options={['Y', 'N']}
-                        disabled={!edit}
-                        required
+                        disabled
                       />
                     </Grid>
                     <Grid item sm={2}>
@@ -356,62 +367,91 @@ const ProjectTargetReviewModal = () => {
                         required
                       />
                     </Grid>
-                    <Grid item sm={4}>
+                    <Grid item sm={2}>
                       <DataField
-                        name="title"
-                        label="제목"
-                        value={values.title}
+                        name="code"
+                        label="형상비 번호"
+                        value={values.code}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         disabled={!edit}
                         required
                       />
                     </Grid>
-                    <Grid item sm={3}>
+                    <Grid item sm={1}>
                       <DataField
-                        name="memo"
-                        label="비고"
-                        value={values.memo}
+                        type="number"
+                        name="langFigureCount"
+                        label="대지모형 개수"
+                        value={values.landFigureCount}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         disabled={!edit}
                       />
                     </Grid>
-                    {edit && (
-                      <Grid item sm={1}>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          disabled={isSubmitting}
-                          onClick={() => {
-                            handleSubmit();
-                          }}
-                        >
-                          {isSubmitting ? '저장 중' : '저장'}
-                        </Button>
-                      </Grid>
-                    )}
-                    {edit && reviewId && (
-                      <Grid item sm={1}>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          onClick={() => {
-                            if (dirty) {
-                              dialog.rollback('작성중인 내용을 취소하겠습니까?', () => {
-                                setEdit(false);
-                                resetForm();
-                              });
-                            } else {
-                              setEdit(false);
-                              resetForm();
-                            }
-                          }}
-                        >
-                          취소
-                        </Button>
-                      </Grid>
-                    )}
+                    <Grid item sm={1}>
+                      {edit && (
+                        <CheckboxField
+                          name="testList"
+                          label="실험 종류(단지)"
+                          value={values.testList}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={['E', 'B']}
+                          disabledAll
+                        />
+                      )}
+                      {!edit && (
+                        <DataField
+                          name="view-testList"
+                          label="실험 종류(단지)"
+                          value={values.testList?.join(', ') ?? ''}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          disabled
+                        />
+                      )}
+                    </Grid>
+                    <Grid item sm={5}>
+                      {edit && (
+                        <Box sx={{
+                          display: 'flex',
+                          width: '100%',
+                          flexWrap: 'wrap',
+                          justifyContent: 'right'
+                        }}>
+                          {reviewId && (
+                            <Button
+                              color="secondary"
+                              variant="contained"
+                              onClick={() => {
+                                if (dirty) {
+                                  dialog.rollback('작성중인 내용을 취소하겠습니까?', () => {
+                                    setEdit(false);
+                                    resetForm();
+                                  });
+                                } else {
+                                  setEdit(false);
+                                  resetForm();
+                                }
+                              }}
+                            >
+                              취소
+                            </Button>
+                          )}
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                              handleSubmit();
+                            }}
+                          >
+                            {isSubmitting ? '저장 중' : '저장'}
+                          </Button>
+                        </Box>
+                      )}
+                    </Grid>
                   </Grid>
                 </Box>
                 {edit && (
@@ -615,7 +655,7 @@ const ProjectTargetReviewModal = () => {
                                   value={values.detailList[i].testList}
                                   setFieldValue={setFieldValue}
                                   errors={errors}
-                                  options={['F', 'P', 'E', 'A', 'B', '구검']}
+                                  options={['F', 'P', 'A', '구검']}
                                   labelDisabled
                                   disabledAll
                                   required
@@ -683,7 +723,7 @@ const ProjectTargetReviewModal = () => {
                       color="primary"
                       variant="contained"
                       onClick={() => {
-                        setFieldValue('detailList', [...values.detailList, initProjectTargetDetailReview]);
+                        setFieldValue('detailList', [...values.detailList, initDetailView]);
                       }}
                     >
                       추가

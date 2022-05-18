@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
-import com.howoocast.hywtl_has.project_target_review.view.ProjectTargetReviewView;
+import com.howoocast.hywtl_has.project_target.view.ProjectTargetReviewView;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import java.time.LocalDate;
 import java.util.List;

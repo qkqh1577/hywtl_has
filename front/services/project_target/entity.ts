@@ -24,14 +24,17 @@ export type ListProjectTargetReview = {
   id: number;
   status: ProjectTargetReviewStatus;
   confirmed: boolean;
-  title: string;
-  memo?: string;
+  code: string;
+  detailCount: number;
+  testList: string[];
+  fileCount: number;
   writer: ListUser;
   createdAt: Date;
   modifiedAt?: Date;
 }
 
 export type ProjectTargetReviewDetail = {
+  id: number;
   buildingName: string;
   floorCount: number;
   baseCount?: number;
@@ -44,12 +47,13 @@ export type ProjectTargetReviewDetail = {
   memo2?: string;
 }
 
-
-export type ProjectTargetReview = ListProjectTargetReview & {
+export type ProjectTargetReview = {
+  id: number;
+  status: ProjectTargetReviewStatus;
+  confirmed: boolean;
+  code: string;
+  landFigureCount?: number;
   detailList: ProjectTargetReviewDetail[];
-}
-
-export type ProjectTarget = {
-  landModelCount?: number;
-  modifiedAt?: Date;
+  testList?: string[];
+  fileList?: FileItem[];
 }

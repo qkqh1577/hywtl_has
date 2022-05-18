@@ -1,17 +1,15 @@
 package com.howoocast.hywtl_has.common.exception;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+public class DuplicatedValueException extends CustomExceptionAdaptor {
 
-@RequiredArgsConstructor
-public class DuplicatedValueException extends RuntimeException {
-
-    private final String property;
-    private final String value;
-
-    public ResponseEntity<String> getResponse() {
-        String message = String.format("DuplicatedValue. property: %s, value: %s", property, value);
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    public DuplicatedValueException(
+        String entityName,
+        String property,
+        String value
+    ) {
+        super(
+            String.format("%s.%s.unique.violation", entityName, property),
+            String.format("이미 사용 중인 값입니다. %s", value)
+        );
     }
 }

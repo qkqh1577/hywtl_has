@@ -233,7 +233,7 @@ const ProjectEstimateSheetModal = () => {
                           errors={errors}
                           options={reviewList?.map(item => ({
                             key: item.id,
-                            text: `${item.title}(${projectTargetReviewStatusName(item.status)})`,
+                            text: `${item.code}(${projectTargetReviewStatusName(item.status)})`,
                           })) ?? null}
                           value={values.reviewId}
                           onChange={(data) => {

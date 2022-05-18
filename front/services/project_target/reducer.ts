@@ -1,15 +1,12 @@
 import { createReducer } from 'typesafe-actions';
 import {
   ListProjectTargetReview,
-  ProjectTarget,
   ProjectTargetActionType,
   ProjectTargetDocument,
   ProjectTargetReview,
 } from 'services/project_target';
 
 export type ProjectTargetState = {
-  detail?: ProjectTarget;
-
   reviewId?: number | null;
   reviewList?: ListProjectTargetReview[];
   reviewDetail?: ProjectTargetReview;
@@ -21,11 +18,6 @@ export type ProjectTargetState = {
 
 const initState: ProjectTargetState = {};
 const projectTargetReducer = createReducer(initState, {
-  [ProjectTargetActionType.setOne]: (state, action) => ({
-    ...state,
-    target: action.payload,
-  }),
-
   [ProjectTargetActionType.setReviewId]: (state, action) => ({
     ...state,
     reviewId: action.payload,
@@ -38,7 +30,6 @@ const projectTargetReducer = createReducer(initState, {
     ...state,
     reviewDetail: action.payload,
   }),
-
   [ProjectTargetActionType.setDocumentId]: (state, action) => ({
     ...state,
     documentId: action.payload,

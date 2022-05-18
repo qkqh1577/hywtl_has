@@ -2,7 +2,6 @@ import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import {
   ListProjectTargetReview,
-  ProjectTarget,
   ProjectTargetActionType,
   ProjectTargetDocument,
   ProjectTargetReview,
@@ -10,25 +9,10 @@ import {
   projectTargetApi,
 } from 'services/project_target';
 
-function* getOne(action: ActionType<typeof projectTargetActions.getOne>) {
-  const data: ProjectTarget = yield projectTargetApi.getOne(action.payload);
-  yield put(projectTargetActions.setOne(data));
-}
-
-function* update(action: ActionType<typeof projectTargetActions.update>) {
-  const { projectId, params, callback } = action.payload;
-  try {
-    yield projectTargetApi.update(projectId, params);
-    callback();
-  } catch (e) {
-  }
-}
-
 function* getReviewList(action: ActionType<typeof projectTargetActions.getReviewList>) {
   const list: ListProjectTargetReview[] = yield projectTargetApi.getReviewList(action.payload);
   yield put(projectTargetActions.setReviewList(list));
 }
-
 
 function* getReview(action: ActionType<typeof projectTargetActions.getReview>) {
   const data: ProjectTargetReview = yield projectTargetApi.getReview(action.payload);
@@ -115,8 +99,6 @@ function* removeDocument(action: ActionType<typeof projectTargetActions.removeDo
 }
 
 export default function* projectTargetSaga() {
-  yield takeLatest(ProjectTargetActionType.getOne, getOne);
-  yield takeLatest(ProjectTargetActionType.update, update);
   yield takeLatest(ProjectTargetActionType.getReviewList, getReviewList);
   yield takeLatest(ProjectTargetActionType.getReview, getReview);
   yield takeLatest(ProjectTargetActionType.addReview, addReview);

@@ -1,11 +1,8 @@
 import { ProjectTargetReviewStatus } from 'services/project_target';
 import { FileItemView } from 'services/common/file-item';
 
-export type ProjectTargetView = {
-  landModelCount: number | '';
-}
-
 export type ProjectTargetReviewDetailView = {
+  id?: number;
   buildingName: string;
   floorCount: number | '';
   baseCount: number | '';
@@ -19,20 +16,19 @@ export type ProjectTargetReviewDetailView = {
 }
 
 export type ProjectTargetReviewView = {
+  confirmed: 'Y' | 'N';
   status: ProjectTargetReviewStatus | '';
-  confirmed: 'Y' | 'N' | '';
-  title: string;
-  memo: string;
+  code: string;
+  landFigureCount: number | '';
   detailList: ProjectTargetReviewDetailView[];
+  testList: string[];
+  fileList: FileItemView[];
 }
 
 export type ProjectTargetDocumentView = {
   fileItem: FileItemView | null;
   memo: string;
 }
-export const initProjectTarget: ProjectTargetView = {
-  landModelCount: '',
-};
 
 export const initProjectTargetDetailReview: ProjectTargetReviewDetailView = {
   buildingName: '',
@@ -48,11 +44,13 @@ export const initProjectTargetDetailReview: ProjectTargetReviewDetailView = {
 };
 
 export const initProjectTargetReview: ProjectTargetReviewView = {
+  confirmed: 'N',
   status: '',
-  confirmed: '',
-  title: '',
-  memo: '',
+  code: '',
+  landFigureCount: '',
+  testList: [],
   detailList: [initProjectTargetDetailReview],
+  fileList: [],
 };
 
 export const initProjectTargetDocument: ProjectTargetDocumentView = {

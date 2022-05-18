@@ -1,7 +1,6 @@
 import { FileItemParameter } from 'services/common/file-item';
 import { ProjectTargetReviewStatus } from 'services/project_target';
 
-
 export type ProjectTargetDocumentAddParameter = {
   fileItem: FileItemParameter;
   memo?: string;
@@ -11,6 +10,7 @@ export type ProjectTargetDocumentChangeParameter = {
   memo?: string;
 }
 export type ProjectTargetReviewDetailParameter = {
+  id?: number;
   buildingName: string;
   floorCount: number;
   baseCount?: number;
@@ -24,13 +24,10 @@ export type ProjectTargetReviewDetailParameter = {
 }
 
 export type ProjectTargetReviewParameter = {
-  title: string;
-  confirmed: boolean;
   status: ProjectTargetReviewStatus;
-  memo?: string;
+  code: string;
+  landFigureCount?: number;
+  testList?: string[];
   detailList: ProjectTargetReviewDetailParameter[];
-}
-
-export type ProjectTargetParameter = {
-  landModelCount?: number;
+  fileList?: FileItemParameter[];
 }
