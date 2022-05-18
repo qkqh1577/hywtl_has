@@ -15,9 +15,9 @@ import java.util.List;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "serviceItem")
+@Table(name = "service_item")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update serviceItem set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update service_item set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ServiceItem extends CustomEntity {
@@ -32,7 +32,7 @@ public class ServiceItem extends CustomEntity {
   
   private String type; // 실험타입
   
-  private Integer order; // 순서
+  private Integer orderNumber; // 순서
 
   @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
   private List<ServiceDetailItem> serviceDetailItemList; // 용역 세부항목 목록

@@ -13,14 +13,14 @@ public class ServiceItemPredicateBuilder {
 
   private final BooleanBuilder criteria = new BooleanBuilder();
 
-  public ServiceItemPredicateBuilder typeAndItem(@Nullable String type, @Nullable String keyword) {
+  public ServiceItemPredicateBuilder typeAndItem(@Nullable String type, @Nullable String item) {
 
     if ((Objects.isNull(type) || type.trim().isEmpty())
-        && (Objects.isNull(keyword) || keyword.trim().isEmpty())) {
+        && (Objects.isNull(item) || item.trim().isEmpty())) {
       return this;
     }
 
-    final String keywordStr = keyword.trim();
+    final String keywordStr = item.trim();
 
     criteria.and(serviceItem.type.containsIgnoreCase(type));
     criteria.and(serviceItem.item.containsIgnoreCase(keywordStr));

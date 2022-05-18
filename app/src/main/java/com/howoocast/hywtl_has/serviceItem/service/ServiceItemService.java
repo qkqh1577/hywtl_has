@@ -47,8 +47,7 @@ public class ServiceItemService {
 
   @Transactional(readOnly = true)
   public ServiceItemView get(Long id) {
-    ServiceItem serviceItem = serviceItemRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("serviceItem", id));
+    ServiceItem serviceItem = serviceItemRepository.findById(id).orElseThrow(() -> new NotFoundException("serviceItem", id));
     return ServiceItemView.assemble(serviceItem);
   }
 

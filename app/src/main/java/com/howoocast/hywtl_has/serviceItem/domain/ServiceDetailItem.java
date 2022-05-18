@@ -16,9 +16,9 @@ import javax.persistence.Table;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "serviceDetailItem")
+@Table(name = "service_detail_item")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update serviceDetailItem set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update service_detail_item set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ServiceDetailItem extends CustomEntity {
@@ -33,7 +33,7 @@ public class ServiceDetailItem extends CustomEntity {
   
   private String memo; // 메모
   
-  private Integer order; // 순서
+  private Integer orderNumber; // 순서
 
   public static ServiceDetailItem of(
       String item,
@@ -49,7 +49,7 @@ public class ServiceDetailItem extends CustomEntity {
     instance.unit = unit;
     instance.price = price;
     instance.memo = memo;
-    instance.order = order;
+    instance.orderNumber = order;
     return instance;
   }
 
@@ -66,6 +66,6 @@ public class ServiceDetailItem extends CustomEntity {
     this.unit = unit;
     this.price = price;
     this.memo = memo;
-    this.order = order;
+    this.orderNumber = order;
   }
 }

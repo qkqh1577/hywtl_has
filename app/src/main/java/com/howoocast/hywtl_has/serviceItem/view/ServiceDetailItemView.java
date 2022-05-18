@@ -18,7 +18,7 @@ public class ServiceDetailItemView {
     target.unit = serviceDetailItem.getUnit();
     target.price = serviceDetailItem.getPrice();
     target.memo = serviceDetailItem.getMemo();
-    target.order = serviceDetailItem.getOrder();
+    target.order = serviceDetailItem.getOrderNumber();
 
     return target;
   }

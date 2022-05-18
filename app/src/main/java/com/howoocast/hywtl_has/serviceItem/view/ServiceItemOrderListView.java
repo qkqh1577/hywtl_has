@@ -12,7 +12,7 @@ public class ServiceItemOrderListView {
   public static ServiceItemOrderListView assemble(ServiceItem serviceItem) {
     ServiceItemOrderListView target = new ServiceItemOrderListView();
 
-    target.order = serviceItem.getOrder();
+    target.order = serviceItem.getOrderNumber();
     target.type = serviceItem.getType();
     target.item = serviceItem.getItem();
 

@@ -80,9 +80,15 @@ const App = () => {
       title: '사용자 관리',
       path: '/user',
       icon: FolderOpenIcon
-    }, {
+    }, 
+    {
       title: '업체 관리',
       path: '/company',
+      icon: FolderOpenIcon
+    },
+    {
+      title: '용역항목 관리',
+      path: '/serviceItem',
       icon: FolderOpenIcon
     }
   ]);

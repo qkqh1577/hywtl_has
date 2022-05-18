@@ -25,11 +25,11 @@ public class ServiceItemController {
   @GetMapping("/serviceItems")
   public List<ServiceItemListView> getList(
       @RequestParam(required = false) String type,
-      @RequestParam(required = false) String keyword
+      @RequestParam(required = false) String item
   ) {
     return serviceItemService.getList(
         new ServiceItemPredicateBuilder()
-            .typeAndItem(type, keyword)
+            .typeAndItem(type, item)
             .build()
     );
   }
@@ -40,9 +40,7 @@ public class ServiceItemController {
   }
 
   @GetMapping("/serviceItems/{id}")
-  public ServiceItemView get(@PathVariable Long id) {
-    return serviceItemService.get(id);
-  }
+  public ServiceItemView get(@PathVariable Long id) { return serviceItemService.get(id); }
 
   @PostMapping("/serviceItems")
   public void add(@Valid @RequestBody ServiceItemParameter params) {

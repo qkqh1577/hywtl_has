@@ -12,6 +12,7 @@ public class ServiceItemView {
   String unit; // 단위
   Long price; // 단가
   String memo; // 비고
+  String type; // 실험타입
   List<ServiceDetailItemView> serviceDetailItemViewList;
 
   public static ServiceItemView assemble(ServiceItem serviceItem) {
@@ -21,6 +22,7 @@ public class ServiceItemView {
     target.unit = serviceItem.getUnit();
     target.price = serviceItem.getPrice();
     target.memo = serviceItem.getMemo();
+    target.type = serviceItem.getType();
     target.serviceDetailItemViewList = serviceItem.getServiceDetailItemList()
         .stream().map(ServiceDetailItemView::assemble)
         .collect(Collectors.toList());
