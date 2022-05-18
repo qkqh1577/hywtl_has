@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class Dictionary extends HashMap<String, String> {
 
     public Dictionary() {
+        this.put("-at","일시");
+        this.put("-by", "자");
         this.put("-count", "수");
         this.put("-id", " 지정");
         this.put("-key", "키");
@@ -27,6 +29,8 @@ public class Dictionary extends HashMap<String, String> {
         this.put("basic", "기본 정보");
         this.put("birth-date", "생년월일");
         this.put("building", "건물");
+        this.put("business", "업체");
+        this.put("business.registration-number", "사업자등록번호");
         this.put("career", "경력 정보");
         this.put("career.company", "근무처");
         this.put("career.end-date", "근무종료일");
@@ -37,6 +41,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("company", "회사");
         this.put("confirmed", "확정 여부");
         this.put("count", "수량");
+        this.put("created", "생성");
         this.put("date", "일자");
         this.put("department", "부서");
         this.put("department.name", "부서명");
@@ -77,9 +82,13 @@ public class Dictionary extends HashMap<String, String> {
         this.put("list", "목록");
         this.put("longitude", "경도");
         this.put("manager", "담당자");
+        this.put("meta", "메타");
+        this.put("mobile-phone", "휴대폰 번호");
+        this.put("modified", "수정");
         this.put("name", "이름");
         this.put("new", "신규");
         this.put("now", "현재");
+        this.put("office-phone", "대표전화 번호");
         this.put("organization", "기관");
         this.put("password", "비밀번호");
         this.put("personnel", "인사");
@@ -95,10 +104,12 @@ public class Dictionary extends HashMap<String, String> {
         this.put("project.target.document", "실험 대상 형상비 검토 자료");
         this.put("project.target.review", "실험 대상 형상비 검토");
         this.put("qualified", "승인");
+        this.put("representative", "대표");
         this.put("review", "검토");
         this.put("role", "권한");
         this.put("sales", "영업");
         this.put("seq", "정렬 순서");
+        this.put("service", "용역");
         this.put("sex", "성별");
         this.put("start", "시작");
         this.put("start-date", "시작일");
