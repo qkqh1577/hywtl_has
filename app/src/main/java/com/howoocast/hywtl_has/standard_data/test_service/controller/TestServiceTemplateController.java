@@ -51,7 +51,7 @@ public class TestServiceTemplateController {
         return service.add(params);
     }
 
-    @PostMapping("/standard-data/test-service/template/change-seq")
+    @PostMapping("/standard-data/test-service-templates/seq/change")
     public void changeSeq(@Valid @RequestBody TestServiceTemplateChangeSeqParameter params) {
         service.changeSeq(params);
     }
