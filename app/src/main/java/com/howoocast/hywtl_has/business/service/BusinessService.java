@@ -59,7 +59,7 @@ public class BusinessService {
                 .map(manager -> BusinessManager.of(
                     manager.getName(),
                     manager.getJobTitle(),
-                    manager.getMobile(),
+                    manager.getMobilePhone(),
                     manager.getPhone(),
                     manager.getEmail(),
                     manager.getState()))
@@ -95,7 +95,7 @@ public class BusinessService {
                 .map(manager -> BusinessManager.of(
                     manager.getName(),
                     manager.getJobTitle(),
-                    manager.getMobile(),
+                    manager.getMobilePhone(),
                     manager.getPhone(),
                     manager.getEmail(),
                     manager.getState()))

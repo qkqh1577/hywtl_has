@@ -13,7 +13,7 @@ public class BusinessManagerParameter {
 
     private String jobTitle;
 
-    private String mobile;
+    private String mobilePhone;
 
     private String phone;
 
