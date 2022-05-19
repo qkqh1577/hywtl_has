@@ -7,7 +7,7 @@
 업체식별자;담당자식별자;용역항목식별자;용역세부항목식별자,id
 업체명,name
 대표명,representativeName
-사업자번호,companyNumber
+사업자번호,registrationNumber
 주소,address
 우편번호,zipCode
 대표전화번호;전화번호,phone

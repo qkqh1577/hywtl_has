@@ -1,0 +1,20 @@
+export type BusinessManagerView = {
+  name?: string;
+  position?: string;
+  mobile?: string;
+  phone?: string;
+  email?: string;
+  meta?: string[];
+  state?: string;
+}
+
+export type BusinessView = {
+  name: string;
+  representativeName?: string;
+  registrationNumber: string;
+  address?: string;
+  zipCode?: string;
+  phone?: string;
+  memo?: string;
+  managerList?: BusinessManagerView[]
+};

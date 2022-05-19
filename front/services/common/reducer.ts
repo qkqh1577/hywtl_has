@@ -8,7 +8,7 @@ import { projectTargetReducer, ProjectTargetState } from 'services/project_targe
 import { projectEstimateReducer, ProjectEstimateState } from 'services/project_estimate';
 import { projectCommentReducer, ProjectCommentState } from 'services/project_comment';
 import { passwordResetReducer, PasswordResetState } from 'services/user/password_reset';
-import { companyReducer, CompanyState } from 'services/company';
+import { businessReducer, BusinessState } from 'services/business';
 import { dialogReducer, DialogState } from 'components';
 
 export type RootState = {
@@ -21,7 +21,7 @@ export type RootState = {
   projectTarget: ProjectTargetState;
   projectEstimate: ProjectEstimateState;
   projectComment: ProjectCommentState;
-  company: CompanyState;
+  business: BusinessState;
   dialog: DialogState;
 }
 
@@ -35,7 +35,7 @@ const reducer = combineReducers<RootState>({
   projectTarget: projectTargetReducer,
   projectEstimate: projectEstimateReducer,
   projectComment: projectCommentReducer,
-  company: companyReducer,
+  business: businessReducer,
   dialog: dialogReducer,
 });
 

@@ -5,7 +5,7 @@ import userRoutes from 'pages/user/routes';
 import hrCardRoutes from 'pages/hr/routes';
 import sales from 'pages/sales/routes';
 import projectRoutes from 'pages/project/routes';
-import companyRoutes from 'pages/company/routes';
+import companyRoutes from 'pages/business/routes';
 
 export interface AppRoutes extends RouteProps {
   // extension wrapper
