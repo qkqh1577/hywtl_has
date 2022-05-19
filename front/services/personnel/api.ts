@@ -14,7 +14,7 @@ import {
   PersonnelQuery,
 } from 'services/personnel';
 
-export class PersonnelApi {
+class PersonnelApi {
   async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {
     const { data } = await apiClient.get('/personnels', query);
     return data;

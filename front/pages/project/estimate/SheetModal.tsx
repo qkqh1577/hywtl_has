@@ -33,12 +33,12 @@ import {
   useProjectEstimate,
 } from 'services/project_estimate';
 import {
-  ProjectTargetReviewDetail,
-  projectTargetReviewStatusName,
-  useProjectTarget
-} from 'services/project_target';
+  ProjectReviewDetail,
+  projectReviewStatusName,
+  useProjectReview
+} from 'services/project_review';
 
-const reviewDetailColumnList: TableCellProperty<ProjectTargetReviewDetail>[] = [
+const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
     label: '건물(동)',
     renderCell: item => item.buildingName,
@@ -99,14 +99,14 @@ const ProjectEstimateSheetModal = () => {
   } = useProjectEstimate();
   const {
     state: {
-      reviewList,
-      reviewDetail,
+      list: reviewList,
+      detail: reviewDetail,
     },
-    getReviewList,
-    getReview,
-    clearReviewList,
-    clearReview,
-  } = useProjectTarget();
+    getList: getReviewList,
+    getOne: getReview,
+    clearList: clearReviewList,
+    clearOne: clearReview,
+  } = useProjectReview();
   const [view, setView] = useState<View>(initView);
   const [reviewId, setReviewId] = useState<number | undefined>();
 
@@ -296,7 +296,7 @@ const ProjectEstimateSheetModal = () => {
                           errors={errors}
                           options={reviewList?.map(item => ({
                             key: item.id,
-                            text: `${item.code}(${projectTargetReviewStatusName(item.status)})`,
+                            text: `${item.code}(${projectReviewStatusName(item.status)})`,
                           })) ?? null}
                           value={values.reviewId}
                           onChange={(data) => {
@@ -348,7 +348,7 @@ const ProjectEstimateSheetModal = () => {
                                   상태
                                 </TableCell>
                                 <TableCell>
-                                  {reviewDetail ? projectTargetReviewStatusName(reviewDetail.status) : undefined}
+                                  {reviewDetail ? projectReviewStatusName(reviewDetail.status) : undefined}
                                 </TableCell>
                               </TableRow>
                             </TableBody>

@@ -1,16 +1,16 @@
-package com.howoocast.hywtl_has.project_target.service;
+package com.howoocast.hywtl_has.project_review.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReviewDetail;
-import com.howoocast.hywtl_has.project_target.parameter.ProjectTargetReviewParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
-import com.howoocast.hywtl_has.project_target.repository.ProjectTargetReviewRepository;
-import com.howoocast.hywtl_has.project_target.view.ProjectTargetReviewListView;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
-import com.howoocast.hywtl_has.project_target.view.ProjectTargetReviewView;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReviewDetail;
+import com.howoocast.hywtl_has.project_review.parameter.ProjectReviewParameter;
+import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository;
+import com.howoocast.hywtl_has.project_review.view.ProjectReviewListView;
+import com.howoocast.hywtl_has.project_review.view.ProjectReviewView;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
@@ -25,31 +25,31 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProjectTargetReviewService {
+public class ProjectReviewService {
 
-    private final ProjectTargetReviewRepository repository;
+    private final ProjectReviewRepository repository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
 
     private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
-    public List<ProjectTargetReviewListView> getList(Long projectId) {
+    public List<ProjectReviewListView> getList(Long projectId) {
         return repository.findByProject_Id(projectId).stream()
-            .map(ProjectTargetReviewListView::assemble)
+            .map(ProjectReviewListView::assemble)
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ProjectTargetReviewView getOne(Long id) {
-        ProjectTargetReview instance = this.load(id);
-        return ProjectTargetReviewView.assemble(instance);
+    public ProjectReviewView getOne(Long id) {
+        ProjectReview instance = this.load(id);
+        return ProjectReviewView.assemble(instance);
     }
 
     @Transactional
-    public ProjectTargetReviewView add(Long projectId, String username, ProjectTargetReviewParameter params) {
+    public ProjectReviewView add(Long projectId, String username, ProjectReviewParameter params) {
         if (repository.findByCode(params.getCode()).isPresent()) {
-            throw new DuplicatedValueException("project-target-review", "code", params.getCode());
+            throw new DuplicatedValueException("project-review", "code", params.getCode());
         }
 
         Project project = projectRepository
@@ -58,7 +58,7 @@ public class ProjectTargetReviewService {
 
         User writer = userRepository.findByUsername(username)
             .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
-        ProjectTargetReview instance = ProjectTargetReview.of(
+        ProjectReview instance = ProjectReview.of(
             project,
             params.getStatus(),
             params.getCode(),
@@ -66,7 +66,7 @@ public class ProjectTargetReviewService {
             params.getTestList(),
             writer,
             params.getDetailList().stream()
-                .map(item -> ProjectTargetReviewDetail.of(
+                .map(item -> ProjectReviewDetail.of(
                     item.getBuildingName(),
                     item.getFloorCount(),
                     item.getBaseCount(),
@@ -87,22 +87,22 @@ public class ProjectTargetReviewService {
                 .orElse(null)
         );
 
-        return ProjectTargetReviewView.assemble(repository.save(instance));
+        return ProjectReviewView.assemble(repository.save(instance));
     }
 
     @Transactional
-    public void change(Long id, ProjectTargetReviewParameter params) {
+    public void change(Long id, ProjectReviewParameter params) {
         repository.findByCode(params.getCode()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("project-target-review", "code", params.getCode());
+                throw new DuplicatedValueException("project-review", "code", params.getCode());
             }
         });
 
-        ProjectTargetReview instance = this.load(id);
-        List<ProjectTargetReviewDetail> detailList = params.getDetailList().stream()
+        ProjectReview instance = this.load(id);
+        List<ProjectReviewDetail> detailList = params.getDetailList().stream()
             .map(detailParam -> {
                 if (Objects.isNull(detailParam.getId())) {
-                    return ProjectTargetReviewDetail.of(
+                    return ProjectReviewDetail.of(
                         detailParam.getBuildingName(),
                         detailParam.getFloorCount(),
                         detailParam.getBaseCount(),
@@ -114,10 +114,10 @@ public class ProjectTargetReviewService {
                         detailParam.getMemo2()
                     );
                 }
-                ProjectTargetReviewDetail detailInstance = instance.getDetailList().stream()
+                ProjectReviewDetail detailInstance = instance.getDetailList().stream()
                     .filter(item -> item.getId().equals(detailParam.getId()))
                     .findFirst()
-                    .orElseThrow(() -> new NotFoundException("project-target-review", detailParam.getId()));
+                    .orElseThrow(() -> new NotFoundException("project-review", detailParam.getId()));
                 detailInstance.change(
                     detailParam.getBuildingName(),
                     detailParam.getFloorCount(),
@@ -154,8 +154,7 @@ public class ProjectTargetReviewService {
         repository.findById(id).ifPresent(instance -> repository.deleteById(instance.getId()));
     }
 
-    private ProjectTargetReview load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project-target-review", id));
+    private ProjectReview load(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project-review", id));
     }
-
 }

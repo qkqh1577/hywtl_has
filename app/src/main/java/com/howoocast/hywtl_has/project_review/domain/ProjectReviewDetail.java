@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.project_target.domain;
+package com.howoocast.hywtl_has.project_review.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import java.util.List;
@@ -21,12 +21,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_target_review_detail")
+@Table(name = "project_review_detail")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_target_review_detail set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update project_review_detail set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectTargetReviewDetail extends CustomEntity {
+public class ProjectReviewDetail extends CustomEntity {
 
     @NotBlank
     @Column(nullable = false)
@@ -61,7 +61,7 @@ public class ProjectTargetReviewDetail extends CustomEntity {
 
     private String memo2; // 비고2
 
-    public static ProjectTargetReviewDetail of(
+    public static ProjectReviewDetail of(
         String buildingName,
         Integer floorCount,
         Integer baseCount,
@@ -72,7 +72,7 @@ public class ProjectTargetReviewDetail extends CustomEntity {
         String memo1,
         String memo2
     ) {
-        ProjectTargetReviewDetail instance = new ProjectTargetReviewDetail();
+        ProjectReviewDetail instance = new ProjectReviewDetail();
         instance.buildingName = buildingName;
         instance.floorCount = floorCount;
         instance.baseCount = baseCount;

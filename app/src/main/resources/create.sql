@@ -277,7 +277,7 @@ project_id bigint not null,
 writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review
+create table project_review
 (
 id bigint auto_increment primary key,
 code varchar(255) not null,
@@ -293,7 +293,7 @@ status varchar(255) not null,
 writer_id bigint not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review_detail
+create table project_review_detail
 (
 id bigint auto_increment primary key,
 area double not null,
@@ -312,35 +312,35 @@ modified_by bigint null,
 ratio double not null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review_detail_list
+create table project_review_detail_list
 (
-project_target_review_id bigint not null,
+project_review_id bigint not null,
 detail_list_id bigint not null,
-constraint UK_project_target_review_detail_list__detail_list_id unique (detail_list_id)
+constraint UK_project_review_detail_list__detail_list_id unique (detail_list_id)
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review_detail_special_wind_load_condition_list
+create table project_review_detail_special_wind_load_condition_list
 (
-project_target_review_detail_id bigint not null,
+project_review_detail_id bigint not null,
 special_wind_load_condition_list varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review_detail_test_list
+create table project_review_detail_test_list
 (
-project_target_review_detail_id bigint not null,
+project_review_detail_id bigint not null,
 test_list varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 
-create table project_target_review_file_list
+create table project_review_file_list
 (
-	project_target_review_id bigint not null,
+	project_review_id bigint not null,
 	file_list_id bigint not null,
-	constraint UK_project_target_review_file_list__file_list_id unique (file_list_id)
+	constraint UK_project_review_file_list__file_list_id unique (file_list_id)
 );
 
-create table project_target_review_test_list
+create table project_review_test_list
 (
-	project_target_review_id bigint not null,
+	project_review_id bigint not null,
 	test_list varchar(255) null
 ) engine = InnoDB DEFAULT CHARSET = utf8mb4;
 

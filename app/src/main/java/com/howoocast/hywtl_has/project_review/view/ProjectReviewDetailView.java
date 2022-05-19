@@ -1,11 +1,11 @@
-package com.howoocast.hywtl_has.project_target.view;
+package com.howoocast.hywtl_has.project_review.view;
 
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReviewDetail;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReviewDetail;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class ProjectTargetReviewDetailView {
+public class ProjectReviewDetailView {
 
     private Long id;
 
@@ -29,8 +29,8 @@ public class ProjectTargetReviewDetailView {
 
     private String memo2;
 
-    public static ProjectTargetReviewDetailView assemble(ProjectTargetReviewDetail source) {
-        ProjectTargetReviewDetailView target = new ProjectTargetReviewDetailView();
+    public static ProjectReviewDetailView assemble(ProjectReviewDetail source) {
+        ProjectReviewDetailView target = new ProjectReviewDetailView();
         target.id = source.getId();
         target.buildingName = source.getBuildingName();
         target.floorCount = source.getFloorCount();

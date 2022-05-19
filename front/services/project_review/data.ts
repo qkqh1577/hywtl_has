@@ -1,6 +1,6 @@
-import { ProjectTargetReviewStatus } from 'services/project_target';
+import { ProjectReviewStatus } from 'services/project_review';
 
-export const projectTargetReviewStatusList: ProjectTargetReviewStatus[] = [
+export const projectReviewStatusList: ProjectReviewStatus[] = [
   'DRAFT',
   'DRAFT_CONFIRMED',
   'SENT',
@@ -10,7 +10,7 @@ export const projectTargetReviewStatusList: ProjectTargetReviewStatus[] = [
   'COMPLETE'
 ];
 
-export const projectTargetReviewStatusName = (status: ProjectTargetReviewStatus): string => {
+export const projectReviewStatusName = (status: ProjectReviewStatus): string => {
   if (status === 'DRAFT') {
     return '초안';
   }

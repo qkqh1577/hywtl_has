@@ -10,8 +10,8 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetAd
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
-import com.howoocast.hywtl_has.project_target.repository.ProjectTargetReviewRepository;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
+import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
@@ -30,7 +30,7 @@ public class ProjectEstimateSheetService {
 
     private final ProjectRepository projectRepository;
 
-    private final ProjectTargetReviewRepository projectTargetReviewRepository;
+    private final ProjectReviewRepository projectReviewRepository;
 
     private final UserRepository userRepository;
 
@@ -61,8 +61,8 @@ public class ProjectEstimateSheetService {
         User salesManagementLeader = userRepository.findById(params.getSalesManagementLeaderId())
             .orElse(null);
 
-        ProjectTargetReview review = projectTargetReviewRepository.findById(params.getReviewId())
-            .orElseThrow(() -> new NotFoundException("project-target-review", params.getReviewId()));
+        ProjectReview review = projectReviewRepository.findById(params.getReviewId())
+            .orElseThrow(() -> new NotFoundException("project-review", params.getReviewId()));
 
         ProjectEstimateSheet instance = ProjectEstimateSheet.of(
             project,

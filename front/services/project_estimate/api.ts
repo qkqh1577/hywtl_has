@@ -7,7 +7,7 @@ import {
   ProjectEstimateSheetAddParameter,
 } from 'services/project_estimate';
 
-export class ProjectEstimateApi {
+class ProjectEstimateApi {
   async getOne(projectId: number): Promise<ProjectEstimate> {
     const { data } = await apiClient.get(`/projects/${projectId}/estimate`);
     return data;

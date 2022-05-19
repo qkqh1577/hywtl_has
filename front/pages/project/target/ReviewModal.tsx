@@ -26,16 +26,16 @@ import {
   useDialog
 } from 'components';
 import {
-  ProjectTargetReviewDetailParameter,
-  ProjectTargetReviewParameter,
-  ProjectTargetReviewStatus,
-  ProjectTargetReviewView as View,
-  initProjectTargetDetailReview as initDetailView,
-  initProjectTargetReview as initView,
-  projectTargetReviewStatusList,
-  projectTargetReviewStatusName,
-  useProjectTarget,
-} from 'services/project_target';
+  ProjectReviewDetailParameter,
+  ProjectReviewParameter,
+  ProjectReviewStatus,
+  ProjectReviewView as View,
+  initProjectDetailReview as initDetailView,
+  initProjectReview as initView,
+  projectReviewStatusList,
+  projectReviewStatusName,
+  useProjectReview,
+} from 'services/project_review';
 import {
   projectSpecialWindLoadConditionName
 } from 'services/project';
@@ -62,23 +62,23 @@ const columns: TableCellProperty[] = [
   { key: 'remove', label: '삭제', align: 'center', style: { minWidth: 15 } },
 ];
 
-const ProjectTargetReviewModal = () => {
+const ProjectReviewModal = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 
   const dialog = useDialog();
   const {
     state: {
-      reviewId,
-      reviewDetail: detail,
+      id,
+      detail,
     },
-    clearReviewId: clearModal,
-    getReview: getOne,
-    clearReview: clearOne,
-    addReview: add,
-    updateReview: update,
-    removeReview: remove,
-  } = useProjectTarget();
+    clearId,
+    getOne,
+    clearOne,
+    add,
+    update,
+    remove,
+  } = useProjectReview();
 
   const [edit, setEdit] = useState<boolean>(false);
   const [view, setView] = useState<View>(initView);
@@ -88,7 +88,7 @@ const ProjectTargetReviewModal = () => {
       setEdit(true);
     },
     remove: () => {
-      if (!reviewId) {
+      if (!id) {
         dialog.alert('검토가 선택되지 않았습니다.');
         return;
       }
@@ -97,7 +97,7 @@ const ProjectTargetReviewModal = () => {
         return;
       }
       dialog.remove('해당 검토를 삭제하시겠습니까?', () => {
-        remove(reviewId, () => {
+        remove(id, () => {
           dialog.alert('삭제하였습니다.');
           handler.close();
         });
@@ -111,7 +111,7 @@ const ProjectTargetReviewModal = () => {
       }
       const errors: any = {};
 
-      const status: ProjectTargetReviewStatus = values.status;
+      const status: ProjectReviewStatus = values.status;
       if (!status) {
         errors.status = '형상비 검토 상태 선택은 필수입니다.';
       }
@@ -124,7 +124,7 @@ const ProjectTargetReviewModal = () => {
       const landFigureCount: number | undefined = values.landFigureCount || undefined;
       const testList: string[] | undefined = Array.isArray(values.testList) && values.testList.length > 0 ? values.testList : undefined;
 
-      const detailList: ProjectTargetReviewDetailParameter[] = (values.detailList as any[])
+      const detailList: ProjectReviewDetailParameter[] = (values.detailList as any[])
       .map((item, index) => {
         const detailErrors: any = {};
 
@@ -179,7 +179,7 @@ const ProjectTargetReviewModal = () => {
           }
           return null;
         }
-        const detail: ProjectTargetReviewDetailParameter = {
+        const detail: ProjectReviewDetailParameter = {
           buildingName,
           floorCount,
           baseCount,
@@ -194,7 +194,7 @@ const ProjectTargetReviewModal = () => {
         return detail;
       })
       .filter(item => item != null)
-      .map(item => item as ProjectTargetReviewDetailParameter);
+      .map(item => item as ProjectReviewDetailParameter);
 
       if (detailList.length === 0) {
         errors['detailList.size'] = '건축물 항목은 하나 이상 필수입니다.';
@@ -214,7 +214,7 @@ const ProjectTargetReviewModal = () => {
         return;
       }
 
-      const params: ProjectTargetReviewParameter = {
+      const params: ProjectReviewParameter = {
         status,
         code,
         landFigureCount,
@@ -222,7 +222,7 @@ const ProjectTargetReviewModal = () => {
         detailList,
         fileList,
       };
-      (reviewId ? update : add)((reviewId ?? projectId), params, () => {
+      (id ? update : add)((id ?? projectId), params, () => {
         dialog.alert('저장되었습니다.');
         handler.init();
       });
@@ -230,7 +230,7 @@ const ProjectTargetReviewModal = () => {
     },
     init: () => {
       setEdit(false);
-      clearModal();
+      clearId();
       clearOne();
       handler.updateView();
     },
@@ -276,12 +276,12 @@ const ProjectTargetReviewModal = () => {
   };
 
   useEffect(() => {
-    if (typeof reviewId === 'number') {
-      getOne(reviewId);
-    } else if (reviewId === null) {
+    if (typeof id === 'number') {
+      getOne(id);
+    } else if (id === null) {
       setEdit(true);
     }
-  }, [reviewId]);
+  }, [id]);
 
   useEffect(() => {
     handler.updateView();
@@ -289,7 +289,7 @@ const ProjectTargetReviewModal = () => {
 
   return (
     <Modal
-      open={typeof reviewId !== 'undefined'}
+      open={typeof id !== 'undefined'}
       onClose={handler.close}
     >
       <Paper sx={{
@@ -309,7 +309,7 @@ const ProjectTargetReviewModal = () => {
           height: '50px',
           mb: '40px',
         }}>
-          <h2>형상비 검토 {reviewId === null ? '등록' : '상세'}</h2>
+          <h2>형상비 검토 {id === null ? '등록' : '상세'}</h2>
           <IconButton
             color="primary"
             onClick={handler.close}
@@ -359,9 +359,9 @@ const ProjectTargetReviewModal = () => {
                         value={values.status}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        options={projectTargetReviewStatusList.map(item => ({
+                        options={projectReviewStatusList.map(item => ({
                           key: item as string,
-                          text: projectTargetReviewStatusName(item),
+                          text: projectReviewStatusName(item),
                         }))}
                         disabled={!edit}
                         required
@@ -420,7 +420,7 @@ const ProjectTargetReviewModal = () => {
                           flexWrap: 'wrap',
                           justifyContent: 'right'
                         }}>
-                          {reviewId && (
+                          {id && (
                             <Button
                               color="secondary"
                               variant="contained"
@@ -769,4 +769,4 @@ const ProjectTargetReviewModal = () => {
   );
 };
 
-export default ProjectTargetReviewModal;
+export default ProjectReviewModal;

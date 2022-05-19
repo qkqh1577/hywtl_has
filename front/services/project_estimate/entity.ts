@@ -1,5 +1,5 @@
 import { ListUser } from 'services/user';
-import { ProjectTargetReview } from 'services/project_target';
+import { ProjectReview } from 'services/project_review';
 
 export type ProjectEstimateSheetStatus = 'DRAFT'
   | 'DRAFT_CONFIRMED'
@@ -59,7 +59,7 @@ export type ProjectEstimateSheet = {
   expectedStartMonth?: Date;
   salesTeamLeader: ListUser;
   salesManagementLeader?: ListUser;
-  review: ProjectTargetReview;
+  review: ProjectReview;
   detailList: ProjectEstimateSheetDetail[];
   specialDiscount?: number;
   commentList: ProjectEstimateSheetComment[];

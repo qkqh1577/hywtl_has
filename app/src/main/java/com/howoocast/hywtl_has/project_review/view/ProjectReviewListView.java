@@ -1,8 +1,8 @@
-package com.howoocast.hywtl_has.project_target.view;
+package com.howoocast.hywtl_has.project_review.view;
 
-import com.howoocast.hywtl_has.project_target.common.ProjectTargetReviewStatus;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReviewDetail;
+import com.howoocast.hywtl_has.project_review.common.ProjectReviewStatus;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReviewDetail;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,11 +12,10 @@ import java.util.function.Consumer;
 import lombok.Getter;
 
 @Getter
-public class ProjectTargetReviewListView {
-
+public class ProjectReviewListView {
     private Long id;
 
-    private ProjectTargetReviewStatus status;
+    private ProjectReviewStatus status;
 
     private Boolean confirmed;
 
@@ -34,8 +33,8 @@ public class ProjectTargetReviewListView {
 
     private LocalDateTime modifiedAt;
 
-    public static ProjectTargetReviewListView assemble(ProjectTargetReview source) {
-        ProjectTargetReviewListView target = new ProjectTargetReviewListView();
+    public static ProjectReviewListView assemble(ProjectReview source) {
+        ProjectReviewListView target = new ProjectReviewListView();
         target.id = source.getId();
         target.status = source.getStatus();
         target.confirmed = Optional.ofNullable(source.getEstimateSheetList())
@@ -50,7 +49,7 @@ public class ProjectTargetReviewListView {
         return target;
     }
 
-    private static List<String> getTestList(ProjectTargetReview source) {
+    private static List<String> getTestList(ProjectReview source) {
         List<String> testList = new ArrayList<>();
         Consumer<List<String>> addTestList = (l) -> l.forEach(test -> {
             if (!testList.contains(test)) {
@@ -58,7 +57,7 @@ public class ProjectTargetReviewListView {
             }
         });
         Optional.ofNullable(source.getTestList()).ifPresent(addTestList);
-        source.getDetailList().stream().map(ProjectTargetReviewDetail::getTestList).forEach(addTestList);
+        source.getDetailList().stream().map(ProjectReviewDetail::getTestList).forEach(addTestList);
         return testList;
     }
 }

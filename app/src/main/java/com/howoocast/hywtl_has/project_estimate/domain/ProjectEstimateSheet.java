@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import java.util.List;
@@ -78,7 +78,7 @@ public class ProjectEstimateSheet extends CustomEntity {
 
     @NotNull
     @ManyToOne
-    private ProjectTargetReview review; // 형상비 검토
+    private ProjectReview review; // 형상비 검토
 
     @NotEmpty
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
@@ -103,7 +103,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
-        ProjectTargetReview review,
+        ProjectReview review,
         List<ProjectEstimateSheetDetail> detailList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList

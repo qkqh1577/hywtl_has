@@ -121,7 +121,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("project-comment", "프로젝트 메모");
         this.put("project-target", "프로젝트 실험 대상");
         this.put("project-target-document", "실험 대상 형상비 검토 자료");
-        this.put("project-target-review", "실험 대상 형상비 검토");
+        this.put("project-review", "형상비 검토");
         this.put("qualified", "승인");
         this.put("recommender", "추천인");
         this.put("relationship", "관계");

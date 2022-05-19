@@ -4,7 +4,6 @@ import { RootState } from 'services/common/reducer';
 import {
   ProjectTargetDocumentAddParameter,
   ProjectTargetDocumentChangeParameter,
-  ProjectTargetReviewParameter,
   projectTargetActions,
 } from 'services/project_target';
 
@@ -12,66 +11,6 @@ export default function useProjectTarget() {
   const state = useSelector((state: RootState) => state.projectTarget);
   const dispatch = useDispatch();
 
-  const getReviewList = useCallback(
-    (projectId: number) =>
-      dispatch(projectTargetActions.getReviewList(projectId)),
-    [dispatch]
-  );
-
-  const clearReviewList = useCallback(
-    () =>
-      dispatch(projectTargetActions.setReviewList(undefined)),
-    [dispatch],
-  );
-
-  const getReview = useCallback(
-    (reviewId: number) =>
-      dispatch(projectTargetActions.getReview(reviewId)),
-    [dispatch]
-  );
-
-  const clearReview = useCallback(
-    () =>
-      dispatch(projectTargetActions.setReview(undefined)),
-    [dispatch]
-  );
-
-  const addReview = useCallback(
-    (projectId: number, params: ProjectTargetReviewParameter, callback: () => void) =>
-      dispatch(projectTargetActions.addReview({ projectId, params, callback })),
-    [dispatch]
-  );
-
-
-  const updateReview = useCallback(
-    (id: number, params: ProjectTargetReviewParameter, callback: () => void) =>
-      dispatch(projectTargetActions.updateReview({ id, params, callback })),
-    [dispatch]
-  );
-
-  const removeReview = useCallback(
-    (id: number, callback: () => void) =>
-      dispatch(projectTargetActions.removeReview({ id, callback })),
-    [dispatch]
-  );
-
-  const confirmReview = useCallback(
-    (id: number, callback: () => void) =>
-      dispatch(projectTargetActions.confirmReview({ id, callback })),
-    [dispatch]
-  );
-
-  const setReviewId = useCallback(
-    (reviewId: number | null) =>
-      dispatch(projectTargetActions.setReviewId(reviewId)),
-    [dispatch],
-  );
-
-  const clearReviewId = useCallback(
-    () =>
-      dispatch(projectTargetActions.setReviewId(undefined)),
-    [dispatch]
-  );
 
   const getDocumentList = useCallback(
     (projectId: number) =>
@@ -129,16 +68,6 @@ export default function useProjectTarget() {
 
   return {
     state,
-    getReviewList,
-    clearReviewList,
-    getReview,
-    clearReview,
-    addReview,
-    updateReview,
-    removeReview,
-    confirmReview,
-    setReviewId,
-    clearReviewId,
     getDocumentList,
     clearDocumentList,
     getDocument,

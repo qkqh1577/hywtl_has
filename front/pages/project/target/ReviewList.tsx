@@ -6,20 +6,20 @@ import {
   Link,
 } from '@mui/material';
 import { Table, DateFormat, UserFormat, Container } from 'components';
-import { projectTargetReviewStatusName, useProjectTarget } from 'services/project_target';
+import { projectReviewStatusName, useProjectReview } from 'services/project_review';
 import { findModifiedAt } from 'util/DateUtil';
 
-const ProjectTargetReviewList = () => {
+const ProjectReviewList = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
     state: {
-      reviewList: list,
-      reviewId,
+      list,
+      id,
     },
-    getReviewList: getList,
-    setReviewId: setId,
-  } = useProjectTarget();
+    getList,
+    setId,
+  } = useProjectReview();
   const [modifiedAt, setModifiedAt] = useState<Date | undefined>();
 
   const handler = {
@@ -32,10 +32,10 @@ const ProjectTargetReviewList = () => {
   };
 
   useEffect(() => {
-    if (!reviewId && projectId) {
+    if (!id && projectId) {
       getList(projectId);
     }
-  }, [reviewId, projectId]);
+  }, [id, projectId]);
 
   useEffect(() => {
     setModifiedAt(findModifiedAt(list));
@@ -104,7 +104,7 @@ const ProjectTargetReviewList = () => {
           },
           {
             label: '상태',
-            renderCell: (item) => projectTargetReviewStatusName(item.status),
+            renderCell: (item) => projectReviewStatusName(item.status),
           },
           {
             label: '대상 동수',
@@ -156,4 +156,4 @@ const ProjectTargetReviewList = () => {
   );
 };
 
-export default ProjectTargetReviewList;
+export default ProjectReviewList;

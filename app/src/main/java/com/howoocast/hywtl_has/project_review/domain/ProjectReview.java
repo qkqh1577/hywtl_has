@@ -1,11 +1,11 @@
-package com.howoocast.hywtl_has.project_target.domain;
+package com.howoocast.hywtl_has.project_review.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.file.domain.FileItem;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
-import com.howoocast.hywtl_has.project_target.common.ProjectTargetReviewStatus;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
+import com.howoocast.hywtl_has.project_review.common.ProjectReviewStatus;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -34,12 +34,12 @@ import org.springframework.lang.Nullable;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_target_review")
+@Table(name = "project_review")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_target_review set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update project_review set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectTargetReview extends CustomEntity {
+public class ProjectReview  extends CustomEntity {
 
     @Getter(AccessLevel.NONE)
     @JsonBackReference
@@ -49,7 +49,7 @@ public class ProjectTargetReview extends CustomEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(nullable = false)
-    private ProjectTargetReviewStatus status; // 상태
+    private ProjectReviewStatus status; // 상태
 
     @NotBlank
     @Column(nullable = false)
@@ -67,7 +67,7 @@ public class ProjectTargetReview extends CustomEntity {
     @NotEmpty
     @OneToMany(cascade = CascadeType.ALL)
     @OrderBy("id asc")
-    private List<ProjectTargetReviewDetail> detailList; // 검토 상세 목록
+    private List<ProjectReviewDetail> detailList; // 검토 상세 목록
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderBy("createdAt desc")
@@ -86,17 +86,17 @@ public class ProjectTargetReview extends CustomEntity {
     //////////////////////////////////
     //// builder
     //////////////////////////////////
-    public static ProjectTargetReview of(
+    public static ProjectReview of(
         Project project,
-        ProjectTargetReviewStatus status,
+        ProjectReviewStatus status,
         String code,
         Integer landFigureCount,
         @Nullable List<String> testList,
         User writer,
-        List<ProjectTargetReviewDetail> detailList,
+        List<ProjectReviewDetail> detailList,
         @Nullable List<FileItem> fileList
     ) {
-        ProjectTargetReview instance = new ProjectTargetReview();
+        ProjectReview instance = new ProjectReview();
         instance.project = project;
         instance.status = status;
         instance.code = code;
@@ -109,11 +109,11 @@ public class ProjectTargetReview extends CustomEntity {
     }
 
     public void change(
-        ProjectTargetReviewStatus status,
+        ProjectReviewStatus status,
         String code,
         Integer landFigureCount,
         @Nullable List<String> testList,
-        List<ProjectTargetReviewDetail> detailList,
+        List<ProjectReviewDetail> detailList,
         @Nullable List<FileItem> fileList
     ) {
         this.status = status;

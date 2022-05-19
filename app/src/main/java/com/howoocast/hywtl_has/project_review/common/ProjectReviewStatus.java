@@ -1,9 +1,9 @@
-package com.howoocast.hywtl_has.project_target.common;
+package com.howoocast.hywtl_has.project_review.common;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ProjectTargetReviewStatus {
+public enum ProjectReviewStatus {
 
     DRAFT("초안"),
     DRAFT_CONFIRMED("초안확정"),

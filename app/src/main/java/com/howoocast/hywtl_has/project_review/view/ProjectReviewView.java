@@ -1,33 +1,33 @@
-package com.howoocast.hywtl_has.project_target.view;
+package com.howoocast.hywtl_has.project_review.view;
 
 import com.howoocast.hywtl_has.file.view.FileItemView;
-import com.howoocast.hywtl_has.project_target.common.ProjectTargetReviewStatus;
-import com.howoocast.hywtl_has.project_target.domain.ProjectTargetReview;
+import com.howoocast.hywtl_has.project_review.common.ProjectReviewStatus;
+import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
-public class ProjectTargetReviewView {
+public class ProjectReviewView {
 
     private Long id;
 
-    private ProjectTargetReviewStatus status;
+    private ProjectReviewStatus status;
 
     private Boolean confirmed;
 
     private String code;
 
     private Integer landFigureCount;
-    private List<ProjectTargetReviewDetailView> detailList;
+    private List<ProjectReviewDetailView> detailList;
 
     private List<String> testList;
 
     private List<FileItemView> fileList;
 
-    public static ProjectTargetReviewView assemble(ProjectTargetReview source) {
-        ProjectTargetReviewView target = new ProjectTargetReviewView();
+    public static ProjectReviewView assemble(ProjectReview source) {
+        ProjectReviewView target = new ProjectReviewView();
         target.id = source.getId();
         target.status = source.getStatus();
         target.confirmed = Optional.ofNullable(source.getEstimateSheetList())
@@ -35,7 +35,7 @@ public class ProjectTargetReviewView {
         target.code = source.getCode();
         target.landFigureCount = source.getLandFigureCount();
         target.detailList = source.getDetailList().stream()
-            .map(ProjectTargetReviewDetailView::assemble)
+            .map(ProjectReviewDetailView::assemble)
             .collect(Collectors.toList());
         target.testList = source.getTestList();
         target.fileList = Optional.ofNullable(source.getFileList())
@@ -43,5 +43,4 @@ public class ProjectTargetReviewView {
             .orElse(null);
         return target;
     }
-
 }
