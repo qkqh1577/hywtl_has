@@ -72,7 +72,7 @@ public class BusinessService {
             params.getRegistrationNumber(),
             params.getAddress(),
             params.getZipCode(),
-            params.getPhone(),
+            params.getOfficePhone(),
             params.getMemo(),
             managerList
         );
@@ -89,7 +89,7 @@ public class BusinessService {
             params.getRegistrationNumber(),
             params.getAddress(),
             params.getZipCode(),
-            params.getPhone(),
+            params.getOfficePhone(),
             params.getMemo(),
             params.getManagerList().stream()
                 .map(manager -> BusinessManager.of(
