@@ -13,7 +13,7 @@ public class BusinessView {
     String registrationNumber; // 사업자번호
     String address; // 주소
     String zipCode; // 우편번호
-    String phone; // 대표 전화번호
+    String officePhone; // 대표 전화번호
     String memo; // 비고
     List<BusinessManagerView> managerList;
 
@@ -25,7 +25,7 @@ public class BusinessView {
         target.registrationNumber = business.getRegistrationNumber();
         target.address = business.getAddress();
         target.zipCode = business.getZipCode();
-        target.phone = business.getPhone();
+        target.officePhone = business.getOfficePhone();
         target.memo = business.getMemo();
         target.managerList = business.getManagerList().stream()
                 .map(BusinessManagerView::assemble)

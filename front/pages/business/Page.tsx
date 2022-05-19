@@ -35,7 +35,7 @@ const columns: TableCellProperty[] = [
   { key: 'representativeName', label: '대표명', style: { minWidth: 100 }, align: 'center' },
   { key: 'registrationNumber', label: '사업자번호', style: { minWidth: 100 }, align: 'center' },
   { key: 'address', label: '주소', style: { minWidth: 100 }, align: 'center' },
-  { key: 'phone', label: '대표 전화번호', style: { minWidth: 100 }, align: 'center' },
+  { key: 'officePhone', label: '대표 전화번호', style: { minWidth: 100 }, align: 'center' },
   { key: 'managerCount', label: '담당자', style: { minWidth: 100 }, align: 'center' },
   { key: 'projectCount', label: '참여 프로젝트 총 개수', style: { minWidth: 100 }, align: 'center' },
   { key: 'memo', label: '비고', style: { minWidth: 100 }, align: 'center' },
@@ -216,7 +216,7 @@ const Page = () => {
                     <TableCell align="center">{business.representativeName}</TableCell>
                     <TableCell align="center">{business.registrationNumber}</TableCell>
                     <TableCell align="center">{business.address}</TableCell>
-                    <TableCell align="center">{business.phone}</TableCell>
+                    <TableCell align="center">{business.officePhone}</TableCell>
                     <TableCell align="center">{business.managerCount}명</TableCell>
                     <TableCell align="center">{}</TableCell>
                     <TableCell align="center">{business.memo}</TableCell>

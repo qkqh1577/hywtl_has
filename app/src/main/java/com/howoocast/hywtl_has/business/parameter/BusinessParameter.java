@@ -22,7 +22,7 @@ public class BusinessParameter {
 
     private String zipCode;
 
-    private String phone;
+    private String officePhone;
 
     private String memo;
 

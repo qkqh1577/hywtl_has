@@ -37,7 +37,7 @@ public class Business extends CustomEntity {
 
     private String zipCode; // 우편번호
 
-    private String phone; // 대표 전화번호
+    private String officePhone; // 대표 전화번호
 
     private String memo; // 비고
 
@@ -50,7 +50,7 @@ public class Business extends CustomEntity {
         String registrationNumber,
         String address,
         String zipCode,
-        String phone,
+        String officePhone,
         String memo,
         List<BusinessManager> managerList
     ) {
@@ -60,7 +60,7 @@ public class Business extends CustomEntity {
         instance.registrationNumber = registrationNumber;
         instance.address = address;
         instance.zipCode = zipCode;
-        instance.phone = phone;
+        instance.officePhone = officePhone;
         instance.memo = memo;
         instance.managerList = managerList;
         return instance;
@@ -72,7 +72,7 @@ public class Business extends CustomEntity {
         String registrationNumber,
         String address,
         String zipCode,
-        String phone,
+        String officePhone,
         String memo,
         List<BusinessManager> managerList
     ) {
@@ -81,7 +81,7 @@ public class Business extends CustomEntity {
         this.registrationNumber = registrationNumber;
         this.address = address;
         this.zipCode = zipCode;
-        this.phone = phone;
+        this.officePhone = officePhone;
         this.memo = memo;
         this.managerList = managerList;
     }

@@ -49,7 +49,7 @@ const Page = () => {
   const initBusinessValue = {
     name: detail?.name || '',
     representativeName: detail?.representativeName || '',
-    phone: detail?.phone || '',
+    officePhone: detail?.officePhone || '',
     registrationNumber: detail?.registrationNumber || '',
     address: detail?.address || '',
     zipCode: detail?.zipCode || '',
@@ -75,7 +75,7 @@ const Page = () => {
         id,
         name: values.name,
         representativeName: values.representativeName,
-        phone: values.phone,
+        officePhone: values.officePhone,
         registrationNumber: values.registrationNumber,
         address: values.address,
         zipCode: values.zipCode,
@@ -142,9 +142,9 @@ const Page = () => {
                     </Grid>
                     <Grid item sm={6}>
                       <DataField
-                        name="phone"
+                        name="officePhone"
                         label="대표 전화번호"
-                        value={values.phone}
+                        value={values.officePhone}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         placeholder="-를 제외하고 입력"

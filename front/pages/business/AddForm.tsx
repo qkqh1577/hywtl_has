@@ -34,7 +34,7 @@ const initBusinessManagerListValue = [
 const initBusinessValue = {
   name: '',
   representativeName: '',
-  phone: '',
+  officePhone: '',
   registrationNumber: '',
   address: '',
   zipCode: '',
@@ -72,7 +72,7 @@ const Page = () => {
       const errors: any = {
         name: {},
         representativeName: {},
-        phone: {},
+        officePhone: {},
         registrationNumber: {},
         address: {},
         zipCode: {},
@@ -96,7 +96,7 @@ const Page = () => {
       const params: BusinessAddParameter = {
         name: values.name,
         representativeName: values.representativeName,
-        phone: values.phone,
+        officePhone: values.officePhone,
         registrationNumber: values.registrationNumber,
         address: values.address,
         zipCode: values.zipCode,
@@ -164,9 +164,9 @@ const Page = () => {
                     </Grid>
                     <Grid item sm={6}>
                       <DataField
-                        name="phone"
+                        name="officePhone"
                         label="대표 전화번호"
-                        value={values.phone}
+                        value={values.officePhone}
                         setFieldValue={setFieldValue}
                         errors={errors}
                         placeholder="-를 제외하고 입력"

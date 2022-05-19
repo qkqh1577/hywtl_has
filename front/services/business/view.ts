@@ -14,7 +14,7 @@ export type BusinessView = {
   registrationNumber: string;
   address?: string;
   zipCode?: string;
-  phone?: string;
+  officePhone?: string;
   memo?: string;
   managerList?: BusinessManagerView[]
 };

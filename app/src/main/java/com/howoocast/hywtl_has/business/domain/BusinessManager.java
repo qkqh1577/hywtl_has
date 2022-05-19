@@ -39,7 +39,7 @@ public class BusinessManager extends CustomEntity {
         String name,
         String position,
         String mobile,
-        String phone,
+        String officePhone,
         String email,
         String state
     ) {
@@ -47,7 +47,7 @@ public class BusinessManager extends CustomEntity {
         manager.name = name;
         manager.position = position;
         manager.mobile = mobile;
-        manager.phone = phone;
+        manager.phone = officePhone;
         manager.email = email;
         manager.state = state;
         return manager;

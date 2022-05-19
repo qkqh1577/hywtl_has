@@ -25,7 +25,7 @@ export type BusinessManagerAddParameter = {
 export type BusinessAddParameter = {
   name: string;
   representativeName?: string;
-  phone?: string;
+  officePhone?: string;
   registrationNumber: string;
   address?: string;
   zipCode?: string;
@@ -37,7 +37,7 @@ export type BusinessChangeParameter = {
   id: number
   name: string;
   representativeName?: string;
-  phone?: string;
+  officePhone?: string;
   registrationNumber: string;
   address?: string;
   zipCode?: string;

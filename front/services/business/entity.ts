@@ -4,7 +4,7 @@ export type BusinessList = {
   representativeName?: string;
   registrationNumber: string;
   address?: string;
-  phone?: string;
+  officePhone?: string;
   managerCount: number;
   memo?: string;
 }
@@ -27,7 +27,7 @@ export type BusinessDetail = {
   registrationNumber: string;
   address?: string;
   zipCode?: string;
-  phone?: string;
+  officePhone?: string;
   memo?: string;
   managerList?: BusinessManagerDetail[];
 }
@@ -46,7 +46,7 @@ export type Business = {
   id: number,
   name: string;
   representativeName?: string;
-  phone?: string;
+  officePhone?: string;
   registrationNumber: string;
   address?: string;
   zipCode?: string;
