@@ -36,7 +36,7 @@ export type DataFieldProps = {
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   size?: 'small';
-  labelDisabled?: boolean;
+  disableLabel?: boolean;
 }
 export const optionKey = (option: Option | DataFieldValue): DataFieldValue => {
   if (typeof option === 'string' || typeof option === 'number') {
@@ -81,7 +81,7 @@ const DataField = ({
   onKeyDown,
   onKeyUp,
   size,
-  labelDisabled
+  disableLabel
 }: DataFieldProps) => {
 
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
@@ -142,7 +142,7 @@ const DataField = ({
         id={`params-${name}`}
         name={name}
         value={viewValue}
-        label={labelDisabled ? undefined : label}
+        label={disableLabel ? undefined : label}
         onChange={(e) => {
           const rawValue = e.target.value ?? '';
           if (type === 'amount') {

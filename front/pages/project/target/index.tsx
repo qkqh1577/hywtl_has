@@ -1,17 +1,11 @@
 import React from 'react';
-import ProjectTargetDetail from 'pages/project/target/Target';
-import ProjectTargetReviewList from 'pages/project/target/ReviewList';
-import ProjectTargetReviewModal from 'pages/project/target/ReviewModal';
-import ProjectTargetDocumentList from 'pages/project/target/DocumentList';
-import ProjectTargetDocumentModal from 'pages/project/target/DocumentModal';
+import ProjectTargetList from 'pages/project/target/List';
+import ProjectTargetModal from 'pages/project/target/Modal';
 
 const ProjectTargetContainer = () => (
   <>
-    <ProjectTargetDetail />
-    <ProjectTargetReviewList />
-    <ProjectTargetDocumentList />
-    <ProjectTargetReviewModal />
-    <ProjectTargetDocumentModal />
+    <ProjectTargetList />
+    <ProjectTargetModal />
   </>
 );
 

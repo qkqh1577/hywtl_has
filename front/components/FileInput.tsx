@@ -31,7 +31,7 @@ export type FileInputProps = {
   helperText?: string | React.ReactNode;
   sx?: object;
   size?: 'small';
-  labelDisabled?: boolean;
+  disableLabel?: boolean;
 }
 
 const FileInput = ({
@@ -48,7 +48,7 @@ const FileInput = ({
   helperText,
   sx,
   size,
-  labelDisabled
+  disableLabel
 }: FileInputProps) => {
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
@@ -118,7 +118,7 @@ const FileInput = ({
                 htmlFor={`params-${name}-label`}
                 error={typeof errors[name] === 'string'}
               >
-                {labelDisabled ? undefined : label}
+                {disableLabel ? undefined : label}
               </InputLabel>
               <Input
                 type="text"

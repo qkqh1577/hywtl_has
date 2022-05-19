@@ -24,6 +24,7 @@ import { ProjectAddModal } from 'pages/project';
 import ProjectInfoContainer from 'pages/project/info';
 import ProjectTargetContainer from 'pages/project/target';
 import ProjectEstimateContainer from 'pages/project/estimate';
+import ProjectReviewContainer from 'pages/project/review';
 
 const ProjectContainer = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -200,7 +201,12 @@ const ProjectContainer = () => {
       </Paper>
       <Routes>
         <Route path="basic" element={<ProjectInfoContainer />} />
-        <Route path="building" element={<ProjectTargetContainer />} />
+        <Route path="building" element={
+          <>
+            <ProjectReviewContainer />
+            <ProjectTargetContainer />
+          </>
+        } />
         <Route path="bid" element={<ProjectEstimateContainer />} />
         <Route path="contract" element={<h2>contract</h2>} />
         <Route path="schedule" element={<h2>schedule</h2>} />

@@ -8,7 +8,7 @@ import {
   ListDepartment,
 } from 'services/department';
 
-export class DepartmentApi {
+class DepartmentApi {
   async getAll(type?: string): Promise<ListDepartment[]> {
     const { data } = await apiClient.get('/departments', {
       type: type ?? 'as-list'

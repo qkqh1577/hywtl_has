@@ -6,19 +6,8 @@ import {
   useProjectEstimate,
   projectEstimateSheetStatusName
 } from 'services/project_estimate';
+import { findModifiedAt } from 'util/DateUtil';
 
-const maxDate = (a: Date | undefined, b: Date | undefined): Date | undefined => {
-  if (typeof a === 'undefined' && typeof b === 'undefined') {
-    return undefined;
-  }
-  if (typeof a === 'undefined') {
-    return b;
-  }
-  if (typeof b === 'undefined') {
-    return a;
-  }
-  return a.getTime() > b.getTime() ? a : b;
-};
 
 const ProjectEstimateSheetList = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -50,15 +39,7 @@ const ProjectEstimateSheetList = () => {
   }, [projectId]);
 
   useEffect(() => {
-    if (Array.isArray(list)) {
-      const createdAt = list
-      .map(item => item.createdAt)
-      .reduce(maxDate, undefined);
-      const modifiedAt = list
-      .map(item => item.modifiedAt)
-      .reduce(maxDate, undefined);
-      setModifiedAt(maxDate(createdAt, modifiedAt));
-    }
+    setModifiedAt(findModifiedAt(list));
   }, [list]);
 
   return (

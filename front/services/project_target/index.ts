@@ -1,5 +1,4 @@
 export * from './actions';
-export * from './data';
 export * from './entity';
 export * from './reducer';
 export * from './parameter';

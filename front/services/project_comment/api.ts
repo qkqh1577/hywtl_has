@@ -7,7 +7,7 @@ import {
   ProjectCommentQuery,
 } from 'services/project_comment';
 
-export class ProjectCommentApi {
+class ProjectCommentApi {
   async getPage(query: ProjectCommentQuery): Promise<Page<ProjectComment>> {
     const { data } = await apiClient.get('/project-comments', query);
     return data;

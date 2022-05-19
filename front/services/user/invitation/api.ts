@@ -5,7 +5,7 @@ import {
   UserInvitationQuery
 } from 'services/user/invitation';
 
-export class UserInvitationApi {
+class UserInvitationApi {
   async invite(params: UserInvitationInviteParameter): Promise<UserInvitation> {
     const { data } = await apiClient.post('/user-verification/user-invitation', params);
     return data;

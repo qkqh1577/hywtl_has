@@ -70,13 +70,6 @@ public class Project extends CustomEntity {
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "landModelCount", column = @Column(name = "target__land_model_count")),
-        @AttributeOverride(name = "modifiedAt", column = @Column(name = "target__modified_at"))
-    })
-    private ProjectTarget target;
-
-    @Embedded
-    @AttributeOverrides({
         @AttributeOverride(name = "receivedDate", column = @Column(name = "estimate__received_date")),
         @AttributeOverride(name = "figureLevel", column = @Column(name = "estimate__figure_level")),
         @AttributeOverride(name = "testLevel", column = @Column(name = "estimate__test_level")),
@@ -172,17 +165,6 @@ public class Project extends CustomEntity {
             beginDate,
             closeDate,
             isOnGoing
-        );
-    }
-
-    public void changeTarget(
-        Integer landModelCount
-    ) {
-        if (Objects.isNull(this.target)) {
-            this.target = new ProjectTarget();
-        }
-        this.target.change(
-            landModelCount
         );
     }
 

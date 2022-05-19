@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
-import com.howoocast.hywtl_has.project_target_review.view.ProjectTargetReviewView;
+import com.howoocast.hywtl_has.project_review.view.ProjectReviewView;
 import com.howoocast.hywtl_has.user.view.UserListView;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +30,7 @@ public class ProjectEstimateSheetView {
 
     private UserListView salesManagerLeader;
 
-    private ProjectTargetReviewView review;
+    private ProjectReviewView review;
 
     private List<ProjectEstimateSheetDetailView> detailList;
 
@@ -49,7 +49,7 @@ public class ProjectEstimateSheetView {
         target.expectedStartMonth = source.getExpectedStartMonth();
         target.salesTeamLeader = UserListView.assemble(source.getSalesTeamLeader());
         target.salesManagerLeader = UserListView.assemble(source.getSalesManagementLeader());
-        target.review = ProjectTargetReviewView.assemble(source.getReview());
+        target.review = ProjectReviewView.assemble(source.getReview());
         target.detailList = source.getDetailList().stream()
             .map(ProjectEstimateSheetDetailView::assemble)
             .collect(Collectors.toList());

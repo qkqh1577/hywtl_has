@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class ProjectStatusParameter {
 
-    @NotNull(message = "project.basic.status.not-null")
+    @NotNull(message = "project-basic.status.not-null")
     private ProjectStatus status;
 
 }
