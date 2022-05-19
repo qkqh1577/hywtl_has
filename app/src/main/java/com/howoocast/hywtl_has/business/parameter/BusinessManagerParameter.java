@@ -15,7 +15,7 @@ public class BusinessManagerParameter {
 
     private String mobilePhone;
 
-    private String phone;
+    private String officePhone;
 
     private String email;
 

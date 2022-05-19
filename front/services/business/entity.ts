@@ -14,7 +14,7 @@ export type BusinessManagerDetail = {
   name?: string;
   jobTitle?: string;
   mobilePhone?: string;
-  phone?: string;
+  officePhone?: string;
   email?: string;
   meta?: string[];
   state?: string;
@@ -36,7 +36,7 @@ type BusinessManager = {
   name?: string;
   jobTitle?: string;
   mobilePhone?: string;
-  phone?: string;
+  officePhone?: string;
   email?: string;
   meta?: string[];
   state?: string;

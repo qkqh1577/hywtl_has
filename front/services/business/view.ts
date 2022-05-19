@@ -2,7 +2,7 @@ export type BusinessManagerView = {
   name?: string;
   jobTitle?: string;
   mobilePhone?: string;
-  phone?: string;
+  officePhone?: string;
   email?: string;
   meta?: string[];
   state?: string;

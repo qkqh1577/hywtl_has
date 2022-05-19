@@ -24,7 +24,7 @@ const initBusinessManagerListValue = [
     name: '',
     jobTitle: '',
     mobilePhone: '',
-    phone: '',
+    officePhone: '',
     email: '',
     meta: [],
     state: ''
@@ -87,7 +87,7 @@ const Page = () => {
         (manager: any) => manager.name
           || manager.jobTitle
           || manager.mobilePhone
-          || manager.phone
+          || manager.officePhone
           || manager.email
           || manager.meta.length > 0
           || manager.state
@@ -302,9 +302,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${i}.phone`}
+                            name={`managerList.${i}.officePhone`}
                             label="전화번호"
-                            value={manager.phone}
+                            value={manager.officePhone}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="-를 제외하고 입력"
