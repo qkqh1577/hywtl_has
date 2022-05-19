@@ -14,7 +14,7 @@ export type BusinessQueryForModal = {
 export type BusinessManagerAddParameter = {
   id?: number;
   name?: string;
-  position?: string;
+  jobTitle?: string;
   mobile?: string;
   phone?: string;
   email?: string;

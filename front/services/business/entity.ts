@@ -12,7 +12,7 @@ export type BusinessList = {
 export type BusinessManagerDetail = {
   id?: number;
   name?: string;
-  position?: string;
+  jobTitle?: string;
   mobile?: string;
   phone?: string;
   email?: string;
@@ -34,7 +34,7 @@ export type BusinessDetail = {
 
 type BusinessManager = {
   name?: string;
-  position?: string;
+  jobTitle?: string;
   mobile?: string;
   phone?: string;
   email?: string;

@@ -22,7 +22,7 @@ import {
 const initBusinessManagerListValue = [
   {
     name: '',
-    position: '',
+    jobTitle: '',
     mobile: '',
     phone: '',
     email: '',
@@ -85,7 +85,7 @@ const Page = () => {
 
       const managerList = values.managerList.filter(
         (manager: any) => manager.name
-          || manager.position
+          || manager.jobTitle
           || manager.mobile
           || manager.phone
           || manager.email
@@ -282,9 +282,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${i}.position`}
+                            name={`managerList.${i}.jobTitle`}
                             label="호칭"
-                            value={manager.position}
+                            value={manager.jobTitle}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="입력"

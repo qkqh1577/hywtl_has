@@ -11,7 +11,7 @@ public class BusinessManagerParameter {
 
     private String name;
 
-    private String position;
+    private String jobTitle;
 
     private String mobile;
 

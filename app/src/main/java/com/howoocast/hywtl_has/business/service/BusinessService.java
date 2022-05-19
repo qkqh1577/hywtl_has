@@ -58,7 +58,7 @@ public class BusinessService {
             list -> list.stream()
                 .map(manager -> BusinessManager.of(
                     manager.getName(),
-                    manager.getPosition(),
+                    manager.getJobTitle(),
                     manager.getMobile(),
                     manager.getPhone(),
                     manager.getEmail(),
@@ -94,7 +94,7 @@ public class BusinessService {
             params.getManagerList().stream()
                 .map(manager -> BusinessManager.of(
                     manager.getName(),
-                    manager.getPosition(),
+                    manager.getJobTitle(),
                     manager.getMobile(),
                     manager.getPhone(),
                     manager.getEmail(),
