@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
 import {
-  PersonnelAcademicView as View,
-  initAcademicView as initView,
+  PersonnelAcademicView,
+  initAcademicView,
+  initView,
   usePersonnel
 } from 'services/personnel';
 
@@ -15,7 +16,7 @@ type Props = {
   errors: FormikErrors<any>;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
-
+const FIELD_NAME = 'academicList';
 const PersonnelDetailAcademicList = ({
   id,
   values,
@@ -29,26 +30,20 @@ const PersonnelDetailAcademicList = ({
     getAcademicList: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View[]>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('academicList', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView(detail?.map((item) => ({
-      academyName: item.academyName,
-      major: item.major,
-      degree: item.degree ?? '',
-      state: item.state,
-      grade: item.grade ?? '',
-      startDate: item.startDate,
-      endDate: item.endDate,
-    })) ?? view);
+    setFieldValue(FIELD_NAME, detail?.map((item) => ({
+      academyName: item.academyName ?? initAcademicView.academyName,
+      major: item.major ?? initAcademicView.major,
+      degree: item.degree ?? initAcademicView.degree,
+      state: item.state ?? initAcademicView.state,
+      grade: item.grade ?? initAcademicView.grade,
+      startDate: item.startDate ?? initAcademicView.startDate,
+      endDate: item.endDate ?? initAcademicView.endDate,
+    })) ?? initView.academicList);
   }, [detail]);
 
   return (
@@ -63,13 +58,18 @@ const PersonnelDetailAcademicList = ({
           variant="contained"
           style={{ height: '36px' }}
           onClick={() => {
-            setView([...view, initView]);
+            if (Array.isArray(values)) {
+              setFieldValue(FIELD_NAME, [...values, initAcademicView]);
+            } else {
+              setFieldValue(FIELD_NAME, [initAcademicView]);
+            }
           }}
         >
           추가
         </Button>
       </Grid>
-      {view && view.map((item, i) => (
+      {Array.isArray(values) && (values as PersonnelAcademicView[])
+      .map((item, i) => (
         <Grid key={i} item sm={12}>
           <Box sx={{
             display: 'flex',
@@ -80,7 +80,7 @@ const PersonnelDetailAcademicList = ({
               <Grid item>
                 <DataField
                   label="교육기관명"
-                  name={`academicList[${i}].academyName`}
+                  name={`${FIELD_NAME}[${i}].academyName`}
                   value={item.academyName}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -90,7 +90,7 @@ const PersonnelDetailAcademicList = ({
               <Grid item>
                 <DataField
                   label="전공"
-                  name={`academicList[${i}].major`}
+                  name={`${FIELD_NAME}[${i}].major`}
                   value={item.major}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -100,7 +100,7 @@ const PersonnelDetailAcademicList = ({
               <Grid item>
                 <DataField
                   label="학위"
-                  name={`academicList[${i}].degree`}
+                  name={`${FIELD_NAME}[${i}].degree`}
                   value={item.degree}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -109,7 +109,7 @@ const PersonnelDetailAcademicList = ({
               <Grid item>
                 <DataField
                   label="재적 상태"
-                  name={`academicList[${i}].state`}
+                  name={`${FIELD_NAME}[${i}].state`}
                   value={item.state}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -119,7 +119,7 @@ const PersonnelDetailAcademicList = ({
               <Grid item>
                 <DataField
                   label="학점"
-                  name={`academicList[${i}].grade`}
+                  name={`${FIELD_NAME}[${i}].grade`}
                   value={item.grade}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -127,7 +127,7 @@ const PersonnelDetailAcademicList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`academicList[${i}].startDate`}
+                  name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   value={item.startDate}
                   setFieldValue={setFieldValue}
@@ -138,7 +138,7 @@ const PersonnelDetailAcademicList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`academicList[${i}].endDate`}
+                  name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   value={item.endDate}
                   setFieldValue={setFieldValue}
@@ -153,8 +153,8 @@ const PersonnelDetailAcademicList = ({
               color="secondary"
               aria-label="삭제"
               onClick={() => {
-                setView(view.filter((item, j) => i !== j)
-                );
+                const list = (values as PersonnelAcademicView[]);
+                setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
               }}
             >
               <DeleteIcon />

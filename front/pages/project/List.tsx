@@ -17,7 +17,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { Divider, DataField } from 'components';
 import {
   ProjectFilterView,
-  initProjectFilter,
+  initProjectFilterView,
   projectStatusName,
   useProject,
 } from 'services/project';
@@ -45,7 +45,7 @@ const ProjectList = () => {
     setAddModal
   } = useProject();
 
-  const [filter, setFilter] = useState<ProjectFilterView>(initProjectFilter);
+  const [filter, setFilter] = useState<ProjectFilterView>(initProjectFilterView);
 
   const handler = {
     search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
@@ -53,7 +53,7 @@ const ProjectList = () => {
       setSubmitting(false);
     },
     clear: () => {
-      setFilter(initProjectFilter);
+      setFilter(initProjectFilterView);
     },
     addModal: () => {
       setAddModal(true);

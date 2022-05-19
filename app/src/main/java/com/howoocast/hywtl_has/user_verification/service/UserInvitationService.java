@@ -46,7 +46,7 @@ public class UserInvitationService {
         String email = params.getEmail();
         // 기 가입자 이메일 사용 체크
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new DuplicatedValueException("email", email);
+            throw new DuplicatedValueException("user", "email", email);
         }
 
         // 기존 코드 무효화

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
 import { DataField, DatePicker } from 'components';
 import {
-  PersonnelCareerView as View,
-  initCareerView as initView,
+  PersonnelCareerView,
+  initCareerView,
+  initView,
   usePersonnel
 } from 'services/personnel';
 
@@ -16,6 +17,7 @@ type Props = {
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
+const FIELD_NAME = 'careerList';
 const PersonnelDetailCareerList = ({
   id,
   values,
@@ -29,18 +31,17 @@ const PersonnelDetailCareerList = ({
     getCareerList: getOne
   } = usePersonnel();
 
-  const [view, setView] = useState<View[]>(values);
-
   useEffect(() => {
     getOne(id);
   }, [id]);
 
   useEffect(() => {
-    setFieldValue('careerList', view);
-  }, [view]);
-
-  useEffect(() => {
-    setView(detail ?? view);
+    setFieldValue(FIELD_NAME, detail?.map((item) => ({
+      companyName: item.companyName ?? initCareerView.companyName,
+      startDate: item.startDate ?? initCareerView.startDate,
+      endDate: item.endDate ?? initCareerView.endDate,
+      majorJob: item.majorJob ?? initCareerView.majorJob,
+    })) ?? initView.careerList);
   }, [detail]);
 
   return (
@@ -55,14 +56,18 @@ const PersonnelDetailCareerList = ({
           variant="contained"
           style={{ height: '36px' }}
           onClick={() => {
-            setView([...view, initView]
-            );
+            if (Array.isArray(values)) {
+              setFieldValue(FIELD_NAME, [...values, initCareerView]);
+            } else {
+              setFieldValue(FIELD_NAME, [initCareerView]);
+            }
           }}
         >
           추가
         </Button>
       </Grid>
-      {view && view.map((item, i) => (
+      {Array.isArray(values) && (values as PersonnelCareerView[])
+      .map((item, i) => (
         <Grid key={i} item sm={12}>
           <Box sx={{
             display: 'flex',
@@ -73,7 +78,7 @@ const PersonnelDetailCareerList = ({
               <Grid item>
                 <DataField
                   label="근무처명"
-                  name={`careerList[${i}].companyName`}
+                  name={`${FIELD_NAME}[${i}].companyName`}
                   value={item.companyName}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -82,7 +87,7 @@ const PersonnelDetailCareerList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`careerList[${i}].startDate`}
+                  name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   value={item.startDate}
                   setFieldValue={setFieldValue}
@@ -94,7 +99,7 @@ const PersonnelDetailCareerList = ({
               </Grid>
               <Grid item>
                 <DatePicker
-                  name={`careerList[${i}].endDate`}
+                  name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   value={item.endDate}
                   setFieldValue={setFieldValue}
@@ -107,7 +112,7 @@ const PersonnelDetailCareerList = ({
               <Grid item>
                 <DataField
                   label="주 업무"
-                  name={`careerList[${i}].majorJob`}
+                  name={`${FIELD_NAME}[${i}].majorJob`}
                   value={item.majorJob}
                   setFieldValue={setFieldValue}
                   errors={errors}
@@ -120,8 +125,8 @@ const PersonnelDetailCareerList = ({
               color="secondary"
               aria-label="삭제"
               onClick={() => {
-                setView(view.filter((item, j) => i !== j)
-                );
+                const list = (values as PersonnelCareerView[]);
+                setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
               }}
             >
               <DeleteIcon />

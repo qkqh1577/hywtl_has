@@ -35,7 +35,7 @@ export type DataFieldProps = {
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   size?: 'small';
-  labelDisabled?: boolean;
+  disableLabel?: boolean;
   buttonName?: string;
   onClick?: () => void;
 }
@@ -64,28 +64,28 @@ export const optionTooltip = (option: Option | DataFieldValue): string | undefin
 };
 
 const DataFieldWithButton = ({
-                     type = 'text',
-                     variant = 'standard',
-                     name,
-                     label,
-                     placeholder,
-                     tooltip,
-                     value,
-                     setFieldValue,
-                     errors,
-                     required,
-                     disabled,
-                     helperText,
-                     options,
-                     sx,
-                     onFocus,
-                     onKeyDown,
-                     onKeyUp,
-                     size,
-                     labelDisabled,
-                     buttonName,
-                     onClick,
-                   }: DataFieldProps) => {
+  type = 'text',
+  variant = 'standard',
+  name,
+  label,
+  placeholder,
+  tooltip,
+  value,
+  setFieldValue,
+  errors,
+  required,
+  disabled,
+  helperText,
+  options,
+  sx,
+  onFocus,
+  onKeyDown,
+  onKeyUp,
+  size,
+  disableLabel,
+  buttonName,
+  onClick,
+}: DataFieldProps) => {
 
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
@@ -154,7 +154,7 @@ const DataFieldWithButton = ({
         id={`params-${name}`}
         name={name}
         value={viewValue}
-        label={labelDisabled ? undefined : label}
+        label={disableLabel ? undefined : label}
         onChange={(e) => {
           setViewValue(e.target.value);
         }}
@@ -179,7 +179,7 @@ const DataFieldWithButton = ({
               <Button
                 variant="outlined"
                 color="primary"
-                sx={{marginBottom: '10px'}}
+                sx={{ marginBottom: '10px' }}
                 onClick={onClick}
               >
                 {buttonName}
@@ -192,11 +192,11 @@ const DataFieldWithButton = ({
         fullWidth
       >
         {type === 'select' && options && options
-          .map((item) => (
-            <MenuItem key={optionKey(item)} value={optionKey(item)}>
-              {optionText(item)}
-            </MenuItem>
-          ))}
+        .map((item) => (
+          <MenuItem key={optionKey(item)} value={optionKey(item)}>
+            {optionText(item)}
+          </MenuItem>
+        ))}
       </TextField>
     </Tooltip>
   );

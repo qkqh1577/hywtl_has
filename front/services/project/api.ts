@@ -10,7 +10,7 @@ import {
   ProjectQuery,
 } from 'services/project';
 
-export class ProjectApi {
+class ProjectApi {
   async getPage(query: ProjectQuery): Promise<Page<ListProject>> {
     const { data } = await apiClient.get('/projects', query);
     return data;

@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.department.service;
 
+import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
-import com.howoocast.hywtl_has.department.exception.DepartmentNameDuplicatedException;
 import com.howoocast.hywtl_has.department.exception.DepartmentViolationParentException;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
@@ -108,7 +108,7 @@ public class DepartmentService {
         repository.findByNameAndCategory(instance.getName(), instance.getCategory())
             .ifPresent(department -> {
                 if (Objects.isNull(instance.getId()) || !Objects.equals(instance.getId(), department.getId())) {
-                    throw new DepartmentNameDuplicatedException();
+                    throw new DuplicatedValueException("department", "name", instance.getName());
                 }
             });
     }

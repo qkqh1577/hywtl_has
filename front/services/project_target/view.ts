@@ -1,61 +1,29 @@
-import { ProjectTargetReviewStatus } from 'services/project_target';
-import { FileItemView } from 'services/common/file-item';
+
+export type ProjectTargetDetailView = {
+  id?: number;
+  buildingName: string;
+  testList: string[];
+  memo: string;
+}
 
 export type ProjectTargetView = {
-  landModelCount: number | '';
-}
-
-export type ProjectTargetReviewDetailView = {
-  buildingName: string;
-  floorCount: number | '';
-  baseCount: number | '';
-  height: number | '';
-  area: number | '';
-  ratio: number | '';
-  specialWindLoadConditionList: string[];
+  confirmed: 'Y' | 'N';
+  code: string;
   testList: string[];
-  memo1: string;
-  memo2: string;
-}
-
-export type ProjectTargetReviewView = {
-  status: ProjectTargetReviewStatus | '';
-  confirmed: 'Y' | 'N' | '';
-  title: string;
   memo: string;
-  detailList: ProjectTargetReviewDetailView[];
+  detailList: ProjectTargetDetailView[];
 }
 
-export type ProjectTargetDocumentView = {
-  fileItem: FileItemView | null;
-  memo: string;
-}
-export const initProjectTarget: ProjectTargetView = {
-  landModelCount: '',
-};
-
-export const initProjectTargetDetailReview: ProjectTargetReviewDetailView = {
+export const initProjectTargetDetailView: ProjectTargetDetailView = {
   buildingName: '',
-  floorCount: '',
-  baseCount: '',
-  height: '',
-  area: '',
-  ratio: '',
-  specialWindLoadConditionList: [],
   testList: [],
-  memo1: '',
-  memo2: '',
+  memo: ''
 };
 
-export const initProjectTargetReview: ProjectTargetReviewView = {
-  status: '',
-  confirmed: '',
-  title: '',
+export const initProjectTargetView: ProjectTargetView = {
+  confirmed: 'N',
+  code: '',
+  testList: [],
   memo: '',
-  detailList: [initProjectTargetDetailReview],
-};
-
-export const initProjectTargetDocument: ProjectTargetDocumentView = {
-  fileItem: null,
-  memo: '',
+  detailList: [initProjectTargetDetailView]
 };

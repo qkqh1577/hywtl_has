@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { Container, useDialog } from 'components';
 import {
   ProjectOrderParameter,
-  ProjectOrderView,
-  initProjectOrder,
+  ProjectOrderView as View,
+  initProjectOrderView as initView,
   useProject,
 } from 'services/project';
 
@@ -23,7 +23,7 @@ const ProjectOrderDetail = () => {
     clearOrder: clearOne,
     updateOrder: update
   } = useProject();
-  const [view, setView] = useState<ProjectOrderView>(initProjectOrder);
+  const [view, setView] = useState<View>(initView);
 
   const handler = {
     submit: (values: any, callback: () => void) => {
@@ -68,12 +68,12 @@ const ProjectOrderDetail = () => {
     },
     updateView: () => {
       setView({
-        amount: detail?.amount ?? view.amount,
-        receivedDate: detail?.receivedDate ?? view.receivedDate,
-        beginDate: detail?.beginDate ?? view.beginDate,
-        closeDate: detail?.closeDate ?? view.closeDate,
+        amount: detail?.amount ?? initView.amount,
+        receivedDate: detail?.receivedDate ?? initView.receivedDate,
+        beginDate: detail?.beginDate ?? initView.beginDate,
+        closeDate: detail?.closeDate ?? initView.closeDate,
         isOnGoing: (detail && typeof detail.isOnGoing === 'boolean') ?
-          (detail.isOnGoing ? '예' : '아니요') : view.isOnGoing
+          (detail.isOnGoing ? '예' : '아니요') : initView.isOnGoing
       });
     }
   };

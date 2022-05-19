@@ -152,7 +152,7 @@ public class UserService {
         String email = instance.getEmail();
         repository.findByEmail(email).ifPresent(target -> {
             if (!Objects.equals(instance.getId(), target.getId())) {
-                throw new DuplicatedValueException("email", email);
+                throw new DuplicatedValueException("user", "email", email);
             }
         });
     }
@@ -161,7 +161,7 @@ public class UserService {
         String username = instance.getUsername();
         repository.findByUsername(username).ifPresent(target -> {
             if (!Objects.equals(instance.getId(), target.getId())) {
-                throw new DuplicatedValueException("username", username);
+                throw new DuplicatedValueException("user", "username", username);
             }
         });
     }

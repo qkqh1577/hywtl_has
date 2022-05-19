@@ -15,7 +15,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { UserSelector, DataField, useDialog } from 'components';
 import {
   ProjectBasicParameter,
-  initProjectBasic,
+  initProjectBasicView,
   useProject,
 } from 'services/project';
 
@@ -112,7 +112,7 @@ const ProjectAddModal = () => {
         </Box>
         <Box sx={{ mb: '20px' }}>
           <Formik
-            initialValues={initProjectBasic}
+            initialValues={initProjectBasicView}
             onSubmit={handler.submit}
             enableReinitialize
           >

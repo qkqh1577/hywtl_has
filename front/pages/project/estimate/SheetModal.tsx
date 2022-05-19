@@ -6,13 +6,25 @@ import {
   Grid,
   IconButton,
   Modal,
-  Paper
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
 } from '@mui/material';
 import {
   Close as CloseIcon
 } from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField, DatePicker, UserSelector } from 'components';
+import {
+  DataField,
+  DataSelector,
+  DatePicker,
+  TableCellProperty,
+  UserSelector
+} from 'components';
 import {
   ProjectEstimateSheetView as View,
   initProjectEstimateSheetView as initView,
@@ -20,6 +32,58 @@ import {
   projectEstimateSheetStatusName,
   useProjectEstimate,
 } from 'services/project_estimate';
+import {
+  ProjectReviewDetail,
+  projectReviewStatusName,
+  useProjectReview
+} from 'services/project_review';
+
+const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
+  {
+    label: '건물(동)',
+    renderCell: item => item.buildingName,
+  },
+  {
+    label: '층수',
+    renderCell: item => item.floorCount
+  },
+  {
+    label: '지하층수',
+    renderCell: item => item.baseCount ?? ''
+  },
+  {
+    label: '높이',
+    renderCell: item => `${item.height}m`,
+  },
+  {
+    label: '면적',
+    renderCell: item => `${item.area}㎡`
+  },
+  {
+    label: '형상비',
+    renderCell: item => item.ratio.toFixed(2)
+  },
+  {
+    label: '특별풍하중조건',
+    renderCell: item => item.specialWindLoadConditionList?.map(c => `(${c})`).join(', ')
+  },
+  {
+    label: '최소실험 대상여부',
+    renderCell: item => item.ratio >= 3 ? 'Y' : ''
+  },
+  {
+    label: '실험 종류',
+    renderCell: item => item.testList.join(', ')
+  },
+  {
+    label: '비고1',
+    renderCell: item => item.memo1
+  },
+  {
+    label: '비고2',
+    renderCell: item => item.memo2
+  },
+];
 
 const ProjectEstimateSheetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -33,7 +97,18 @@ const ProjectEstimateSheetModal = () => {
     clearSheetOne: clearOne,
     clearSheetId,
   } = useProjectEstimate();
+  const {
+    state: {
+      list: reviewList,
+      detail: reviewDetail,
+    },
+    getList: getReviewList,
+    getOne: getReview,
+    clearList: clearReviewList,
+    clearOne: clearReview,
+  } = useProjectReview();
   const [view, setView] = useState<View>(initView);
+  const [reviewId, setReviewId] = useState<number | undefined>();
 
   const handler = {
     close: (event: object, reason?: string) => {
@@ -45,15 +120,17 @@ const ProjectEstimateSheetModal = () => {
     },
     submit: (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
 
-    }
+    },
   };
 
   useEffect(() => {
-    if (projectId) {
-
+    if (typeof sheetId !== 'undefined' && projectId) {
+      getReviewList(projectId);
     }
-  }, [projectId]);
-
+    return () => {
+      clearReviewList();
+    };
+  }, [projectId, sheetId]);
 
   useEffect(() => {
     if (sheetId) {
@@ -62,6 +139,15 @@ const ProjectEstimateSheetModal = () => {
       // TODO: 용역 항목 리스트 불러오기
     }
   }, [sheetId]);
+
+  useEffect(() => {
+    if (reviewId) {
+      getReview(reviewId);
+    }
+    return () => {
+      clearReview();
+    };
+  }, [reviewId]);
 
   return (
     <Modal
@@ -192,8 +278,124 @@ const ProjectEstimateSheetModal = () => {
                   mb: '40px',
                 }}>
                   <Grid container spacing={2}>
-                    <Grid item sm={3}>
-                      형상비 TBD
+                    <Grid item sm={3} sx={{
+                      display: 'flex',
+                      width: '100%',
+                      flexWrap: 'wrap',
+                    }}>
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        mb: '20px',
+                      }}>
+                        <DataSelector
+                          name="reviewId"
+                          label="형상비 검토"
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={reviewList?.map(item => ({
+                            key: item.id,
+                            text: `${item.code}(${projectReviewStatusName(item.status)})`,
+                          })) ?? null}
+                          value={values.reviewId}
+                          onChange={(data) => {
+                            const value: number | undefined = data !== '' ? +data : undefined;
+                            setReviewId(value);
+                          }}
+                        />
+                      </Box>
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        mb: '40px',
+                      }}>
+                        <TableContainer>
+                          <Table>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell variant="head">
+                                  형상비 번호
+                                </TableCell>
+                                <TableCell colSpan={3}>
+                                  {reviewDetail?.code}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell variant="head">
+                                  대지 모형 개수
+                                </TableCell>
+                                <TableCell>
+                                  {reviewDetail?.landFigureCount}
+                                </TableCell>
+                                <TableCell variant="head">
+                                  실험종류 (단지)
+                                </TableCell>
+                                <TableCell>
+                                  {reviewDetail?.testList?.join(', ')}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell variant="head">
+                                  견적 여부
+                                </TableCell>
+                                <TableCell>
+                                  {reviewDetail?.confirmed ? 'Y' : 'N' ?? ''}
+                                </TableCell>
+                                <TableCell variant="head">
+                                  상태
+                                </TableCell>
+                                <TableCell>
+                                  {reviewDetail ? projectReviewStatusName(reviewDetail.status) : undefined}
+                                </TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Box>
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        mb: '40px',
+                        justifyContent: 'center',
+                        minHeight: '500px',
+                      }}>
+                        {reviewDetail && (
+                          <TableContainer sx={{
+                            maxHeight: '430px',
+                            minWidth: '100%'
+                          }}>
+                            <Table>
+                              <TableBody>
+                                {reviewDetailColumnList.map((column, i) => (
+                                  <TableRow key={i}>
+                                    <TableCell variant="head">
+                                      {column.label}
+                                    </TableCell>
+                                    {reviewDetail.detailList.map((item, j) => (
+                                      <TableCell key={j}>
+                                        {column.renderCell(item, j)}
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                        )}
+                        {!reviewDetail && (
+                          <Typography sx={{
+                            color: 'lightgray',
+                            textAlign: 'center'
+                          }}>
+                            형상비 검토 또는 실험대상을
+                            <br />
+                            선택해 주세요.
+                          </Typography>
+                        )}
+                      </Box>
                     </Grid>
                     <Grid item sm={9}>
                       <Box sx={{

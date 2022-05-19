@@ -11,7 +11,7 @@ import {
 } from 'services/user';
 import { PasswordChangeParameter } from 'services/user/password_reset';
 
-export class UserApi {
+class UserApi {
   async getPage(query: UserQuery): Promise<Page<ListUser>> {
     const { data } = await apiClient.get('/users', query);
     return data;

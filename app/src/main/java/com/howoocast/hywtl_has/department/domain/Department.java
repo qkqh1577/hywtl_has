@@ -6,7 +6,6 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -67,11 +66,6 @@ public class Department extends CustomEntity {
     @OneToMany(mappedBy = "department")
     @OrderBy("id")
     private List<User> userList; // 소속 유저 리스트
-
-    @Nullable
-    public Long getParentId() {
-        return Optional.ofNullable(this.parent).map(Department::getId).orElse(null);
-    }
 
     //////////////////////////////////
     //// builder

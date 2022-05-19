@@ -4,8 +4,8 @@ import { Container, useDialog } from 'components';
 import useProject from 'services/project/hook';
 import {
   ProjectBasicParameter,
-  ProjectBasicView,
-  initProjectBasic,
+  ProjectBasicView as View,
+  initProjectBasicView as initView,
 } from 'services/project';
 
 const ProjectBasicDetail = () => {
@@ -23,7 +23,7 @@ const ProjectBasicDetail = () => {
     clearBasic: clearOne,
     updateBasic: update,
   } = useProject();
-  const [view, setView] = useState<ProjectBasicView>(initProjectBasic);
+  const [view, setView] = useState<View>(initView);
 
   const handler = {
     submit: (values: any, callback: () => void) => {
@@ -107,25 +107,25 @@ const ProjectBasicDetail = () => {
     },
     updateView: () => {
       setView({
-        name: detail?.name ?? view.name,
-        code: detail?.code ?? view.code,
-        alias: detail?.alias ?? view.alias,
-        salesManagerId: detail?.salesManager.id ?? view.salesManagerId,
-        projectManagerId: detail?.projectManager.id ?? view.projectManagerId,
-        address: detail?.address ?? view.address,
-        purpose1: detail?.purpose1 ?? view.purpose1,
-        purpose2: detail?.purpose2 ?? view.purpose2,
-        lotArea: detail?.lotArea ?? view.lotArea,
-        totalArea: detail?.totalArea ?? view.totalArea,
-        buildingCount: detail?.buildingCount ?? view.buildingCount,
-        householdCount: detail?.householdCount ?? view.householdCount,
-        floorCount: detail?.floorCount ?? view.floorCount,
-        baseCount: detail?.baseCount ?? view.baseCount,
-        clientName: detail?.clientName ?? view.clientName,
-        isClientLH: (detail && typeof detail.isClientLH === 'boolean') ? (detail.isClientLH ? '예' : '아니요') : view.isClientLH,
-        clientManager: detail?.clientManager ?? view.clientManager,
-        clientPhone: detail?.clientPhone ?? view.clientPhone,
-        clientEmail: detail?.clientEmail ?? view.clientEmail,
+        name: detail?.name ?? initView.name,
+        code: detail?.code ?? initView.code,
+        alias: detail?.alias ?? initView.alias,
+        salesManagerId: detail?.salesManager.id ?? initView.salesManagerId,
+        projectManagerId: detail?.projectManager.id ?? initView.projectManagerId,
+        address: detail?.address ?? initView.address,
+        purpose1: detail?.purpose1 ?? initView.purpose1,
+        purpose2: detail?.purpose2 ?? initView.purpose2,
+        lotArea: detail?.lotArea ?? initView.lotArea,
+        totalArea: detail?.totalArea ?? initView.totalArea,
+        buildingCount: detail?.buildingCount ?? initView.buildingCount,
+        householdCount: detail?.householdCount ?? initView.householdCount,
+        floorCount: detail?.floorCount ?? initView.floorCount,
+        baseCount: detail?.baseCount ?? initView.baseCount,
+        clientName: detail?.clientName ?? initView.clientName,
+        isClientLH: (detail && typeof detail.isClientLH === 'boolean') ? (detail.isClientLH ? '예' : '아니요') : initView.isClientLH,
+        clientManager: detail?.clientManager ?? initView.clientManager,
+        clientPhone: detail?.clientPhone ?? initView.clientPhone,
+        clientEmail: detail?.clientEmail ?? initView.clientEmail,
       });
     }
   };
@@ -265,8 +265,6 @@ const ProjectBasicDetail = () => {
       ]}
     />
   );
-
-
 };
 
 export default ProjectBasicDetail;
