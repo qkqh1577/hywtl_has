@@ -68,6 +68,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("figure", "모형");
         this.put("file-item", "파일");
         this.put("floor", "층");
+        this.put("standard-data", "기준정보");
         this.put("height", "높이");
         this.put("hired", "고용");
         this.put("id", "고유 번호");
