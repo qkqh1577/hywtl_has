@@ -52,7 +52,7 @@ public class ServiceItemService {
   }
 
   @Transactional
-  public void add(ServiceItemParameter params) {
+  public ServiceItemView add(ServiceItemParameter params) {
     List<ServiceDetailItem> serviceDetailItemList = Optional.ofNullable(params.getServiceDetailItemParameterList()).map(
         list -> list.stream()
             .map(serviceDetailItem -> ServiceDetailItem.of(
@@ -61,18 +61,21 @@ public class ServiceItemService {
                 serviceDetailItem.getUnit(),
                 serviceDetailItem.getPrice(),
                 serviceDetailItem.getMemo(),
-                serviceDetailItem.getOrder()
+                serviceDetailItem.getOrderNumber()
             )).collect(Collectors.toList())
     ).orElse(Collections.emptyList());
 
-    ServiceItem.of(
+    ServiceItem serviceItem = ServiceItem.of(
         params.getItem(),
         params.getUnit(),
         params.getPrice(),
         params.getMemo(),
         params.getType(),
+        params.getOrderNumber(),
         serviceDetailItemList
     );
+
+    return ServiceItemView.assemble(serviceItemRepository.save(serviceItem));
   }
 
   @Transactional
@@ -92,7 +95,7 @@ public class ServiceItemService {
                 serviceDetailItem.getUnit(),
                 serviceDetailItem.getPrice(),
                 serviceDetailItem.getMemo(),
-                serviceDetailItem.getOrder()
+                serviceDetailItem.getOrderNumber()
             )).collect(Collectors.toList())
     );
 

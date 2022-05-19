@@ -20,12 +20,17 @@ import {
   Button,
   Switch,
   Box,
+  TextField,
 } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
-import React from "react";
+import React, {useEffect} from "react";
 import {DataField} from "components";
 import InfoIcon from "@mui/icons-material/Info";
 import {useNavigate} from "react-router-dom";
+import ArrowDropDownSharpIcon from "@mui/icons-material/ArrowDropDownSharp";
+import ArrowDropUpSharpIcon from "@mui/icons-material/ArrowDropUpSharp";
+import {ServiceItemParameter, useServiceItem} from "services/serviceItem";
 
 const notiList = [
   '직접입력 설정 변경 시, 입력된 값은 초기화 됩니다.',
@@ -41,7 +46,7 @@ type TableCellProperty = {
 }
 
 const columns: TableCellProperty[] = [
-  { key: 'directInputUseYn', label: '직접입력 사용여부', style: { minWidth: 50 }, align: 'center' },
+  { key: 'directInputUseYn', label: '직접입력 사용여부', style: { minWidth: 130 }, align: 'center' },
   { key: 'item', label: '세부 항목명', style: { minWidth: 50 }, align: 'center' },
   { key: 'unit', label: '단위', style: { minWidth: 100 }, align: 'center' },
   { key: 'price', label: '단가', style: { minWidth: 100 }, align: 'center' },
@@ -50,8 +55,35 @@ const columns: TableCellProperty[] = [
   { key: 'deleteButton', label: '삭제', style: { minWidth: 100 }, align: 'center' },
 ];
 
+const DirectInputUseYnSwitch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  '& .MuiSwitch-track': {
+    borderRadius: 22 / 2,
+    '&:before, &:after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: 16,
+      height: 16,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: 'none',
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+}));
+
 const ServiceItemAdd = () => {
   const navigate = useNavigate();
+
+  const { state: { orderList }, add, getOrderList } = useServiceItem();
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
 
   const initServiceDetailItemListValue = [{
     directInputUseYn: true,
@@ -59,10 +91,11 @@ const ServiceItemAdd = () => {
     unit: '',
     price: '',
     memo: '',
-    order: 1,
+    orderNumber: 1,
   }]
 
   const initServiceItemValue = {
+    orderNumber: orderList && orderList.length ? orderList.length + 1 : 1,
     item: '',
     unit: '',
     price: '',
@@ -76,7 +109,23 @@ const ServiceItemAdd = () => {
       navigate('/serviceItem');
     },
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+      const params: ServiceItemParameter = {
+        orderNumber: values.orderNumber,
+        item: values.item,
+        unit: values.unit,
+        price: values.price,
+        memo: values.memo,
+        type: values.type,
+        serviceDetailItemParameterList: values.serviceDetailItemViewList.length ? values.serviceDetailItemViewList : undefined,
+      }
 
+      add(params, (data) => {
+        if (data) {
+          window.alert('저장하였습니다.');
+          navigate('/serviceItem');
+        }
+        setSubmitting(false);
+      });
     }
   };
 
@@ -191,6 +240,140 @@ const ServiceItemAdd = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
+                          {values.serviceDetailItemViewList.map((serviceDetailItemView, i) => {
+                            return (
+                              <TableRow>
+                                <TableCell align="center" style={{maxWidth: '130px'}}>
+                                  <FormControl variant="standard" fullWidth>
+                                    <FormControlLabel
+                                      value={serviceDetailItemView.directInputUseYn}
+                                      control={
+                                        <DirectInputUseYnSwitch
+                                          name={`serviceDetailItemViewList.${i}.directInputUseYn`}
+                                          checked={serviceDetailItemView.directInputUseYn}
+                                          onChange={handleChange}
+                                        />
+                                      }
+                                      label={(serviceDetailItemView.directInputUseYn && '사용') || '미사용'}
+                                    />
+                                  </FormControl>
+                                </TableCell>
+                                <TableCell align="center">
+                                  <DataField
+                                    name={`serviceDetailItemViewList.${i}.item`}
+                                    label=""
+                                    value={serviceDetailItemView.item}
+                                    setFieldValue={setFieldValue}
+                                    errors={errors}
+                                    placeholder="입력"
+                                  />
+                                </TableCell>
+                                <TableCell align="center">
+                                  {serviceDetailItemView.directInputUseYn ?
+                                    <DataField
+                                      name={`serviceDetailItemViewList.${i}.unit`}
+                                      label=""
+                                      value={serviceDetailItemView.unit}
+                                      setFieldValue={setFieldValue}
+                                      errors={errors}
+                                      variant="standard"
+                                      placeholder="입력"
+                                    /> :
+                                    <TextField
+                                      name={`serviceDetailItemViewList.${i}.unit`}
+                                      label=""
+                                      value={values.unit}
+                                      variant="standard"
+                                      placeholder="기본값"
+                                      fullWidth={true}
+                                      InputProps={{
+                                        readOnly: true,
+                                      }}
+                                    />
+                                  }
+                                </TableCell>
+                                <TableCell align="center">
+                                  {serviceDetailItemView.directInputUseYn ?
+                                    <DataField
+                                      name={`serviceDetailItemViewList.${i}.price`}
+                                      label=""
+                                      value={serviceDetailItemView.price}
+                                      setFieldValue={setFieldValue}
+                                      errors={errors}
+                                      placeholder="입력"
+                                    /> :
+                                    <TextField
+                                      name={`serviceDetailItemViewList.${i}.price`}
+                                      label=""
+                                      value={values.price}
+                                      variant="standard"
+                                      placeholder="기본값"
+                                      fullWidth={true}
+                                      InputProps={{
+                                        readOnly: true,
+                                      }}
+                                    />
+                                  }
+                                </TableCell>
+                                <TableCell align="center">
+                                  {serviceDetailItemView.directInputUseYn ?
+                                    <DataField
+                                      name={`serviceDetailItemViewList.${i}.memo`}
+                                      label=""
+                                      value={serviceDetailItemView.memo}
+                                      setFieldValue={setFieldValue}
+                                      errors={errors}
+                                      placeholder="입력"
+                                    /> :
+                                    <TextField
+                                      name={`serviceDetailItemViewList.${i}.memo`}
+                                      label=""
+                                      value={values.memo}
+                                      variant="standard"
+                                      placeholder="기본값"
+                                      fullWidth={true}
+                                      InputProps={{
+                                        readOnly: true,
+                                      }}
+                                    />
+                                  }
+                                </TableCell>
+                                <TableCell align="center">
+                                  <Button
+                                    variant="outlined"
+                                    disabled={i+1 === values.serviceDetailItemViewList.length}
+                                    onClick={() => {
+                                      console.log(serviceDetailItemView.directInputUseYn)
+                                    }}
+                                  >
+                                    <ArrowDropDownSharpIcon />
+                                  </Button>
+                                  <Button
+                                    variant="outlined"
+                                    disabled={!i}
+                                    style={{ marginLeft: '5px'}}
+                                  >
+                                    <ArrowDropUpSharpIcon />
+                                  </Button>
+                                </TableCell>
+                                <TableCell align="center">
+                                  <Button
+                                    variant="outlined"
+                                    onClick={() => {
+                                      const {serviceDetailItemViewList, ...rest} = values;
+                                      const filteredServiceDetailItemViewList = serviceDetailItemViewList.filter((serviceDetailItemView, index) => index !== i);
+                                      setValues({
+                                        ...rest,
+                                        serviceDetailItemViewList: filteredServiceDetailItemViewList
+                                      })
+                                    }}
+                                  >
+                                    삭제
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            )
+                          })}
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -203,6 +386,18 @@ const ServiceItemAdd = () => {
                         color="primary"
                         style={{marginTop: '10px'}}
                         onClick={() => {
+                          const {serviceDetailItemViewList, ...rest} = values;
+                          const newOrderNumber = serviceDetailItemViewList[serviceDetailItemViewList.length-1].orderNumber + 1;
+                          setValues({
+                            ...rest,
+                            serviceDetailItemViewList: [...serviceDetailItemViewList, {
+                              directInputUseYn: true,
+                              item: '',
+                              unit: '',
+                              price: '',
+                              memo: '',
+                              orderNumber: newOrderNumber,
+                            }]});
                         }}
                       >
                         추가

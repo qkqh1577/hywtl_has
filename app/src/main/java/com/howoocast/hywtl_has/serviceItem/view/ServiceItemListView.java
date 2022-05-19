@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class ServiceItemListView {
   private Long id; // 식별자
-  private Integer order; // 순서
+  private Integer orderNumber; // 순서
   private String type; // 실험타입
   private String item; // 용역항목명
   private Integer detailItemCount; // 세부항목 수
@@ -17,7 +17,7 @@ public class ServiceItemListView {
   public static ServiceItemListView assemble(ServiceItem source) {
     ServiceItemListView target = new ServiceItemListView();
     target.id = source.getId();
-    target.order = source.getOrderNumber();
+    target.orderNumber = source.getOrderNumber();
     target.type = source.getType();
     target.item = source.getItem();
     target.detailItemCount = source.getServiceDetailItemList().size();

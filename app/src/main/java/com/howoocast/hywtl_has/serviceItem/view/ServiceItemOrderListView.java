@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @Getter
 public class ServiceItemOrderListView {
-  Integer order;
+  Integer orderNumber;
   String type;
   String item;
 
   public static ServiceItemOrderListView assemble(ServiceItem serviceItem) {
     ServiceItemOrderListView target = new ServiceItemOrderListView();
 
-    target.order = serviceItem.getOrderNumber();
+    target.orderNumber = serviceItem.getOrderNumber();
     target.type = serviceItem.getType();
     target.item = serviceItem.getItem();
 

@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import {
   ServiceItemQuery,
-  serviceItemActions
+  serviceItemActions,
+  ServiceItemDetail,
+  ServiceItemParameter
 } from 'services/serviceItem';
 
 export default function useServiceItem() {
@@ -17,14 +19,26 @@ export default function useServiceItem() {
     [dispatch]
   );
 
+  const getOrderList = useCallback(() => dispatch(serviceItemActions.getOrderList()),
+    [dispatch]
+  );
+
   const getOne = useCallback(
     (id: number) => dispatch(serviceItemActions.getOne(id)),
+    [dispatch]
+  );
+
+  const add = useCallback(
+    (params: ServiceItemParameter, callback: (data?: ServiceItemDetail) => void) =>
+      dispatch(serviceItemActions.add({params, callback})),
     [dispatch]
   );
 
   return {
     state,
     getList,
+    getOrderList,
     getOne,
+    add,
   }
 }

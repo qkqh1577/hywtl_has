@@ -2,7 +2,9 @@ import apiClient from 'services/common/api';
 import {
   ServiceItemQuery,
   ServiceItemList,
-  ServiceItemDetail
+  ServiceItemDetail,
+  ServiceItemParameter,
+  ServiceItemOrderList
 } from 'services/serviceItem';
 
 export class ServiceItemApi {
@@ -13,6 +15,16 @@ export class ServiceItemApi {
 
   async getOne(id: number): Promise<ServiceItemDetail> {
     const { data } = await apiClient.get(`/serviceItems/${id}`);
+    return data;
+  }
+
+  async getOrderList(): Promise<ServiceItemOrderList[]> {
+    const { data } = await apiClient.get('/serviceItems/order');
+    return data;
+  }
+
+  async add(params: ServiceItemParameter): Promise<ServiceItemDetail> {
+    const { data } = await apiClient.post('/serviceItems', params);
     return data;
   }
 }

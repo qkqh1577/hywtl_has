@@ -215,7 +215,7 @@ const ServiceItemListPage = () => {
               {list?.map((serviceItem, i) => {
                 return (
                   <TableRow>
-                    <TableCell align="center">{serviceItem.order}</TableCell>
+                    <TableCell align="center">{serviceItem.orderNumber}</TableCell>
                     <TableCell align="center">{serviceItem.type}</TableCell>
                     <TableCell align="center">
                       <Link
@@ -230,7 +230,7 @@ const ServiceItemListPage = () => {
                     </TableCell>
                     <TableCell align="center">{serviceItem.detailItemCount}개</TableCell>
                     <TableCell align="center">{serviceItem.unit}</TableCell>
-                    <TableCell align="center">{serviceItem.price.toLocaleString()}</TableCell>
+                    <TableCell align="center">{serviceItem.price && !isNaN(serviceItem.price) && serviceItem.price.toLocaleString()}</TableCell>
                     <TableCell align="center">{serviceItem.memo}</TableCell>
                   </TableRow>
                 )

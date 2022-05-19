@@ -11,5 +11,5 @@ public class ServiceDetailItemParameter {
   private String unit; // 단위
   private Long price; // 단가
   private String memo; // 비고
-  private Integer order; // 순서
+  private Integer orderNumber; // 순서
 }

@@ -9,7 +9,7 @@ public class ServiceDetailItemView {
   private String unit; // 단위
   private Long price; // 단가
   private String memo; // 비고
-  private Integer order; // 순서
+  private Integer orderNumber; // 순서
 
   public static ServiceDetailItemView assemble(ServiceDetailItem serviceDetailItem) {
     ServiceDetailItemView target = new ServiceDetailItemView();
@@ -18,7 +18,7 @@ public class ServiceDetailItemView {
     target.unit = serviceDetailItem.getUnit();
     target.price = serviceDetailItem.getPrice();
     target.memo = serviceDetailItem.getMemo();
-    target.order = serviceDetailItem.getOrderNumber();
+    target.orderNumber = serviceDetailItem.getOrderNumber();
 
     return target;
   }

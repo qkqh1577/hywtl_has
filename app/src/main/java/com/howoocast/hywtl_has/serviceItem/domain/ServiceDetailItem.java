@@ -41,7 +41,7 @@ public class ServiceDetailItem extends CustomEntity {
       String unit,
       Long price,
       String memo,
-      Integer order
+      Integer orderNumber
   ) {
     ServiceDetailItem instance = new ServiceDetailItem();
     instance.item = item;
@@ -49,7 +49,7 @@ public class ServiceDetailItem extends CustomEntity {
     instance.unit = unit;
     instance.price = price;
     instance.memo = memo;
-    instance.orderNumber = order;
+    instance.orderNumber = orderNumber;
     return instance;
   }
 
@@ -59,13 +59,13 @@ public class ServiceDetailItem extends CustomEntity {
       String unit,
       Long price,
       String memo,
-      Integer order
+      Integer orderNumber
   ) {
     this.item = item;
     this.directInputUseYn = directInputUseYn;
     this.unit = unit;
     this.price = price;
     this.memo = memo;
-    this.orderNumber = order;
+    this.orderNumber = orderNumber;
   }
 }

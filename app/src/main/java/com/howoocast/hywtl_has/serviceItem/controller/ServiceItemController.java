@@ -43,8 +43,8 @@ public class ServiceItemController {
   public ServiceItemView get(@PathVariable Long id) { return serviceItemService.get(id); }
 
   @PostMapping("/serviceItems")
-  public void add(@Valid @RequestBody ServiceItemParameter params) {
-    serviceItemService.add(params);
+  public ServiceItemView add(@Valid @RequestBody ServiceItemParameter params) {
+    return serviceItemService.add(params);
   }
 
   @PatchMapping("/serviceItems/{id}")

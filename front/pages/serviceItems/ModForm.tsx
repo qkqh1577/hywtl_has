@@ -77,7 +77,7 @@ const ServiceItemMod = () => {
     unit: '',
     price: '',
     memo: '',
-    order: 1,
+    orderNumber: 1,
   }]
 
   const initServiceItemValue = {

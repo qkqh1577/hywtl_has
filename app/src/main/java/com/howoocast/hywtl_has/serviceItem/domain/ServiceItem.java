@@ -31,7 +31,7 @@ public class ServiceItem extends CustomEntity {
   private String memo; // 비고(기본값)
   
   private String type; // 실험타입
-  
+
   private Integer orderNumber; // 순서
 
   @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
@@ -43,6 +43,7 @@ public class ServiceItem extends CustomEntity {
       Long price,
       String memo,
       String type,
+      Integer orderNumber,
       List<ServiceDetailItem> serviceDetailItemList
   ) {
     ServiceItem instance = new ServiceItem();
@@ -51,6 +52,7 @@ public class ServiceItem extends CustomEntity {
     instance.price = price;
     instance.memo = memo;
     instance.type = type;
+    instance.orderNumber = orderNumber;
     instance.serviceDetailItemList = serviceDetailItemList;
     return instance;
   }
