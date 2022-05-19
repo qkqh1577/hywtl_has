@@ -12,6 +12,7 @@ import { projectTargetSaga } from 'services/project_target';
 import { projectEstimateSaga } from 'services/project_estimate';
 import { projectCommentSaga } from 'services/project_comment';
 import { companySaga } from 'services/company';
+import { serviceItemSaga } from 'services/serviceItem';
 import reducer from 'services/common/reducer';
 
 const middleware = createSagaMiddleware();
@@ -29,6 +30,7 @@ function* saga() {
     projectCommentSaga(),
     passwordResetSaga(),
     companySaga(),
+    serviceItemSaga(),
   ]);
 }
 
