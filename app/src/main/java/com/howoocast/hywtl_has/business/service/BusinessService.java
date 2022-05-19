@@ -60,7 +60,7 @@ public class BusinessService {
                     manager.getName(),
                     manager.getJobTitle(),
                     manager.getMobilePhone(),
-                    manager.getPhone(),
+                    manager.getOfficePhone(),
                     manager.getEmail(),
                     manager.getState()))
                 .collect(Collectors.toList())
@@ -96,7 +96,7 @@ public class BusinessService {
                     manager.getName(),
                     manager.getJobTitle(),
                     manager.getMobilePhone(),
-                    manager.getPhone(),
+                    manager.getOfficePhone(),
                     manager.getEmail(),
                     manager.getState()))
                 .collect(Collectors.toList())

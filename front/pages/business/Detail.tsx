@@ -175,9 +175,9 @@ const Page = () => {
                   </Grid>
                   <Grid item sm={6} xs={12}>
                     <TextField
-                      name="manager.phone"
+                      name="manager.officePhone"
                       label="전화번호"
-                      value={manager.phone || ''}
+                      value={manager.officePhone || ''}
                       variant="standard"
                       fullWidth
                       InputProps={{

@@ -9,7 +9,7 @@ public class BusinessManagerView {
     String name; // 담당자명
     String jobTitle; // 호칭
     String mobilePhone; // 핸드폰
-    String phone; // 전화번호
+    String officePhone; // 전화번호
     String email; // 이메일
     String state; // 상태
 
@@ -20,7 +20,7 @@ public class BusinessManagerView {
         target.name = businessManager.getName();
         target.jobTitle = businessManager.getJobTitle();
         target.mobilePhone = businessManager.getMobilePhone();
-        target.phone = businessManager.getPhone();
+        target.officePhone = businessManager.getOfficePhone();
         target.email = businessManager.getEmail();
         target.state = businessManager.getState();
 

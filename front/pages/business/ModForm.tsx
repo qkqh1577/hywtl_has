@@ -40,7 +40,7 @@ const Page = () => {
     name: '',
     jobTitle: '',
     mobilePhone: '',
-    phone: '',
+    officePhone: '',
     email: '',
     meta: [''],
     state: ''
@@ -282,9 +282,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${i}.phone`}
+                            name={`managerList.${i}.officePhone`}
                             label="전화번호"
-                            value={manager.phone || ''}
+                            value={manager.officePhone || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="-를 제외하고 입력"
@@ -391,9 +391,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${0}.phone`}
+                            name={`managerList.${0}.officePhone`}
                             label="전화번호"
-                            value={values?.managerList?.[0]?.phone || ''}
+                            value={values?.managerList?.[0]?.officePhone || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="-를 제외하고 입력"
