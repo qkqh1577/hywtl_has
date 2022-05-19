@@ -29,6 +29,7 @@ public class Business extends CustomEntity {
 
     private String representativeName; // 대표명
 
+    @NotBlank
     @Column(nullable = false)
     private String registrationNumber; // 사업자번호
 
