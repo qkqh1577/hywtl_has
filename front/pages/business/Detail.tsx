@@ -163,9 +163,9 @@ const Page = () => {
                   </Grid>
                   <Grid item sm={6} xs={12}>
                     <TextField
-                      name="manager.mobile"
+                      name="manager.mobilePhone"
                       label="핸드폰"
-                      value={manager.mobile || ''}
+                      value={manager.mobilePhone || ''}
                       variant="standard"
                       fullWidth
                       InputProps={{
