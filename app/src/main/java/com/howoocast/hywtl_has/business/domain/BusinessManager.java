@@ -9,9 +9,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @Getter
@@ -23,6 +25,8 @@ import javax.persistence.Table;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BusinessManager extends CustomEntity {
 
+    @NotBlank
+    @Column(nullable=false)
     private String name; // 담당자명
 
     private String position; // 호칭
