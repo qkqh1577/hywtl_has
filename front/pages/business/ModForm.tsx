@@ -38,7 +38,7 @@ const Page = () => {
   const initBusinessManagerListValue = [{
     id: undefined,
     name: '',
-    position: '',
+    jobTitle: '',
     mobile: '',
     phone: '',
     email: '',
@@ -262,9 +262,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${i}.position`}
+                            name={`managerList.${i}.jobTitle`}
                             label="호칭"
-                            value={manager.position || ''}
+                            value={manager.jobTitle || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="입력"
@@ -371,9 +371,9 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <DataField
-                            name={`managerList.${0}.position`}
+                            name={`managerList.${0}.jobTitle`}
                             label="호칭"
-                            value={values?.managerList?.[0]?.position || ''}
+                            value={values?.managerList?.[0]?.jobTitle || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="입력"

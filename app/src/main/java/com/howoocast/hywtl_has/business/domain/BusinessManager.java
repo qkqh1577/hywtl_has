@@ -29,7 +29,7 @@ public class BusinessManager extends CustomEntity {
     @Column(nullable=false)
     private String name; // 담당자명
 
-    private String position; // 호칭
+    private String jobTitle; // 호칭
 
     private String mobile; // 핸드폰
 
@@ -41,7 +41,7 @@ public class BusinessManager extends CustomEntity {
 
     public static BusinessManager of(
         String name,
-        String position,
+        String jobTitle,
         String mobile,
         String officePhone,
         String email,
@@ -49,7 +49,7 @@ public class BusinessManager extends CustomEntity {
     ) {
         BusinessManager manager = new BusinessManager();
         manager.name = name;
-        manager.position = position;
+        manager.jobTitle = jobTitle;
         manager.mobile = mobile;
         manager.phone = officePhone;
         manager.email = email;
@@ -59,14 +59,14 @@ public class BusinessManager extends CustomEntity {
 
     public void change(
             String name,
-            String position,
+            String jobTitle,
             String mobile,
             String phone,
             String email,
             String state
     ) {
         this.name = name;
-        this.position = position;
+        this.jobTitle = jobTitle;
         this.mobile = mobile;
         this.phone = phone;
         this.email = email;

@@ -151,9 +151,9 @@ const Page = () => {
                   </Grid>
                   <Grid item sm={6} xs={12}>
                     <TextField
-                      name="manager.position"
+                      name="manager.jobTitle"
                       label="호칭"
-                      value={manager.position || ''}
+                      value={manager.jobTitle || ''}
                       variant="standard"
                       fullWidth
                       InputProps={{

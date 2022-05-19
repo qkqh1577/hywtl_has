@@ -1,6 +1,6 @@
 export type BusinessManagerView = {
   name?: string;
-  position?: string;
+  jobTitle?: string;
   mobile?: string;
   phone?: string;
   email?: string;
