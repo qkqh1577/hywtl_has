@@ -1,41 +1,33 @@
 import apiClient from 'services/common/api';
 import {
-  ProjectTargetDocument,
-  ProjectTargetDocumentChangeParameter,
+  ListProjectTarget,
+  ProjectTarget,
+  ProjectTargetParameter,
 } from 'services/project_target';
 
 class ProjectTargetApi {
-  async getDocumentList(projectId: number): Promise<ProjectTargetDocument[]> {
-    const { data } = await apiClient.get(`/projects/${projectId}/target/documents`);
+  async getList(projectId: number): Promise<ListProjectTarget[]> {
+    const { data } = await apiClient.get(`/projects/${projectId}/targets`);
     return data;
   }
 
-  async getDocument(id: number): Promise<ProjectTargetDocument> {
-    const { data } = await apiClient.get(`/project/target/documents/${id}`);
+  async getOne(id: number): Promise<ProjectTarget> {
+    const { data } = await apiClient.get(`/project/targets/${id}`);
     return data;
   }
 
-  async addDocument(projectId: number, params: any): Promise<ProjectTargetDocument[]> {
-    const form = new FormData();
-    form.append('fileItem.multipartFile', params.fileItem.multipartFile);
-    if (params.memo) {
-      form.append('memo', params.memo);
-    }
-    const { data } = await apiClient.post(`/projects/${projectId}/target/documents`, form, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+  async add(projectId: number, params: ProjectTargetParameter): Promise<ProjectTarget> {
+    const { data } = await apiClient.post(`/projects/${projectId}/targets`, params);
     return data;
   }
 
-  async updateDocument(id: number, params: ProjectTargetDocumentChangeParameter): Promise<ProjectTargetDocument[]> {
-    const { data } = await apiClient.patch(`/project/target/documents/${id}`, params);
+  async update(id: number, params: ProjectTargetParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/project/targets/${id}`, params);
     return data;
   }
 
-  async removeDocument(id: number): Promise<void> {
-    const { data } = await apiClient.delete(`/project/target/documents/${id}`);
+  async remove(id: number): Promise<void> {
+    const { data } = await apiClient.delete(`/project/targets/${id}`);
     return data;
   }
 }

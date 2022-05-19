@@ -1,28 +1,29 @@
 import { createReducer } from 'typesafe-actions';
 import {
+  ListProjectTarget,
+  ProjectTarget,
   ProjectTargetActionType,
-  ProjectTargetDocument,
 } from 'services/project_target';
 
 export type ProjectTargetState = {
-  documentId?: number | null;
-  documentList?: ProjectTargetDocument[];
-  documentDetail?: ProjectTargetDocument;
+  id?: number | null;
+  list?: ListProjectTarget[];
+  detail?: ProjectTarget;
 }
 
 const initState: ProjectTargetState = {};
 const projectTargetReducer = createReducer(initState, {
-  [ProjectTargetActionType.setDocumentId]: (state, action) => ({
+  [ProjectTargetActionType.setId]: (state, action) => ({
     ...state,
-    documentId: action.payload,
+    id: action.payload,
   }),
-  [ProjectTargetActionType.setDocumentList]: (state, action) => ({
+  [ProjectTargetActionType.setList]: (state, action) => ({
     ...state,
-    documentList: action.payload,
+    list: action.payload,
   }),
-  [ProjectTargetActionType.setDocument]: (state, action) => ({
+  [ProjectTargetActionType.setOne]: (state, action) => ({
     ...state,
-    documentDetail: action.payload,
+    detail: action.payload,
   }),
 });
 

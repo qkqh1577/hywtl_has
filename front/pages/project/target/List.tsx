@@ -5,8 +5,7 @@ import {
   Button,
   Link,
 } from '@mui/material';
-import { Container, DateFormat, Table } from 'components';
-import { toReadableSize } from 'services/common/file-item';
+import { Container, DateFormat, Table, UserFormat } from 'components';
 import { useProjectTarget } from 'services/project_target';
 import { findModifiedAt } from 'util/DateUtil';
 
@@ -15,31 +14,28 @@ const ProjectTargetDocumentList = () => {
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
     state: {
-      documentList: list,
-      documentId,
+      list,
+      id,
     },
-    getDocumentList: getList,
-    clearDocumentList: clearList,
-    setDocumentId: setId,
+    getList,
+    setId,
   } = useProjectTarget();
   const [modifiedAt, setModifiedAt] = useState<Date | undefined>();
 
   const handler = {
     addModal: () => {
       setId(null);
+    },
+    detailModal: (id: number) => {
+      setId(id);
     }
   };
 
   useEffect(() => {
-    if (!documentId && projectId) {
+    if (!id && projectId) {
       getList(projectId);
     }
-    return () => {
-      if (typeof projectId === 'undefined') {
-        clearList();
-      }
-    };
-  }, [documentId, projectId]);
+  }, [id, projectId]);
 
   useEffect(() => {
     setModifiedAt(findModifiedAt(list));
@@ -47,7 +43,7 @@ const ProjectTargetDocumentList = () => {
 
   return (
     <Container
-      title="형상비 검토 자료"
+      title="실험대상"
       modifiedAt={modifiedAt}
     >
       <Box sx={{
@@ -76,44 +72,42 @@ const ProjectTargetDocumentList = () => {
               <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
           },
           {
-            label: '파일명',
-            width: 200,
-            renderCell: (item) => {
-              const size: string = toReadableSize(item.fileItem.size);
-              return <Link
-                sx={{
-                  cursor: 'pointer'
-                }}
-                onClick={() => {
-                  setId(item.id);
-                }}
-              >
-                {`${item.fileItem.filename} (${size})`}
-              </Link>;
-            }
+            label: '견적 여부',
+            renderCell: (item) => item.confirmed ? 'Y' : 'N',
+            cellStyle: (item) => ({
+              backgroundColor: item.confirmed ? '#c4baf5' : 'inherit'
+            })
           },
           {
-            label: '다운로드',
-            align: 'center',
-            renderCell: (item) =>
-              <Button
-                color="primary"
-                variant="contained"
+            label: '실험대상 번호',
+            renderCell: (item) => (
+              <Link
+                sx={{
+                  cursor: 'pointer',
+                }}
                 onClick={() => {
-
-                  window.open(`/file-items/${item.fileItem.id}`, '_blank');
+                  handler.detailModal(item.id);
                 }}
               >
-                다운로드
-              </Button>
+                {item.code}
+              </Link>
+            )
+          },
+          {
+            label: '대상 동수',
+            renderCell: (item) => item.detailCount,
+          },
+          {
+            label: '실험 종류',
+            renderCell: (item) => item.testList.join(', ')
+          },
+          {
+            label: '등록자',
+            renderCell: (item) => (<UserFormat user={item.writer} />),
           },
           {
             label: '비고',
             renderCell: item => item.memo
-          },
-          {
-            label: '등록자',
-            renderCell: item => item.writer.name
           },
         ]}
         list={list}

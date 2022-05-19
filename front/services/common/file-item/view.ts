@@ -20,7 +20,7 @@ export const toReadableSize = (size: number, toBinary?: boolean): string => {
     }
     memory.push(temp / divider);
   }
-  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length]}B`;
+  return `${memory[memory.length - 1].toFixed(2)}${unit[memory.length - 1]}B`;
 };
 
 export const getExtension = (filename: string | undefined): string => {
@@ -49,5 +49,6 @@ export const fileToView = (file: File): FileItemView => {
     ext: getExtension(file.name),
     size: file.size,
     readableSize: toReadableSize(file.size),
+    multipartFile: file,
   };
 };

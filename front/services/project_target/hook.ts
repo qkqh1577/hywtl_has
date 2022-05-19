@@ -2,8 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import {
-  ProjectTargetDocumentAddParameter,
-  ProjectTargetDocumentChangeParameter,
+  ProjectTargetParameter,
   projectTargetActions,
 } from 'services/project_target';
 
@@ -12,70 +11,70 @@ export default function useProjectTarget() {
   const dispatch = useDispatch();
 
 
-  const getDocumentList = useCallback(
+  const getList = useCallback(
     (projectId: number) =>
-      dispatch(projectTargetActions.getDocumentList(projectId)),
+      dispatch(projectTargetActions.getList(projectId)),
     [dispatch]
   );
 
-  const clearDocumentList = useCallback(
+  const clearList = useCallback(
     () =>
-      dispatch(projectTargetActions.setDocumentList(undefined)),
+      dispatch(projectTargetActions.setList(undefined)),
     [dispatch]
   );
 
-  const getDocument = useCallback(
+  const getOne = useCallback(
     (id: number) =>
-      dispatch(projectTargetActions.getDocument(id)),
+      dispatch(projectTargetActions.getOne(id)),
     [dispatch]
   );
 
-  const clearDocument = useCallback(
+  const clearOne = useCallback(
     () =>
-      dispatch(projectTargetActions.setDocument(undefined)),
+      dispatch(projectTargetActions.setOne(undefined)),
     [dispatch]
   );
 
-  const addDocument = useCallback(
-    (projectId: number, params: ProjectTargetDocumentAddParameter, callback: () => void) =>
-      dispatch(projectTargetActions.addDocument({ projectId, params, callback })),
+  const add = useCallback(
+    (projectId: number, params: ProjectTargetParameter, callback: () => void) =>
+      dispatch(projectTargetActions.add({ projectId, params, callback })),
     [dispatch]
   );
 
-  const updateDocument = useCallback(
-    (id: number, params: ProjectTargetDocumentChangeParameter, callback: () => void) =>
-      dispatch(projectTargetActions.updateDocument({ id, params, callback })),
+  const update = useCallback(
+    (id: number, params: ProjectTargetParameter, callback: () => void) =>
+      dispatch(projectTargetActions.update({ id, params, callback })),
     [dispatch]
   );
 
-  const removeDocument = useCallback(
+  const remove = useCallback(
     (id: number, callback: () => void) =>
-      dispatch(projectTargetActions.removeDocument({ id, callback })),
+      dispatch(projectTargetActions.remove({ id, callback })),
     [dispatch]
   );
 
-  const setDocumentId = useCallback(
-    (documentId: number | null) =>
-      dispatch(projectTargetActions.setDocumentId(documentId)),
+  const setId = useCallback(
+    (id: number | null) =>
+      dispatch(projectTargetActions.setId(id)),
     [dispatch]
   );
 
-  const clearDocumentId = useCallback(
+  const clearId = useCallback(
     () =>
-      dispatch(projectTargetActions.setDocumentId(undefined)),
+      dispatch(projectTargetActions.setId(undefined)),
     [dispatch]
   );
 
   return {
     state,
-    getDocumentList,
-    clearDocumentList,
-    getDocument,
-    clearDocument,
-    addDocument,
-    updateDocument,
-    removeDocument,
-    setDocumentId,
-    clearDocumentId
+    getList,
+    clearList,
+    getOne,
+    clearOne,
+    add,
+    update,
+    remove,
+    setId,
+    clearId
   };
 }

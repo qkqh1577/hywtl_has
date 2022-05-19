@@ -1,39 +1,39 @@
 import { createAction } from 'typesafe-actions';
 import {
-  ProjectTargetDocument,
-  ProjectTargetDocumentAddParameter,
-  ProjectTargetDocumentChangeParameter,
+  ListProjectTarget,
+  ProjectTarget,
+  ProjectTargetParameter,
 } from 'services/project_target';
 
 export enum ProjectTargetActionType {
-  getDocumentList = 'project/target/document/getList',
-  setDocumentList = 'project/target/document/setList',
-  getDocument = 'project/target/document/getOne',
-  setDocument = 'project/target/document/setOne',
-  addDocument = 'project/target/document/add',
-  updateDocument = 'project/target/document/update',
-  removeDocument = 'project/target/document/remove',
-  setDocumentId = 'project/target/document/setId',
+  getList = 'project/target/getList',
+  setList = 'project/target/document/setList',
+  getOne = 'project/target/document/getOne',
+  setOne = 'project/target/document/setOne',
+  add = 'project/target/document/add',
+  update = 'project/target/document/update',
+  remove = 'project/target/document/remove',
+  setId = 'project/target/document/setId',
 }
 
 export const projectTargetActions = {
-  getDocumentList: createAction(ProjectTargetActionType.getDocumentList)<number>(),
-  setDocumentList: createAction(ProjectTargetActionType.setDocumentList)<ProjectTargetDocument[] | undefined>(),
-  getDocument: createAction(ProjectTargetActionType.getDocument)<number>(),
-  setDocument: createAction(ProjectTargetActionType.setDocument)<ProjectTargetDocument | undefined>(),
-  addDocument: createAction(ProjectTargetActionType.addDocument)<{
+  getList: createAction(ProjectTargetActionType.getList)<number>(),
+  setList: createAction(ProjectTargetActionType.setList)<ListProjectTarget[] | undefined>(),
+  getOne: createAction(ProjectTargetActionType.getOne)<number>(),
+  setOne: createAction(ProjectTargetActionType.setOne)<ProjectTarget | undefined>(),
+  add: createAction(ProjectTargetActionType.add)<{
     projectId: number;
-    params: ProjectTargetDocumentAddParameter;
+    params: ProjectTargetParameter;
     callback: () => void;
   }>(),
-  updateDocument: createAction(ProjectTargetActionType.updateDocument)<{
+  update: createAction(ProjectTargetActionType.update)<{
     id: number;
-    params: ProjectTargetDocumentChangeParameter;
+    params: ProjectTargetParameter;
     callback: () => void;
   }>(),
-  removeDocument: createAction(ProjectTargetActionType.removeDocument)<{
+  remove: createAction(ProjectTargetActionType.remove)<{
     id: number;
     callback: () => void;
   }>(),
-  setDocumentId: createAction(ProjectTargetActionType.setDocumentId)<number | null | undefined>(),
+  setId: createAction(ProjectTargetActionType.setId)<number | null | undefined>(),
 };

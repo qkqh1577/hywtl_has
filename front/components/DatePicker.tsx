@@ -20,7 +20,7 @@ type Props = {
   disableFuture?: boolean;
   placeholder?: string;
   helperText?: string | React.ReactNode;
-  labelDisabled?: boolean;
+  disableLabel?: boolean;
 }
 
 const DatePicker = ({
@@ -36,7 +36,7 @@ const DatePicker = ({
   disableFuture,
   placeholder,
   helperText,
-  labelDisabled
+  disableLabel
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
@@ -81,7 +81,7 @@ const DatePicker = ({
             id={`params-${name}`}
             name={name}
             value={value === null ? '' : dayjs(value).format(format)}
-            label={labelDisabled ? undefined : label}
+            label={disableLabel ? undefined : label}
             helperText={helperMessage}
             placeholder={placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`}
             variant="standard"

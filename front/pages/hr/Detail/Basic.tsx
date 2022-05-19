@@ -93,7 +93,7 @@ const PersonnelDetailBasic = ({
           value={values.image}
           setFieldValue={setFieldValue}
           errors={errors}
-          labelDisabled
+          disableLabel
         />
       </Grid>
       <Grid item sm={6} xs={12}>

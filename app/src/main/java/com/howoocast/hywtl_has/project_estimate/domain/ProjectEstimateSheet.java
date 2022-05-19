@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
+import com.howoocast.hywtl_has.project_target.domain.ProjectTarget;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import java.util.List;
@@ -76,9 +77,11 @@ public class ProjectEstimateSheet extends CustomEntity {
     @ManyToOne
     private User salesManagementLeader; // 영업실장
 
-    @NotNull
     @ManyToOne
     private ProjectReview review; // 형상비 검토
+
+    @ManyToOne
+    private ProjectTarget target; // 실험대상
 
     @NotEmpty
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
@@ -91,6 +94,40 @@ public class ProjectEstimateSheet extends CustomEntity {
     @ElementCollection
     @OrderBy("seq")
     private List<ProjectEstimateSheetComment> commentList;
+
+    private static ProjectEstimateSheet of(
+        Project project,
+        Boolean confirmed,
+        ProjectEstimateSheetStatus status,
+        String title,
+        String memo,
+        User writer,
+        LocalDate estimateDate,
+        LocalDate expectedStartMonth,
+        User salesTeamLeader,
+        @Nullable User salesManagementLeader,
+        List<ProjectEstimateSheetDetail> detailList,
+        Long specialDiscount,
+        List<ProjectEstimateSheetComment> commentList
+    ) {
+        ProjectEstimateSheet instance = new ProjectEstimateSheet();
+        instance.project = project;
+        instance.writer = writer;
+        instance.change(
+            confirmed,
+            status,
+            title,
+            memo,
+            estimateDate,
+            expectedStartMonth,
+            salesTeamLeader,
+            salesManagementLeader,
+            detailList,
+            specialDiscount,
+            commentList
+        );
+        return instance;
+    }
 
     public static ProjectEstimateSheet of(
         Project project,
@@ -108,15 +145,13 @@ public class ProjectEstimateSheet extends CustomEntity {
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
     ) {
-        ProjectEstimateSheet instance = new ProjectEstimateSheet();
-        instance.project = project;
-        instance.writer = writer;
-        instance.review = review;
-        instance.change(
+        ProjectEstimateSheet instance = ProjectEstimateSheet.of(
+            project,
             confirmed,
             status,
             title,
             memo,
+            writer,
             estimateDate,
             expectedStartMonth,
             salesTeamLeader,
@@ -125,6 +160,42 @@ public class ProjectEstimateSheet extends CustomEntity {
             specialDiscount,
             commentList
         );
+        instance.review = review;
+        return instance;
+    }
+
+    public static ProjectEstimateSheet of(
+        Project project,
+        Boolean confirmed,
+        ProjectEstimateSheetStatus status,
+        String title,
+        String memo,
+        User writer,
+        LocalDate estimateDate,
+        LocalDate expectedStartMonth,
+        User salesTeamLeader,
+        @Nullable User salesManagementLeader,
+        ProjectTarget target,
+        List<ProjectEstimateSheetDetail> detailList,
+        Long specialDiscount,
+        List<ProjectEstimateSheetComment> commentList
+    ) {
+        ProjectEstimateSheet instance = ProjectEstimateSheet.of(
+            project,
+            confirmed,
+            status,
+            title,
+            memo,
+            writer,
+            estimateDate,
+            expectedStartMonth,
+            salesTeamLeader,
+            salesManagementLeader,
+            detailList,
+            specialDiscount,
+            commentList
+        );
+        instance.target = target;
         return instance;
     }
 

@@ -147,6 +147,8 @@ public class ProjectReviewService {
                 )
                 .orElse(null)
         );
+
+        // TODO: 삭제된 항목 deleted 처리
     }
 
     @Transactional

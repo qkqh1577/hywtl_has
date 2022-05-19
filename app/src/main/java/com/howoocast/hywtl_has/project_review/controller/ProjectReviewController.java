@@ -12,10 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -40,7 +40,7 @@ public class ProjectReviewController {
     public ProjectReviewView add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @RequestBody ProjectReviewParameter params
+        @Valid @ModelAttribute ProjectReviewParameter params
     ) {
         return projectReviewService.add(projectId, authentication.getName(), params);
     }
@@ -48,7 +48,7 @@ public class ProjectReviewController {
     @PatchMapping("/project/reviews/{id}")
     public ProjectReviewView change(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectReviewParameter params
+        @Valid @ModelAttribute ProjectReviewParameter params
     ) {
         projectReviewService.change(id, params);
         return projectReviewService.getOne(id);

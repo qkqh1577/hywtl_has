@@ -43,7 +43,7 @@ const ProjectReviewList = () => {
 
   return (
     <Container
-      title="형상비 검토 목록"
+      title="형상비 검토"
       modifiedAt={modifiedAt}
     >
       <Box sx={{

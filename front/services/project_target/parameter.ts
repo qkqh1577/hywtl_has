@@ -1,10 +1,14 @@
-import { FileItemParameter } from 'services/common/file-item';
-
-export type ProjectTargetDocumentAddParameter = {
-  fileItem: FileItemParameter;
+export type ProjectTargetDetailParameter = {
+  id?: number;
+  buildingName: string;
+  testList: string[];
   memo?: string;
 }
 
-export type ProjectTargetDocumentChangeParameter = {
+export type ProjectTargetParameter = {
+  code: string;
+  testList?: string[];
   memo?: string;
+  detailList: ProjectTargetDetailParameter[];
 }
+

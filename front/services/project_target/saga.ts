@@ -1,47 +1,48 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import {
+  ListProjectTarget,
+  ProjectTarget,
   ProjectTargetActionType,
-  ProjectTargetDocument,
   projectTargetActions,
   projectTargetApi,
 } from 'services/project_target';
 
 
-function* getDocumentList(action: ActionType<typeof projectTargetActions.getDocumentList>) {
-  const list: ProjectTargetDocument[] = yield projectTargetApi.getDocumentList(action.payload);
-  yield put(projectTargetActions.setDocumentList(list));
+function* getList(action: ActionType<typeof projectTargetActions.getList>) {
+  const list: ListProjectTarget[] = yield projectTargetApi.getList(action.payload);
+  yield put(projectTargetActions.setList(list));
 }
 
-function* getDocument(action: ActionType<typeof projectTargetActions.getDocument>) {
-  const data: ProjectTargetDocument = yield projectTargetApi.getDocument(action.payload);
-  yield put(projectTargetActions.setDocument(data));
+function* getOne(action: ActionType<typeof projectTargetActions.getOne>) {
+  const data: ProjectTarget = yield projectTargetApi.getOne(action.payload);
+  yield put(projectTargetActions.setOne(data));
 }
 
-function* addDocument(action: ActionType<typeof projectTargetActions.addDocument>) {
+function* add(action: ActionType<typeof projectTargetActions.add>) {
   const { projectId, params, callback } = action.payload;
   try {
-    yield projectTargetApi.addDocument(projectId, params);
+    yield projectTargetApi.add(projectId, params);
     callback();
   } catch (e) {
     // nothing to do
   }
 }
 
-function* updateDocument(action: ActionType<typeof projectTargetActions.updateDocument>) {
+function* update(action: ActionType<typeof projectTargetActions.update>) {
   const { id, params, callback } = action.payload;
   try {
-    yield projectTargetApi.updateDocument(id, params);
+    yield projectTargetApi.update(id, params);
     callback();
   } catch (e) {
     // nothing to do
   }
 }
 
-function* removeDocument(action: ActionType<typeof projectTargetActions.removeDocument>) {
+function* remove(action: ActionType<typeof projectTargetActions.remove>) {
   const { id, callback } = action.payload;
   try {
-    yield projectTargetApi.removeDocument(id);
+    yield projectTargetApi.remove(id);
     callback();
   } catch (e) {
     // nothing to do
@@ -49,9 +50,9 @@ function* removeDocument(action: ActionType<typeof projectTargetActions.removeDo
 }
 
 export default function* projectTargetSaga() {
-  yield takeLatest(ProjectTargetActionType.getDocumentList, getDocumentList);
-  yield takeLatest(ProjectTargetActionType.getDocument, getDocument);
-  yield takeLatest(ProjectTargetActionType.addDocument, addDocument);
-  yield takeLatest(ProjectTargetActionType.updateDocument, updateDocument);
-  yield takeLatest(ProjectTargetActionType.removeDocument, removeDocument);
+  yield takeLatest(ProjectTargetActionType.getList, getList);
+  yield takeLatest(ProjectTargetActionType.getOne, getOne);
+  yield takeLatest(ProjectTargetActionType.add, add);
+  yield takeLatest(ProjectTargetActionType.update, update);
+  yield takeLatest(ProjectTargetActionType.remove, remove);
 }

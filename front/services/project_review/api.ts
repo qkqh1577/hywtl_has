@@ -13,12 +13,12 @@ class ProjectReviewApi {
   }
 
   async add(projectId: number, params: ProjectReviewParameter): Promise<ListProjectReview[]> {
-    const { data } = await apiClient.post(`/projects/${projectId}/reviews`, params);
+    const { data } = await apiClient.post(`/projects/${projectId}/reviews`, toFormData(params));
     return data;
   }
 
   async update(id: number, params: ProjectReviewParameter): Promise<ListProjectReview[]> {
-    const { data } = await apiClient.patch(`/project/reviews/${id}`, params);
+    const { data } = await apiClient.patch(`/project/reviews/${id}`, toFormData(params));
     return data;
   }
 
@@ -27,6 +27,41 @@ class ProjectReviewApi {
     return data;
   }
 }
+
+const mapFormData = (obj: any, fieldName: string, form: FormData): void => {
+  if (typeof obj === 'undefined' || Number.isNaN(obj)) {
+    return;
+  }
+  if (Array.isArray(obj)) {
+    for (let i = 0; i < obj.length; i++) {
+      mapFormData(obj[i], `${fieldName}[${i}]`, form);
+    }
+    return;
+  }
+  if (obj instanceof File) {
+    form.append(fieldName, obj);
+    return;
+  }
+  if (typeof obj === 'object') {
+    const keys: string[] = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+      const key: string = keys[i];
+      mapFormData(obj[key], `${fieldName}.${key}`, form);
+    }
+    return;
+  }
+  form.append(fieldName, obj);
+};
+
+const toFormData = (params: any): FormData => {
+  const formData = new FormData();
+  const keys: string[] = Object.keys(params);
+  for (let i = 0; i < keys.length; i++) {
+    const key: string = keys[i];
+    mapFormData(params[key], key, formData);
+  }
+  return formData;
+};
 
 const projectReviewApi = new ProjectReviewApi();
 export default projectReviewApi;

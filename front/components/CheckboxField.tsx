@@ -30,8 +30,8 @@ export type CheckboxFieldProps = {
   helperText?: string | React.ReactNode;
   sx?: object;
   size?: 'small';
-  labelDisabled?: boolean;
-  disabledAll?: boolean;
+  disableLabel?: boolean;
+  disableAll?: boolean;
 }
 const CheckboxField = ({
   variant,
@@ -46,8 +46,8 @@ const CheckboxField = ({
   helperText,
   sx,
   size,
-  labelDisabled,
-  disabledAll,
+  disableLabel,
+  disableAll,
 }: CheckboxFieldProps) => {
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const isChecked = (option: Option | DataFieldValue): boolean =>
@@ -68,27 +68,23 @@ const CheckboxField = ({
       id={`params-${name}`}
       variant={variant}
       size={size}
-      required={!(disabled === true) && required === true}
+      required={!disableLabel && !(disabled === true) && required === true}
       disabled={disabled === true}
       sx={sx}
       fullWidth
     >
-      <FormLabel
-        component="legend"
-        error={typeof errors[name] === 'string'}
-      >
-        <FormHelperText error={typeof errors[name] === 'string'}>
-          {helperMessage}
-        </FormHelperText>
-        {labelDisabled ? undefined : label}
-      </FormLabel>
-      <FormGroup
-        row
-      >
-        {!disabledAll && (
+      {!disableLabel && (
+        <FormLabel
+          component="legend"
+        >
+          {label}
+        </FormLabel>
+      )}
+      <FormGroup row>
+        {!disableAll && (
           <FormControlLabel
             control={
-              <Tooltip title={`${label} - 전체`} placement="bottom-start">
+              <Tooltip title={`${label} - 전체`}>
                 <Checkbox
                   name={`${name}-all`}
                   checked={value && options.length === value.length}
@@ -112,7 +108,7 @@ const CheckboxField = ({
             <FormControlLabel
               key={key}
               control={
-                <Tooltip title={optionTooltip(option) ?? `${label} - ${optionText(option)}`} placement="bottom-start">
+                <Tooltip title={optionTooltip(option) ?? `${label} - ${optionText(option)}`}>
                   <Checkbox
                     name={name}
                     value={key}
@@ -132,6 +128,11 @@ const CheckboxField = ({
           );
         })}
       </FormGroup>
+      {typeof errors[name] === 'string' && (
+        <FormHelperText error>
+          {helperMessage}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };
