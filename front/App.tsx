@@ -11,7 +11,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  SvgIcon,
   Toolbar,
   Typography
 } from '@mui/material';
@@ -23,7 +22,10 @@ import {
   Logout as LogoutIcon,
   AccountCircle as AccountIcon,
   FolderOpen as FolderOpenIcon,
-  Search as SearchIcon
+  Search as SearchIcon,
+  CancelPresentation as UnusableIcon,
+  DoubleArrow as SelectedMenuIcon,
+  Label as MenuIcon,
 } from '@mui/icons-material';
 import { Formik, FormikHelpers } from 'formik';
 import Tree, { TreeNode } from 'rc-tree';
@@ -40,10 +42,53 @@ import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment'
 
 type Menu = {
   title: string;
-  path: string;
-  icon: typeof SvgIcon;
+  path?: string;
   children?: Menu[];
+  depth: number;
 }
+const MenuNode = (menu: Menu): React.ReactNode => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const getIcon = () => {
+    if (menu.path) {
+      if (location.pathname.startsWith(menu.path)) {
+        return SelectedMenuIcon;
+      }
+      return MenuIcon;
+    }
+    if (menu.children) {
+      return FolderOpenIcon;
+    }
+    return UnusableIcon;
+  };
+  const icon = getIcon();
+  return (
+    <TreeNode
+      title={
+        <ListItem
+          sx={{
+            paddingLeft: `${16 + menu.depth * 24}px`,
+          }}
+          onClick={() => {
+            if (menu.path) {
+              navigate(menu.path);
+            }
+          }}
+          disabled={!menu.path && !menu.children}
+          button
+        >
+          <ListItemIcon>
+            {React.createElement(icon)}
+          </ListItemIcon>
+          <ListItemText primary={menu.title} />
+        </ListItem>
+      }
+      key={menu.title}
+      checkable={false}
+      children={menu.children?.map(MenuNode)}
+    />
+  );
+};
 
 const App = () => {
   const navigate = useNavigate();
@@ -57,40 +102,61 @@ const App = () => {
   const [openComment, setOpenComment] = useState(false);
   const [menuData, setMenuData] = useState<Menu[]>([
     {
-      title: '프로젝트 관리',
-      path: '/project',
-      icon: FolderOpenIcon
-    },
-    {
-      title: '영업 관리',
-      path: '/sales',
-      icon: FolderOpenIcon
-    },
-    {
-      title: '인사카드 관리',
-      path: '/hr/card',
-      icon: FolderOpenIcon
-    },
-    {
-      title: '부서 관리',
-      path: '/department',
-      icon: FolderOpenIcon
-    },
-    {
-      title: '사용자 관리',
-      path: '/user',
-      icon: FolderOpenIcon
-    }, 
-    {
+      title: '프로젝트',
+      depth: 0,
+      children: [
+        {
+          title: '영업정보 관리',
+          depth: 1,
+        }, {
+          title: '프로젝트 관리',
+          path: '/project',
+          depth: 1,
+        }, {
+          title: '영업 관리',
+          path: '/sales',
+          depth: 1,
+        }, {
+          title: '수금 관리',
+          depth: 1,
+        }, {
+          title: '고객 관리',
+          depth: 1,
+        }
+      ]
+    }, {
       title: '업체 관리',
       path: '/company',
-      icon: FolderOpenIcon
+      depth: 0,
+    }, {
+      title: '인사카드 관리',
+      path: '/hr/card',
+      depth: 0,
+    }, {
+      title: '결재 관리',
+      depth: 0,
+    }, {
+      title: 'WBS 관리',
+      depth: 0,
+    }, {
+      title: '관리자 메뉴',
+      depth: 0,
+      children: [
+        {
+          title: '사용자 관리',
+          path: '/user',
+          depth: 1,
+        }, {
+          title: '조직 관리',
+          path: '/department',
+          depth: 1,
+        }, {
+          title: '용역항목 관리',
+          path: '/test-service',
+          depth: 1,
+        }
+      ]
     },
-    {
-      title: '용역항목 관리',
-      path: '/serviceItem',
-      icon: FolderOpenIcon
-    }
   ]);
 
   const handler = {
@@ -339,29 +405,11 @@ const App = () => {
               onDragStart={handler.dragStart}
               onDragEnter={handler.dragEnter}
               onDrop={handler.drop}
+              showLine
               draggable
               defaultExpandAll
             >
-              {menuData.map((menu) => (
-                <TreeNode
-                  title={
-                    <ListItem
-                      key={menu.path}
-                      onClick={() => {
-                        navigate(menu.path);
-                      }}
-                      button
-                    >
-                      <ListItemIcon>
-                        {React.createElement(menu.icon)}
-                      </ListItemIcon>
-                      <ListItemText primary={menu.title} />
-                    </ListItem>
-                  }
-                  key={menu.path}
-                  checkable={false}
-                />
-              ))}
+              {menuData.map(MenuNode)}
             </Tree>
           )}
         </AppDrawer>

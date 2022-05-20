@@ -87,7 +87,7 @@ const ProjectList = () => {
             setFieldValue,
             handleSubmit,
           }) => (
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item sm={9}>
                 <DataField
                   name="keyword"

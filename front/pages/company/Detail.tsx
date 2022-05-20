@@ -38,7 +38,7 @@ const Page = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={12}>
             <Grid container spacing={2}>
               <Grid item sm={12}>

@@ -1,7 +1,9 @@
-export * from './parameter';
 export * from './actions';
+export * from './data';
 export * from './entity';
+export * from './parameter';
 export * from './reducer';
+export * from './view';
 export { default as testServiceTemplateApi } from './api';
 export { default as testServiceTemplateSaga } from './saga';
 export { default as testServiceTemplateReducer } from './reducer';

@@ -141,10 +141,10 @@ const DepartmentPage = () => {
           enableReinitialize
         >
           {({ values, isSubmitting, handleChange, handleSubmit, resetForm }) => (
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <FormControl variant="standard" fullWidth>
                         <FormLabel component="legend">부서 유형</FormLabel>
@@ -166,7 +166,7 @@ const DepartmentPage = () => {
                         </FormGroup>
                       </FormControl>
                     </Grid>
-                    <Grid container spacing={1} item sm={12}>
+                    <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
                         <FormControl variant="standard" fullWidth>
                           <FormLabel component="legend">검색 대상</FormLabel>
@@ -244,7 +244,7 @@ const DepartmentPage = () => {
         justifyContent: 'flex-end',
         mb: '20px',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={8} sx={{
             display: 'flex',
             justifyContent: 'flex-start',

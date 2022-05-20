@@ -4,12 +4,17 @@ import {
   ListTestServiceTemplate,
   TestServiceTemplateActionType,
   testServiceTemplateActions,
-  testServiceTemplateApi,
+  testServiceTemplateApi, TestServiceTemplate,
 } from 'services/standard_data/test_service_template';
 
 function* getList(action: ActionType<typeof testServiceTemplateActions.getList>) {
   const list: ListTestServiceTemplate[] = yield testServiceTemplateApi.getList(action.payload);
   yield put(testServiceTemplateActions.setList(list));
+}
+
+function* getOne(action: ActionType<typeof testServiceTemplateActions.getOne>) {
+  const detail: TestServiceTemplate = yield testServiceTemplateApi.getOne(action.payload);
+  yield put(testServiceTemplateActions.setOne(detail));
 }
 
 function* add(action: ActionType<typeof testServiceTemplateActions.add>) {
@@ -44,6 +49,7 @@ function* changeSeq(action: ActionType<typeof testServiceTemplateActions.changeS
 
 export default function* testServiceTemplateSaga() {
   yield takeLatest(TestServiceTemplateActionType.getList, getList);
+  yield takeLatest(TestServiceTemplateActionType.getOne, getOne);
   yield takeLatest(TestServiceTemplateActionType.add, add);
   yield takeLatest(TestServiceTemplateActionType.change, change);
   yield takeLatest(TestServiceTemplateActionType.changeSeq, changeSeq);

@@ -215,7 +215,7 @@ const ProjectReviewModal = () => {
         return;
       }
       if (edit) {
-        dialog.rollback('작성 중인 내용이 전부 사라집니다. 취소하시겠습니까?', handler.init);
+        dialog.rollback(handler.init);
       } else {
         handler.init();
       }
@@ -402,7 +402,7 @@ const ProjectReviewModal = () => {
                               variant="contained"
                               onClick={() => {
                                 if (dirty) {
-                                  dialog.rollback('작성중인 내용을 취소하겠습니까?', () => {
+                                  dialog.rollback(() => {
                                     setEdit(false);
                                     resetForm();
                                   });

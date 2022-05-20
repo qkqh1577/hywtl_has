@@ -1,7 +1,7 @@
 export type TestServiceTemplateQuery = {
   keywordType?: 'by_title';
   keyword?: string;
-  testType?: string[];
+  testType: string[];
 }
 
 export type TestServiceDetailTemplateParameter = {
@@ -15,7 +15,7 @@ export type TestServiceDetailTemplateParameter = {
 export type TestServiceTemplateParameter = {
   title: string;
   testType: string;
-  detailList: TestServiceDetailTemplateParameter;
+  detailList: TestServiceDetailTemplateParameter[];
 }
 
 export type TestServiceTemplateChangeSeqParameter = {

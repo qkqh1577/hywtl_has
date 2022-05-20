@@ -91,7 +91,7 @@ const DepartmentAddForm = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik
               initialValues={{
@@ -105,7 +105,7 @@ const DepartmentAddForm = () => {
             >
               {({ values, isSubmitting, handleChange, handleSubmit }) => (
                 <Form>
-                  <Grid container spacing={3}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <FormControl variant="standard" fullWidth>
                         <InputLabel htmlFor="params-name">부서명</InputLabel>

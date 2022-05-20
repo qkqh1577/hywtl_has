@@ -138,9 +138,9 @@ function useDialog() {
   );
 
   const rollback = useCallback(
-    (message: string, afterConfirm: () => void) =>
+    (afterConfirm: () => void) =>
       dispatch(dialogActions.openConfirm({
-        children: message,
+        children: '작업을 취소하겠습니까? 변경 사항은 사라집니다.',
         confirmText: '작업 취소',
         status: 'warn',
         afterConfirm,

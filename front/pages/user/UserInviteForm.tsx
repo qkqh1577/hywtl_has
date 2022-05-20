@@ -89,7 +89,7 @@ const UserInviteForm = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik
               initialValues={initialParameter}
@@ -97,7 +97,7 @@ const UserInviteForm = () => {
             >
               {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
                 <Form>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <DataField
                         name="name"
