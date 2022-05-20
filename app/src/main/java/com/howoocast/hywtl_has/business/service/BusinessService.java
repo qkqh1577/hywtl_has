@@ -94,6 +94,12 @@ public class BusinessService {
     @Transactional
     public void change(Long id, BusinessParameter params) {
         Business business = businessRepository.findById(id).orElseThrow(() -> new NotFoundException("business", id));
+
+        Optional<Business> duplicatedBusiness = businessRepository.findByRegistrationNumber(params.getRegistrationNumber());
+        if(duplicatedBusiness.get().getId() != id) {
+            throw new DuplicatedValueException("id", id.toString());
+        }
+
         business.change(
             params.getName(),
             params.getRepresentativeName(),
