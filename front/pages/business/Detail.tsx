@@ -16,7 +16,7 @@ const Page = () => {
     return null;
   }
 
-  const { state: { detail }, getOne } = useBusiness();
+  const { state: { detail }, getOne, remove } = useBusiness();
 
   useEffect(() => {
     getOne(id);
@@ -28,6 +28,13 @@ const Page = () => {
     },
     toModForm: () => {
       navigate(`/business/modify/${id}`);
+    },
+
+    delete: () => {
+      remove(id, () => {
+        window.alert('삭제하였습니다.');
+        navigate('/business');
+    });
     }
   };
 
@@ -260,6 +267,14 @@ const Page = () => {
               }}>
                 <Button variant="contained" color="primary" onClick={handler.toPage}>
                   목록
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{marginLeft: '5px'}}
+                  onClick={handler.delete}
+                >
+                  삭제
                 </Button>
               </Box>
               <Box sx={{

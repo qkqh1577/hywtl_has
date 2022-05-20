@@ -51,10 +51,21 @@ function* change(action: ActionType<typeof businessActions.change>) {
   }
 }
 
+function* remove(action: ActionType<typeof businessActions.remove>) {
+  const { id, callback } = action.payload;
+  try {
+    yield businessApi.remove(id);
+    callback();
+  } catch (e) {
+    callback();
+  }
+}
+
 export default function* businessSaga() {
   yield takeLatest(BusinessActionType.getPage, getPage);
   yield takeLatest(BusinessActionType.getAll, getAll);
   yield takeLatest(BusinessActionType.getOne, getOne);
   yield takeLatest(BusinessActionType.add, add);
   yield takeLatest(BusinessActionType.change, change);
+  yield takeLatest(BusinessActionType.remove, remove);
 }

@@ -45,12 +45,19 @@ export default function useBusiness() {
     [dispatch]
   );
 
+  const remove = useCallback(
+    (id: number, callback: () => void) =>
+      dispatch(businessActions.remove({ id, callback })),
+    [dispatch]
+  )
+
   return {
     state,
     getPage,
     getAll,
     getOne,
     add,
-    change
+    change,
+    remove
   };
 }

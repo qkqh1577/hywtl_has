@@ -1,4 +1,4 @@
-import { createAction } from 'typesafe-actions';;
+import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
 import {
   Business,
@@ -19,6 +19,7 @@ export enum BusinessActionType {
   change = 'business/change',
   getAll = 'business/getAll',
   setAll = 'business/setAll',
+  remove = 'business/delete',
 }
 
 export const businessActions = {
@@ -35,5 +36,9 @@ export const businessActions = {
   change: createAction(BusinessActionType.change)<{
     params: BusinessChangeParameter;
     callback: (data?: Business) => void;
+  }>(),
+  remove: createAction(BusinessActionType.remove)<{
+    id: number;
+    callback: () => void;
   }>(),
 };
