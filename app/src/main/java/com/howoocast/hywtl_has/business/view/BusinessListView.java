@@ -15,7 +15,7 @@ public class BusinessListView {
     private String address; // 주소
     private String officePhone; // 대표 전화번호
     private Integer managerCount; // 담당자
-    private Long projectCount; // 참여 프로젝트 총 개수
+    private Integer projectCount; // 참여 프로젝트 총 개수
     private String memo;
 
     public static BusinessListView assemble(Business source) {
