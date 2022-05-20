@@ -54,6 +54,12 @@ export default function useTestServiceTemplate() {
     [dispatch]
   );
 
+  const setSeqModal = useCallback(
+    (open: boolean) =>
+      dispatch(testServiceTemplateActions.setSeqModal(open)),
+    [dispatch]
+  );
+
   return {
     state,
     getList,
@@ -62,6 +68,7 @@ export default function useTestServiceTemplate() {
     clearOne,
     add,
     change,
-    changeSeq
+    changeSeq,
+    setSeqModal
   };
 }

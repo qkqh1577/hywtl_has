@@ -14,7 +14,8 @@ export enum TestServiceTemplateActionType {
   setOne = 'standard-data/test-service-template/setOne',
   add = 'standard-data/test-service-template/add',
   change = 'standard-data/test-service-template/change',
-  changeSeq = 'standard-data/test-service-template/changeSeq'
+  changeSeq = 'standard-data/test-service-template/changeSeq',
+  setSeqModal = 'standard-data/test-service-template/setSeqModal',
 }
 
 export const testServiceTemplateActions = {
@@ -35,4 +36,5 @@ export const testServiceTemplateActions = {
     params: TestServiceTemplateChangeSeqParameter;
     callback: () => void;
   }>(),
+  setSeqModal: createAction(TestServiceTemplateActionType.setSeqModal)<boolean>(),
 };
