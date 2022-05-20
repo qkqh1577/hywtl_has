@@ -9,12 +9,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
-import javax.persistence.ElementCollection;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -42,6 +39,9 @@ public class BusinessManager extends CustomEntity {
     @ElementCollection
     private List<String> meta; // 메타
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable=false)
     private String state; // 상태
 
     public static BusinessManager of(
