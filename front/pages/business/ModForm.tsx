@@ -72,14 +72,9 @@ const Page = () => {
         return;
       }
 
-      if(detail?.registrationNumber === registrationNumber) {
-        alert('기존 사업자번호와 일치합니다.');
-        return;
-      }
-
       const duplicatedBusiness = list?.find(business => business.registrationNumber === registrationNumber);
 
-      if(duplicatedBusiness) {
+      if(duplicatedBusiness && (duplicatedBusiness.registrationNumber !== detail?.registrationNumber)) {
         alert('이미 등록되어 있는 사업자번호 입니다.');
         return;
       }
