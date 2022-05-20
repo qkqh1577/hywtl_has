@@ -3,9 +3,11 @@ package com.howoocast.hywtl_has.business.service;
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
+import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.business.view.BusinessListView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
+import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -54,6 +57,13 @@ public class BusinessService {
 
     @Transactional
     public BusinessView add(BusinessParameter params) {
+
+        if(businessRepository.exists(Objects.requireNonNull(
+            new BusinessPredicateBuilder().registrationNumberIs(params.getRegistrationNumber())
+                .build()))) {
+            throw new DuplicatedValueException("registrationNumber", params.getRegistrationNumber());
+        }
+
         List<BusinessManager> managerList = Optional.ofNullable(params.getManagerList()).map(
             list -> list.stream()
                 .map(manager -> BusinessManager.of(

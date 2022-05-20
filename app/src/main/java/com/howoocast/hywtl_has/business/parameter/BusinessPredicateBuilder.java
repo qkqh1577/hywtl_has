@@ -49,6 +49,11 @@ public class BusinessPredicateBuilder {
         return this;
     }
 
+    public BusinessPredicateBuilder registrationNumberIs(String registrationNumber) {
+        criteria.and(business.registrationNumber.eq(registrationNumber));
+        return this;
+    }
+
     @Nullable
     public Predicate build() {
         return criteria.getValue();
