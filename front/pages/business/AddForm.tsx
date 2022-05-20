@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -42,7 +42,12 @@ const initBusinessValue = {
 const Page = () => {
   const navigate = useNavigate();
 
-  const { state: { list }, add } = useBusiness();
+  const { state: { list }, add, getAll } = useBusiness();
+
+  useEffect(() => {
+    getAll({});
+  }, [])
+
 
   const handler = {
 
