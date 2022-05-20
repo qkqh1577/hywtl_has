@@ -17,7 +17,7 @@ export type BusinessManagerDetail = {
   officePhone?: string;
   email?: string;
   meta?: string[];
-  state?: string;
+  status?: string;
   projectCount?: number;
 }
 
@@ -39,7 +39,7 @@ type BusinessManager = {
   officePhone?: string;
   email?: string;
   meta?: string[];
-  state?: string;
+  status?: string;
 }
 
 export type Business = {

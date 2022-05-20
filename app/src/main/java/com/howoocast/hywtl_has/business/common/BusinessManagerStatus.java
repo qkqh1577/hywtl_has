@@ -1,24 +1,13 @@
 package com.howoocast.hywtl_has.business.common;
 
-import lombok.RequiredArgsConstructor;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RequiredArgsConstructor
 public enum BusinessManagerStatus {
   IN_OFFICE("재직"),
   RESIGNATION("퇴사"),
   LEAVE("휴직");
 
-  private final String message;
+  private final String value;
 
-  public String message() {
-    return this.message;
-  }
+  BusinessManagerStatus(final String value) { this.value = value; }
 
-  public final List<String> getAllMessage() {
-    return Arrays.stream(BusinessManagerStatus.values()).map(BusinessManagerStatus::message).collect(Collectors.toList());
-  }
+  public final String value() { return value; }
 }

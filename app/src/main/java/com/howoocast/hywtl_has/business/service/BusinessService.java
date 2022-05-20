@@ -63,7 +63,7 @@ public class BusinessService {
                     manager.getOfficePhone(),
                     manager.getEmail(),
                     manager.getMeta(),
-                    manager.getState()))
+                    manager.getStatus()))
                 .collect(Collectors.toList())
         ).orElse(Collections.emptyList());
 
@@ -100,7 +100,7 @@ public class BusinessService {
                     manager.getOfficePhone(),
                     manager.getEmail(),
                     manager.getMeta(),
-                    manager.getState()))
+                    manager.getStatus()))
                 .collect(Collectors.toList())
         );
     }

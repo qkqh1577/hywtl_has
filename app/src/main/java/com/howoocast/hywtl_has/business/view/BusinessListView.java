@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business.view;
 
+import com.howoocast.hywtl_has.business.common.BusinessManagerStatus;
 import com.howoocast.hywtl_has.business.domain.Business;
 import lombok.Getter;
 
@@ -27,7 +28,7 @@ public class BusinessListView {
         target.address = source.getAddress();
         target.officePhone = source.getOfficePhone();
         target.managerCount = source.getManagerList().stream().filter(
-            manager -> !(manager.getState().equals("퇴사")))
+            manager -> !(manager.getStatus().equals(BusinessManagerStatus.RESIGNATION)))
             .collect(Collectors.toList())
             .size();
         target.memo = source.getMemo();

@@ -5,7 +5,7 @@ export type BusinessManagerView = {
   officePhone?: string;
   email?: string;
   meta?: string[];
-  state?: string;
+  status?: string;
 }
 
 export type BusinessView = {
