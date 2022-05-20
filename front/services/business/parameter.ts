@@ -19,7 +19,7 @@ export type BusinessManagerAddParameter = {
   officePhone?: string;
   email?: string;
   meta?: string[];
-  state?: string;
+  status?: string;
 }
 
 export type BusinessAddParameter = {

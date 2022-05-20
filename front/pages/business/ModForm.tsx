@@ -43,7 +43,7 @@ const Page = () => {
     officePhone: '',
     email: '',
     meta: [''],
-    state: ''
+    status: ''
   }]
 
   const initBusinessValue = {
@@ -315,9 +315,9 @@ const Page = () => {
                             <FormLabel>상태</FormLabel>
                             <RadioGroup
                               row
-                              aria-label="params-manager-state"
-                              name={`managerList.${i}.state`}
-                              value={values?.managerList?.[i]?.state}
+                              aria-label="params-manager-status"
+                              name={`managerList.${i}.status`}
+                              value={values?.managerList?.[i]?.status}
                               onChange={handleChange}
                             >
                               <FormControlLabel value="재직" control={<Radio />} label="재직" />
@@ -424,9 +424,9 @@ const Page = () => {
                             <FormLabel>상태</FormLabel>
                             <RadioGroup
                               row
-                              aria-label="params-manager-state"
-                              name={`managerList.${0}.state`}
-                              value={values?.managerList?.[0]?.state}
+                              aria-label="params-manager-status"
+                              name={`managerList.${0}.status`}
+                              value={values?.managerList?.[0]?.status}
                               onChange={handleChange}
                             >
                               <FormControlLabel value="재직" control={<Radio />} label="재직" />

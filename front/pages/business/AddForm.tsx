@@ -27,7 +27,7 @@ const initBusinessManagerListValue = [
     officePhone: '',
     email: '',
     meta: [''],
-    state: ''
+    status: ''
   }
 ];
 
@@ -90,7 +90,7 @@ const Page = () => {
           || manager.officePhone
           || manager.email
           || manager.meta.length > 0
-          || manager.state
+          || manager.status
       );
 
       const params: BusinessAddParameter = {
@@ -335,15 +335,15 @@ const Page = () => {
                             <FormLabel>상태</FormLabel>
                             <RadioGroup
                               row
-                              aria-label="params-manager-state"
-                              name={`managerList.${i}.state`}
-                              value={values?.managerList?.[i]?.state}
+                              aria-label="params-manager-status"
+                              name={`managerList.${i}.status`}
+                              value={values?.managerList?.[i]?.status}
                               onChange={handleChange}
                             >
                               <FormControlLabel value="재직" control={<Radio />} label="재직" />
                               <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
                             </RadioGroup>
-                            <ErrorMessage name="manager-state" />
+                            <ErrorMessage name="manager-status" />
                           </FormControl>
                         </Grid>
                       </Grid>

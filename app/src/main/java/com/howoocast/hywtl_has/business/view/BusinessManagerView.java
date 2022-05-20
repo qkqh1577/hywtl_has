@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business.view;
 
+import com.howoocast.hywtl_has.business.common.BusinessManagerStatus;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class BusinessManagerView {
     String officePhone; // 전화번호
     String email; // 이메일
     List<String> meta; // 메타
-    String state; // 상태
+    BusinessManagerStatus status; // 상태
 
     public static BusinessManagerView assemble(BusinessManager businessManager) {
         BusinessManagerView target = new BusinessManagerView();
@@ -26,7 +27,7 @@ public class BusinessManagerView {
         target.officePhone = businessManager.getOfficePhone();
         target.email = businessManager.getEmail();
         target.meta = businessManager.getMeta();
-        target.state = businessManager.getState();
+        target.status = businessManager.getStatus();
 
         return target;
     }

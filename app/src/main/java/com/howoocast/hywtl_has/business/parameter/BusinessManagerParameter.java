@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business.parameter;
 
+import com.howoocast.hywtl_has.business.common.BusinessManagerStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +24,5 @@ public class BusinessManagerParameter {
 
     private List<String> meta;
 
-    private String state; //상태:  재직, 퇴사
+    private BusinessManagerStatus status; // 상태:  재직, 퇴사, 휴직
 }

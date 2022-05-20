@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business.domain;
 
+import com.howoocast.hywtl_has.business.common.BusinessManagerStatus;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public class BusinessManager extends CustomEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
-    private String state; // 상태
+    private BusinessManagerStatus status; // 상태
 
     public static BusinessManager of(
         String name,
@@ -51,7 +52,7 @@ public class BusinessManager extends CustomEntity {
         String officePhone,
         String email,
         List<String> meta,
-        String state
+        BusinessManagerStatus status
     ) {
         BusinessManager manager = new BusinessManager();
         manager.name = name;
@@ -60,7 +61,7 @@ public class BusinessManager extends CustomEntity {
         manager.officePhone = officePhone;
         manager.email = email;
         manager.meta = meta;
-        manager.state = state;
+        manager.status = status;
         return manager;
     }
 
@@ -71,7 +72,7 @@ public class BusinessManager extends CustomEntity {
             String officePhone,
             String email,
             List<String> meta,
-            String state
+            BusinessManagerStatus status
     ) {
         this.name = name;
         this.jobTitle = jobTitle;
@@ -79,6 +80,6 @@ public class BusinessManager extends CustomEntity {
         this.officePhone = officePhone;
         this.email = email;
         this.meta = meta;
-        this.state = state;
+        this.status = status;
     }
 }
