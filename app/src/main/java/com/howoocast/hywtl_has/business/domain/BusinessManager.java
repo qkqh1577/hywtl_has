@@ -18,9 +18,9 @@ import java.util.List;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "businessManager")
+@Table(name = "business_manager")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update businessManager set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update business_manager set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BusinessManager extends CustomEntity {

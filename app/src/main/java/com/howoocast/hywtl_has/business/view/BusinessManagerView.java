@@ -8,14 +8,15 @@ import java.util.List;
 
 @Getter
 public class BusinessManagerView {
-    Long id;
-    String name; // 담당자명
-    String jobTitle; // 호칭
-    String mobilePhone; // 핸드폰
-    String officePhone; // 전화번호
-    String email; // 이메일
-    List<String> meta; // 메타
-    BusinessManagerStatus status; // 상태
+
+    private Long id;
+    private String name; // 담당자명
+    private String jobTitle; // 호칭
+    private String mobilePhone; // 핸드폰
+    private String officePhone; // 전화번호
+    private String email; // 이메일
+    private List<String> meta; // 메타
+    private BusinessManagerStatus status; // 상태
 
     public static BusinessManagerView assemble(BusinessManager businessManager) {
         BusinessManagerView target = new BusinessManagerView();

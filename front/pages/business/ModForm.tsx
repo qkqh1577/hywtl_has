@@ -27,7 +27,7 @@ const Page = () => {
 
   if (typeof id === 'undefined' || Number.isNaN(id)) {
     window.alert('잘못된 접근입니다.');
-    navigate('/business');
+    navigate('/business-management');
     return null;
   }
 
@@ -63,7 +63,7 @@ const Page = () => {
 
   const handler = {
     toPage: () => {
-      navigate('/business');
+      navigate('/business-management');
     },
 
     checkRegistrationNumber: (registrationNumber: string): void => {
@@ -127,7 +127,7 @@ const Page = () => {
       change(params, (data) => {
         if (data) {
           window.alert('수정하였습니다.');
-          navigate('/business');
+          navigate('/business-management');
         }
         setSubmitting(false);
       });
