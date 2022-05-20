@@ -10,9 +10,11 @@ import {
   Grid,
   Input,
   InputLabel,
+  MenuItem,
   Paper,
   Radio,
   RadioGroup,
+  Select,
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
 import {DataField, DataFieldWithButton} from "components";
@@ -312,17 +314,18 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <FormControl variant="standard" fullWidth>
-                            <FormLabel>상태</FormLabel>
-                            <RadioGroup
-                              row
-                              aria-label="params-manager-status"
+                            <InputLabel>상태</InputLabel>
+                            <Select
                               name={`managerList.${i}.status`}
                               value={values?.managerList?.[i]?.status}
                               onChange={handleChange}
+                              aria-label="params-manager-status"
                             >
-                              <FormControlLabel value="재직" control={<Radio />} label="재직" />
-                              <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
-                            </RadioGroup>
+                              <MenuItem value="재직">재직</MenuItem>
+                              <MenuItem value="퇴사">퇴사</MenuItem>
+                              <MenuItem value="휴직">휴직</MenuItem>
+                            </Select>
+                            <ErrorMessage name="manager-status" />
                           </FormControl>
                         </Grid>
                       </Grid>
