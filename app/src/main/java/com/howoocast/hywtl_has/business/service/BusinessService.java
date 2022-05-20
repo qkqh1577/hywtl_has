@@ -62,6 +62,7 @@ public class BusinessService {
                     manager.getMobilePhone(),
                     manager.getOfficePhone(),
                     manager.getEmail(),
+                    manager.getMeta(),
                     manager.getState()))
                 .collect(Collectors.toList())
         ).orElse(Collections.emptyList());
@@ -98,6 +99,7 @@ public class BusinessService {
                     manager.getMobilePhone(),
                     manager.getOfficePhone(),
                     manager.getEmail(),
+                    manager.getMeta(),
                     manager.getState()))
                 .collect(Collectors.toList())
         );
@@ -105,7 +107,6 @@ public class BusinessService {
 
     @Transactional
     public void delete(Long id) {
-        System.out.println("id : " + id);
         businessRepository.findById(id).ifPresent(instance ->
             businessRepository.deleteById(instance.getId())
         );
