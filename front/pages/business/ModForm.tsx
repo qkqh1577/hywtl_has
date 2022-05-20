@@ -5,15 +5,11 @@ import {
   Button,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
   Input,
   InputLabel,
   MenuItem,
   Paper,
-  Radio,
-  RadioGroup,
   Select,
 } from "@mui/material";
 import {ErrorMessage, Form, Formik, FormikHelpers} from "formik";
@@ -71,7 +67,33 @@ const Page = () => {
 
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      //validation
+      const errors: any = {
+        name: {},
+        representativeName: {},
+        officePhone: {},
+        registrationNumber: {},
+        address: {},
+        zipCode: {},
+        memo: {},
+      };
+
+      if (values.name === '') {
+        errors.name = '업체명은 필수 입력 항목입니다.';
+      }
+
+      const managerList = values.managerList.map((item: any) => ({
+        ...item,
+        meta: [item.meta]
+      })).filter(
+        (manager: any) =>
+          manager.name !== ''
+          || manager.jobTitle !== ''
+          || manager.mobilePhone !== ''
+          || manager.officePhone !== ''
+          || manager.email !== ''
+          || (!manager.meta.length && manager.meta[0] !== '')
+          || manager.status !== ''
+      );
 
       const params: BusinessChangeParameter = {
         id,
@@ -82,7 +104,7 @@ const Page = () => {
         address: values.address,
         zipCode: values.zipCode,
         memo: values.memo,
-        managerList: values.managerList,
+        managerList: managerList.length === 0 ? undefined : managerList,
       };
 
       change(params, (data) => {
@@ -204,7 +226,7 @@ const Page = () => {
                     </Grid>
                   </Grid>
                   {values.managerList?.map((manager, i) => (
-                    <>
+                    <Grid bgcolor={manager.status === 'RESIGNATION' || manager.status === 'LEAVE' ? '#e5e5e5' : ''}>
                       <Divider sx={{ mt: '40px', mb: '40px' }} />
                       <Box sx={{
                         display: 'flex',
@@ -214,7 +236,6 @@ const Page = () => {
                         mb: '40px',
                       }}>
                         <h2>담당자 정보</h2>
-
                         <Box sx={{
                           display: 'flex',
                           justifyContent: 'flex-end',
@@ -249,7 +270,6 @@ const Page = () => {
                             </Button>
                             )}
                         </Box>
-
                       </Box>
                       <Grid container spacing={2}>
                         <Grid item sm={6}>
@@ -306,7 +326,7 @@ const Page = () => {
                           <DataField
                             name={`managerList.${i}.meta`}
                             label="메타"
-                            value={''}
+                            value={manager.meta?.[0] || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="입력"
@@ -321,15 +341,15 @@ const Page = () => {
                               onChange={handleChange}
                               aria-label="params-manager-status"
                             >
-                              <MenuItem value="재직">재직</MenuItem>
-                              <MenuItem value="퇴사">퇴사</MenuItem>
-                              <MenuItem value="휴직">휴직</MenuItem>
+                              <MenuItem value="IN_OFFICE">재직</MenuItem>
+                              <MenuItem value="RESIGNATION">퇴사</MenuItem>
+                              <MenuItem value="LEAVE">휴직</MenuItem>
                             </Select>
                             <ErrorMessage name="manager-status" />
                           </FormControl>
                         </Grid>
                       </Grid>
-                    </>
+                    </Grid>
                   ))}
                   {!values.managerList.length && (
                     <>
@@ -416,7 +436,7 @@ const Page = () => {
                           <DataField
                             name={`managerList.${0}.meta`}
                             label="메타"
-                            value={''}
+                            value={values?.managerList?.[0]?.meta?.[0] || ''}
                             setFieldValue={setFieldValue}
                             errors={errors}
                             placeholder="입력"
@@ -424,17 +444,18 @@ const Page = () => {
                         </Grid>
                         <Grid item sm={6}>
                           <FormControl variant="standard" fullWidth>
-                            <FormLabel>상태</FormLabel>
-                            <RadioGroup
-                              row
-                              aria-label="params-manager-status"
+                            <InputLabel>상태</InputLabel>
+                            <Select
                               name={`managerList.${0}.status`}
                               value={values?.managerList?.[0]?.status}
                               onChange={handleChange}
+                              aria-label="params-manager-status"
                             >
-                              <FormControlLabel value="재직" control={<Radio />} label="재직" />
-                              <FormControlLabel value="퇴사" control={<Radio />} label="퇴사" />
-                            </RadioGroup>
+                              <MenuItem value="IN_OFFICE">재직</MenuItem>
+                              <MenuItem value="RESIGNATION">퇴사</MenuItem>
+                              <MenuItem value="LEAVE">휴직</MenuItem>
+                            </Select>
+                            <ErrorMessage name="manager-status" />
                           </FormControl>
                         </Grid>
                       </Grid>

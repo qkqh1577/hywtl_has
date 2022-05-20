@@ -80,14 +80,18 @@ const Page = () => {
         errors.name = '업체명은 필수 입력 항목입니다.';
       }
 
-      const managerList = values.managerList.filter(
-        (manager: any) => manager.name
-          || manager.jobTitle
-          || manager.mobilePhone
-          || manager.officePhone
-          || manager.email
-          || manager.meta.length > 0
-          || manager.status
+      const managerList = values.managerList.map((item: any) => ({
+        ...item,
+        meta: [item.meta]
+      })).filter(
+        (manager: any) =>
+          manager.name !== ''
+          || manager.jobTitle !== ''
+          || manager.mobilePhone !== ''
+          || manager.officePhone !== ''
+          || manager.email !== ''
+          || (!manager.meta.length && manager.meta[0] !== '')
+          || manager.status !== ''
       );
 
       const params: BusinessAddParameter = {
@@ -336,9 +340,9 @@ const Page = () => {
                               onChange={handleChange}
                               aria-label="params-manager-status"
                             >
-                              <MenuItem value="재직">재직</MenuItem>
-                              <MenuItem value="퇴사">퇴사</MenuItem>
-                              <MenuItem value="휴직">휴직</MenuItem>
+                              <MenuItem value="IN_OFFICE">재직</MenuItem>
+                              <MenuItem value="RESIGNATION">퇴사</MenuItem>
+                              <MenuItem value="LEAVE">휴직</MenuItem>
                             </Select>
                             <ErrorMessage name="manager-status" />
                           </FormControl>

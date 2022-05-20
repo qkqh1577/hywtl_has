@@ -147,7 +147,7 @@ const Page = () => {
                 <Grid 
                   container 
                   spacing={2} 
-                  bgcolor={manager.status === '퇴사' || manager.status === '휴직' ? '#e5e5e5' : ''}
+                  bgcolor={manager.status === 'RESIGNATION' || manager.status === 'LEAVE' ? '#e5e5e5' : ''}
                 >
                   <Grid item sm={12}>
                     <h2>담당자 정보</h2>
@@ -216,7 +216,7 @@ const Page = () => {
                     <TextField
                       name="manager.meta"
                       label="메타"
-                      value={''}
+                      value={manager.meta?.[0] || ''}
                       variant="standard"
                       fullWidth
                       InputProps={{
@@ -228,7 +228,9 @@ const Page = () => {
                     <TextField
                       name="manager.status"
                       label="상태"
-                      value={manager.status || ''}
+                      value={(manager.status === 'RESIGNATION' && '퇴사') 
+                        || (manager.status === 'IN_OFFICE' && '재직')
+                        || (manager.status === 'LEAVE' && '휴직')}
                       variant="standard"
                       fullWidth
                       InputProps={{
