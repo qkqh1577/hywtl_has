@@ -39,7 +39,6 @@ export class BusinessApi {
 
   async remove(id: number): Promise<void> {
     const { data } = await apiClient.delete(`/business/${id}`);
-    console.log(id)
     return data;
   }
 }

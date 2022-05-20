@@ -31,10 +31,14 @@ const Page = () => {
     },
 
     delete: () => {
-      remove(id, () => {
-        window.alert('삭제하였습니다.');
-        navigate('/business');
-    });
+      if(detail?.managerList?.length) {
+        window.alert('담당자 정보가 존재하는 업체 정보는 삭제할 수 없습니다.');
+      } else {
+        remove(id, () => {
+          window.alert('삭제하였습니다.');
+          navigate('/business');
+        });
+      }
     }
   };
 
