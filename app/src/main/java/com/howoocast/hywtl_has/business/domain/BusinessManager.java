@@ -13,7 +13,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Table;
+import javax.persistence.ElementCollection;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Slf4j
 @Getter
@@ -37,6 +39,9 @@ public class BusinessManager extends CustomEntity {
 
     private String email; // 이메일
 
+    @ElementCollection
+    private List<String> meta; // 메타
+
     private String state; // 상태
 
     public static BusinessManager of(
@@ -45,6 +50,7 @@ public class BusinessManager extends CustomEntity {
         String mobilePhone,
         String officePhone,
         String email,
+        List<String> meta,
         String state
     ) {
         BusinessManager manager = new BusinessManager();
@@ -53,6 +59,7 @@ public class BusinessManager extends CustomEntity {
         manager.mobilePhone = mobilePhone;
         manager.officePhone = officePhone;
         manager.email = email;
+        manager.meta = meta;
         manager.state = state;
         return manager;
     }
@@ -63,6 +70,7 @@ public class BusinessManager extends CustomEntity {
             String mobilePhone,
             String officePhone,
             String email,
+            List<String> meta,
             String state
     ) {
         this.name = name;
@@ -70,6 +78,7 @@ public class BusinessManager extends CustomEntity {
         this.mobilePhone = mobilePhone;
         this.officePhone = officePhone;
         this.email = email;
+        this.meta = meta;
         this.state = state;
     }
 }

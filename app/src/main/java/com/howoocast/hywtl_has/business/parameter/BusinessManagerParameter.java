@@ -3,6 +3,8 @@ package com.howoocast.hywtl_has.business.parameter;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class BusinessManagerParameter {
@@ -18,6 +20,8 @@ public class BusinessManagerParameter {
     private String officePhone;
 
     private String email;
+
+    private List<String> meta;
 
     private String state; //상태:  재직, 퇴사
 }

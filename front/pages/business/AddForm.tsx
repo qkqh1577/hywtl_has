@@ -26,7 +26,7 @@ const initBusinessManagerListValue = [
     mobilePhone: '',
     officePhone: '',
     email: '',
-    meta: [],
+    meta: [''],
     state: ''
   }
 ];
