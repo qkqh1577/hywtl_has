@@ -102,6 +102,14 @@ public class BusinessService {
                 .collect(Collectors.toList())
         );
     }
+
+    @Transactional
+    public void delete(Long id) {
+        System.out.println("id : " + id);
+        businessRepository.findById(id).ifPresent(instance ->
+            businessRepository.deleteById(instance.getId())
+        );
+    }
 }
 
 

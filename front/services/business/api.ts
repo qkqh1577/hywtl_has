@@ -36,6 +36,12 @@ export class BusinessApi {
     const { data } = await apiClient.patch(`/business/${id}`, rest);
     return data;
   }
+
+  async remove(id: number): Promise<void> {
+    const { data } = await apiClient.delete(`/business/${id}`);
+    console.log(id)
+    return data;
+  }
 }
 
 const businessApi = new BusinessApi();

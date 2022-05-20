@@ -67,4 +67,7 @@ public class BusinessController {
         businessService.change(id, params);
         return businessService.get(id);
     }
+
+    @DeleteMapping("/business/{id}")
+    public void delete(@PathVariable Long id) { businessService.delete(id); }
 }
