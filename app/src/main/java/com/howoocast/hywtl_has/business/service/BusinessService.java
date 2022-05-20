@@ -56,7 +56,7 @@ public class BusinessService {
     @Transactional
     public BusinessView add(BusinessParameter params) {
         repository.findByRegistrationNumber(params.getRegistrationNumber()).ifPresent((instance) -> {
-            throw new DuplicatedValueException("registrationNumber", params.getRegistrationNumber());
+            throw new DuplicatedValueException("business", "registration-number", params.getRegistrationNumber());
         });
 
         // NOTE: 아래와 동일 로직
@@ -110,7 +110,7 @@ public class BusinessService {
     public void change(Long id, BusinessParameter params) {
         repository.findByRegistrationNumber(params.getRegistrationNumber()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("registrationNumber", params.getRegistrationNumber());
+                throw new DuplicatedValueException("business", "registration-number", params.getRegistrationNumber());
             }
         });
 
