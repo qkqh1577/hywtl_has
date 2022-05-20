@@ -121,10 +121,10 @@ const UserPage = () => {
             handleSubmit,
             resetForm
           }) => (
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <CheckboxField
                         name="role"
@@ -140,7 +140,7 @@ const UserPage = () => {
                         errors={errors}
                       />
                     </Grid>
-                    <Grid container spacing={1} item sm={12}>
+                    <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
                         <DataField
                           type="select"
@@ -251,7 +251,7 @@ const UserPage = () => {
         width: '100%',
         justifyContent: 'space-between',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={8} sx={{
             display: 'flex',
             justifyContent: 'flex-start',

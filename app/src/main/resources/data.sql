@@ -28,4 +28,18 @@ INSERT INTO hywtl_has_api.project_review_detail_list (project_review_id, detail_
 INSERT INTO hywtl_has_api.project_review_detail_special_wind_load_condition_list (project_review_detail_id, special_wind_load_condition_list) VALUES (1, '4');
 INSERT INTO hywtl_has_api.project_review_detail_test_list (project_review_detail_id, test_list) VALUES (1, 'F');
 INSERT INTO hywtl_has_api.project_review_detail_test_list (project_review_detail_id, test_list) VALUES (1, 'P');
+INSERT INTO hywtl_has_api.test_service_detail_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, memo, seq, unit, unit_price) VALUES (1, '2022-05-20 16:43:43.944352', 1, null, null, null, 1, '글로벌 수준 ESDU 기반', 1, '단지', 25000000);
+INSERT INTO hywtl_has_api.test_service_detail_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, memo, seq, unit, unit_price) VALUES (2, '2022-05-20 16:46:09.573678', 1, null, null, null, 1, '국토교통부 풍동실험 가이드라인', 1, '동', 7500000);
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (1, '재현기간 별 기본풍속 평가');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (1, '대상부지 지표면조도구분 판정');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (1, '대지주변 건물모델링 및 모형제작');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (1, '풍동실험을 위한 맞춤형 자연기류 형성');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (2, '풍력실험을 위한 풍력 특수모형 제작');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (2, '풍력실험을 통한 풍하중 측정');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (2, '주골조설계용 풍응답 평가(재해석 2회)');
+INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (2, '중간요약본 및 최종평가보고서');
+INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (1, '2022-05-20 16:43:43.918093', 1, null, null, null, 1, 1, '공통', '자연기류 형성');
+INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (2, '2022-05-20 16:46:09.571086', 1, null, null, null, 1, 2, 'F', '주골조설계용 풍하중');
+INSERT INTO hywtl_has_api.test_service_template_detail_list (test_service_template_id, detail_list_id) VALUES (1, 1);
+INSERT INTO hywtl_has_api.test_service_template_detail_list (test_service_template_id, detail_list_id) VALUES (2, 2);
 set FOREIGN_KEY_CHECKS = 1;

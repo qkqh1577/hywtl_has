@@ -130,10 +130,10 @@ const PersonnelPage = () => {
             handleSubmit,
             resetForm
           }) => (
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <CheckboxField
                         name="sex"
@@ -154,7 +154,7 @@ const PersonnelPage = () => {
                         options={hiredTypeList}
                       />
                     </Grid>
-                    <Grid container spacing={1} item sm={12}>
+                    <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
                         <FormControl variant="standard" fullWidth>
                           <FormLabel component="legend">검색 대상</FormLabel>
@@ -186,7 +186,7 @@ const PersonnelPage = () => {
                         />
                       </Grid>
                     </Grid>
-                    <Grid container spacing={1} item sm={12}>
+                    <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
                         <FormControl variant="standard" fullWidth>
                           <FormLabel component="legend">날짜 대상</FormLabel>
@@ -312,7 +312,7 @@ const PersonnelPage = () => {
         width: '100%',
         justifyContent: 'space-between',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={8} sx={{
             display: 'flex',
             justifyContent: 'flex-start',

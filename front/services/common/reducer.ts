@@ -8,9 +8,9 @@ import { projectTargetReducer, ProjectTargetState } from 'services/project_targe
 import { projectEstimateReducer, ProjectEstimateState } from 'services/project_estimate';
 import { projectCommentReducer, ProjectCommentState } from 'services/project_comment';
 import { passwordResetReducer, PasswordResetState } from 'services/user/password_reset';
+import { testServiceTemplateReducer, TestServiceTemplateState} from 'services/standard_data/test_service_template';
 import { companyReducer, CompanyState } from 'services/company';
 import { dialogReducer, DialogState } from 'components';
-import { serviceItemReducer, ServiceItemState } from 'services/serviceItem';
 import { projectReviewReducer, ProjectReviewState } from 'services/project_review';
 
 export type RootState = {
@@ -24,9 +24,9 @@ export type RootState = {
   projectTarget: ProjectTargetState;
   projectEstimate: ProjectEstimateState;
   projectComment: ProjectCommentState;
+  testServiceTemplate: TestServiceTemplateState;
   company: CompanyState;
   dialog: DialogState;
-  serviceItem: ServiceItemState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -40,9 +40,9 @@ const reducer = combineReducers<RootState>({
   projectTarget: projectTargetReducer,
   projectEstimate: projectEstimateReducer,
   projectComment: projectCommentReducer,
+  testServiceTemplate: testServiceTemplateReducer,
   company: companyReducer,
   dialog: dialogReducer,
-  serviceItem: serviceItemReducer,
 });
 
 const rootReducer: Reducer = (state, action) => {

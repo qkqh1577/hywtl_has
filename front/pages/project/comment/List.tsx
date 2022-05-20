@@ -200,7 +200,7 @@ const ProjectCommentList = () => {
       }}>
         <Grid container spacing={2}>
           {page.content.map((item) => (
-            <Grid key={item.id} container spacing={1} item sm={12}>
+            <Grid key={item.id} container spacing={2} item sm={12}>
               <Grid item sm={12} sx={{
                 display: 'flex',
                 alignContent: 'center',
@@ -250,7 +250,7 @@ const ProjectCommentList = () => {
                     <IconButton
                       color="secondary"
                       onClick={() => {
-                        dialog.rollback('수정을 취소하시겠습니까?', () => {
+                        dialog.rollback(() => {
                           setSelected(undefined);
                         });
                       }}

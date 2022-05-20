@@ -421,7 +421,7 @@ const Container = (props: ChildrenProps | SubmitProps) => {
                               <IconButton
                                 onClick={() => {
                                   if (edit && dirty) {
-                                    dialog.rollback('수정을 취소하겠습니까? 변경 사항은 사라집니다.', () => {
+                                    dialog.rollback( () => {
                                       resetForm();
                                       handler.updateView();
                                       setEdit(false);

@@ -143,7 +143,7 @@ const UserAuthenticationForm = () => {
           >
             {({ values, isSubmitting, handleChange, handleSubmit }) => (
               <Form>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                   <Grid item sm={12}>
                     <FormControl variant="standard" fullWidth>
                       <InputLabel htmlFor="params-email">이메일</InputLabel>

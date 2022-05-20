@@ -1,1 +1,0 @@
-export const typeList: string[] = ['공통', 'F', 'P', 'E', 'A', 'B', '구검'];

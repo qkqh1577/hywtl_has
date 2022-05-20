@@ -101,7 +101,7 @@ const LoginForm = () => {
         >
           {({ values, isSubmitting, handleChange, handleSubmit }) => (
             <Form>
-              <Grid container spacing={1}>
+              <Grid container spacing={2}>
                 <Grid item sm={12}>
                   <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="params-username">아이디</InputLabel>

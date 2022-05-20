@@ -29,6 +29,7 @@ export type TableProps<T> = {
   emptyText?: string;
   title?: string | React.ReactNode;
   footer?: string | React.ReactNode;
+  titleRightComponent?: React.ReactNode;
 };
 const Table = <T, >({
   columns,
@@ -38,6 +39,7 @@ const Table = <T, >({
   sx,
   emptyText = '항목이 없습니다.',
   title,
+  titleRightComponent,
   footer,
 }: TableProps<T>) => {
   const id: string = `tableTitle_${new Date().getTime()}_${`${Math.round(Math.random() * 100)}`.padStart(3, '0')}`;
@@ -46,14 +48,16 @@ const Table = <T, >({
       width: '100%',
     }}>
       {title && (
-        <Toolbar id={id}>
-          {typeof title === 'string' && (<Typography
-              variant="h6"
-            >
-              {title}
-            </Typography>
-          )}
-          {typeof title !== 'string' && { title }}
+        <Toolbar id={id} sx={{
+          display: 'flex',
+          width: '100%',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+        }}>
+          <Typography variant="h6">
+            {title}
+          </Typography>
+          {titleRightComponent}
         </Toolbar>
       )}
       <TableContainer sx={sx ? {

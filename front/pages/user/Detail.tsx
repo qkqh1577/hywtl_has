@@ -139,8 +139,8 @@ const UserDetail = () => {
           width: '100%',
           mb: '40px',
         }}>
-          <Grid container spacing={1}>
-            <Grid container spacing={3} item sm={6} xs={12}>
+          <Grid container spacing={2}>
+            <Grid container spacing={2} item sm={6} xs={12}>
               <Grid item sm={4}>
                 계정상태
               </Grid>
@@ -148,7 +148,7 @@ const UserDetail = () => {
                 TBD
               </Grid>
             </Grid>
-            <Grid container spacing={3} item sm={6} xs={12}>
+            <Grid container spacing={2} item sm={6} xs={12}>
               <Grid item sm={4}>
                 생성일시
               </Grid>
@@ -156,7 +156,7 @@ const UserDetail = () => {
                 <DateFormat date={detail?.createdAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
-            <Grid container spacing={3} item sm={6} xs={12}>
+            <Grid container spacing={2} item sm={6} xs={12}>
               <Grid item sm={4}>
                 최근접속일
               </Grid>
@@ -164,7 +164,7 @@ const UserDetail = () => {
                 <DateFormat date={detail?.loginAt} format="YYYY-MM-DD HH:mm" />
               </Grid>
             </Grid>
-            <Grid container spacing={3} item sm={6} xs={12}>
+            <Grid container spacing={2} item sm={6} xs={12}>
               <Grid item sm={4}>
                 비밀번호 변경일
               </Grid>
@@ -175,7 +175,7 @@ const UserDetail = () => {
           </Grid>
         </Box>
         <Box sx={{ mb: '20px' }}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             <Grid item sm={12}>
               {detail && (
                 <Formik
@@ -300,7 +300,7 @@ const UserDetail = () => {
       {detail && (<PersonnelDetail />)}
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ mb: '20px' }}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             <Grid item sm={12}>
               <div style={{ textAlign: 'center' }}>
                 시스템 접속 이력 조회 기능 추가 예정

@@ -100,7 +100,7 @@ const Page = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik
               initialValues={ initCompanyValue }
@@ -118,7 +118,7 @@ const Page = () => {
                   }}>
                     <h2>업체 정보</h2>
                   </Box>
-                  <Grid container spacing={3}>
+                  <Grid container spacing={2}>
                     <Grid item sm={12}>
                       <DataField
                         name="name"
@@ -249,7 +249,7 @@ const Page = () => {
                         </Box>
 
                       </Box>
-                      <Grid container spacing={3}>
+                      <Grid container spacing={2}>
                         <Grid item sm={6}>
                           <DataField
                             name={`managerList.${i}.name`}
@@ -358,7 +358,7 @@ const Page = () => {
                           </Button>
                         </Box>
                       </Box>
-                      <Grid container spacing={3}>
+                      <Grid container spacing={2}>
                         <Grid item sm={6}>
                           <DataField
                             name={`managerList.${0}.name`}

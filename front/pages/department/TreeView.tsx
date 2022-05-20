@@ -147,7 +147,7 @@ const DepartmentTreeView = () => {
   const initRoot = () => list.filter(item => !item.parentId).map(toNode);
   const handler = {
     cancel: () => {
-      dialog.rollback('수정을 취소하겠습니까? 변경 사항은 사라집니다.', () => {
+      dialog.rollback(() => {
         setRoot(initRoot);
       });
     },

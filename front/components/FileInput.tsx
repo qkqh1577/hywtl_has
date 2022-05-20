@@ -94,7 +94,7 @@ const FileInput = ({
         width: '100%',
         height: '100%',
       }}>
-      <Grid container spacing={1} display="flex">
+      <Grid container spacing={2} display="flex">
         <Grid item sm={(value || params) ? 8 : 10}>
           <Tooltip
             title={

@@ -124,7 +124,7 @@ const PasswordResetForm = () => {
           >
             {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
               <Form>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                   <Grid item sm={12}>
                     <DataField
                       type="password"

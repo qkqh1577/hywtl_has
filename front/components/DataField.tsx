@@ -31,6 +31,7 @@ export type DataFieldProps = {
   disabled?: boolean;
   options?: Option[] | DataFieldValue[];
   helperText?: string | React.ReactNode;
+  endAdornment?: React.ReactNode;
   sx?: any;
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
@@ -75,6 +76,7 @@ const DataField = ({
   required,
   disabled,
   helperText,
+  endAdornment,
   options,
   sx,
   onFocus,
@@ -125,7 +127,10 @@ const DataField = ({
   }, [amountKor]);
 
   return (
-    <Tooltip
+    <Tooltip sx={{
+      display: 'flex',
+      width: '100%',
+    }}
       title={
         disabled === true
           ? label
@@ -170,14 +175,19 @@ const DataField = ({
         required={!(disabled === true) && required === true}
         disabled={disabled === true}
         sx={sx}
-        InputProps={type !== 'select' ? {
+        InputProps={{
           onFocus,
           onKeyDown,
           onKeyUp,
+          endAdornment: endAdornment ? (
+            <InputAdornment position="end">
+              {endAdornment}
+            </InputAdornment>
+          ) : undefined,
           startAdornment: type === 'amount'
             ? <InputAdornment position="start">₩</InputAdornment>
             : undefined,
-        } : undefined}
+        }}
         fullWidth
       >
         {type === 'select' && options && options
