@@ -31,7 +31,7 @@ const Page = () => {
     return null;
   }
 
-  const { state: { detail }, change, getOne } = useBusiness();
+  const { state: { detail, list }, change, getOne, getAll } = useBusiness();
 
   const initBusinessManagerListValue = [{
     id: undefined,
@@ -57,12 +57,34 @@ const Page = () => {
 
   useEffect(() => {
     getOne(id);
+    getAll({});
   }, [id]);
 
 
   const handler = {
     toPage: () => {
       navigate('/business');
+    },
+
+    checkRegistrationNumber: (registrationNumber: string): void => {
+      if (!registrationNumber.length) {
+        alert('사업자번호를 입력해 주세요.');
+        return;
+      }
+
+      if(detail?.registrationNumber === registrationNumber) {
+        alert('기존 사업자번호와 일치합니다.');
+        return;
+      }
+
+      const duplicatedBusiness = list?.find(business => business.registrationNumber === registrationNumber);
+
+      if(duplicatedBusiness) {
+        alert('이미 등록되어 있는 사업자번호 입니다.');
+        return;
+      }
+
+      alert('등록 가능한 사업자번호 입니다.');
     },
 
 
@@ -184,6 +206,7 @@ const Page = () => {
                         setFieldValue={setFieldValue}
                         errors={errors}
                         placeholder="입력"
+                        onClick={() => {handler.checkRegistrationNumber(values.registrationNumber)}}
                         required
                       />
                     </Grid>
