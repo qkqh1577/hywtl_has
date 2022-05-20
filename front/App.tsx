@@ -82,7 +82,7 @@ const App = () => {
       icon: FolderOpenIcon
     }, {
       title: '업체 관리',
-      path: '/business',
+      path: '/business-management',
       icon: FolderOpenIcon
     }
   ]);

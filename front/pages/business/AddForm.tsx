@@ -52,7 +52,7 @@ const Page = () => {
   const handler = {
 
     toPage: () => {
-      navigate('/business');
+      navigate('/business-management');
     },
 
     checkRegistrationNumber: (registrationNumber: string): void => {
@@ -113,7 +113,7 @@ const Page = () => {
       add(params, (data) => {
         if (data) {
           window.alert('저장하였습니다.');
-          navigate('/business');
+          navigate('/business-management');
         }
         setSubmitting(false);
       });

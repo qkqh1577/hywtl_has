@@ -7,19 +7,19 @@ import BusinessDetail from './Detail';
 
 const routes: AppRoutes[] = [
   {
-    path: '/business',
+    path: '/business-management',
     element: <Page />
   },
   {
-    path: '/business/add',
+    path: '/business-management/add',
     element: <BusinessAddForm />
   },
   {
-    path: '/business/modify/:id',
+    path: '/business-management/:id/form',
     element: <BusinessModForm />
   },
   {
-    path: '/business/:id',
+    path: '/business-management/:id',
     element: <BusinessDetail />
   },
 ];

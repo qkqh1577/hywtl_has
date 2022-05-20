@@ -57,7 +57,7 @@ const Page = () => {
 
   const handler = {
     toAdd: () => {
-      navigate('/business/add');
+      navigate('/business-management/add');
     },
     page: (e: any, page: number) => {
       setFilter({
@@ -208,7 +208,7 @@ const Page = () => {
                           cursor: 'pointer'
                         }}
                         onClick={() => {
-                          navigate(`/business/${business.id}`);
+                          navigate(`/business-management/${business.id}`);
                         }}>
                         {business.name}
                       </Link>

@@ -41,7 +41,7 @@ public class Business extends CustomEntity {
 
     private String memo; // 비고
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
+    @OneToMany(cascade = CascadeType.ALL)
     private List<BusinessManager> managerList;
 
     public static Business of(

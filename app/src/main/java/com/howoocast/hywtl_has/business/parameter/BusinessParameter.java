@@ -15,7 +15,7 @@ public class BusinessParameter {
 
     private String representativeName;
 
-    @NotBlank(message = "business.registrationNumber.not-blank")
+    @NotBlank(message = "business.registration-number.not-blank")
     private String registrationNumber;
 
     private String address;

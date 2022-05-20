@@ -12,7 +12,7 @@ const Page = () => {
 
   if (typeof id === 'undefined' || Number.isNaN(id)) {
     window.alert('잘못된 접근입니다.');
-    navigate('/business');
+    navigate('/business-management');
     return null;
   }
 
@@ -24,10 +24,10 @@ const Page = () => {
 
   const handler = {
     toPage: () => {
-      navigate('/business');
+      navigate('/business-management');
     },
     toModForm: () => {
-      navigate(`/business/modify/${id}`);
+      navigate(`/business-management/${id}/form`);
     },
 
     delete: () => {
@@ -36,7 +36,7 @@ const Page = () => {
       } else {
         remove(id, () => {
           window.alert('삭제하였습니다.');
-          navigate('/business');
+          navigate('/business-management');
         });
       }
     }
