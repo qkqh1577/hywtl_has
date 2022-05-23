@@ -440,7 +440,7 @@ const Page = () => {
                         sx={{
                         display: 'flex',
                         width: '100%',
-                        backgroundColor: (manager.status === 'RESIGNATION' || manager.status === 'LEAVE') ? '#ccc' : undefined
+                        backgroundColor: (manager.status === 'RESIGNATION' || manager.status === 'LEAVE') ? '#e5e5e5' : undefined
                         }}
                       >
                         <Grid container spacing={2}>

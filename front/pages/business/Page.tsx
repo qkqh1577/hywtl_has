@@ -177,9 +177,11 @@ const Page = () => {
           columns={[
             {
               label: 'No.',
+              align: 'center',
               renderCell: (item, i) => i + 1 + page.number * page.size
             }, {
               label: '업체명',
+              align: 'center',
               renderCell: (item) => (
                 <Link
                   onClick={() => {
@@ -194,24 +196,31 @@ const Page = () => {
               )
             }, {
               label: '대표명',
+              align: 'center',
               renderCell: (item) => item.representativeName,
             }, {
               label: '사업자번호',
+              align: 'center',
               renderCell: (item) => item.registrationNumber,
             }, {
               label: '주소',
+              align: 'center',
               renderCell: (item) => item.address,
             }, {
               label: '대표 전화번호',
+              align: 'center',
               renderCell: (item) => item.officePhone,
             }, {
               label: '담당자 수',
+              align: 'center',
               renderCell: (item) => item.managerCount,
             }, {
               label: '참여 프로젝트 총 개수',
+              align: 'center',
               renderCell: (item) => item.projectCount ?? '-',
             }, {
               label: '비고',
+              align: 'center',
               renderCell: (item) => item.memo,
             }
           ]}
