@@ -353,6 +353,18 @@ const Page = () => {
                         setFieldValue={setFieldValue}
                         errors={errors}
                         disabled={!edit}
+                        endAdornment={
+                          edit && (
+                            <Button
+                              variant="outlined"
+                              sx={{ mb: '10px' }}
+                              onClick={() => {
+                                console.log('TODO')
+                              }}
+                            >
+                              주소 검색
+                            </Button>)
+                        }
                       />
                     </Grid>
                     <Grid item sm={6}>
@@ -525,6 +537,31 @@ const Page = () => {
                               required
                             />
                           </Grid>
+                          {!edit && (
+                            <Grid item sm={6}>
+                              <DataField
+                                name={`managerList[${i}].projectCount`}
+                                label="담당 프로젝트"
+                                value={''}
+                                setFieldValue={setFieldValue}
+                                errors={errors}
+                                disabled={!edit}
+                                placeholder="입력"
+                                endAdornment={
+                                  edit && (
+                                    <Button
+                                      variant="outlined"
+                                      sx={{ mb: '10px' }}
+                                      onClick={() => {
+                                        console.log("TODO")
+                                      }}
+                                    >
+                                      상세
+                                    </Button>)
+                                }
+                              />
+                            </Grid>
+                          )}
                         </Grid>
                       </Box>
                     </Box>
