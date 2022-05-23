@@ -41,6 +41,19 @@ public class TestServiceTemplateController {
         );
     }
 
+    @SuppressWarnings("unused")
+    @GetMapping(value = "/standard-data/test-service-templates", params = "type")
+    public List<TestServiceTemplateView> getFullList(
+        @RequestParam String type,
+        @RequestParam(required = false, name = "testType[]") List<String> testTypeList
+    ) {
+        return service.getFullList(
+            new TestServiceTemplatePredicateBuilder()
+                .testTypeIn(testTypeList)
+                .build()
+        );
+    }
+
     @GetMapping("/standard-data/test-service-templates/{id}")
     public TestServiceTemplateView getOne(@PathVariable Long id) {
         return service.getOne(id);

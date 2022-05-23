@@ -1,3 +1,4 @@
+
 export type TestServiceTemplateQuery = {
   keywordType?: 'by_title';
   keyword?: string;
