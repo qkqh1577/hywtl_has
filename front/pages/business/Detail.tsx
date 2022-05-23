@@ -138,9 +138,9 @@ const Page = () => {
       .filter(item => item !== null)
       .map(item => item as BusinessManagerParameter);
 
-      // if(managerList.length === 0) {
-      //   errors['managerList.size'] = '담당자는 한 명 이상 필수입니다.';
-      // }
+      if(managerList.length === 0) {
+        errors['managerList.size'] = '담당자는 한 명 이상 필수입니다.';
+      }
 
       const name: string = values.name;
       if (!name) {
@@ -507,7 +507,6 @@ const Page = () => {
                               setFieldValue={setFieldValue}
                               errors={errors}
                               disabled={!edit}
-                              placeholder="입력"
                             />
                           </Grid>
                           <Grid item sm={6}>
@@ -518,7 +517,6 @@ const Page = () => {
                               setFieldValue={setFieldValue}
                               errors={errors}
                               disabled={!edit}
-                              placeholder="입력"
                             />
                           </Grid>
                           <Grid item sm={6}>
@@ -546,7 +544,6 @@ const Page = () => {
                                 setFieldValue={setFieldValue}
                                 errors={errors}
                                 disabled={!edit}
-                                placeholder="입력"
                                 endAdornment={
                                   edit && (
                                     <Button
