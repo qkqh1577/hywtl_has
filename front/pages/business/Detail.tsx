@@ -8,7 +8,7 @@ import {
   Paper,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField } from 'components';
+import {DataField, useDialog} from 'components';
 import {
   BusinessAddParameter,
   BusinessManagerParameter,
@@ -31,6 +31,7 @@ const Page = () => {
   const id = typeof idString === 'undefined' || idString === 'add' ?
     null : (Number.isNaN(+idString) ? null : +idString);
 
+  const dialog = useDialog();
   const {
     state: {
       detail
@@ -180,7 +181,7 @@ const Page = () => {
         };
 
         add(params, () => {
-          window.alert('저장하였습니다.');
+          dialog.alert('저장되었습니다.');
           navigate('/business-management');
         });
       } else {
@@ -198,7 +199,7 @@ const Page = () => {
           };
 
           change(params, () => {
-            window.alert('수정하였습니다.');
+            dialog.alert('수정되었습니다.');
             navigate('/business-management');
           });
         }
@@ -211,7 +212,7 @@ const Page = () => {
     delete: () => {
       if(id) {
         remove(id, () => {
-          window.alert('삭제하였습니다.');
+          dialog.alert('삭제되었습니다.');
           navigate('/business-management');
         });
       }
