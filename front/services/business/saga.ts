@@ -4,7 +4,6 @@ import Page from 'components/Page';
 import {
   Business,
   BusinessActionType,
-  BusinessDetail,
   BusinessList,
   businessActions,
   businessApi,
@@ -21,12 +20,8 @@ function* getAll(action: ActionType<typeof businessActions.getAll>) {
 }
 
 function* getOne(action: ActionType<typeof businessActions.getOne>) {
-  try {
-    const detail: BusinessDetail = yield businessApi.getOne(action.payload);
-    yield put(businessActions.setOne(detail));
-  } catch (e) {
-    // nothing to do
-  }
+  const detail: Business = yield businessApi.getOne(action.payload);
+  yield put(businessActions.setOne(detail));
 }
 
 function* add(action: ActionType<typeof businessActions.add>) {
@@ -34,9 +29,9 @@ function* add(action: ActionType<typeof businessActions.add>) {
   try {
     const data: Business = yield businessApi.add(params);
     yield put(businessActions.setOne(data));
-    callback(data);
-  } catch (e) {
     callback();
+  } catch (e) {
+    // nothing to do
   }
 }
 
@@ -45,9 +40,9 @@ function* change(action: ActionType<typeof businessActions.change>) {
   try {
     const data: Business = yield businessApi.change(params);
     yield put(businessActions.setOne(data));
-    callback(data);
-  } catch (e) {
     callback();
+  } catch (e) {
+    // nothing to do
   }
 }
 
@@ -57,7 +52,18 @@ function* remove(action: ActionType<typeof businessActions.remove>) {
     yield businessApi.remove(id);
     callback();
   } catch (e) {
+    // nothing to do
+  }
+}
+
+function* checkRegistrationNumber(action: ActionType<typeof businessActions.checkRegistrationNumber>) {
+  const { params, callback } = action.payload;
+  try {
+    yield businessApi.checkRegistrationNumber(params);
     callback();
+  } catch (e) {
+    // TODO: 전체 에러 처리 필요
+    callback(e);
   }
 }
 
@@ -68,4 +74,5 @@ export default function* businessSaga() {
   yield takeLatest(BusinessActionType.add, add);
   yield takeLatest(BusinessActionType.change, change);
   yield takeLatest(BusinessActionType.remove, remove);
+  yield takeLatest(BusinessActionType.checkRegistrationNumber, checkRegistrationNumber);
 }

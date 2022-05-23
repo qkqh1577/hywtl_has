@@ -1,11 +1,11 @@
 import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
-import { BusinessDetail, Business, BusinessList, BusinessActionType } from 'services/business';
+import { Business, BusinessList, BusinessActionType } from 'services/business';
 
 export type BusinessState = {
   page: Page<BusinessList>
   list?: Business[]
-  detail?: BusinessDetail
+  detail?: Business
 };
 
 export const initState: BusinessState = {

@@ -1,124 +1,161 @@
-import React, {useEffect} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   Divider,
-  FormControl,
-  Grid, InputLabel, MenuItem,
+  Grid,
   Paper,
-  Select,
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { DataField, DataFieldWithButton } from "components";
+import { Form, Formik, FormikHelpers } from 'formik';
+import { DataField } from 'components';
 import {
   BusinessAddParameter,
-  useBusiness
+  BusinessManagerParameter,
+  BusinessManagerStatus,
+  BusinessManagerView,
+  BusinessRegistrationNumberCheckParameter,
+  businessManagerStatusList,
+  businessManagerStatusName,
+  initBusinessManagerView,
+  initBusinessView,
+  useBusiness,
 } from 'services/business';
-
-const initBusinessManagerListValue = [
-  {
-    name: '',
-    jobTitle: '',
-    mobilePhone: '',
-    officePhone: '',
-    email: '',
-    meta: [''],
-    status: ''
-  }
-];
-
-const initBusinessValue = {
-  name: '',
-  representativeName: '',
-  officePhone: '',
-  registrationNumber: '',
-  address: '',
-  zipCode: '',
-  memo: '',
-  managerList: initBusinessManagerListValue
-};
 
 const Page = () => {
   const navigate = useNavigate();
 
-  const { state: { list }, add, getAll } = useBusiness();
+  const {
+    add,
+    checkRegistrationNumber,
+  } = useBusiness();
 
-  useEffect(() => {
-    getAll({});
-  }, [])
-
+  const [registrationNumberHelperText, setRegistrationNumberHelperText] = useState<string | undefined>();
 
   const handler = {
-
     toPage: () => {
       navigate('/business-management');
     },
-
     checkRegistrationNumber: (registrationNumber: string): void => {
-      if (!registrationNumber.length) {
-         alert('사업자번호를 입력해 주세요.');
+      if (!registrationNumber) {
+        setRegistrationNumberHelperText('사업자번호를 입력해 주세요.');
         return;
       }
 
-      const duplicatedBusiness = list?.find(business => business.registrationNumber === registrationNumber);
-      if(duplicatedBusiness) {
-        alert('이미 등록되어 있는 사업자번호 입니다.');
-        return;
-      }
-
-      alert('등록 가능한 사업자번호 입니다.');
+      const params: BusinessRegistrationNumberCheckParameter = {
+        registrationNumber,
+      };
+      checkRegistrationNumber(params, (e) => {
+        if (e) {
+          console.log(e);
+          setRegistrationNumberHelperText('이미 등록되어 있는 사업자번호 입니다.');
+        } else {
+          setRegistrationNumberHelperText('등록 가능한 사업자번호 입니다.');
+        }
+      });
     },
 
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      const errors: any = {
-        name: {},
-        representativeName: {},
-        officePhone: {},
-        registrationNumber: {},
-        address: {},
-        zipCode: {},
-        memo: {},
-      };
+      const errors: any = {};
 
-      if (values.name === '') {
+      const managerList: BusinessManagerParameter[] = (values.managerList as any[])
+      .map((item, index) => {
+        const managerErrors: any = {};
+
+        const name: string = item.name;
+        if (!name) {
+          managerErrors.name = '담당자명은 필수 입력 항목입니다.';
+        }
+        const id: number | undefined = item.id || undefined;
+
+        const jobTitle: string | undefined = item.jobTitle || undefined;
+
+        const mobilePhone: string | undefined = item.mobilePhone || undefined;
+
+        const officePhone: string | undefined = item.officePhone || undefined;
+
+        const email: string | undefined = item.email || undefined;
+
+        const meta: string[] = item.meta.split(',').map((text: string) => text.trim());
+
+        const status: BusinessManagerStatus = item.status;
+        if (!status) {
+          managerErrors.status = '담당자 상태는 필수 입력 항목입니다.';
+        }
+
+        const keys = Object.keys(managerErrors);
+
+        if (keys.length > 0) {
+          for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+            errors[`managerList[${index}].${keys[errorIndex]}`]
+              = managerErrors[keys[errorIndex]];
+          }
+          return null;
+        }
+
+        const managerParam: BusinessManagerParameter = {
+          id,
+          name,
+          jobTitle,
+          mobilePhone,
+          officePhone,
+          email,
+          meta: meta.length === 0 ? undefined : meta,
+          status,
+        };
+
+        return managerParam;
+      })
+      .filter(item => item !== null)
+      .map(item => item as BusinessManagerParameter);
+
+      // if(managerList.length === 0) {
+      //   errors['managerList.size'] = '담당자는 한 명 이상 필수입니다.';
+      // }
+
+      const name: string = values.name;
+      if (!name) {
         errors.name = '업체명은 필수 입력 항목입니다.';
       }
 
-      const managerList = values.managerList.map((item: any) => ({
-        ...item,
-        meta: [item.meta]
-      })).filter(
-        (manager: any) =>
-          manager.name !== ''
-          || manager.jobTitle !== ''
-          || manager.mobilePhone !== ''
-          || manager.officePhone !== ''
-          || manager.email !== ''
-          || (!manager.meta.length && manager.meta[0] !== '')
-          || manager.status !== ''
-      );
+      const representativeName: string | undefined = values.representativeName || undefined;
+
+      const officePhone: string | undefined = values.officePhone || undefined;
+
+      const registrationNumber: string = values.registrationNumber;
+      if (!registrationNumber) {
+        errors.registrationNumber = '사업자번호는 필수 입력 항목입니다.';
+      }
+
+      const address: string | undefined = values.address || undefined;
+
+      const zipCode: string | undefined = values.zipCode || undefined;
+
+      const memo: string | undefined = values.memo || undefined;
+
+      if (Object.keys(errors).length > 0) {
+        setErrors(errors);
+        setSubmitting(false);
+        return;
+      }
 
       const params: BusinessAddParameter = {
-        name: values.name,
-        representativeName: values.representativeName,
-        officePhone: values.officePhone,
-        registrationNumber: values.registrationNumber,
-        address: values.address,
-        zipCode: values.zipCode,
-        memo: values.memo,
-        managerList: managerList.length === 0 ? undefined : managerList,
+        name,
+        representativeName,
+        officePhone,
+        registrationNumber,
+        address,
+        zipCode,
+        memo,
+        managerList,
       };
 
-      add(params, (data) => {
-        if (data) {
-          window.alert('저장하였습니다.');
-          navigate('/business-management');
-        }
-        setSubmitting(false);
+      add(params, () => {
+        window.alert('저장하였습니다.');
+        navigate('/business-management');
       });
+      setSubmitting(false);
     }
-
   };
 
   return (
@@ -131,11 +168,17 @@ const Page = () => {
         <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik
-              initialValues={initBusinessValue}
+              initialValues={initBusinessView}
               enableReinitialize
               onSubmit={handler.submit}
             >
-              {({ values, errors, isSubmitting, setFieldValue, handleChange, handleSubmit, setValues }) => (
+              {({
+                values,
+                errors,
+                isSubmitting,
+                setFieldValue,
+                handleSubmit,
+              }) => (
                 <Form>
                   <Box sx={{
                     display: 'flex',
@@ -154,7 +197,6 @@ const Page = () => {
                         value={values.name}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="입력"
                         required
                       />
                     </Grid>
@@ -165,7 +207,6 @@ const Page = () => {
                         value={values.representativeName}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="입력"
                       />
                     </Grid>
                     <Grid item sm={6}>
@@ -179,30 +220,35 @@ const Page = () => {
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataFieldWithButton
-                        type="check"
-                        buttonName="중복 조회"
+                      <DataField
                         name="registrationNumber"
                         label="사업자번호"
                         value={values.registrationNumber}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="입력"
-                        onClick={() => {handler.checkRegistrationNumber(values.registrationNumber)}}
+                        helperText={registrationNumberHelperText}
+                        endAdornment={
+                          <Button
+                            onClick={() => {
+                              handler.checkRegistrationNumber(values.registrationNumber);
+                            }}
+                          >
+                            중복 조회
+                          </Button>
+                        }
+                        onKeyDown={() => {
+                          setRegistrationNumberHelperText(undefined);
+                        }}
                         required
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataFieldWithButton
-                        type="check"
-                        buttonName="주소 검색"
+                      <DataField
                         name="address"
                         label="주소"
                         value={values.address}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="주소 검색 후 상세 주소 입력"
-                        required
                       />
                     </Grid>
                     <Grid item sm={6}>
@@ -212,7 +258,6 @@ const Page = () => {
                         value={values.zipCode}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="입력"
                       />
                     </Grid>
                     <Grid item sm={12}>
@@ -222,138 +267,145 @@ const Page = () => {
                         value={values.memo}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        placeholder="입력"
                       />
                     </Grid>
                   </Grid>
+                  <Divider sx={{ mt: '40px', mb: '40px' }} />
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    height: '50px',
+                    mb: '40px',
+                  }}>
+                    <h2>담당자 정보</h2>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        const managerList = values.managerList;
+                        if (Array.isArray(managerList)) {
+                          setFieldValue('managerList', [...values.managerList, initBusinessManagerView]);
+                        } else {
+                          setFieldValue('managerList', [initBusinessManagerView]);
+                        }
+                      }}
+                    >
+                      추가
+                    </Button>
+                  </Box>
                   {values.managerList?.map((manager, i) => (
-                    <>
-                      <Divider sx={{ mt: '40px', mb: '40px' }} />
-                      <Box sx={{
+                    <Box
+                      key={i}
+                      sx={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
                         width: '100%',
-                        height: '50px',
                         mb: '40px',
                       }}>
-                        <h2>담당자 정보</h2>
-                        <Box sx={{
-                          display: 'flex',
-                          justifyContent: 'flex-end',
-                          alignItems: 'flex-end',
-                          height: '50px',
-                          mb: '40px',
-                        }}>
-                          {i + 1 === values.managerList.length && (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => {
-                                const { managerList, ...rest } = values;
-                                setValues({
-                                  ...rest,
-                                  managerList: [...managerList, ...initBusinessManagerListValue]
-                                });
-                              }}
-                            >
-                              추가
-                            </Button>
-                          )}
-                          {values.managerList?.length !== 1 && (
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              style={{ marginLeft: '5px' }}
-                              onClick={() => {
-                                const { managerList, ...rest } = values;
-                                const removedManagerList = managerList.filter((manager, index) => index !== i);
-                                setValues({ ...rest, managerList: removedManagerList });
-                              }}
-                            >
-                              삭제
-                            </Button>
-                          )}
-                        </Box>
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        width: '100%',
+                        height: '50px',
+                      }}>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          style={{ marginLeft: '5px' }}
+                          onClick={() => {
+                            const managerList: BusinessManagerView[] = values.managerList;
+                            if (managerList.length === 1) {
+                              setFieldValue('managerList', []);
+                            } else {
+                              setFieldValue('managerList', managerList.filter((m, index) => index !== i));
+                            }
+                          }}
+                        >
+                          삭제
+                        </Button>
                       </Box>
-                      <Grid container spacing={2}>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.name`}
-                            label="담당자명"
-                            value={manager.name}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="입력"
-                          />
+                      <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                      }}>
+                        <Grid container spacing={2}>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].name`}
+                              label="담당자명"
+                              value={manager.name}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              required
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].jobTitle`}
+                              label="호칭"
+                              value={manager.jobTitle}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].mobilePhone`}
+                              label="핸드폰"
+                              value={manager.mobilePhone}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              placeholder="-를 제외하고 입력"
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].officePhone`}
+                              label="전화번호"
+                              value={manager.officePhone}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              placeholder="-를 제외하고 입력"
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].email`}
+                              label="이메일"
+                              value={manager.email}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              placeholder="입력"
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].meta`}
+                              label="메타"
+                              value={manager.meta}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              placeholder="입력"
+                            />
+                          </Grid>
+                          <Grid item sm={6}>
+                            <DataField
+                              name={`managerList[${i}].status`}
+                              label="상태"
+                              value={manager.status}
+                              setFieldValue={setFieldValue}
+                              errors={errors}
+                              options={businessManagerStatusList.map((item) => ({
+                                key: item as string,
+                                text: businessManagerStatusName(item)
+                              }))}
+                              required
+                            />
+                          </Grid>
                         </Grid>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.jobTitle`}
-                            label="호칭"
-                            value={manager.jobTitle}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="입력"
-                          />
-                        </Grid>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.mobilePhone`}
-                            label="핸드폰"
-                            value={manager.mobilePhone}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="-를 제외하고 입력"
-                          />
-                        </Grid>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.officePhone`}
-                            label="전화번호"
-                            value={manager.officePhone}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="-를 제외하고 입력"
-                          />
-                        </Grid>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.email`}
-                            label="이메일"
-                            value={manager.email}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="입력"
-                          />
-                        </Grid>
-                        <Grid item sm={6}>
-                          <DataField
-                            name={`managerList.${i}.meta`}
-                            label="메타"
-                            value={''}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            placeholder="입력"
-                          />
-                        </Grid>
-                        <Grid item sm={6}>
-                          <FormControl variant="standard" fullWidth>
-                            <InputLabel>상태</InputLabel>
-                            <Select
-                              name={`managerList.${i}.status`}
-                              value={values?.managerList?.[i]?.status}
-                              onChange={handleChange}
-                              aria-label="params-manager-status"
-                            >
-                              <MenuItem value="IN_OFFICE">재직</MenuItem>
-                              <MenuItem value="RESIGNATION">퇴사</MenuItem>
-                              <MenuItem value="LEAVE">휴직</MenuItem>
-                            </Select>
-                            <ErrorMessage name="manager-status" />
-                          </FormControl>
-                        </Grid>
-                      </Grid>
-                    </>
+                      </Box>
+                    </Box>
                   ))}
                   <Box sx={{
                     display: 'flex',

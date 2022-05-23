@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 @Getter
 public class BusinessView {
 
+    private Long id;
+
     private String name;
     private String representativeName; // 대표명
     private String registrationNumber; // 사업자번호
@@ -21,7 +23,7 @@ public class BusinessView {
 
     public static BusinessView assemble(Business business) {
         BusinessView target = new BusinessView();
-
+        target.id = business.getId();
         target.name = business.getName();
         target.representativeName = business.getRepresentativeName();
         target.registrationNumber = business.getRegistrationNumber();

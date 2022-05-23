@@ -2,12 +2,11 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import {
-  Business,
   BusinessAddParameter,
   BusinessChangeParameter,
   BusinessQuery,
   BusinessQueryForModal,
-  businessActions,
+  businessActions, BusinessRegistrationNumberCheckParameter,
 } from 'services/business';
 
 export default function useBusiness() {
@@ -33,14 +32,20 @@ export default function useBusiness() {
     [dispatch]
   );
 
+  const clearOne = useCallback(
+    () =>
+      dispatch(businessActions.setOne(undefined)),
+    [dispatch],
+  );
+
   const add = useCallback(
-    (params: BusinessAddParameter, callback: (data?: Business) => void) =>
+    (params: BusinessAddParameter, callback: () => void) =>
       dispatch(businessActions.add({ params, callback })),
     [dispatch]
   );
 
   const change = useCallback(
-    (params: BusinessChangeParameter, callback: (data?: Business) => void) =>
+    (params: BusinessChangeParameter, callback: () => void) =>
       dispatch(businessActions.change({ params, callback })),
     [dispatch]
   );
@@ -49,15 +54,23 @@ export default function useBusiness() {
     (id: number, callback: () => void) =>
       dispatch(businessActions.remove({ id, callback })),
     [dispatch]
-  )
+  );
+
+  const checkRegistrationNumber = useCallback(
+    (params: BusinessRegistrationNumberCheckParameter, callback: (e?: any) => void) =>
+      dispatch(businessActions.checkRegistrationNumber({ params, callback })),
+    [dispatch]
+  );
 
   return {
     state,
     getPage,
     getAll,
     getOne,
+    clearOne,
     add,
     change,
-    remove
+    remove,
+    checkRegistrationNumber
   };
 }

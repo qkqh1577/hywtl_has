@@ -48,8 +48,8 @@ const TestServiceTemplateDetail = () => {
     change,
   } = useTestServiceTemplate();
   const [view, setView] = useState<View>(initView);
-  const [edit, setEdit] = useState<boolean>(id === null);
 
+  const [edit, setEdit] = useState<boolean>(id === null);
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
       const errors: any = {};

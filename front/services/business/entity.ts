@@ -1,3 +1,5 @@
+export type BusinessManagerStatus = 'IN_OFFICE' | 'RESIGNATION' | 'LEAVE';
+
 export type BusinessList = {
   id: number;
   name: string;
@@ -6,50 +8,29 @@ export type BusinessList = {
   address?: string;
   officePhone?: string;
   managerCount: number;
-  memo?: string;
-}
-
-export type BusinessManagerDetail = {
-  id?: number;
-  name?: string;
-  jobTitle?: string;
-  mobilePhone?: string;
-  officePhone?: string;
-  email?: string;
-  meta?: string[];
-  status?: string;
   projectCount?: number;
-}
-
-export type BusinessDetail = {
-  name: string;
-  representativeName?: string;
-  registrationNumber: string;
-  address?: string;
-  zipCode?: string;
-  officePhone?: string;
   memo?: string;
-  managerList?: BusinessManagerDetail[];
 }
 
-type BusinessManager = {
-  name?: string;
+export type BusinessManager = {
+  id: number;
+  name: string;
   jobTitle?: string;
   mobilePhone?: string;
   officePhone?: string;
   email?: string;
   meta?: string[];
-  status?: string;
+  status: BusinessManagerStatus;
 }
 
 export type Business = {
-  id: number,
+  id: number;
   name: string;
   representativeName?: string;
-  officePhone?: string;
   registrationNumber: string;
   address?: string;
   zipCode?: string;
+  officePhone?: string;
   memo?: string;
-  ManagerList?: BusinessManager[];
+  managerList?: BusinessManager[];
 }

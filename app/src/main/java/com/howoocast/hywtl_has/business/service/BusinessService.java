@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.business.service;
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
+import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.business.view.BusinessListView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
@@ -53,31 +54,14 @@ public class BusinessService {
         return BusinessView.assemble(this.load(id));
     }
 
+    @Transactional(readOnly = true)
+    public void checkRegistrationNumber(BusinessRegistrationNumberCheckParameter params) {
+        this.checkRegistrationNumber(params.getRegistrationNumber(), params.getId());
+    }
+
     @Transactional
     public BusinessView add(BusinessParameter params) {
-        repository.findByRegistrationNumber(params.getRegistrationNumber()).ifPresent((instance) -> {
-            throw new DuplicatedValueException("business", "registration-number", params.getRegistrationNumber());
-        });
-
-        // NOTE: 아래와 동일 로직
-//        List<BusinessManager> managerList = new ArrayList<>();
-//        if (params.getManagerList() != null) {
-//            List<BusinessManagerParameter> list = params.getManagerList();
-//
-//            for (int i = 0; i < list.size(); i++) {
-//                BusinessManagerParameter item = list.get(i);
-//                BusinessManager manager = BusinessManager.of(
-//                    item.getName(),
-//                    item.getJobTitle(),
-//                    item.getMobilePhone(),
-//                    item.getOfficePhone(),
-//                    item.getEmail(),
-//                    item.getMeta(),
-//                    item.getStatus()
-//                );
-//                managerList.add(manager);
-//            }
-//        }
+        this.checkRegistrationNumber(params.getRegistrationNumber(), null);
 
         List<BusinessManager> managerList = Optional.ofNullable(params.getManagerList())
             .map(list -> list.stream()
@@ -108,65 +92,9 @@ public class BusinessService {
 
     @Transactional
     public void change(Long id, BusinessParameter params) {
-        repository.findByRegistrationNumber(params.getRegistrationNumber()).ifPresent(instance -> {
-            if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("business", "registration-number", params.getRegistrationNumber());
-            }
-        });
+        this.checkRegistrationNumber(params.getRegistrationNumber(), id);
 
         Business business = this.load(id);
-
-//        List<BusinessManager> managerList = new ArrayList<>();
-//
-//        if (params.getManagerList() != null) {
-//
-//            List<BusinessManagerParameter> managerParameterList = params.getManagerList();
-//
-//            for (int i = 0; i < managerParameterList.size(); i++) {
-//
-//                BusinessManagerParameter managerParameter = managerParameterList.get(i);
-//
-//                if (managerParameter.getId() != null) {
-//                    boolean found = false;
-//                    List<BusinessManager> prevManagerList = business.getManagerList();
-//
-//                    for (int j = 0; j < prevManagerList.size(); j++) {
-//
-//                        if (prevManagerList.get(j).getId().equals(managerParameter.getId())) {
-//                            found = true;
-//                            BusinessManager manager = prevManagerList.get(j);
-//                            manager.change(
-//                                managerParameter.getName(),
-//                                managerParameter.getJobTitle(),
-//                                managerParameter.getMobilePhone(),
-//                                managerParameter.getOfficePhone(),
-//                                managerParameter.getEmail(),
-//                                managerParameter.getMeta(),
-//                                managerParameter.getStatus()
-//                            );
-//                            managerList.add(manager);
-//                            break;
-//                        }
-//                    } // end of prevManagerList loop
-//
-//                    if (!found) {
-//                        throw new NotFoundException("business-manager", managerParameter.getId());
-//                    }
-//                }
-//                else {
-//                    BusinessManager manager = BusinessManager.of(
-//                        managerParameter.getName(),
-//                        managerParameter.getJobTitle(),
-//                        managerParameter.getMobilePhone(),
-//                        managerParameter.getOfficePhone(),
-//                        managerParameter.getEmail(),
-//                        managerParameter.getMeta(),
-//                        managerParameter.getStatus()
-//                    );
-//                    managerList.add(manager);
-//                }
-//            }
-//        }
 
         List<BusinessManager> managerList = Optional.ofNullable(params.getManagerList())
             .map(managerParameterList -> managerParameterList.stream()
@@ -225,6 +153,14 @@ public class BusinessService {
 
     private Business load(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("business", id));
+    }
+
+    private void checkRegistrationNumber(String registrationNumber, @Nullable Long id) {
+        repository.findByRegistrationNumber(registrationNumber).ifPresent((instance) -> {
+            if (Objects.isNull(id) || !Objects.equals(instance.getId(), id)) {
+                throw new DuplicatedValueException("business", "registration-number", registrationNumber);
+            }
+        });
     }
 }
 

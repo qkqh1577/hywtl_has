@@ -11,7 +11,7 @@ export type BusinessQueryForModal = {
   keyword?: string;
 }
 
-export type BusinessManagerAddParameter = {
+export type BusinessManagerParameter = {
   id?: number;
   name?: string;
   jobTitle?: string;
@@ -30,7 +30,7 @@ export type BusinessAddParameter = {
   address?: string;
   zipCode?: string;
   memo?: string;
-  managerList?: BusinessManagerAddParameter[];
+  managerList?: BusinessManagerParameter[];
 }
 
 export type BusinessChangeParameter = {
@@ -42,5 +42,10 @@ export type BusinessChangeParameter = {
   address?: string;
   zipCode?: string;
   memo?: string;
-  managerList?: BusinessManagerAddParameter[];
+  managerList?: BusinessManagerParameter[];
+}
+
+export type BusinessRegistrationNumberCheckParameter = {
+  registrationNumber: string;
+  id?: number;
 }

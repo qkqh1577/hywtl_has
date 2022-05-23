@@ -4,11 +4,10 @@ import {
   Business,
   BusinessAddParameter,
   BusinessChangeParameter,
-  BusinessDetail,
   BusinessList,
   BusinessQuery,
-  BusinessQueryForModal,
-} from 'services/business'
+  BusinessQueryForModal, BusinessRegistrationNumberCheckParameter,
+} from 'services/business';
 
 export enum BusinessActionType {
   getPage = 'business/getPage',
@@ -20,25 +19,30 @@ export enum BusinessActionType {
   getAll = 'business/getAll',
   setAll = 'business/setAll',
   remove = 'business/delete',
+  checkRegistrationNumber = 'business/registration-number/check',
 }
 
 export const businessActions = {
   getPage: createAction(BusinessActionType.getPage)<BusinessQuery>(),
   setPage: createAction(BusinessActionType.setPage)<Page<BusinessList>>(),
   getOne: createAction(BusinessActionType.getOne)<number>(),
-  setOne: createAction(BusinessActionType.setOne)<BusinessDetail | undefined>(),
+  setOne: createAction(BusinessActionType.setOne)<Business | undefined>(),
   getAll: createAction(BusinessActionType.getAll)<BusinessQueryForModal>(),
   setAll: createAction(BusinessActionType.setAll)<Business[]>(),
   add: createAction(BusinessActionType.add)<{
     params: BusinessAddParameter;
-    callback: (data?: Business) => void;
+    callback: () => void;
   }>(),
   change: createAction(BusinessActionType.change)<{
     params: BusinessChangeParameter;
-    callback: (data?: Business) => void;
+    callback: () => void;
   }>(),
   remove: createAction(BusinessActionType.remove)<{
     id: number;
     callback: () => void;
+  }>(),
+  checkRegistrationNumber: createAction(BusinessActionType.checkRegistrationNumber)<{
+    params: BusinessRegistrationNumberCheckParameter;
+    callback: (e?: any) => void;
   }>(),
 };

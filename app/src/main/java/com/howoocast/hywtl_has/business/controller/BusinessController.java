@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.business.controller;
 
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
+import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.service.BusinessService;
 import com.howoocast.hywtl_has.business.view.BusinessListView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
@@ -57,6 +58,14 @@ public class BusinessController {
     @PostMapping("/business")
     public BusinessView add(@Valid @RequestBody BusinessParameter params) {
         return businessService.add(params);
+    }
+
+
+    @PostMapping("/business/registration-number/check")
+    public void checkRegistrationNumber(
+        @Valid @RequestBody BusinessRegistrationNumberCheckParameter params
+    ) {
+        businessService.checkRegistrationNumber(params);
     }
 
     @PatchMapping("/business/{id}")

@@ -4,10 +4,9 @@ import {
   Business,
   BusinessAddParameter,
   BusinessChangeParameter,
-  BusinessDetail,
   BusinessList,
   BusinessQuery,
-  BusinessQueryForModal,
+  BusinessQueryForModal, BusinessRegistrationNumberCheckParameter,
 } from 'services/business';
 
 export class BusinessApi {
@@ -16,7 +15,7 @@ export class BusinessApi {
     return data;
   }
 
-  async getOne(id: number): Promise<BusinessDetail> {
+  async getOne(id: number): Promise<Business> {
     const { data } = await apiClient.get(`/business/${id}`);
     return data;
   }
@@ -39,6 +38,11 @@ export class BusinessApi {
 
   async remove(id: number): Promise<void> {
     const { data } = await apiClient.delete(`/business/${id}`);
+    return data;
+  }
+
+  async checkRegistrationNumber(params: BusinessRegistrationNumberCheckParameter) : Promise<void> {
+    const { data } = await apiClient.post('/business/registration-number/check', params);
     return data;
   }
 }
