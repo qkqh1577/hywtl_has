@@ -4,9 +4,6 @@ import {
   Box,
   Button,
   Grid,
-  IconButton,
-  Modal,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -14,14 +11,12 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import {
-  Close as CloseIcon
-} from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import {
   DataField,
   DataSelector,
   DatePicker,
+  Modal,
   TableCellProperty,
   UserSelector
 } from 'components';
@@ -111,10 +106,7 @@ const ProjectEstimateSheetModal = () => {
   const [reviewId, setReviewId] = useState<number | undefined>();
 
   const handler = {
-    close: (event: object, reason?: string) => {
-      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-        return;
-      }
+    close: () => {
       clearOne();
       clearSheetId();
     },
@@ -151,329 +143,278 @@ const ProjectEstimateSheetModal = () => {
 
   return (
     <Modal
+      title={`시스템 견적서 ${sheetId === null ? '등록' : '수정'}`}
+      width="80%"
       open={typeof sheetId !== 'undefined'}
       onClose={handler.close}
-    >
-      <Paper sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80%',
+      sx={{
         maxHeight: '70%',
-        overflow: 'hidden',
-        bgColor: '#777',
-        p: 4,
       }}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          alignContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '50px',
-          mb: '40px',
-        }}>
-          <h2>시스템 견적서 {sheetId === null ? '등록' : '수정'}</h2>
-          <IconButton
-            color="primary"
-            onClick={handler.close}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ mb: '20px' }}>
-          <Formik
-            initialValues={view}
-            onSubmit={handler.submit}
-            enableReinitialize
-          >
-            {({
-              values,
-              errors,
-              isSubmitting,
-              setFieldValue,
-              handleSubmit,
-            }) => (
-              <Form>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                }}>
-                  <Grid container spacing={2}>
-                    <Grid item sm={1}>
-                      <DataField
-                        type="select"
-                        name="confirmed"
-                        label="확정 여부"
-                        value={values.confirmed}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        options={['Y', 'N']}
-                        required
-                      />
-                    </Grid>
-                    <Grid item sm={2}>
-                      <DataField
-                        type="select"
-                        name="status"
-                        label="상태"
-                        value={values.status}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        options={projectEstimateSheetStatusList.map(item => ({
-                          key: item as string,
-                          text: projectEstimateSheetStatusName(item),
-                        }))}
-                        required
-                      />
-                    </Grid>
-                    <Grid item sm={4}>
-                      <DataField
-                        name="title"
-                        label="제목"
-                        value={values.title}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        required
-                      />
-                    </Grid>
-                    <Grid item sm={3}>
-                      <DataField
-                        name="memo"
-                        label="비고"
-                        value={values.memo}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                      />
-                    </Grid>
-                    <Grid item sm={2}>
-                      <Button
-                        variant="contained"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          // TODO: 금액 재계산
-                        }}
-                      >
-                        금액 재계산
-                      </Button>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
-                      >
-                        {isSubmitting ? '저장 중' : '저장'}
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                }}>
-                  <Grid container spacing={2}>
-                    <Grid item sm={3} sx={{
-                      display: 'flex',
-                      width: '100%',
-                      flexWrap: 'wrap',
+      <Formik
+        initialValues={view}
+        onSubmit={handler.submit}
+        enableReinitialize
+      >
+        {({
+          values,
+          errors,
+          isSubmitting,
+          setFieldValue,
+          handleSubmit,
+        }) => (
+          <Form>
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              mb: '40px',
+            }}>
+              <Grid container spacing={2}>
+                <Grid item sm={1}>
+                  <DataField
+                    type="select"
+                    name="confirmed"
+                    label="확정 여부"
+                    value={values.confirmed}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={['Y', 'N']}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={2}>
+                  <DataField
+                    type="select"
+                    name="status"
+                    label="상태"
+                    value={values.status}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={projectEstimateSheetStatusList.map(item => ({
+                      key: item as string,
+                      text: projectEstimateSheetStatusName(item),
+                    }))}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={4}>
+                  <DataField
+                    name="title"
+                    label="제목"
+                    value={values.title}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={3}>
+                  <DataField
+                    name="memo"
+                    label="비고"
+                    value={values.memo}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                  />
+                </Grid>
+                <Grid item sm={2}>
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      // TODO: 금액 재계산
                     }}>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        flexWrap: 'wrap',
-                        mb: '20px',
+                    금액 재계산
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      handleSubmit();
+                    }}>
+                    {isSubmitting ? '저장 중' : '저장'}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              mb: '40px',
+            }}>
+              <Grid container spacing={2}>
+                <Grid item sm={3} sx={{
+                  display: 'flex',
+                  width: '100%',
+                  flexWrap: 'wrap',
+                }}>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    flexWrap: 'wrap',
+                    mb: '20px',
+                  }}>
+                    <DataSelector
+                      name="reviewId"
+                      label="형상비 검토"
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                      options={reviewList?.map(item => ({
+                        key: item.id,
+                        text: `${item.code}(${projectReviewStatusName(item.status)})`,
+                      })) ?? null}
+                      value={values.reviewId}
+                      onChange={(data) => {
+                        const value: number | undefined = data !== '' ? +data : undefined;
+                        setReviewId(value);
+                      }} />
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    mb: '40px',
+                  }}>
+                    <TableContainer>
+                      <Table>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell variant="head" children="형상비 번호" />
+                            <TableCell colSpan={3} children={reviewDetail?.code} />
+                          </TableRow>
+                          <TableRow>
+                            <TableCell variant="head" children=" 대지 모형 개수" />
+                            <TableCell children={reviewDetail?.landFigureCount} />
+                            <TableCell variant="head" children="실험종류 (단지)" />
+                            <TableCell children={reviewDetail?.testList?.join(', ')} />
+                          </TableRow>
+                          <TableRow>
+                            <TableCell variant="head" children="견적 여부" />
+                            <TableCell children={reviewDetail?.confirmed ? 'Y' : 'N' ?? ''} />
+                            <TableCell variant="head" children="상태" />
+                            <TableCell children={reviewDetail ? projectReviewStatusName(reviewDetail.status) : undefined} />
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                    justifyContent: 'center',
+                    minHeight: '500px',
+                  }}>
+                    {reviewDetail && (
+                      <TableContainer sx={{
+                        maxHeight: '430px',
+                        minWidth: '100%'
                       }}>
-                        <DataSelector
-                          name="reviewId"
-                          label="형상비 검토"
+                        <Table>
+                          <TableBody>
+                            {reviewDetailColumnList.map((column, i) => (
+                              <TableRow key={i}>
+                                <TableCell variant="head">
+                                  {column.label}
+                                </TableCell>
+                                {reviewDetail.detailList.map((item, j) => (
+                                  <TableCell key={j}>
+                                    {column.renderCell(item, j)}
+                                  </TableCell>
+                                ))}
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    )}
+                    {!reviewDetail && (
+                      <Typography sx={{
+                        color: 'lightgray',
+                        textAlign: 'center'
+                      }}>
+                        형상비 검토 또는 실험대상을
+                        <br />
+                        선택해 주세요.
+                      </Typography>
+                    )}
+                  </Box>
+                </Grid>
+                <Grid item sm={9}>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                  }}>
+                    <Grid container spacing={2}>
+                      <Grid item sm={3}>
+                        <DatePicker
+                          name="estimateDate"
+                          label="견적일자"
+                          value={values.estimateDate}
                           setFieldValue={setFieldValue}
                           errors={errors}
-                          options={reviewList?.map(item => ({
-                            key: item.id,
-                            text: `${item.code}(${projectReviewStatusName(item.status)})`,
-                          })) ?? null}
-                          value={values.reviewId}
-                          onChange={(data) => {
-                            const value: number | undefined = data !== '' ? +data : undefined;
-                            setReviewId(value);
-                          }}
+                          required
                         />
-                      </Box>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        mb: '40px',
-                      }}>
-                        <TableContainer>
-                          <Table>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell variant="head">
-                                  형상비 번호
-                                </TableCell>
-                                <TableCell colSpan={3}>
-                                  {reviewDetail?.code}
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell variant="head">
-                                  대지 모형 개수
-                                </TableCell>
-                                <TableCell>
-                                  {reviewDetail?.landFigureCount}
-                                </TableCell>
-                                <TableCell variant="head">
-                                  실험종류 (단지)
-                                </TableCell>
-                                <TableCell>
-                                  {reviewDetail?.testList?.join(', ')}
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell variant="head">
-                                  견적 여부
-                                </TableCell>
-                                <TableCell>
-                                  {reviewDetail?.confirmed ? 'Y' : 'N' ?? ''}
-                                </TableCell>
-                                <TableCell variant="head">
-                                  상태
-                                </TableCell>
-                                <TableCell>
-                                  {reviewDetail ? projectReviewStatusName(reviewDetail.status) : undefined}
-                                </TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      </Box>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        mb: '40px',
-                        justifyContent: 'center',
-                        minHeight: '500px',
-                      }}>
-                        {reviewDetail && (
-                          <TableContainer sx={{
-                            maxHeight: '430px',
-                            minWidth: '100%'
-                          }}>
-                            <Table>
-                              <TableBody>
-                                {reviewDetailColumnList.map((column, i) => (
-                                  <TableRow key={i}>
-                                    <TableCell variant="head">
-                                      {column.label}
-                                    </TableCell>
-                                    {reviewDetail.detailList.map((item, j) => (
-                                      <TableCell key={j}>
-                                        {column.renderCell(item, j)}
-                                      </TableCell>
-                                    ))}
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
-                        )}
-                        {!reviewDetail && (
-                          <Typography sx={{
-                            color: 'lightgray',
-                            textAlign: 'center'
-                          }}>
-                            형상비 검토 또는 실험대상을
-                            <br />
-                            선택해 주세요.
-                          </Typography>
-                        )}
-                      </Box>
+                      </Grid>
+                      <Grid item sm={3}>
+                        <DatePicker
+                          name="expectedStartMonth"
+                          label="착수 가능"
+                          value={values.expectedStartMonth}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
+                      </Grid>
+                      <Grid item sm={3}>
+                        <UserSelector
+                          name="salesTeamLeaderId"
+                          label="영업팀장"
+                          value={values.salesTeamLeaderId}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          required
+                        />
+                      </Grid>
+                      <Grid item sm={3}>
+                        <UserSelector
+                          name="salesManagementLeaderId"
+                          label="영업실장"
+                          value={values.salesManagementLeaderId}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item sm={9}>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        mb: '40px',
-                      }}>
-                        <Grid container spacing={2}>
-                          <Grid item sm={3}>
-                            <DatePicker
-                              name="estimateDate"
-                              label="견적일자"
-                              value={values.estimateDate}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                              required
-                            />
-                          </Grid>
-                          <Grid item sm={3}>
-                            <DatePicker
-                              name="expectedStartMonth"
-                              label="착수 가능"
-                              value={values.expectedStartMonth}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                            />
-                          </Grid>
-                          <Grid item sm={3}>
-                            <UserSelector
-                              name="salesTeamLeaderId"
-                              label="영업팀장"
-                              value={values.salesTeamLeaderId}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                              required
-                            />
-                          </Grid>
-                          <Grid item sm={3}>
-                            <UserSelector
-                              name="salesManagementLeaderId"
-                              label="영업실장"
-                              value={values.salesManagementLeaderId}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                            />
-                          </Grid>
-                        </Grid>
-                      </Box>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        mb: '40px',
-                        justifyContent: 'center'
-                      }}>
-                        합계(부가세 별도): 일금 원정 ()
-                      </Box>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        mb: '40px',
-                      }}>
-                        용역항목 Table TBD
-                      </Box>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                        mb: '40px',
-                      }}>
-                        사용 문구 Table TBD
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      </Paper>
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                    justifyContent: 'center'
+                  }}>
+                    합계(부가세 별도): 일금 원정 ()
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                  }}>
+                    용역항목 Table TBD
+                  </Box>
+                  <Box sx={{
+                    display: 'flex',
+                    width: '100%',
+                    mb: '40px',
+                  }}>
+                    사용 문구 Table TBD
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 };

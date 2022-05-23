@@ -60,6 +60,18 @@ export default function useTestServiceTemplate() {
     [dispatch]
   );
 
+  const getSeqList = useCallback(
+    () =>
+      dispatch(testServiceTemplateActions.getSeqList()),
+    [dispatch]
+  );
+
+  const clearSeqList = useCallback(
+    () =>
+      dispatch(testServiceTemplateActions.setSeqList([])),
+    [dispatch]
+  );
+
   return {
     state,
     getList,
@@ -69,6 +81,8 @@ export default function useTestServiceTemplate() {
     add,
     change,
     changeSeq,
-    setSeqModal
+    setSeqModal,
+    getSeqList,
+    clearSeqList
   };
 }

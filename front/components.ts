@@ -23,6 +23,7 @@ export { default as DatePicker } from './components/DatePicker';
 export { default as DepartmentSelector } from './components/DepartmentSelector';
 export { default as Divider } from './components/Divider';
 export { default as FileInput } from './components/FileInput';
+export { default as Modal } from './components/Modal';
 export { default as Table } from './components/Table';
 export { default as Tooltip } from './components/Tooltip';
 export { default as UserFormat } from './components/UserFormat';
