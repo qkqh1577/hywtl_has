@@ -4,11 +4,7 @@ import {
   Box,
   Button,
   Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
+  TableBody, TableCell, TableHead, TableRow,
   Typography,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
@@ -17,6 +13,7 @@ import {
   DataSelector,
   DatePicker,
   Modal,
+  Table,
   TableCellProperty,
   UserSelector
 } from 'components';
@@ -25,13 +22,17 @@ import {
   initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
   projectEstimateSheetStatusName,
-  useProjectEstimate,
+  useProjectEstimate, ProjectEstimateSheetDetailView,
 } from 'services/project_estimate';
 import {
   ProjectReviewDetail,
   projectReviewStatusName,
   useProjectReview
 } from 'services/project_review';
+import {
+  TestServiceTemplate,
+  testServiceTemplateApi,
+} from 'services/standard_data/test_service_template';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
@@ -104,6 +105,8 @@ const ProjectEstimateSheetModal = () => {
   } = useProjectReview();
   const [view, setView] = useState<View>(initView);
   const [reviewId, setReviewId] = useState<number | undefined>();
+  const [templateList, setTemplateList] = useState<TestServiceTemplate[] | undefined>();
+  const [testServiceList, setTestServiceList] = useState<ProjectEstimateSheetDetailView[] | undefined>();
 
   const handler = {
     close: () => {
@@ -140,6 +143,105 @@ const ProjectEstimateSheetModal = () => {
       clearReview();
     };
   }, [reviewId]);
+
+  useEffect(() => {
+    if (reviewDetail) {
+      const testType: string[] = [];
+      if (Array.isArray(reviewDetail.testList)) {
+        for (let i = 0; i < reviewDetail.testList.length; i++) {
+          testType.push(reviewDetail.testList[i]);
+        }
+      }
+      reviewDetail.detailList.forEach((detail) => {
+        if (Array.isArray(detail.testList)) {
+          for (let i = 0; i < detail.testList.length; i++) {
+            if (!testType.includes(detail.testList[i])) {
+              testType.push(detail.testList[i]);
+            }
+          }
+        }
+      });
+      testServiceTemplateApi.getFullList({
+        testType,
+      }).then(setTemplateList);
+    }
+  }, [reviewDetail]);
+
+  useEffect(() => {
+    const list: ProjectEstimateSheetDetailView [] = [];
+    const counter: any = {};
+
+    if (reviewDetail && templateList) {
+      if (Array.isArray(reviewDetail.testList)) {
+        for (let i = 0; i < reviewDetail.testList.length; i++) {
+          const testType: string = reviewDetail.testList[i];
+          if (typeof counter[testType] === 'undefined') {
+            counter[testType] = 0;
+          }
+          counter[testType]++;
+        }
+      }
+      for (let d = 0; d < reviewDetail.detailList.length; d++) {
+        const detail = reviewDetail.detailList[d];
+        for (let i = 0; i < detail.testList.length; i++) {
+          const testType: string = detail.testList[i];
+          if (typeof counter[testType] === 'undefined') {
+            counter[testType] = 0;
+          }
+          counter[testType]++;
+        }
+      }
+
+      for (let i = 0; i < templateList.length; i++) {
+        const template = templateList[i];
+        if (Array.isArray(reviewDetail.testList)) {
+          for (let j = 0; j < reviewDetail.testList.length; j++) {
+            const testType = reviewDetail.testList[j];
+            const count: number | '' = counter[testType] as number ?? '';
+            if (testType === template.testType) {
+              for (let k = 0; k < template.detailList.length; k++) {
+                const templateDetail = template.detailList[k];
+                list.push({
+                  title: template.title,
+                  subTitleList: templateDetail.titleList,
+                  unit: templateDetail.unit,
+                  count,
+                  unitPrice: templateDetail.unitPrice,
+                  totalPrice: templateDetail.unitPrice * count,
+                  isIncluded: true,
+                  memo: templateDetail.memo ?? '',
+                });
+              }
+            }
+          }
+        }
+
+        for (let d = 0; d < reviewDetail.detailList.length; d++) {
+          const detail = reviewDetail.detailList[d];
+          for (let j = 0; j < detail.testList.length; j++) {
+            const testType = detail.testList[j];
+            const count: number | '' = counter[testType] as number ?? '';
+            if (testType === template.testType) {
+              for (let k = 0; k < template.detailList.length; k++) {
+                const templateDetail = template.detailList[k];
+                list.push({
+                  title: template.title,
+                  subTitleList: templateDetail.titleList,
+                  unit: templateDetail.unit,
+                  count,
+                  unitPrice: templateDetail.unitPrice,
+                  totalPrice: templateDetail.unitPrice * count,
+                  isIncluded: true,
+                  memo: templateDetail.memo ?? '',
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+    setTestServiceList(list);
+  }, [templateList]);
 
   return (
     <Modal
@@ -275,8 +377,8 @@ const ProjectEstimateSheetModal = () => {
                     justifyContent: 'center',
                     mb: '40px',
                   }}>
-                    <TableContainer>
-                      <Table>
+                    <Table
+                      body={
                         <TableBody>
                           <TableRow>
                             <TableCell variant="head" children="형상비 번호" />
@@ -295,8 +397,8 @@ const ProjectEstimateSheetModal = () => {
                             <TableCell children={reviewDetail ? projectReviewStatusName(reviewDetail.status) : undefined} />
                           </TableRow>
                         </TableBody>
-                      </Table>
-                    </TableContainer>
+                      }
+                    />
                   </Box>
                   <Box sx={{
                     display: 'flex',
@@ -306,11 +408,8 @@ const ProjectEstimateSheetModal = () => {
                     minHeight: '500px',
                   }}>
                     {reviewDetail && (
-                      <TableContainer sx={{
-                        maxHeight: '430px',
-                        minWidth: '100%'
-                      }}>
-                        <Table>
+                      <Table
+                        body={
                           <TableBody>
                             {reviewDetailColumnList.map((column, i) => (
                               <TableRow key={i}>
@@ -325,8 +424,12 @@ const ProjectEstimateSheetModal = () => {
                               </TableRow>
                             ))}
                           </TableBody>
-                        </Table>
-                      </TableContainer>
+                        }
+                        sx={{
+                          maxHeight: '430px',
+                          minWidth: '100%'
+                        }}
+                      />
                     )}
                     {!reviewDetail && (
                       <Typography sx={{
@@ -400,7 +503,51 @@ const ProjectEstimateSheetModal = () => {
                     width: '100%',
                     mb: '40px',
                   }}>
-                    용역항목 Table TBD
+                    <Table
+                      head={
+                        <TableHead>
+                          <TableRow>
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              colSpan={3}
+                              children="용역 항목"
+                            />
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              children="단위"
+                            />
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              children="수량"
+                            />
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              children="단가"
+                            />
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              children="금액"
+                            />
+                            <TableCell
+                              align="center"
+                              variant="head"
+                              children="비고"
+                            />
+                          </TableRow>
+                        </TableHead>
+                      }
+                      body={
+                        <TableBody>
+
+                        </TableBody>
+                      }
+                      emptyText="형상비 검토 또는 실험대상 선택 시 노출됩니다."
+                    />
                   </Box>
                   <Box sx={{
                     display: 'flex',

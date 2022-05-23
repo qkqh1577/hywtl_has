@@ -36,7 +36,6 @@ export type ProjectEstimateSheetView = {
   detailList: ProjectEstimateSheetDetailView[];
   specialDiscount: number | '';
   commentList: ProjectEstimateSheetCommentView[];
-
 }
 
 export const initProjectEstimateView: ProjectEstimateView = {

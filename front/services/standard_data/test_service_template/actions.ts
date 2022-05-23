@@ -40,5 +40,5 @@ export const testServiceTemplateActions = {
   }>(),
   setSeqModal: createAction(TestServiceTemplateActionType.setSeqModal)<boolean>(),
   getSeqList: createAction(TestServiceTemplateActionType.getSeqList)(),
-  setSeqList:createAction(TestServiceTemplateActionType.setSeqList)<ListTestServiceTemplate[]>(),
+  setSeqList: createAction(TestServiceTemplateActionType.setSeqList)<ListTestServiceTemplate[]>(),
 };
