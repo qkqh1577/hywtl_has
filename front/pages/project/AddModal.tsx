@@ -4,15 +4,14 @@ import {
   Box,
   Button,
   Grid,
-  IconButton,
-  Modal,
-  Paper
 } from '@mui/material';
-import {
-  Close as CloseIcon
-} from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { UserSelector, DataField, useDialog } from 'components';
+import {
+  DataField,
+  Modal,
+  UserSelector,
+  useDialog
+} from 'components';
 import {
   ProjectBasicParameter,
   initProjectBasicView,
@@ -82,118 +81,91 @@ const ProjectAddModal = () => {
 
   return (
     <Modal
+      title="프로젝트 등록"
       open={addModal}
       onClose={handler.close}
     >
-      <Paper sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '50%',
-        overflow: 'hidden',
-        bgColor: '#777',
-        p: 4,
-      }}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          height: '50px',
-          mb: '40px',
-        }}>
-          <h2>프로젝트 등록</h2>
-          <IconButton
-            color="primary"
-            onClick={handler.close}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ mb: '20px' }}>
-          <Formik
-            initialValues={initProjectBasicView}
-            onSubmit={handler.submit}
-            enableReinitialize
-          >
-            {({ values, errors, isSubmitting, setFieldValue, handleSubmit, }) => (
-              <Form>
-                <Grid container spacing={2}>
-                  <Grid item sm={12}>
-                    <DataField
-                      name="name"
-                      label="프로젝트명"
-                      value={values.name}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      required
-                    />
-                  </Grid>
-                  <Grid item sm={12}>
-                    <DataField
-                      name="code"
-                      label="프로젝트 코드"
-                      value={values.code}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      required
-                    />
-                  </Grid>
-                  <Grid item sm={12}>
-                    <DataField
-                      name="alias"
-                      label="프로젝트 닉네임"
-                      value={values.alias}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      helperText="※최대 5글자"
-                    />
-                  </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <UserSelector
-                      name="salesManagerId"
-                      label="영업 담당자"
-                      value={values.salesManagerId}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      required
-                    />
-                  </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <UserSelector
-                      name="projectManagerId"
-                      label="담당 PM"
-                      value={values.projectManagerId}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      required
-                    />
-                  </Grid>
-                  <Grid item sm={12}>
-                    <Box sx={{
-                      display: 'flex',
-                      justifyContent: 'flex-end',
-                      width: '100%',
-                      mt: '40px',
-                    }}>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
-                      >
-                        등록
-                      </Button>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      </Paper>
+      <Formik
+        initialValues={initProjectBasicView}
+        onSubmit={handler.submit}
+        enableReinitialize
+      >
+        {({ values, errors, isSubmitting, setFieldValue, handleSubmit, }) => (
+          <Form>
+            <Grid container spacing={2}>
+              <Grid item sm={12}>
+                <DataField
+                  name="name"
+                  label="프로젝트명"
+                  value={values.name}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  required
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <DataField
+                  name="code"
+                  label="프로젝트 코드"
+                  value={values.code}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  required
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <DataField
+                  name="alias"
+                  label="프로젝트 닉네임"
+                  value={values.alias}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  helperText="※최대 5글자"
+                />
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <UserSelector
+                  name="salesManagerId"
+                  label="영업 담당자"
+                  value={values.salesManagerId}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  required
+                />
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <UserSelector
+                  name="projectManagerId"
+                  label="담당 PM"
+                  value={values.projectManagerId}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  required
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                  mt: '40px',
+                }}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      handleSubmit();
+                    }}
+                  >
+                    등록
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 };

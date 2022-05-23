@@ -16,6 +16,8 @@ export enum TestServiceTemplateActionType {
   change = 'standard-data/test-service-template/change',
   changeSeq = 'standard-data/test-service-template/changeSeq',
   setSeqModal = 'standard-data/test-service-template/setSeqModal',
+  getSeqList = 'standard-data/test-service-template/getSeqList',
+  setSeqList = 'standard-data/test-service-template/setSeqList',
 }
 
 export const testServiceTemplateActions = {
@@ -37,4 +39,6 @@ export const testServiceTemplateActions = {
     callback: () => void;
   }>(),
   setSeqModal: createAction(TestServiceTemplateActionType.setSeqModal)<boolean>(),
+  getSeqList: createAction(TestServiceTemplateActionType.getSeqList)(),
+  setSeqList:createAction(TestServiceTemplateActionType.setSeqList)<ListTestServiceTemplate[]>(),
 };

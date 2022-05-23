@@ -32,6 +32,11 @@ class TestServiceTemplateApi {
     const { data } = await apiClient.post('/standard-data/test-service-templates/seq/change', params);
     return data;
   }
+
+  async getSeqList(): Promise<ListTestServiceTemplate[]> {
+    const { data } = await apiClient.get('/standard-data/test-service-templates');
+    return data;
+  }
 }
 
 const testServiceTemplateApi = new TestServiceTemplateApi();

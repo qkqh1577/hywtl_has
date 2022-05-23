@@ -20,7 +20,8 @@ const TestServiceTemplateList = () => {
   const location = useLocation();
   const {
     state: {
-      list
+      list,
+      seqModal
     },
     getList,
     setSeqModal,
@@ -53,8 +54,10 @@ const TestServiceTemplateList = () => {
   };
 
   useEffect(() => {
-    getList(filter);
-  }, [filter]);
+    if (!seqModal) {
+      getList(filter);
+    }
+  }, [filter, seqModal]);
 
   return (
     <>
