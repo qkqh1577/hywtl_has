@@ -1,9 +1,7 @@
 import React from 'react';
 import { AppRoutes } from 'services/common/routes';
 import Page from './Page';
-import BusinessAddForm from './AddForm';
-import BusinessModForm from './ModForm';
-import BusinessDetail from './Detail';
+import BusinessForm from './Detail';
 
 const routes: AppRoutes[] = [
   {
@@ -12,15 +10,15 @@ const routes: AppRoutes[] = [
   },
   {
     path: '/business-management/add',
-    element: <BusinessAddForm />
+    element: <BusinessForm />
   },
   {
     path: '/business-management/:id/form',
-    element: <BusinessModForm />
+    element: <BusinessForm />
   },
   {
     path: '/business-management/:id',
-    element: <BusinessDetail />
+    element: <BusinessForm />
   },
 ];
 

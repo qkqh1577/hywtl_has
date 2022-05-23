@@ -32,5 +32,5 @@ export type Business = {
   zipCode?: string;
   officePhone?: string;
   memo?: string;
-  managerList?: BusinessManager[];
+  managerList: BusinessManager[];
 }
