@@ -8,9 +8,15 @@ export type ProjectEstimateParameter = {
   reportLevel?: string;
 }
 
-export type ProjectEstimateSheetDetailParameter = {
-  title: string;
-  subTitleList: string[];
+export type ProjectEstimateSheetCommentParameter = {
+  seq: number;
+  description: string;
+  inUse: boolean;
+}
+
+export type ProjectEstimateSheetTestServiceDetailParameter = {
+  id?: number;
+  titleList: string[];
   seq: number;
   unit: string;
   count: number;
@@ -20,10 +26,11 @@ export type ProjectEstimateSheetDetailParameter = {
   memo?: string;
 };
 
-export type ProjectEstimateSheetCommentParameter = {
+export type ProjectEstimateSheetTestServiceParameter = {
+  id?: number;
+  title: string;
   seq: number;
-  description: string;
-  inUse: boolean;
+  detailList: ProjectEstimateSheetTestServiceDetailParameter[];
 }
 
 export type ProjectEstimateSheetAddParameter = {
@@ -36,8 +43,27 @@ export type ProjectEstimateSheetAddParameter = {
   expectedStartMonth?: string;
   salesTeamLeaderId: number;
   salesManagementLeaderId?: number;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
   reviewId: number;
-  detailList: ProjectEstimateSheetDetailParameter[];
+  testServiceList: ProjectEstimateSheetTestServiceParameter[];
+  specialDiscount?: number;
+  commentList: ProjectEstimateSheetCommentParameter[];
+}
+
+export type ProjectEstimateSheetChangeParameter = {
+  id: number;
+  confirmed: boolean;
+  status: ProjectEstimateSheetStatus;
+  title: string;
+  memo?: string;
+  estimateDate: string;
+  expectedStartMonth?: string;
+  salesTeamLeaderId: number;
+  salesManagementLeaderId?: number;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
+  testServiceList: ProjectEstimateSheetTestServiceParameter[];
   specialDiscount?: number;
   commentList: ProjectEstimateSheetCommentParameter[];
 }

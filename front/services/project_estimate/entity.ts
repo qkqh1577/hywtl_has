@@ -18,18 +18,6 @@ export type ProjectEstimate = {
   modifiedAt?: Date;
 }
 
-export type ProjectEstimateSheetDetail = {
-  id: number;
-  title: string;
-  subTitleList: string[];
-  seq: number;
-  unit: string;
-  count: number;
-  unitPrice: number;
-  totalPrice: number;
-  isIncluded: boolean;
-  memo?: string;
-}
 
 export type ProjectEstimateSheetComment = {
   seq: number;
@@ -48,6 +36,23 @@ export type ListProjectEstimateSheet = {
   modifiedAt?: Date;
 }
 
+export type ProjectEstimateSheetTestServiceDetail = {
+  id: number;
+  titleList: string[];
+  unit: string;
+  count: number;
+  unitPrice: number;
+  totalPrice: number;
+  isIncluded: boolean;
+  memo?: string;
+}
+
+export type ProjectEstimateSheetTestService = {
+  id: number;
+  title: string;
+  detailList: ProjectEstimateSheetTestServiceDetail[];
+}
+
 export type ProjectEstimateSheet = {
   id: number;
   confirmed: boolean;
@@ -59,8 +64,10 @@ export type ProjectEstimateSheet = {
   expectedStartMonth?: Date;
   salesTeamLeader: ListUser;
   salesManagementLeader?: ListUser;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
   review: ProjectReview;
-  detailList: ProjectEstimateSheetDetail[];
+  testServiceList: ProjectEstimateSheetTestService[];
   specialDiscount?: number;
   commentList: ProjectEstimateSheetComment[];
 }

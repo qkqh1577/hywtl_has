@@ -7,12 +7,14 @@ import {
 
 export type TestServiceTemplateState = {
   list: ListTestServiceTemplate[];
+  seqList: ListTestServiceTemplate[];
   detail?: TestServiceTemplate;
   seqModal: boolean;
 }
 
 const initState: TestServiceTemplateState = {
   list: [],
+  seqList: [],
   seqModal: false,
 };
 
@@ -28,6 +30,10 @@ const testServiceTemplateReducer = createReducer(initState, {
   [TestServiceTemplateActionType.setSeqModal]: (state, action) => ({
     ...state,
     seqModal: action.payload,
+  }),
+  [TestServiceTemplateActionType.setSeqList]: (state, action) => ({
+    ...state,
+    seqList: action.payload,
   }),
 });
 

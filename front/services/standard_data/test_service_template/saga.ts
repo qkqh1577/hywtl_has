@@ -47,10 +47,16 @@ function* changeSeq(action: ActionType<typeof testServiceTemplateActions.changeS
   }
 }
 
+function* getSeqList() {
+  const list: ListTestServiceTemplate[] = yield testServiceTemplateApi.getSeqList();
+  yield put(testServiceTemplateActions.setSeqList(list));
+}
+
 export default function* testServiceTemplateSaga() {
   yield takeLatest(TestServiceTemplateActionType.getList, getList);
   yield takeLatest(TestServiceTemplateActionType.getOne, getOne);
   yield takeLatest(TestServiceTemplateActionType.add, add);
   yield takeLatest(TestServiceTemplateActionType.change, change);
   yield takeLatest(TestServiceTemplateActionType.changeSeq, changeSeq);
+  yield takeLatest(TestServiceTemplateActionType.getSeqList, getSeqList);
 }

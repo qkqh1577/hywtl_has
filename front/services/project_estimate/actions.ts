@@ -4,7 +4,7 @@ import {
   ProjectEstimate,
   ProjectEstimateParameter,
   ProjectEstimateSheet,
-  ProjectEstimateSheetAddParameter,
+  ProjectEstimateSheetAddParameter, ProjectEstimateSheetChangeParameter,
 } from 'services/project_estimate';
 
 export enum ProjectEstimateType {
@@ -19,6 +19,7 @@ export enum ProjectEstimateType {
   setSheetOne = 'project/estimate/sheet/setOne',
 
   addSheet = 'project/estimate/sheet/add',
+  changeSheet = 'project/estimate/sheet/change',
 
   setSheetId = 'project/estimate/sheet/setId',
 }
@@ -39,6 +40,10 @@ export const projectEstimateActions = {
 
   addSheet: createAction(ProjectEstimateType.addSheet)<{
     params: ProjectEstimateSheetAddParameter;
+    callback: () => void;
+  }>(),
+  changeSheet: createAction(ProjectEstimateType.changeSheet)<{
+    params: ProjectEstimateSheetChangeParameter;
     callback: () => void;
   }>(),
 

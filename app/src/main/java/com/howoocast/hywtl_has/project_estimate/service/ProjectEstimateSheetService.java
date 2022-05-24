@@ -5,8 +5,9 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetComment;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetDetail;
-import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetAddParameter;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestService;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestServiceDetail;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
@@ -15,6 +16,7 @@ import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +50,7 @@ public class ProjectEstimateSheetService {
     }
 
     @Transactional
-    public ProjectEstimateSheetView add(Long projectId, String username, ProjectEstimateSheetAddParameter params) {
+    public ProjectEstimateSheetView add(Long projectId, String username, ProjectEstimateSheetParameter params) {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new NotFoundException("project", projectId));
 
@@ -58,7 +60,8 @@ public class ProjectEstimateSheetService {
         User salesTeamLeader = userRepository.findById(params.getSalesTeamLeaderId())
             .orElseThrow(() -> new NotFoundException("user", params.getSalesTeamLeaderId()));
 
-        User salesManagementLeader = userRepository.findById(params.getSalesManagementLeaderId())
+        User salesManagementLeader = Optional.ofNullable(params.getSalesManagementLeaderId())
+            .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user", userId)))
             .orElse(null);
 
         ProjectReview review = projectReviewRepository.findById(params.getReviewId())
@@ -75,18 +78,25 @@ public class ProjectEstimateSheetService {
             params.getExpectedStartMonth(),
             salesTeamLeader,
             salesManagementLeader,
+            params.getEngineeringPeriod(),
+            params.getFinalReportPeriod(),
             review,
-            params.getDetailList().stream()
-                .map(detailParams -> ProjectEstimateSheetDetail.of(
-                    detailParams.getTitle(),
-                    detailParams.getSubTitleList(),
-                    detailParams.getSeq(),
-                    detailParams.getUnit(),
-                    detailParams.getCount(),
-                    detailParams.getUnitPrice(),
-                    detailParams.getTotalPrice(),
-                    detailParams.getIsIncluded(),
-                    detailParams.getMemo()
+            params.getTestServiceList().stream()
+                .map(testServiceParams -> ProjectEstimateSheetTestService.of(
+                    testServiceParams.getTitle(),
+                    testServiceParams.getDetailList().stream()
+                        .map(detailParams -> ProjectEstimateSheetTestServiceDetail.of(
+                            detailParams.getTitleList(),
+                            detailParams.getUnit(),
+                            detailParams.getCount(),
+                            detailParams.getUnitPrice(),
+                            detailParams.getTotalPrice(),
+                            detailParams.getIsIncluded(),
+                            detailParams.getMemo(),
+                            detailParams.getSeq()
+                        ))
+                        .collect(Collectors.toList()),
+                    testServiceParams.getSeq()
                 ))
                 .collect(Collectors.toList()),
             params.getSpecialDiscount(),
@@ -99,6 +109,75 @@ public class ProjectEstimateSheetService {
                 .collect(Collectors.toList())
         );
         return ProjectEstimateSheetView.assemble(repository.save(instance));
+    }
+
+    @Transactional
+    public void change(Long id, ProjectEstimateSheetParameter params) {
+        ProjectEstimateSheet instance = this.load(id);
+
+        User salesTeamLeader = userRepository.findById(params.getSalesTeamLeaderId())
+            .orElseThrow(() -> new NotFoundException("user", params.getSalesTeamLeaderId()));
+
+        User salesManagementLeader = Optional.ofNullable(params.getSalesManagementLeaderId())
+            .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user", userId)))
+            .orElse(null);
+
+        instance.change(
+            params.getConfirmed(),
+            params.getStatus(),
+            params.getTitle(),
+            params.getMemo(),
+            params.getEstimateDate(),
+            params.getExpectedStartMonth(),
+            salesTeamLeader,
+            salesManagementLeader,
+            params.getEngineeringPeriod(),
+            params.getFinalReportPeriod(),
+            params.getTestServiceList().stream()
+                .map(testServiceParams -> {
+                    ProjectEstimateSheetTestService testServiceInstance
+                        = instance.getTestServiceList().stream()
+                        .filter(item -> item.getId().equals(testServiceParams.getId()))
+                        .findFirst()
+                        .orElseThrow(() -> new NotFoundException(
+                            "project-estimate.sheet.test-service",
+                            testServiceParams.getId()
+                        ));
+                    testServiceInstance.change(
+                        testServiceParams.getDetailList().stream()
+                            .map(testServiceDetailParams -> {
+                                ProjectEstimateSheetTestServiceDetail testServiceDetailInstance
+                                    = testServiceInstance.getDetailList().stream()
+                                    .filter(item -> item.getId().equals(testServiceDetailParams.getId()))
+                                    .findFirst()
+                                    .orElseThrow(() -> new NotFoundException(
+                                        "project-estimate.sheet.test-service-detail",
+                                        testServiceParams.getId()
+                                    ));
+                                testServiceDetailInstance.change(
+                                    testServiceDetailParams.getUnit(),
+                                    testServiceDetailParams.getCount(),
+                                    testServiceDetailParams.getUnitPrice(),
+                                    testServiceDetailParams.getTotalPrice(),
+                                    testServiceDetailParams.getIsIncluded(),
+                                    testServiceDetailParams.getMemo()
+                                );
+                                return testServiceDetailInstance;
+                            })
+                            .collect(Collectors.toList())
+                    );
+                    return testServiceInstance;
+                })
+                .collect(Collectors.toList()),
+            params.getSpecialDiscount(),
+            params.getCommentList().stream()
+                .map(commentParams -> ProjectEstimateSheetComment.of(
+                    commentParams.getSeq(),
+                    commentParams.getDescription(),
+                    commentParams.getInUse()
+                ))
+                .collect(Collectors.toList())
+        );
     }
 
     private ProjectEstimateSheet load(Long id) {

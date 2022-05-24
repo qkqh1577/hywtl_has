@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.parameter;
 
+import com.howoocast.hywtl_has.common.service.ValidationGroup.OnAdd;
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-public class ProjectEstimateSheetAddParameter {
+public class ProjectEstimateSheetParameter {
 
     @NotNull(message = "project.estimate.sheet.confirm.not-null")
     private Boolean confirmed;
@@ -37,16 +38,19 @@ public class ProjectEstimateSheetAddParameter {
 
     private Long salesManagementLeaderId;
 
-    @NotNull(message = "project.estimate.sheet.project-review-id.not-null")
+    private Integer engineeringPeriod;
+
+    private Integer finalReportPeriod;
+
+    @NotNull(message = "project.estimate.sheet.project-review-id.not-null", groups = OnAdd.class)
     private Long reviewId;
 
-    @NotEmpty(message = "project.estimate.sheet.detail-list.not-empty")
-    private List<ProjectEstimateSheetDetailParameter> detailList;
+    @NotEmpty(message = "project.estimate.sheet.test-service-list.not-empty")
+    private List<ProjectEstimateSheetTestServiceParameter> testServiceList;
 
     private Long specialDiscount;
 
     @NotEmpty(message = "project.estimate.sheet.comment-list.not-empty")
     private List<ProjectEstimateSheetCommentParameter> commentList;
-
 
 }

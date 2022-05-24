@@ -41,6 +41,16 @@ public class TestServiceTemplateService {
     }
 
     @Transactional(readOnly = true)
+    public List<TestServiceTemplateView> getFullList(Predicate predicate) {
+        return StreamSupport.stream(
+                repository.findAll(predicate, Sort.by(Direction.ASC, "seq")).spliterator(),
+                false
+            )
+            .map(TestServiceTemplateView::assemble)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public TestServiceTemplateView getOne(Long id) {
         return TestServiceTemplateView.assemble(this.load(id));
     }

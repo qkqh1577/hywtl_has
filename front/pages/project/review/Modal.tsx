@@ -4,18 +4,13 @@ import {
   Box,
   Button,
   Grid,
-  IconButton,
-  Modal,
-  Paper,
   Typography
 } from '@mui/material';
-import {
-  Close as CloseIcon
-} from '@mui/icons-material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import {
   CheckboxField,
   DataField,
+  Modal,
   Table,
   Tooltip,
   useDialog
@@ -265,561 +260,528 @@ const ProjectReviewModal = () => {
 
   return (
     <Modal
+      title={`형상비 검토 ${id === null ? '등록' : '상세'}`}
       open={typeof id !== 'undefined'}
       onClose={handler.close}
     >
-      <Paper sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '90%',
-        overflow: 'hidden',
-        bgColor: '#777',
-        p: 4,
-      }}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          height: '50px',
-          mb: '40px',
-        }}>
-          <h2>형상비 검토 {id === null ? '등록' : '상세'}</h2>
-          <IconButton
-            color="primary"
-            onClick={handler.close}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ mb: '20px' }}>
-          <Formik
-            initialValues={view}
-            onSubmit={handler.submit}
-            enableReinitialize
-          >
-            {({
-              values,
-              errors,
-              isSubmitting,
-              dirty,
-              setFieldValue,
-              handleSubmit,
-              resetForm
-            }) => (
-              <Form>
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                }}>
-                  <Grid container spacing={2}>
-                    <Grid item sm={1}>
-                      <DataField
-                        type="select"
-                        name="confirmed"
-                        label="견적 여부"
-                        value={values.confirmed}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        options={['Y', 'N']}
-                        disabled
-                      />
-                    </Grid>
-                    <Grid item sm={2}>
-                      <DataField
-                        type="select"
-                        name="status"
-                        label="상태"
-                        value={values.status}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        options={projectReviewStatusList.map(item => ({
-                          key: item as string,
-                          text: projectReviewStatusName(item),
-                        }))}
-                        disabled={!edit}
-                        required
-                      />
-                    </Grid>
-                    <Grid item sm={2}>
-                      <DataField
-                        name="code"
-                        label="형상비 번호"
-                        value={values.code}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        disabled={!edit}
-                        required
-                      />
-                    </Grid>
-                    <Grid item sm={1}>
-                      <DataField
-                        type="number"
-                        name="langFigureCount"
-                        label="대지모형 개수"
-                        value={values.landFigureCount}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        disabled={!edit}
-                      />
-                    </Grid>
-                    <Grid item sm={2}>
-                      {edit && (
-                        <CheckboxField
-                          name="testList"
-                          label="실험 종류(단지)"
-                          value={values.testList}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                          options={['E', 'B']}
-                          disableAll
-                        />
-                      )}
-                      {!edit && (
-                        <DataField
-                          name="view-testList"
-                          label="실험 종류(단지)"
-                          value={values.testList?.join(', ') ?? ''}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                          disabled
-                        />
-                      )}
-                    </Grid>
-                    <Grid item sm={4}>
-                      {edit && (
-                        <Box sx={{
-                          display: 'flex',
-                          width: '100%',
-                          flexWrap: 'wrap',
-                          justifyContent: 'right'
-                        }}>
-                          {id && (
-                            <Button
-                              color="secondary"
-                              variant="contained"
-                              onClick={() => {
-                                if (dirty) {
-                                  dialog.rollback(() => {
-                                    setEdit(false);
-                                    resetForm();
-                                  });
-                                } else {
-                                  setEdit(false);
-                                  resetForm();
-                                }
-                              }}
-                            >
-                              취소
-                            </Button>
-                          )}
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            disabled={isSubmitting}
-                            onClick={() => {
-                              handleSubmit();
-                            }}
-                          >
-                            {isSubmitting ? '저장 중' : '저장'}
-                          </Button>
-                        </Box>
-                      )}
-                    </Grid>
-                  </Grid>
-                </Box>
-                {edit && (
-                  <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mb: '40px',
-                    p: '10px',
-                    backgroundColor: '#aaa',
-                    flexWrap: 'wrap',
-                  }}>
-                    <Typography variant="h5" sx={{
-                      width: '100%',
-                      mb: '15px'
-                    }}>
-                      KDS 41 10 10 15 건축구조기준 설계하중 (5.1.3 특별풍하중 조건)
-                    </Typography>
-                    <Typography variant="body1" sx={{
-                      width: '100%',
-                    }}>
-                      1) 풍진동의 영향을 고려해야 할 건축물 <br />
-                      2) 특수한 지붕 골조 <br />
-                      3) 골바람교화가 발생하는 건설지점 <br />
-                      4) 인접효과가 우려되는 건축물 <br />
-                      5) 비정형적 형상의 건축물 <br />
-                    </Typography>
-                  </Box>
-                )}
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                  flexWrap: 'wrap',
-                }}>
+      <Formik
+        initialValues={view}
+        onSubmit={handler.submit}
+        enableReinitialize
+      >
+        {({
+          values,
+          errors,
+          isSubmitting,
+          dirty,
+          setFieldValue,
+          handleSubmit,
+          resetForm
+        }) => (
+          <Form style={{
+            width: '100%',
+          }}>
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              mb: '40px',
+            }}>
+              <Grid container spacing={2}>
+                <Grid item sm={1}>
+                  <DataField
+                    type="select"
+                    name="confirmed"
+                    label="견적 여부"
+                    value={values.confirmed}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={['Y', 'N']}
+                    disabled
+                  />
+                </Grid>
+                <Grid item sm={2}>
+                  <DataField
+                    type="select"
+                    name="status"
+                    label="상태"
+                    value={values.status}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={projectReviewStatusList.map(item => ({
+                      key: item as string,
+                      text: projectReviewStatusName(item),
+                    }))}
+                    disabled={!edit}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={2}>
+                  <DataField
+                    name="code"
+                    label="형상비 번호"
+                    value={values.code}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    disabled={!edit}
+                    required
+                  />
+                </Grid>
+                <Grid item sm={1}>
+                  <DataField
+                    type="number"
+                    name="langFigureCount"
+                    label="대지모형 개수"
+                    value={values.landFigureCount}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    disabled={!edit}
+                  />
+                </Grid>
+                <Grid item sm={2}>
                   {edit && (
-                    <Typography variant="h6" sx={{
-                      width: '100%',
-                      color: '#0bd',
-                    }}>
-                      ※(1)조건은 높이와 면적 입력 후 계산 버튼을 클릭 시 자동으로 계산됩니다.
-                    </Typography>
+                    <CheckboxField
+                      name="testList"
+                      label="실험 종류(단지)"
+                      value={values.testList}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                      options={['E', 'B']}
+                      disableAll
+                    />
                   )}
-                  <Table
-                    title="형상비 검토 목록"
-                    columns={[
-                      {
-                        label: 'No.',
-                        renderCell: (item, i) => i + 1,
-                      }, {
-                        label: '건물(동)',
-                        renderCell: (item, i) => (
-                          <DataField
-                            name={`detailList[${i}].buildingName`}
-                            label="건물(동)"
-                            value={item.buildingName}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                            required
-                          />
-                        )
-                      }, {
-                        label: '층수',
-                        renderCell: (item, i) => (
-                          <DataField
-                            type="number"
-                            name={`detailList[${i}].floorCount`}
-                            label="층수"
-                            value={item.floorCount}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                            required
-                          />
-                        )
-                      }, {
-                        label: '지하층수',
-                        renderCell: (item, i) => (
-                          <DataField
-                            type="number"
-                            name={`detailList[${i}].baseCount`}
-                            label="지하층 수"
-                            value={item.baseCount}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                          />
-                        )
-                      }, {
-                        label: '높이(m)',
-                        renderCell: (item, i) => (
-                          <DataField
-                            type="number"
-                            name={`detailList[${i}].height`}
-                            label="높이(m)"
-                            value={item.height}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                            required
-                          />
-                        )
-                      }, {
-                        label: '면적(㎡)',
-                        renderCell: (item, i) => (
-                          <DataField
-                            type="number"
-                            name={`detailList[${i}].area`}
-                            label="면적(㎡)"
-                            value={item.area}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                            required
-                          />
-                        )
-                      }, {
-                        label: '형상비',
-                        renderCell: (item, i) => {
-                          const ratio: string = typeof item.ratio === 'number'
-                            ? item.ratio.toFixed(2)
-                            : '';
-
-                          return (
-                            <>
-                              <Typography>
-                                {ratio}
-                              </Typography>
-                              {edit && (
-                                <Button
-                                  variant="contained"
-                                  onClick={() => {
-                                    const height = values.detailList[i].height;
-                                    const area = values.detailList[i].area;
-                                    if (!height || !area) {
-                                      setFieldValue(`detailList[${i}].ratio`, '');
-                                      return;
-                                    }
-                                    const ratio: number = height / Math.sqrt(area);
-                                    setFieldValue(`detailList[${i}].ratio`, ratio);
-                                  }}
-                                >
-                                  계산
-                                </Button>
-                              )}
-                            </>
-                          );
-                        }
-                      }, {
-                        label: '특별풍하중 조건',
-                        renderCell: (item, i) => {
-                          if (!edit) {
-                            return item.specialWindLoadConditionList?.map((condition, j) => (
-                              <Tooltip key={j} title={projectSpecialWindLoadConditionName(condition)}>
-                                <Typography>
-                                  {condition}
-                                </Typography>
-                              </Tooltip>
-                            ));
-                          }
-                          return (
-                            <CheckboxField
-                              name={`detailList[${i}].specialWindLoadConditionList`}
-                              label="특별풍하중 조건"
-                              value={item.specialWindLoadConditionList}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                              options={
-                                ['1', '2', '3', '4', '5']
-                                .map((key) => ({
-                                  key,
-                                  text: `(${key})`,
-                                  tooltip: projectSpecialWindLoadConditionName(key),
-                                }))
-                              }
-                              disableLabel
-                              disableAll
-                            />
-                          );
-                        }
-                      }, {
-                        label: '최소 실험대상 여부',
-                        renderCell: (item) => item.ratio >= 3.0 ? 'Y' : '',
-                        disableShow: edit
-                      }, {
-                        label: '실험 종류(동)',
-                        renderCell: (item, i) => {
-                          if (!edit) {
-                            return item.testList?.join(', ');
-                          }
-                          return (
-                            <CheckboxField
-                              name={`detailList[${i}].testList`}
-                              label="실험 종류(동)"
-                              value={item.testList}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
-                              options={['F', 'P', 'A', '구검']}
-                              disableLabel
-                              disableAll
-                              required
-                            />
-                          );
-                        }
-                      }, {
-                        label: '비고1',
-                        renderCell: (item, i) => (
-                          <DataField
-                            name={`detailList[${i}].memo1`}
-                            label="비고1"
-                            value={item.memo1}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                          />
-                        )
-                      }, {
-                        label: '비고2',
-                        renderCell: (item, i) => (
-                          <DataField
-                            name={`detailList[${i}].memo2`}
-                            label="비고2"
-                            value={item.memo2}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
-                            disabled={!edit}
-                            disableLabel
-                          />
-                        )
-                      }, {
-                        label: '삭제',
-                        renderCell: (item, i) => (
-                          <Button
-                            color="warning"
-                            variant="contained"
-                            onClick={() => {
-                              if (values.detailList.length === 1) {
-                                dialog.alert('최소 1개의 건축물 항목이 필요합니다.');
-                                return;
-                              }
-                              dialog.remove(`${item.buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`, () => {
-                                setFieldValue('detailList', values.detailList.filter((item, j) => i !== j));
-                              });
-                            }}
-                            fullWidth
-                          >
-                            삭제
-                          </Button>
-                        ),
-                        disableShow: !edit
-                      }
-                    ]}
-                    list={values.detailList}
-                    sx={{
-                      maxHeight: '400px'
-                    }}
-                    hover
-                  />
-                </Box>
-                {edit && (
-                  <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mb: '40px',
-                    flexDirection: 'row-reverse'
-                  }}>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={() => {
-                        setFieldValue('detailList', [...values.detailList, initDetailView]);
-                      }}
-                    >
-                      추가
-                    </Button>
-                  </Box>
-                )}
-                <Box sx={{
-                  display: 'flex',
-                  width: '100%',
-                  mb: '40px',
-                  flexWrap: 'wrap',
-                }}>
-                  <Table
-                    title="관련 파일"
-                    columns={[
-                      {
-                        label: 'No.',
-                        renderCell: (item, i) => i + 1,
-                      }, {
-                        label: '파일명',
-                        renderCell: (item) => `${item.filename} (${item.readableSize})`
-                      }, {
-                        label: '삭제',
-                        renderCell: (item, i) => (
-                          <Button
-                            color="warning"
-                            variant="contained"
-                            onClick={() => {
-                              dialog.remove(`${item.filename || '해당'} 파일을 삭제하시겠습니까?`, () => {
-                                setFieldValue('fileList', values.fileList.filter((item, j) => i !== j));
-                              });
-                            }}
-                            fullWidth
-                          >
-                            삭제
-                          </Button>
-                        ),
-                        disableShow: !edit
-                      }, {
-                        label: '다운로드',
-                        renderCell: (item) => (
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => {
-                              window.open(`/file-items/${item.id}`, '_blank');
-                            }}>
-                            다운로드
-                          </Button>
-                        ),
-                        disableShow: edit
-                      }
-                    ]}
-                    list={values.fileList}
-                    sx={{
-                      maxHeight: '300px'
-                    }}
-
-                  />
+                  {!edit && (
+                    <DataField
+                      name="view-testList"
+                      label="실험 종류(단지)"
+                      value={values.testList?.join(', ') ?? ''}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                      disabled
+                    />
+                  )}
+                </Grid>
+                <Grid item sm={4}>
                   {edit && (
                     <Box sx={{
                       display: 'flex',
                       width: '100%',
-                      mb: '40px',
-                      justifyContent: 'right',
+                      flexWrap: 'wrap',
+                      justifyContent: 'right'
                     }}>
-                      <FileUploadButton
-                        onClick={(fileItem) => {
-                          const fileList = values.fileList ?? [];
-                          setFieldValue('fileList', [
-                            ...fileList,
-                            fileItem
-                          ]);
-                        }}
-                      >
-                        추가
-                      </FileUploadButton>
+                      {id && (
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => {
+                            if (dirty) {
+                              dialog.rollback(() => {
+                                setEdit(false);
+                                resetForm();
+                              });
+                            } else {
+                              setEdit(false);
+                              resetForm();
+                            }
+                          }}>
+                          취소
+                        </Button>
+                      )}
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          handleSubmit();
+                        }}>
+                        {isSubmitting ? '저장 중' : '저장'}
+                      </Button>
                     </Box>
                   )}
-                </Box>
-                {!edit && (
-                  <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mb: '40px',
-                    justifyContent: 'space-around'
-                  }}>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={handler.remove}
-                    >
-                      삭제
-                    </Button>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={handler.edit}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={handler.close}
-                    >
-                      닫기
-                    </Button>
-                  </Box>
-                )}
-              </Form>
+                </Grid>
+              </Grid>
+            </Box>
+            {edit && (
+              <Box sx={{
+                display: 'flex',
+                width: '100%',
+                mb: '40px',
+                p: '10px',
+                backgroundColor: '#aaa',
+                flexWrap: 'wrap',
+              }}>
+                <Typography variant="h5" sx={{
+                  width: '100%',
+                  mb: '15px'
+                }}>
+                  KDS 41 10 10 15 건축구조기준 설계하중 (5.1.3 특별풍하중 조건)
+                </Typography>
+                <Typography variant="body1" sx={{
+                  width: '100%',
+                }}>
+                  1) 풍진동의 영향을 고려해야 할 건축물 <br />
+                  2) 특수한 지붕 골조 <br />
+                  3) 골바람교화가 발생하는 건설지점 <br />
+                  4) 인접효과가 우려되는 건축물 <br />
+                  5) 비정형적 형상의 건축물 <br />
+                </Typography>
+              </Box>
             )}
-          </Formik>
-        </Box>
-      </Paper>
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              mb: '40px',
+            }}>
+              {edit && (
+                <Typography variant="h6" sx={{
+                  width: '100%',
+                  color: '#0bd',
+                }}>
+                  ※(1)조건은 높이와 면적 입력 후 계산 버튼을 클릭 시 자동으로 계산됩니다.
+                </Typography>
+              )}
+              <Table
+                title="형상비 검토 목록"
+                columns={[
+                  {
+                    label: 'No.',
+                    renderCell: (item, i) => i + 1,
+                  }, {
+                    label: '건물(동)',
+                    renderCell: (item, i) => (
+                      <DataField
+                        name={`detailList[${i}].buildingName`}
+                        label="건물(동)"
+                        value={item.buildingName}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                        required
+                      />
+                    )
+                  }, {
+                    label: '층수',
+                    renderCell: (item, i) => (
+                      <DataField
+                        type="number"
+                        name={`detailList[${i}].floorCount`}
+                        label="층수"
+                        value={item.floorCount}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                        required
+                      />
+                    )
+                  }, {
+                    label: '지하층수',
+                    renderCell: (item, i) => (
+                      <DataField
+                        type="number"
+                        name={`detailList[${i}].baseCount`}
+                        label="지하층 수"
+                        value={item.baseCount}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                      />
+                    )
+                  }, {
+                    label: '높이(m)',
+                    renderCell: (item, i) => (
+                      <DataField
+                        type="number"
+                        name={`detailList[${i}].height`}
+                        label="높이(m)"
+                        value={item.height}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                        required
+                      />
+                    )
+                  }, {
+                    label: '면적(㎡)',
+                    renderCell: (item, i) => (
+                      <DataField
+                        type="number"
+                        name={`detailList[${i}].area`}
+                        label="면적(㎡)"
+                        value={item.area}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                        required
+                      />
+                    )
+                  }, {
+                    label: '형상비',
+                    renderCell: (item, i) => {
+                      const ratio: string = typeof item.ratio === 'number'
+                        ? item.ratio.toFixed(2)
+                        : '';
+
+                      return (
+                        <>
+                          <Typography children={ratio} />
+                          {edit && (
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                const height = values.detailList[i].height;
+                                const area = values.detailList[i].area;
+                                if (!height || !area) {
+                                  setFieldValue(`detailList[${i}].ratio`, '');
+                                  return;
+                                }
+                                const ratio: number = height / Math.sqrt(area);
+                                setFieldValue(`detailList[${i}].ratio`, ratio);
+                              }}
+                            >
+                              계산
+                            </Button>
+                          )}
+                        </>
+                      );
+                    }
+                  }, {
+                    label: '특별풍하중 조건',
+                    renderCell: (item, i) => {
+                      if (!edit) {
+                        return item.specialWindLoadConditionList?.map((condition, j) => (
+                          <Tooltip key={j} title={projectSpecialWindLoadConditionName(condition)}>
+                            <Typography>
+                              {condition}
+                            </Typography>
+                          </Tooltip>
+                        ));
+                      }
+                      return (
+                        <CheckboxField
+                          name={`detailList[${i}].specialWindLoadConditionList`}
+                          label="특별풍하중 조건"
+                          value={item.specialWindLoadConditionList}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={
+                            ['1', '2', '3', '4', '5']
+                            .map((key) => ({
+                              key,
+                              text: `(${key})`,
+                              tooltip: projectSpecialWindLoadConditionName(key),
+                            }))
+                          }
+                          disableLabel
+                          disableAll
+                        />
+                      );
+                    }
+                  }, {
+                    label: '최소 실험대상 여부',
+                    renderCell: (item) => item.ratio >= 3.0 ? 'Y' : '',
+                    disableShow: edit
+                  }, {
+                    label: '실험 종류(동)',
+                    renderCell: (item, i) => {
+                      if (!edit) {
+                        return item.testList?.join(', ');
+                      }
+                      return (
+                        <CheckboxField
+                          name={`detailList[${i}].testList`}
+                          label="실험 종류(동)"
+                          value={item.testList}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={['F', 'P', 'A', '구검']}
+                          disableLabel
+                          disableAll
+                          required
+                        />
+                      );
+                    }
+                  }, {
+                    label: '비고1',
+                    renderCell: (item, i) => (
+                      <DataField
+                        name={`detailList[${i}].memo1`}
+                        label="비고1"
+                        value={item.memo1}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                      />
+                    )
+                  }, {
+                    label: '비고2',
+                    renderCell: (item, i) => (
+                      <DataField
+                        name={`detailList[${i}].memo2`}
+                        label="비고2"
+                        value={item.memo2}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={!edit}
+                        disableLabel
+                      />
+                    )
+                  }, {
+                    label: '삭제',
+                    renderCell: (item, i) => (
+                      <Button
+                        color="warning"
+                        variant="contained"
+                        onClick={() => {
+                          if (values.detailList.length === 1) {
+                            dialog.alert('최소 1개의 건축물 항목이 필요합니다.');
+                            return;
+                          }
+                          dialog.remove(`${item.buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`, () => {
+                            setFieldValue('detailList', values.detailList.filter((item, j) => i !== j));
+                          });
+                        }}
+                        fullWidth
+                      >
+                        삭제
+                      </Button>
+                    ),
+                    disableShow: !edit
+                  }
+                ]}
+                list={values.detailList}
+                sx={{
+                  maxHeight: '400px'
+                }}
+                hover
+              />
+            </Box>
+            {edit && (
+              <Box sx={{
+                display: 'flex',
+                width: '100%',
+                mb: '40px',
+                flexDirection: 'row-reverse'
+              }}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    setFieldValue('detailList', [...values.detailList, initDetailView]);
+                  }}>
+                  추가
+                </Button>
+              </Box>
+            )}
+            <Box sx={{
+              display: 'flex',
+              width: '100%',
+              mb: '40px',
+              flexWrap: 'wrap',
+            }}>
+              <Table
+                title="관련 파일"
+                columns={[
+                  {
+                    label: 'No.',
+                    renderCell: (item, i) => i + 1,
+                  }, {
+                    label: '파일명',
+                    renderCell: (item) => `${item.filename} (${item.readableSize})`
+                  }, {
+                    label: '삭제',
+                    renderCell: (item, i) => (
+                      <Button
+                        color="warning"
+                        variant="contained"
+                        onClick={() => {
+                          dialog.remove(`${item.filename || '해당'} 파일을 삭제하시겠습니까?`, () => {
+                            setFieldValue('fileList', values.fileList.filter((item, j) => i !== j));
+                          });
+                        }}
+                        fullWidth
+                      >
+                        삭제
+                      </Button>
+                    ),
+                    disableShow: !edit
+                  }, {
+                    label: '다운로드',
+                    renderCell: (item) => (
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => {
+                          window.open(`/file-items/${item.id}`, '_blank');
+                        }}>
+                        다운로드
+                      </Button>
+                    ),
+                    disableShow: edit
+                  }
+                ]}
+                list={values.fileList}
+                sx={{
+                  maxHeight: '300px'
+                }}
+              />
+              {edit && (
+                <Box sx={{
+                  display: 'flex',
+                  width: '100%',
+                  mb: '40px',
+                  justifyContent: 'right',
+                }}>
+                  <FileUploadButton
+                    onClick={(fileItem) => {
+                      const fileList = values.fileList ?? [];
+                      setFieldValue('fileList', [
+                        ...fileList,
+                        fileItem
+                      ]);
+                    }}>
+                    추가
+                  </FileUploadButton>
+                </Box>
+              )}
+            </Box>
+            {!edit && (
+              <Box sx={{
+                display: 'flex',
+                width: '100%',
+                mb: '40px',
+                justifyContent: 'space-around'
+              }}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={handler.remove}
+                >
+                  삭제
+                </Button>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={handler.edit}
+                >
+                  수정
+                </Button>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={handler.close}
+                >
+                  닫기
+                </Button>
+              </Box>
+            )}
+          </Form>
+        )}
+      </Formik>
     </Modal>
   );
 };

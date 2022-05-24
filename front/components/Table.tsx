@@ -4,14 +4,17 @@ import {
   Table as MuiTable,
   TableBody,
   TableCell,
-  TableContainer, TableFooter,
+  TableContainer,
+  TableFooter,
   TableHead,
-  TableRow, Toolbar, Typography
+  TableRow,
+  Toolbar,
+  Typography
 } from '@mui/material';
 
 export type TableCellProperty<T> = {
   label: string;
-  renderCell: (item: T, index: number) => React.ReactNode | string | number | null;
+  renderCell: (item: T, index: number) => React.ReactNode | React.ReactNode[] | string | number;
   key?: string | number;
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
   width?: number;
@@ -19,9 +22,10 @@ export type TableCellProperty<T> = {
   cellStyle?: ((item: T, index: number) => object) | object;
   disableShow?: boolean;
   required?: boolean;
+  colSpan?: number;
 }
 export type TableProps<T> = {
-  columns: TableCellProperty<T>[];
+  columns?: TableCellProperty<T>[];
   list?: T[];
   onRowClick?: (item: T) => void;
   hover?: boolean;
@@ -30,6 +34,8 @@ export type TableProps<T> = {
   title?: string | React.ReactNode;
   footer?: string | React.ReactNode;
   titleRightComponent?: React.ReactNode;
+  head?: React.ReactNode,
+  body?: React.ReactNode,
 };
 const Table = <T, >({
   columns,
@@ -41,6 +47,8 @@ const Table = <T, >({
   title,
   titleRightComponent,
   footer,
+  head,
+  body,
 }: TableProps<T>) => {
   const id: string = `tableTitle_${new Date().getTime()}_${`${Math.round(Math.random() * 100)}`.padStart(3, '0')}`;
   return (
@@ -51,7 +59,6 @@ const Table = <T, >({
         <Toolbar id={id} sx={{
           display: 'flex',
           width: '100%',
-          flexWrap: 'wrap',
           justifyContent: 'space-between',
         }}>
           <Typography variant="h6">
@@ -60,120 +67,134 @@ const Table = <T, >({
           {titleRightComponent}
         </Toolbar>
       )}
-      <TableContainer sx={sx ? {
-        width: '100%',
-        ...sx,
-      } : {
-        width: '100%'
+      <Box sx={{
+        display: 'flex',
+        flexWrap: 'unwrap',
+        overflowX: 'auto'
       }}>
-        <MuiTable
-          aria-label="sticky table"
-          stickyHeader
-          aria-labelledby={id}
-        >
-          <TableHead>
-            <TableRow>
-              {columns
-              .filter(column => !column.disableShow)
-              .map(({
-                key,
-                label,
-                width = 100,
-                style: prevStyle,
-                required
-              }, i) => {
-                const style = {
-                  ...prevStyle,
-                  minWidth: width,
-                };
-                return (
-                  <TableCell
-                    key={key ?? i}
-                    style={style}
-                    align="center"
-                  >
-                    {label}
-                    {required && (
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          marginLeft: '4px',
-                          fontSize: '0.7rem'
-                        }}
+        <TableContainer sx={sx ? {
+          width: '100%',
+          ...sx,
+        } : {
+          width: '100%',
+        }}>
+          <MuiTable
+            aria-label="sticky table"
+            stickyHeader
+            aria-labelledby={id}
+          >
+            {!columns && head}
+            {!columns && body}
+            {columns && (
+              <TableHead>
+                <TableRow>
+                  {columns
+                  .filter(column => !column.disableShow)
+                  .map(({
+                    key,
+                    label,
+                    width = 100,
+                    style: prevStyle,
+                    required,
+                    colSpan
+                  }, i) => {
+                    const style = {
+                      ...prevStyle,
+                      minWidth: width,
+                    };
+                    return (
+                      <TableCell
+                        key={key ?? i}
+                        style={style}
+                        align="center"
+                        variant="head"
+                        colSpan={colSpan}
                       >
-                        *
-                      </Typography>
-                    )}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(!list || list.length === 0) && (
-              <TableRow
-                role="list"
-                tabIndex={-1}
-              >
-                <TableCell
-                  colSpan={columns.filter(column => !column.disableShow).length}
-                  sx={{
-                    textAlign: 'center'
-                  }}
-                >
-                  <Typography>{emptyText}</Typography>
-                </TableCell>
-              </TableRow>
+                        {label}
+                        {required && (
+                          <Typography
+                            variant="caption"
+                            children="*"
+                            sx={{
+                              marginLeft: '4px',
+                              fontSize: '0.7rem'
+                            }}
+                          />
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              </TableHead>
             )}
-            {list && list.length > 0 && list.map((item, i) => (
-              <TableRow
-                key={i}
-                role="list"
-                tabIndex={-1}
-                onClick={() => {
-                  if (onRowClick) {
-                    onRowClick(item);
-                  }
-                }}
-                hover={hover === true}
-              >
-                {columns
-                .filter(column => !column.disableShow)
-                .map((column, j) => {
-                  const { cellStyle, align, renderCell } = column;
-                  const style: object | undefined = cellStyle ?
-                    (typeof cellStyle === 'function' ? cellStyle(item, i) : cellStyle)
-                    : undefined;
-                  return (
+            {columns && (
+              <TableBody>
+                {(!list || list.length === 0) && (
+                  <TableRow
+                    role="list"
+                    tabIndex={-1}
+                  >
                     <TableCell
-                      key={j}
-                      align={align}
-                      style={style}
+                      colSpan={columns.filter(column => !column.disableShow).length}
+                      sx={{
+                        textAlign: 'center'
+                      }}
                     >
-                      {renderCell(item, i)}
+                      <Typography>{emptyText}</Typography>
                     </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-          {footer && (
-            <TableFooter>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.filter(column => !column.disableShow).length}
-                  sx={{
-                    textAlign: 'center'
-                  }}
-                >
-                  {typeof footer === 'string' && (<Typography>{footer}</Typography>)}
-                  {typeof footer !== 'string' && footer}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          )}
-        </MuiTable>
-      </TableContainer>
+                  </TableRow>
+                )}
+                {list && list.length > 0 && list.map((item, i) => (
+                  <TableRow
+                    key={i}
+                    role="list"
+                    tabIndex={-1}
+                    onClick={() => {
+                      if (onRowClick) {
+                        onRowClick(item);
+                      }
+                    }}
+                    hover={hover === true}
+                  >
+                    {columns
+                    .filter(column => !column.disableShow)
+                    .map((column, j) => {
+                      const { cellStyle, align, renderCell } = column;
+                      const style: object | undefined = cellStyle ?
+                        (typeof cellStyle === 'function' ? cellStyle(item, i) : cellStyle)
+                        : undefined;
+                      return (
+                        <TableCell
+                          key={j}
+                          align={align}
+                          style={style}
+                        >
+                          {renderCell(item, i)}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
+            {footer && (
+              <TableFooter>
+                <TableRow>
+                  <TableCell
+                    colSpan={columns?.filter(column => !column.disableShow).length}
+                    sx={{
+                      textAlign: 'center'
+                    }}
+                  >
+                    {typeof footer === 'string' && (<Typography>{footer}</Typography>)}
+                    {typeof footer !== 'string' && footer}
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            )}
+          </MuiTable>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };

@@ -4,7 +4,7 @@ const ROOT = './front';
 module.exports = {
   mode: 'development',
   entry: `${ROOT}/index.tsx`,
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),

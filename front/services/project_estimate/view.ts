@@ -1,4 +1,5 @@
 import { ProjectEstimateSheetStatus } from 'services/project_estimate';
+import { ProjectReview } from 'services/project_review';
 
 export type ProjectEstimateView = {
   receivedDate: Date | null;
@@ -7,20 +8,26 @@ export type ProjectEstimateView = {
   reportLevel: string;
 }
 
-export type ProjectEstimateSheetDetailView = {
-  title: string;
-  subTitleList: string[];
-  unit: string;
-  count: number | '';
-  unitPrice: number | '';
-  totalPrice: number | '';
-  isIncluded: boolean;
-  memo: string;
-}
-
 export type ProjectEstimateSheetCommentView = {
   description: string;
   inUse: boolean;
+}
+
+export type ProjectEstimateSheetTestServiceDetailView = {
+  id?: number;
+  titleList: string[];
+  unit: string;
+  count: number | '';
+  unitPrice: number | '';
+  isIncluded: 'Y' | 'N' | '';
+  memo: string;
+}
+
+
+export type ProjectEstimateSheetTestServiceView = {
+  id?: number;
+  title: string;
+  detailList: ProjectEstimateSheetTestServiceDetailView[];
 }
 
 export type ProjectEstimateSheetView = {
@@ -32,11 +39,13 @@ export type ProjectEstimateSheetView = {
   expectedStartMonth: Date | null;
   salesTeamLeaderId: number | '';
   salesManagementLeaderId: number | '';
+  engineeringPeriod: number | '';
+  finalReportPeriod: number | '';
   reviewId: number | '';
-  detailList: ProjectEstimateSheetDetailView[];
+  reviewDetail?: ProjectReview;
   specialDiscount: number | '';
+  testServiceList: ProjectEstimateSheetTestServiceView[];
   commentList: ProjectEstimateSheetCommentView[];
-
 }
 
 export const initProjectEstimateView: ProjectEstimateView = {
@@ -55,8 +64,10 @@ export const initProjectEstimateSheetView: ProjectEstimateSheetView = {
   expectedStartMonth: null,
   salesTeamLeaderId: '',
   salesManagementLeaderId: '',
+  engineeringPeriod: '',
+  finalReportPeriod: '',
   reviewId: '',
-  detailList: [],
   specialDiscount: '',
+  testServiceList: [],
   commentList: [],
 };
