@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.controller;
 
-import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetAddParameter;
+import com.howoocast.hywtl_has.common.service.ValidationGroup;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateSheetService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,7 @@ public class ProjectEstimateSheetController {
     public ProjectEstimateSheetView add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @RequestBody ProjectEstimateSheetAddParameter params
+        @Validated(ValidationGroup.OnAdd.class) @Valid @RequestBody ProjectEstimateSheetParameter params
     ) {
         return projectEstimateSheetService.add(
             projectId,
@@ -49,6 +51,14 @@ public class ProjectEstimateSheetController {
                 .orElseThrow(() -> new UserLoginException(UserLoginExceptionType.NOT_AUTHENTICATED)),
             params
         );
+    }
+
+    @PatchMapping("/project/estimate/sheets/{id}")
+    public void change(
+        @PathVariable Long id,
+        @Validated(ValidationGroup.OnEdit.class) @Valid @RequestBody ProjectEstimateSheetParameter params
+    ) {
+        projectEstimateSheetService.change(id, params);
     }
 
 }

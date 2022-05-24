@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.parameter;
 
+import com.howoocast.hywtl_has.common.service.ValidationGroup.OnAdd;
+import com.howoocast.hywtl_has.common.service.ValidationGroup.OnEdit;
 import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -12,11 +14,14 @@ import lombok.Setter;
 @Setter
 public class ProjectEstimateSheetTestServiceDetailParameter {
 
-    @NotEmpty(message = "project.estimate.sheet.detail.title-list.not-empty")
+    @NotNull(message = "project.estimate.sheet.test-service.detail.id.not-null", groups = OnEdit.class)
+    private Long id;
+
+    @NotEmpty(message = "project.estimate.sheet.detail.title-list.not-empty", groups = OnAdd.class)
     private List<String> titleList;
 
-    @NotNull(message = "project.estimate.sheet.detail.seq.not-null")
-    @Min(value = 0, message = "project.estimate.sheet.detail.seq.positive")
+    @NotNull(message = "project.estimate.sheet.detail.seq.not-null", groups = OnAdd.class)
+    @Min(value = 0, message = "project.estimate.sheet.detail.seq.positive", groups = OnAdd.class)
     private Integer seq;
 
     @NotBlank(message = "project.estimate.sheet.detail.unit.not-blank")

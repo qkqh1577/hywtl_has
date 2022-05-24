@@ -4,7 +4,7 @@ import {
   ProjectEstimate,
   ProjectEstimateParameter,
   ProjectEstimateSheet,
-  ProjectEstimateSheetAddParameter,
+  ProjectEstimateSheetAddParameter, ProjectEstimateSheetChangeParameter,
 } from 'services/project_estimate';
 
 class ProjectEstimateApi {
@@ -32,6 +32,12 @@ class ProjectEstimateApi {
   async addSheet(params: ProjectEstimateSheetAddParameter): Promise<void> {
     const { projectId, ...rest } = params;
     const { data } = await apiClient.post(`/projects/${projectId}/estimate/sheets`, rest);
+    return data;
+  }
+
+  async changeSheet(params: ProjectEstimateSheetChangeParameter): Promise<void> {
+    const { id, ...rest } = params;
+    const { data } = await apiClient.patch(`/project/estimate/sheets/${id}`, rest);
     return data;
   }
 }
