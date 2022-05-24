@@ -46,7 +46,7 @@ public class ProjectEstimateSheet extends CustomEntity {
     @ManyToOne
     private Project project;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private Boolean confirmed; // 확정 여부
 
@@ -56,7 +56,7 @@ public class ProjectEstimateSheet extends CustomEntity {
 
     @NotBlank
     @Column(nullable = false)
-    private String title; // 제목
+    private String title; // 견적 번호
 
     private String memo; // 비고
 
@@ -69,13 +69,16 @@ public class ProjectEstimateSheet extends CustomEntity {
     private LocalDate estimateDate; // 견적 일자
 
     private LocalDate expectedStartMonth; // 착수 가능 월
-
     @NotNull
     @ManyToOne
     private User salesTeamLeader; // 영업팀장
 
     @ManyToOne
     private User salesManagementLeader; // 영업실장
+
+    private Integer engineeringPeriod; // 주골조설계 소요 기간
+
+    private Integer finalReportPeriod; // 최종보고서 기간
 
     @ManyToOne
     private ProjectReview review; // 형상비 검토
@@ -84,15 +87,15 @@ public class ProjectEstimateSheet extends CustomEntity {
     private ProjectTarget target; // 실험대상
 
     @NotEmpty
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
-    @OrderBy("seq")
+    @OneToMany(cascade = CascadeType.ALL)
+    @OrderBy("seq asc")
     private List<ProjectEstimateSheetTestService> testServiceList; // 용역 항목 목록
 
     private Long specialDiscount; // 특별 할인
 
     @NotEmpty
     @ElementCollection
-    @OrderBy("seq")
+    @OrderBy("seq asc")
     private List<ProjectEstimateSheetComment> commentList;
 
     private static ProjectEstimateSheet of(
@@ -106,6 +109,8 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
+        Integer engineeringPeriod,
+        Integer finalReportPeriod,
         List<ProjectEstimateSheetTestService> testServiceList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
@@ -122,6 +127,8 @@ public class ProjectEstimateSheet extends CustomEntity {
             expectedStartMonth,
             salesTeamLeader,
             salesManagementLeader,
+            engineeringPeriod,
+            finalReportPeriod,
             testServiceList,
             specialDiscount,
             commentList
@@ -140,6 +147,8 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
+        Integer engineeringPeriod,
+        Integer finalReportPeriod,
         ProjectReview review,
         List<ProjectEstimateSheetTestService> detailList,
         Long specialDiscount,
@@ -156,6 +165,8 @@ public class ProjectEstimateSheet extends CustomEntity {
             expectedStartMonth,
             salesTeamLeader,
             salesManagementLeader,
+            engineeringPeriod,
+            finalReportPeriod,
             detailList,
             specialDiscount,
             commentList
@@ -175,6 +186,8 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
+        Integer engineeringPeriod,
+        Integer finalReportPeriod,
         ProjectTarget target,
         List<ProjectEstimateSheetTestService> detailList,
         Long specialDiscount,
@@ -191,6 +204,8 @@ public class ProjectEstimateSheet extends CustomEntity {
             expectedStartMonth,
             salesTeamLeader,
             salesManagementLeader,
+            engineeringPeriod,
+            finalReportPeriod,
             detailList,
             specialDiscount,
             commentList
@@ -208,6 +223,8 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
+        Integer engineeringPeriod,
+        Integer finalReportPeriod,
         List<ProjectEstimateSheetTestService> testServiceList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
@@ -220,6 +237,8 @@ public class ProjectEstimateSheet extends CustomEntity {
         this.expectedStartMonth = expectedStartMonth;
         this.salesTeamLeader = salesTeamLeader;
         this.salesManagementLeader = salesManagementLeader;
+        this.engineeringPeriod = engineeringPeriod;
+        this.finalReportPeriod = finalReportPeriod;
         this.testServiceList = testServiceList;
         this.specialDiscount = specialDiscount;
         this.commentList = commentList;

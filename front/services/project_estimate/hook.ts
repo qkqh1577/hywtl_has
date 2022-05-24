@@ -4,7 +4,7 @@ import { RootState } from 'services/common/reducer';
 import {
   ProjectEstimateParameter,
   ProjectEstimateState,
-  projectEstimateActions,
+  projectEstimateActions, ProjectEstimateSheetAddParameter,
 } from 'services/project_estimate';
 
 export default function useProjectEstimate() {
@@ -64,6 +64,12 @@ export default function useProjectEstimate() {
     [dispatch],
   );
 
+  const addSheet = useCallback(
+    (params: ProjectEstimateSheetAddParameter, callback: () => void) =>
+      dispatch(projectEstimateActions.addSheet({ params, callback })),
+    [dispatch]
+  )
+
   return {
     state,
     getOne,
@@ -75,5 +81,6 @@ export default function useProjectEstimate() {
     clearSheetOne,
     setSheetId,
     clearSheetId,
+    addSheet,
   };
 }

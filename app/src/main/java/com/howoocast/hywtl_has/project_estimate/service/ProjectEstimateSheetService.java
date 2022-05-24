@@ -16,6 +16,7 @@ import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +60,8 @@ public class ProjectEstimateSheetService {
         User salesTeamLeader = userRepository.findById(params.getSalesTeamLeaderId())
             .orElseThrow(() -> new NotFoundException("user", params.getSalesTeamLeaderId()));
 
-        User salesManagementLeader = userRepository.findById(params.getSalesManagementLeaderId())
+        User salesManagementLeader = Optional.ofNullable(params.getSalesManagementLeaderId())
+            .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user", userId)))
             .orElse(null);
 
         ProjectReview review = projectReviewRepository.findById(params.getReviewId())
@@ -76,6 +78,8 @@ public class ProjectEstimateSheetService {
             params.getExpectedStartMonth(),
             salesTeamLeader,
             salesManagementLeader,
+            params.getEngineeringPeriod(),
+            params.getFinalReportPeriod(),
             review,
             params.getTestServiceList().stream()
                 .map(testServiceParams -> ProjectEstimateSheetTestService.of(
