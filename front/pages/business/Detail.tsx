@@ -88,78 +88,69 @@ const Page = () => {
       const errors: any = {};
 
       const managerList: BusinessManagerParameter[] = (values.managerList as any[])
-      .map((item, index) => {
-        const managerErrors: any = {};
+        .filter((manager: any) =>
+          manager.name !== ''
+          || manager.jobTitle !== ''
+          || manager.mobilePhone !== ''
+          || manager.officePhone !== ''
+          || manager.email !== ''
+          || manager.meta !== ''
+          || manager.status !== ''
+        ).map((item, index) => {
+          const managerErrors: any = {};
 
-        const name: string = item.name;
-        if (!name) {
-          managerErrors.name = '담당자명은 필수 입력 항목입니다.';
-        }
-        const id: number | undefined = item.id || undefined;
-
-        const jobTitle: string | undefined = item.jobTitle || undefined;
-
-        const mobilePhone: string | undefined = item.mobilePhone || undefined;
-
-        const officePhone: string | undefined = item.officePhone || undefined;
-
-        const email: string | undefined = item.email || undefined;
-
-        const meta: string[] = item.meta.split(',').map((text: string) => text.trim());
-
-        const status: BusinessManagerStatus = item.status;
-        if (!status) {
-          managerErrors.status = '담당자 상태는 필수 입력 항목입니다.';
-        }
-
-        const keys = Object.keys(managerErrors);
-
-        if (keys.length > 0) {
-          for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
-            errors[`managerList[${index}].${keys[errorIndex]}`]
-              = managerErrors[keys[errorIndex]];
+          const name: string = item.name;
+          if (!name) {
+            managerErrors.name = '담당자명은 필수 입력 항목입니다.';
           }
-          return null;
-        }
+          const id: number | undefined = item.id || undefined;
+          const jobTitle: string | undefined = item.jobTitle || undefined;
+          const mobilePhone: string | undefined = item.mobilePhone || undefined;
+          const officePhone: string | undefined = item.officePhone || undefined;
+          const email: string | undefined = item.email || undefined;
+          const meta: string[] = item.meta.split(',').map((text: string) => text.trim());
+          const status: BusinessManagerStatus = item.status;
+          if (!status) {
+            managerErrors.status = '담당자 상태는 필수 입력 항목입니다.';
+          }
 
-        const managerParam: BusinessManagerParameter = {
-          id,
-          name,
-          jobTitle,
-          mobilePhone,
-          officePhone,
-          email,
-          meta: meta.length === 0 ? undefined : meta,
-          status,
-        };
+          const keys = Object.keys(managerErrors);
+          if (keys.length > 0) {
+            for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+              errors[`managerList[${index}].${keys[errorIndex]}`]
+                = managerErrors[keys[errorIndex]];
+            }
+            return null;
+          }
 
-        return managerParam;
+          const managerParam: BusinessManagerParameter = {
+            id,
+            name,
+            jobTitle,
+            mobilePhone,
+            officePhone,
+            email,
+            meta: meta.length === 0 ? undefined : meta,
+            status,
+          };
+
+          return managerParam;
       })
       .filter(item => item !== null)
       .map(item => item as BusinessManagerParameter);
-
-      if(managerList.length === 0) {
-        errors['managerList.size'] = '담당자는 한 명 이상 필수입니다.';
-      }
 
       const name: string = values.name;
       if (!name) {
         errors.name = '업체명은 필수 입력 항목입니다.';
       }
-
       const representativeName: string | undefined = values.representativeName || undefined;
-
       const officePhone: string | undefined = values.officePhone || undefined;
-
       const registrationNumber: string = values.registrationNumber;
       if (!registrationNumber) {
         errors.registrationNumber = '사업자번호는 필수 입력 항목입니다.';
       }
-
       const address: string | undefined = values.address || undefined;
-
       const zipCode: string | undefined = values.zipCode || undefined;
-
       const memo: string | undefined = values.memo || undefined;
 
       if (Object.keys(errors).length > 0) {
@@ -227,7 +218,8 @@ const Page = () => {
         zipCode: detail?.zipCode ?? initBusinessView.zipCode,
         officePhone: detail?.officePhone ?? initBusinessView.officePhone,
         memo: detail?.memo ?? initBusinessView.memo,
-        managerList: detail?.managerList.map((item) => ({
+        managerList: detail?.managerList.length ?
+          detail?.managerList.map((item) => ({
           name: item.name,
           jobTitle: item.jobTitle ?? '',
           mobilePhone: item.mobilePhone ?? '',
@@ -235,7 +227,7 @@ const Page = () => {
           email: item.email ?? '',
           meta: item.meta?.join() ?? '',
           status: item.status,
-        })) ?? initBusinessView.managerList,
+        })) : initBusinessView.managerList
       });
     },
   };
