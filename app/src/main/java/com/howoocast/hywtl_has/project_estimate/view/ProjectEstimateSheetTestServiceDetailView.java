@@ -1,15 +1,15 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetDetail;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestServiceDetail;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class ProjectEstimateSheetDetailView {
+public class ProjectEstimateSheetTestServiceDetailView {
 
-    private String title;
+    private Long id;
 
-    private List<String> subTitleList;
+    private List<String> titleList;
 
     private String unit;
 
@@ -23,10 +23,10 @@ public class ProjectEstimateSheetDetailView {
 
     private String memo;
 
-    public static ProjectEstimateSheetDetailView assemble(ProjectEstimateSheetDetail source) {
-        ProjectEstimateSheetDetailView target = new ProjectEstimateSheetDetailView();
-        target.title = source.getTitle();
-        target.subTitleList = source.getSubTitleList();
+    public static ProjectEstimateSheetTestServiceDetailView assemble(ProjectEstimateSheetTestServiceDetail source) {
+        ProjectEstimateSheetTestServiceDetailView target = new ProjectEstimateSheetTestServiceDetailView();
+        target.id = source.getId();
+        target.titleList = source.getTitleList();
         target.unit = source.getUnit();
         target.count = source.getCount();
         target.unitPrice = source.getUnitPrice();

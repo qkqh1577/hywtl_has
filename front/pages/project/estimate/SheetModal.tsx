@@ -4,7 +4,10 @@ import {
   Box,
   Button,
   Grid,
-  TableBody, TableCell, TableHead, TableRow,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
@@ -22,7 +25,7 @@ import {
   initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
   projectEstimateSheetStatusName,
-  useProjectEstimate, ProjectEstimateSheetDetailView,
+  useProjectEstimate, ProjectEstimateSheetTestServiceView,
 } from 'services/project_estimate';
 import {
   ProjectReviewDetail,
@@ -33,6 +36,7 @@ import {
   TestServiceTemplate,
   testServiceTemplateApi,
 } from 'services/standard_data/test_service_template';
+import { toAmountKor } from 'util/NumberUtil';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
@@ -106,7 +110,7 @@ const ProjectEstimateSheetModal = () => {
   const [view, setView] = useState<View>(initView);
   const [reviewId, setReviewId] = useState<number | undefined>();
   const [templateList, setTemplateList] = useState<TestServiceTemplate[] | undefined>();
-  const [testServiceList, setTestServiceList] = useState<ProjectEstimateSheetDetailView[] | undefined>();
+  const [amount, setAmount] = useState<number>(0);
 
   const handler = {
     close: () => {
@@ -116,6 +120,23 @@ const ProjectEstimateSheetModal = () => {
     submit: (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
 
     },
+    calculatePrice: (values: any) => {
+      setAmount(
+        (values.testServiceList as ProjectEstimateSheetTestServiceView[])
+        .map(item => item.detailList)
+        .map(list => list.map(item => {
+            const count = item.count;
+            const unitPrice = item.unitPrice;
+            if (count === '' || unitPrice === '' || item.isIncluded !== 'Y') {
+              return 0;
+            }
+            return count * unitPrice;
+          })
+          .reduce((a, b) => a + b, 0)
+        )
+        .reduce((a, b) => a + b, 0)
+      );
+    }
   };
 
   useEffect(() => {
@@ -163,85 +184,96 @@ const ProjectEstimateSheetModal = () => {
       });
       testServiceTemplateApi.getFullList({
         testType,
-      }).then(setTemplateList);
+      })
+      .then(setTemplateList);
     }
   }, [reviewDetail]);
 
   useEffect(() => {
-    const list: ProjectEstimateSheetDetailView [] = [];
-    const counter: any = {};
+    if (templateList) {
+      const testServiceList: ProjectEstimateSheetTestServiceView[] = [];
+      const counter: any = {};
 
-    if (reviewDetail && templateList) {
-      if (Array.isArray(reviewDetail.testList)) {
-        for (let i = 0; i < reviewDetail.testList.length; i++) {
-          const testType: string = reviewDetail.testList[i];
-          if (typeof counter[testType] === 'undefined') {
-            counter[testType] = 0;
-          }
-          counter[testType]++;
-        }
-      }
-      for (let d = 0; d < reviewDetail.detailList.length; d++) {
-        const detail = reviewDetail.detailList[d];
-        for (let i = 0; i < detail.testList.length; i++) {
-          const testType: string = detail.testList[i];
-          if (typeof counter[testType] === 'undefined') {
-            counter[testType] = 0;
-          }
-          counter[testType]++;
-        }
-      }
-
-      for (let i = 0; i < templateList.length; i++) {
-        const template = templateList[i];
+      if (reviewDetail && templateList) {
         if (Array.isArray(reviewDetail.testList)) {
-          for (let j = 0; j < reviewDetail.testList.length; j++) {
-            const testType = reviewDetail.testList[j];
-            const count: number | '' = counter[testType] as number ?? '';
-            if (testType === template.testType) {
-              for (let k = 0; k < template.detailList.length; k++) {
-                const templateDetail = template.detailList[k];
-                list.push({
-                  title: template.title,
-                  subTitleList: templateDetail.titleList,
-                  unit: templateDetail.unit,
-                  count,
-                  unitPrice: templateDetail.unitPrice,
-                  totalPrice: templateDetail.unitPrice * count,
-                  isIncluded: true,
-                  memo: templateDetail.memo ?? '',
-                });
-              }
+          for (let i = 0; i < reviewDetail.testList.length; i++) {
+            const testType: string = reviewDetail.testList[i];
+            if (typeof counter[testType] === 'undefined') {
+              counter[testType] = 0;
             }
+            counter[testType]++;
           }
         }
-
         for (let d = 0; d < reviewDetail.detailList.length; d++) {
           const detail = reviewDetail.detailList[d];
-          for (let j = 0; j < detail.testList.length; j++) {
-            const testType = detail.testList[j];
-            const count: number | '' = counter[testType] as number ?? '';
-            if (testType === template.testType) {
-              for (let k = 0; k < template.detailList.length; k++) {
-                const templateDetail = template.detailList[k];
-                list.push({
+          for (let i = 0; i < detail.testList.length; i++) {
+            const testType: string = detail.testList[i];
+            if (typeof counter[testType] === 'undefined') {
+              counter[testType] = 0;
+            }
+            counter[testType]++;
+          }
+        }
+
+        for (let i = 0; i < templateList.length; i++) {
+          const template = templateList[i];
+          if (Array.isArray(reviewDetail.testList)) {
+            for (let j = 0; j < reviewDetail.testList.length; j++) {
+              const testType = reviewDetail.testList[j];
+              const count: number | '' = counter[testType] as number ?? '';
+              if (testType === template.testType) {
+                testServiceList.push({
                   title: template.title,
-                  subTitleList: templateDetail.titleList,
-                  unit: templateDetail.unit,
-                  count,
-                  unitPrice: templateDetail.unitPrice,
-                  totalPrice: templateDetail.unitPrice * count,
-                  isIncluded: true,
-                  memo: templateDetail.memo ?? '',
+                  detailList: template.detailList.map((templateDetail) => ({
+                    titleList: templateDetail.titleList,
+                    unit: templateDetail.unit,
+                    count,
+                    unitPrice: templateDetail.unitPrice,
+                    totalPrice: templateDetail.unitPrice * count,
+                    isIncluded: 'Y',
+                    memo: templateDetail.memo ?? '',
+                  })),
+                });
+              }
+            }
+          }
+
+          for (let d = 0; d < reviewDetail.detailList.length; d++) {
+            const detail = reviewDetail.detailList[d];
+            for (let j = 0; j < detail.testList.length; j++) {
+              const testType = detail.testList[j];
+              const count: number | '' = counter[testType] as number ?? '';
+              if (testType === template.testType) {
+                testServiceList.push({
+                  title: template.title,
+                  detailList: template.detailList.map((templateDetail) => ({
+                    titleList: templateDetail.titleList,
+                    unit: templateDetail.unit,
+                    count,
+                    unitPrice: templateDetail.unitPrice,
+                    totalPrice: templateDetail.unitPrice * count,
+                    isIncluded: 'Y',
+                    memo: templateDetail.memo ?? '',
+                  })),
                 });
               }
             }
           }
         }
       }
+      const { testServiceList: list, ...rest } = view;
+      setView({
+        ...rest,
+        testServiceList,
+      });
     }
-    setTestServiceList(list);
   }, [templateList]);
+
+  useEffect(() => {
+    if (templateList) {
+      handler.calculatePrice(view);
+    }
+  }, [view]);
 
   return (
     <Modal
@@ -322,7 +354,7 @@ const ProjectEstimateSheetModal = () => {
                     variant="contained"
                     disabled={isSubmitting}
                     onClick={() => {
-                      // TODO: 금액 재계산
+                      handler.calculatePrice(values);
                     }}>
                     금액 재계산
                   </Button>
@@ -488,6 +520,27 @@ const ProjectEstimateSheetModal = () => {
                           errors={errors}
                         />
                       </Grid>
+                      <Grid item sm={3}>
+                        <DataField
+                          name="engineeringPeriod"
+                          label="주골조설계소요 기간"
+                          value={values.engineeringPeriod}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          endAdornment="주"
+                        />
+                      </Grid>
+                      <Grid item sm={3}>
+                        <DataField
+                          type="number"
+                          name="finalReportPeriod"
+                          label="최종보고서(전자본) 기간"
+                          value={values.finalReportPeriod}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          endAdornment="주"
+                        />
+                      </Grid>
                     </Grid>
                   </Box>
                   <Box sx={{
@@ -496,7 +549,7 @@ const ProjectEstimateSheetModal = () => {
                     mb: '40px',
                     justifyContent: 'center'
                   }}>
-                    합계(부가세 별도): 일금 원정 ()
+                    합계(부가세 별도): {toAmountKor(amount)} (₩{amount.toLocaleString()})
                   </Box>
                   <Box sx={{
                     display: 'flex',
@@ -513,26 +566,50 @@ const ProjectEstimateSheetModal = () => {
                               colSpan={3}
                               children="용역 항목"
                             />
-                            <TableCell
-                              align="center"
-                              variant="head"
-                              children="단위"
-                            />
-                            <TableCell
-                              align="center"
-                              variant="head"
-                              children="수량"
-                            />
-                            <TableCell
-                              align="center"
-                              variant="head"
-                              children="단가"
-                            />
-                            <TableCell
-                              align="center"
-                              variant="head"
-                              children="금액"
-                            />
+                            <TableCell align="center" variant="head">
+                              단위
+                              <Typography
+                                variant="caption"
+                                children="*"
+                                sx={{
+                                  marginLeft: '4px',
+                                  fontSize: '0.7rem'
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell align="center" variant="head">
+                              수량
+                              <Typography
+                                variant="caption"
+                                children="*"
+                                sx={{
+                                  marginLeft: '4px',
+                                  fontSize: '0.7rem'
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell align="center" variant="head">
+                              단가
+                              <Typography
+                                variant="caption"
+                                children="*"
+                                sx={{
+                                  marginLeft: '4px',
+                                  fontSize: '0.7rem'
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell align="center" variant="head">
+                              금액
+                              <Typography
+                                variant="caption"
+                                children="*"
+                                sx={{
+                                  marginLeft: '4px',
+                                  fontSize: '0.7rem'
+                                }}
+                              />
+                            </TableCell>
                             <TableCell
                               align="center"
                               variant="head"
@@ -543,10 +620,130 @@ const ProjectEstimateSheetModal = () => {
                       }
                       body={
                         <TableBody>
-
+                          {values.testServiceList && values.testServiceList.length > 0 &&
+                          values.testServiceList
+                          .map((testService, i) => {
+                            const rowSpan: number | undefined = testService.detailList
+                            .map(d => d.titleList)
+                            .map(l => l.length)
+                            .reduce((a, b) => a + b);
+                            return testService.detailList.map((testServiceDetail, j) => {
+                              const detailRowSpan: number | undefined = testServiceDetail.titleList.length;
+                              const totalPrice: number | '' =
+                                testServiceDetail.count === '' || testServiceDetail.unitPrice === '' ?
+                                  '' : testServiceDetail.count * testServiceDetail.unitPrice;
+                              return testServiceDetail.titleList.map((title, k) => (
+                                <TableRow key={`${i}-${j}-${k}`}>
+                                  {j === 0 && k === 0 && ([
+                                    <TableCell
+                                      key={`${i}-no`}
+                                      rowSpan={rowSpan}
+                                      children={`(${i + 1})`}
+                                    />,
+                                    <TableCell
+                                      key={`${i}-title`}
+                                      rowSpan={rowSpan}
+                                      children={testService.title}
+                                    />
+                                  ])}
+                                  <TableCell children={title} />
+                                  {k === 0 && ([
+                                    <TableCell
+                                      key={`${i}-${j}-unit`}
+                                      rowSpan={detailRowSpan}
+                                    >
+                                      <DataField
+                                        type="select"
+                                        name={`testServiceList[${i}].detailList[${j}].unit`}
+                                        label="단위"
+                                        value={testServiceDetail.unit}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        options={['단지', '동']}
+                                        disableLabel
+                                        required
+                                      />
+                                    </TableCell>,
+                                    <TableCell
+                                      key={`${i}-${j}-count`}
+                                      rowSpan={detailRowSpan}
+                                    >
+                                      <DataField
+                                        type="number"
+                                        name={`testServiceList[${i}].detailList[${j}].count`}
+                                        label="수량"
+                                        value={testServiceDetail.count}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        disableLabel
+                                        required
+                                      />
+                                    </TableCell>,
+                                    <TableCell
+                                      key={`${i}-${j}-unitPrice`}
+                                      rowSpan={detailRowSpan}
+                                    >
+                                      <DataField
+                                        type="amount"
+                                        name={`testServiceList[${i}].detailList[${j}].unitPrice`}
+                                        label="단가"
+                                        value={testServiceDetail.unitPrice}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        disableLabel
+                                        required
+                                      />
+                                    </TableCell>,
+                                    <TableCell
+                                      key={`${i}-${j}-isIncluded`}
+                                      rowSpan={detailRowSpan}
+                                    >
+                                      <DataField
+                                        type="select"
+                                        name={`testServiceList[${i}].detailList[${j}].isIncluded`}
+                                        label="사용"
+                                        value={testServiceDetail.isIncluded}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        options={['Y', 'N']}
+                                        disableLabel
+                                        required
+                                      />
+                                      <DataField
+                                        type="amount"
+                                        name={`testServiceList[${i}].detailList[${j}].totalPrice`}
+                                        label="금액"
+                                        value={totalPrice}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        disableLabel
+                                        required
+                                      />
+                                    </TableCell>,
+                                    <TableCell
+                                      key={`${i}-${j}-memo`}
+                                      rowSpan={detailRowSpan}>
+                                      <DataField
+                                        name={`testServiceList[${i}].detailList[${j}].memo`}
+                                        label="비고"
+                                        value={testServiceDetail.memo}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        disableLabel
+                                      />
+                                    </TableCell>
+                                  ])}
+                                </TableRow>
+                              ));
+                            });
+                          })}
+                          {(!values.testServiceList || values.testServiceList.length === 0) && (
+                            <TableRow>
+                              <TableCell colSpan={8} children="형상비 검토 또는 실험대상 선택 시 노출됩니다." />
+                            </TableRow>
+                          )}
                         </TableBody>
                       }
-                      emptyText="형상비 검토 또는 실험대상 선택 시 노출됩니다."
                     />
                   </Box>
                   <Box sx={{

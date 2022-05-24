@@ -10,13 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectEstimateSheetDetailParameter {
+public class ProjectEstimateSheetTestServiceDetailParameter {
 
-    @NotBlank(message = "project.estimate.sheet.detail.title.not-blank")
-    private String title;
-
-    @NotEmpty(message = "project.estimate.sheet.detail.sub-title-list.not-empty")
-    private List<String> subTitleList;
+    @NotEmpty(message = "project.estimate.sheet.detail.title-list.not-empty")
+    private List<String> titleList;
 
     @NotNull(message = "project.estimate.sheet.detail.seq.not-null")
     @Min(value = 0, message = "project.estimate.sheet.detail.seq.positive")

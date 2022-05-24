@@ -8,9 +8,15 @@ export type ProjectEstimateParameter = {
   reportLevel?: string;
 }
 
-export type ProjectEstimateSheetDetailParameter = {
-  title: string;
-  subTitleList: string[];
+export type ProjectEstimateSheetCommentParameter = {
+  seq: number;
+  description: string;
+  inUse: boolean;
+}
+
+export type ProjectEstimateSheetTestServiceDetailParameter = {
+  id?: number;
+  titleList: string[];
   seq: number;
   unit: string;
   count: number;
@@ -20,10 +26,11 @@ export type ProjectEstimateSheetDetailParameter = {
   memo?: string;
 };
 
-export type ProjectEstimateSheetCommentParameter = {
+export type ProjectEstimateSheetTestServiceParameter = {
+  id?: number;
+  title: string;
   seq: number;
-  description: string;
-  inUse: boolean;
+  detailList: ProjectEstimateSheetTestServiceDetailParameter[];
 }
 
 export type ProjectEstimateSheetAddParameter = {
@@ -37,7 +44,7 @@ export type ProjectEstimateSheetAddParameter = {
   salesTeamLeaderId: number;
   salesManagementLeaderId?: number;
   reviewId: number;
-  detailList: ProjectEstimateSheetDetailParameter[];
+  testServiceList: ProjectEstimateSheetTestServiceParameter[];
   specialDiscount?: number;
   commentList: ProjectEstimateSheetCommentParameter[];
 }

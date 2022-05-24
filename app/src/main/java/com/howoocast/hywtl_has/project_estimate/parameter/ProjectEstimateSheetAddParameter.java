@@ -40,8 +40,8 @@ public class ProjectEstimateSheetAddParameter {
     @NotNull(message = "project.estimate.sheet.project-review-id.not-null")
     private Long reviewId;
 
-    @NotEmpty(message = "project.estimate.sheet.detail-list.not-empty")
-    private List<ProjectEstimateSheetDetailParameter> detailList;
+    @NotEmpty(message = "project.estimate.sheet.test-service-list.not-empty")
+    private List<ProjectEstimateSheetTestServiceParameter> testServiceList;
 
     private Long specialDiscount;
 

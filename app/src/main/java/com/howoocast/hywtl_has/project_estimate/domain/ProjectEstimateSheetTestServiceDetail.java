@@ -21,24 +21,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_estimate_sheet_detail")
+@Table(name = "project_estimate_sheet_test_service_detail")
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_estimate_sheet_detail set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update project_estimate_sheet_test_service_detail set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectEstimateSheetDetail extends CustomEntity {
-
-    @NotBlank
-    @Column(nullable = false)
-    private String title; // 용역 항목 정보
+public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
 
     @NotEmpty
     @ElementCollection
-    private List<String> subTitleList; // 용역 항목 부가 정보
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer seq;
+    private List<String> titleList; // 용역 항목 부가 정보
 
     @NotBlank
     @Column(nullable = false)
@@ -62,27 +54,30 @@ public class ProjectEstimateSheetDetail extends CustomEntity {
 
     private String memo; // 비고
 
-    public static ProjectEstimateSheetDetail of(
-        String title,
-        List<String> subTitleList,
-        Integer seq,
+    @NotNull
+    @Column(nullable = false)
+    private Integer seq;
+
+    public static ProjectEstimateSheetTestServiceDetail of(
+        List<String> titleList,
         String unit,
         Integer count,
         Long unitPrice,
         Long totalPrice,
         Boolean isIncluded,
-        String memo
+        String memo,
+        Integer seq
     ) {
-        ProjectEstimateSheetDetail instance = new ProjectEstimateSheetDetail();
-        instance.title = title;
-        instance.subTitleList = subTitleList;
-        instance.seq = seq;
+        ProjectEstimateSheetTestServiceDetail instance =
+            new ProjectEstimateSheetTestServiceDetail();
+        instance.titleList = titleList;
         instance.unit = unit;
         instance.count = count;
         instance.unitPrice = unitPrice;
         instance.totalPrice = totalPrice;
         instance.isIncluded = isIncluded;
         instance.memo = memo;
+        instance.seq = seq;
         return instance;
     }
 }
