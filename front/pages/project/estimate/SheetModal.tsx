@@ -33,7 +33,7 @@ import {
   initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
   projectEstimateSheetStatusName,
-  useProjectEstimate,
+  useProjectEstimate, ProjectEstimateSheetChangeParameter,
 } from 'services/project_estimate';
 import {
   ProjectReviewDetail,
@@ -106,6 +106,7 @@ const ProjectEstimateSheetModal = () => {
     clearSheetOne: clearOne,
     clearSheetId,
     addSheet,
+    changeSheet,
   } = useProjectEstimate();
   const {
     state: {
@@ -372,32 +373,54 @@ const ProjectEstimateSheetModal = () => {
         return;
       }
 
-      const params: ProjectEstimateSheetAddParameter = {
-        projectId,
-        confirmed,
-        status,
-        title,
-        memo,
-        estimateDate,
-        expectedStartMonth,
-        salesTeamLeaderId,
-        salesManagementLeaderId,
-        engineeringPeriod,
-        finalReportPeriod,
-        reviewId,
-        testServiceList,
-        specialDiscount,
-        commentList,
-      };
-
-      addSheet(params, () => {
-        dialog.alert('등록되었습니다.');
-        handler.close();
-      });
+      if (!sheetId) {
+        const params: ProjectEstimateSheetAddParameter = {
+          projectId,
+          confirmed,
+          status,
+          title,
+          memo,
+          estimateDate,
+          expectedStartMonth,
+          salesTeamLeaderId,
+          salesManagementLeaderId,
+          engineeringPeriod,
+          finalReportPeriod,
+          reviewId,
+          testServiceList,
+          specialDiscount,
+          commentList,
+        };
+        addSheet(params, () => {
+          dialog.alert('등록되었습니다.');
+          handler.close();
+        });
+      } else {
+        const params: ProjectEstimateSheetChangeParameter = {
+          id: sheetId,
+          confirmed,
+          status,
+          title,
+          memo,
+          estimateDate,
+          expectedStartMonth,
+          salesTeamLeaderId,
+          salesManagementLeaderId,
+          engineeringPeriod,
+          finalReportPeriod,
+          testServiceList,
+          specialDiscount,
+          commentList,
+        };
+        changeSheet(params, () => {
+          dialog.alert('수정되었습니다.');
+          handler.close();
+        });
+      }
       setSubmitting(false);
     },
-    calculatePrice: () => {
-      setAmount(view.testServiceList.map(item => item.detailList)
+    calculatePrice: (testServiceList: ProjectEstimateSheetTestServiceView[]) => {
+      setAmount(testServiceList.map(item => item.detailList)
         .map(list => list.map(item => {
             const count = item.count;
             const unitPrice = item.unitPrice;
@@ -461,7 +484,7 @@ const ProjectEstimateSheetModal = () => {
 
   useEffect(() => {
     if (view.testServiceList.length > 0) {
-      handler.calculatePrice();
+      handler.calculatePrice(view.testServiceList);
     }
   }, [view]);
 
@@ -543,7 +566,9 @@ const ProjectEstimateSheetModal = () => {
                   <Button
                     variant="contained"
                     disabled={isSubmitting}
-                    onClick={handler.calculatePrice}
+                    onClick={() => {
+                      handler.calculatePrice(values.testServiceList);
+                    }}
                   >
                     금액 재계산
                   </Button>

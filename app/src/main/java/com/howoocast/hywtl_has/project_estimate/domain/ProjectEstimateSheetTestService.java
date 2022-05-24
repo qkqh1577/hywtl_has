@@ -56,4 +56,10 @@ public class ProjectEstimateSheetTestService extends CustomEntity {
         instance.seq = seq;
         return instance;
     }
+
+    public void change(
+        List<ProjectEstimateSheetTestServiceDetail> detailList
+    ) {
+        this.detailList = detailList;
+    }
 }

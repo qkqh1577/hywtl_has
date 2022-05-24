@@ -80,4 +80,20 @@ public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
         instance.seq = seq;
         return instance;
     }
+
+    public void change(
+        String unit,
+        Integer count,
+        Long unitPrice,
+        Long totalPrice,
+        Boolean isIncluded,
+        String memo
+    ) {
+        this.unit = unit;
+        this.count = count;
+        this.unitPrice = unitPrice;
+        this.totalPrice = totalPrice;
+        this.isIncluded = isIncluded;
+        this.memo = memo;
+    }
 }

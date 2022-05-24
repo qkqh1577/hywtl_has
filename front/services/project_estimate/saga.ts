@@ -48,10 +48,21 @@ function* addSheet(action: ActionType<typeof projectEstimateActions.addSheet>) {
   }
 }
 
+function* changeSheet(action: ActionType<typeof projectEstimateActions.changeSheet>) {
+  const { params, callback } = action.payload;
+  try {
+    yield projectEstimateApi.changeSheet(params);
+    callback();
+  } catch (e) {
+    // nothing to do
+  }
+}
+
 export default function* projectEstimateSaga() {
   yield takeLatest(ProjectEstimateType.getOne, getOne);
   yield takeLatest(ProjectEstimateType.upsert, upsert);
   yield takeLatest(ProjectEstimateType.getSheetList, getSheetList);
   yield takeLatest(ProjectEstimateType.getSheetOne, getSheetOne);
   yield takeLatest(ProjectEstimateType.addSheet, addSheet);
+  yield takeLatest(ProjectEstimateType.changeSheet, changeSheet);
 }

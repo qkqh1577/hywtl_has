@@ -50,3 +50,20 @@ export type ProjectEstimateSheetAddParameter = {
   specialDiscount?: number;
   commentList: ProjectEstimateSheetCommentParameter[];
 }
+
+export type ProjectEstimateSheetChangeParameter = {
+  id: number;
+  confirmed: boolean;
+  status: ProjectEstimateSheetStatus;
+  title: string;
+  memo?: string;
+  estimateDate: string;
+  expectedStartMonth?: string;
+  salesTeamLeaderId: number;
+  salesManagementLeaderId?: number;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
+  testServiceList: ProjectEstimateSheetTestServiceParameter[];
+  specialDiscount?: number;
+  commentList: ProjectEstimateSheetCommentParameter[];
+}
