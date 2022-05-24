@@ -8,7 +8,6 @@ import {
 } from 'services/project_estimate';
 import { findModifiedAt } from 'util/DateUtil';
 
-
 const ProjectEstimateSheetList = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
@@ -16,9 +15,9 @@ const ProjectEstimateSheetList = () => {
   const {
     state: {
       sheetList: list,
+      sheetId,
     },
     getSheetList: getList,
-    clearSheetList: clearList,
     setSheetId,
   } = useProjectEstimate();
   const [modifiedAt, setModifiedAt] = useState<Date | undefined>();
@@ -30,13 +29,10 @@ const ProjectEstimateSheetList = () => {
   };
 
   useEffect(() => {
-    if (projectId) {
+    if (projectId && typeof sheetId === 'undefined') {
       getList(projectId);
     }
-    return () => {
-      clearList();
-    };
-  }, [projectId]);
+  }, [projectId, sheetId]);
 
   useEffect(() => {
     setModifiedAt(findModifiedAt(list));
@@ -100,7 +96,7 @@ const ProjectEstimateSheetList = () => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
-                  // open modal
+                  setSheetId(item.id);
                 }}
               >
                 {item.title}

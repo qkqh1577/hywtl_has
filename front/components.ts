@@ -22,6 +22,7 @@ export { default as DateFormat } from './components/DateFormat';
 export { default as DatePicker } from './components/DatePicker';
 export { default as DepartmentSelector } from './components/DepartmentSelector';
 export { default as Divider } from './components/Divider';
+export { default as Fade } from './components/Fade';
 export { default as FileInput } from './components/FileInput';
 export { default as Modal } from './components/Modal';
 export { default as Table } from './components/Table';
