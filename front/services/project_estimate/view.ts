@@ -41,9 +41,7 @@ export type ProjectEstimateSheetView = {
   engineeringPeriod: number | '';
   finalReportPeriod: number | '';
   reviewId: number | '';
-  testServiceList: ProjectEstimateSheetTestServiceView[];
   specialDiscount: number | '';
-  commentList: ProjectEstimateSheetCommentView[];
 }
 
 export const initProjectEstimateView: ProjectEstimateView = {
@@ -65,7 +63,5 @@ export const initProjectEstimateSheetView: ProjectEstimateSheetView = {
   engineeringPeriod: '',
   finalReportPeriod: '',
   reviewId: '',
-  testServiceList: [],
   specialDiscount: '',
-  commentList: [],
 };

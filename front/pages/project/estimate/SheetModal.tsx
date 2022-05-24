@@ -18,14 +18,21 @@ import {
   Modal,
   Table,
   TableCellProperty,
-  UserSelector
+  UserSelector,
+  useDialog,
 } from 'components';
 import {
+  ProjectEstimateSheetAddParameter,
+  ProjectEstimateSheetCommentParameter,
+  ProjectEstimateSheetStatus,
+  ProjectEstimateSheetTestServiceDetailParameter,
+  ProjectEstimateSheetTestServiceParameter,
+  ProjectEstimateSheetTestServiceView,
   ProjectEstimateSheetView as View,
   initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
   projectEstimateSheetStatusName,
-  useProjectEstimate, ProjectEstimateSheetTestServiceView,
+  useProjectEstimate,
 } from 'services/project_estimate';
 import {
   ProjectReviewDetail,
@@ -37,6 +44,7 @@ import {
   testServiceTemplateApi,
 } from 'services/standard_data/test_service_template';
 import { toAmountKor } from 'util/NumberUtil';
+import dayjs from 'dayjs';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
@@ -88,6 +96,7 @@ const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
 const ProjectEstimateSheetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
+  const dialog = useDialog();
   const {
     state: {
       sheetId,
@@ -96,6 +105,7 @@ const ProjectEstimateSheetModal = () => {
     getSheetOne: getOne,
     clearSheetOne: clearOne,
     clearSheetId,
+    addSheet,
   } = useProjectEstimate();
   const {
     state: {
@@ -108,21 +118,197 @@ const ProjectEstimateSheetModal = () => {
     clearOne: clearReview,
   } = useProjectReview();
   const [view, setView] = useState<View>(initView);
+  const [testServiceViewList, setTestServiceViewList] = useState<ProjectEstimateSheetTestServiceView[]>([]);
   const [reviewId, setReviewId] = useState<number | undefined>();
   const [templateList, setTemplateList] = useState<TestServiceTemplate[] | undefined>();
   const [amount, setAmount] = useState<number>(0);
 
   const handler = {
     close: () => {
+      setView(initView);
+      setReviewId(undefined);
+      setTemplateList(undefined);
       clearOne();
       clearSheetId();
+      clearReview();
+      clearReviewList();
     },
     submit: (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
+      if (!projectId) {
+        dialog.alert('프로젝트가 선택되지 않았습니다.');
+        return;
+      }
+      if (!reviewId) {
+        dialog.alert('형상비 검토가 선택되지 않았습니다.');
+        return;
+      }
+      const errors: any = {};
 
+      const testServiceList: ProjectEstimateSheetTestServiceParameter[] =
+        (testServiceViewList as any[])
+        .map((testService, i) => {
+          const testServiceErrors: any = {};
+
+          const detailList: ProjectEstimateSheetTestServiceDetailParameter[] =
+            (testService.detailList as any[])
+            .map((testServiceDetail, j) => {
+              const testServiceDetailErrors: any = {};
+              const id: number | undefined = testServiceDetail.id;
+              const titleList: string[] = testServiceDetail.titleList;
+              const unit: string = testServiceDetail.unit;
+              if (!unit) {
+                testServiceDetailErrors.unit = '단위는 필수 항목입니다.';
+              }
+              const count: number = testServiceDetail.count;
+              if (!count && count !== 0) {
+                testServiceDetailErrors.count = '수량은 필수 항목입니다.';
+              }
+              const unitPrice: number = testServiceDetail.unitPrice;
+              if (!unitPrice && unitPrice !== 0) {
+                testServiceDetailErrors.unitPrice = '단가는 필수 항목입니다.';
+              }
+              const isIncluded: boolean = testServiceDetail.isIncluded === 'Y';
+              if (!testServiceDetail.isIncluded) {
+                testServiceDetailErrors.isIncluded = '사용 여부는 필수 항목입니다.';
+              }
+              const totalPrice: number = count * unitPrice;
+              const memo: string | undefined = testServiceDetail.memo || undefined;
+
+              const keys = Object.keys(testServiceDetailErrors);
+              if (keys.length > 0) {
+                for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+                  testServiceErrors[`detailList[${j}].${keys[errorIndex]}`]
+                    = testServiceDetailErrors[keys[errorIndex]];
+                }
+                return null;
+              }
+              const params: ProjectEstimateSheetTestServiceDetailParameter = {
+                id,
+                titleList,
+                seq: j + 1,
+                unit,
+                count,
+                unitPrice,
+                isIncluded,
+                totalPrice,
+                memo,
+              };
+              return params;
+            })
+            .filter(item => item !== null)
+            .map(item => item as ProjectEstimateSheetTestServiceDetailParameter);
+          if (detailList.length === 0) {
+            testServiceErrors['detailList.size'] = '상세는 하나 이상 필수 항목입니다.';
+          }
+
+          const id: number | undefined = testService.id;
+          const title: string = testService.title;
+          if (!title) {
+            testServiceErrors.title = '용역 항목은 필수 항목입니다.';
+          }
+
+          const keys = Object.keys(testServiceErrors);
+          if (keys.length > 0) {
+            for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+              errors[`detailList[${i}].${keys[errorIndex]}`]
+                = testServiceErrors[keys[errorIndex]];
+            }
+            return null;
+          }
+
+          const params: ProjectEstimateSheetTestServiceParameter = {
+            id,
+            title,
+            seq: i + 1,
+            detailList,
+          };
+          return params;
+        })
+        .filter(item => item !== null)
+        .map(item => item as ProjectEstimateSheetTestServiceParameter);
+      if (testServiceList.length === 0) {
+        errors['testServiceList.size'] = '용역 항목은 하나 이상 필수 항목입니다.';
+      }
+
+      const confirmed: boolean = values.confirmed === 'Y';
+      if (values.confirmed === '') {
+        errors.confirmed = '확정 여부는 필수 항목입니다.';
+      }
+
+      const status: ProjectEstimateSheetStatus = values.status;
+      if (!status) {
+        errors.status = '상태는 필수 항목입니다.';
+      }
+
+      const title: string = values.title;
+      if (!title) {
+        errors.title = '견적번호는 필수 항목입니다.';
+      }
+
+      const memo: string | undefined = values.memo || undefined;
+
+      const estimateDate: string = dayjs(values.estimateDate).format('YYYY-MM-DD');
+      if (values.estimateDate === null) {
+        errors.estimateDate = '견적일자는 필수 항목입니다.';
+      }
+
+      const expectedStartMonth: string | undefined = values.expectedStartMonth === null ? undefined :
+        dayjs(values.expectedStartMonth).format('YYYY-MM-01');
+
+      const salesTeamLeaderId: number = values.salesTeamLeaderId;
+      if (!salesTeamLeaderId) {
+        errors.salesTeamLeaderId = '영업팀장은 필수 항목입니다.';
+      }
+
+      const salesManagementLeaderId: number | undefined = values.salesManagementLeaderId || undefined;
+
+      const engineeringPeriod: number | undefined = values.engineeringPeriod || undefined;
+
+      const finalReportPeriod: number | undefined = values.finalReportPeriod || undefined;
+
+      const specialDiscount: number | undefined = values.specialDiscount || undefined;
+
+      const commentList: ProjectEstimateSheetCommentParameter[] = [
+        {
+          seq: 1,
+          description: 'test comment',
+          inUse: true,
+        }
+      ];
+
+      if (Object.keys(errors).length > 0) {
+        setErrors(errors);
+        setSubmitting(false);
+        return;
+      }
+
+      const params: ProjectEstimateSheetAddParameter = {
+        projectId,
+        confirmed,
+        status,
+        title,
+        memo,
+        estimateDate,
+        expectedStartMonth,
+        salesTeamLeaderId,
+        salesManagementLeaderId,
+        engineeringPeriod,
+        finalReportPeriod,
+        reviewId,
+        testServiceList,
+        specialDiscount,
+        commentList,
+      };
+
+      addSheet(params, () => {
+        dialog.alert('등록되었습니다.');
+        handler.close();
+      });
+      setSubmitting(false);
     },
-    calculatePrice: (values: any) => {
+    calculatePrice: () => {
       setAmount(
-        (values.testServiceList as ProjectEstimateSheetTestServiceView[])
+        testServiceViewList
         .map(item => item.detailList)
         .map(list => list.map(item => {
             const count = item.count;
@@ -261,19 +447,15 @@ const ProjectEstimateSheetModal = () => {
           }
         }
       }
-      const { testServiceList: list, ...rest } = view;
-      setView({
-        ...rest,
-        testServiceList,
-      });
+      setTestServiceViewList(testServiceList);
     }
   }, [templateList]);
 
   useEffect(() => {
-    if (templateList) {
-      handler.calculatePrice(view);
+    if (testServiceViewList) {
+      handler.calculatePrice();
     }
-  }, [view]);
+  }, [testServiceViewList]);
 
   return (
     <Modal
@@ -353,9 +535,8 @@ const ProjectEstimateSheetModal = () => {
                   <Button
                     variant="contained"
                     disabled={isSubmitting}
-                    onClick={() => {
-                      handler.calculatePrice(values);
-                    }}>
+                    onClick={handler.calculatePrice}
+                  >
                     금액 재계산
                   </Button>
                   <Button
@@ -400,7 +581,8 @@ const ProjectEstimateSheetModal = () => {
                       onChange={(data) => {
                         const value: number | undefined = data !== '' ? +data : undefined;
                         setReviewId(value);
-                      }} />
+                      }}
+                    />
                   </Box>
                   <Box sx={{
                     display: 'flex',
@@ -620,8 +802,8 @@ const ProjectEstimateSheetModal = () => {
                       }
                       body={
                         <TableBody>
-                          {values.testServiceList && values.testServiceList.length > 0 &&
-                          values.testServiceList
+                          {testServiceViewList && testServiceViewList.length > 0 &&
+                          testServiceViewList
                           .map((testService, i) => {
                             const rowSpan: number | undefined = testService.detailList
                             .map(d => d.titleList)
@@ -737,7 +919,7 @@ const ProjectEstimateSheetModal = () => {
                               ));
                             });
                           })}
-                          {(!values.testServiceList || values.testServiceList.length === 0) && (
+                          {testServiceViewList.length === 0 && (
                             <TableRow>
                               <TableCell colSpan={8} children="형상비 검토 또는 실험대상 선택 시 노출됩니다." />
                             </TableRow>

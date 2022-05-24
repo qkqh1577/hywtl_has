@@ -43,6 +43,8 @@ export type ProjectEstimateSheetAddParameter = {
   expectedStartMonth?: string;
   salesTeamLeaderId: number;
   salesManagementLeaderId?: number;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
   reviewId: number;
   testServiceList: ProjectEstimateSheetTestServiceParameter[];
   specialDiscount?: number;
