@@ -64,6 +64,8 @@ export type ProjectEstimateSheet = {
   expectedStartMonth?: Date;
   salesTeamLeader: ListUser;
   salesManagementLeader?: ListUser;
+  engineeringPeriod?: number;
+  finalReportPeriod?: number;
   review: ProjectReview;
   testServiceList: ProjectEstimateSheetTestService[];
   specialDiscount?: number;

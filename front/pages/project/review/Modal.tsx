@@ -278,7 +278,9 @@ const ProjectReviewModal = () => {
           handleSubmit,
           resetForm
         }) => (
-          <Form>
+          <Form style={{
+            width: '100%',
+          }}>
             <Box sx={{
               display: 'flex',
               width: '100%',
@@ -428,7 +430,6 @@ const ProjectReviewModal = () => {
               display: 'flex',
               width: '100%',
               mb: '40px',
-              flexWrap: 'wrap',
             }}>
               {edit && (
                 <Typography variant="h6" sx={{
