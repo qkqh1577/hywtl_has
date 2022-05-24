@@ -100,21 +100,21 @@ const ProjectEstimateDetail = () => {
           type: 'select',
           name: 'figureLevel',
           label: '모형제작 난이도',
-          options: ['상', '중', '하']
+          options: ['상', '중상', '중', '중하', '하']
         },
         {
           sm: 3,
           type: 'select',
           name: 'testLevel',
           label: '실험 난이도',
-          options: ['상', '중', '하']
+          options: ['상', '중상', '중', '중하', '하']
         },
         {
           sm: 3,
           type: 'select',
           name: 'reportLevel',
           label: '평가 난이도',
-          options: ['상', '중', '하']
+          options: ['상', '중상', '중', '중하', '하']
         },
       ]}
     />

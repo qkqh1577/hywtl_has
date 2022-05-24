@@ -1,4 +1,5 @@
 import { ProjectEstimateSheetStatus } from 'services/project_estimate';
+import { ProjectReview } from 'services/project_review';
 
 export type ProjectEstimateView = {
   receivedDate: Date | null;
@@ -41,7 +42,10 @@ export type ProjectEstimateSheetView = {
   engineeringPeriod: number | '';
   finalReportPeriod: number | '';
   reviewId: number | '';
+  reviewDetail?: ProjectReview;
   specialDiscount: number | '';
+  testServiceList: ProjectEstimateSheetTestServiceView[];
+  commentList: ProjectEstimateSheetCommentView[];
 }
 
 export const initProjectEstimateView: ProjectEstimateView = {
@@ -64,4 +68,6 @@ export const initProjectEstimateSheetView: ProjectEstimateSheetView = {
   finalReportPeriod: '',
   reviewId: '',
   specialDiscount: '',
+  testServiceList: [],
+  commentList: [],
 };
