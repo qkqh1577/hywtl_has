@@ -86,7 +86,7 @@ public class ProjectEstimateSheet extends CustomEntity {
     @NotEmpty
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.ALL})
     @OrderBy("seq")
-    private List<ProjectEstimateSheetDetail> detailList; // 용역 항목 목록
+    private List<ProjectEstimateSheetTestService> testServiceList; // 용역 항목 목록
 
     private Long specialDiscount; // 특별 할인
 
@@ -106,7 +106,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
-        List<ProjectEstimateSheetDetail> detailList,
+        List<ProjectEstimateSheetTestService> testServiceList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
     ) {
@@ -122,7 +122,7 @@ public class ProjectEstimateSheet extends CustomEntity {
             expectedStartMonth,
             salesTeamLeader,
             salesManagementLeader,
-            detailList,
+            testServiceList,
             specialDiscount,
             commentList
         );
@@ -141,7 +141,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
         ProjectReview review,
-        List<ProjectEstimateSheetDetail> detailList,
+        List<ProjectEstimateSheetTestService> detailList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
     ) {
@@ -176,7 +176,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
         ProjectTarget target,
-        List<ProjectEstimateSheetDetail> detailList,
+        List<ProjectEstimateSheetTestService> detailList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
     ) {
@@ -208,7 +208,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         LocalDate expectedStartMonth,
         User salesTeamLeader,
         @Nullable User salesManagementLeader,
-        List<ProjectEstimateSheetDetail> detailList,
+        List<ProjectEstimateSheetTestService> testServiceList,
         Long specialDiscount,
         List<ProjectEstimateSheetComment> commentList
     ) {
@@ -220,7 +220,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         this.expectedStartMonth = expectedStartMonth;
         this.salesTeamLeader = salesTeamLeader;
         this.salesManagementLeader = salesManagementLeader;
-        this.detailList = detailList;
+        this.testServiceList = testServiceList;
         this.specialDiscount = specialDiscount;
         this.commentList = commentList;
     }

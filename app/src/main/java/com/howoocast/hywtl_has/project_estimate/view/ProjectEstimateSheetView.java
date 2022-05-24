@@ -32,7 +32,7 @@ public class ProjectEstimateSheetView {
 
     private ProjectReviewView review;
 
-    private List<ProjectEstimateSheetDetailView> detailList;
+    private List<ProjectEstimateSheetTestServiceView> testServiceList;
 
     private Long specialDiscount;
 
@@ -50,8 +50,8 @@ public class ProjectEstimateSheetView {
         target.salesTeamLeader = UserListView.assemble(source.getSalesTeamLeader());
         target.salesManagerLeader = UserListView.assemble(source.getSalesManagementLeader());
         target.review = ProjectReviewView.assemble(source.getReview());
-        target.detailList = source.getDetailList().stream()
-            .map(ProjectEstimateSheetDetailView::assemble)
+        target.testServiceList = source.getTestServiceList().stream()
+            .map(ProjectEstimateSheetTestServiceView::assemble)
             .collect(Collectors.toList());
         target.specialDiscount = source.getSpecialDiscount();
         target.commentList = source.getCommentList().stream()

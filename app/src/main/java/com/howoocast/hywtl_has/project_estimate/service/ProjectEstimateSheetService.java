@@ -5,7 +5,8 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetComment;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetDetail;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestService;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestServiceDetail;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetAddParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
@@ -76,17 +77,22 @@ public class ProjectEstimateSheetService {
             salesTeamLeader,
             salesManagementLeader,
             review,
-            params.getDetailList().stream()
-                .map(detailParams -> ProjectEstimateSheetDetail.of(
-                    detailParams.getTitle(),
-                    detailParams.getSubTitleList(),
-                    detailParams.getSeq(),
-                    detailParams.getUnit(),
-                    detailParams.getCount(),
-                    detailParams.getUnitPrice(),
-                    detailParams.getTotalPrice(),
-                    detailParams.getIsIncluded(),
-                    detailParams.getMemo()
+            params.getTestServiceList().stream()
+                .map(testServiceParams -> ProjectEstimateSheetTestService.of(
+                    testServiceParams.getTitle(),
+                    testServiceParams.getDetailList().stream()
+                        .map(detailParams -> ProjectEstimateSheetTestServiceDetail.of(
+                            detailParams.getTitleList(),
+                            detailParams.getUnit(),
+                            detailParams.getCount(),
+                            detailParams.getUnitPrice(),
+                            detailParams.getTotalPrice(),
+                            detailParams.getIsIncluded(),
+                            detailParams.getMemo(),
+                            detailParams.getSeq()
+                        ))
+                        .collect(Collectors.toList()),
+                    testServiceParams.getSeq()
                 ))
                 .collect(Collectors.toList()),
             params.getSpecialDiscount(),

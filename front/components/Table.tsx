@@ -110,13 +110,12 @@ const Table = <T, >({
                       {required && (
                         <Typography
                           variant="caption"
+                          children="*"
                           sx={{
                             marginLeft: '4px',
                             fontSize: '0.7rem'
                           }}
-                        >
-                          *
-                        </Typography>
+                        />
                       )}
                     </TableCell>
                   );

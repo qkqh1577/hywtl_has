@@ -7,20 +7,26 @@ export type ProjectEstimateView = {
   reportLevel: string;
 }
 
-export type ProjectEstimateSheetDetailView = {
-  title: string;
-  subTitleList: string[];
-  unit: string;
-  count: number | '';
-  unitPrice: number | '';
-  totalPrice: number | '';
-  isIncluded: boolean;
-  memo: string;
-}
-
 export type ProjectEstimateSheetCommentView = {
   description: string;
   inUse: boolean;
+}
+
+export type ProjectEstimateSheetTestServiceDetailView = {
+  id?: number;
+  titleList: string[];
+  unit: string;
+  count: number | '';
+  unitPrice: number | '';
+  isIncluded: 'Y' | 'N' | '';
+  memo: string;
+}
+
+
+export type ProjectEstimateSheetTestServiceView = {
+  id?: number;
+  title: string;
+  detailList: ProjectEstimateSheetTestServiceDetailView[];
 }
 
 export type ProjectEstimateSheetView = {
@@ -32,8 +38,10 @@ export type ProjectEstimateSheetView = {
   expectedStartMonth: Date | null;
   salesTeamLeaderId: number | '';
   salesManagementLeaderId: number | '';
+  engineeringPeriod: number | '';
+  finalReportPeriod: number | '';
   reviewId: number | '';
-  detailList: ProjectEstimateSheetDetailView[];
+  testServiceList: ProjectEstimateSheetTestServiceView[];
   specialDiscount: number | '';
   commentList: ProjectEstimateSheetCommentView[];
 }
@@ -54,8 +62,10 @@ export const initProjectEstimateSheetView: ProjectEstimateSheetView = {
   expectedStartMonth: null,
   salesTeamLeaderId: '',
   salesManagementLeaderId: '',
+  engineeringPeriod: '',
+  finalReportPeriod: '',
   reviewId: '',
-  detailList: [],
+  testServiceList: [],
   specialDiscount: '',
   commentList: [],
 };
