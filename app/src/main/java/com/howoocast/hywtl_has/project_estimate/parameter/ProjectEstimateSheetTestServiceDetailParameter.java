@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.parameter;
 
+import com.howoocast.hywtl_has.common.parameter.CustomIdParameter;
 import com.howoocast.hywtl_has.common.service.ValidationGroup.OnAdd;
 import com.howoocast.hywtl_has.common.service.ValidationGroup.OnEdit;
 import java.util.List;
@@ -12,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectEstimateSheetTestServiceDetailParameter {
+public class ProjectEstimateSheetTestServiceDetailParameter extends CustomIdParameter {
 
     @NotNull(message = "project.estimate.sheet.test-service.detail.id.not-null", groups = OnEdit.class)
     private Long id;

@@ -1,9 +1,7 @@
 package com.howoocast.hywtl_has.project.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.parameter.ProjectOrderParameter;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project.view.ProjectOrderView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,17 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectOrderService {
 
-    private final ProjectRepository repository;
+    private final ProjectFinder finder;
 
     @Transactional(readOnly = true)
     public ProjectOrderView getOne(Long projectId) {
-        Project instance = this.load(projectId);
+        Project instance = finder.load(projectId);
         return ProjectOrderView.assemble(instance.getOrder());
     }
 
     @Transactional
     public void update(Long projectId, ProjectOrderParameter params) {
-        Project instance = this.load(projectId);
+        Project instance = finder.load(projectId);
         instance.changeOrder(
             params.getAmount(),
             params.getReceivedDate(),
@@ -35,7 +33,4 @@ public class ProjectOrderService {
         );
     }
 
-    private Project load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project", id));
-    }
 }

@@ -1,12 +1,13 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.common.util.ListConvertor;
+import com.howoocast.hywtl_has.project.service.ProjectFinder;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetComment;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestService;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestServiceDetail;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetCommentParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
@@ -14,9 +15,8 @@ import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository;
 import com.howoocast.hywtl_has.user.domain.User;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user.service.UserFinder;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +30,11 @@ public class ProjectEstimateSheetService {
 
     private final ProjectEstimateSheetRepository repository;
 
-    private final ProjectRepository projectRepository;
-
     private final ProjectReviewRepository projectReviewRepository;
 
-    private final UserRepository userRepository;
+    private final ProjectFinder projectFinder;
+
+    private final UserFinder userFinder;
 
     @Transactional(readOnly = true)
     public List<ProjectEstimateSheetListView> getList(Long projectId) {
@@ -51,24 +51,16 @@ public class ProjectEstimateSheetService {
 
     @Transactional
     public ProjectEstimateSheetView add(Long projectId, String username, ProjectEstimateSheetParameter params) {
-        Project project = projectRepository.findById(projectId)
-            .orElseThrow(() -> new NotFoundException("project", projectId));
 
-        User writer = userRepository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
-
-        User salesTeamLeader = userRepository.findById(params.getSalesTeamLeaderId())
-            .orElseThrow(() -> new NotFoundException("user", params.getSalesTeamLeaderId()));
-
-        User salesManagementLeader = Optional.ofNullable(params.getSalesManagementLeaderId())
-            .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user", userId)))
-            .orElse(null);
+        User writer = userFinder.load(username);
+        User salesTeamLeader = userFinder.load(params.getSalesTeamLeaderId());
+        User salesManagementLeader = userFinder.find(params.getSalesManagementLeaderId());
 
         ProjectReview review = projectReviewRepository.findById(params.getReviewId())
             .orElseThrow(() -> new NotFoundException("project-review", params.getReviewId()));
 
         ProjectEstimateSheet instance = ProjectEstimateSheet.of(
-            project,
+            projectFinder.load(projectId),
             params.getConfirmed(),
             params.getStatus(),
             params.getTitle(),
@@ -81,11 +73,13 @@ public class ProjectEstimateSheetService {
             params.getEngineeringPeriod(),
             params.getFinalReportPeriod(),
             review,
-            params.getTestServiceList().stream()
-                .map(testServiceParams -> ProjectEstimateSheetTestService.of(
+            ListConvertor.make(
+                params.getTestServiceList(),
+                testServiceParams -> ProjectEstimateSheetTestService.of(
                     testServiceParams.getTitle(),
-                    testServiceParams.getDetailList().stream()
-                        .map(detailParams -> ProjectEstimateSheetTestServiceDetail.of(
+                    ListConvertor.make(
+                        testServiceParams.getDetailList(),
+                        detailParams -> ProjectEstimateSheetTestServiceDetail.of(
                             detailParams.getTitleList(),
                             detailParams.getUnit(),
                             detailParams.getCount(),
@@ -94,19 +88,13 @@ public class ProjectEstimateSheetService {
                             detailParams.getIsIncluded(),
                             detailParams.getMemo(),
                             detailParams.getSeq()
-                        ))
-                        .collect(Collectors.toList()),
+                        )
+                    ),
                     testServiceParams.getSeq()
-                ))
-                .collect(Collectors.toList()),
+                )
+            ),
             params.getSpecialDiscount(),
-            params.getCommentList().stream()
-                .map(commentParams -> ProjectEstimateSheetComment.of(
-                    commentParams.getSeq(),
-                    commentParams.getDescription(),
-                    commentParams.getInUse()
-                ))
-                .collect(Collectors.toList())
+            toCommentList(params.getCommentList())
         );
         return ProjectEstimateSheetView.assemble(repository.save(instance));
     }
@@ -114,13 +102,8 @@ public class ProjectEstimateSheetService {
     @Transactional
     public void change(Long id, ProjectEstimateSheetParameter params) {
         ProjectEstimateSheet instance = this.load(id);
-
-        User salesTeamLeader = userRepository.findById(params.getSalesTeamLeaderId())
-            .orElseThrow(() -> new NotFoundException("user", params.getSalesTeamLeaderId()));
-
-        User salesManagementLeader = Optional.ofNullable(params.getSalesManagementLeaderId())
-            .map(userId -> userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user", userId)))
-            .orElse(null);
+        User salesTeamLeader = userFinder.load(params.getSalesTeamLeaderId());
+        User salesManagementLeader = userFinder.find(params.getSalesManagementLeaderId());
 
         instance.change(
             params.getConfirmed(),
@@ -133,50 +116,39 @@ public class ProjectEstimateSheetService {
             salesManagementLeader,
             params.getEngineeringPeriod(),
             params.getFinalReportPeriod(),
-            params.getTestServiceList().stream()
-                .map(testServiceParams -> {
-                    ProjectEstimateSheetTestService testServiceInstance
-                        = instance.getTestServiceList().stream()
-                        .filter(item -> item.getId().equals(testServiceParams.getId()))
-                        .findFirst()
-                        .orElseThrow(() -> new NotFoundException(
-                            "project-estimate.sheet.test-service",
-                            testServiceParams.getId()
-                        ));
-                    testServiceInstance.change(
-                        testServiceParams.getDetailList().stream()
-                            .map(testServiceDetailParams -> {
-                                ProjectEstimateSheetTestServiceDetail testServiceDetailInstance
-                                    = testServiceInstance.getDetailList().stream()
-                                    .filter(item -> item.getId().equals(testServiceDetailParams.getId()))
-                                    .findFirst()
-                                    .orElseThrow(() -> new NotFoundException(
-                                        "project-estimate.sheet.test-service-detail",
-                                        testServiceParams.getId()
-                                    ));
-                                testServiceDetailInstance.change(
-                                    testServiceDetailParams.getUnit(),
-                                    testServiceDetailParams.getCount(),
-                                    testServiceDetailParams.getUnitPrice(),
-                                    testServiceDetailParams.getTotalPrice(),
-                                    testServiceDetailParams.getIsIncluded(),
-                                    testServiceDetailParams.getMemo()
-                                );
-                                return testServiceDetailInstance;
-                            })
-                            .collect(Collectors.toList())
-                    );
-                    return testServiceInstance;
-                })
-                .collect(Collectors.toList()),
+            ListConvertor.make(
+                params.getTestServiceList(),
+                instance.getTestServiceList(),
+                "project-estimate.sheet.test-service",
+                (i, p) -> i.change(
+                    ListConvertor.make(
+                        p.getDetailList(),
+                        i.getDetailList(),
+                        "project-estimate.sheet.test-service-detail",
+                        (di, dp) -> di.change(
+                            dp.getUnit(),
+                            dp.getCount(),
+                            dp.getUnitPrice(),
+                            dp.getTotalPrice(),
+                            dp.getIsIncluded(),
+                            dp.getMemo()
+                        )
+                    )
+                )
+            ),
             params.getSpecialDiscount(),
-            params.getCommentList().stream()
-                .map(commentParams -> ProjectEstimateSheetComment.of(
-                    commentParams.getSeq(),
-                    commentParams.getDescription(),
-                    commentParams.getInUse()
-                ))
-                .collect(Collectors.toList())
+            toCommentList(params.getCommentList())
+        );
+    }
+
+    private List<ProjectEstimateSheetComment> toCommentList(List<ProjectEstimateSheetCommentParameter> params) {
+        return ListConvertor.make(
+            params,
+            p -> ProjectEstimateSheetComment.of(
+                p.getSeq(),
+                p.getDescription(),
+                p.getInUse()
+            )
         );
     }
 
