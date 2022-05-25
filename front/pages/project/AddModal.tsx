@@ -80,37 +80,27 @@ const ProjectAddModal = () => {
   };
 
   return (
-    <Modal
-      title="프로젝트 등록"
-      open={addModal}
-      onClose={handler.close}
-    >
-      <Formik
-        initialValues={initProjectBasicView}
-        onSubmit={handler.submit}
-        enableReinitialize
-      >
+    <Modal title="프로젝트 등록" open={addModal} onClose={handler.close}>
+      <Formik enableReinitialize initialValues={initProjectBasicView} onSubmit={handler.submit}>
         {({ values, errors, isSubmitting, setFieldValue, handleSubmit, }) => (
           <Form>
             <Grid container spacing={2}>
               <Grid item sm={12}>
-                <DataField
+                <DataField required
                   name="name"
                   label="프로젝트명"
                   value={values.name}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item sm={12}>
-                <DataField
+                <DataField required
                   name="code"
                   label="프로젝트 코드"
                   value={values.code}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item sm={12}>
@@ -124,23 +114,21 @@ const ProjectAddModal = () => {
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
-                <UserSelector
+                <UserSelector required
                   name="salesManagerId"
                   label="영업 담당자"
                   value={values.salesManagerId}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
-                <UserSelector
+                <UserSelector required
                   name="projectManagerId"
                   label="담당 PM"
                   value={values.projectManagerId}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item sm={12}>
@@ -151,13 +139,10 @@ const ProjectAddModal = () => {
                   mt: '40px',
                 }}>
                   <Button
-                    color="primary"
-                    variant="contained"
                     disabled={isSubmitting}
                     onClick={() => {
                       handleSubmit();
-                    }}
-                  >
+                    }}>
                     등록
                   </Button>
                 </Box>

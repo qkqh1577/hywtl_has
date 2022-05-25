@@ -339,13 +339,9 @@ const DepartmentTreeView = () => {
         mb: '40px',
       }}>
         <h2>부서 목록</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-            navigate('/department', { state: location?.state });
-          }}
-        >
+        <Button onClick={() => {
+          navigate('/department', { state: location?.state });
+        }}>
           리스트로 보기
         </Button>
       </Box>
@@ -381,8 +377,7 @@ const DepartmentTreeView = () => {
               setExpend([...expend, key]);
             }
           }}
-        >
-        </Tree>
+        />
       </Box>
       {treeHash !== hash(list.filter(item => !item.parentId).map(toNode)) && (
         <Box sx={{
@@ -391,18 +386,10 @@ const DepartmentTreeView = () => {
           width: '100%',
           mt: '40px',
         }}>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={handler.cancel}
-          >
+          <Button color="secondary" onClick={handler.cancel}>
             취소
           </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handler.submit}
-          >
+          <Button onClick={handler.submit}>
             저장
           </Button>
         </Box>

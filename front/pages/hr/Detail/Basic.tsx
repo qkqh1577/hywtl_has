@@ -53,29 +53,26 @@ const PersonnelDetailBasic = ({
         <h2>기본 정보</h2>
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DataField
+        <DataField required
           name={`${FIELD_NAME}.engName`}
           label="영문명"
           value={values.engName}
           setFieldValue={setFieldValue}
           errors={errors}
-          required
         />
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DatePicker
+        <DatePicker required disableFuture
           name={`${FIELD_NAME}.birthDate`}
           label="생년월일"
           value={values.birthDate}
           setFieldValue={setFieldValue}
           errors={errors}
           openTo="year"
-          required
-          disableFuture
         />
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DataField
+        <DataField required
           type="select"
           name={`${FIELD_NAME}.sex`}
           label="성별"
@@ -83,17 +80,15 @@ const PersonnelDetailBasic = ({
           setFieldValue={setFieldValue}
           errors={errors}
           options={['남', '여']}
-          required
         />
       </Grid>
       <Grid item sm={6} xs={12}>
-        <FileInput
+        <FileInput disableLabel
           name={`${FIELD_NAME}.image`}
           label="프로필 사진"
           value={values.image}
           setFieldValue={setFieldValue}
           errors={errors}
-          disableLabel
         />
       </Grid>
       <Grid item sm={6} xs={12}>

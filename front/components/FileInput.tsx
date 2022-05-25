@@ -43,7 +43,7 @@ const FileInput = ({
   value,
   setFieldValue,
   errors,
-  required,
+  required: requiredProp,
   disabled,
   helperText,
   sx,
@@ -54,6 +54,8 @@ const FileInput = ({
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const [params, setParams] = useState<FileItemParameter | undefined>();
   const ref = createRef<HTMLInputElement>();
+
+  const required: boolean | undefined = !disableLabel && !disabled && requiredProp;
 
   useEffect(() => {
     if (value) {
@@ -88,31 +90,28 @@ const FileInput = ({
   }, [errors]);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-      }}>
+    <Box sx={{
+      display: 'flex',
+      width: '100%',
+      height: '100%',
+    }}>
       <Grid container spacing={2} display="flex">
         <Grid item sm={(value || params) ? 8 : 10}>
           <Tooltip
-            title={
-              disabled === true
-                ? label
-                : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
-            }
             open={mouseEnter && !!value && typeof tooltip === 'string'}
             placement="bottom-start"
+            title={
+              disabled ? label
+                : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
+            }
           >
-            <FormControl
+            <FormControl fullWidth
               id={`params-${name}`}
               variant={variant}
               size={size}
-              required={!(disabled === true) && required === true}
-              disabled={disabled === true}
+              required={required}
+              disabled={disabled}
               sx={sx}
-              fullWidth
             >
               <InputLabel
                 htmlFor={`params-${name}-label`}
@@ -120,28 +119,27 @@ const FileInput = ({
               >
                 {disableLabel ? undefined : label}
               </InputLabel>
-              <Input
+              <Input disabled
                 type="text"
                 id={`params-${name}.filename`}
                 value={params?.multipartFile?.name ?? value?.filename ?? ''}
+                error={typeof errors[name] === 'string'}
+                placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
                 onMouseEnter={() => {
                   setMouseEnter(true);
                 }}
                 onMouseLeave={() => {
                   setMouseEnter(false);
                 }}
-                error={typeof errors[name] === 'string'}
-                placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
-                disabled
               />
-              <FormHelperText
-                error={typeof errors[name] === 'string'}
-              >
-                {helperMessage}
-              </FormHelperText>
+              {typeof errors[name] !== 'undefined' && (
+                <FormHelperText error>
+                  {helperMessage}
+                </FormHelperText>
+              )}
             </FormControl>
           </Tooltip>
-          <input
+          <input hidden
             type="file"
             accept="image/*"
             name="multipartFileInput"
@@ -157,34 +155,28 @@ const FileInput = ({
               }
               e.target.value = '';
             }}
-            hidden
           />
         </Grid>
-        <Grid item sm={2} sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-        }}>
-          <Button
-            color="primary"
-            variant="contained"
+        <Grid item
+          sm={2}
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}>
+          <Button fullWidth
             onClick={() => {
               ref.current?.click();
-            }}
-            fullWidth
-          >
+            }}>
             {value ? '변경' : '추가'}
           </Button>
         </Grid>
         {(value || params) && (
           <Grid item sm={2} display="flex">
-            <Button
+            <Button fullWidth
               color="secondary"
-              variant="contained"
               onClick={() => {
                 setParams(undefined);
-              }}
-              fullWidth
-            >
+              }}>
               삭제
             </Button>
           </Grid>

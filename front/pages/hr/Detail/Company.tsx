@@ -47,19 +47,17 @@ const PersonnelDetailCompany = ({
         <h2>입사 정보</h2>
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DatePicker
+        <DatePicker required disableFuture
           name={`${FIELD_NAME}.hiredDate`}
           label="입사일"
           value={values.hiredDate}
           setFieldValue={setFieldValue}
           errors={errors}
           openTo="year"
-          required
-          disableFuture
         />
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DataField
+        <DataField required
           type="select"
           name={`${FIELD_NAME}.hiredType`}
           label="입사 구분"
@@ -67,7 +65,6 @@ const PersonnelDetailCompany = ({
           setFieldValue={setFieldValue}
           errors={errors}
           options={['신입', '경력']}
-          required
         />
       </Grid>
       <Grid item sm={6} xs={12}>
@@ -83,5 +80,4 @@ const PersonnelDetailCompany = ({
   );
 };
 
-export default PersonnelDetailCompany
-;
+export default PersonnelDetailCompany;

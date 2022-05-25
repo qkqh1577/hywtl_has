@@ -123,13 +123,11 @@ const ProjectCommentList = () => {
         height: '100px',
         mb: '10px',
       }}>
-        <Formik
+        <Formik enableReinitialize
+          onSubmit={handler.submit}
           initialValues={{
             description: selected?.description ?? '',
-          }}
-          onSubmit={handler.submit}
-          enableReinitialize
-        >
+          }}>
           {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
@@ -142,15 +140,11 @@ const ProjectCommentList = () => {
                 />
               </Grid>
               <Grid item sm={12}>
-                <Button
-                  color="primary"
-                  variant="contained"
+                <Button fullWidth
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
-                  }}
-                  fullWidth
-                >
+                  }}>
                   작성완료
                 </Button>
               </Grid>
@@ -165,13 +159,11 @@ const ProjectCommentList = () => {
         width: '100%',
         marginBottom: '10px',
       }}>
-        <Formik
+        <Formik enableReinitialize
+          onSubmit={handler.search}
           initialValues={{
             keyword: '',
-          }}
-          onSubmit={handler.search}
-          enableReinitialize
-        >
+          }}>
           {({ values, errors, setFieldValue, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
@@ -200,19 +192,18 @@ const ProjectCommentList = () => {
       }}>
         <Grid container spacing={2}>
           {page.content.map((item) => (
-            <Grid key={item.id} container spacing={2} item sm={12}>
-              <Grid item sm={12} sx={{
-                display: 'flex',
-                alignContent: 'center',
-                flexWrap: 'nowrap',
-
-              }}>
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                    textAlign: 'center'
-                  }}
-                >
+            <Grid container key={item.id} spacing={2} item sm={12}>
+              <Grid item
+                sm={12}
+                sx={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  flexWrap: 'nowrap',
+                }}>
+                <Typography sx={{
+                  fontWeight: 'bold',
+                  textAlign: 'center'
+                }}>
                   <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                 </Typography>
                 <Typography>
@@ -220,12 +211,9 @@ const ProjectCommentList = () => {
                 </Typography>
                 {!selected && login && item.writer.id === login.id && (
                   <Grid item sm={12}>
-                    <IconButton
-                      color="primary"
-                      onClick={() => {
-                        setSelected(item);
-                      }}
-                    >
+                    <IconButton onClick={() => {
+                      setSelected(item);
+                    }}>
                       <EditIcon />
                     </IconButton>
                     <IconButton
@@ -239,8 +227,7 @@ const ProjectCommentList = () => {
                             });
                           });
                         });
-                      }}
-                    >
+                      }}>
                       <DeleteIcon />
                     </IconButton>
                   </Grid>
@@ -253,8 +240,7 @@ const ProjectCommentList = () => {
                         dialog.rollback(() => {
                           setSelected(undefined);
                         });
-                      }}
-                    >
+                      }}>
                       <ResetIcon />
                     </IconButton>
                   </Grid>
@@ -271,7 +257,6 @@ const ProjectCommentList = () => {
       </Box>
     </Paper>
   );
-
 };
 
 export default ProjectCommentList;

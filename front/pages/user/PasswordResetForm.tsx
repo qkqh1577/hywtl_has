@@ -94,8 +94,7 @@ const PasswordResetForm = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-    }}
-    >
+    }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -116,12 +115,11 @@ const PasswordResetForm = () => {
         )}
         {detail && (
           <Formik
+            onSubmit={handler.submit}
             initialValues={{
               password: '',
               passwordCheck: '',
-            }}
-            onSubmit={handler.submit}
-          >
+            }}>
             {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
               <Form>
                 <Grid container spacing={2}>
@@ -155,13 +153,10 @@ const PasswordResetForm = () => {
                       mt: '40px',
                     }}>
                       <Button
-                        color="primary"
-                        variant="contained"
+                        disabled={isSubmitting}
                         onClick={() => {
                           handleSubmit();
-                        }}
-                        disabled={isSubmitting}
-                      >
+                        }}>
                         {isSubmitting ? ' 변경 요청 중' : '변경'}
                       </Button>
                     </Box>

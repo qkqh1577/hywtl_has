@@ -1,7 +1,6 @@
 import React from 'react';
 import {AppRoutes} from "services/common/routes";
 import DepartmentPage from 'pages/department/Page';
-import DepartmentAddForm from 'pages/department/AddForm';
 import DepartmentDetail from 'pages/department/Detail';
 import DepartmentTreeView from 'pages/department/TreeView';
 
@@ -16,7 +15,7 @@ const routes: AppRoutes[] = [
   },
   {
     path: '/department/add',
-    element: <DepartmentAddForm />
+    element: <DepartmentDetail />
   },
   {
     path: '/department/:id',

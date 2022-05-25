@@ -53,24 +53,19 @@ const PersonnelDetailLicenseList = ({
         justifyContent: 'space-between',
       }}>
         <h2>면허 정보</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ height: '36px' }}
-          onClick={() => {
-            if (Array.isArray(values)) {
-              setFieldValue(FIELD_NAME, [...values, initLicenseView]);
-            } else {
-              setFieldValue(FIELD_NAME, [initLicenseView]);
-            }
-          }}
-        >
+        <Button onClick={() => {
+          if (Array.isArray(values)) {
+            setFieldValue(FIELD_NAME, [...values, initLicenseView]);
+          } else {
+            setFieldValue(FIELD_NAME, [initLicenseView]);
+          }
+        }}>
           추가
         </Button>
       </Grid>
       {Array.isArray(values) && (values as PersonnelLicenseView[])
       .map((item, i) => (
-        <Grid key={i} item sm={12}>
+        <Grid item key={i} sm={12}>
           <Box sx={{
             display: 'flex',
             width: '100%',
@@ -78,13 +73,12 @@ const PersonnelDetailLicenseList = ({
           }}>
             <Grid container spacing={2} wrap="nowrap">
               <Grid item>
-                <DataField
+                <DataField required
                   label="면허명"
                   name={`${FIELD_NAME}[${i}].name`}
                   value={item.name}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
@@ -97,35 +91,31 @@ const PersonnelDetailLicenseList = ({
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="발급기관명"
                   name={`${FIELD_NAME}[${i}].organizationName`}
                   value={item.organizationName}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="인가 번호"
                   name={`${FIELD_NAME}[${i}].qualifiedNumber`}
                   value={item.qualifiedNumber}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required disableFuture
                   name={`${FIELD_NAME}[${i}].qualifiedDate`}
                   label="인가일"
                   value={item.qualifiedDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
-                  disableFuture
                 />
               </Grid>
               <Grid item>
@@ -145,8 +135,7 @@ const PersonnelDetailLicenseList = ({
               onClick={() => {
                 const list = (values as PersonnelLicenseView[]);
                 setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
-              }}
-            >
+              }}>
               <DeleteIcon />
             </IconButton>
           </Box>

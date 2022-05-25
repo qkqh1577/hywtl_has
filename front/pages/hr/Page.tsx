@@ -106,7 +106,8 @@ const PersonnelPage = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Formik
+        <Formik enableReinitialize
+          onSubmit={handler.search}
           initialValues={{
             page: filter.page,
             size: filter.size,
@@ -117,10 +118,7 @@ const PersonnelPage = () => {
             startDate: filter.startDate ?? null,
             endDate: filter.endDate ?? null,
             dateType: filter.dateType ?? dateTypeList,
-          }}
-          onSubmit={handler.search}
-          enableReinitialize
-        >
+          }}>
           {({
             values,
             errors,
@@ -230,30 +228,27 @@ const PersonnelPage = () => {
                   </Grid>
                 </Form>
               </Grid>
-              <Grid item sm={2} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                alignContent: 'center'
-              }}>
+              <Grid item
+                sm={2}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-around',
+                  alignContent: 'center'
+                }}>
                 <Button
-                  color="primary"
-                  variant="contained"
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
-                  }}
-                >
+                  }}>
                   검색
                 </Button>
                 <Button
                   color="secondary"
-                  variant="contained"
                   onClick={() => {
                     handler.clear();
                     resetForm();
-                  }}
-                >
+                  }}>
                   초기화
                 </Button>
               </Grid>
@@ -268,43 +263,34 @@ const PersonnelPage = () => {
         mb: '20px',
       }}>
         <Table
+          list={page.content}
           columns={[
             {
               label: 'No.',
               renderCell: (item, i) => (page.number * page.size) + i + 1,
-            },
-            {
+            }, {
               label: '이름',
               renderCell: (item) => (
-                <Link
-                  sx={{
-                    cursor: 'pointer'
-                  }}
-                  onClick={() => {
-                    navigate(`/hr/card/${item.id}`, { state: { filter } });
-                  }}>
+                <Link onClick={() => {
+                  navigate(`/hr/card/${item.id}`, { state: { filter } });
+                }}>
                   {item.name}
                 </Link>
               )
-            },
-            {
+            }, {
               label: '성별',
               renderCell: (item) => item.basic.sex
-            },
-            {
+            }, {
               label: '생년월일',
-              renderCell: (item) => (<DateFormat date={item.basic.birthDate} />)
-            },
-            {
+              renderCell: (item) => <DateFormat date={item.basic.birthDate} />
+            }, {
               label: '입사 구분',
               renderCell: (item) => item.company.hiredType
-            },
-            {
+            }, {
               label: '입사일',
-              renderCell: (item) => (<DateFormat date={item.company.hiredDate} />)
+              renderCell: (item) => <DateFormat date={item.company.hiredDate} />
             },
           ]}
-          list={page.content}
         />
       </Box>
       <Box sx={{
@@ -313,10 +299,12 @@ const PersonnelPage = () => {
         justifyContent: 'space-between',
       }}>
         <Grid container spacing={2}>
-          <Grid item sm={8} sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-          }}>
+          <Grid item
+            sm={8}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+            }}>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"

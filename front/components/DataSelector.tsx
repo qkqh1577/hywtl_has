@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { DataFieldProps, DataFieldValue, Option } from 'components';
-import { getObjectPostPosition } from 'util/KoreanLetterUtil';
+import { getAuxiliaryPostPosition, getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = Omit<DataFieldProps, 'type' | 'options' | 'value'> & {
   options: Option[] | DataFieldValue[] | null;
@@ -20,22 +20,27 @@ const DataSelector = (props: Props) => {
     multiple,
     setFieldValue,
     errors,
-    required,
+    errorText,
+    required: requiredProp,
     disabled,
+    readOnly,
     options,
     helperText,
     sx,
     size,
     onChange,
+    disableLabel,
   } = props;
 
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const [optionList, setOptionList] = useState<Option[] | null>(null);
   const [value, setValue] = useState<Option | null>(null);
 
+  const required: boolean | undefined = !disableLabel && !(disabled || readOnly) && requiredProp;
+
   useEffect(() => {
-    if (errors && typeof errors[name] === 'string') {
-      setHelperMessage(errors[name]);
+    if (errors && errors[name]) {
+      setHelperMessage(errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`);
     } else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
@@ -69,7 +74,7 @@ const DataSelector = (props: Props) => {
   }, [rawValue, optionList]);
 
   return (
-    <Autocomplete
+    <Autocomplete fullWidth
       id={`params-${name}`}
       options={optionList ?? []}
       loading={optionList === null || value === null}
@@ -100,21 +105,21 @@ const DataSelector = (props: Props) => {
       getOptionLabel={(option) => `${option.text}`}
       sx={sx}
       size={size}
-      disabled={disabled === true}
+      disabled={disabled}
+      readOnly={readOnly}
       renderInput={(params) => {
         return (
           <TextField
             {...params}
             label={label}
             variant={variant}
-            error={typeof errors[name] === 'string'}
+            error={typeof errors[name] !== 'undefined'}
             helperText={helperMessage}
-            required={disabled !== true && required === true}
+            required={required}
             fullWidth
           />
         );
       }}
-      fullWidth
     />
   );
 };

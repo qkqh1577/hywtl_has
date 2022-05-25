@@ -189,11 +189,7 @@ const ProjectTargetModal = () => {
       sx={{
         maxHeight: '70%',
       }}>
-      <Formik
-        initialValues={view}
-        onSubmit={handler.submit}
-        enableReinitialize
-      >
+      <Formik enableReinitialize initialValues={view} onSubmit={handler.submit}>
         {({
           values,
           errors,
@@ -211,7 +207,7 @@ const ProjectTargetModal = () => {
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={1}>
-                  <DataField
+                  <DataField readOnly
                     type="select"
                     name="confirmed"
                     label="견적 여부"
@@ -219,7 +215,6 @@ const ProjectTargetModal = () => {
                     setFieldValue={setFieldValue}
                     errors={errors}
                     options={['Y', 'N']}
-                    disabled
                   />
                 </Grid>
                 <Grid item sm={2}>
@@ -229,32 +224,20 @@ const ProjectTargetModal = () => {
                     value={values.code}
                     setFieldValue={setFieldValue}
                     errors={errors}
-                    disabled={!edit}
+                    readOnly={!edit}
                     required={edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  {edit && (
-                    <CheckboxField
-                      name="testList"
-                      label="실험 종류(단지)"
-                      value={values.testList}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      options={['E', 'B']}
-                      disableAll
-                    />
-                  )}
-                  {!edit && (
-                    <DataField
-                      name="view-testList"
-                      label="실험 종류(단지)"
-                      value={values.testList?.join(', ') ?? ''}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      disabled
-                    />
-                  )}
+                  <CheckboxField disableAll
+                    name="testList"
+                    label="실험 종류(단지)"
+                    value={values.testList}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={['E', 'B']}
+                    readOnly={!edit}
+                  />
                 </Grid>
                 <Grid item sm={2}>
                   <DataField
@@ -263,7 +246,7 @@ const ProjectTargetModal = () => {
                     value={values.memo}
                     setFieldValue={setFieldValue}
                     errors={errors}
-                    disabled={!edit}
+                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={4}>
@@ -277,7 +260,6 @@ const ProjectTargetModal = () => {
                       {id && (
                         <Button
                           color="secondary"
-                          variant="contained"
                           onClick={() => {
                             if (dirty) {
                               dialog.rollback(() => {
@@ -293,8 +275,6 @@ const ProjectTargetModal = () => {
                         </Button>
                       )}
                       <Button
-                        color="primary"
-                        variant="contained"
                         disabled={isSubmitting}
                         onClick={() => {
                           handleSubmit();
@@ -313,52 +293,45 @@ const ProjectTargetModal = () => {
               flexWrap: 'wrap',
             }}>
               <Table
+                list={values.detailList}
                 columns={[
                   {
                     label: 'No.',
                     renderCell: (item, i) => i + 1
                   }, {
                     label: '건물(동)',
+                    required: edit,
                     renderCell: (item, i) => (
-                      <DataField
+                      <DataField disableLabel
                         name={`detailList[${i}].buildingName`}
                         label="건물(동)"
                         value={item.buildingName}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
+                        readOnly={!edit}
                         required={edit}
-                        disableLabel
                       />
                     ),
-                    required: edit,
                   }, {
                     label: '실험 종류',
-                    renderCell: (item, i) => {
-                      if (!edit) {
-                        return item.testList?.join(', ');
-                      }
-                      return (
-                        <CheckboxField
-                          name={`detailList[${i}].testList`}
-                          label="실험 종류(동)"
-                          value={item.testList}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                          options={['F', 'P', 'A', '구검']}
-                          required={edit}
-                          disableLabel
-                          disableAll
-                        />
-                      );
-                    },
                     required: edit,
+                    renderCell: (item, i) =>
+                      <CheckboxField disableAll disableLabel
+                        name={`detailList[${i}].testList`}
+                        label="실험 종류(동)"
+                        value={item.testList}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={['F', 'P', 'A', '구검']}
+                        required={edit}
+                        readOnly={!edit}
+                      />
                   }, {
                     label: '삭제',
+                    disableShow: !edit,
                     renderCell: (item, i) => (
-                      <Button
+                      <Button fullWidth
                         color="warning"
-                        variant="contained"
                         onClick={() => {
                           if (values.detailList.length === 1) {
                             dialog.alert('최소 1개의 건축물 항목이 필요합니다.');
@@ -369,20 +342,12 @@ const ProjectTargetModal = () => {
                               .filter((item, j) => i !== j)
                             );
                           });
-                        }}
-                        fullWidth
-                      >
+                        }}>
                         삭제
                       </Button>
                     ),
-                    disableShow: !edit
                   }
                 ]}
-                list={values.detailList}
-                sx={{
-                  maxHeight: '400px'
-                }}
-                hover
               />
             </Box>
             {edit && (
@@ -392,13 +357,9 @@ const ProjectTargetModal = () => {
                 mb: '40px',
                 flexDirection: 'row-reverse'
               }}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    setFieldValue('detailList', [...values.detailList, initDetailView]);
-                  }}
-                >
+                <Button onClick={() => {
+                  setFieldValue('detailList', [...values.detailList, initDetailView]);
+                }}>
                   추가
                 </Button>
               </Box>
@@ -410,25 +371,13 @@ const ProjectTargetModal = () => {
                 mb: '40px',
                 justifyContent: 'space-around'
               }}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.remove}
-                >
+                <Button color="error" onClick={handler.remove}>
                   삭제
                 </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.edit}
-                >
+                <Button onClick={handler.edit}>
                   수정
                 </Button>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={handler.close}
-                >
+                <Button color="secondary" onClick={handler.close}>
                   닫기
                 </Button>
               </Box>

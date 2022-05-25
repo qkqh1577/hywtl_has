@@ -76,8 +76,7 @@ const LoginForm = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-    }}
-    >
+    }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -93,25 +92,24 @@ const LoginForm = () => {
         mb: '40px',
         justifyContent: 'center',
       }}>
-        <Formik initialValues={{
-          username: '',
-          password: '',
-        }}
+        <Formik
           onSubmit={handler.submit}
-        >
+          initialValues={{
+            username: '',
+            password: '',
+          }}>
           {({ values, isSubmitting, handleChange, handleSubmit }) => (
             <Form>
               <Grid container spacing={2}>
                 <Grid item sm={12}>
                   <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="params-username">아이디</InputLabel>
-                    <Input
+                    <Input required
                       type="text"
                       id="params-username"
                       name="username"
                       value={values.username}
                       onChange={handleChange}
-                      required
                     />
                     <ErrorMessage name="username" />
                   </FormControl>
@@ -119,7 +117,7 @@ const LoginForm = () => {
                 <Grid item sm={12}>
                   <FormControl variant="standard" fullWidth>
                     <InputLabel htmlFor="params-password">비밀번호</InputLabel>
-                    <Input
+                    <Input required
                       type="password"
                       id="params-password"
                       name="password"
@@ -128,7 +126,6 @@ const LoginForm = () => {
                       onKeyDown={(e) => {
                         handler.keyDown(e, handleSubmit);
                       }}
-                      required
                     />
                     <ErrorMessage name="password" />
                   </FormControl>
@@ -140,21 +137,14 @@ const LoginForm = () => {
                     width: '100%',
                     mt: '40px',
                   }}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={handler.toPasswordForget}
-                    >
+                    <Button color="secondary" onClick={handler.toPasswordForget}>
                       비밀번호 초기화
                     </Button>
                     <Button
-                      color="primary"
-                      variant="contained"
+                      disabled={isSubmitting}
                       onClick={() => {
                         handleSubmit();
-                      }}
-                      disabled={isSubmitting}
-                    >
+                      }}>
                       {isSubmitting ? ' 로그인 중' : '로그인'}
                     </Button>
                   </Box>

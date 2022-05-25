@@ -3,16 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
-  FormControl,
   Grid,
-  Input,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
-import { useDialog } from 'components';
+import { Form, Formik, FormikHelpers } from 'formik';
+import { DataField, useDialog } from 'components';
 import {
   DepartmentCategory,
   DepartmentParameter,
@@ -28,10 +23,6 @@ const DepartmentDetail = () => {
 
   const navigate = useNavigate();
   const dialog = useDialog();
-  if (typeof id === 'undefined' || Number.isNaN(id)) {
-    dialog.error('잘못된 접근입니다.', '/department');
-    return null;
-  }
 
   const {
     state: {
@@ -46,11 +37,6 @@ const DepartmentDetail = () => {
 
   const handler = {
     submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      if (!detail) {
-        dialog.error('잘못된 접근입니다.', '/department');
-        return;
-      }
-
       const errors: any = {};
       const name: string = values.name;
       if (!name) {
@@ -70,7 +56,7 @@ const DepartmentDetail = () => {
       }
 
       const params: DepartmentParameter = {
-        id: detail.id,
+        id: detail?.id,
         name,
         category,
         parentId,
@@ -80,7 +66,7 @@ const DepartmentDetail = () => {
       upsert(params, (data) => {
         setSubmitting(false);
         if (data) {
-          dialog.alert('저장하였습니다.', '/department');
+          dialog.alert('저장하였습니다.', id ? undefined : '/department');
         }
       });
     }
@@ -91,7 +77,9 @@ const DepartmentDetail = () => {
   }, []);
 
   useEffect(() => {
-    getOne(id);
+    if (id) {
+      getOne(id);
+    }
     return () => {
       clearOne();
     };
@@ -106,7 +94,7 @@ const DepartmentDetail = () => {
         height: '50px',
         mb: '40px',
       }}>
-        <h2>부서 상세 정보</h2>
+        <h2>{id ? '부서 상세 정보' : '부서 등록'}</h2>
       </Box>
       <Box sx={{
         display: 'flex',
@@ -115,69 +103,61 @@ const DepartmentDetail = () => {
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            {detail && (
-              <Formik
-                initialValues={{
-                  id: detail.id,
-                  name: detail.name,
-                  category: detail.category,
-                  parentId: detail.parentId ?? '',
-                  memo: detail.memo ?? ''
-                }}
-                enableReinitialize
-                onSubmit={handler.submit}
-              >
-                {({ values, isSubmitting, handleChange, handleSubmit }) => (
-                  <Form>
-                    <Grid container spacing={2}>
-                      <Grid item sm={12}>
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel htmlFor="params-name">부서명</InputLabel>
-                          <Input
-                            type="text"
-                            id="params-name"
-                            name="name"
-                            value={values.name}
-                            onChange={handleChange}
-                            required
-                          />
-                          <ErrorMessage name="name" />
-                        </FormControl>
-                      </Grid>
-                      <Grid item sm={12}>
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel id="params-category-label">부서 유형</InputLabel>
-                          <Select
-                            labelId="params-category-label"
-                            id="params-category"
-                            name="category"
-                            value={values.category}
-                            onChange={handleChange}
-                            required
-                          >
-                            {departmentCategoryList.map((category) => (
-                              <MenuItem key={category} value={category}>
-                                {departmentCategoryName(category)}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          <ErrorMessage name="category" />
-                        </FormControl>
-                      </Grid>
-                      <Grid item sm={12}>
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel id="params-parentId-label">상위 부서</InputLabel>
-                          <Select
-                            labelId="params-parentId-label"
-                            id="params-parentId"
-                            name="parentId"
-                            value={values.parentId}
-                            onChange={handleChange}
-                            disabled={values.category === 'COMPANY'}
-                            required={values.category !== 'COMPANY'}
-                          >
-                            <MenuItem value="root">최상위</MenuItem>
-                            {list
+            <Formik enableReinitialize
+              onSubmit={handler.submit}
+              initialValues={{
+                name: detail?.name ?? '',
+                category: detail?.category ?? '',
+                parentId: detail?.parentId ?? '',
+                memo: detail?.memo ?? ''
+              }}>
+              {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
+                <Form>
+                  <Grid container spacing={2}>
+                    <Grid item sm={12}>
+                      <DataField required
+                        name="name"
+                        label="부서명"
+                        value={values.name}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                      />
+                    </Grid>
+                    <Grid item sm={12}>
+                      <DataField required
+                        type="select"
+                        name="category"
+                        label="부서 유형"
+                        value={values.category}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={departmentCategoryList.map((category) => ({
+                          key: category as string,
+                          text: departmentCategoryName(category)
+                        }))}
+                        onChange={(e, value) => {
+                          if (value === 'COMPANY') {
+                            setFieldValue('parentId', '');
+                          }
+                        }}
+                      />
+                    </Grid>
+                    <Grid item sm={12}>
+                      <DataField
+                        type="select"
+                        name="parentId"
+                        label="상위 부서"
+                        value={values.parentId}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        disabled={values.category === 'COMPANY'}
+                        required={values.category !== 'COMPANY'}
+                        options={[
+                          {
+                            key: 'root',
+                            text: '최상위'
+                          }, ...(
+                            detail ? list
                             .filter((department) => department.id !== detail.id)
                             .filter((department) => {
                               if (!department.parentId) {
@@ -196,61 +176,49 @@ const DepartmentDetail = () => {
 
                               const ancestorIdList = getAncestorIdList(department.parentId, []);
                               return !ancestorIdList.includes(detail.id);
-                            }).map((department) => (
-                              <MenuItem key={department.id} value={department.id}>
-                                {department.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          <ErrorMessage name="parentId" />
-                        </FormControl>
-                      </Grid>
-                      <Grid item sm={12}>
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel htmlFor="params-memo">설명</InputLabel>
-                          <Input
-                            type="text"
-                            id="params-memo"
-                            name="memo"
-                            value={values.memo}
-                            onChange={handleChange}
-                          />
-                          <ErrorMessage name="memo" />
-                        </FormControl>
-                      </Grid>
+                            }) : list).map((department) => ({
+                            key: department.id,
+                            text: department.name
+                          }))
+                        ]}
+                      />
                     </Grid>
                     <Grid item sm={12}>
-                      <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        width: '100%',
-                        mt: '40px',
-                      }}>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          onClick={() => {
-                            navigate(-1);
-                          }}
-                        >
-                          취소
-                        </Button>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          disabled={isSubmitting}
-                          onClick={() => {
-                            handleSubmit();
-                          }}
-                        >
-                          저장
-                        </Button>
-                      </Box>
+                      <DataField
+                        name="memo"
+                        label="설명"
+                        value={values.memo}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                      />
                     </Grid>
-                  </Form>
-                )}
-              </Formik>
-            )}
+                  </Grid>
+                  <Grid item sm={12}>
+                    <Box sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                      mt: '40px',
+                    }}>
+                      <Button
+                        color="secondary"
+                        onClick={() => {
+                          navigate(-1);
+                        }}>
+                        취소
+                      </Button>
+                      <Button
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          handleSubmit();
+                        }}>
+                        저장
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>
           </Grid>
         </Grid>
       </Box>

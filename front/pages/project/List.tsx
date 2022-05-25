@@ -75,11 +75,7 @@ const ProjectList = () => {
         justifyContent: 'space-between',
         width: '100%',
       }}>
-        <Formik
-          initialValues={filter}
-          onSubmit={handler.search}
-          enableReinitialize
-        >
+        <Formik enableReinitialize initialValues={filter} onSubmit={handler.search}>
           {({
             values,
             errors,
@@ -98,15 +94,11 @@ const ProjectList = () => {
                 />
               </Grid>
               <Grid item sm={3}>
-                <Button
-                  color="primary"
-                  variant="contained"
+                <Button fullWidth
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
-                  }}
-                  fullWidth
-                >
+                  }}>
                   검색
                 </Button>
               </Grid>
@@ -122,13 +114,11 @@ const ProjectList = () => {
         width: '100%',
         mb: '20px',
       }}>
-        <TableContainer
-          sx={{
-            display: 'flex',
-            width: '100%',
-            mb: '20px',
-          }}
-        >
+        <TableContainer sx={{
+          display: 'flex',
+          width: '100%',
+          mb: '20px',
+        }}>
           <Table
             aria-label="sticky table"
             sx={{
@@ -149,8 +139,7 @@ const ProjectList = () => {
                       fontWeight: 'bold',
                       borderTopLeftRadius: i === 0 ? '4px' : 0,
                       borderTopRightRadius: i === columns.length - 1 ? '4px' : 0,
-                    }}
-                  >
+                    }}>
                     {label}
                   </TableCell>
                 ))}
@@ -159,41 +148,29 @@ const ProjectList = () => {
             <TableBody>
               {page.content.map((item, i) => {
                 return (
-                  <TableRow
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={item.id}
-                    hover
-                  >
+                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
                     <TableCell
                       sx={{
                         textAlign: 'center',
                         border: '1px solid #b9b9b9',
                         borderBottomLeftRadius: i === page.content.length - 1 ? '4px' : 0,
-                      }}
-                    >{item.code}</TableCell>
-                    <TableCell
-                      sx={{
-                        border: '1px solid #b9b9b9',
-                      }}
-                    >
-                      <Link
-                        sx={{
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => {
-                          navigate(`/project/${item.id}/basic`);
-                        }}>
+                      }}>
+                      {item.code}
+                    </TableCell>
+                    <TableCell sx={{
+                      border: '1px solid #b9b9b9',
+                    }}>
+                      <Link onClick={() => {
+                        navigate(`/project/${item.id}/basic`);
+                      }}>
                         {item.name}
                       </Link>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        textAlign: 'center',
-                        border: '1px solid #b9b9b9',
-                        borderBottomRightRadius: i === page.content.length - 1 ? '4px' : 0,
-                      }}
-                    >
+                    <TableCell sx={{
+                      textAlign: 'center',
+                      border: '1px solid #b9b9b9',
+                      borderBottomRightRadius: i === page.content.length - 1 ? '4px' : 0,
+                    }}>
                       {projectStatusName(item.status)}
                     </TableCell>
                   </TableRow>
@@ -202,19 +179,13 @@ const ProjectList = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box
-          sx={{
-            width: '100%',
-            bottom: 0,
-            position: 'sticky',
-            height: '30px',
-          }}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handler.addModal}
-            fullWidth
-          >
+        <Box sx={{
+          width: '100%',
+          bottom: 0,
+          position: 'sticky',
+          height: '30px',
+        }}>
+          <Button fullWidth onClick={handler.addModal}>
             등록
           </Button>
         </Box>

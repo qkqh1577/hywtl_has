@@ -18,7 +18,7 @@ type Props = {
 const Modal = ({
   open,
   title,
-  width = '50%',
+  width = '80vw',
   onClose,
   children,
   sx
@@ -41,7 +41,10 @@ const Modal = ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: typeof width === 'number' ? `${width}px` : width,
+        width,
+        maxWidth: '1850px',
+        height: '100%',
+        maxHeight: '80vh',
         overflow: 'hidden',
         bgColor: '#777',
         p: 4,
@@ -56,17 +59,15 @@ const Modal = ({
           <h2>
             {title}
           </h2>
-          <IconButton
-            color="primary"
-            onClick={onClose}
-          >
+          <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>
         <Box sx={{
           display: 'flex',
-          width: '100%',
           mb: '40px',
+          height: 'calc(100% - 90px)',
+          overflow: 'auto'
         }}>
           {children}
         </Box>

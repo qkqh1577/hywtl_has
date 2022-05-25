@@ -54,24 +54,19 @@ const PersonnelDetailLanguageList = ({
         justifyContent: 'space-between',
       }}>
         <h2>어학 정보</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ height: '36px' }}
-          onClick={() => {
-            if (Array.isArray(values)) {
-              setFieldValue(FIELD_NAME, [...values, initLanguageView]);
-            } else {
-              setFieldValue(FIELD_NAME, [initLanguageView]);
-            }
-          }}
-        >
+        <Button onClick={() => {
+          if (Array.isArray(values)) {
+            setFieldValue(FIELD_NAME, [...values, initLanguageView]);
+          } else {
+            setFieldValue(FIELD_NAME, [initLanguageView]);
+          }
+        }}>
           추가
         </Button>
       </Grid>
       {Array.isArray(values) && (values as PersonnelLanguageView[])
       .map((item, i) => (
-        <Grid key={i} item sm={12}>
+        <Grid item key={i} sm={12}>
           <Box sx={{
             display: 'flex',
             width: '100%',
@@ -79,23 +74,21 @@ const PersonnelDetailLanguageList = ({
           }}>
             <Grid container spacing={2} wrap="nowrap">
               <Grid item>
-                <DataField
+                <DataField required
                   name={`${FIELD_NAME}[${i}].name`}
                   label="자격증명"
                   value={item.name}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   name={`${FIELD_NAME}[${i}].type`}
                   label="대상 언어"
                   value={item.type}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
@@ -108,25 +101,22 @@ const PersonnelDetailLanguageList = ({
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   name={`${FIELD_NAME}[${i}].organizationName`}
                   label="발급기관명"
                   value={item.organizationName}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required disableFuture
                   name={`${FIELD_NAME}[${i}].certifiedDate`}
                   label="취득일"
                   value={item.certifiedDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
-                  disableFuture
                 />
               </Grid>
               <Grid item>
@@ -155,8 +145,7 @@ const PersonnelDetailLanguageList = ({
               onClick={() => {
                 const list = (values as PersonnelLanguageView[]);
                 setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
-              }}
-            >
+              }}>
               <DeleteIcon />
             </IconButton>
           </Box>

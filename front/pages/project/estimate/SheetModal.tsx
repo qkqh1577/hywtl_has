@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -6,7 +6,7 @@ import {
   Grid,
   TableBody,
   TableCell,
-  TableHead,
+  TableHead as TableHeader,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -17,8 +17,10 @@ import {
   DataSelector,
   DatePicker,
   Modal,
+  RequiredMark,
   Table,
   TableCellProperty,
+  TableHead,
   UserSelector,
   useDialog,
 } from 'components';
@@ -45,49 +47,40 @@ import {
   testServiceTemplateApi,
 } from 'services/standard_data/test_service_template';
 import { toAmountKor } from 'util/NumberUtil';
+import { FormikProps } from 'formik/dist/types';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
     label: '건물(동)',
     renderCell: item => item.buildingName,
-  },
-  {
+  }, {
     label: '층수',
     renderCell: item => item.floorCount
-  },
-  {
+  }, {
     label: '지하층수',
     renderCell: item => item.baseCount ?? ''
-  },
-  {
+  }, {
     label: '높이',
     renderCell: item => `${item.height}m`,
-  },
-  {
+  }, {
     label: '면적',
     renderCell: item => `${item.area}㎡`
-  },
-  {
+  }, {
     label: '형상비',
     renderCell: item => item.ratio.toFixed(2)
-  },
-  {
+  }, {
     label: '특별풍하중조건',
     renderCell: item => item.specialWindLoadConditionList?.map(c => `(${c})`).join(', ')
-  },
-  {
+  }, {
     label: '최소실험 대상여부',
     renderCell: item => item.ratio >= 3 ? 'Y' : ''
-  },
-  {
+  }, {
     label: '실험 종류',
     renderCell: item => item.testList.join(', ')
-  },
-  {
+  }, {
     label: '비고1',
     renderCell: item => item.memo1
-  },
-  {
+  }, {
     label: '비고2',
     renderCell: item => item.memo2
   },
@@ -96,6 +89,8 @@ const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
 const ProjectEstimateSheetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
+
+  const formikRef = createRef<FormikProps<View>>();
   const dialog = useDialog();
   const {
     state: {
@@ -497,10 +492,10 @@ const ProjectEstimateSheetModal = () => {
       sx={{
         maxHeight: '70%',
       }}>
-      <Formik
+      <Formik enableReinitialize
         initialValues={view}
         onSubmit={handler.submit}
-        enableReinitialize
+        innerRef={formikRef}
       >
         {({
           values,
@@ -517,7 +512,7 @@ const ProjectEstimateSheetModal = () => {
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={1}>
-                  <DataField
+                  <DataField required
                     type="select"
                     name="confirmed"
                     label="확정 여부"
@@ -525,11 +520,10 @@ const ProjectEstimateSheetModal = () => {
                     setFieldValue={setFieldValue}
                     errors={errors}
                     options={['Y', 'N']}
-                    required
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField
+                  <DataField required
                     type="select"
                     name="status"
                     label="상태"
@@ -540,17 +534,15 @@ const ProjectEstimateSheetModal = () => {
                       key: item as string,
                       text: projectEstimateSheetStatusName(item),
                     }))}
-                    required
                   />
                 </Grid>
                 <Grid item sm={4}>
-                  <DataField
+                  <DataField required
                     name="title"
                     label="제목"
                     value={values.title}
                     setFieldValue={setFieldValue}
                     errors={errors}
-                    required
                   />
                 </Grid>
                 <Grid item sm={3}>
@@ -564,17 +556,13 @@ const ProjectEstimateSheetModal = () => {
                 </Grid>
                 <Grid item sm={2}>
                   <Button
-                    variant="contained"
                     disabled={isSubmitting}
                     onClick={() => {
                       handler.calculatePrice(values.testServiceList);
-                    }}
-                  >
+                    }}>
                     금액 재계산
                   </Button>
                   <Button
-                    color="primary"
-                    variant="contained"
                     disabled={isSubmitting}
                     onClick={() => {
                       handleSubmit();
@@ -590,11 +578,13 @@ const ProjectEstimateSheetModal = () => {
               mb: '40px',
             }}>
               <Grid container spacing={2}>
-                <Grid item sm={3} sx={{
-                  display: 'flex',
-                  width: '100%',
-                  flexWrap: 'wrap',
-                }}>
+                <Grid item
+                  sm={3}
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    flexWrap: 'wrap',
+                  }}>
                   <Box sx={{
                     display: 'flex',
                     width: '100%',
@@ -611,7 +601,7 @@ const ProjectEstimateSheetModal = () => {
                         key: item.id,
                         text: `${item.code}(${projectReviewStatusName(item.status)})`,
                       })) ?? null}
-                      disabled={typeof detail !== 'undefined'}
+                      readOnly={typeof detail !== 'undefined'}
                       onChange={(value) => {
                         if (typeof value === 'number') {
                           handler.onReviewChange(value, setFieldValue);
@@ -629,38 +619,38 @@ const ProjectEstimateSheetModal = () => {
                     <Table body={
                       <TableBody>
                         <TableRow>
-                          <TableCell variant="head">
+                          <TableHead>
                             형상비 번호
-                          </TableCell>
+                          </TableHead>
                           <TableCell colSpan={3}>
                             {values.reviewDetail?.code}
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell variant="head">
+                          <TableHead>
                             대지 모형 개수
-                          </TableCell>
+                          </TableHead>
                           <TableCell>
                             {values.reviewDetail?.landFigureCount}
                           </TableCell>
-                          <TableCell variant="head">
+                          <TableHead>
                             실험종류 (단지)
-                          </TableCell>
+                          </TableHead>
                           <TableCell>
                             {values.reviewDetail?.testList?.join(', ')}
                           </TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell variant="head">
+                          <TableHead>
                             견적 여부
-                          </TableCell>
+                          </TableHead>
                           <TableCell>
                             {typeof values.reviewDetail === 'undefined' ? ''
                               : values.reviewDetail.confirmed ? 'Y' : 'N'}
                           </TableCell>
-                          <TableCell variant="head">
+                          <TableHead>
                             상태
-                          </TableCell>
+                          </TableHead>
                           <TableCell>
                             {values.reviewDetail?.status
                               ? projectReviewStatusName(values.reviewDetail.status)
@@ -668,7 +658,8 @@ const ProjectEstimateSheetModal = () => {
                           </TableCell>
                         </TableRow>
                       </TableBody>
-                    } />
+                    }
+                    />
                   </Box>
                   <Box sx={{
                     display: 'flex',
@@ -684,9 +675,9 @@ const ProjectEstimateSheetModal = () => {
                           <TableBody>
                             {reviewDetailColumnList.map((column, i) => (
                               <TableRow key={i}>
-                                <TableCell variant="head">
+                                <TableHead>
                                   {column.label}
-                                </TableCell>
+                                </TableHead>
                                 {values.reviewDetail?.detailList.map((item, j) => (
                                   <TableCell key={j}>
                                     {column.renderCell(item, j)}
@@ -722,13 +713,12 @@ const ProjectEstimateSheetModal = () => {
                   }}>
                     <Grid container spacing={2}>
                       <Grid item sm={3}>
-                        <DatePicker
+                        <DatePicker required
                           name="estimateDate"
                           label="견적일자"
                           value={values.estimateDate}
                           setFieldValue={setFieldValue}
                           errors={errors}
-                          required
                         />
                       </Grid>
                       <Grid item sm={3}>
@@ -741,13 +731,12 @@ const ProjectEstimateSheetModal = () => {
                         />
                       </Grid>
                       <Grid item sm={3}>
-                        <UserSelector
+                        <UserSelector required
                           name="salesTeamLeaderId"
                           label="영업팀장"
                           value={values.salesTeamLeaderId}
                           setFieldValue={setFieldValue}
                           errors={errors}
-                          required
                         />
                       </Grid>
                       <Grid item sm={3}>
@@ -797,63 +786,28 @@ const ProjectEstimateSheetModal = () => {
                   }}>
                     <Table
                       head={
-                        <TableHead>
+                        <TableHeader>
                           <TableRow>
-                            <TableCell
-                              align="center"
-                              variant="head"
-                              colSpan={3}
-                            >
+                            <TableHead colSpan={3}>
                               용역 항목
-                            </TableCell>
-                            <TableCell align="center" variant="head">
-                              단위
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  marginLeft: '4px',
-                                  fontSize: '0.7rem'
-                                }}
-                              >*</Typography>
-                            </TableCell>
-                            <TableCell align="center" variant="head">
-                              수량
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  marginLeft: '4px',
-                                  fontSize: '0.7rem'
-                                }}
-                              >*</Typography>
-                            </TableCell>
-                            <TableCell align="center" variant="head">
-                              단가
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  marginLeft: '4px',
-                                  fontSize: '0.7rem'
-                                }}
-                              >*</Typography>
-                            </TableCell>
-                            <TableCell align="center" variant="head">
-                              금액
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  marginLeft: '4px',
-                                  fontSize: '0.7rem'
-                                }}
-                              >*</Typography>
-                            </TableCell>
-                            <TableCell
-                              align="center"
-                              variant="head"
-                            >
+                            </TableHead>
+                            <TableHead>
+                              <RequiredMark text="단위" />
+                            </TableHead>
+                            <TableHead>
+                              <RequiredMark text="수량" />
+                            </TableHead>
+                            <TableHead>
+                              <RequiredMark text="단가" />
+                            </TableHead>
+                            <TableHead>
+                              <RequiredMark text="금액" />
+                            </TableHead>
+                            <TableHead>
                               비고
-                            </TableCell>
+                            </TableHead>
                           </TableRow>
-                        </TableHead>
+                        </TableHeader>
                       }
                       body={
                         <TableBody>
@@ -871,26 +825,19 @@ const ProjectEstimateSheetModal = () => {
                               return testServiceDetail.titleList.map((title, k) => (
                                 <TableRow key={`${i}-${j}-${k}`}>
                                   {j === 0 && k === 0 && ([
-                                    <TableCell
-                                      key={`${i}-no`}
-                                      rowSpan={rowSpan}
-                                    >
+                                    <TableCell key={`${i}-no`} rowSpan={rowSpan}>
                                       {`(${i + 1})`}
                                     </TableCell>,
-                                    <TableCell
-                                      key={`${i}-title`}
-                                      rowSpan={rowSpan}
-                                    >
+                                    <TableCell key={`${i}-title`} rowSpan={rowSpan}>
                                       {testService.title}
                                     </TableCell>
                                   ])}
-                                  <TableCell>{title}</TableCell>
+                                  <TableCell>
+                                    {title}
+                                  </TableCell>
                                   {k === 0 && ([
-                                    <TableCell
-                                      key={`${i}-${j}-unit`}
-                                      rowSpan={detailRowSpan}
-                                    >
-                                      <DataField
+                                    <TableCell key={`${i}-${j}-unit`} rowSpan={detailRowSpan}>
+                                      <DataField required disableLabel
                                         type="select"
                                         name={`testServiceList[${i}].detailList[${j}].unit`}
                                         label="단위"
@@ -898,45 +845,30 @@ const ProjectEstimateSheetModal = () => {
                                         setFieldValue={setFieldValue}
                                         errors={errors}
                                         options={['단지', '동']}
-                                        disableLabel
-                                        required
                                       />
                                     </TableCell>,
-                                    <TableCell
-                                      key={`${i}-${j}-count`}
-                                      rowSpan={detailRowSpan}
-                                    >
-                                      <DataField
+                                    <TableCell key={`${i}-${j}-count`} rowSpan={detailRowSpan}>
+                                      <DataField required disableLabel
                                         type="number"
                                         name={`testServiceList[${i}].detailList[${j}].count`}
                                         label="수량"
                                         value={testServiceDetail.count}
                                         setFieldValue={setFieldValue}
                                         errors={errors}
-                                        disableLabel
-                                        required
                                       />
                                     </TableCell>,
-                                    <TableCell
-                                      key={`${i}-${j}-unitPrice`}
-                                      rowSpan={detailRowSpan}
-                                    >
-                                      <DataField
+                                    <TableCell key={`${i}-${j}-unitPrice`} rowSpan={detailRowSpan}>
+                                      <DataField required disableLabel
                                         type="amount"
                                         name={`testServiceList[${i}].detailList[${j}].unitPrice`}
                                         label="단가"
                                         value={testServiceDetail.unitPrice}
                                         setFieldValue={setFieldValue}
                                         errors={errors}
-                                        disableLabel
-                                        required
                                       />
                                     </TableCell>,
-                                    <TableCell
-                                      key={`${i}-${j}-isIncluded`}
-                                      rowSpan={detailRowSpan}
-                                    >
-                                      <DataField
+                                    <TableCell key={`${i}-${j}-isIncluded`} rowSpan={detailRowSpan}>
+                                      <DataField required disableLabel
                                         type="select"
                                         name={`testServiceList[${i}].detailList[${j}].isIncluded`}
                                         label="사용"
@@ -944,30 +876,23 @@ const ProjectEstimateSheetModal = () => {
                                         setFieldValue={setFieldValue}
                                         errors={errors}
                                         options={['Y', 'N']}
-                                        disableLabel
-                                        required
                                       />
-                                      <DataField
+                                      <DataField required disableLabel
                                         type="amount"
                                         name={`testServiceList[${i}].detailList[${j}].totalPrice`}
                                         label="금액"
                                         value={totalPrice}
                                         setFieldValue={setFieldValue}
                                         errors={errors}
-                                        disableLabel
-                                        required
                                       />
                                     </TableCell>,
-                                    <TableCell
-                                      key={`${i}-${j}-memo`}
-                                      rowSpan={detailRowSpan}>
-                                      <DataField
+                                    <TableCell key={`${i}-${j}-memo`} rowSpan={detailRowSpan}>
+                                      <DataField disableLabel
                                         name={`testServiceList[${i}].detailList[${j}].memo`}
                                         label="비고"
                                         value={testServiceDetail.memo}
                                         setFieldValue={setFieldValue}
                                         errors={errors}
-                                        disableLabel
                                       />
                                     </TableCell>
                                   ])}
@@ -983,8 +908,7 @@ const ProjectEstimateSheetModal = () => {
                             </TableRow>
                           )}
                         </TableBody>
-                      }
-                    />
+                      } />
                   </Box>
                   <Box sx={{
                     display: 'flex',

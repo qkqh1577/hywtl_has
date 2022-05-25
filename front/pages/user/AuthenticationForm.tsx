@@ -3,13 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  FormControl,
   Grid,
-  Input,
-  InputLabel,
   Paper,
 } from '@mui/material';
-import { ErrorMessage, Form, Formik, FormikHelpers } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import {
   AddUserParameter,
   userApi
@@ -18,6 +15,7 @@ import {
   UserInvitation,
   userInvitationApi
 } from 'services/user/invitation';
+import { DataField } from 'components';
 
 const UserAuthenticationForm = () => {
   const location = useLocation();
@@ -110,8 +108,7 @@ const UserAuthenticationForm = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-    }}
-    >
+    }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -132,90 +129,65 @@ const UserAuthenticationForm = () => {
         )}
         {detail && (
           <Formik
+            onSubmit={handler.submit}
             initialValues={{
               name: detail.name,
               email: detail.email,
               username: '',
               password: '',
               passwordCheck: '',
-            }}
-            onSubmit={handler.submit}
-          >
-            {({ values, isSubmitting, handleChange, handleSubmit }) => (
+            }}>
+            {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
               <Form>
                 <Grid container spacing={2}>
                   <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-email">이메일</InputLabel>
-                      <Input
-                        type="text"
-                        id="params-email"
-                        name="name"
-                        value={values.email}
-                        disabled
-                      />
-                      <ErrorMessage name="email" />
-                    </FormControl>
+                    <DataField disabled
+                      name="email"
+                      label="이메일"
+                      value={values.email}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                    />
                   </Grid>
                   <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-name">이름</InputLabel>
-                      <Input
-                        type="text"
-                        id="params-name"
-                        name="name"
-                        value={values.name}
-                        onChange={handleChange}
-                        placeholder="이름을 입력하세요"
-                        required
-                      />
-                      <ErrorMessage name="name" />
-                    </FormControl>
+                    <DataField required
+                      name="name"
+                      label="이름"
+                      value={values.name}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                    />
                   </Grid>
                   <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-username">아이디</InputLabel>
-                      <Input
-                        type="text"
-                        id="params-username"
-                        name="username"
-                        value={values.username}
-                        onChange={handleChange}
-                        placeholder="사용할 아이디를 입력하세요"
-                        required
-                      />
-                      <ErrorMessage name="username" />
-                    </FormControl>
+                    <DataField required
+                      name="username"
+                      label="아이디"
+                      value={values.username}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                    />
                   </Grid>
                   <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-password">비밀번호</InputLabel>
-                      <Input
-                        type="password"
-                        id="params-password"
-                        name="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        placeholder="사용할 비밀번호를 입력하세요"
-                        required
-                      />
-                      <ErrorMessage name="password" />
-                    </FormControl>
+                    <DataField required
+                      type="password"
+                      name="password"
+                      label="비밀번호"
+                      value={values.password}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                      placeholder="사용할 비밀번호를 입력하세요"
+                    />
                   </Grid>
                   <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-password-check">비밀번호 확인</InputLabel>
-                      <Input
-                        type="password"
-                        id="params-password-check"
-                        name="passwordCheck"
-                        value={values.passwordCheck}
-                        onChange={handleChange}
-                        placeholder="사용할 비밀번호를 다시 입력하세요"
-                        required
-                      />
-                      <ErrorMessage name="passwordCheck" />
-                    </FormControl>
+                    <DataField required
+                      type="password"
+                      name="passwordCheck"
+                      label="비밀번호 확인"
+                      value={values.passwordCheck}
+                      setFieldValue={setFieldValue}
+                      errors={errors}
+                      placeholder="사용할 비밀번호를 다시 입력하세요"
+                    />
                   </Grid>
                   <Grid item sm={12}>
                     <Box sx={{
@@ -225,13 +197,10 @@ const UserAuthenticationForm = () => {
                       mt: '40px',
                     }}>
                       <Button
-                        color="primary"
-                        variant="contained"
+                        disabled={isSubmitting}
                         onClick={() => {
                           handleSubmit();
-                        }}
-                        disabled={isSubmitting}
-                      >
+                        }}>
                         {isSubmitting ? ' 가입 요청 중' : '가입'}
                       </Button>
                     </Box>

@@ -76,15 +76,13 @@ const TestServiceTemplateList = () => {
           width: '100%',
           mb: '40px',
         }}>
-          <Formik
+          <Formik enableReinitialize
+            onSubmit={handler.search}
             initialValues={{
               keywordType: filter.keywordType ?? 'by_title',
               keyword: filter.keyword ?? '',
               testType: filter.testType
-            }}
-            onSubmit={handler.search}
-            enableReinitialize
-          >
+            }}>
             {({
               values,
               errors,
@@ -114,14 +112,14 @@ const TestServiceTemplateList = () => {
                             name="keywordType"
                             label="검색 대상"
                             value={values.keywordType}
+                            setFieldValue={setFieldValue}
+                            errors={errors}
                             options={[
                               {
                                 key: 'by_title',
                                 text: '용역 항목'
                               },
                             ]}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
                           />
                         </Grid>
                         <Grid item sm={8}>
@@ -137,30 +135,27 @@ const TestServiceTemplateList = () => {
                     </Grid>
                   </Form>
                 </Grid>
-                <Grid item sm={2} sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-around',
-                  alignContent: 'center'
-                }}>
+                <Grid item
+                  sm={2}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-around',
+                    alignContent: 'center'
+                  }}>
                   <Button
-                    color="primary"
-                    variant="contained"
                     disabled={isSubmitting}
                     onClick={() => {
                       handleSubmit();
-                    }}
-                  >
+                    }}>
                     검색
                   </Button>
                   <Button
                     color="secondary"
-                    variant="contained"
                     onClick={() => {
                       handler.clear();
                       resetForm();
-                    }}
-                  >
+                    }}>
                     초기화
                   </Button>
                 </Grid>
@@ -174,21 +169,14 @@ const TestServiceTemplateList = () => {
           mb: '40px',
         }}>
           <Table
+            list={list}
             title={`총 ${list?.length}건`}
             titleRightComponent={
               <Box>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.openSeqModal}
-                >
+                <Button onClick={handler.openSeqModal}>
                   순서 설정
                 </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.toAdd}
-                >
+                <Button onClick={handler.toAdd}>
                   등록
                 </Button>
               </Box>
@@ -203,14 +191,9 @@ const TestServiceTemplateList = () => {
               }, {
                 label: '용역 항목',
                 renderCell: (item) => (
-                  <Link
-                    sx={{
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => {
-                      navigate(`/test-service/${item.id}`, { state: { testServiceListFilter: filter } });
-                    }}
-                  >
+                  <Link onClick={() => {
+                    navigate(`/test-service/${item.id}`, { state: { testServiceListFilter: filter } });
+                  }}>
                     {item.title}
                   </Link>
                 )
@@ -222,8 +205,6 @@ const TestServiceTemplateList = () => {
                 renderCell: (item) => item.totalPrice.toLocaleString(),
               }
             ]}
-
-            list={list}
           />
         </Box>
       </Paper>

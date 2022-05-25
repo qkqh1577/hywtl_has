@@ -69,41 +69,34 @@ const ProjectContainer = () => {
             display: 'flex',
             flexWrap: 'nowrap'
           }}>
-            <Typography
-              sx={{
-                fontSize: '20px',
-                fontWeight: 'bold',
-              }}
-            >
+            <Typography sx={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+            }}>
               {detail?.basic.code}
             </Typography>
-            <Typography
-              sx={{
-                marginLeft: '4px',
-                marginRight: '4px',
-                fontSize: '20px',
-              }}>
+            <Typography sx={{
+              marginLeft: '4px',
+              marginRight: '4px',
+              fontSize: '20px',
+            }}>
               /
             </Typography>
-            <Typography
-              sx={{
-                fontSize: '20px',
-              }}
-            >
+            <Typography sx={{
+              fontSize: '20px',
+            }}>
               {detail?.basic.name}
             </Typography>
           </Box>
           <IconButton
-            color="primary"
+            onClick={handler.toggleFavorite}
             sx={{
               display: 'flex',
               width: '36px',
               height: '36px',
               backgroundColor: '#e5e5e5',
               border: '2px solid #301a9a',
-            }}
-            onClick={handler.toggleFavorite}
-          >
+            }}>
             {favorite ? <StarFillIcon /> : <StarOutlineIcon />}
           </IconButton>
         </Toolbar>
@@ -126,75 +119,63 @@ const ProjectContainer = () => {
           mb: '10px',
         }}>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/basic`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/basic`);
               }
-            }}
-          >
+            }}>
             기본 정보
           </Button>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/building`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/building`);
               }
-            }}
-          >
+            }}>
             실험 대상
           </Button>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/bid`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/bid`);
               }
-            }}
-          >
+            }}>
             견적/입찰
           </Button>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/contract`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/contract`);
               }
-            }}
-          >
+            }}>
             계약
           </Button>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/schedule`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/schedule`);
               }
-            }}
-          >
+            }}>
             일정
           </Button>
           <Button
-            color="primary"
             variant="outlined"
             disabled={!id || path === `/project/${id}/record`}
             onClick={() => {
               if (id) {
                 navigate(`/project/${id}/record`);
               }
-            }}
-          >
+            }}>
             이력
           </Button>
         </Box>
@@ -206,7 +187,8 @@ const ProjectContainer = () => {
             <ProjectReviewContainer />
             <ProjectTargetContainer />
           </>
-        } />
+        }
+        />
         <Route path="bid" element={<ProjectEstimateContainer />} />
         <Route path="contract" element={<h2>contract</h2>} />
         <Route path="schedule" element={<h2>schedule</h2>} />

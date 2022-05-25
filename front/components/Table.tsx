@@ -6,11 +6,12 @@ import {
   TableCell,
   TableContainer,
   TableFooter,
-  TableHead,
+  TableHead as TableHeader,
   TableRow,
   Toolbar,
   Typography
 } from '@mui/material';
+import { TableHead, RequiredMark } from 'components';
 
 export type TableCellProperty<T> = {
   label: string;
@@ -56,11 +57,13 @@ const Table = <T, >({
       width: '100%',
     }}>
       {title && (
-        <Toolbar id={id} sx={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'space-between',
-        }}>
+        <Toolbar
+          id={id}
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}>
           <Typography variant="h6">
             {title}
           </Typography>
@@ -78,15 +81,11 @@ const Table = <T, >({
         } : {
           width: '100%',
         }}>
-          <MuiTable
-            aria-label="sticky table"
-            stickyHeader
-            aria-labelledby={id}
-          >
+          <MuiTable stickyHeader aria-label="sticky table" aria-labelledby={id}>
             {!columns && head}
             {!columns && body}
             {columns && (
-              <TableHead>
+              <TableHeader>
                 <TableRow>
                   {columns
                   .filter(column => !column.disableShow)
@@ -103,44 +102,30 @@ const Table = <T, >({
                       minWidth: width,
                     };
                     return (
-                      <TableCell
+                      <TableHead
                         key={key ?? i}
                         style={style}
-                        align="center"
-                        variant="head"
                         colSpan={colSpan}
                       >
-                        {label}
-                        {required && (
-                          <Typography
-                            variant="caption"
-                            children="*"
-                            sx={{
-                              marginLeft: '4px',
-                              fontSize: '0.7rem'
-                            }}
-                          />
-                        )}
-                      </TableCell>
+                        <RequiredMark text={label} required={required} />
+                      </TableHead>
                     );
                   })}
                 </TableRow>
-              </TableHead>
+              </TableHeader>
             )}
             {columns && (
               <TableBody>
                 {(!list || list.length === 0) && (
-                  <TableRow
-                    role="list"
-                    tabIndex={-1}
-                  >
+                  <TableRow role="list" tabIndex={-1}>
                     <TableCell
                       colSpan={columns.filter(column => !column.disableShow).length}
                       sx={{
                         textAlign: 'center'
-                      }}
-                    >
-                      <Typography>{emptyText}</Typography>
+                      }}>
+                      <Typography>
+                        {emptyText}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 )}
@@ -149,26 +134,20 @@ const Table = <T, >({
                     key={i}
                     role="list"
                     tabIndex={-1}
+                    hover={hover}
                     onClick={() => {
                       if (onRowClick) {
                         onRowClick(item);
                       }
-                    }}
-                    hover={hover === true}
-                  >
-                    {columns
-                    .filter(column => !column.disableShow)
+                    }}>
+                    {columns.filter(column => !column.disableShow)
                     .map((column, j) => {
                       const { cellStyle, align, renderCell } = column;
                       const style: object | undefined = cellStyle ?
                         (typeof cellStyle === 'function' ? cellStyle(item, i) : cellStyle)
                         : undefined;
                       return (
-                        <TableCell
-                          key={j}
-                          align={align}
-                          style={style}
-                        >
+                        <TableCell key={j} align={align} style={style}>
                           {renderCell(item, i)}
                         </TableCell>
                       );
@@ -184,8 +163,7 @@ const Table = <T, >({
                     colSpan={columns?.filter(column => !column.disableShow).length}
                     sx={{
                       textAlign: 'center'
-                    }}
-                  >
+                    }}>
                     {typeof footer === 'string' && (<Typography>{footer}</Typography>)}
                     {typeof footer !== 'string' && footer}
                   </TableCell>
