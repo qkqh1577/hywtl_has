@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.business.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
+import com.howoocast.hywtl_has.business.exception.BusinessManagerNondeletableException;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
@@ -144,8 +145,7 @@ public class BusinessService {
     public void delete(Long id) {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
-                // TODO: 삭제 불가한 경우 던질 예외 파일 만들기
-//                throw new SomethingAwesomeException();
+                throw new BusinessManagerNondeletableException();
             }
             repository.deleteById(instance.getId());
         });
