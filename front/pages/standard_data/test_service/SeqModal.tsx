@@ -72,12 +72,9 @@ const TestServiceTemplateSeqModal = () => {
   }, [templateList]);
 
   return (
-    <Modal
-      open={seqModal}
-      title="용역 노출 순서 변경"
-      onClose={handler.close}
-    >
+    <Modal open={seqModal} title="용역 노출 순서 변경" onClose={handler.close}>
       <Table
+        list={list}
         columns={[
           {
             label: 'No.',
@@ -139,7 +136,6 @@ const TestServiceTemplateSeqModal = () => {
             )
           }
         ]}
-        list={list}
         footer={
           <Box sx={{
             display: 'flex',
@@ -147,18 +143,10 @@ const TestServiceTemplateSeqModal = () => {
             width: '100%',
             height: '50px',
           }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handler.submit}
-            >
+            <Button onClick={handler.submit}>
               저장
             </Button>
-            <Button
-              color="warning"
-              variant="contained"
-              onClick={handler.close}
-            >
+            <Button color="warning" onClick={handler.close}>
               취소
             </Button>
           </Box>

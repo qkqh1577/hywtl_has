@@ -226,30 +226,22 @@ export const Alert = () => {
           <h2>
             {alertProps?.title}
           </h2>
-          <IconButton
-            color="primary"
-            onClick={handleClose}
-          >
+          <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-          alignContent: 'center',
-          alignItems: 'center',
-        }}>
+      <DialogContent sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '100%',
+        alignContent: 'center',
+        alignItems: 'center',
+      }}>
         {alertProps?.children}
       </DialogContent>
       <DialogActions>
-        <Button
-          color={getColor(alertProps?.status)}
-          variant="contained"
-          onClick={handleClose}
-        >
+        <Button color={getColor(alertProps?.status)} onClick={handleClose}>
           {alertProps?.closeText}
         </Button>
       </DialogActions>
@@ -293,14 +285,10 @@ export const Confirm = () => {
   }, [open]);
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-    >
-      <DialogTitle
-        sx={{
-          minWidth: '20vw',
-        }}>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle sx={{
+        minWidth: '20vw',
+      }}>
         <Box sx={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -310,39 +298,26 @@ export const Confirm = () => {
           alignContent: 'center',
           alignItems: 'center',
         }}>
-          <h2>
-            {confirmProps?.title}
-          </h2>
-          <IconButton
-            color="primary"
-            onClick={handleClose}
-          >
+          <h2>            {confirmProps?.title}          </h2>
+          <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-          alignContent: 'center',
-          alignItems: 'center',
-        }}>
+      <DialogContent sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '100%',
+        alignContent: 'center',
+        alignItems: 'center',
+      }}>
         {confirmProps?.children}
       </DialogContent>
       <DialogActions>
-        <Button
-          color={getColor(confirmProps?.status)}
-          variant="contained"
-          onClick={handleConfirm}
-        >
+        <Button color={getColor(confirmProps?.status)} onClick={handleConfirm}>
           {confirmProps?.confirmText}
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleClose}
-        >
+        <Button onClick={handleClose}>
           {confirmProps?.closeText}
         </Button>
       </DialogActions>

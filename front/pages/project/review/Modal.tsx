@@ -12,7 +12,6 @@ import {
   DataField,
   Modal,
   Table,
-  Tooltip,
   useDialog
 } from 'components';
 import {
@@ -284,7 +283,11 @@ const ProjectReviewModal = () => {
             <Box sx={{
               display: 'flex',
               width: '100%',
-              mb: '40px',
+              position: 'sticky',
+              height: '75px',
+              top: 0,
+              backgroundColor: '#fff',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={1}>
@@ -300,7 +303,7 @@ const ProjectReviewModal = () => {
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField
+                  <DataField required
                     type="select"
                     name="status"
                     label="상태"
@@ -311,19 +314,17 @@ const ProjectReviewModal = () => {
                       key: item as string,
                       text: projectReviewStatusName(item),
                     }))}
-                    disabled={!edit}
-                    required
+                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField
+                  <DataField required
                     name="code"
                     label="형상비 번호"
                     value={values.code}
                     setFieldValue={setFieldValue}
                     errors={errors}
-                    disabled={!edit}
-                    required
+                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={1}>
@@ -334,31 +335,19 @@ const ProjectReviewModal = () => {
                     value={values.landFigureCount}
                     setFieldValue={setFieldValue}
                     errors={errors}
-                    disabled={!edit}
+                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  {edit && (
-                    <CheckboxField
-                      name="testList"
-                      label="실험 종류(단지)"
-                      value={values.testList}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      options={['E', 'B']}
-                      disableAll
-                    />
-                  )}
-                  {!edit && (
-                    <DataField
-                      name="view-testList"
-                      label="실험 종류(단지)"
-                      value={values.testList?.join(', ') ?? ''}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      disabled
-                    />
-                  )}
+                  <CheckboxField disableAll
+                    name="testList"
+                    label="실험 종류(단지)"
+                    value={values.testList}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    options={['E', 'B']}
+                    readOnly={!edit}
+                  />
                 </Grid>
                 <Grid item sm={4}>
                   {edit && (
@@ -371,7 +360,6 @@ const ProjectReviewModal = () => {
                       {id && (
                         <Button
                           color="secondary"
-                          variant="contained"
                           onClick={() => {
                             if (dirty) {
                               dialog.rollback(() => {
@@ -387,8 +375,6 @@ const ProjectReviewModal = () => {
                         </Button>
                       )}
                       <Button
-                        color="primary"
-                        variant="contained"
                         disabled={isSubmitting}
                         onClick={() => {
                           handleSubmit();
@@ -409,15 +395,19 @@ const ProjectReviewModal = () => {
                 backgroundColor: '#aaa',
                 flexWrap: 'wrap',
               }}>
-                <Typography variant="h5" sx={{
-                  width: '100%',
-                  mb: '15px'
-                }}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    width: '100%',
+                    mb: '15px'
+                  }}>
                   KDS 41 10 10 15 건축구조기준 설계하중 (5.1.3 특별풍하중 조건)
                 </Typography>
-                <Typography variant="body1" sx={{
-                  width: '100%',
-                }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    width: '100%',
+                  }}>
                   1) 풍진동의 영향을 고려해야 할 건축물 <br />
                   2) 특수한 지붕 골조 <br />
                   3) 골바람교화가 발생하는 건설지점 <br />
@@ -429,17 +419,21 @@ const ProjectReviewModal = () => {
             <Box sx={{
               display: 'flex',
               width: '100%',
+              flexWrap: 'wrap',
               mb: '40px',
             }}>
               {edit && (
-                <Typography variant="h6" sx={{
-                  width: '100%',
-                  color: '#0bd',
-                }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    width: '100%',
+                    color: '#0bd',
+                  }}>
                   ※(1)조건은 높이와 면적 입력 후 계산 버튼을 클릭 시 자동으로 계산됩니다.
                 </Typography>
               )}
               <Table
+                list={values.detailList}
                 title="형상비 검토 목록"
                 columns={[
                   {
@@ -447,77 +441,71 @@ const ProjectReviewModal = () => {
                     renderCell: (item, i) => i + 1,
                   }, {
                     label: '건물(동)',
-                    renderCell: (item, i) => (
-                      <DataField
+                    required: edit,
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         name={`detailList[${i}].buildingName`}
                         label="건물(동)"
                         value={item.buildingName}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
-                        required
+                        required={edit}
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '층수',
-                    renderCell: (item, i) => (
-                      <DataField
+                    required: edit,
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         type="number"
                         name={`detailList[${i}].floorCount`}
                         label="층수"
                         value={item.floorCount}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
-                        required
+                        required={edit}
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '지하층수',
-                    renderCell: (item, i) => (
-                      <DataField
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         type="number"
                         name={`detailList[${i}].baseCount`}
                         label="지하층 수"
                         value={item.baseCount}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '높이(m)',
-                    renderCell: (item, i) => (
-                      <DataField
+                    required: edit,
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         type="number"
                         name={`detailList[${i}].height`}
                         label="높이(m)"
                         value={item.height}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
-                        required
+                        required={edit}
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '면적(㎡)',
-                    renderCell: (item, i) => (
-                      <DataField
+                    required: edit,
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         type="number"
                         name={`detailList[${i}].area`}
                         label="면적(㎡)"
                         value={item.area}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
-                        required
+                        required={edit}
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '형상비',
                     renderCell: (item, i) => {
@@ -529,19 +517,16 @@ const ProjectReviewModal = () => {
                         <>
                           <Typography children={ratio} />
                           {edit && (
-                            <Button
-                              variant="contained"
-                              onClick={() => {
-                                const height = values.detailList[i].height;
-                                const area = values.detailList[i].area;
-                                if (!height || !area) {
-                                  setFieldValue(`detailList[${i}].ratio`, '');
-                                  return;
-                                }
-                                const ratio: number = height / Math.sqrt(area);
-                                setFieldValue(`detailList[${i}].ratio`, ratio);
-                              }}
-                            >
+                            <Button onClick={() => {
+                              const height = values.detailList[i].height;
+                              const area = values.detailList[i].area;
+                              if (!height || !area) {
+                                setFieldValue(`detailList[${i}].ratio`, '');
+                                return;
+                              }
+                              const ratio: number = height / Math.sqrt(area);
+                              setFieldValue(`detailList[${i}].ratio`, ratio);
+                            }}>
                               계산
                             </Button>
                           )}
@@ -550,92 +535,69 @@ const ProjectReviewModal = () => {
                     }
                   }, {
                     label: '특별풍하중 조건',
-                    renderCell: (item, i) => {
-                      if (!edit) {
-                        return item.specialWindLoadConditionList?.map((condition, j) => (
-                          <Tooltip key={j} title={projectSpecialWindLoadConditionName(condition)}>
-                            <Typography>
-                              {condition}
-                            </Typography>
-                          </Tooltip>
-                        ));
-                      }
-                      return (
-                        <CheckboxField
-                          name={`detailList[${i}].specialWindLoadConditionList`}
-                          label="특별풍하중 조건"
-                          value={item.specialWindLoadConditionList}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                          options={
-                            ['1', '2', '3', '4', '5']
-                            .map((key) => ({
-                              key,
-                              text: `(${key})`,
-                              tooltip: projectSpecialWindLoadConditionName(key),
-                            }))
-                          }
-                          disableLabel
-                          disableAll
-                        />
-                      );
-                    }
+                    renderCell: (item, i) =>
+                      <CheckboxField disableAll disableLabel
+                        name={`detailList[${i}].specialWindLoadConditionList`}
+                        label="특별풍하중 조건"
+                        value={item.specialWindLoadConditionList}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        readOnly={!edit}
+                        options={
+                          ['1', '2', '3', '4', '5']
+                          .map((key) => ({
+                            key,
+                            text: `(${key})`,
+                            tooltip: projectSpecialWindLoadConditionName(key),
+                          }))
+                        }
+                      />
                   }, {
                     label: '최소 실험대상 여부',
                     renderCell: (item) => item.ratio >= 3.0 ? 'Y' : '',
                     disableShow: edit
                   }, {
                     label: '실험 종류(동)',
-                    renderCell: (item, i) => {
-                      if (!edit) {
-                        return item.testList?.join(', ');
-                      }
-                      return (
-                        <CheckboxField
-                          name={`detailList[${i}].testList`}
-                          label="실험 종류(동)"
-                          value={item.testList}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
-                          options={['F', 'P', 'A', '구검']}
-                          disableLabel
-                          disableAll
-                          required
-                        />
-                      );
-                    }
+                    required: edit,
+                    renderCell: (item, i) =>
+                      <CheckboxField disableAll disableLabel
+                        name={`detailList[${i}].testList`}
+                        label="실험 종류(동)"
+                        value={item.testList}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={['F', 'P', 'A', '구검']}
+                        required={edit}
+                        readOnly={!edit}
+                      />
                   }, {
                     label: '비고1',
-                    renderCell: (item, i) => (
-                      <DataField
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         name={`detailList[${i}].memo1`}
                         label="비고1"
                         value={item.memo1}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '비고2',
-                    renderCell: (item, i) => (
-                      <DataField
+                    renderCell: (item, i) =>
+                      <DataField disableLabel
                         name={`detailList[${i}].memo2`}
                         label="비고2"
                         value={item.memo2}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
-                        disableLabel
+                        readOnly={!edit}
                       />
-                    )
                   }, {
                     label: '삭제',
-                    renderCell: (item, i) => (
-                      <Button
+                    disableShow: !edit,
+                    renderCell: (item, i) =>
+                      <Button fullWidth
                         color="warning"
-                        variant="contained"
                         onClick={() => {
                           if (values.detailList.length === 1) {
                             dialog.alert('최소 1개의 건축물 항목이 필요합니다.');
@@ -644,20 +606,11 @@ const ProjectReviewModal = () => {
                           dialog.remove(`${item.buildingName || '해당'} 건축물 항목을 삭제하시겠습니까?`, () => {
                             setFieldValue('detailList', values.detailList.filter((item, j) => i !== j));
                           });
-                        }}
-                        fullWidth
-                      >
+                        }}>
                         삭제
                       </Button>
-                    ),
-                    disableShow: !edit
                   }
                 ]}
-                list={values.detailList}
-                sx={{
-                  maxHeight: '400px'
-                }}
-                hover
               />
             </Box>
             {edit && (
@@ -667,12 +620,9 @@ const ProjectReviewModal = () => {
                 mb: '40px',
                 flexDirection: 'row-reverse'
               }}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    setFieldValue('detailList', [...values.detailList, initDetailView]);
-                  }}>
+                <Button onClick={() => {
+                  setFieldValue('detailList', [...values.detailList, initDetailView]);
+                }}>
                   추가
                 </Button>
               </Box>
@@ -684,6 +634,7 @@ const ProjectReviewModal = () => {
               flexWrap: 'wrap',
             }}>
               <Table
+                list={values.fileList}
                 title="관련 파일"
                 columns={[
                   {
@@ -694,40 +645,28 @@ const ProjectReviewModal = () => {
                     renderCell: (item) => `${item.filename} (${item.readableSize})`
                   }, {
                     label: '삭제',
-                    renderCell: (item, i) => (
-                      <Button
+                    disableShow: !edit,
+                    renderCell: (item, i) =>
+                      <Button fullWidth
                         color="warning"
-                        variant="contained"
                         onClick={() => {
                           dialog.remove(`${item.filename || '해당'} 파일을 삭제하시겠습니까?`, () => {
                             setFieldValue('fileList', values.fileList.filter((item, j) => i !== j));
                           });
-                        }}
-                        fullWidth
-                      >
+                        }}>
                         삭제
                       </Button>
-                    ),
-                    disableShow: !edit
                   }, {
                     label: '다운로드',
-                    renderCell: (item) => (
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={() => {
-                          window.open(`/file-items/${item.id}`, '_blank');
-                        }}>
+                    disableShow: edit,
+                    renderCell: (item) =>
+                      <Button onClick={() => {
+                        window.open(`/file-items/${item.id}`, '_blank');
+                      }}>
                         다운로드
                       </Button>
-                    ),
-                    disableShow: edit
                   }
                 ]}
-                list={values.fileList}
-                sx={{
-                  maxHeight: '300px'
-                }}
               />
               {edit && (
                 <Box sx={{
@@ -736,14 +675,13 @@ const ProjectReviewModal = () => {
                   mb: '40px',
                   justifyContent: 'right',
                 }}>
-                  <FileUploadButton
-                    onClick={(fileItem) => {
-                      const fileList = values.fileList ?? [];
-                      setFieldValue('fileList', [
-                        ...fileList,
-                        fileItem
-                      ]);
-                    }}>
+                  <FileUploadButton onClick={(fileItem) => {
+                    const fileList = values.fileList ?? [];
+                    setFieldValue('fileList', [
+                      ...fileList,
+                      fileItem
+                    ]);
+                  }}>
                     추가
                   </FileUploadButton>
                 </Box>
@@ -756,25 +694,13 @@ const ProjectReviewModal = () => {
                 mb: '40px',
                 justifyContent: 'space-around'
               }}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.remove}
-                >
+                <Button color="error" onClick={handler.remove}>
                   삭제
                 </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handler.edit}
-                >
+                <Button onClick={handler.edit}>
                   수정
                 </Button>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={handler.close}
-                >
+                <Button color="secondary" onClick={handler.close}>
                   닫기
                 </Button>
               </Box>

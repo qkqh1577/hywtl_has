@@ -55,14 +55,6 @@ export const optionText = (option: Option | DataFieldValue): DataFieldValue => {
   return item.text;
 };
 
-export const optionTooltip = (option: Option | DataFieldValue): string | undefined => {
-  if (typeof option === 'string' || typeof option === 'number') {
-    return undefined;
-  }
-  const item: Option = option as Option;
-  return item.tooltip;
-};
-
 const DataFieldWithButton = ({
   type = 'text',
   variant = 'standard',
@@ -178,7 +170,6 @@ const DataFieldWithButton = ({
             ? (<InputAdornment position="end">
               <Button
                 variant="outlined"
-                color="primary"
                 sx={{ marginBottom: '10px' }}
                 onClick={onClick}
               >

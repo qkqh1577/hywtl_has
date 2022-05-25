@@ -24,7 +24,6 @@ import {
   PasswordResetParameter,
   usePasswordReset,
 } from 'services/user/password_reset';
-import PersonnelDetail from 'pages/hr/Detail';
 
 const UserDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -178,14 +177,12 @@ const UserDetail = () => {
           <Grid container spacing={2}>
             <Grid item sm={12}>
               {detail && (
-                <Formik
+                <Formik enableReinitialize
+                  onSubmit={handler.submit}
                   initialValues={{
                     ...detail,
                     departmentId: detail.department.id,
-                  }}
-                  onSubmit={handler.submit}
-                  enableReinitialize
-                >
+                  }}>
                   {({
                     values,
                     errors,
@@ -197,37 +194,34 @@ const UserDetail = () => {
                     <Form>
                       <Grid container spacing={2}>
                         <Grid item sm={3}>
-                          <DataField
+                          <DataField disabled
                             name="username"
                             label="아이디"
                             value={values.username}
                             setFieldValue={setFieldValue}
                             errors={errors}
-                            disabled
                           />
                         </Grid>
                         <Grid item sm={3}>
-                          <DataField
+                          <DataField required
                             name="name"
                             label="이름"
                             value={values.name}
                             setFieldValue={setFieldValue}
                             errors={errors}
-                            required
                           />
                         </Grid>
                         <Grid item sm={4}>
-                          <DataField
+                          <DataField required
                             name="email"
                             label="이메일"
                             value={values.email}
                             setFieldValue={setFieldValue}
                             errors={errors}
-                            required
                           />
                         </Grid>
                         <Grid item sm={2}>
-                          <DataField
+                          <DataField required
                             type="select"
                             name="userRole"
                             label="권한"
@@ -238,17 +232,15 @@ const UserDetail = () => {
                               key: item,
                               text: userRoleName(item)
                             }))}
-                            required
                           />
                         </Grid>
                         <Grid item sm={3}>
-                          <DepartmentSelector
+                          <DepartmentSelector required
                             name="departmentId"
                             label="소속 부서"
                             value={values.departmentId}
                             setFieldValue={setFieldValue}
                             errors={errors}
-                            required
                           />
                         </Grid>
                         <Grid item sm={12}>
@@ -260,30 +252,20 @@ const UserDetail = () => {
                           }}>
                             <Button
                               color="secondary"
-                              variant="contained"
                               disabled={dirty}
                               onClick={() => {
                                 navigate(-1);
-                              }}
-                            >
+                              }}>
                               취소
                             </Button>
                             <Button
-                              color="primary"
-                              variant="contained"
                               disabled={!dirty && isSubmitting}
                               onClick={() => {
                                 handleSubmit();
-                              }}
-                            >
+                              }}>
                               저장
                             </Button>
-                            <Button
-                              style={{ float: 'right' }}
-                              color="primary"
-                              variant="contained"
-                              onClick={handler.password}
-                            >
+                            <Button style={{ float: 'right' }} onClick={handler.password}>
                               비밀번호 변경
                             </Button>
                           </Box>
@@ -297,7 +279,6 @@ const UserDetail = () => {
           </Grid>
         </Box>
       </Paper>
-      {detail && (<PersonnelDetail />)}
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <Box sx={{ mb: '20px' }}>
           <Grid container spacing={2}>

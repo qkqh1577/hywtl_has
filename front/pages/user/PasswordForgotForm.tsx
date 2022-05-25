@@ -58,8 +58,7 @@ const PasswordForgotForm = () => {
       justifyContent: 'center',
       alignItems: 'center',
       alignContent: 'center',
-    }}
-    >
+    }}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -75,11 +74,11 @@ const PasswordForgotForm = () => {
         mb: '40px',
         justifyContent: 'center',
       }}>
-        <Formik initialValues={{
-          email: '',
-        }}
+        <Formik
           onSubmit={handler.submit}
-        >
+          initialValues={{
+            email: '',
+          }}>
           {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
             <Form>
               <Grid container spacing={2}>
@@ -100,21 +99,14 @@ const PasswordForgotForm = () => {
                     width: '100%',
                     mt: '40px',
                   }}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={handler.toLogin}
-                    >
+                    <Button color="secondary" onClick={handler.toLogin}>
                       돌아가기
                     </Button>
                     <Button
-                      color="primary"
-                      variant="contained"
+                      disabled={isSubmitting}
                       onClick={() => {
                         handleSubmit();
-                      }}
-                      disabled={isSubmitting}
-                    >
+                      }}>
                       {isSubmitting ? ' 확인 중' : '초기화 요청'}
                     </Button>
                   </Box>

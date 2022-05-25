@@ -53,24 +53,19 @@ const PersonnelDetailAcademicList = ({
         justifyContent: 'space-between',
       }}>
         <h2>학력 정보</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ height: '36px' }}
-          onClick={() => {
-            if (Array.isArray(values)) {
-              setFieldValue(FIELD_NAME, [...values, initAcademicView]);
-            } else {
-              setFieldValue(FIELD_NAME, [initAcademicView]);
-            }
-          }}
-        >
+        <Button onClick={() => {
+          if (Array.isArray(values)) {
+            setFieldValue(FIELD_NAME, [...values, initAcademicView]);
+          } else {
+            setFieldValue(FIELD_NAME, [initAcademicView]);
+          }
+        }}>
           추가
         </Button>
       </Grid>
       {Array.isArray(values) && (values as PersonnelAcademicView[])
       .map((item, i) => (
-        <Grid key={i} item sm={12}>
+        <Grid item key={i} sm={12}>
           <Box sx={{
             display: 'flex',
             width: '100%',
@@ -78,23 +73,21 @@ const PersonnelDetailAcademicList = ({
           }}>
             <Grid container spacing={2} wrap="nowrap">
               <Grid item>
-                <DataField
+                <DataField required
                   label="교육기관명"
                   name={`${FIELD_NAME}[${i}].academyName`}
                   value={item.academyName}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="전공"
                   name={`${FIELD_NAME}[${i}].major`}
                   value={item.major}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
@@ -107,13 +100,12 @@ const PersonnelDetailAcademicList = ({
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="재적 상태"
                   name={`${FIELD_NAME}[${i}].state`}
                   value={item.state}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
@@ -126,25 +118,23 @@ const PersonnelDetailAcademicList = ({
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required
                   name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   value={item.startDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required
                   name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   value={item.endDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
                 />
               </Grid>
             </Grid>
@@ -155,8 +145,7 @@ const PersonnelDetailAcademicList = ({
               onClick={() => {
                 const list = (values as PersonnelAcademicView[]);
                 setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
-              }}
-            >
+              }}>
               <DeleteIcon />
             </IconButton>
           </Box>

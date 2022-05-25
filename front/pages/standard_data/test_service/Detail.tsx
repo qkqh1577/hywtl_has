@@ -197,11 +197,7 @@ const TestServiceTemplateDetail = () => {
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <Formik
-              initialValues={view}
-              enableReinitialize
-              onSubmit={handler.submit}
-            >
+            <Formik enableReinitialize initialValues={view} onSubmit={handler.submit}>
               {({
                 values,
                 dirty,
@@ -222,7 +218,7 @@ const TestServiceTemplateDetail = () => {
                         value={values.title}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
+                        readOnly={!edit}
                         required={edit}
                       />
                     </Grid>
@@ -235,12 +231,12 @@ const TestServiceTemplateDetail = () => {
                         options={testTypeList}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        disabled={!edit}
+                        readOnly={!edit}
                         required={edit}
                       />
                     </Grid>
                     <Grid item sm={6}>
-                      <DataField
+                      <DataField disabled
                         type="amount"
                         name="totalPrice"
                         label="총액"
@@ -248,14 +244,14 @@ const TestServiceTemplateDetail = () => {
                         setFieldValue={setFieldValue}
                         errors={errors}
                         endAdornment={
-                          <IconButton
-                            onClick={() => {
+                          edit ?
+                            <IconButton onClick={() => {
                               setFieldValue('totalPrice', getTotalPrice(values.detailList));
                             }}>
-                            <RefreshIcon />
-                          </IconButton>
+                              <RefreshIcon />
+                            </IconButton>
+                            : undefined
                         }
-                        disabled
                       />
                     </Grid>
                   </Grid>
@@ -265,9 +261,11 @@ const TestServiceTemplateDetail = () => {
                     </Grid>
                     <Grid item sm={12}>
                       <Table
+                        list={values.detailList}
                         columns={[
                           {
                             label: '세부 항목명',
+                            required: edit,
                             renderCell: (item, i) => {
                               if (!edit) {
                                 return item.titleList.map((title, j) => (
@@ -281,12 +279,18 @@ const TestServiceTemplateDetail = () => {
                                   <Box key={j} sx={{
                                     width: '100%',
                                   }}>
-                                    <DataField
+                                    <DataField required disableLabel
                                       name={`detailList[${i}].titleList[${j}]`}
                                       label="세부 항목명"
                                       value={title}
                                       setFieldValue={setFieldValue}
                                       errors={errors}
+                                      autoFocus={j === item.titleList.length - 1}
+                                      onKeyUp={(e) => {
+                                        if (e.key.toLowerCase() === 'enter' && title !== '') {
+                                          setFieldValue(`detailList[${i}].titleList`, [...item.titleList, '']);
+                                        }
+                                      }}
                                       endAdornment={
                                         <Box sx={{
                                           display: 'flex',
@@ -331,6 +335,7 @@ const TestServiceTemplateDetail = () => {
                                           {values.detailList[i].titleList.length - 1 === j && (
                                             <Tooltip title="항목 추가">
                                               <IconButton
+                                                disabled={title === ''}
                                                 onClick={() => {
                                                   setFieldValue(`detailList[${i}].titleList`, [...item.titleList, '']);
                                                 }}>
@@ -340,83 +345,64 @@ const TestServiceTemplateDetail = () => {
                                           )}
                                           {values.detailList[i].titleList.length - 1 !== j && (
                                             <Tooltip title="현재 항목 삭제">
-                                              <IconButton
-                                                onClick={() => {
-                                                  setFieldValue(`detailList[${i}].titleList`, item.titleList.filter((t, k) => k !== j));
-                                                }}>
+                                              <IconButton onClick={() => {
+                                                setFieldValue(`detailList[${i}].titleList`, item.titleList.filter((t, k) => k !== j));
+                                              }}>
                                                 <RemoveIcon />
                                               </IconButton>
                                             </Tooltip>
                                           )}
                                         </Box>
                                       }
-                                      disableLabel
-                                      required
                                     />
                                   </Box>
                                 ))}
                                 </>
                               );
                             },
-                            required: edit
                           }, {
                             label: '단위',
-                            renderCell: (item, i) => {
-                              if (!edit) {
-                                return item.unit;
-                              }
-                              return (
-                                <DataField
-                                  name={`detailList[${i}].unit`}
-                                  label="단위"
-                                  value={item.unit}
-                                  setFieldValue={setFieldValue}
-                                  errors={errors}
-                                  disableLabel
-                                  required
-                                />
-                              );
-                            },
-                            required: edit
+                            required: edit,
+                            renderCell: (item, i) =>
+                              <DataField disableLabel
+                                type="select"
+                                name={`detailList[${i}].unit`}
+                                label="단위"
+                                value={item.unit}
+                                setFieldValue={setFieldValue}
+                                errors={errors}
+                                options={['단지', '동']}
+                                readOnly={!edit}
+                                required={edit}
+                              />
                           }, {
                             label: '단가',
-                            renderCell: (item, i) => {
-                              if (!edit) {
-                                return item.unitPrice.toLocaleString();
-                              }
-                              return (
-                                <DataField
-                                  type="amount"
-                                  name={`detailList[${i}].unitPrice`}
-                                  label="단가"
-                                  value={item.unitPrice}
-                                  setFieldValue={setFieldValue}
-                                  errors={errors}
-                                  disableLabel
-                                  required
-                                />
-                              );
-                            },
-                            required: edit
+                            required: edit,
+                            renderCell: (item, i) =>
+                              <DataField disableLabel
+                                type="amount"
+                                name={`detailList[${i}].unitPrice`}
+                                label="단가"
+                                value={item.unitPrice}
+                                setFieldValue={setFieldValue}
+                                errors={errors}
+                                required={edit}
+                                readOnly={!edit}
+                              />
                           }, {
                             label: '비고',
-                            renderCell: (item, i) => {
-                              if (!edit) {
-                                return item.memo;
-                              }
-                              return (
-                                <DataField
-                                  name={`detailList[${i}].memo`}
-                                  label="비고"
-                                  value={item.memo}
-                                  setFieldValue={setFieldValue}
-                                  errors={errors}
-                                  disableLabel
-                                />
-                              );
-                            }
+                            renderCell: (item, i) =>
+                              <DataField disableLabel
+                                name={`detailList[${i}].memo`}
+                                label="비고"
+                                value={item.memo}
+                                setFieldValue={setFieldValue}
+                                errors={errors}
+                                readOnly={!edit}
+                              />
                           }, {
                             label: '순서',
+                            disableShow: !edit,
                             renderCell: (item, i) => (
                               <Box sx={{
                                 display: 'flex',
@@ -459,13 +445,12 @@ const TestServiceTemplateDetail = () => {
                                 </Tooltip>
                               </Box>
                             ),
-                            disableShow: !edit
                           }, {
                             label: '삭제',
+                            disableShow: !edit,
                             renderCell: (item, i) => (
                               <Button
                                 color="warning"
-                                variant="contained"
                                 disabled={values.detailList.length <= 1}
                                 onClick={() => {
                                   if (values.detailList.length === 1) {
@@ -477,17 +462,12 @@ const TestServiceTemplateDetail = () => {
                                 삭제
                               </Button>
                             ),
-                            disableShow: !edit
                           }
                         ]}
-                        list={values.detailList}
                         footer={edit ?
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={() => {
-                              setFieldValue('detailList', [...values.detailList, initDetailView]);
-                            }}>
+                          <Button onClick={() => {
+                            setFieldValue('detailList', [...values.detailList, initDetailView]);
+                          }}>
                             추가
                           </Button>
                           : undefined
@@ -503,15 +483,12 @@ const TestServiceTemplateDetail = () => {
                     }}>
                       <Button
                         color="secondary"
-                        variant="contained"
                         onClick={() => {
                           handler.cancel(dirty);
                         }}>
                         취소
                       </Button>
                       <Button
-                        color="primary"
-                        variant="contained"
                         disabled={isSubmitting}
                         onClick={() => {
                           handleSubmit();
@@ -528,7 +505,6 @@ const TestServiceTemplateDetail = () => {
                     }}>
                       <Button
                         color="secondary"
-                        variant="contained"
                         onClick={() => {
                           navigate('/test-service', { state: location.state });
                         }}>
@@ -536,15 +512,12 @@ const TestServiceTemplateDetail = () => {
                       </Button>
                       <Button
                         color="error"
-                        variant="contained"
                         onClick={() => {
                           // TODO: 삭제
                         }}>
                         삭제
                       </Button>
                       <Button
-                        color="primary"
-                        variant="contained"
                         disabled={isSubmitting}
                         onClick={() => {
                           setEdit(true);

@@ -102,17 +102,15 @@ const UserPage = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Formik
+        <Formik enableReinitialize
+          onSubmit={handler.search}
           initialValues={{
             page: filter.page,
             size: filter.size,
             role: filter.role ?? userRoleList,
             keyword: filter.keyword ?? '',
             keywordType: filter.keywordType ?? 'by_username',
-          }}
-          onSubmit={handler.search}
-          enableReinitialize
-        >
+          }}>
           {({
             values,
             errors,
@@ -129,6 +127,8 @@ const UserPage = () => {
                       <CheckboxField
                         name="role"
                         label="권한"
+                        setFieldValue={setFieldValue}
+                        errors={errors}
                         value={userRoleList.map((item) =>
                           item as string)
                         }
@@ -136,8 +136,6 @@ const UserPage = () => {
                           key: item as string,
                           text: userRoleName(item)
                         }))}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                       />
                     </Grid>
                     <Grid container spacing={2} item sm={12}>
@@ -147,6 +145,8 @@ const UserPage = () => {
                           name="keywordType"
                           label="검색 대상"
                           value={values.keywordType}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
                           options={[
                             {
                               key: 'by_username',
@@ -159,8 +159,6 @@ const UserPage = () => {
                               text: '이메일'
                             }
                           ]}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={8}>
@@ -176,30 +174,27 @@ const UserPage = () => {
                   </Grid>
                 </Form>
               </Grid>
-              <Grid item sm={2} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                alignContent: 'center'
-              }}>
+              <Grid item
+                sm={2}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-around',
+                  alignContent: 'center'
+                }}>
                 <Button
-                  color="primary"
-                  variant="contained"
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
-                  }}
-                >
+                  }}>
                   검색
                 </Button>
                 <Button
                   color="secondary"
-                  variant="contained"
                   onClick={() => {
                     handler.clear();
                     resetForm();
-                  }}
-                >
+                  }}>
                   초기화
                 </Button>
               </Grid>
@@ -252,10 +247,12 @@ const UserPage = () => {
         justifyContent: 'space-between',
       }}>
         <Grid container spacing={2}>
-          <Grid item sm={8} sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-          }}>
+          <Grid item
+            sm={8}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+            }}>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
@@ -273,11 +270,7 @@ const UserPage = () => {
               width: '100%',
               mt: '40px',
             }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handler.toAdd}
-              >
+              <Button onClick={handler.toAdd}>
                 등록
               </Button>
             </Box>

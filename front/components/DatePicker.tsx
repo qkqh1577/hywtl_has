@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import dayjs from 'dayjs';
 import { FormikErrors, FormikValues } from 'formik';
 import { Tooltip } from 'components';
-import { getObjectPostPosition } from 'util/KoreanLetterUtil';
+import { getAuxiliaryPostPosition, getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 type Props = {
   value: Date | null;
@@ -13,8 +13,10 @@ type Props = {
   label: string;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   errors: FormikErrors<FormikValues>;
+  errorText?: string;
   required?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
   format?: string;
   openTo?: CalendarPickerView;
   disableFuture?: boolean;
@@ -29,8 +31,10 @@ const DatePicker = ({
   value,
   setFieldValue,
   errors,
-  required,
+  errorText,
+  required: requiredProp,
   disabled,
+  readOnly,
   format = 'YYYY-MM-DD',
   openTo = 'day',
   disableFuture,
@@ -41,14 +45,27 @@ const DatePicker = ({
   const [error, setError] = useState<string | undefined>();
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
 
+  const required: boolean | undefined = !disableLabel && !(disabled || readOnly) && requiredProp;
+
+  useEffect(() => {
+    if (errors && errors[name]) {
+      setError(errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`);
+    } else if (helperMessage !== helperText) {
+      setError(undefined);
+    }
+  }, [errors]);
+
   return (
-    <MuiDatePicker
+    <MuiDatePicker allowSameDateSelection
       mask="____-__-__"
       okText="적용"
       inputFormat={format}
       toolbarFormat={format}
       value={value}
       openTo={openTo}
+      disableFuture={disableFuture}
+      disabled={disabled}
+      readOnly={readOnly}
       onChange={(date) => {
         setFieldValue(name, date);
         if (helperMessage !== helperText) {
@@ -69,35 +86,30 @@ const DatePicker = ({
       }}
       renderInput={(params) => (
         <Tooltip
+          placement="bottom-end"
           title={
-            disabled === true
+            disabled || readOnly
               ? label
               : (placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`)
           }
-          placement="bottom-end"
         >
-          <TextField
+          <TextField fullWidth
             {...params}
+            variant="standard"
             id={`params-${name}`}
             name={name}
             value={value === null ? '' : dayjs(value).format(format)}
             label={disableLabel ? undefined : label}
             helperText={helperMessage}
             placeholder={placeholder ?? `${label}(${format})${getObjectPostPosition(label)} 입력해 주세요`}
-            variant="standard"
-            required={required === true}
-            error={typeof errors[name] === 'string' || typeof error === 'string'}
+            required={required}
+            error={typeof errors[name] !== 'undefined'}
             onError={() => {
-              setHelperMessage(error ?? errors[name]);
+              setHelperMessage(error);
             }}
-            fullWidth
-          >
-          </TextField>
+          />
         </Tooltip>
       )}
-      allowSameDateSelection
-      disableFuture={disableFuture === true}
-      disabled={disabled === true}
     />
   );
 };

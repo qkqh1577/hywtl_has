@@ -407,11 +407,7 @@ const PersonnelDetail = () => {
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <Formik
-              initialValues={initView}
-              onSubmit={handler.submit}
-              enableReinitialize
-            >
+            <Formik enableReinitialize initialValues={initView} onSubmit={handler.submit}>
               {({
                 values,
                 errors,
@@ -468,7 +464,6 @@ const PersonnelDetail = () => {
                     errors={errors}
                     setFieldValue={setFieldValue}
                   />
-
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
@@ -480,21 +475,16 @@ const PersonnelDetail = () => {
                       }}>
                         <Button
                           color="secondary"
-                          variant="contained"
                           onClick={() => {
                             navigate(-1);
-                          }}
-                        >
+                          }}>
                           취소
                         </Button>
                         <Button
-                          color="primary"
-                          variant="contained"
                           disabled={isSubmitting}
                           onClick={() => {
                             handleSubmit();
-                          }}
-                        >
+                          }}>
                           저장
                         </Button>
                       </Box>
@@ -509,4 +499,5 @@ const PersonnelDetail = () => {
     </Paper>
   );
 };
+
 export default PersonnelDetail;

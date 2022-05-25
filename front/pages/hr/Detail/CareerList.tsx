@@ -46,29 +46,26 @@ const PersonnelDetailCareerList = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid item sm={12} sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}>
+      <Grid item
+        sm={12}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
         <h2>경력 정보</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ height: '36px' }}
-          onClick={() => {
-            if (Array.isArray(values)) {
-              setFieldValue(FIELD_NAME, [...values, initCareerView]);
-            } else {
-              setFieldValue(FIELD_NAME, [initCareerView]);
-            }
-          }}
-        >
+        <Button onClick={() => {
+          if (Array.isArray(values)) {
+            setFieldValue(FIELD_NAME, [...values, initCareerView]);
+          } else {
+            setFieldValue(FIELD_NAME, [initCareerView]);
+          }
+        }}>
           추가
         </Button>
       </Grid>
       {Array.isArray(values) && (values as PersonnelCareerView[])
       .map((item, i) => (
-        <Grid key={i} item sm={12}>
+        <Grid item key={i} sm={12}>
           <Box sx={{
             display: 'flex',
             width: '100%',
@@ -76,47 +73,41 @@ const PersonnelDetailCareerList = ({
           }}>
             <Grid container spacing={2} wrap="nowrap">
               <Grid item>
-                <DataField
+                <DataField required
                   label="근무처명"
                   name={`${FIELD_NAME}[${i}].companyName`}
                   value={item.companyName}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required disableFuture
                   name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   value={item.startDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
-                  disableFuture
                 />
               </Grid>
               <Grid item>
-                <DatePicker
+                <DatePicker required disableFuture
                   name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   value={item.endDate}
                   setFieldValue={setFieldValue}
                   errors={errors}
                   openTo="year"
-                  required
-                  disableFuture
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="주 업무"
                   name={`${FIELD_NAME}[${i}].majorJob`}
                   value={item.majorJob}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
             </Grid>
@@ -127,8 +118,7 @@ const PersonnelDetailCareerList = ({
               onClick={() => {
                 const list = (values as PersonnelCareerView[]);
                 setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
-              }}
-            >
+              }}>
               <DeleteIcon />
             </IconButton>
           </Box>

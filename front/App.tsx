@@ -46,6 +46,84 @@ type Menu = {
   children?: Menu[];
   depth: number;
 }
+
+interface ToggleButtonProps {
+  open: boolean;
+  onClick: () => void;
+  fromRight?: boolean;
+}
+
+const ToggleButton = ({
+  open,
+  onClick,
+  fromRight,
+}: ToggleButtonProps) => {
+  const closedIcon = fromRight ? <RightIcon /> : <LeftIcon />;
+  const openedIcon = fromRight ? <LeftIcon /> : <RightIcon />;
+  return (
+    <IconButton
+      onClick={onClick}
+      sx={{
+        display: 'flex',
+        width: '16.25px',
+        height: '16.25px',
+        backgroundColor: 'transparent',
+        border: '2px solid #301a9a',
+      }}>
+      {open ? openedIcon : closedIcon}
+    </IconButton>
+  );
+};
+
+interface DrawerContainerProps extends ToggleButtonProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const DrawerContainer = ({
+  title,
+  open,
+  onClick,
+  children,
+}: DrawerContainerProps) => {
+  return (
+    <>
+      <Toolbar />
+      <Toolbar sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: open ? 'space-between' : 'flex-end',
+        px: [1],
+      }}>
+        <Fade in={open}>
+          <Typography sx={{
+            ml: '19px',
+            fontSize: '16px'
+          }}>
+            {title}
+          </Typography>
+        </Fade>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center',
+          width: '36px',
+          height: '36px',
+          backgroundColor: '#c4baf5',
+          borderRadius: '4px'
+        }}>
+          <ToggleButton open={open} onClick={onClick} />
+        </Box>
+      </Toolbar>
+      <Divider />
+      <Fade in={open}>
+        {children}
+      </Fade>
+    </>
+  );
+};
+
 const MenuNode = (menu: Menu): React.ReactNode => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,25 +141,27 @@ const MenuNode = (menu: Menu): React.ReactNode => {
   };
   const icon = getIcon();
   return (
-    <TreeNode title={
-      <ListItem sx={{
-        paddingLeft: `${16 + menu.depth * 24}px`,
-      }}
-        onClick={() => {
-          if (menu.path) {
-            navigate(menu.path);
-          }
-        }}
-        disabled={!menu.path && !menu.children}
-        button>
-        <ListItemIcon children={React.createElement(icon)} />
-        <ListItemText primary={menu.title} />
-      </ListItem>
-    }
+    <TreeNode
       key={menu.title}
       checkable={false}
-      children={menu.children?.map(MenuNode)}
-    />
+      title={
+        <ListItem button
+          disabled={!menu.path && !menu.children}
+          sx={{ paddingLeft: `${16 + menu.depth * 24}px` }}
+          onClick={() => {
+            if (menu.path) {
+              navigate(menu.path);
+            }
+          }}>
+          <ListItemIcon>
+            {React.createElement(icon)}
+          </ListItemIcon>
+          <ListItemText primary={menu.title} />
+        </ListItem>
+      }
+    >
+      {menu.children?.map(MenuNode)}
+    </TreeNode>
   );
 };
 
@@ -264,7 +344,9 @@ const App = () => {
           <Toolbar sx={{
             backgroundColor: '#3c3757'
           }}>
-            <Grid container spacing={2} wrap="nowrap"
+            <Grid container
+              spacing={2}
+              wrap="nowrap"
               sx={{
                 display: 'flex',
                 flexWrap: 'nowrap',
@@ -276,17 +358,20 @@ const App = () => {
               </Grid>
             </Grid>
             {login && (
-              <Grid item sx={{
-                display: 'flex',
-                flexWrap: 'nowrap',
-                justifyContent: 'flex-end',
-              }}>
-                <Formik onSubmit={handler.search}
+              <Grid item
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  justifyContent: 'flex-end',
+                }}>
+                <Formik
+                  onSubmit={handler.search}
                   initialValues={{
                     search: ''
                   }}>
                   {({ setFieldValue }) => (
-                    <Input placeholder="통합검색"
+                    <Input
+                      placeholder="통합검색"
                       onChange={(e) => {
                         setFieldValue('search', e.target.value);
                       }}
@@ -301,11 +386,13 @@ const App = () => {
                       endAdornment={
                         <InputAdornment
                           position="end"
-                          children={<SearchIcon />}
                           sx={{
                             color: '#717ea8',
-                          }} />
-                      } />
+                          }}>
+                          <SearchIcon />
+                        </InputAdornment>
+                      }
+                    />
                   )}
                 </Formik>
                 <Tooltip title="알림" placement="bottom">
@@ -315,121 +402,50 @@ const App = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="계정 정보" placement="bottom">
-                  <IconButton color="info"
-                    children={<AccountIcon />}
+                  <IconButton
+                    color="info"
                     onClick={() => {
                       console.log(login);
-                    }} />
+                    }}>
+                    <AccountIcon />
+                  </IconButton>
                 </Tooltip>
                 <Tooltip title="로그아웃" placement="bottom">
-                  <IconButton color="info"
-                    onClick={handler.logout}
-                    children={<LogoutIcon />} />
+                  <IconButton color="info" onClick={handler.logout}>
+                    <LogoutIcon />
+                  </IconButton>
                 </Tooltip>
               </Grid>
             )}
           </Toolbar>
         </AppBar>
         <AppDrawer variant="permanent" open={openMenu}>
-          <Toolbar />
-          <Toolbar sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            px: [1],
-          }}>
-            <Fade in={openMenu}
-              children={
-                <Typography
-                  color="primary"
-                  children="업무메뉴"
-                  sx={{
-                    ml: '24px',
-                    fontSize: '16px'
-                  }} />
-              } />
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              width: '36px',
-              height: '36px',
-              backgroundColor: '#c4baf5',
-              borderRadius: '4px'
-            }}>
-              <IconButton color="primary"
-                onClick={handler.toggleMenu}
-                children={openMenu ? <LeftIcon /> : <RightIcon />}
-                sx={{
-                  display: 'flex',
-                  width: '16.25px',
-                  height: '16.25px',
-                  backgroundColor: 'transparent',
-                  border: '2px solid #301a9a',
-                }} />
-            </Box>
-          </Toolbar>
-          <Divider />
-          <Fade in={openMenu}>
-            <Tree
-              onDragStart={handler.dragStart}
-              onDragEnter={handler.dragEnter}
-              onDrop={handler.drop}
-              showLine
-              draggable
-              defaultExpandAll>
-              {menuData.map(MenuNode)}
-            </Tree>
-          </Fade>
+          <DrawerContainer
+            title="업무메뉴"
+            open={openMenu}
+            onClick={handler.toggleMenu}
+            children={
+              <Tree showLine draggable defaultExpandAll
+                onDragStart={handler.dragStart}
+                onDragEnter={handler.dragEnter}
+                onDrop={handler.drop}
+                children={<>{menuData.map(MenuNode)}</>}
+              />
+            }
+          />
         </AppDrawer>
         {path.startsWith('/project') && (
           <ProjectDrawer variant="permanent" open={openProject}>
-            <Toolbar />
-            <Toolbar
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: openProject ? 'space-between' : 'flex-end',
-                px: [1],
-              }}>
-              <Fade in={openProject}
-                children={
-                  <Typography
-                    color="primary"
-                    children="프로젝트 목록"
-                    sx={{
-                      ml: '19px',
-                      fontSize: '16px'
-                    }} />
-                } />
-              <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignContent: 'center',
-                alignItems: 'center',
-                width: '36px',
-                height: '36px',
-                backgroundColor: '#c4baf5',
-                borderRadius: '4px'
-              }}>
-                <IconButton color="primary"
-                  onClick={handler.toggleProject}
-                  children={openProject ? <LeftIcon /> : <RightIcon />}
-                  sx={{
-                    display: 'flex',
-                    width: '16.25px',
-                    height: '16.25px',
-                    backgroundColor: 'transparent',
-                    border: '2px solid #301a9a',
-                  }} />
-              </Box>
-            </Toolbar>
-            <Divider />
-            <Fade in={openProject} children={<ProjectList />} />
+            <DrawerContainer
+              title="프로젝트 목록"
+              open={openProject}
+              onClick={handler.toggleProject}
+              children={<ProjectList />}
+            />
           </ProjectDrawer>
         )}
-        <Box component="main"
+        <Box
+          component="main"
           sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === 'light'
@@ -444,58 +460,24 @@ const App = () => {
           <Toolbar sx={{
             paddingLeft: 0,
             paddingRight: 0,
-          }} />
+          }}
+          />
           <ReactRouter />
         </Box>
         <Routes>
           <Route
             path="/project/:id/*"
             element={
-              <ProjectCommentDrawer
-                variant="permanent"
-                open={openComment}>
-                <Toolbar />
-                <Toolbar sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  px: [1],
-                }}>
-                  <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                    alignItems: 'center',
-                    width: '36px',
-                    height: '36px',
-                    backgroundColor: '#c4baf5',
-                    borderRadius: '4px'
-                  }}>
-                    <IconButton color="primary"
-                      onClick={handler.toggleComment}
-                      children={openComment ? <RightIcon /> : <LeftIcon />}
-                      sx={{
-                        display: 'flex',
-                        width: '16.25px',
-                        height: '16.25px',
-                        backgroundColor: 'transparent',
-                        border: '2px solid #301a9a',
-                      }} />
-                  </Box>
-                  <Fade in={openComment}
-                    children={
-                      <Typography
-                        color="primary"
-                        children="메모"
-                        sx={{
-                          ml: '19px',
-                          fontSize: '16px'
-                        }} />
-                    } />
-                </Toolbar>
-                <Divider />
-                <Fade in={openComment} children={<ProjectCommentList />} />
+              <ProjectCommentDrawer variant="permanent" open={openComment}>
+                <DrawerContainer fromRight
+                  title="메모"
+                  open={openComment}
+                  onClick={handler.toggleComment}
+                  children={<ProjectCommentList />}
+                />
               </ProjectCommentDrawer>
-            } />
+            }
+          />
         </Routes>
       </Box>
       <Alert />

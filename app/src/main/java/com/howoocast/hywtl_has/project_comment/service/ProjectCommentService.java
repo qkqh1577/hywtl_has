@@ -1,13 +1,13 @@
 package com.howoocast.hywtl_has.project_comment.service;
 
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project.service.ProjectFinder;
 import com.howoocast.hywtl_has.project_comment.domain.ProjectComment;
 import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentAddParameter;
 import com.howoocast.hywtl_has.project_comment.parameter.ProjectCommentChangeParameter;
 import com.howoocast.hywtl_has.project_comment.repository.ProjectCommentRepository;
 import com.howoocast.hywtl_has.project_comment.view.ProjectCommentView;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user.service.UserFinder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,9 @@ public class ProjectCommentService {
 
     private final ProjectCommentRepository repository;
 
-    private final ProjectRepository projectRepository;
+    private final ProjectFinder projectFinder;
 
-    private final UserRepository userRepository;
+    private final UserFinder userFinder;
 
     @Transactional(readOnly = true)
     public Page<ProjectCommentView> page(
@@ -46,10 +46,8 @@ public class ProjectCommentService {
     @Transactional
     public ProjectCommentView add(String username, ProjectCommentAddParameter params) {
         ProjectComment instance = ProjectComment.of(
-            projectRepository.findById(params.getProjectId())
-                .orElseThrow(() -> new NotFoundException("project", params.getProjectId())),
-            userRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username))),
+            projectFinder.load(params.getProjectId()),
+            userFinder.load(username),
             params.getDescription()
         );
         return ProjectCommentView.assemble(repository.save(instance));

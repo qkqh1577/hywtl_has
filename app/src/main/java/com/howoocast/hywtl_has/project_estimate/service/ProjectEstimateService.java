@@ -1,8 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project.service.ProjectFinder;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateParameter;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import lombok.RequiredArgsConstructor;
@@ -15,26 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectEstimateService {
 
-    private final ProjectRepository repository;
+    private final ProjectFinder finder;
+
 
     @Transactional(readOnly = true)
     public ProjectEstimateView getOne(Long id) {
-        Project instance = this.load(id);
+        Project instance = finder.load(id);
         return ProjectEstimateView.assemble(instance.getEstimate());
     }
 
     @Transactional
     public void upsert(Long id, ProjectEstimateParameter params) {
-        Project instance = this.load(id);
+        Project instance = finder.load(id);
         instance.changeEstimate(
             params.getReceivedDate(),
             params.getFigureLevel(),
             params.getTestLevel(),
             params.getReportLevel()
         );
-    }
-
-    private Project load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project", id));
     }
 }

@@ -43,6 +43,31 @@ const render = () => {
         disabledBackground: '#f1eaff',
       },
     },
+    components: {
+      MuiLink: {
+        styleOverrides: {
+          root: {
+            cursor: 'pointer'
+          }
+        }
+      },
+      MuiIconButton: {
+        defaultProps: {
+          color: 'primary'
+        }
+      },
+      MuiButton: {
+        defaultProps: {
+          color: 'primary',
+          variant: 'contained'
+        },
+        styleOverrides: {
+          root: {
+            maxHeight: '30px'
+          }
+        }
+      }
+    }
   });
 
   ReactDOM.render(

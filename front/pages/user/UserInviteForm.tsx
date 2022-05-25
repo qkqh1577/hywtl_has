@@ -91,35 +91,30 @@ const UserInviteForm = () => {
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
-            <Formik
-              initialValues={initialParameter}
-              onSubmit={handler.submit}
-            >
+            <Formik initialValues={initialParameter} onSubmit={handler.submit}>
               {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField
+                      <DataField required
                         name="name"
                         label="이름"
                         value={values.name}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        required
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <DataField required
                         name="email"
                         label="이메일"
                         value={values.email}
                         setFieldValue={setFieldValue}
                         errors={errors}
-                        required
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <DataField required
                         type="select"
                         name="userRole"
                         label="권한"
@@ -130,17 +125,15 @@ const UserInviteForm = () => {
                           key: item,
                           text: `${userRoleName(item)} 권한`
                         }))}
-                        required
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DepartmentSelector
+                      <DepartmentSelector required
                         name="departmentId"
                         label="소속 부서"
                         value={values.departmentId}
                         errors={errors}
                         setFieldValue={setFieldValue}
-                        required
                       />
                     </Grid>
                     <Grid item sm={12}>
@@ -151,13 +144,10 @@ const UserInviteForm = () => {
                         mt: '40px',
                       }}>
                         <Button
-                          color="primary"
-                          variant="contained"
+                          disabled={isSubmitting}
                           onClick={() => {
                             handleSubmit();
-                          }}
-                          disabled={isSubmitting}
-                        >
+                          }}>
                           {isSubmitting ? ' 등록 중' : '등록'}
                         </Button>
                       </Box>

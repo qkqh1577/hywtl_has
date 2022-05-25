@@ -3,20 +3,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
   Grid,
-  Input,
-  MenuItem,
   Paper,
-  Select,
   TablePagination,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { Table, TableCellProperty } from 'components';
+import { CheckboxField, DataField, Table, TableCellProperty } from 'components';
 import {
   DepartmentQuery,
   ListDepartment,
@@ -120,13 +112,9 @@ const DepartmentPage = () => {
         mb: '40px',
       }}>
         <h2>부서 목록</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-            navigate('/department-tree', { state: { filter } });
-          }}
-        >
+        <Button onClick={() => {
+          navigate('/department-tree', { state: { filter } });
+        }}>
           트리로 보기
         </Button>
       </Box>
@@ -135,91 +123,76 @@ const DepartmentPage = () => {
         width: '100%',
         mb: '40px',
       }}>
-        <Formik
-          initialValues={filter}
-          onSubmit={handler.search}
-          enableReinitialize
-        >
-          {({ values, isSubmitting, handleChange, handleSubmit, resetForm }) => (
+        <Formik enableReinitialize initialValues={filter} onSubmit={handler.search}>
+          {({ values, errors, isSubmitting, setFieldValue, handleSubmit, resetForm }) => (
             <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <FormLabel component="legend">부서 유형</FormLabel>
-                        <FormGroup row>
-                          {departmentCategoryList.map((item) => (
-                            <FormControlLabel
-                              key={item as string}
-                              control={
-                                <Checkbox
-                                  value={item}
-                                  checked={values.category?.includes(item)}
-                                  onChange={handleChange}
-                                  name="category"
-                                />
-                              }
-                              label={departmentCategoryName(item)}
-                            />
-                          ))}
-                        </FormGroup>
-                      </FormControl>
+                      <CheckboxField
+                        name="category"
+                        label="부서 유형"
+                        value={values.category ?? []}
+                        setFieldValue={setFieldValue}
+                        errors={errors}
+                        options={departmentCategoryList.map(item => ({
+                          key: item as string,
+                          text: departmentCategoryName(item),
+                        }))}
+                      />
                     </Grid>
                     <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색 대상</FormLabel>
-                          <Select
-                            value={values.keywordType}
-                            onChange={handleChange}
-                            name="keywordType"
-                            placeholder="선택"
-                          >
-                            <MenuItem value="by_name">부서명</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <DataField
+                          type="select"
+                          name="keywordType"
+                          label="검색 대상"
+                          value={values.keywordType ?? ''}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                          options={[
+                            {
+                              key: 'by_name',
+                              text: '부서명',
+                            }
+                          ]}
+                        />
                       </Grid>
                       <Grid item sm={8}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색어</FormLabel>
-                          <Input
-                            type="text"
-                            name="keyword"
-                            value={values.keyword}
-                            onChange={handleChange}
-                            placeholder="검색어를 입력하세요"
-                          />
-                        </FormControl>
+                        <DataField
+                          name="keyword"
+                          label="검색어"
+                          value={values.keyword ?? ''}
+                          setFieldValue={setFieldValue}
+                          errors={errors}
+                        />
                       </Grid>
                     </Grid>
                   </Grid>
                 </Form>
               </Grid>
-              <Grid item sm={2} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                alignContent: 'center'
-              }}>
+              <Grid item
+                sm={2}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-around',
+                  alignContent: 'center'
+                }}>
                 <Button
-                  color="primary"
-                  variant="contained"
                   disabled={isSubmitting}
                   onClick={() => {
                     handleSubmit();
-                  }}
-                >
+                  }}>
                   검색
                 </Button>
                 <Button
                   color="secondary"
-                  variant="contained"
                   onClick={() => {
                     handler.clear();
                     resetForm();
-                  }}
-                >
+                  }}>
                   초기화
                 </Button>
               </Grid>
@@ -233,10 +206,7 @@ const DepartmentPage = () => {
         maxHeight: 740,
         mb: '20px',
       }}>
-        <Table
-          columns={columns}
-          list={page.content}
-        />
+        <Table columns={columns} list={page.content} />
       </Box>
       <Box sx={{
         display: 'flex',
@@ -245,10 +215,12 @@ const DepartmentPage = () => {
         mb: '20px',
       }}>
         <Grid container spacing={2}>
-          <Grid item sm={8} sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-          }}>
+          <Grid item
+            sm={8}
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+            }}>
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
@@ -266,11 +238,7 @@ const DepartmentPage = () => {
               width: '100%',
               mt: '40px',
             }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handler.toAdd}
-              >
+              <Button onClick={handler.toAdd}>
                 등록
               </Button>
             </Box>

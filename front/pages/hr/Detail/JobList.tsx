@@ -55,24 +55,19 @@ const PersonnelDetailJobList = ({
         justifyContent: 'space-between',
       }}>
         <h2>소속 정보</h2>
-        <Button
-          color="primary"
-          variant="contained"
-          style={{ height: '36px' }}
-          onClick={() => {
-            if (Array.isArray(values)) {
-              setFieldValue(FIELD_NAME, [...values, initJobView]);
-            } else {
-              setFieldValue(FIELD_NAME, [initJobView]);
-            }
-          }}
-        >
+        <Button onClick={() => {
+          if (Array.isArray(values)) {
+            setFieldValue(FIELD_NAME, [...values, initJobView]);
+          } else {
+            setFieldValue(FIELD_NAME, [initJobView]);
+          }
+        }}>
           추가
         </Button>
       </Grid>
       {Array.isArray(values) && (values as PersonnelJobView[])
       .map((item, i) => (
-        <Grid key={i} item sm={12}>
+        <Grid item key={i} sm={12}>
           <Box sx={{
             display: 'flex',
             width: '100%',
@@ -80,43 +75,39 @@ const PersonnelDetailJobList = ({
           }}>
             <Grid container spacing={2} wrap="nowrap">
               <Grid item sm={4}>
-                <DepartmentSelector
+                <DepartmentSelector required
                   name={`${FIELD_NAME}[${i}].departmentId`}
                   label="소속 부서"
                   value={item.departmentId}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="직함"
                   name={`${FIELD_NAME}[${i}].jobTitle`}
                   value={item.jobTitle}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="직종"
                   name={`${FIELD_NAME}[${i}].jobType`}
                   value={item.jobType}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DataField required
                   label="직위"
                   name={`${FIELD_NAME}[${i}].jobPosition`}
                   value={item.jobPosition}
                   setFieldValue={setFieldValue}
                   errors={errors}
-                  required
                 />
               </Grid>
               <Grid item>
@@ -149,8 +140,7 @@ const PersonnelDetailJobList = ({
                   return;
                 }
                 setFieldValue(FIELD_NAME, list.filter((item, j) => i !== j));
-              }}
-            >
+              }}>
               <DeleteIcon />
             </IconButton>
           </Box>

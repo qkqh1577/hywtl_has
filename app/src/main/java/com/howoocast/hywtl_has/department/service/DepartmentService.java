@@ -32,7 +32,10 @@ public class DepartmentService {
     private final DepartmentRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<DepartmentListView> page(@Nullable Predicate predicate, Pageable pageable) {
+    public Page<DepartmentListView> page(
+        @Nullable Predicate predicate,
+        Pageable pageable
+    ) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))

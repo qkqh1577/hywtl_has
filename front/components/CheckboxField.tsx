@@ -16,6 +16,9 @@ import {
   optionText,
   optionTooltip
 } from 'components';
+import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
 export type CheckboxFieldProps = {
   variant?: 'standard' | 'filled' | 'outlined';
@@ -24,14 +27,16 @@ export type CheckboxFieldProps = {
   value: DataFieldValue[];
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   errors: FormikErrors<FormikValues>,
+  errorText?: string;
   required?: boolean;
   disabled?: boolean;
   options: Option[] | DataFieldValue[];
   helperText?: string | React.ReactNode;
-  sx?: object;
+  sx?: SxProps<Theme>;
   size?: 'small';
   disableLabel?: boolean;
   disableAll?: boolean;
+  readOnly?: boolean;
 }
 const CheckboxField = ({
   variant,
@@ -40,8 +45,10 @@ const CheckboxField = ({
   value,
   setFieldValue,
   errors,
-  required,
+  errorText,
+  required: requiredProp,
   disabled,
+  readOnly,
   options,
   helperText,
   sx,
@@ -55,9 +62,11 @@ const CheckboxField = ({
       ? false
       : value.includes(optionKey(option));
 
+  const required: boolean | undefined = !disableLabel && !(disabled || readOnly) && requiredProp;
+
   useEffect(() => {
-    if (errors && typeof errors[name] === 'string') {
-      setHelperMessage(errors[name]);
+    if (errors && errors[name]) {
+      setHelperMessage(errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`);
     } else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
@@ -68,25 +77,25 @@ const CheckboxField = ({
       id={`params-${name}`}
       variant={variant}
       size={size}
-      required={!disableLabel && !(disabled === true) && required === true}
-      disabled={disabled === true}
+      required={required}
+      disabled={disabled}
       sx={sx}
-      fullWidth
-    >
+      fullWidth>
       {!disableLabel && (
-        <FormLabel
-          component="legend"
-        >
+        <FormLabel component="legend">
           {label}
         </FormLabel>
       )}
       <FormGroup row>
         {!disableAll && (
           <FormControlLabel
+            label="전체"
             control={
               <Tooltip title={`${label} - 전체`}>
                 <Checkbox
                   name={`${name}-all`}
+                  readOnly={readOnly}
+                  disabled={disabled}
                   checked={value && options.length === value.length}
                   onChange={() => {
                     if (value && options.length === value.length) {
@@ -94,24 +103,23 @@ const CheckboxField = ({
                     } else {
                       setFieldValue(name, options.map(optionKey));
                     }
-                  }
-                  }
-                />
+                  }} />
               </Tooltip>
-            }
-            label="전체"
-          />
+            } />
         )}
         {options.map((option) => {
           const key = optionKey(option);
           return (
             <FormControlLabel
               key={key}
+              label={optionText(option)}
               control={
                 <Tooltip title={optionTooltip(option) ?? `${label} - ${optionText(option)}`}>
                   <Checkbox
                     name={name}
                     value={key}
+                    readOnly={readOnly}
+                    disabled={disabled}
                     checked={isChecked(option)}
                     onChange={() => {
                       if (isChecked(option) && value) {
@@ -119,16 +127,13 @@ const CheckboxField = ({
                       } else {
                         setFieldValue(name, [...(value ?? []), optionKey(option)]);
                       }
-                    }}
-                  />
+                    }} />
                 </Tooltip>
-              }
-              label={optionText(option)}
-            />
+              } />
           );
         })}
       </FormGroup>
-      {typeof errors[name] === 'string' && (
+      {typeof errors[name] !== 'undefined' && (
         <FormHelperText error>
           {helperMessage}
         </FormHelperText>
