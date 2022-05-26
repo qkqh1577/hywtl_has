@@ -9,7 +9,7 @@ import com.howoocast.hywtl_has.personnel.view.PersonnelCareerView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelCompanyView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelJobView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelLicenseView;
-import com.howoocast.hywtl_has.personnel.view.PersonnelListView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
 import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
@@ -35,7 +35,7 @@ public class PersonnelController {
     private final PersonnelService personnelService;
 
     @GetMapping("/personnels")
-    public Page<PersonnelListView> page(
+    public Page<PersonnelShortView> page(
         @RequestParam(required = false, name = "sex[]") List<String> sexList,
         @RequestParam(required = false, name = "hiredType[]") List<String> hiredTypeList,
         @RequestParam(required = false) String keyword,

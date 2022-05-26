@@ -10,7 +10,7 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheetTestS
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetCommentParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateSheetRepository;
-import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
+import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository;
@@ -37,9 +37,9 @@ public class ProjectEstimateSheetService {
     private final UserFinder userFinder;
 
     @Transactional(readOnly = true)
-    public List<ProjectEstimateSheetListView> getList(Long projectId) {
+    public List<ProjectEstimateSheetShortView> getList(Long projectId) {
         return repository.findByProject_Id(projectId).stream()
-            .map(ProjectEstimateSheetListView::assemble)
+            .map(ProjectEstimateSheetShortView::assemble)
             .collect(Collectors.toList());
     }
 

@@ -7,7 +7,7 @@ import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceD
 import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceTemplateChangeSeqParameter;
 import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceTemplateParameter;
 import com.howoocast.hywtl_has.standard_data.test_service.repository.TestServiceTemplateRepository;
-import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateListView;
+import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateShortView;
 import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateView;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ public class TestServiceTemplateService {
     private final TestServiceTemplateRepository repository;
 
     @Transactional(readOnly = true)
-    public List<TestServiceTemplateListView> getList(Predicate predicate) {
+    public List<TestServiceTemplateShortView> getList(Predicate predicate) {
         return
             StreamSupport.stream(
                     repository.findAll(predicate, Sort.by(Direction.ASC, "seq")).spliterator(),
                     false
                 )
-                .map(TestServiceTemplateListView::assemble)
+                .map(TestServiceTemplateShortView::assemble)
                 .collect(Collectors.toList());
     }
 

@@ -7,7 +7,7 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
-import com.howoocast.hywtl_has.personnel.view.PersonnelListView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
@@ -33,12 +33,12 @@ public class PersonnelService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public Page<PersonnelListView> page(
+    public Page<PersonnelShortView> page(
         Predicate predicate,
         Pageable pageable
     ) {
         return repository.findAll(predicate, pageable)
-            .map(PersonnelListView::assemble);
+            .map(PersonnelShortView::assemble);
     }
 
     @Transactional(readOnly = true)

@@ -1,8 +1,11 @@
 package com.howoocast.hywtl_has.project.parameter;
 
+import com.howoocast.hywtl_has.project.domain.Project;
 import java.time.LocalDate;
 import javax.validation.constraints.Min;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,4 +26,25 @@ public class ProjectOrderParameter {
     private LocalDate closeDate;
 
     private Boolean isOnGoing;
+
+    public ProjectChangeOrderBuilder changeOrderBuilder() {
+        return new ProjectChangeOrderBuilder(this);
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ProjectChangeOrderBuilder {
+
+        private final ProjectOrderParameter params;
+
+        public void action(Project instance) {
+            instance.changeOrder(
+                params.amount,
+                params.receivedDate,
+                params.beginDate,
+                params.closeDate,
+                params.isOnGoing
+            );
+        }
+
+    }
 }

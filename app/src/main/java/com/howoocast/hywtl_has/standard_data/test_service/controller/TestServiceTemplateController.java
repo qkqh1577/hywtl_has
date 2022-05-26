@@ -4,7 +4,7 @@ import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceT
 import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceTemplateParameter;
 import com.howoocast.hywtl_has.standard_data.test_service.parameter.TestServiceTemplatePredicateBuilder;
 import com.howoocast.hywtl_has.standard_data.test_service.service.TestServiceTemplateService;
-import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateListView;
+import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateShortView;
 import com.howoocast.hywtl_has.standard_data.test_service.view.TestServiceTemplateView;
 import java.util.List;
 import javax.validation.Valid;
@@ -28,7 +28,7 @@ public class TestServiceTemplateController {
     private final TestServiceTemplateService service;
 
     @GetMapping("/standard-data/test-service-templates")
-    public List<TestServiceTemplateListView> getList(
+    public List<TestServiceTemplateShortView> getList(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false, name = "testType[]") List<String> testTypeList

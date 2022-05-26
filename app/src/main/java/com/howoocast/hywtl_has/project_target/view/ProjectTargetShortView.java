@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project_target.view;
 
 import com.howoocast.hywtl_has.project_target.domain.ProjectTarget;
 import com.howoocast.hywtl_has.project_target.domain.ProjectTargetDetail;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import lombok.Getter;
 
 @Getter
-public class ProjectTargetListView {
+public class ProjectTargetShortView {
 
     private Long id;
 
@@ -23,7 +23,7 @@ public class ProjectTargetListView {
 
     private List<String> testList;
 
-    private UserListView writer;
+    private UserShortView writer;
 
     private String memo;
 
@@ -31,15 +31,15 @@ public class ProjectTargetListView {
 
     private LocalDateTime modifiedAt;
 
-    public static ProjectTargetListView assemble(ProjectTarget source) {
-        ProjectTargetListView target = new ProjectTargetListView();
+    public static ProjectTargetShortView assemble(ProjectTarget source) {
+        ProjectTargetShortView target = new ProjectTargetShortView();
         target.id = source.getId();
         target.confirmed = Optional.ofNullable(source.getEstimateSheetList())
             .map(List::size).map(size -> size > 0).orElse(Boolean.FALSE);
         target.code = source.getCode();
         target.detailCount = source.getDetailList().size();
         target.testList = getTestList(source);
-        target.writer = UserListView.assemble(source.getWriter());
+        target.writer = UserShortView.assemble(source.getWriter());
         target.memo = source.getMemo();
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();

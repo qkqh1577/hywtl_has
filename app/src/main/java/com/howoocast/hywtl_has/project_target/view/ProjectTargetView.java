@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project_target.view;
 
 import com.howoocast.hywtl_has.project_target.domain.ProjectTarget;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ public class ProjectTargetView {
 
     private String memo;
 
-    private UserListView writer;
+    private UserShortView writer;
 
     private List<ProjectTargetDetailView> detailList;
 
@@ -32,7 +32,7 @@ public class ProjectTargetView {
         target.code = source.getCode();
         target.testList = source.getTestList();
         target.memo = source.getMemo();
-        target.writer = UserListView.assemble(source.getWriter());
+        target.writer = UserShortView.assemble(source.getWriter());
         target.detailList = source.getDetailList().stream()
             .map(ProjectTargetDetailView::assemble)
             .collect(Collectors.toList());
