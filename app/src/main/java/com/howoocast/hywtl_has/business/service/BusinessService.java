@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.business.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
-import com.howoocast.hywtl_has.business.exception.BusinessManagerNondeletableException;
+import com.howoocast.hywtl_has.business.exception.BusinessDeleteException;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
@@ -145,7 +145,7 @@ public class BusinessService {
     public void delete(Long id) {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
-                throw new BusinessManagerNondeletableException();
+                throw new BusinessDeleteException();
             }
             repository.deleteById(instance.getId());
         });
