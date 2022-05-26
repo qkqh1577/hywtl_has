@@ -8,7 +8,7 @@ import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParamete
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentItemView;
-import com.howoocast.hywtl_has.department.view.DepartmentListView;
+import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
@@ -32,20 +32,20 @@ public class DepartmentService {
     private final DepartmentRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<DepartmentListView> page(
+    public Page<DepartmentShortView> page(
         @Nullable Predicate predicate,
         Pageable pageable
     ) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
-            .map(DepartmentListView::assemble);
+            .map(DepartmentShortView::assemble);
     }
 
     @Transactional(readOnly = true)
-    public List<DepartmentListView> list() {
+    public List<DepartmentShortView> list() {
         return repository.findAll().stream()
-            .map(DepartmentListView::assemble)
+            .map(DepartmentShortView::assemble)
             .collect(Collectors.toList());
     }
 

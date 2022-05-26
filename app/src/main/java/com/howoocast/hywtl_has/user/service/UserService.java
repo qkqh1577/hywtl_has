@@ -13,8 +13,8 @@ import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
-import com.howoocast.hywtl_has.user.view.UserDetailView;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
 import java.util.Objects;
@@ -46,38 +46,38 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
 
     @Transactional(readOnly = true)
-    public Page<UserListView> page(
+    public Page<UserShortView> page(
         @Nullable Predicate predicate,
         Pageable pageable
     ) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
-            .map(UserListView::assemble);
+            .map(UserShortView::assemble);
     }
 
     @Transactional(readOnly = true)
-    public List<UserListView> getAll() {
+    public List<UserShortView> getAll() {
         return repository.findAll().stream()
-            .map(UserListView::assemble)
+            .map(UserShortView::assemble)
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public UserDetailView get(Long id) {
+    public UserView get(Long id) {
         User instance = this.load(id);
-        return UserDetailView.assemble(instance);
+        return UserView.assemble(instance);
     }
 
     @Transactional(readOnly = true)
-    public UserDetailView get(String username) {
+    public UserView get(String username) {
         User instance = repository.findByUsername(username)
             .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
-        return UserDetailView.assemble(instance);
+        return UserView.assemble(instance);
     }
 
     @Transactional
-    public UserDetailView add(UserAddParameter params) {
+    public UserView add(UserAddParameter params) {
         String email = params.getEmail();
         UserInvitation userInvitation = userInvitationRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(
@@ -97,7 +97,7 @@ public class UserService {
         this.checkEmailUsed(instance);
         this.checkUsernameUsed(instance);
         userInvitationRepository.deleteById(userInvitation.getId());
-        return UserDetailView.assemble(repository.save(instance));
+        return UserView.assemble(repository.save(instance));
     }
 
     @Transactional

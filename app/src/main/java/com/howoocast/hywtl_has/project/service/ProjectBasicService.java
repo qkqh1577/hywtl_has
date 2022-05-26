@@ -34,7 +34,7 @@ public class ProjectBasicService {
 
     @Transactional
     public void update(Long projectId, ProjectStatusParameter params) {
-        Project instance = finder.load(projectId);
-        instance.changeStatus(params.getStatus());
+        params.statusChangeBuilder()
+            .action(finder.load(projectId));
     }
 }

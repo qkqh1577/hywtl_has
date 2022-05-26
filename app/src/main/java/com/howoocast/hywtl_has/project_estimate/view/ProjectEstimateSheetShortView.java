@@ -2,12 +2,12 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.project_estimate.common.ProjectEstimateSheetStatus;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateSheet;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class ProjectEstimateSheetListView {
+public class ProjectEstimateSheetShortView {
 
     private Long id;
 
@@ -19,20 +19,20 @@ public class ProjectEstimateSheetListView {
 
     private String memo;
 
-    private UserListView writer;
+    private UserShortView writer;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public static ProjectEstimateSheetListView assemble(ProjectEstimateSheet source) {
-        ProjectEstimateSheetListView target = new ProjectEstimateSheetListView();
+    public static ProjectEstimateSheetShortView assemble(ProjectEstimateSheet source) {
+        ProjectEstimateSheetShortView target = new ProjectEstimateSheetShortView();
         target.id = source.getId();
         target.confirmed = source.getConfirmed();
         target.status = source.getStatus();
         target.title = source.getTitle();
         target.memo = source.getMemo();
-        target.writer = UserListView.assemble(source.getWriter());
+        target.writer = UserShortView.assemble(source.getWriter());
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();
         return target;

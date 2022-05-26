@@ -9,8 +9,8 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
-import com.howoocast.hywtl_has.user.view.UserDetailView;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import java.util.List;
 import javax.validation.Valid;
@@ -39,7 +39,7 @@ public class UserController {
     private final PasswordResetService passwordResetService;
 
     @GetMapping("/users")
-    public Page<UserListView> page(
+    public Page<UserShortView> page(
         @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
@@ -55,12 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/users/all")
-    public List<UserListView> getAll() {
+    public List<UserShortView> getAll() {
         return userService.getAll();
     }
 
     @GetMapping("/users/login")
-    public UserDetailView getLogin(Authentication authentication) {
+    public UserView getLogin(Authentication authentication) {
         try {
             String username = authentication.getName();
             log.debug("[Login] username: {}", username);
@@ -71,12 +71,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public UserDetailView get(@PathVariable Long id) {
+    public UserView get(@PathVariable Long id) {
         return userService.get(id);
     }
 
     @PostMapping("/user/invite")
-    public UserDetailView add(@Valid @RequestBody UserAddParameter params) {
+    public UserView add(@Valid @RequestBody UserAddParameter params) {
         return userService.add(params);
     }
 
@@ -91,13 +91,13 @@ public class UserController {
     }
 
     @PatchMapping("/users/{id}")
-    public UserDetailView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
+    public UserView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
         userService.change(id, params);
         return userService.get(id);
     }
 
     @PatchMapping("/users/{id}/password")
-    public UserDetailView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
+    public UserView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
         userService.changePassword(id, params);
         return userService.get(id);
     }

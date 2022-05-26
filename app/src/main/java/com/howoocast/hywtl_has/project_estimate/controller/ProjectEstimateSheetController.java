@@ -3,7 +3,7 @@ package com.howoocast.hywtl_has.project_estimate.controller;
 import com.howoocast.hywtl_has.common.service.ValidationGroup;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateSheetParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateSheetService;
-import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetListView;
+import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateSheetView;
 import com.howoocast.hywtl_has.user.exception.UserLoginException;
 import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
@@ -30,7 +30,7 @@ public class ProjectEstimateSheetController {
     private final ProjectEstimateSheetService projectEstimateSheetService;
 
     @GetMapping("/projects/{projectId}/estimate/sheets")
-    public List<ProjectEstimateSheetListView> getList(@PathVariable Long projectId) {
+    public List<ProjectEstimateSheetShortView> getList(@PathVariable Long projectId) {
         return projectEstimateSheetService.getList(projectId);
     }
 
