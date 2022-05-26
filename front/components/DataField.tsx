@@ -104,7 +104,7 @@ const DataField = ({
     } else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
-  }, [errors]);
+  }, [errors, helperText]);
 
   const [viewValue, setViewValue] = useState<DataFieldValue>(value);
   const [amount, setAmount] = useState<number | undefined>();

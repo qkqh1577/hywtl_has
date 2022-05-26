@@ -201,7 +201,7 @@ const App = () => {
       ]
     }, {
       title: '업체 관리',
-      path: '/company',
+      path: '/business-management',
       depth: 0,
     }, {
       title: '인사카드 관리',

@@ -7,12 +7,11 @@ import { userInvitationSaga } from 'services/user/invitation';
 import { passwordResetSaga } from 'services/user/password_reset';
 import { personnelSaga } from 'services/personnel';
 import { projectSaga } from 'services/project';
-import { projectReviewSaga } from 'services/project_review';
 import { projectTargetSaga } from 'services/project_target';
 import { projectEstimateSaga } from 'services/project_estimate';
 import { projectCommentSaga } from 'services/project_comment';
+import { businessSaga } from 'services/business';
 import { testServiceTemplateSaga } from 'services/standard_data/test_service_template';
-import { companySaga } from 'services/company';
 import reducer from 'services/common/reducer';
 
 const middleware = createSagaMiddleware();
@@ -24,13 +23,12 @@ function* saga() {
     userInvitationSaga(),
     personnelSaga(),
     projectSaga(),
-    projectReviewSaga(),
     projectTargetSaga(),
     projectEstimateSaga(),
     projectCommentSaga(),
-    testServiceTemplateSaga(),
     passwordResetSaga(),
-    companySaga(),
+    businessSaga(),
+    testServiceTemplateSaga(),
   ]);
 }
 
