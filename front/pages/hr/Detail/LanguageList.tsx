@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
-import { DataField, DatePicker } from 'components';
+import { DataField } from 'components';
 import {
   PersonnelLanguageView,
   initLanguageView,
@@ -110,7 +110,8 @@ const PersonnelDetailLanguageList = ({
                 />
               </Grid>
               <Grid item>
-                <DatePicker required disableFuture
+                <DataField required disableFuture
+                  type="date"
                   name={`${FIELD_NAME}[${i}].certifiedDate`}
                   label="취득일"
                   value={item.certifiedDate}

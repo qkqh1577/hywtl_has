@@ -15,10 +15,8 @@ import {
 import { Formik, Form, FormikHelpers } from 'formik';
 import dayjs from 'dayjs';
 import {
-  CheckboxField,
   DataField,
   DateFormat,
-  DatePicker,
   Table,
 } from 'components';
 import {
@@ -133,7 +131,8 @@ const PersonnelPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <CheckboxField
+                      <DataField
+                        type="checkbox"
                         name="sex"
                         label="성별"
                         value={values.sex}
@@ -143,7 +142,8 @@ const PersonnelPage = () => {
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <CheckboxField
+                      <DataField
+                        type="checkbox"
                         name="hiredType"
                         label="입사 구분"
                         value={values.hiredType}
@@ -207,7 +207,8 @@ const PersonnelPage = () => {
                         </FormControl>
                       </Grid>
                       <Grid item sm={4}>
-                        <DatePicker
+                        <DataField
+                          type="date"
                           name="startDate"
                           label="시작일"
                           value={values.startDate ? dayjs(values.startDate).toDate() : null}
@@ -216,7 +217,8 @@ const PersonnelPage = () => {
                         />
                       </Grid>
                       <Grid item sm={4}>
-                        <DatePicker
+                        <DataField
+                          type="date"
                           name="endDate"
                           label="종료일"
                           value={values.endDate ? dayjs(values.endDate).toDate() : null}

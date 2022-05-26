@@ -8,7 +8,7 @@ import {
   TablePagination,
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { CheckboxField, DataField, Table, TableCellProperty } from 'components';
+import { DataField, Table, TableCellProperty } from 'components';
 import {
   DepartmentQuery,
   DepartmentShort,
@@ -130,7 +130,8 @@ const DepartmentPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <CheckboxField
+                      <DataField
+                        type="checkbox"
                         name="category"
                         label="부서 유형"
                         value={values.category ?? []}

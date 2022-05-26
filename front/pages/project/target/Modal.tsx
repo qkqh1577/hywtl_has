@@ -7,7 +7,6 @@ import {
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import {
-  CheckboxField,
   DataField,
   Modal,
   Table,
@@ -229,7 +228,8 @@ const ProjectTargetModal = () => {
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <CheckboxField disableAll
+                  <DataField disableAll
+                    type="checkbox"
                     name="testList"
                     label="실험 종류(단지)"
                     value={values.testList}
@@ -316,7 +316,8 @@ const ProjectTargetModal = () => {
                     label: '실험 종류',
                     required: edit,
                     renderCell: (item, i) =>
-                      <CheckboxField disableAll disableLabel
+                      <DataField disableAll disableLabel
+                        type="checkbox"
                         name={`detailList[${i}].testList`}
                         label="실험 종류(동)"
                         value={item.testList}

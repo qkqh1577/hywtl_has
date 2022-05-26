@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
-import { DataField, DatePicker } from 'components';
+import { DataField } from 'components';
 import {
   PersonnelLicenseView,
   initLicenseView,
@@ -109,7 +109,8 @@ const PersonnelDetailLicenseList = ({
                 />
               </Grid>
               <Grid item>
-                <DatePicker required disableFuture
+                <DataField required disableFuture
+                  type="date"
                   name={`${FIELD_NAME}[${i}].qualifiedDate`}
                   label="인가일"
                   value={item.qualifiedDate}

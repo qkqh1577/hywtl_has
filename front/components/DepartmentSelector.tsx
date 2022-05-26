@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-  DataFieldProps,
-  DataSelector,
-} from 'components';
+import { DataField, SelectProps } from 'components';
 import { DepartmentShort, departmentApi } from 'services/department';
 
-const DepartmentSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
+const DepartmentSelector = (props: Omit<SelectProps, 'type' | 'options'>) => {
 
   const [list, setList] = useState<DepartmentShort[] | null>();
 
@@ -15,7 +12,8 @@ const DepartmentSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => 
   }, []);
 
   return (
-    <DataSelector
+    <DataField
+      type="select"
       options={list?.map(item => ({
         key: item.id,
         text: item.name,

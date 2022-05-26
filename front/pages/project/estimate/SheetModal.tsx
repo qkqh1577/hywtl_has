@@ -14,8 +14,6 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import dayjs from 'dayjs';
 import {
   DataField,
-  DataSelector,
-  DatePicker,
   Modal,
   RequiredMark,
   Table,
@@ -591,7 +589,8 @@ const ProjectEstimateSheetModal = () => {
                     flexWrap: 'wrap',
                     mb: '20px',
                   }}>
-                    <DataSelector
+                    <DataField
+                      type="select"
                       name="reviewId"
                       label="형상비 검토"
                       value={values.reviewId}
@@ -602,7 +601,7 @@ const ProjectEstimateSheetModal = () => {
                         text: `${item.code}(${projectReviewStatusName(item.status)})`,
                       })) ?? null}
                       readOnly={typeof detail !== 'undefined'}
-                      onChange={(value) => {
+                      onChange={(e, value) => {
                         if (typeof value === 'number') {
                           handler.onReviewChange(value, setFieldValue);
                         }
@@ -713,7 +712,8 @@ const ProjectEstimateSheetModal = () => {
                   }}>
                     <Grid container spacing={2}>
                       <Grid item sm={3}>
-                        <DatePicker required
+                        <DataField required
+                          type="date"
                           name="estimateDate"
                           label="견적일자"
                           value={values.estimateDate}
@@ -722,7 +722,8 @@ const ProjectEstimateSheetModal = () => {
                         />
                       </Grid>
                       <Grid item sm={3}>
-                        <DatePicker
+                        <DataField
+                          type="date"
                           name="expectedStartMonth"
                           label="착수 가능"
                           value={values.expectedStartMonth}

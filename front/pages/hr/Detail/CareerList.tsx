@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Button, Grid, IconButton } from '@mui/material';
 import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import { FormikErrors } from 'formik';
-import { DataField, DatePicker } from 'components';
+import { DataField } from 'components';
 import {
   PersonnelCareerView,
   initCareerView,
@@ -82,7 +82,8 @@ const PersonnelDetailCareerList = ({
                 />
               </Grid>
               <Grid item>
-                <DatePicker required disableFuture
+                <DataField required disableFuture
+                  type="date"
                   name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   value={item.startDate}
@@ -92,7 +93,8 @@ const PersonnelDetailCareerList = ({
                 />
               </Grid>
               <Grid item>
-                <DatePicker required disableFuture
+                <DataField required disableFuture
+                  type="date"
                   name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   value={item.endDate}

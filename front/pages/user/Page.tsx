@@ -14,7 +14,7 @@ import {
   Box
 } from '@mui/material';
 import { Formik, FormikHelpers, Form } from 'formik';
-import { DataField, CheckboxField } from 'components';
+import { DataField } from 'components';
 import {
   useUser,
   UserQuery,
@@ -124,7 +124,8 @@ const UserPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <CheckboxField
+                      <DataField
+                        type="checkbox"
                         name="role"
                         label="권한"
                         setFieldValue={setFieldValue}
