@@ -61,12 +61,15 @@ const ProjectReviewList = () => {
               <>
                 <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                 {item.modifiedAt && (
-                  <DateFormat
-                    date={item.modifiedAt}
-                    format="YYYY-MM-DD HH:mm"
-                    prefix="("
-                    postfix=" 수정됨)"
-                  />
+                  <>
+                    <br />
+                    <DateFormat
+                      date={item.modifiedAt}
+                      format="YYYY-MM-DD HH:mm"
+                      prefix="("
+                      postfix=" 수정됨)"
+                    />
+                  </>
                 )}
               </>
             )

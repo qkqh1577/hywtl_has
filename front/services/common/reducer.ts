@@ -4,6 +4,7 @@ import { userReducer, UserState } from 'services/user';
 import { userInvitationReducer, UserInvitationState } from 'services/user/invitation';
 import { personnelReducer, PersonnelState } from 'services/personnel';
 import { projectReducer, ProjectState } from 'services/project';
+import { projectReviewReducer, ProjectReviewState } from 'services/project_review';
 import { projectTargetReducer, ProjectTargetState } from 'services/project_target';
 import { projectEstimateReducer, ProjectEstimateState } from 'services/project_estimate';
 import { projectCommentReducer, ProjectCommentState } from 'services/project_comment';
@@ -11,7 +12,6 @@ import { passwordResetReducer, PasswordResetState } from 'services/user/password
 import { testServiceTemplateReducer, TestServiceTemplateState} from 'services/standard_data/test_service_template';
 import { businessReducer, BusinessState } from 'services/business';
 import { dialogReducer, DialogState } from 'components';
-import { projectReviewReducer, ProjectReviewState } from 'services/project_review';
 
 export type RootState = {
   department: DepartmentState;

@@ -53,17 +53,19 @@ const render = () => {
       },
       MuiIconButton: {
         defaultProps: {
-          color: 'primary'
+          color: 'primary',
         }
       },
       MuiButton: {
         defaultProps: {
           color: 'primary',
-          variant: 'contained'
+          variant: 'contained',
         },
         styleOverrides: {
           root: {
-            maxHeight: '30px'
+            maxHeight: '30px',
+            minWidth: '70px',
+            fontSize: '10px',
           }
         }
       }
