@@ -23,14 +23,8 @@ public class ProjectOrderService {
 
     @Transactional
     public void update(Long projectId, ProjectOrderParameter params) {
-        Project instance = finder.load(projectId);
-        instance.changeOrder(
-            params.getAmount(),
-            params.getReceivedDate(),
-            params.getBeginDate(),
-            params.getCloseDate(),
-            params.getIsOnGoing()
-        );
+        params.changeOrderBuilder()
+            .action(finder.load(projectId));
     }
 
 }

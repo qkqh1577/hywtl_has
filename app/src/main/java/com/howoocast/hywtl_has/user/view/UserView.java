@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class UserDetailView {
+public class UserView {
 
     private Long id;
     private String username;
@@ -19,8 +19,8 @@ public class UserDetailView {
     private LocalDateTime loginAt;
     private LocalDateTime passwordChangedAt;
 
-    public static UserDetailView assemble(User source) {
-        UserDetailView target = new UserDetailView();
+    public static UserView assemble(User source) {
+        UserView target = new UserView();
         target.id = source.getId();
         target.username = source.getUsername();
         target.email = source.getEmail();

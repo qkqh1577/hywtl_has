@@ -11,25 +11,25 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DepartmentListView extends DepartmentItemView {
+public class DepartmentShortView extends DepartmentItemView {
 
     private Long id;
     private String name;
     private DepartmentCategory category;
-    private DepartmentListView parent;
+    private DepartmentShortView parent;
 
     private Long parentId;
 
     private Integer userCount;
     private Integer childrenCount;
 
-    public static DepartmentListView assemble(Department source) {
-        DepartmentListView target = new DepartmentListView();
+    public static DepartmentShortView assemble(Department source) {
+        DepartmentShortView target = new DepartmentShortView();
         target.id = source.getId();
         target.name = source.getName();
         target.category = source.getCategory();
         if (Objects.nonNull(source.getParent())) {
-            DepartmentListView targetParent = new DepartmentListView();
+            DepartmentShortView targetParent = new DepartmentShortView();
             targetParent.id = source.getParent().getId();
             targetParent.name = source.getParent().getName();
             targetParent.category = source.getParent().getCategory();

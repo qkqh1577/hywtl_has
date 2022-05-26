@@ -6,7 +6,7 @@ import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentPredicateBuilder;
 import com.howoocast.hywtl_has.department.service.DepartmentService;
 import com.howoocast.hywtl_has.department.view.DepartmentItemView;
-import com.howoocast.hywtl_has.department.view.DepartmentListView;
+import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import java.util.List;
 import javax.validation.Valid;
@@ -34,7 +34,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @GetMapping("/departments")
-    public Page<DepartmentListView> page(
+    public Page<DepartmentShortView> page(
         @RequestParam(required = false, name = "parentId[]") List<Long> parentIdList,
         @RequestParam(required = false, name = "category[]") List<DepartmentCategory> categoryList,
         @RequestParam(required = false) String keywordType,

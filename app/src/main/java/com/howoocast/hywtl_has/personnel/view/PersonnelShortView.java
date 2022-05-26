@@ -7,7 +7,7 @@ import lombok.Getter;
 import org.springframework.lang.Nullable;
 
 @Getter
-public class PersonnelListView {
+public class PersonnelShortView {
 
     private Long id;
 
@@ -31,8 +31,8 @@ public class PersonnelListView {
 
     private Integer languageCount;
 
-    public static PersonnelListView assemble(Personnel source) {
-        PersonnelListView target = new PersonnelListView();
+    public static PersonnelShortView assemble(Personnel source) {
+        PersonnelShortView target = new PersonnelShortView();
         target.id = Optional.ofNullable(source.getId()).orElse(source.getUser().getId());
         target.name = source.getUser().getName();
         target.email = source.getUser().getEmail();

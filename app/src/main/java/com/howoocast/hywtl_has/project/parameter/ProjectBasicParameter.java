@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -62,7 +63,7 @@ public class ProjectBasicParameter {
         return new ProjectBasicChangeBuilder(this);
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectOfBuilder {
 
         private final ProjectBasicParameter params;
@@ -92,7 +93,7 @@ public class ProjectBasicParameter {
         }
     }
 
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectBasicChangeBuilder {
 
         private final ProjectBasicParameter params;
@@ -135,6 +136,7 @@ public class ProjectBasicParameter {
             );
         }
     }
+
 
 }
 

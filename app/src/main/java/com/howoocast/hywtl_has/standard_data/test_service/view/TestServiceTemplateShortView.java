@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class TestServiceTemplateListView {
+public class TestServiceTemplateShortView {
 
     private Long id;
 
@@ -18,8 +18,8 @@ public class TestServiceTemplateListView {
 
     private Long totalPrice;
 
-    public static TestServiceTemplateListView assemble(TestServiceTemplate source) {
-        TestServiceTemplateListView target = new TestServiceTemplateListView();
+    public static TestServiceTemplateShortView assemble(TestServiceTemplate source) {
+        TestServiceTemplateShortView target = new TestServiceTemplateShortView();
         target.id = source.getId();
         target.testType = source.getTestType();
         target.title = source.getTitle();
