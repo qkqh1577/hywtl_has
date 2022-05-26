@@ -1,6 +1,6 @@
 export type BusinessManagerStatus = 'IN_OFFICE' | 'RESIGNATION' | 'LEAVE';
 
-export type BusinessList = {
+export type BusinessShort = {
   id: number;
   name: string;
   representativeName?: string;

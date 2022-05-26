@@ -1,14 +1,15 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import {
-  ListTestServiceTemplate,
+  TestServiceTemplate,
   TestServiceTemplateActionType,
+  TestServiceTemplateShort,
   testServiceTemplateActions,
-  testServiceTemplateApi, TestServiceTemplate,
+  testServiceTemplateApi,
 } from 'services/standard_data/test_service_template';
 
 function* getList(action: ActionType<typeof testServiceTemplateActions.getList>) {
-  const list: ListTestServiceTemplate[] = yield testServiceTemplateApi.getList(action.payload);
+  const list: TestServiceTemplateShort[] = yield testServiceTemplateApi.getList(action.payload);
   yield put(testServiceTemplateActions.setList(list));
 }
 
@@ -48,7 +49,7 @@ function* changeSeq(action: ActionType<typeof testServiceTemplateActions.changeS
 }
 
 function* getSeqList() {
-  const list: ListTestServiceTemplate[] = yield testServiceTemplateApi.getSeqList();
+  const list: TestServiceTemplateShort[] = yield testServiceTemplateApi.getSeqList();
   yield put(testServiceTemplateActions.setSeqList(list));
 }
 

@@ -1,10 +1,10 @@
 import { createAction } from 'typesafe-actions';
 import {
-  ListTestServiceTemplate,
   TestServiceTemplate,
   TestServiceTemplateChangeSeqParameter,
   TestServiceTemplateParameter,
   TestServiceTemplateQuery,
+  TestServiceTemplateShort,
 } from 'services/standard_data/test_service_template';
 
 export enum TestServiceTemplateActionType {
@@ -22,7 +22,7 @@ export enum TestServiceTemplateActionType {
 
 export const testServiceTemplateActions = {
   getList: createAction(TestServiceTemplateActionType.getList)<TestServiceTemplateQuery>(),
-  setList: createAction(TestServiceTemplateActionType.setList)<ListTestServiceTemplate[]>(),
+  setList: createAction(TestServiceTemplateActionType.setList)<TestServiceTemplateShort[]>(),
   getOne: createAction(TestServiceTemplateActionType.getOne)<number>(),
   setOne: createAction(TestServiceTemplateActionType.setOne)<TestServiceTemplate | undefined>(),
   add: createAction(TestServiceTemplateActionType.add)<{
@@ -40,5 +40,5 @@ export const testServiceTemplateActions = {
   }>(),
   setSeqModal: createAction(TestServiceTemplateActionType.setSeqModal)<boolean>(),
   getSeqList: createAction(TestServiceTemplateActionType.getSeqList)(),
-  setSeqList: createAction(TestServiceTemplateActionType.setSeqList)<ListTestServiceTemplate[]>(),
+  setSeqList: createAction(TestServiceTemplateActionType.setSeqList)<TestServiceTemplateShort[]>(),
 };

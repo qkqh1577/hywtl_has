@@ -2,17 +2,17 @@ import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import Page from 'components/Page';
 import {
-  ListProject,
   Project,
   ProjectActionType,
   ProjectBasic,
   ProjectOrder,
+  ProjectShort,
   projectActions,
   projectApi,
 } from 'services/project';
 
 function* getPage(action: ActionType<typeof projectActions.getPage>) {
-  const page: Page<ListProject> = yield projectApi.getPage(action.payload);
+  const page: Page<ProjectShort> = yield projectApi.getPage(action.payload);
   yield put(projectActions.setPage(page));
 }
 

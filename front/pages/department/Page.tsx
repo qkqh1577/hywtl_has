@@ -11,13 +11,13 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { CheckboxField, DataField, Table, TableCellProperty } from 'components';
 import {
   DepartmentQuery,
-  ListDepartment,
+  DepartmentShort,
   departmentCategoryList,
   departmentCategoryName,
   useDepartment,
 } from 'services/department';
 
-const columns: TableCellProperty<ListDepartment>[] = [
+const columns: TableCellProperty<DepartmentShort>[] = [
   {
     label: 'No.',
     renderCell: (item, i) => i + 1,

@@ -13,11 +13,11 @@ export type Department = {
   userList: User[];
 }
 
-export type ListDepartment = {
+export type DepartmentShort = {
   id: number;
   name: string;
   category: DepartmentCategory;
-  parent?: ListDepartment;
+  parent?: DepartmentShort;
   parentId?: number;
   userCount?: number;
   childrenCount?: number;

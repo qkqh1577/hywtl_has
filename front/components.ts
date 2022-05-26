@@ -16,7 +16,6 @@ export * from './components/UserSelector';
 export { default as CheckboxField } from './components/CheckboxField';
 export { default as Container } from './components/Container';
 export { default as DataField } from './components/DataField';
-export { default as DataFieldWithButton } from './components/DataFieldWithButton';
 export { default as DataSelector } from './components/DataSelector';
 export { default as DateFormat } from './components/DateFormat';
 export { default as DatePicker } from './components/DatePicker';

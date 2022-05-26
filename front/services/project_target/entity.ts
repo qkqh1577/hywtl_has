@@ -1,4 +1,4 @@
-import { ListUser } from 'services/user';
+import { UserShort } from 'services/user';
 
 export type ProjectTargetDetail = {
   id: number;
@@ -7,13 +7,13 @@ export type ProjectTargetDetail = {
   memo?: string;
 }
 
-export type ListProjectTarget = {
+export type ProjectTargetShort = {
   id: number;
   confirmed: boolean;
   code: string;
   testList: string[];
   detailCount: number;
-  writer: ListUser;
+  writer: UserShort;
   memo?: string;
   createdAt: Date;
   modifiedAt?: Date;
@@ -25,6 +25,6 @@ export type ProjectTarget = {
   code: string;
   testList?: string[];
   memo?: string;
-  writer: ListUser;
+  writer: UserShort;
   detailList: ProjectTargetDetail[];
 }

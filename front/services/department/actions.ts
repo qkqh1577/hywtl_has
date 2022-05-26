@@ -5,7 +5,7 @@ import {
   DepartmentChangeTreeParameter,
   DepartmentParameter,
   DepartmentQuery,
-  ListDepartment,
+  DepartmentShort,
 } from 'services/department';
 
 export enum DepartmentActionType {
@@ -21,9 +21,9 @@ export enum DepartmentActionType {
 
 export const departmentActions = {
   getAll: createAction(DepartmentActionType.getAll)<string | undefined>(),
-  setAll: createAction(DepartmentActionType.setAll)<ListDepartment[]>(),
+  setAll: createAction(DepartmentActionType.setAll)<DepartmentShort[]>(),
   getPage: createAction(DepartmentActionType.getPage)<DepartmentQuery>(),
-  setPage: createAction(DepartmentActionType.setPage)<Page<ListDepartment>>(),
+  setPage: createAction(DepartmentActionType.setPage)<Page<DepartmentShort>>(),
   getOne: createAction(DepartmentActionType.getOne)<number>(),
   setOne: createAction(DepartmentActionType.setOne)<Department | undefined>(),
   upsert: createAction(DepartmentActionType.upsert)<{
@@ -32,6 +32,6 @@ export const departmentActions = {
   }>(),
   changeTree: createAction(DepartmentActionType.changeTree)<{
     params: DepartmentChangeTreeParameter;
-    callback: (list?: ListDepartment[]) => void;
+    callback: (list?: DepartmentShort[]) => void;
   }>(),
 };

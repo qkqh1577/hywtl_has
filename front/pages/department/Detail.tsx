@@ -11,7 +11,7 @@ import { DataField, useDialog } from 'components';
 import {
   DepartmentCategory,
   DepartmentParameter,
-  ListDepartment,
+  DepartmentShort,
   departmentCategoryList,
   departmentCategoryName,
   useDepartment,
@@ -164,7 +164,7 @@ const DepartmentDetail = () => {
                                 return true;
                               }
                               const getAncestorIdList = (sourceId: number, temp: number[]): number[] => {
-                                const target: ListDepartment | undefined = list.find(item => item.id === sourceId);
+                                const target: DepartmentShort | undefined = list.find(item => item.id === sourceId);
                                 if (target) {
                                   if (target.parentId) {
                                     return [target.id, ...getAncestorIdList(target.parentId, temp)];

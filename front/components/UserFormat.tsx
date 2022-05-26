@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Tooltip } from 'components';
-import { ListUser, userApi } from 'services/user';
+import { UserShort, userApi } from 'services/user';
 import { personnelApi } from 'services/personnel';
 
 type User = {
@@ -18,7 +18,7 @@ type Job = {
   duty?: string;
 }
 
-const UserFormat = (props: { id?: number, user?: ListUser }) => {
+const UserFormat = (props: { id?: number, user?: UserShort }) => {
 
   const { id, user: propUser } = props;
 

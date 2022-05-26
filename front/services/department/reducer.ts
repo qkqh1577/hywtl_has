@@ -3,12 +3,12 @@ import Page, { initial } from 'components/Page';
 import {
   Department,
   DepartmentActionType,
-  ListDepartment,
+  DepartmentShort,
 } from 'services/department';
 
 export type DepartmentState = {
-  list: ListDepartment[];
-  page: Page<ListDepartment>;
+  list: DepartmentShort[];
+  page: Page<DepartmentShort>;
   detail?: Department;
 }
 

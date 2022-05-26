@@ -1,13 +1,13 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
 import {
-  ListProject,
   Project,
   ProjectBasic,
   ProjectBasicParameter,
   ProjectOrder,
   ProjectOrderParameter,
   ProjectQuery,
+  ProjectShort,
 } from 'services/project';
 
 export enum ProjectActionType {
@@ -29,7 +29,7 @@ export enum ProjectActionType {
 
 export const projectActions = {
   getPage: createAction(ProjectActionType.getPage)<ProjectQuery>(),
-  setPage: createAction(ProjectActionType.setPage)<Page<ListProject>>(),
+  setPage: createAction(ProjectActionType.setPage)<Page<ProjectShort>>(),
   getOne: createAction(ProjectActionType.getOne)<number>(),
   setOne: createAction(ProjectActionType.setOne)<Project | undefined>(),
   add: createAction(ProjectActionType.add)<{

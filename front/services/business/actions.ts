@@ -4,9 +4,10 @@ import {
   Business,
   BusinessAddParameter,
   BusinessChangeParameter,
-  BusinessList,
   BusinessQuery,
-  BusinessQueryForModal, BusinessRegistrationNumberCheckParameter,
+  BusinessQueryForModal,
+  BusinessRegistrationNumberCheckParameter,
+  BusinessShort,
 } from 'services/business';
 
 export enum BusinessActionType {
@@ -24,7 +25,7 @@ export enum BusinessActionType {
 
 export const businessActions = {
   getPage: createAction(BusinessActionType.getPage)<BusinessQuery>(),
-  setPage: createAction(BusinessActionType.setPage)<Page<BusinessList>>(),
+  setPage: createAction(BusinessActionType.setPage)<Page<BusinessShort>>(),
   getOne: createAction(BusinessActionType.getOne)<number>(),
   setOne: createAction(BusinessActionType.setOne)<Business | undefined>(),
   getAll: createAction(BusinessActionType.getAll)<BusinessQueryForModal>(),

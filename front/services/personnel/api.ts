@@ -1,7 +1,6 @@
 import apiClient from 'services/common/api';
 import Page from 'components/Page';
 import {
-  ListPersonnel,
   Personnel,
   PersonnelAcademic,
   PersonnelBasic,
@@ -12,10 +11,11 @@ import {
   PersonnelLicense,
   PersonnelParameter,
   PersonnelQuery,
+  PersonnelShort,
 } from 'services/personnel';
 
 class PersonnelApi {
-  async getPage(query: PersonnelQuery): Promise<Page<ListPersonnel>> {
+  async getPage(query: PersonnelQuery): Promise<Page<PersonnelShort>> {
     const { data } = await apiClient.get('/personnels', query);
     return data;
   }

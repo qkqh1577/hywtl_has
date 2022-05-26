@@ -1,5 +1,5 @@
 import { FileItem } from 'services/common/file-item';
-import { ListDepartment } from 'services/department';
+import { DepartmentShort } from 'services/department';
 
 export type PersonnelBasic = {
   engName: string;
@@ -20,7 +20,7 @@ export type PersonnelCompany = {
 }
 
 export type PersonnelJob = {
-  department: ListDepartment;
+  department: DepartmentShort;
   jobTitle: string;
   jobType: string;
   jobPosition: string;
@@ -64,7 +64,7 @@ export type PersonnelLanguage = {
   trainingPeriod?: string;
 }
 
-export type ListPersonnel = {
+export type PersonnelShort = {
   id: number;
   name: string;
   email: string;

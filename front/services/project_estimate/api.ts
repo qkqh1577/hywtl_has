@@ -1,10 +1,11 @@
 import apiClient from 'services/common/api';
 import {
-  ListProjectEstimateSheet,
   ProjectEstimate,
   ProjectEstimateParameter,
   ProjectEstimateSheet,
-  ProjectEstimateSheetAddParameter, ProjectEstimateSheetChangeParameter,
+  ProjectEstimateSheetAddParameter,
+  ProjectEstimateSheetChangeParameter,
+  ProjectEstimateSheetShort,
 } from 'services/project_estimate';
 
 class ProjectEstimateApi {
@@ -19,7 +20,7 @@ class ProjectEstimateApi {
     return data;
   }
 
-  async getSheetList(projectId: number): Promise<ListProjectEstimateSheet[]> {
+  async getSheetList(projectId: number): Promise<ProjectEstimateSheetShort[]> {
     const { data } = await apiClient.get(`/projects/${projectId}/estimate/sheets`);
     return data;
   }

@@ -1,50 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import {
   InputAdornment,
   MenuItem,
-  TextField
+  TextField, TextFieldProps
 } from '@mui/material';
-import { FormikValues, FormikErrors } from 'formik';
-import { Tooltip } from 'components';
-import { getObjectPostPosition, getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
-import { toAmount, toAmountKor } from 'util/NumberUtil';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
+import { FormikValues, FormikErrors } from 'formik';
+import { Tooltip as CustomTooltip } from 'components';
+import { getObjectPostPosition, getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
+import { toAmount, toAmountKor } from 'util/NumberUtil';
 
 export type DataFieldValue = string | number;
 
-export type Option = {
+export interface Option {
   key: DataFieldValue;
   text: DataFieldValue;
   tooltip?: string;
 }
 
-export type DataFieldProps = {
-  type?: 'select' | 'amount' | 'number' | 'text' | 'password';
-  variant?: 'standard' | 'filled' | 'outlined';
-  name: string;
-  label: string;
-  placeholder?: string;
-  tooltip?: string;
-  value: DataFieldValue | '';
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  errors: FormikErrors<FormikValues>;
-  errorText?: string;
-  helperText?: string | React.ReactNode;
-  required?: boolean;
-  readOnly?: boolean;
+export interface Props {
+  autoFocus?: boolean;
+  disableLabel?: boolean;
   disabled?: boolean;
-  options?: Option[] | DataFieldValue[];
   endAdornment?: React.ReactNode;
-  sx?: SxProps<Theme>;
+  errorText?: string;
+  errors: FormikErrors<FormikValues>;
+  helperText?: string | React.ReactNode;
+  label: string;
+  name: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | SyntheticEvent, value?: DataFieldValue) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, value?: DataFieldValue) => void;
+  placeholder?: string;
+  readOnly?: boolean;
+  required?: boolean;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   size?: 'small';
-  disableLabel?: boolean;
-  autoFocus?: boolean;
+  sx?: SxProps<Theme>;
+  tooltip?: string;
+  type?: 'select' | 'amount' | 'number' | 'text' | 'password';
+  value: DataFieldValue | DataFieldValue[] | '';
+  variant?: 'standard' | 'filled' | 'outlined';
 }
+
+export interface SelectProps extends Props {
+  options: Option[] | DataFieldValue[];
+  type: 'select';
+  multiple?: boolean;
+}
+
+export interface InputProps extends Props {
+  type?: 'number' | 'text' | 'password';
+  value: DataFieldValue | '';
+}
+
+const isSelect = (props: Props): props is SelectProps => {
+  return props.type === 'select';
+};
+
+const isInput = (props: Props): props is InputProps => {
+  return typeof props.type === 'undefined'
+    || props.type === 'number'
+    || props.type === 'text'
+    || props.type === 'password';
+};
+
 export const optionKey = (option: Option | DataFieldValue): DataFieldValue => {
   if (typeof option === 'string' || typeof option === 'number') {
     return option as DataFieldValue;
@@ -69,48 +91,78 @@ export const optionTooltip = (option: Option | DataFieldValue): string | undefin
   return item.tooltip;
 };
 
-const DataField = ({
-  type = 'text',
-  variant = 'standard',
-  name,
-  label,
-  placeholder,
+const Tooltip = (props: {
+  open?: boolean;
+  title: string;
+  children: React.ReactElement;
+}) => (
+  <CustomTooltip
+    {...props}
+    placement="bottom-start"
+    sx={{
+      display: 'flex',
+      width: '100%',
+    }}
+  />
+);
+
+interface InputFieldProps extends Pick<TextFieldProps,
+  'InputProps'
+  | 'autoFocus'
+  | 'disabled'
+  | 'error'
+  | 'helperText'
+  | 'id'
+  | 'label'
+  | 'name'
+  | 'onBlur'
+  | 'onChange'
+  | 'onFocus'
+  | 'onKeyDown'
+  | 'onKeyUp'
+  | 'placeholder'
+  | 'required'
+  | 'size'
+  | 'sx'
+  | 'type'
+  | 'variant'> {
+  value: DataFieldValue | '';
+  tooltip: string;
+  openTooltip?: boolean;
+}
+
+const InputField = ({
   tooltip,
-  value,
-  setFieldValue,
-  errors,
-  errorText,
-  helperText,
-  disabled,
-  readOnly,
-  required: requiredProp,
-  endAdornment,
-  options,
-  sx,
-  onFocus,
-  onKeyDown,
-  onKeyUp,
-  onChange,
-  size,
-  disableLabel,
-  autoFocus,
-}: DataFieldProps) => {
+  openTooltip,
+  ...rest
+}: InputFieldProps) => (
+  <Tooltip open={openTooltip} title={tooltip}>
+    <TextField fullWidth {...rest} />
+  </Tooltip>
+);
+
+const DataField = (props: Props) => {
+  const {
+    name,
+    label,
+    errors,
+  } = props;
+
+  const required: boolean | undefined
+    = !props.disableLabel
+    && !(props.disabled || props.readOnly)
+    && props.required;
+  const isError: boolean = !!(errors && errors[name]);
+  const helperText: React.ReactNode
+    = isError
+    ? props.errorText ?? `${label}${getAuxiliaryPostPosition(props.label)} 필수 항목입니다.`
+    : props.helperText;
 
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
-  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
-  useEffect(() => {
-    if (errors && errors[name]) {
-      setHelperMessage(errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`);
-    } else if (helperMessage !== helperText) {
-      setHelperMessage(helperText);
-    }
-  }, [errors, helperText]);
 
   const [viewValue, setViewValue] = useState<DataFieldValue>(value);
   const [amount, setAmount] = useState<number | undefined>();
   const [amountKor, setAmountKor] = useState<string | undefined>();
-
-  const required: boolean | undefined = !disableLabel && !(disabled || readOnly) && requiredProp;
 
   useEffect(() => {
     if (type === 'amount' && typeof value === 'number') {
@@ -141,16 +193,12 @@ const DataField = ({
   return (
     <Tooltip
       open={mouseEnter && viewValue !== '' && type !== 'select'}
-      placement="bottom-start"
       title={
         disabled || readOnly
           ? label
           : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
       }
-      sx={{
-        display: 'flex',
-        width: '100%',
-      }}>
+    >
       <TextField fullWidth
         type={type === 'amount' ? 'string' : type}
         select={type === 'select' || undefined}

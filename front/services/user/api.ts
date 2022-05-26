@@ -4,20 +4,20 @@ import {
   AddUserParameter,
   ChangeUserParameter,
   ChangeUserPasswordParameter,
-  ListUser,
   LoginParameter,
   User,
   UserQuery,
+  UserShort,
 } from 'services/user';
 import { PasswordChangeParameter } from 'services/user/password_reset';
 
 class UserApi {
-  async getPage(query: UserQuery): Promise<Page<ListUser>> {
+  async getPage(query: UserQuery): Promise<Page<UserShort>> {
     const { data } = await apiClient.get('/users', query);
     return data;
   }
 
-  async getAll(): Promise<ListUser[]> {
+  async getAll(): Promise<UserShort[]> {
     const { data } = await apiClient.get('/users/all');
     return data;
   }

@@ -21,40 +21,40 @@ import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 
 export type CheckboxFieldProps = {
-  variant?: 'standard' | 'filled' | 'outlined';
-  name: string;
-  label: string;
-  value: DataFieldValue[];
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  errors: FormikErrors<FormikValues>,
-  errorText?: string;
-  required?: boolean;
-  disabled?: boolean;
-  options: Option[] | DataFieldValue[];
-  helperText?: string | React.ReactNode;
-  sx?: SxProps<Theme>;
-  size?: 'small';
-  disableLabel?: boolean;
   disableAll?: boolean;
+  disableLabel?: boolean;
+  disabled?: boolean;
+  errorText?: string;
+  errors: FormikErrors<FormikValues>,
+  helperText?: string | React.ReactNode;
+  label: string;
+  name: string;
+  options: Option[] | DataFieldValue[];
   readOnly?: boolean;
+  required?: boolean;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  size?: 'small';
+  sx?: SxProps<Theme>;
+  value: DataFieldValue[];
+  variant?: 'standard' | 'filled' | 'outlined';
 }
 const CheckboxField = ({
-  variant,
-  name,
-  label,
-  value,
-  setFieldValue,
-  errors,
-  errorText,
-  required: requiredProp,
-  disabled,
-  readOnly,
-  options,
-  helperText,
-  sx,
-  size,
-  disableLabel,
   disableAll,
+  disableLabel,
+  disabled,
+  errorText,
+  errors,
+  helperText,
+  label,
+  name,
+  options,
+  readOnly,
+  required: requiredProp,
+  setFieldValue,
+  size,
+  sx,
+  value,
+  variant,
 }: CheckboxFieldProps) => {
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const isChecked = (option: Option | DataFieldValue): boolean =>

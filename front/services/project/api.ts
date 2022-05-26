@@ -1,17 +1,17 @@
 import apiClient from 'services/common/api';
 import Page from 'components/Page';
 import {
-  ListProject,
   Project,
   ProjectBasic,
   ProjectBasicParameter,
   ProjectOrder,
   ProjectOrderParameter,
   ProjectQuery,
+  ProjectShort,
 } from 'services/project';
 
 class ProjectApi {
-  async getPage(query: ProjectQuery): Promise<Page<ListProject>> {
+  async getPage(query: ProjectQuery): Promise<Page<ProjectShort>> {
     const { data } = await apiClient.get('/projects', query);
     return data;
   }

@@ -1,13 +1,13 @@
 import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
 import {
-  ListUser,
   User,
   UserActionType,
+  UserShort,
 } from 'services/user';
 
 export type UserState = {
-  page: Page<ListUser>;
+  page: Page<UserShort>;
   login?: User;
   detail?: User;
   selectedId?: number;

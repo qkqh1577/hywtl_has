@@ -7,7 +7,6 @@ type Props = Omit<DataFieldProps, 'type' | 'options' | 'value'> & {
   options: Option[] | DataFieldValue[] | null;
   value: DataFieldValue;
   multiple?: boolean;
-  onChange?: (data: DataFieldValue) => void;
 };
 
 const DataSelector = (props: Props) => {
@@ -91,14 +90,14 @@ const DataSelector = (props: Props) => {
       onChange={(e, newValue) => {
         setFieldValue(name, newValue?.key ?? '');
         if (onChange) {
-          onChange(newValue?.key ?? '');
+          onChange(e, newValue?.key ?? '');
         }
       }}
       onInputChange={(e, value, reason) => {
         if (reason === 'clear') {
           setFieldValue(name, '');
           if (onChange) {
-            onChange('');
+            onChange(e, '');
           }
         }
       }}

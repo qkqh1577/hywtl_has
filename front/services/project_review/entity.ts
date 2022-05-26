@@ -1,4 +1,4 @@
-import { ListUser } from 'services/user';
+import { UserShort } from 'services/user';
 import { FileItem } from 'services/common/file-item';
 
 export type ProjectReviewStatus =
@@ -11,7 +11,7 @@ export type ProjectReviewStatus =
   | 'COMPLETE'
   ;
 
-export type ListProjectReview = {
+export type ProjectReviewShort = {
   id: number;
   status: ProjectReviewStatus;
   confirmed: boolean;
@@ -19,7 +19,7 @@ export type ListProjectReview = {
   detailCount: number;
   testList: string[];
   fileCount: number;
-  writer: ListUser;
+  writer: UserShort;
   createdAt: Date;
   modifiedAt?: Date;
 }

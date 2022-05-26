@@ -1,7 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
 import {
-  ListPersonnel,
   PersonnelAcademic,
   PersonnelActionType,
   PersonnelBasic,
@@ -10,10 +9,11 @@ import {
   PersonnelJob,
   PersonnelLanguage,
   PersonnelLicense,
+  PersonnelShort,
 } from 'services/personnel';
 
 export type PersonnelState = {
-  page: Page<ListPersonnel>;
+  page: Page<PersonnelShort>;
   basic?: PersonnelBasic;
   company?: PersonnelCompany;
   job?: PersonnelJob;

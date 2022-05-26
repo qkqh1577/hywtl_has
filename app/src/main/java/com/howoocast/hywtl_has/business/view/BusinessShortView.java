@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.util.stream.Collectors;
 
 @Getter
-public class BusinessListView {
+public class BusinessShortView {
 
     private Long id; // 식별자
     private String name; // 업체명
@@ -22,8 +22,8 @@ public class BusinessListView {
     private Integer projectCount; // 참여 프로젝트 총 개수
     private String memo; // 비고
 
-    public static BusinessListView assemble(Business source) {
-        BusinessListView target = new BusinessListView();
+    public static BusinessShortView assemble(Business source) {
+        BusinessShortView target = new BusinessShortView();
         target.id = source.getId();
         target.name = source.getName();
         target.representativeName = source.getRepresentativeName();

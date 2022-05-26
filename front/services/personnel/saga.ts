@@ -2,7 +2,6 @@ import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import Page from 'components/Page';
 import {
-  ListPersonnel,
   PersonnelAcademic,
   PersonnelActionType,
   PersonnelBasic,
@@ -11,12 +10,13 @@ import {
   PersonnelJob,
   PersonnelLanguage,
   PersonnelLicense,
+  PersonnelShort,
   personnelActions,
   personnelApi,
 } from 'services/personnel';
 
 function* getPage(action: ActionType<typeof personnelActions.getPage>) {
-  const page: Page<ListPersonnel> = yield personnelApi.getPage(action.payload);
+  const page: Page<PersonnelShort> = yield personnelApi.getPage(action.payload);
   yield put(personnelActions.setPage(page));
 }
 

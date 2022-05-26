@@ -1,15 +1,15 @@
 import { ActionType } from 'typesafe-actions';
 import {
-  ListProjectReview,
   ProjectReview,
   ProjectReviewActionType,
+  ProjectReviewShort,
   projectReviewActions,
   projectReviewApi,
 } from 'services/project_review';
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* getList(action: ActionType<typeof projectReviewActions.getList>) {
-  const list: ListProjectReview[] = yield projectReviewApi.getList(action.payload);
+  const list: ProjectReviewShort[] = yield projectReviewApi.getList(action.payload);
   yield put(projectReviewActions.setList(list));
 }
 

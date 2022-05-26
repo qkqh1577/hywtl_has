@@ -6,7 +6,7 @@ import com.howoocast.hywtl_has.business.exception.BusinessDeleteException;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
-import com.howoocast.hywtl_has.business.view.BusinessListView;
+import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -33,11 +33,11 @@ public class BusinessService {
     private final BusinessRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<BusinessListView> page(@Nullable Predicate predicate, Pageable pageable) {
+    public Page<BusinessShortView> page(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
-            .map(BusinessListView::assemble);
+            .map(BusinessShortView::assemble);
     }
 
     @Transactional(readOnly = true)

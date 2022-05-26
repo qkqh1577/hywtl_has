@@ -1,13 +1,13 @@
 import { createReducer } from 'typesafe-actions';
 import {
-  ListTestServiceTemplate,
   TestServiceTemplate,
   TestServiceTemplateActionType,
+  TestServiceTemplateShort,
 } from 'services/standard_data/test_service_template';
 
 export type TestServiceTemplateState = {
-  list: ListTestServiceTemplate[];
-  seqList: ListTestServiceTemplate[];
+  list: TestServiceTemplateShort[];
+  seqList: TestServiceTemplateShort[];
   detail?: TestServiceTemplate;
   seqModal: boolean;
 }

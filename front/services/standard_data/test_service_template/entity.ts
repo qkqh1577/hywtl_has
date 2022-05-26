@@ -6,7 +6,7 @@ export type TestServiceDetailTemplate = {
   memo?: string;
 }
 
-export type ListTestServiceTemplate = {
+export type TestServiceTemplateShort = {
   id: number;
   testType: string;
   title: string;

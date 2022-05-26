@@ -1,9 +1,9 @@
-import { ListUser } from 'services/user';
+import { UserShort } from 'services/user';
 
 export type ProjectComment = {
   id: number;
   projectId: number;
-  writer: ListUser;
+  writer: UserShort;
   description: string;
   createdAt: Date;
   updatedAt: Date;
