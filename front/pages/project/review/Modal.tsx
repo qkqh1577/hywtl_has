@@ -11,7 +11,7 @@ import {
   CheckboxField,
   DataField,
   Modal,
-  Table,
+  Table, Tooltip,
   useDialog
 } from 'components';
 import {
@@ -694,12 +694,16 @@ const ProjectReviewModal = () => {
                 mb: '40px',
                 justifyContent: 'space-around'
               }}>
-                <Button color="error" onClick={handler.remove}>
-                  삭제
-                </Button>
-                <Button onClick={handler.edit}>
-                  수정
-                </Button>
+                <Tooltip title="견적으로 사용된 검토는 삭제할 수 없습니다." open={detail && !detail.confirmed}>
+                  <Button color="error" onClick={handler.remove} disabled={detail && detail.confirmed}>
+                    삭제
+                  </Button>
+                </Tooltip>
+                <Tooltip title="견적으로 사용된 검토는 수정할 수 없습니다." open={detail && !detail.confirmed}>
+                  <Button onClick={handler.edit} disabled={detail && detail.confirmed}>
+                    수정
+                  </Button>
+                </Tooltip>
                 <Button color="secondary" onClick={handler.close}>
                   닫기
                 </Button>
