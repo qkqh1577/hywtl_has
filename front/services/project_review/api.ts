@@ -1,8 +1,12 @@
 import apiClient from 'services/common/api';
-import { ListProjectReview, ProjectReview, ProjectReviewParameter } from 'services/project_review';
+import {
+  ProjectReview,
+  ProjectReviewParameter,
+  ProjectReviewShort,
+} from 'services/project_review';
 
 class ProjectReviewApi {
-  async getList(projectId: number): Promise<ListProjectReview[]> {
+  async getList(projectId: number): Promise<ProjectReviewShort[]> {
     const { data } = await apiClient.get(`/projects/${projectId}/reviews`);
     return data;
   }
@@ -12,12 +16,12 @@ class ProjectReviewApi {
     return data;
   }
 
-  async add(projectId: number, params: ProjectReviewParameter): Promise<ListProjectReview[]> {
+  async add(projectId: number, params: ProjectReviewParameter): Promise<ProjectReviewShort[]> {
     const { data } = await apiClient.post(`/projects/${projectId}/reviews`, toFormData(params));
     return data;
   }
 
-  async update(id: number, params: ProjectReviewParameter): Promise<ListProjectReview[]> {
+  async update(id: number, params: ProjectReviewParameter): Promise<ProjectReviewShort[]> {
     const { data } = await apiClient.patch(`/project/reviews/${id}`, toFormData(params));
     return data;
   }

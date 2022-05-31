@@ -4,13 +4,14 @@ import {
   Business,
   BusinessAddParameter,
   BusinessChangeParameter,
-  BusinessList,
   BusinessQuery,
-  BusinessQueryForModal, BusinessRegistrationNumberCheckParameter,
+  BusinessQueryForModal,
+  BusinessRegistrationNumberCheckParameter,
+  BusinessShort,
 } from 'services/business';
 
 export class BusinessApi {
-  async getPage(query: BusinessQuery): Promise<Page<BusinessList>> {
+  async getPage(query: BusinessQuery): Promise<Page<BusinessShort>> {
     const { data } = await apiClient.get('/business', query);
     return data;
   }

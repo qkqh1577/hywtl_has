@@ -4,7 +4,7 @@ import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
 import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.service.BusinessService;
-import com.howoocast.hywtl_has.business.view.BusinessListView;
+import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class BusinessController {
     private final BusinessService businessService;
 
     @GetMapping("/business")
-    public Page<BusinessListView> page(
+    public Page<BusinessShortView> page(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
         Pageable pageable

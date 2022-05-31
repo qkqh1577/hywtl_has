@@ -8,10 +8,10 @@ import {
 } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
 import {
-  CheckboxField,
   DataField,
   Modal,
-  Table, Tooltip,
+  Table,
+  Tooltip,
   useDialog
 } from 'components';
 import {
@@ -339,7 +339,8 @@ const ProjectReviewModal = () => {
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <CheckboxField disableAll
+                  <DataField disableAll
+                    type="checkbox"
                     name="testList"
                     label="실험 종류(단지)"
                     value={values.testList}
@@ -536,7 +537,8 @@ const ProjectReviewModal = () => {
                   }, {
                     label: '특별풍하중 조건',
                     renderCell: (item, i) =>
-                      <CheckboxField disableAll disableLabel
+                      <DataField disableAll disableLabel
+                        type="checkbox"
                         name={`detailList[${i}].specialWindLoadConditionList`}
                         label="특별풍하중 조건"
                         value={item.specialWindLoadConditionList}
@@ -560,7 +562,8 @@ const ProjectReviewModal = () => {
                     label: '실험 종류(동)',
                     required: edit,
                     renderCell: (item, i) =>
-                      <CheckboxField disableAll disableLabel
+                      <DataField disableAll disableLabel
+                        type="checkbox"
                         name={`detailList[${i}].testList`}
                         label="실험 종류(동)"
                         value={item.testList}

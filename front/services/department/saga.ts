@@ -4,18 +4,18 @@ import Page from 'components/Page';
 import {
   Department,
   DepartmentActionType,
-  ListDepartment,
+  DepartmentShort,
   departmentActions,
   departmentApi,
 } from 'services/department';
 
 function* getAll() {
-  const list: ListDepartment[] = yield departmentApi.getAll();
+  const list: DepartmentShort[] = yield departmentApi.getAll();
   yield put(departmentActions.setAll(list));
 }
 
 function* getPage(action: ActionType<typeof departmentActions.getPage>) {
-  const page: Page<ListDepartment> = yield departmentApi.getPage(action.payload);
+  const page: Page<DepartmentShort> = yield departmentApi.getPage(action.payload);
   yield put(departmentActions.setPage(page));
 }
 
@@ -38,7 +38,7 @@ function* upsert(action: ActionType<typeof departmentActions.upsert>) {
 function* changeTree(action: ActionType<typeof departmentActions.changeTree>) {
   const { params, callback } = action.payload;
   try {
-    const list: ListDepartment[] = yield departmentApi.changeTree(params);
+    const list: DepartmentShort[] = yield departmentApi.changeTree(params);
     yield put(departmentActions.setAll(list));
     callback(list);
   } catch (e) {

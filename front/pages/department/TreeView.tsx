@@ -31,8 +31,8 @@ import { useDialog } from 'components';
 import {
   DepartmentCategory,
   DepartmentChangeTreeParameter,
+  DepartmentShort,
   DepartmentTreeParameter,
-  ListDepartment,
   useDepartment,
 } from 'services/department';
 
@@ -59,7 +59,7 @@ const useStyle = makeStyles(() => ({
   }
 }));
 
-type Node = Omit<DataNode, 'children'> & { data: ListDepartment, children: Node[] | undefined };
+type Node = Omit<DataNode, 'children'> & { data: DepartmentShort, children: Node[] | undefined };
 
 const getIconType = (category: DepartmentCategory) => {
   switch (category) {
@@ -130,8 +130,8 @@ const DepartmentTreeView = () => {
   const [expend, setExpend] = useState<number[]>([]);
   const [treeHash, setTreeHash] = useState<string | undefined>();
 
-  const toNode = (item: ListDepartment): Node => {
-    const children: ListDepartment[] = list.filter(childItem => childItem.parentId === item.id);
+  const toNode = (item: DepartmentShort): Node => {
+    const children: DepartmentShort[] = list.filter(childItem => childItem.parentId === item.id);
     return {
       key: item.id,
       title: (

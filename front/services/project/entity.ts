@@ -1,9 +1,9 @@
-import { ListUser } from 'services/user';
+import { UserShort } from 'services/user';
 import { ProjectTarget } from 'services/project_target';
 
 export type ProjectStatus = 'ON_GOING' | 'TEMPLATE';
 
-export type ListProject = {
+export type ProjectShort = {
   id: number;
   name: string;
   code: string;
@@ -15,8 +15,8 @@ export type ProjectBasic = {
   name: string;
   alias?: string;
   status: ProjectStatus;
-  salesManager: ListUser;
-  projectManager: ListUser;
+  salesManager: UserShort;
+  projectManager: UserShort;
   // TODO: 주소 컴포넌트 개발 이후 변경
   address?: string;
   purpose1?: string;

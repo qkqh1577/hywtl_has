@@ -3,7 +3,7 @@ package com.howoocast.hywtl_has.project_review.view;
 import com.howoocast.hywtl_has.project_review.common.ProjectReviewStatus;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReviewDetail;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import lombok.Getter;
 
 @Getter
-public class ProjectReviewListView {
+public class ProjectReviewShortView {
     private Long id;
 
     private ProjectReviewStatus status;
@@ -27,14 +27,14 @@ public class ProjectReviewListView {
 
     private Integer fileCount;
 
-    private UserListView writer;
+    private UserShortView writer;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public static ProjectReviewListView assemble(ProjectReview source) {
-        ProjectReviewListView target = new ProjectReviewListView();
+    public static ProjectReviewShortView assemble(ProjectReview source) {
+        ProjectReviewShortView target = new ProjectReviewShortView();
         target.id = source.getId();
         target.status = source.getStatus();
         target.confirmed = Optional.ofNullable(source.getEstimateSheetList())
@@ -43,7 +43,7 @@ public class ProjectReviewListView {
         target.detailCount = source.getDetailList().size();
         target.testList = getTestList(source);
         target.fileCount = Optional.ofNullable(source.getFileList()).map(List::size).orElse(0);
-        target.writer = UserListView.assemble(source.getWriter());
+        target.writer = UserShortView.assemble(source.getWriter());
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();
         return target;

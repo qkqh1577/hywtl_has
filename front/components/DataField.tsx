@@ -1,241 +1,572 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Autocomplete,
+  AutocompleteProps,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
+  IconButton,
   InputAdornment,
-  MenuItem,
-  TextField
+  TextField,
+  TextFieldProps
 } from '@mui/material';
-import { FormikValues, FormikErrors } from 'formik';
-import { Tooltip } from 'components';
+import {
+  CloseRounded as CloseIcon,
+} from '@mui/icons-material';
+import {
+  CheckboxProps,
+  CommonProps,
+  DataFieldValue,
+  DateProps,
+  InputProps,
+  Option,
+  SelectProps,
+  Tooltip as CustomTooltip,
+  isCheckbox,
+  isDataFieldValue,
+  isDate,
+  isInput,
+  isOption,
+  isSelect,
+} from 'components';
 import { getObjectPostPosition, getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { toAmount, toAmountKor } from 'util/NumberUtil';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
+import { DatePicker } from '@mui/x-date-pickers';
+import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
 
-export type DataFieldValue = string | number;
+const Tooltip = (props: {
+  title: string;
+  open?: boolean;
+  children: React.ReactElement;
+}) => (
+  <CustomTooltip
+    {...props}
+    placement="bottom-start"
+    sx={{
+      display: 'flex',
+      width: '100%',
+    }}
+  />
+);
 
-export type Option = {
-  key: DataFieldValue;
-  text: DataFieldValue;
-  tooltip?: string;
-}
-
-export type DataFieldProps = {
-  type?: 'select' | 'amount' | 'number' | 'text' | 'password';
-  variant?: 'standard' | 'filled' | 'outlined';
-  name: string;
-  label: string;
-  placeholder?: string;
-  tooltip?: string;
-  value: DataFieldValue | '';
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  errors: FormikErrors<FormikValues>;
-  errorText?: string;
-  helperText?: string | React.ReactNode;
-  required?: boolean;
-  readOnly?: boolean;
-  disabled?: boolean;
-  options?: Option[] | DataFieldValue[];
-  endAdornment?: React.ReactNode;
-  sx?: SxProps<Theme>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, value?: DataFieldValue) => void;
-  size?: 'small';
-  disableLabel?: boolean;
-  autoFocus?: boolean;
-}
-export const optionKey = (option: Option | DataFieldValue): DataFieldValue => {
-  if (typeof option === 'string' || typeof option === 'number') {
-    return option as DataFieldValue;
-  }
-  const item: Option = option as Option;
-  return item.key;
-};
-
-export const optionText = (option: Option | DataFieldValue): DataFieldValue => {
-  if (typeof option === 'string' || typeof option === 'number') {
-    return option as DataFieldValue;
-  }
-  const item: Option = option as Option;
-  return item.text;
-};
-
-export const optionTooltip = (option: Option | DataFieldValue): string | undefined => {
-  if (typeof option === 'string' || typeof option === 'number') {
-    return undefined;
-  }
-  const item: Option = option as Option;
-  return item.tooltip;
-};
-
-const DataField = ({
-  type = 'text',
-  variant = 'standard',
-  name,
-  label,
-  placeholder,
-  tooltip,
-  value,
-  setFieldValue,
-  errors,
-  errorText,
-  helperText,
-  disabled,
-  readOnly,
-  required: requiredProp,
-  endAdornment,
-  options,
-  sx,
-  onFocus,
-  onKeyDown,
-  onKeyUp,
-  onChange,
-  size,
-  disableLabel,
-  autoFocus,
-}: DataFieldProps) => {
+const DataField = (props: InputProps | SelectProps | CheckboxProps | DateProps) => {
+  const {
+    autoFocus,
+    disableLabel,
+    disabled,
+    errorText,
+    helperText,
+    label,
+    name,
+    placeholder,
+    readOnly,
+    required,
+    size,
+    sx,
+    variant = 'standard',
+    errors,
+    setFieldValue,
+  } = props;
 
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
-  const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
-  useEffect(() => {
-    if (errors && errors[name]) {
-      setHelperMessage(errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`);
-    } else if (helperMessage !== helperText) {
-      setHelperMessage(helperText);
-    }
-  }, [errors, helperText]);
 
-  const [viewValue, setViewValue] = useState<DataFieldValue>(value);
-  const [amount, setAmount] = useState<number | undefined>();
-  const [amountKor, setAmountKor] = useState<string | undefined>();
+  const error: boolean | undefined = errors && typeof errors[name] !== 'undefined' ? true : undefined;
+  const editable: boolean = !(disabled || readOnly);
+  const defaultPlaceholder = (placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`);
+  const commonProps: CommonProps = {
+    autoFocus,
+    disabled,
+    error,
+    name,
+    size,
+    sx,
+    variant,
+    id: `params-${name}`,
+    label: disableLabel ? undefined : label,
+    required: !disableLabel && editable && required,
+    helperText: error ? errorText ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
+    placeholder: editable ? defaultPlaceholder : undefined,
+  };
 
-  const required: boolean | undefined = !disableLabel && !(disabled || readOnly) && requiredProp;
+  if (isInput(props)) {
+    const {
+      endAdornment,
+      onBlur,
+      onChange,
+      onClick,
+      onFocus,
+      onKeyDown,
+      onKeyUp,
+      onMouseEnter,
+      onMouseLeave,
+      startAdornment,
+      tooltip,
+      type = 'text',
+      value,
+    } = props;
+    const [viewValue, setViewValue] = useState<DataFieldValue>(value);
+    const tooltipOpen = editable && mouseEnter && value !== '';
+    const tooltipTitle = tooltip ?? defaultPlaceholder;
+    const placeholder
+      = type === 'amount' && !commonProps.error && typeof value === 'number'
+      ? toAmountKor(value)
+      : commonProps.placeholder;
 
-  useEffect(() => {
-    if (type === 'amount' && typeof value === 'number') {
-      const amount = value as number;
-      setAmount(amount);
-      setViewValue(amount.toLocaleString());
-    } else {
-      setViewValue(value);
-      setAmount(undefined);
-      setAmountKor(undefined);
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (type === 'amount' && typeof amount === 'number') {
-      setAmountKor(toAmountKor(amount));
-    }
-  }, [amount]);
-
-  useEffect(() => {
-    if (type === 'amount' && typeof amountKor === 'string' && amountKor !== '일금원') {
-      setHelperMessage(amountKor);
-    } else if (typeof amountKor === 'undefined') {
-      setHelperMessage(helperText);
-    }
-  }, [amountKor]);
-
-  return (
-    <Tooltip
-      open={mouseEnter && viewValue !== '' && type !== 'select'}
-      placement="bottom-start"
-      title={
-        disabled || readOnly
-          ? label
-          : (tooltip ?? placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)
+    const fieldProps: Pick<TextFieldProps,
+      'onBlur'
+      | 'onFocus'
+      | 'onKeyUp'
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'onChange'
+      | 'InputProps'> = {
+      onFocus: (e) => {
+        setMouseEnter(false);
+        if (onFocus) {
+          onFocus(e);
+        }
+      },
+      onMouseEnter: (e) => {
+        setMouseEnter(true);
+        if (onMouseEnter) {
+          onMouseEnter(e);
+        }
+      },
+      onMouseLeave: (e) => {
+        setMouseEnter(false);
+        if (onMouseLeave) {
+          onMouseLeave(e);
+        }
+      },
+      onChange: (e) => {
+        const rawValue = e.target.value ?? '';
+        setViewValue(rawValue);
+        if (onChange) {
+          onChange(e, type === 'amount' ? toAmount(rawValue) : rawValue);
+        }
+      },
+      onBlur: (e) => {
+        setMouseEnter(false);
+        if (onBlur) {
+          onBlur(e);
+        }
+      },
+      InputProps: {
+        onClick,
+        onKeyUp,
+        readOnly,
+        startAdornment,
+        endAdornment:
+          <>
+            {editable && (
+              <InputAdornment position="end">
+                <IconButton onClick={() => {
+                  setFieldValue(name, '');
+                }}>
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            )}
+            {endAdornment && (
+              <InputAdornment position="end" children={endAdornment} />
+            )}
+          </>,
+        onKeyDown: (e) => {
+          setMouseEnter(false);
+          const key = e.key.toLowerCase();
+          if (key === 'enter' || key === 'tab') {
+            const tempValue = type === 'amount' ? toAmount(viewValue) : viewValue;
+            setFieldValue(name, tempValue);
+          }
+          if (key === 'escape') {
+            setFieldValue(name, value?.toLocaleString() ?? '');
+          }
+          if (onKeyDown) {
+            onKeyDown(e);
+          }
+        },
       }
-      sx={{
-        display: 'flex',
-        width: '100%',
-      }}>
-      <TextField fullWidth
-        type={type === 'amount' ? 'string' : type}
-        select={type === 'select' || undefined}
+    };
+
+    useEffect(() => {
+      const tempValue = type === 'amount' ? value?.toLocaleString() ?? '' : value;
+      if (tempValue !== viewValue) {
+        setViewValue(tempValue);
+      }
+    }, [value]);
+
+    return (
+      <Tooltip open={tooltipOpen} title={tooltipTitle}>
+        <TextField fullWidth
+          type={type === 'amount' ? 'text' : type}
+          value={viewValue}
+          {...commonProps}
+          {...fieldProps}
+          placeholder={placeholder}
+        />
+      </Tooltip>
+    );
+  } // end of InputProps
+
+  if (isSelect(props)) {
+    const {
+      multiple,
+      onBlur,
+      onChange,
+      onClick,
+      onFocus,
+      onKeyUp,
+      onMouseEnter,
+      onMouseLeave,
+      value,
+    } = props;
+
+    const {
+      label,
+      variant,
+      error,
+      helperText,
+      ...restCommonProps
+    } = commonProps;
+
+    const options = props.options?.map((option) =>
+      isDataFieldValue(option)
+        ? { key: option, text: option }
+        : option
+    ) ?? [];
+
+    const getOption = (value: DataFieldValue): Option | null => {
+      if (!value) {
+        return null;
+      }
+      return options.find(option => option.key === value) ?? null;
+    };
+
+    const getValue = (value: DataFieldValue | DataFieldValue[]): Option[] | Option | null => {
+      if (Array.isArray(value)) {
+        const result = value.map(getOption)
+        .filter(v => typeof v !== 'undefined') as Option[];
+        if (result.length === 0) {
+          return multiple ? [] : null;
+        }
+        return multiple ? result : result[0];
+      }
+      return getOption(value);
+    };
+
+    const selectProps: Pick<AutocompleteProps<Option, boolean | undefined, boolean | undefined, undefined>,
+      'getOptionLabel'
+      | 'isOptionEqualToValue'
+      | 'loading'
+      | 'loadingText'
+      | 'multiple'
+      | 'noOptionsText'
+      | 'onBlur'
+      | 'onChange'
+      | 'onClick'
+      | 'onFocus'
+      | 'onInputChange'
+      | 'onKeyUp'
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'options'
+      | 'readOnly'
+      | 'renderInput'
+      | 'value'> = {
+      multiple,
+      onBlur,
+      onClick,
+      onFocus,
+      onKeyUp,
+      onMouseEnter,
+      onMouseLeave,
+      options,
+      readOnly,
+      getOptionLabel: (option) => `${option.text}`,
+      loading: options.length > 0,
+      loadingText: '불러오는 중',
+      noOptionsText: '결과가 없습니다.',
+      value: getValue(value),
+      renderInput: (params) => (
+        <TextField
+          {...params}
+          label={label}
+          variant={variant}
+          error={error}
+          helperText={helperText}
+          fullWidth
+        />
+      ),
+
+      isOptionEqualToValue: (option, value) => {
+        if (!value) {
+          return false;
+        }
+        return option.key === value.key;
+      },
+
+      onChange: (e, newValue) => {
+        const getResult = (): DataFieldValue[] | DataFieldValue => {
+          if (multiple) {
+            if (Array.isArray(newValue)) {
+              return newValue.map(option => option.key);
+            }
+            const v = newValue?.key ?? '';
+            if (!v) {
+              return [];
+            }
+            return [v];
+          }
+          if (Array.isArray(newValue)) {
+            if (newValue.length === 0) {
+              return '';
+            }
+            return newValue.map(option => option.key)[0];
+          }
+          return newValue?.key ?? '';
+        };
+        const result = getResult();
+        setFieldValue(name, result);
+        if (onChange) {
+          onChange(e, result);
+        }
+      },
+
+      onInputChange: (e, value, reason) => {
+        if (reason === 'clear') {
+          setFieldValue(name, multiple ? [] : '');
+          if (onChange) {
+            onChange(e, multiple ? [] : '');
+          }
+        }
+      },
+    };
+    return (
+      <Autocomplete fullWidth
+        {...restCommonProps}
+        {...selectProps}
+      />
+    );
+  } // end of SelectProps
+
+  if (isCheckbox(props)) {
+    const {
+      allText = '전체',
+      disableAll,
+      showTooltip,
+      value
+    } = props;
+
+    const options = props.options?.map(option => isOption(option) ? option : {
+      key: option,
+      text: option
+    }) ?? [];
+
+    const isChecked = (option: Option): boolean => value.includes(option.key);
+
+    return (
+      <FormControl fullWidth
+        id={commonProps.id}
         variant={variant}
         size={size}
-        id={`params-${name}`}
-        name={name}
-        value={viewValue}
-        label={disableLabel ? undefined : label}
-        autoFocus={autoFocus}
-        error={typeof errors[name] !== 'undefined'}
-        placeholder={disabled || readOnly ? '' : (placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`)}
-        helperText={helperMessage}
-        required={required}
-        disabled={disabled}
-        sx={sx}
-        InputProps={{
-          onFocus,
-          onKeyUp,
-          readOnly,
-          onKeyDown: (e) => {
-            setMouseEnter(false);
-            if (e.key.toLowerCase() === 'enter') {
-              if (type === 'amount') {
-                setViewValue(toAmount(viewValue).toLocaleString());
-                setFieldValue(name, toAmount(viewValue));
-              } else {
-                setFieldValue(name, viewValue);
+        required={commonProps.required}
+        disabled={commonProps.disabled}
+        sx={commonProps.sx}
+      >
+        {!disableLabel && (
+          <FormLabel component="legend">
+            {label}
+          </FormLabel>
+        )}
+        <FormGroup row>
+          {!disableAll && (
+            <FormControlLabel
+              label={allText}
+              control={
+                <Tooltip title={`${label} - ${allText}`} open={showTooltip}>
+                  <Checkbox
+                    readOnly={readOnly}
+                    disabled={disabled}
+                    checked={value && options.length === value.length}
+                    onChange={() => {
+                      if (value && options.length === value.length) {
+                        setFieldValue(name, []);
+                      } else {
+                        setFieldValue(name, options.map(option => option.key));
+                      }
+                    }}
+                  />
+                </Tooltip>
               }
-            }
-            if (onKeyDown) {
-              onKeyDown(e);
-            }
-          },
-          endAdornment: endAdornment ? (
-            <InputAdornment position="end">
-              {endAdornment}
-            </InputAdornment>
-          ) : undefined,
-          startAdornment: type === 'amount'
-            ? <InputAdornment position="start">₩</InputAdornment>
-            : undefined,
-        }}
-        onChange={(e) => {
-          const rawValue = e.target.value ?? '';
-          if (type === 'amount') {
-            setAmount(toAmount(rawValue) || undefined);
-          }
-          if (type === 'select') {
-            setFieldValue(name, rawValue);
-          } else {
-            setViewValue(rawValue);
-          }
-          if (onChange) {
-            onChange(e, rawValue);
-          }
-        }}
-        onMouseEnter={() => {
-          setMouseEnter(true);
-        }}
-        onMouseLeave={() => {
-          setMouseEnter(false);
-        }}
-        onBlur={() => {
-          setMouseEnter(false);
-          if (type !== 'select') {
-            if (type === 'amount') {
-              setViewValue(toAmount(viewValue).toLocaleString());
-              setFieldValue(name, toAmount(viewValue));
-            } else {
-              setFieldValue(name, viewValue);
-            }
-          }
-        }}>
-        {type === 'select' && options && options.map((item) => (
-          <MenuItem
-            key={optionKey(item)}
-            value={optionKey(item)}
-          >
-            {optionText(item)}
-          </MenuItem>
-        ))}
-      </TextField>
-    </Tooltip>
-  );
+            />
+          )}
+          {options.map((option, i) => (
+            <FormControlLabel
+              key={i}
+              label={`${option.text}`}
+              control={
+                <Tooltip title={option.tooltip ?? `${label} - ${option.text}`} open={showTooltip}>
+                  <Checkbox
+                    name={name}
+                    value={option.key}
+                    readOnly={readOnly}
+                    disabled={disabled}
+                    checked={isChecked(option)}
+                    onChange={() => {
+                      if (isChecked(option)) {
+                        setFieldValue(name, value.filter(item => item !== option.key));
+                      } else {
+                        setFieldValue(name, [...value, option.key]);
+                      }
+                    }}
+                  />
+                </Tooltip>
+              }
+            />
+          ))}
+        </FormGroup>
+        {commonProps.error && (
+          <FormHelperText error>
+            {commonProps.helperText}
+          </FormHelperText>
+        )}
+      </FormControl>
+    );
+
+  } // end of CheckboxProps
+
+  if (isDate(props)) {
+    const {
+      mask = '____-__-__',
+      cancelText = '취소',
+      clearText = '초기화',
+      format = 'YYYY-MM-DD',
+      openTo = 'day',
+      okText = '적용',
+      inputFormat,
+      toolbarFormat,
+      clearable,
+      disableCloseOnSelect,
+      disableFuture,
+      disableHighlightToday,
+      disableOpenPicker,
+      disablePast,
+      maxDate,
+      minDate,
+      onAccept,
+      onClose,
+      onMonthChange,
+      onOpen,
+      onViewChange,
+      onYearChange,
+      showDaysOutsideCurrentMonth,
+      showTodayButton,
+      showToolbar,
+      todayText,
+      toolbarPlaceholder,
+      toolbarTitle,
+      value,
+    } = props;
+
+
+    const [errorText, setErrorText] = useState<React.ReactNode>(commonProps.error ? commonProps.helperText : undefined);
+
+    const dateProps: Pick<DatePickerProps,
+      'cancelText'
+      | 'clearText'
+      | 'clearable'
+      | 'disableCloseOnSelect'
+      | 'disableFuture'
+      | 'disableHighlightToday'
+      | 'disableOpenPicker'
+      | 'disablePast'
+      | 'disabled'
+      | 'inputFormat'
+      | 'mask'
+      | 'maxDate'
+      | 'minDate'
+      | 'okText'
+      | 'onAccept'
+      | 'onChange'
+      | 'onClose'
+      | 'onError'
+      | 'onMonthChange'
+      | 'onOpen'
+      | 'onViewChange'
+      | 'onYearChange'
+      | 'openTo'
+      | 'readOnly'
+      | 'renderInput'
+      | 'showDaysOutsideCurrentMonth'
+      | 'showTodayButton'
+      | 'showToolbar'
+      | 'todayText'
+      | 'toolbarFormat'
+      | 'toolbarPlaceholder'
+      | 'toolbarTitle'> = {
+      cancelText,
+      clearText,
+      clearable : editable && clearable,
+      disableCloseOnSelect,
+      disableFuture,
+      disableHighlightToday,
+      disableOpenPicker,
+      disablePast,
+      disabled,
+      mask,
+      maxDate,
+      minDate,
+      okText,
+      onAccept,
+      onClose,
+      onMonthChange,
+      onOpen,
+      onViewChange,
+      onYearChange,
+      openTo,
+      readOnly,
+      showDaysOutsideCurrentMonth,
+      showTodayButton,
+      showToolbar,
+      todayText,
+      toolbarPlaceholder,
+      toolbarTitle,
+      inputFormat: inputFormat ?? format,
+      toolbarFormat: toolbarFormat ?? format,
+      onChange: (date) => {
+        setFieldValue(name, date ?? '');
+      },
+      onError: (reason) => {
+        switch (reason) {
+          case 'invalidDate':
+            setErrorText(`날짜 유형(${format})이 올바르지 않습니다.`);
+            break;
+          case 'disableFuture':
+            setErrorText('미래 날짜는 넣을 수 없습니다.');
+            break;
+          default:
+            setErrorText(undefined);
+        }
+      },
+      renderInput: (params) => (
+        <TextField fullWidth
+          {...params}
+          helperText={errorText ?? commonProps.helperText}
+        />
+      )
+    };
+
+    return <DatePicker allowSameDateSelection
+      value={value || null}
+      {...commonProps}
+      {...dateProps}
+    />;
+  } // end of DateProps
+
+  return <>ERROR: type not declared.</>;
 };
 
 export default DataField;

@@ -5,18 +5,18 @@ import {
   DepartmentChangeTreeParameter,
   DepartmentParameter,
   DepartmentQuery,
-  ListDepartment,
+  DepartmentShort,
 } from 'services/department';
 
 class DepartmentApi {
-  async getAll(type?: string): Promise<ListDepartment[]> {
+  async getAll(type?: string): Promise<DepartmentShort[]> {
     const { data } = await apiClient.get('/departments', {
       type: type ?? 'as-list'
     });
     return data;
   }
 
-  async getPage(query: DepartmentQuery): Promise<Page<ListDepartment>> {
+  async getPage(query: DepartmentQuery): Promise<Page<DepartmentShort>> {
     const { data } = await apiClient.get('/departments', query);
     return data;
   }
@@ -31,7 +31,7 @@ class DepartmentApi {
     return data;
   }
 
-  async changeTree(params: DepartmentChangeTreeParameter): Promise<ListDepartment[]> {
+  async changeTree(params: DepartmentChangeTreeParameter): Promise<DepartmentShort[]> {
     const { data } = await apiClient.post('/departments/tree', params);
     return data;
   }

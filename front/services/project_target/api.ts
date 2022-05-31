@@ -1,12 +1,12 @@
 import apiClient from 'services/common/api';
 import {
-  ListProjectTarget,
   ProjectTarget,
   ProjectTargetParameter,
+  ProjectTargetShort,
 } from 'services/project_target';
 
 class ProjectTargetApi {
-  async getList(projectId: number): Promise<ListProjectTarget[]> {
+  async getList(projectId: number): Promise<ProjectTargetShort[]> {
     const { data } = await apiClient.get(`/projects/${projectId}/targets`);
     return data;
   }

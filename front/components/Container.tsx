@@ -22,60 +22,41 @@ import {
   EditOff as ResetIcon,
   SaveAs as SaveIcon
 } from '@mui/icons-material';
-import { CalendarPickerView } from '@mui/x-date-pickers/internals/models';
 import {
-  CheckboxField,
   DataField,
-  DataFieldValue,
-  DataSelector,
   DateFormat,
-  DatePicker,
   DepartmentSelector,
-  Option,
   Tooltip,
   UserSelector,
   useDialog,
+  DataFieldType,
+  isCheckbox,
+  isDate,
+  isInput,
+  isSelect,
+  Props as DataFieldProps, Option, DataFieldValue
 } from 'components';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
 
 export type State = {
   values: any;
 }
 
-export interface FieldProps {
+export interface FieldProps extends Omit<DataFieldProps, 'type' | 'errors' | 'value' | 'setFieldValue'> {
   sm: number;
   xl?: number | false;
   lg?: number | false;
   md?: number | false;
   xs?: number | false;
-  type?: 'text' | 'password' | 'number' | 'amount' | 'select' | 'user' | 'department' | 'checkbox' | 'date';
-  variant?: 'standard' | 'filled' | 'outlined';
-  name: string;
-  label: string;
-  placeholder?: string;
-  value?: DataFieldValue | DataFieldValue[] | Date | '' | null;
-  required?: boolean;
-  disabled?: boolean;
-  readOnly?: boolean;
-  options?: Option[] | DataFieldValue[];
-  helperText?: string | React.ReactNode;
-  sx?: SxProps<Theme>;
-  size?: 'small';
-  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  format?: string;
-  openTo?: CalendarPickerView;
-  disableFuture?: boolean;
+  type?: DataFieldType | 'user' | 'department';
+  options?: (Option | DataFieldValue)[];
 }
 
-export interface Props {
+interface Props {
   title: string;
   modifiedAt?: Date;
 }
 
-export interface SubmitProps extends Props {
+interface SubmitProps extends Props {
   view: any;
   submit: (values: any, callback: () => void) => void;
   updateView: () => void;
@@ -90,20 +71,20 @@ interface ChildrenProps extends Props {
 }
 
 export const mapper = ({
-    xl = false,
-    lg = false,
-    md = false,
-    sm,
-    xs = false,
-    index,
-    ...rest
-  }: FieldProps & {
-    index: number,
-    edit: boolean,
-    containerReadOnly?: boolean,
-    containerDisabled?: boolean,
-  } & Pick<FormikProps<any>, 'values' | 'setFieldValue' | 'errors'>,
-) => (
+  xl = false,
+  lg = false,
+  md = false,
+  sm,
+  xs = false,
+  index,
+  type,
+  ...rest
+}: FieldProps & Pick<FormikProps<any>, 'values' | 'setFieldValue' | 'errors'> & {
+  index: number;
+  edit: boolean;
+  containerReadOnly?: boolean;
+  containerDisabled?: boolean;
+}) => (
   <Grid item
     key={index}
     xl={xl}
@@ -112,123 +93,70 @@ export const mapper = ({
     sm={sm}
     xs={xs}
   >
-    {buildField(rest)}
+    {buildField({ ...rest, type, value: rest.values[rest.name] })}
   </Grid>
 );
 
-export const buildField = ({
-    type,
-    value: rawValue,
-    options,
-    values,
-    setFieldValue,
-    errors,
-    edit,
-    required: fieldRequired,
-    disabled: fieldDisabled,
-    readOnly: fieldReadOnly,
-    containerReadOnly,
-    containerDisabled,
-    ...rest
-  }: Omit<FieldProps, 'xl' | 'lg' | 'md' | 'sm' | 'xs'>
+export const buildField = (props:
+    Omit<DataFieldProps, 'type'>
     & Pick<FormikProps<any>, 'values' | 'setFieldValue' | 'errors'>
     & {
+    fieldRequired?: boolean,
+    fieldDisabled?: boolean,
+    fieldReadOnly?: boolean,
     edit: boolean;
     containerReadOnly?: boolean;
     containerDisabled?: boolean;
+    type?: DataFieldType | 'user' | 'department';
   }
 ): React.ReactNode | null => {
-  const value = typeof rawValue === 'undefined' ? values[rest.name] : rawValue;
+  const {
+    fieldRequired,
+    fieldDisabled,
+    fieldReadOnly,
+    edit,
+    containerReadOnly,
+    containerDisabled,
+    type,
+    ...rest
+  } = props;
   const required: boolean | undefined
     = !(fieldReadOnly || fieldDisabled || containerReadOnly || containerDisabled) && edit && fieldRequired;
   const disabled: boolean | undefined = (fieldDisabled || containerDisabled);
   const readOnly: boolean | undefined = (fieldReadOnly || containerReadOnly) || !edit;
-  const props = {
+
+  const fieldProps: DataFieldProps = {
     ...rest,
+    type: type === 'user' || type === 'department' ? 'select' : type,
     required,
     disabled,
     readOnly,
-    setFieldValue,
-    errors,
   };
-  if (type === 'checkbox') {
-    if (!options) {
-      return (
-        <>
-          ERROR: options: Option[] | DataFieldValue[] required when
-          type=checkbox.
-        </>
-      );
+
+  if (isInput(fieldProps)) {
+    return <DataField {...fieldProps} />;
+  }
+
+  if (isSelect(fieldProps)) {
+    if (type === 'user') {
+      const { options, type, ...selectProps } = fieldProps;
+      return <UserSelector  {...selectProps} />;
     }
-    if (!Array.isArray(value)) {
-      return (
-        <>
-          ERROR: 'value' must be DataFieldValue[] when type="checkbox".
-        </>
-      );
+    if (type === 'department') {
+      const { options, type, ...selectProps } = fieldProps;
+      return <DepartmentSelector {...selectProps} />;
     }
-    return (
-      <CheckboxField
-        value={value}
-        options={options}
-        {...props}
-      />
-    );
+    return <DataField {...fieldProps} />;
   }
-  if (type === 'date') {
-    return (
-      <DatePicker
-        value={value}
-        {...props}
-      />
-    );
+
+  if (isCheckbox(fieldProps)) {
+    return <DataField {...fieldProps} />;
   }
-  if (Array.isArray(value)) {
-    return (
-      <>
-        ERROR: 'value' cannot be DataFieldValue[] when type!="checkbox".
-      </>
-    );
+
+  if (isDate(fieldProps)) {
+    return <DataField {...fieldProps} />;
   }
-  if (value instanceof Date) {
-    return (
-      <>
-        ERROR: 'value' cannot be Date when type!="date".
-      </>
-    );
-  }
-  if (type === 'user') {
-    return (
-      <UserSelector
-        value={value ?? ''}
-        {...props}
-      />
-    );
-  }
-  if (type === 'department') {
-    return (
-      <DepartmentSelector
-        value={value ?? ''}
-        {...props}
-      />
-    );
-  }
-  if (type === 'select') {
-    return (
-      <DataSelector
-        value={value ?? ''}
-        options={options ?? null}
-        {...props}
-      />
-    );
-  }
-  return (
-    <DataField
-      type={type}
-      value={value ?? ''}
-      {...props}
-    />
-  );
+  return <>ERROR: type not declared.</>;
 };
 
 const isChildrenProps = (props: Props): props is ChildrenProps => typeof (props as any).submit === 'undefined';

@@ -1,9 +1,13 @@
 import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
-import { Business, BusinessList, BusinessActionType } from 'services/business';
+import {
+  Business,
+  BusinessActionType,
+  BusinessShort,
+} from 'services/business';
 
 export type BusinessState = {
-  page: Page<BusinessList>
+  page: Page<BusinessShort>
   list?: Business[]
   detail?: Business
 };

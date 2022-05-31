@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { DataFieldProps, DataSelector } from 'components';
-import { ListUser, userApi } from 'services/user';
+import { DataField, SelectProps } from 'components';
+import { UserShort, userApi } from 'services/user';
 
-const UserSelector = (props: Omit<DataFieldProps, 'type' | 'options'>) => {
-  const [list, setList] = useState<ListUser[] | null>(null);
+const UserSelector = (props: Omit<SelectProps, 'type' | 'options'>) => {
+  const [list, setList] = useState<UserShort[] | null>(null);
   useEffect(() => {
     userApi.getAll().then(setList).catch(() => setList(null));
   }, []);
 
   return (
-    <DataSelector
+    <DataField
+      type="select"
       options={list?.map((item) => ({
         key: item.id,
         text: item.name,

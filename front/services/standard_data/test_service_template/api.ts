@@ -1,14 +1,14 @@
 import apiClient from 'services/common/api';
 import {
-  ListTestServiceTemplate,
   TestServiceTemplate,
   TestServiceTemplateChangeSeqParameter,
   TestServiceTemplateParameter,
   TestServiceTemplateQuery,
+  TestServiceTemplateShort,
 } from 'services/standard_data/test_service_template';
 
 class TestServiceTemplateApi {
-  async getList(query: TestServiceTemplateQuery): Promise<ListTestServiceTemplate[]> {
+  async getList(query: TestServiceTemplateQuery): Promise<TestServiceTemplateShort[]> {
     const { data } = await apiClient.get('/standard-data/test-service-templates', query);
     return data;
   }
@@ -33,14 +33,15 @@ class TestServiceTemplateApi {
     return data;
   }
 
-  async getSeqList(): Promise<ListTestServiceTemplate[]> {
+  async getSeqList(): Promise<TestServiceTemplateShort[]> {
     const { data } = await apiClient.get('/standard-data/test-service-templates');
     return data;
   }
 
   async getFullList(query: TestServiceTemplateQuery): Promise<TestServiceTemplate[]> {
     const { data } = await apiClient.get('/standard-data/test-service-templates', {
-      type: 'list'
+      type: 'list',
+      ...query,
     });
     return data;
   }

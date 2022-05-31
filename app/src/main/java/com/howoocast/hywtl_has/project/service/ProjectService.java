@@ -3,7 +3,7 @@ package com.howoocast.hywtl_has.project.service;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
-import com.howoocast.hywtl_has.project.view.ProjectListView;
+import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
 import com.howoocast.hywtl_has.user.service.UserFinder;
 import com.querydsl.core.types.Predicate;
@@ -26,12 +26,12 @@ public class ProjectService {
     private final UserFinder userFinder;
 
     @Transactional(readOnly = true)
-    public Page<ProjectListView> page(
+    public Page<ProjectShortView> page(
         Predicate predicate,
         Pageable pageable
     ) {
         return repository.findAll(predicate, pageable)
-            .map(ProjectListView::assemble);
+            .map(ProjectShortView::assemble);
     }
 
     @Transactional(readOnly = true)
@@ -42,7 +42,6 @@ public class ProjectService {
     @Transactional
     public ProjectView add(ProjectBasicParameter params) {
         Project instance = params.ofBuilder()
-
             .salesManager(userFinder.load(params.getSalesManagerId()))
             .projectManager(userFinder.load(params.getProjectManagerId()))
             .build();

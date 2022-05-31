@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, Grid, Link, Paper } from '@mui/material';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { CheckboxField, DataField, Table } from 'components';
+import { DataField, Table } from 'components';
 import {
   TestServiceTemplateQuery,
   testTypeList,
@@ -96,7 +96,8 @@ const TestServiceTemplateList = () => {
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item sm={12}>
-                        <CheckboxField
+                        <DataField
+                          type="checkbox"
                           name="testType"
                           label="실험 타입"
                           value={values.testType}

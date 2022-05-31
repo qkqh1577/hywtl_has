@@ -1,9 +1,9 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import {
-  ListProjectEstimateSheet,
   ProjectEstimate,
   ProjectEstimateSheet,
+  ProjectEstimateSheetShort,
   ProjectEstimateType,
   projectEstimateActions,
   projectEstimateApi,
@@ -29,7 +29,7 @@ function* upsert(action: ActionType<typeof projectEstimateActions.upsert>) {
 }
 
 function* getSheetList(action: ActionType<typeof projectEstimateActions.getSheetList>) {
-  const list: ListProjectEstimateSheet[] = yield projectEstimateApi.getSheetList(action.payload);
+  const list: ProjectEstimateSheetShort[] = yield projectEstimateApi.getSheetList(action.payload);
   yield put(projectEstimateActions.setSheetList(list));
 }
 

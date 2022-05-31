@@ -10,7 +10,7 @@ import com.howoocast.hywtl_has.project_review.domain.ProjectReview;
 import com.howoocast.hywtl_has.project_review.domain.ProjectReviewDetail;
 import com.howoocast.hywtl_has.project_review.parameter.ProjectReviewParameter;
 import com.howoocast.hywtl_has.project_review.repository.ProjectReviewRepository;
-import com.howoocast.hywtl_has.project_review.view.ProjectReviewListView;
+import com.howoocast.hywtl_has.project_review.view.ProjectReviewShortView;
 import com.howoocast.hywtl_has.project_review.view.ProjectReviewView;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.service.UserFinder;
@@ -39,10 +39,10 @@ public class ProjectReviewService {
     private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
-    public List<ProjectReviewListView> getList(Long projectId) {
+    public List<ProjectReviewShortView> getList(Long projectId) {
         return ListConvertor.make(
             finder.findByProjectId(projectId),
-            ProjectReviewListView::assemble
+            ProjectReviewShortView::assemble
         );
     }
 

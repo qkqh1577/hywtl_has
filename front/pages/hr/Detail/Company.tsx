@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
-import { DataField, DatePicker } from 'components';
+import { DataField } from 'components';
 import {
   initCompanyView as initView,
   usePersonnel
@@ -47,7 +47,8 @@ const PersonnelDetailCompany = ({
         <h2>입사 정보</h2>
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DatePicker required disableFuture
+        <DataField required disableFuture
+          type="date"
           name={`${FIELD_NAME}.hiredDate`}
           label="입사일"
           value={values.hiredDate}

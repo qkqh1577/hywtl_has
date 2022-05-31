@@ -1,7 +1,6 @@
 import { createAction } from 'typesafe-actions';
 import Page from 'components/Page';
 import {
-  ListPersonnel,
   PersonnelAcademic,
   PersonnelBasic,
   PersonnelCareer,
@@ -11,6 +10,7 @@ import {
   PersonnelLicense,
   PersonnelParameter,
   PersonnelQuery,
+  PersonnelShort,
 } from 'services/personnel';
 
 export enum PersonnelActionType {
@@ -49,7 +49,7 @@ export enum PersonnelActionType {
 
 export const personnelActions = {
   getPage: createAction(PersonnelActionType.getPage)<PersonnelQuery>(),
-  setPage: createAction(PersonnelActionType.setPage)<Page<ListPersonnel>>(),
+  setPage: createAction(PersonnelActionType.setPage)<Page<PersonnelShort>>(),
   getBasic: createAction(PersonnelActionType.getBasic)<number>(),
   setBasic: createAction(PersonnelActionType.setBasic)<PersonnelBasic | undefined>(),
 

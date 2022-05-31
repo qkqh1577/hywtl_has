@@ -2,7 +2,7 @@ import { Department } from 'services/department';
 
 export type UserRole = 'NORMAL' | 'ADMIN' | 'MASTER';
 
-export type ListUser = {
+export type UserShort = {
   id: number;
   name: string;
   username: string;
@@ -12,7 +12,7 @@ export type ListUser = {
   departmentName: string;
 }
 
-export type User = Omit<ListUser, 'departmentId' | 'departmentName'> & {
+export type User = Omit<UserShort, 'departmentId' | 'departmentName'> & {
   department: Department;
   createdAt: Date;
   loginAt?: Date;

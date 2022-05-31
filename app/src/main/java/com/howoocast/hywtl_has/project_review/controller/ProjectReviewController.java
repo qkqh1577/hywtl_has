@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project_review.controller;
 
 import com.howoocast.hywtl_has.project_review.parameter.ProjectReviewParameter;
-import com.howoocast.hywtl_has.project_review.view.ProjectReviewListView;
+import com.howoocast.hywtl_has.project_review.view.ProjectReviewShortView;
 import com.howoocast.hywtl_has.project_review.service.ProjectReviewService;
 import com.howoocast.hywtl_has.project_review.view.ProjectReviewView;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ProjectReviewController {
     private final ProjectReviewService projectReviewService;
 
     @GetMapping("/projects/{projectId}/reviews")
-    public List<ProjectReviewListView> getList(@PathVariable Long projectId) {
+    public List<ProjectReviewShortView> getList(@PathVariable Long projectId) {
         return projectReviewService.getList(projectId);
     }
 

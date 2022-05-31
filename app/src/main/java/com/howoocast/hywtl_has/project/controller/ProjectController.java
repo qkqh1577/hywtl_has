@@ -3,7 +3,7 @@ package com.howoocast.hywtl_has.project.controller;
 import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
 import com.howoocast.hywtl_has.project.service.ProjectService;
-import com.howoocast.hywtl_has.project.view.ProjectListView;
+import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("/projects")
-    public Page<ProjectListView> page(
+    public Page<ProjectShortView> page(
         @RequestParam(required = false) String keyword,
         Pageable pageable
     ) {

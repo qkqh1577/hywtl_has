@@ -1,14 +1,14 @@
 import { createReducer } from 'typesafe-actions';
 import {
-  ListProjectEstimateSheet,
   ProjectEstimate,
   ProjectEstimateSheet,
+  ProjectEstimateSheetShort,
   ProjectEstimateType,
 } from 'services/project_estimate';
 
 export type ProjectEstimateState = {
   detail?: ProjectEstimate;
-  sheetList?: ListProjectEstimateSheet[];
+  sheetList?: ProjectEstimateSheetShort[];
   sheetDetail?: ProjectEstimateSheet;
   sheetId?: number | null;
 }

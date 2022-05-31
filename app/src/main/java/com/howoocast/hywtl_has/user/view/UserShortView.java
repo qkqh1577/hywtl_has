@@ -4,7 +4,7 @@ import com.howoocast.hywtl_has.user.domain.User;
 import lombok.Getter;
 
 @Getter
-public class UserListView {
+public class UserShortView {
 
     private Long id;
     private String username;
@@ -14,8 +14,8 @@ public class UserListView {
 
     private String departmentName;
 
-    public static UserListView assemble(User source) {
-        UserListView target = new UserListView();
+    public static UserShortView assemble(User source) {
+        UserShortView target = new UserShortView();
         target.id = source.getId();
         target.username = source.getUsername();
         target.email = source.getEmail();

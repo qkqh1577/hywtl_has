@@ -1,4 +1,4 @@
-import { ListUser } from 'services/user';
+import { UserShort } from 'services/user';
 import { ProjectReview } from 'services/project_review';
 
 export type ProjectEstimateSheetStatus = 'DRAFT'
@@ -25,13 +25,13 @@ export type ProjectEstimateSheetComment = {
   inUse: boolean;
 }
 
-export type ListProjectEstimateSheet = {
+export type ProjectEstimateSheetShort = {
   id: number;
   confirmed: boolean;
   status: ProjectEstimateSheetStatus;
   title: string;
   memo?: string;
-  writer: ListUser;
+  writer: UserShort;
   createdAt: Date;
   modifiedAt?: Date;
 }
@@ -59,11 +59,11 @@ export type ProjectEstimateSheet = {
   status: ProjectEstimateSheetStatus;
   title: string;
   memo?: string;
-  writer: ListUser;
+  writer: UserShort;
   estimateDate: Date;
   expectedStartMonth?: Date;
-  salesTeamLeader: ListUser;
-  salesManagementLeader?: ListUser;
+  salesTeamLeader: UserShort;
+  salesManagementLeader?: UserShort;
   engineeringPeriod?: number;
   finalReportPeriod?: number;
   review: ProjectReview;

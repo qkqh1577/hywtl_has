@@ -1,5 +1,7 @@
-export const toAmount = (localeString: string | number): number | '' => {
-  if (typeof localeString === 'number' || localeString === '') {
+import { DataFieldValue } from 'components';
+
+export const toAmount = (localeString: DataFieldValue): number | '' => {
+  if (localeString === null || typeof localeString === 'number' || localeString === '') {
     return '';
   }
   const builder: string[] = [];

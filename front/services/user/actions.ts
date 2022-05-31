@@ -4,10 +4,10 @@ import {
   AddUserParameter,
   ChangeUserParameter,
   ChangeUserPasswordParameter,
-  ListUser,
   LoginParameter,
   User,
   UserQuery,
+  UserShort,
 } from 'services/user';
 
 export enum UserActionType {
@@ -28,7 +28,7 @@ export enum UserActionType {
 
 export const userActions = {
   getPage: createAction(UserActionType.getPage)<UserQuery>(),
-  setPage: createAction(UserActionType.setPage)<Page<ListUser>>(),
+  setPage: createAction(UserActionType.setPage)<Page<UserShort>>(),
   getOne: createAction(UserActionType.getOne)<number>(),
   setOne: createAction(UserActionType.setOne)<User | undefined>(),
   add: createAction(UserActionType.add)<{

@@ -1,8 +1,8 @@
 import { createAction } from 'typesafe-actions';
 import {
-  ListProjectTarget,
   ProjectTarget,
   ProjectTargetParameter,
+  ProjectTargetShort,
 } from 'services/project_target';
 
 export enum ProjectTargetActionType {
@@ -18,7 +18,7 @@ export enum ProjectTargetActionType {
 
 export const projectTargetActions = {
   getList: createAction(ProjectTargetActionType.getList)<number>(),
-  setList: createAction(ProjectTargetActionType.setList)<ListProjectTarget[] | undefined>(),
+  setList: createAction(ProjectTargetActionType.setList)<ProjectTargetShort[] | undefined>(),
   getOne: createAction(ProjectTargetActionType.getOne)<number>(),
   setOne: createAction(ProjectTargetActionType.setOne)<ProjectTarget | undefined>(),
   add: createAction(ProjectTargetActionType.add)<{

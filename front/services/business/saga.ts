@@ -4,13 +4,13 @@ import Page from 'components/Page';
 import {
   Business,
   BusinessActionType,
-  BusinessList,
+  BusinessShort,
   businessActions,
   businessApi,
 } from 'services/business';
 
 function* getPage(action: ActionType<typeof businessActions.getPage>) {
-  const page: Page<BusinessList> = yield businessApi.getPage(action.payload);
+  const page: Page<BusinessShort> = yield businessApi.getPage(action.payload);
   yield put(businessActions.setPage(page));
 }
 

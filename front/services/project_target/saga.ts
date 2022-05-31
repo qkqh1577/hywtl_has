@@ -1,16 +1,16 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
 import {
-  ListProjectTarget,
   ProjectTarget,
   ProjectTargetActionType,
+  ProjectTargetShort,
   projectTargetActions,
   projectTargetApi,
 } from 'services/project_target';
 
 
 function* getList(action: ActionType<typeof projectTargetActions.getList>) {
-  const list: ListProjectTarget[] = yield projectTargetApi.getList(action.payload);
+  const list: ProjectTargetShort[] = yield projectTargetApi.getList(action.payload);
   yield put(projectTargetActions.setList(list));
 }
 

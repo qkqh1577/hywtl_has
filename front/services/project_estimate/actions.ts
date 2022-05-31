@@ -1,10 +1,11 @@
 import { createAction } from 'typesafe-actions';
 import {
-  ListProjectEstimateSheet,
   ProjectEstimate,
   ProjectEstimateParameter,
   ProjectEstimateSheet,
-  ProjectEstimateSheetAddParameter, ProjectEstimateSheetChangeParameter,
+  ProjectEstimateSheetAddParameter,
+  ProjectEstimateSheetChangeParameter,
+  ProjectEstimateSheetShort,
 } from 'services/project_estimate';
 
 export enum ProjectEstimateType {
@@ -33,7 +34,7 @@ export const projectEstimateActions = {
   }>(),
 
   getSheetList: createAction(ProjectEstimateType.getSheetList)<number>(),
-  setSheetList: createAction(ProjectEstimateType.setSheetList)<ListProjectEstimateSheet[] | undefined>(),
+  setSheetList: createAction(ProjectEstimateType.setSheetList)<ProjectEstimateSheetShort[] | undefined>(),
 
   getSheetOne: createAction(ProjectEstimateType.getSheetOne)<number>(),
   setSheetOne: createAction(ProjectEstimateType.setSheetOne)<ProjectEstimateSheet | undefined>(),

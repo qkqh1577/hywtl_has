@@ -6,7 +6,7 @@ import {
   DepartmentChangeTreeParameter,
   DepartmentParameter,
   DepartmentQuery,
-  ListDepartment,
+  DepartmentShort,
   departmentActions,
 } from 'services/department';
 
@@ -43,7 +43,7 @@ export default function useDepartment() {
   );
 
   const changeTree = useCallback(
-    (params: DepartmentChangeTreeParameter, callback: (list?: ListDepartment[]) => void) =>
+    (params: DepartmentChangeTreeParameter, callback: (list?: DepartmentShort[]) => void) =>
       dispatch(departmentActions.changeTree({ params, callback })),
     [dispatch],
   );

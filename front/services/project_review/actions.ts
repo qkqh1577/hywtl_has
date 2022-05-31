@@ -1,8 +1,8 @@
 import { createAction } from 'typesafe-actions';
 import {
-  ListProjectReview,
   ProjectReview,
-  ProjectReviewParameter
+  ProjectReviewParameter,
+  ProjectReviewShort,
 } from 'services/project_review';
 
 export enum ProjectReviewActionType {
@@ -18,7 +18,7 @@ export enum ProjectReviewActionType {
 
 export const projectReviewActions = {
   getList: createAction(ProjectReviewActionType.getList)<number>(),
-  setList: createAction(ProjectReviewActionType.setList)<ListProjectReview[] | undefined>(),
+  setList: createAction(ProjectReviewActionType.setList)<ProjectReviewShort[] | undefined>(),
   getOne: createAction(ProjectReviewActionType.getOne)<number>(),
   setOne: createAction(ProjectReviewActionType.setOne)<ProjectReview | undefined>(),
   add: createAction(ProjectReviewActionType.add)<{

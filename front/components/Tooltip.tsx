@@ -7,11 +7,7 @@ const Tooltip = ({
   children,
   ...props
 }: TooltipProps) => (
-  <MuiTooltip
-    title={title}
-    placement={placement}
-    {...props}
-  >
+  <MuiTooltip title={title} placement={placement} {...props}>
     <div>
       {children}
     </div>

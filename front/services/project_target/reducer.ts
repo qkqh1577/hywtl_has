@@ -1,13 +1,13 @@
 import { createReducer } from 'typesafe-actions';
 import {
-  ListProjectTarget,
   ProjectTarget,
   ProjectTargetActionType,
+  ProjectTargetShort,
 } from 'services/project_target';
 
 export type ProjectTargetState = {
   id?: number | null;
-  list?: ListProjectTarget[];
+  list?: ProjectTargetShort[];
   detail?: ProjectTarget;
 }
 

@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project.view;
 
 import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectBasic;
-import com.howoocast.hywtl_has.user.view.UserListView;
+import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -17,9 +17,9 @@ public class ProjectBasicView {
 
     private ProjectStatus status;
 
-    private UserListView salesManager;
+    private UserShortView salesManager;
 
-    private UserListView projectManager;
+    private UserShortView projectManager;
 
     private String address;
 
@@ -57,8 +57,8 @@ public class ProjectBasicView {
         target.name = source.getName();
         target.alias = source.getAlias();
         target.status = source.getStatus();
-        target.salesManager = UserListView.assemble(source.getSalesManager());
-        target.projectManager = UserListView.assemble(source.getProjectManager());
+        target.salesManager = UserShortView.assemble(source.getSalesManager());
+        target.projectManager = UserShortView.assemble(source.getProjectManager());
         target.address = source.getAddress();
         target.purpose1 = source.getPurpose1();
         target.purpose2 = source.getPurpose2();

@@ -1,15 +1,15 @@
 import { createReducer } from 'typesafe-actions';
 import Page, { initial } from 'components/Page';
 import {
-  ListProject,
   Project,
   ProjectActionType,
   ProjectBasic,
   ProjectOrder,
+  ProjectShort,
 } from 'services/project';
 
 export type ProjectState = {
-  page: Page<ListProject>;
+  page: Page<ProjectShort>;
   detail?: Project;
   basic?: ProjectBasic;
   order?: ProjectOrder;
