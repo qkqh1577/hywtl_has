@@ -483,6 +483,7 @@ const DataField = (props: InputProps | SelectProps | CheckboxProps | DateProps) 
       | 'disableHighlightToday'
       | 'disableOpenPicker'
       | 'disablePast'
+      | 'disabled'
       | 'inputFormat'
       | 'mask'
       | 'maxDate'
@@ -497,6 +498,7 @@ const DataField = (props: InputProps | SelectProps | CheckboxProps | DateProps) 
       | 'onViewChange'
       | 'onYearChange'
       | 'openTo'
+      | 'readOnly'
       | 'renderInput'
       | 'showDaysOutsideCurrentMonth'
       | 'showTodayButton'
@@ -507,12 +509,13 @@ const DataField = (props: InputProps | SelectProps | CheckboxProps | DateProps) 
       | 'toolbarTitle'> = {
       cancelText,
       clearText,
-      clearable,
+      clearable : editable && clearable,
       disableCloseOnSelect,
       disableFuture,
       disableHighlightToday,
       disableOpenPicker,
       disablePast,
+      disabled,
       mask,
       maxDate,
       minDate,
@@ -524,6 +527,7 @@ const DataField = (props: InputProps | SelectProps | CheckboxProps | DateProps) 
       onViewChange,
       onYearChange,
       openTo,
+      readOnly,
       showDaysOutsideCurrentMonth,
       showTodayButton,
       showToolbar,
