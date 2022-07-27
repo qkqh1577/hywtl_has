@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 import {
   Box,
   CssBaseline,
@@ -27,18 +35,39 @@ import {
   DoubleArrow as SelectedMenuIcon,
   Label as MenuIcon,
 } from '@mui/icons-material';
-import { Formik, FormikHelpers } from 'formik';
+import {
+  Formik,
+  FormikHelpers
+} from 'formik';
 import Tree, { TreeNode } from 'rc-tree';
 import { NodeDragEventParams } from 'rc-tree/lib/contextTypes';
-import { EventDataNode, Key } from 'rc-tree/lib/interface';
+import {
+  EventDataNode,
+  Key
+} from 'rc-tree/lib/interface';
 
 import logo from 'assets/logo.png';
-import { AppBar, AppDrawer } from 'layouts';
-import { Alert, Confirm, Fade, Tooltip, useDialog } from 'components';
+import {
+  AppBar,
+  AppDrawer
+} from 'layouts';
+import {
+  Alert,
+  Confirm,
+  Fade,
+  Tooltip,
+  useDialog
+} from 'components';
 import { routes as ReactRouter } from 'services/common';
 import { useUser } from 'services/user';
-import { ProjectDrawer, ProjectList } from 'pages/project';
-import { ProjectCommentDrawer, ProjectCommentList } from 'pages/project/comment';
+import {
+  ProjectDrawer,
+  ProjectList
+} from 'pages/project';
+import {
+  ProjectCommentDrawer,
+  ProjectCommentList
+} from 'pages/project/comment';
 
 type Menu = {
   title: string;
@@ -54,64 +83,65 @@ interface ToggleButtonProps {
 }
 
 const ToggleButton = ({
-  open,
-  onClick,
-  fromRight,
-}: ToggleButtonProps) => {
+                        open,
+                        onClick,
+                        fromRight,
+                      }: ToggleButtonProps) => {
   const closedIcon = fromRight ? <RightIcon /> : <LeftIcon />;
   const openedIcon = fromRight ? <LeftIcon /> : <RightIcon />;
   return (
     <IconButton
       onClick={onClick}
       sx={{
-        display: 'flex',
-        width: '16.25px',
-        height: '16.25px',
+        display:         'flex',
+        width:           '16.25px',
+        height:          '16.25px',
         backgroundColor: 'transparent',
-        border: '2px solid #301a9a',
+        border:          '2px solid #301a9a',
       }}>
       {open ? openedIcon : closedIcon}
     </IconButton>
   );
 };
 
-interface DrawerContainerProps extends ToggleButtonProps {
+interface DrawerContainerProps
+  extends ToggleButtonProps {
   title: string;
   children: React.ReactNode;
 }
 
 const DrawerContainer = ({
-  title,
-  open,
-  onClick,
-  children,
-}: DrawerContainerProps) => {
+                           title,
+                           open,
+                           onClick,
+                           children,
+                         }: DrawerContainerProps) => {
   return (
     <>
       <Toolbar />
       <Toolbar sx={{
-        display: 'flex',
-        alignItems: 'center',
+        display:        'flex',
+        alignItems:     'center',
         justifyContent: open ? 'space-between' : 'flex-end',
-        px: [1],
+        px:             [1],
       }}>
         <Fade in={open}>
           <Typography sx={{
-            ml: '19px',
+            ml:       '19px',
             fontSize: '16px'
           }}>
             {title}
           </Typography>
         </Fade>
         <Box sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-          width: '36px',
-          height: '36px',
+          display:         'flex',
+          justifyContent:  'center',
+          alignContent:    'center',
+          alignItems:      'center',
+          width:           '36px',
+          height:          '36px',
           backgroundColor: '#c4baf5',
-          borderRadius: '4px'
+          borderRadius:    '4px'
         }}>
           <ToggleButton open={open} onClick={onClick} />
         </Box>
@@ -177,19 +207,19 @@ const App = () => {
   const [openComment, setOpenComment] = useState(false);
   const [menuData, setMenuData] = useState<Menu[]>([
     {
-      title: '프로젝트',
-      depth: 0,
+      title:    '프로젝트',
+      depth:    0,
       children: [
         {
           title: '영업정보 관리',
           depth: 1,
         }, {
           title: '프로젝트 관리',
-          path: '/project',
+          path:  '/project',
           depth: 1,
         }, {
           title: '영업 관리',
-          path: '/sales',
+          path:  '/sales',
           depth: 1,
         }, {
           title: '수금 관리',
@@ -201,11 +231,11 @@ const App = () => {
       ]
     }, {
       title: '업체 관리',
-      path: '/business-management',
+      path:  '/business-management',
       depth: 0,
     }, {
       title: '인사카드 관리',
-      path: '/hr/card',
+      path:  '/hr/card',
       depth: 0,
     }, {
       title: '결재 관리',
@@ -214,20 +244,20 @@ const App = () => {
       title: 'WBS 관리',
       depth: 0,
     }, {
-      title: '관리자 메뉴',
-      depth: 0,
+      title:    '관리자 메뉴',
+      depth:    0,
       children: [
         {
           title: '사용자 관리',
-          path: '/user',
+          path:  '/user',
           depth: 1,
         }, {
           title: '조직 관리',
-          path: '/department',
+          path:  '/department',
           depth: 1,
         }, {
           title: '용역항목 관리',
-          path: '/test-service',
+          path:  '/test-service',
           depth: 1,
         }
       ]
@@ -235,7 +265,7 @@ const App = () => {
   ]);
 
   const handler = {
-    toggleMenu: () => {
+    toggleMenu:    () => {
       setOpenMenu(!openMenu);
     },
     toggleProject: () => {
@@ -244,7 +274,7 @@ const App = () => {
     toggleComment: () => {
       setOpenComment(!openComment);
     },
-    dragStart: (info: NodeDragEventParams) => {
+    dragStart:     (info: NodeDragEventParams) => {
       console.log(info);
       setMenuData(menuData.map((menu) => {
         if (info.node.key as string === menu.path) {
@@ -256,12 +286,12 @@ const App = () => {
         return menu;
       }));
     },
-    dragEnter: (info: NodeDragEventParams & {
+    dragEnter:     (info: NodeDragEventParams & {
       expandedKeys: Key[];
     }) => {
       console.log(info);
     },
-    drop: (info: NodeDragEventParams & {
+    drop:          (info: NodeDragEventParams & {
       dragNode: EventDataNode;
       dragNodesKeys: Key[];
       dropPosition: number;
@@ -272,8 +302,17 @@ const App = () => {
       const dropPos = info.node.pos.split('-');
       const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
 
-      const loop = (data: Menu[], path: string, callback: (item: Menu, index: number, arr: Menu[]) => void) => {
-        data.forEach((item, index, arr) => {
+      const loop = (data: Menu[],
+                    path: string,
+                    callback: (item: Menu,
+                               index: number,
+                               arr: Menu[]
+                    ) => void
+      ) => {
+        data.forEach((item,
+                      index,
+                      arr
+        ) => {
           if (item.path === path) {
             callback(item, index, arr);
             return;
@@ -284,7 +323,10 @@ const App = () => {
 
       // Find dragObject
       let dragObj: Menu | undefined;
-      loop(data, dragKey, (item, index, arr) => {
+      loop(data, dragKey, (item,
+                           index,
+                           arr
+      ) => {
         arr.splice(index, 1);
         dragObj = item;
       });
@@ -292,14 +334,18 @@ const App = () => {
         // Drop on the gap (insert before or insert after)
         let ar: Menu[] | undefined;
         let i: number | undefined;
-        loop(data, dropKey, (item, index, arr) => {
+        loop(data, dropKey, (item,
+                             index,
+                             arr
+        ) => {
           ar = arr;
           i = index;
         });
         if (ar && typeof i === 'number') {
           if (dropPosition === -1) {
             ar.splice(i, 0, dragObj);
-          } else {
+          }
+          else {
             ar.splice(i + 1, 0, dragObj);
           }
         }
@@ -307,17 +353,19 @@ const App = () => {
 
       setMenuData(data.map(menu => ({ ...menu, icon: FolderOpenIcon })));
     },
-    logout: () => {
+    logout:        () => {
       dialog.confirm({
-        children: '로그아웃하시겠습니까?',
-        confirmText: '로그아웃',
+        children:     '로그아웃하시겠습니까?',
+        confirmText:  '로그아웃',
         afterConfirm: () => {
           logout();
           navigate('/login');
         }
       });
     },
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+    search:        (values: any,
+                    { setSubmitting }: FormikHelpers<any>
+                   ) => {
       console.log(values);
       setSubmitting(false);
     }
@@ -337,7 +385,7 @@ const App = () => {
     <>
       <Box sx={{
         display: 'flex',
-        width: '100%'
+        width:   '100%'
       }}>
         <CssBaseline />
         <AppBar color="transparent" position="absolute">
@@ -348,9 +396,9 @@ const App = () => {
               spacing={2}
               wrap="nowrap"
               sx={{
-                display: 'flex',
-                flexWrap: 'nowrap',
-                alignContent: 'center',
+                display:        'flex',
+                flexWrap:       'nowrap',
+                alignContent:   'center',
                 justifyContent: 'space-between',
               }}>
               <Grid item>
@@ -360,8 +408,8 @@ const App = () => {
             {login && (
               <Grid item
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'nowrap',
+                  display:        'flex',
+                  flexWrap:       'nowrap',
                   justifyContent: 'flex-end',
                 }}>
                 <Formik
@@ -369,31 +417,26 @@ const App = () => {
                   initialValues={{
                     search: ''
                   }}>
-                  {({ setFieldValue }) => (
-                    <Input
-                      placeholder="통합검색"
-                      onChange={(e) => {
-                        setFieldValue('search', e.target.value);
-                      }}
-                      sx={{
-                        width: '240px',
-                        paddingLeft: '10px',
-                        paddingRight: '10px',
-                        border: '1px solid #44527b',
-                        borderRadius: '8px',
-                        color: '#fff',
-                      }}
-                      endAdornment={
-                        <InputAdornment
-                          position="end"
-                          sx={{
-                            color: '#717ea8',
-                          }}>
-                          <SearchIcon />
-                        </InputAdornment>
-                      }
-                    />
-                  )}
+                  <Input
+                    placeholder="통합검색"
+                    sx={{
+                      width:        '240px',
+                      paddingLeft:  '10px',
+                      paddingRight: '10px',
+                      border:       '1px solid #44527b',
+                      borderRadius: '8px',
+                      color:        '#fff',
+                    }}
+                    endAdornment={
+                      <InputAdornment
+                        position="end"
+                        sx={{
+                          color: '#717ea8',
+                        }}>
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
                 </Formik>
                 <Tooltip title="알림" placement="bottom">
                   <IconButton color="warning">
@@ -448,17 +491,17 @@ const App = () => {
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-            paddingLeft: 0,
-            paddingRight: 0,
+                               theme.palette.mode === 'light'
+                                 ? theme.palette.grey[100]
+                                 : theme.palette.grey[900],
+            flexGrow:        1,
+            height:          '100vh',
+            overflow:        'auto',
+            paddingLeft:     0,
+            paddingRight:    0,
           }}>
           <Toolbar sx={{
-            paddingLeft: 0,
+            paddingLeft:  0,
             paddingRight: 0,
           }}
           />

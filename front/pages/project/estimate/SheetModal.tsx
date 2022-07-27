@@ -1,4 +1,8 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, {
+  createRef,
+  useEffect,
+  useState
+} from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -10,7 +14,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
+import {
+  Form,
+  Formik,
+  FormikHelpers
+} from 'formik';
 import dayjs from 'dayjs';
 import {
   DataField,
@@ -33,7 +41,8 @@ import {
   initProjectEstimateSheetView as initView,
   projectEstimateSheetStatusList,
   projectEstimateSheetStatusName,
-  useProjectEstimate, ProjectEstimateSheetChangeParameter,
+  useProjectEstimate,
+  ProjectEstimateSheetChangeParameter,
 } from 'services/project_estimate';
 import {
   ProjectReviewDetail,
@@ -46,40 +55,43 @@ import {
 } from 'services/standard_data/test_service_template';
 import { toAmountKor } from 'util/NumberUtil';
 import { FormikProps } from 'formik/dist/types';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
-    label: '건물(동)',
+    label:      '건물(동)',
     renderCell: item => item.buildingName,
   }, {
-    label: '층수',
+    label:      '층수',
     renderCell: item => item.floorCount
   }, {
-    label: '지하층수',
+    label:      '지하층수',
     renderCell: item => item.baseCount ?? ''
   }, {
-    label: '높이',
+    label:      '높이',
     renderCell: item => `${item.height}m`,
   }, {
-    label: '면적',
+    label:      '면적',
     renderCell: item => `${item.area}㎡`
   }, {
-    label: '형상비',
+    label:      '형상비',
     renderCell: item => item.ratio.toFixed(2)
   }, {
-    label: '특별풍하중조건',
-    renderCell: item => item.specialWindLoadConditionList?.map(c => `(${c})`).join(', ')
+    label:      '특별풍하중조건',
+    renderCell: item => item.specialWindLoadConditionList?.map(c => `(${c})`)
+                            .join(', ')
   }, {
-    label: '최소실험 대상여부',
+    label:      '최소실험 대상여부',
     renderCell: item => item.ratio >= 3 ? 'Y' : ''
   }, {
-    label: '실험 종류',
+    label:      '실험 종류',
     renderCell: item => item.testList.join(', ')
   }, {
-    label: '비고1',
+    label:      '비고1',
     renderCell: item => item.memo1
   }, {
-    label: '비고2',
+    label:      '비고2',
     renderCell: item => item.memo2
   },
 ];
@@ -91,131 +103,138 @@ const ProjectEstimateSheetModal = () => {
   const formikRef = createRef<FormikProps<View>>();
   const dialog = useDialog();
   const {
-    state: {
-      sheetId,
-      sheetDetail: detail,
-    },
-    getSheetOne: getOne,
-    clearSheetOne: clearOne,
-    clearSheetId,
-    addSheet,
-    changeSheet,
-  } = useProjectEstimate();
+          state:         {
+                           sheetId,
+                           sheetDetail: detail,
+                         },
+          getSheetOne:   getOne,
+          clearSheetOne: clearOne,
+          clearSheetId,
+          addSheet,
+          changeSheet,
+        } = useProjectEstimate();
   const {
-    state: {
-      list: reviewList,
-    },
-    getList: getReviewList,
-    clearList: clearReviewList,
-  } = useProjectReview();
+          state:     {
+                       list: reviewList,
+                     },
+          getList:   getReviewList,
+          clearList: clearReviewList,
+        } = useProjectReview();
   const [view, setView] = useState<View>(initView);
   const [amount, setAmount] = useState<number>(0);
 
   const handler = {
-    close: () => {
+    close:          () => {
       setView(initView);
       clearOne();
       clearSheetId();
       clearReviewList();
     },
-    onReviewChange: (reviewId: number, setFieldValue: (name: string, value: any) => void) => {
+    onReviewChange: (reviewId: number,
+                     setFieldValue: (name: string,
+                                     value: any
+                     ) => void
+                    ) => {
 
       projectReviewApi.getOne(reviewId)
-      .then((reviewDetail) => {
-        setFieldValue('reviewDetail', reviewDetail);
-        const testType: string[] = [];
-        if (Array.isArray(reviewDetail.testList)) {
-          for (let i = 0; i < reviewDetail.testList.length; i++) {
-            testType.push(reviewDetail.testList[i]);
-          }
-        }
-        reviewDetail.detailList.forEach((detail) => {
-          if (Array.isArray(detail.testList)) {
-            for (let i = 0; i < detail.testList.length; i++) {
-              if (!testType.includes(detail.testList[i])) {
-                testType.push(detail.testList[i]);
-              }
-            }
-          }
-        });
-        testServiceTemplateApi.getFullList({
-          testType,
-        }).then((templateList) => {
-          const testServiceList: ProjectEstimateSheetTestServiceView[] = [];
-          const counter: any = {};
+                      .then((reviewDetail) => {
+                        setFieldValue('reviewDetail', reviewDetail);
+                        const testType: string[] = [];
+                        if (Array.isArray(reviewDetail.testList)) {
+                          for (let i = 0; i < reviewDetail.testList.length; i++) {
+                            testType.push(reviewDetail.testList[i]);
+                          }
+                        }
+                        reviewDetail.detailList.forEach((detail) => {
+                          if (Array.isArray(detail.testList)) {
+                            for (let i = 0; i < detail.testList.length; i++) {
+                              if (!testType.includes(detail.testList[i])) {
+                                testType.push(detail.testList[i]);
+                              }
+                            }
+                          }
+                        });
+                        testServiceTemplateApi.getFullList({
+                          testType,
+                        })
+                                              .then((templateList) => {
+                                                const testServiceList: ProjectEstimateSheetTestServiceView[] = [];
+                                                const counter: any = {};
 
-          if (reviewDetail && templateList) {
-            if (Array.isArray(reviewDetail.testList)) {
-              for (let i = 0; i < reviewDetail.testList.length; i++) {
-                const testType: string = reviewDetail.testList[i];
-                if (typeof counter[testType] === 'undefined') {
-                  counter[testType] = 0;
-                }
-                counter[testType]++;
-              }
-            }
-            for (let d = 0; d < reviewDetail.detailList.length; d++) {
-              const detail = reviewDetail.detailList[d];
-              for (let i = 0; i < detail.testList.length; i++) {
-                const testType: string = detail.testList[i];
-                if (typeof counter[testType] === 'undefined') {
-                  counter[testType] = 0;
-                }
-                counter[testType]++;
-              }
-            }
+                                                if (reviewDetail && templateList) {
+                                                  if (Array.isArray(reviewDetail.testList)) {
+                                                    for (let i = 0; i < reviewDetail.testList.length; i++) {
+                                                      const testType: string = reviewDetail.testList[i];
+                                                      if (typeof counter[testType] === 'undefined') {
+                                                        counter[testType] = 0;
+                                                      }
+                                                      counter[testType]++;
+                                                    }
+                                                  }
+                                                  for (let d = 0; d < reviewDetail.detailList.length; d++) {
+                                                    const detail = reviewDetail.detailList[d];
+                                                    for (let i = 0; i < detail.testList.length; i++) {
+                                                      const testType: string = detail.testList[i];
+                                                      if (typeof counter[testType] === 'undefined') {
+                                                        counter[testType] = 0;
+                                                      }
+                                                      counter[testType]++;
+                                                    }
+                                                  }
 
-            for (let i = 0; i < templateList.length; i++) {
-              const template = templateList[i];
-              if (Array.isArray(reviewDetail.testList)) {
-                for (let j = 0; j < reviewDetail.testList.length; j++) {
-                  const testType = reviewDetail.testList[j];
-                  const count: number | '' = counter[testType] as number ?? '';
-                  if (testType === template.testType) {
-                    testServiceList.push({
-                      title: template.title,
-                      detailList: template.detailList.map((templateDetail) => ({
-                        titleList: templateDetail.titleList,
-                        unit: templateDetail.unit,
-                        count,
-                        unitPrice: templateDetail.unitPrice,
-                        totalPrice: templateDetail.unitPrice * count,
-                        isIncluded: 'Y',
-                        memo: templateDetail.memo ?? '',
-                      })),
-                    });
-                  }
-                }
-              }
+                                                  for (let i = 0; i < templateList.length; i++) {
+                                                    const template = templateList[i];
+                                                    if (Array.isArray(reviewDetail.testList)) {
+                                                      for (let j = 0; j < reviewDetail.testList.length; j++) {
+                                                        const testType = reviewDetail.testList[j];
+                                                        const count: number | '' = counter[testType] as number ?? '';
+                                                        if (testType === template.testType) {
+                                                          testServiceList.push({
+                                                            title:      template.title,
+                                                            detailList: template.detailList.map((templateDetail) => ({
+                                                              titleList:  templateDetail.titleList,
+                                                              unit:       templateDetail.unit,
+                                                              count,
+                                                              unitPrice:  templateDetail.unitPrice,
+                                                              totalPrice: templateDetail.unitPrice * count,
+                                                              isIncluded: 'Y',
+                                                              memo:       templateDetail.memo ?? '',
+                                                            })),
+                                                          });
+                                                        }
+                                                      }
+                                                    }
 
-              for (let d = 0; d < reviewDetail.detailList.length; d++) {
-                const detail = reviewDetail.detailList[d];
-                for (let j = 0; j < detail.testList.length; j++) {
-                  const testType = detail.testList[j];
-                  const count: number | '' = counter[testType] as number ?? '';
-                  if (testType === template.testType) {
-                    testServiceList.push({
-                      title: template.title,
-                      detailList: template.detailList.map((templateDetail) => ({
-                        titleList: templateDetail.titleList,
-                        unit: templateDetail.unit,
-                        count,
-                        unitPrice: templateDetail.unitPrice,
-                        totalPrice: templateDetail.unitPrice * count,
-                        isIncluded: 'Y',
-                        memo: templateDetail.memo ?? '',
-                      })),
-                    });
-                  }
-                }
-              }
-            }
-          }
-          setFieldValue('testServiceList', testServiceList);
-        });
-      });
+                                                    for (let d = 0; d < reviewDetail.detailList.length; d++) {
+                                                      const detail = reviewDetail.detailList[d];
+                                                      for (let j = 0; j < detail.testList.length; j++) {
+                                                        const testType = detail.testList[j];
+                                                        const count: number | '' = counter[testType] as number ?? '';
+                                                        if (testType === template.testType) {
+                                                          testServiceList.push({
+                                                            title:      template.title,
+                                                            detailList: template.detailList.map((templateDetail) => ({
+                                                              titleList:  templateDetail.titleList,
+                                                              unit:       templateDetail.unit,
+                                                              count,
+                                                              unitPrice:  templateDetail.unitPrice,
+                                                              totalPrice: templateDetail.unitPrice * count,
+                                                              isIncluded: 'Y',
+                                                              memo:       templateDetail.memo ?? '',
+                                                            })),
+                                                          });
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                                setFieldValue('testServiceList', testServiceList);
+                                              });
+                      });
     },
-    submit: (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
+    submit:         (values: any,
+                     { setErrors, setSubmitting }: FormikHelpers<any>
+                    ) => {
       if (!projectId) {
         dialog.alert('프로젝트가 선택되지 않았습니다.');
         return;
@@ -223,87 +242,91 @@ const ProjectEstimateSheetModal = () => {
       const errors: any = {};
 
       const testServiceList: ProjectEstimateSheetTestServiceParameter[] =
-        (values.testServiceList as any[])
-        .map((testService, i) => {
-          const testServiceErrors: any = {};
+              (values.testServiceList as any[])
+              .map((testService,
+                    i
+              ) => {
+                const testServiceErrors: any = {};
 
-          const detailList: ProjectEstimateSheetTestServiceDetailParameter[] =
-            (testService.detailList as any[])
-            .map((testServiceDetail, j) => {
-              const testServiceDetailErrors: any = {};
-              const id: number | undefined = testServiceDetail.id;
-              const titleList: string[] = testServiceDetail.titleList;
-              const unit: string = testServiceDetail.unit;
-              if (!unit) {
-                testServiceDetailErrors.unit = '단위는 필수 항목입니다.';
-              }
-              const count: number = testServiceDetail.count;
-              if (!count && count !== 0) {
-                testServiceDetailErrors.count = '수량은 필수 항목입니다.';
-              }
-              const unitPrice: number = testServiceDetail.unitPrice;
-              if (!unitPrice && unitPrice !== 0) {
-                testServiceDetailErrors.unitPrice = '단가는 필수 항목입니다.';
-              }
-              const isIncluded: boolean = testServiceDetail.isIncluded === 'Y';
-              if (!testServiceDetail.isIncluded) {
-                testServiceDetailErrors.isIncluded = '사용 여부는 필수 항목입니다.';
-              }
-              const totalPrice: number = count * unitPrice;
-              const memo: string | undefined = testServiceDetail.memo || undefined;
+                const detailList: ProjectEstimateSheetTestServiceDetailParameter[] =
+                        (testService.detailList as any[])
+                        .map((testServiceDetail,
+                              j
+                        ) => {
+                          const testServiceDetailErrors: any = {};
+                          const id: number | undefined = testServiceDetail.id;
+                          const titleList: string[] = testServiceDetail.titleList;
+                          const unit: string = testServiceDetail.unit;
+                          if (!unit) {
+                            testServiceDetailErrors.unit = '단위는 필수 항목입니다.';
+                          }
+                          const count: number = testServiceDetail.count;
+                          if (!count && count !== 0) {
+                            testServiceDetailErrors.count = '수량은 필수 항목입니다.';
+                          }
+                          const unitPrice: number = testServiceDetail.unitPrice;
+                          if (!unitPrice && unitPrice !== 0) {
+                            testServiceDetailErrors.unitPrice = '단가는 필수 항목입니다.';
+                          }
+                          const isIncluded: boolean = testServiceDetail.isIncluded === 'Y';
+                          if (!testServiceDetail.isIncluded) {
+                            testServiceDetailErrors.isIncluded = '사용 여부는 필수 항목입니다.';
+                          }
+                          const totalPrice: number = count * unitPrice;
+                          const memo: string | undefined = testServiceDetail.memo || undefined;
 
-              const keys = Object.keys(testServiceDetailErrors);
-              if (keys.length > 0) {
-                for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
-                  testServiceErrors[`detailList[${j}].${keys[errorIndex]}`]
-                    = testServiceDetailErrors[keys[errorIndex]];
+                          const keys = Object.keys(testServiceDetailErrors);
+                          if (keys.length > 0) {
+                            for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+                              testServiceErrors[`detailList[${j}].${keys[errorIndex]}`]
+                                = testServiceDetailErrors[keys[errorIndex]];
+                            }
+                            return null;
+                          }
+                          const params: ProjectEstimateSheetTestServiceDetailParameter = {
+                            id,
+                            titleList,
+                            seq: j + 1,
+                            unit,
+                            count,
+                            unitPrice,
+                            isIncluded,
+                            totalPrice,
+                            memo,
+                          };
+                          return params;
+                        })
+                        .filter(item => item !== null)
+                        .map(item => item as ProjectEstimateSheetTestServiceDetailParameter);
+                if (detailList.length === 0) {
+                  testServiceErrors['detailList.size'] = '상세는 하나 이상 필수 항목입니다.';
                 }
-                return null;
-              }
-              const params: ProjectEstimateSheetTestServiceDetailParameter = {
-                id,
-                titleList,
-                seq: j + 1,
-                unit,
-                count,
-                unitPrice,
-                isIncluded,
-                totalPrice,
-                memo,
-              };
-              return params;
-            })
-            .filter(item => item !== null)
-            .map(item => item as ProjectEstimateSheetTestServiceDetailParameter);
-          if (detailList.length === 0) {
-            testServiceErrors['detailList.size'] = '상세는 하나 이상 필수 항목입니다.';
-          }
 
-          const id: number | undefined = testService.id;
-          const title: string = testService.title;
-          if (!title) {
-            testServiceErrors.title = '용역 항목은 필수 항목입니다.';
-          }
+                const id: number | undefined = testService.id;
+                const title: string = testService.title;
+                if (!title) {
+                  testServiceErrors.title = '용역 항목은 필수 항목입니다.';
+                }
 
-          const keys = Object.keys(testServiceErrors);
-          if (keys.length > 0) {
-            for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
-              errors[`detailList[${i}].${keys[errorIndex]}`]
-                = testServiceErrors[keys[errorIndex]];
-            }
-            return null;
-          }
+                const keys = Object.keys(testServiceErrors);
+                if (keys.length > 0) {
+                  for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+                    errors[`detailList[${i}].${keys[errorIndex]}`]
+                      = testServiceErrors[keys[errorIndex]];
+                  }
+                  return null;
+                }
 
-          const params: ProjectEstimateSheetTestServiceParameter = {
-            id,
-            title,
-            seq: i + 1,
-            detailList,
-          };
-          return params;
-        })
-        .filter(item => item !== null)
-        .map(item => item as ProjectEstimateSheetTestServiceParameter);
+                const params: ProjectEstimateSheetTestServiceParameter = {
+                  id,
+                  title,
+                  seq: i + 1,
+                  detailList,
+                };
+                return params;
+              })
+              .filter(item => item !== null)
+              .map(item => item as ProjectEstimateSheetTestServiceParameter);
       if (testServiceList.length === 0) {
         errors['testServiceList.size'] = '용역 항목은 하나 이상 필수 항목입니다.';
       }
@@ -325,13 +348,15 @@ const ProjectEstimateSheetModal = () => {
 
       const memo: string | undefined = values.memo || undefined;
 
-      const estimateDate: string = dayjs(values.estimateDate).format('YYYY-MM-DD');
+      const estimateDate: string = dayjs(values.estimateDate)
+      .format('YYYY-MM-DD');
       if (values.estimateDate === null) {
         errors.estimateDate = '견적일자는 필수 항목입니다.';
       }
 
       const expectedStartMonth: string | undefined = values.expectedStartMonth === null ? undefined :
-        dayjs(values.expectedStartMonth).format('YYYY-MM-01');
+        dayjs(values.expectedStartMonth)
+        .format('YYYY-MM-01');
 
       const salesTeamLeaderId: number = values.salesTeamLeaderId;
       if (!salesTeamLeaderId) {
@@ -353,9 +378,9 @@ const ProjectEstimateSheetModal = () => {
 
       const commentList: ProjectEstimateSheetCommentParameter[] = [
         {
-          seq: 1,
+          seq:         1,
           description: 'test comment',
-          inUse: true,
+          inUse:       true,
         }
       ];
 
@@ -388,7 +413,8 @@ const ProjectEstimateSheetModal = () => {
           dialog.alert('등록되었습니다.');
           handler.close();
         });
-      } else {
+      }
+      else {
         const params: ProjectEstimateSheetChangeParameter = {
           id: sheetId,
           confirmed,
@@ -414,15 +440,21 @@ const ProjectEstimateSheetModal = () => {
     },
     calculatePrice: (testServiceList: ProjectEstimateSheetTestServiceView[]) => {
       setAmount(testServiceList.map(item => item.detailList)
-        .map(list => list.map(item => {
-            const count = item.count;
-            const unitPrice = item.unitPrice;
-            if (count === '' || unitPrice === '' || item.isIncluded !== 'Y') {
-              return 0;
-            }
-            return count * unitPrice;
-          }).reduce((a, b) => a + b, 0)
-        ).reduce((a, b) => a + b, 0)
+                               .map(list => list.map(item => {
+                                   const count = item.count;
+                                   const unitPrice = item.unitPrice;
+                                   if (count === '' || unitPrice === '' || item.isIncluded !== 'Y') {
+                                     return 0;
+                                   }
+                                   return count * unitPrice;
+                                 })
+                                                .reduce((a,
+                                                         b
+                                                ) => a + b, 0)
+                               )
+                               .reduce((a,
+                                        b
+                               ) => a + b, 0)
       );
     }
   };
@@ -442,34 +474,34 @@ const ProjectEstimateSheetModal = () => {
   useEffect(() => {
     if (detail) {
       setView({
-        confirmed: detail.confirmed ? 'Y' : 'N',
-        status: detail.status,
-        title: detail.title,
-        memo: detail.memo ?? '',
-        estimateDate: detail.estimateDate,
-        expectedStartMonth: detail.expectedStartMonth ?? null,
-        salesTeamLeaderId: detail.salesTeamLeader.id,
+        confirmed:               detail.confirmed ? 'Y' : 'N',
+        status:                  detail.status,
+        title:                   detail.title,
+        memo:                    detail.memo ?? '',
+        estimateDate:            detail.estimateDate,
+        expectedStartMonth:      detail.expectedStartMonth ?? null,
+        salesTeamLeaderId:       detail.salesTeamLeader.id,
         salesManagementLeaderId: detail.salesManagementLeader?.id ?? '',
-        engineeringPeriod: detail.engineeringPeriod ?? '',
-        finalReportPeriod: detail.finalReportPeriod ?? '',
-        reviewId: detail.review.id,
-        specialDiscount: detail.specialDiscount ?? '',
-        testServiceList: detail.testServiceList.map((testService) => ({
-          id: testService.id,
-          title: testService.title,
+        engineeringPeriod:       detail.engineeringPeriod ?? '',
+        finalReportPeriod:       detail.finalReportPeriod ?? '',
+        reviewId:                detail.review.id,
+        specialDiscount:         detail.specialDiscount ?? '',
+        testServiceList:         detail.testServiceList.map((testService) => ({
+          id:         testService.id,
+          title:      testService.title,
           detailList: testService.detailList.map((testServiceDetail) => ({
-            id: testServiceDetail.id,
-            titleList: testServiceDetail.titleList,
-            unit: testServiceDetail.unit,
-            count: testServiceDetail.count,
-            unitPrice: testServiceDetail.unitPrice,
+            id:         testServiceDetail.id,
+            titleList:  testServiceDetail.titleList,
+            unit:       testServiceDetail.unit,
+            count:      testServiceDetail.count,
+            unitPrice:  testServiceDetail.unitPrice,
             isIncluded: testServiceDetail.isIncluded ? 'Y' : 'N',
-            memo: testServiceDetail.memo ?? '',
+            memo:       testServiceDetail.memo ?? '',
           }))
         })),
-        commentList: detail.commentList.map((comment) => ({
+        commentList:             detail.commentList.map((comment) => ({
           description: comment.description,
-          inUse: comment.inUse
+          inUse:       comment.inUse
         }))
       });
     }
@@ -496,60 +528,47 @@ const ProjectEstimateSheetModal = () => {
         innerRef={formikRef}
       >
         {({
-          values,
-          errors,
-          isSubmitting,
-          setFieldValue,
-          handleSubmit,
-        }) => (
+            values,
+            isSubmitting,
+            handleSubmit,
+          }) => (
           <Form>
             <Box sx={{
               display: 'flex',
-              width: '100%',
-              mb: '40px',
+              width:   '100%',
+              mb:      '40px',
             }}>
               <Grid container spacing={2}>
                 <Grid item sm={1}>
-                  <DataField required
-                    type="select"
+                  <SelectField
+                    required
                     name="confirmed"
                     label="확정 여부"
-                    value={values.confirmed}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
                     options={['Y', 'N']}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField required
-                    type="select"
+                  <SelectField
+                    required
                     name="status"
                     label="상태"
-                    value={values.status}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
                     options={projectEstimateSheetStatusList.map(item => ({
-                      key: item as string,
+                      key:  item as string,
                       text: projectEstimateSheetStatusName(item),
                     }))}
                   />
                 </Grid>
                 <Grid item sm={4}>
-                  <DataField required
+                  <TextField
+                    required
                     name="title"
                     label="제목"
-                    value={values.title}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
                   />
                 </Grid>
                 <Grid item sm={3}>
-                  <DataField
+                  <TextField
                     name="memo"
                     label="비고"
-                    value={values.memo}
-                    setFieldValue={setFieldValue}
-                    errors={errors}
                   />
                 </Grid>
                 <Grid item sm={2}>
@@ -572,48 +591,47 @@ const ProjectEstimateSheetModal = () => {
             </Box>
             <Box sx={{
               display: 'flex',
-              width: '100%',
-              mb: '40px',
+              width:   '100%',
+              mb:      '40px',
             }}>
               <Grid container spacing={2}>
                 <Grid item
                   sm={3}
                   sx={{
-                    display: 'flex',
-                    width: '100%',
+                    display:  'flex',
+                    width:    '100%',
                     flexWrap: 'wrap',
                   }}>
                   <Box sx={{
-                    display: 'flex',
-                    width: '100%',
+                    display:  'flex',
+                    width:    '100%',
                     flexWrap: 'wrap',
-                    mb: '20px',
+                    mb:       '20px',
                   }}>
-                    <DataField
-                      type="select"
+                    <SelectField
                       name="reviewId"
                       label="형상비 검토"
-                      value={values.reviewId}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
                       options={reviewList?.map(item => ({
-                        key: item.id,
+                        key:  item.id,
                         text: `${item.code}(${projectReviewStatusName(item.status)})`,
                       })) ?? null}
                       readOnly={typeof detail !== 'undefined'}
-                      onChange={(e, value) => {
-                        if (typeof value === 'number') {
-                          handler.onReviewChange(value, setFieldValue);
-                        }
-                      }}
+                      // TODO: onChange
+                      // onChange={(e,
+                      //            value
+                      // ) => {
+                      //   if (typeof value === 'number') {
+                      //     handler.onReviewChange(value, setFieldValue);
+                      //   }
+                      // }}
                     />
                   </Box>
                   <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    flexWrap: 'wrap',
+                    display:        'flex',
+                    width:          '100%',
+                    flexWrap:       'wrap',
                     justifyContent: 'center',
-                    mb: '40px',
+                    mb:             '40px',
                   }}>
                     <Table body={
                       <TableBody>
@@ -661,23 +679,27 @@ const ProjectEstimateSheetModal = () => {
                     />
                   </Box>
                   <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mb: '40px',
+                    display:        'flex',
+                    width:          '100%',
+                    mb:             '40px',
                     justifyContent: 'center',
-                    minHeight: '500px',
-                    overflowX: 'hidden',
+                    minHeight:      '500px',
+                    overflowX:      'hidden',
                   }}>
                     {values.reviewDetail && (
                       <Table
                         body={
                           <TableBody>
-                            {reviewDetailColumnList.map((column, i) => (
+                            {reviewDetailColumnList.map((column,
+                                                         i
+                            ) => (
                               <TableRow key={i}>
                                 <TableHead>
                                   {column.label}
                                 </TableHead>
-                                {values.reviewDetail?.detailList.map((item, j) => (
+                                {values.reviewDetail?.detailList.map((item,
+                                                                      j
+                                ) => (
                                   <TableCell key={j}>
                                     {column.renderCell(item, j)}
                                   </TableCell>
@@ -688,13 +710,13 @@ const ProjectEstimateSheetModal = () => {
                         }
                         sx={{
                           maxHeight: '430px',
-                          minWidth: '100%'
+                          minWidth:  '100%'
                         }}
                       />
                     )}
                     {!values.reviewDetail && (
                       <Typography sx={{
-                        color: 'lightgray',
+                        color:     'lightgray',
                         textAlign: 'center'
                       }}>
                         형상비 검토 또는 실험대상을
@@ -707,8 +729,8 @@ const ProjectEstimateSheetModal = () => {
                 <Grid item sm={9}>
                   <Box sx={{
                     display: 'flex',
-                    width: '100%',
-                    mb: '40px',
+                    width:   '100%',
+                    mb:      '40px',
                   }}>
                     <Grid container spacing={2}>
                       <Grid item sm={3}>
@@ -716,9 +738,6 @@ const ProjectEstimateSheetModal = () => {
                           type="date"
                           name="estimateDate"
                           label="견적일자"
-                          value={values.estimateDate}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={3}>
@@ -726,64 +745,50 @@ const ProjectEstimateSheetModal = () => {
                           type="date"
                           name="expectedStartMonth"
                           label="착수 가능"
-                          value={values.expectedStartMonth}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={3}>
                         <UserSelector required
                           name="salesTeamLeaderId"
                           label="영업팀장"
-                          value={values.salesTeamLeaderId}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={3}>
                         <UserSelector
                           name="salesManagementLeaderId"
                           label="영업실장"
-                          value={values.salesManagementLeaderId}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={3}>
-                        <DataField
+                        <TextField
+                          type="number"
                           name="engineeringPeriod"
                           label="주골조설계소요 기간"
-                          value={values.engineeringPeriod}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                           endAdornment="주"
                         />
                       </Grid>
                       <Grid item sm={3}>
-                        <DataField
+                        <TextField
                           type="number"
                           name="finalReportPeriod"
                           label="최종보고서(전자본) 기간"
-                          value={values.finalReportPeriod}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                           endAdornment="주"
                         />
                       </Grid>
                     </Grid>
                   </Box>
                   <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mb: '40px',
+                    display:        'flex',
+                    width:          '100%',
+                    mb:             '40px',
                     justifyContent: 'center'
                   }}>
                     합계(부가세 별도): {toAmountKor(amount)} (₩{amount.toLocaleString()})
                   </Box>
                   <Box sx={{
                     display: 'flex',
-                    width: '100%',
-                    mb: '40px',
+                    width:   '100%',
+                    mb:      '40px',
                   }}>
                     <Table
                       head={
@@ -813,17 +818,26 @@ const ProjectEstimateSheetModal = () => {
                       body={
                         <TableBody>
                           {values.testServiceList && values.testServiceList.length > 0 &&
-                          values.testServiceList.map((testService, i) => {
+                          values.testServiceList.map((testService,
+                                                      i
+                          ) => {
                             const rowSpan: number | undefined = testService.detailList
-                            .map(d => d.titleList)
-                            .map(l => l.length)
-                            .reduce((a, b) => a + b);
-                            return testService.detailList.map((testServiceDetail, j) => {
+                                                                           .map(d => d.titleList)
+                                                                           .map(l => l.length)
+                                                                           .reduce((a,
+                                                                                    b
+                                                                           ) => a + b);
+                            return testService.detailList.map((testServiceDetail,
+                                                               j
+                            ) => {
                               const detailRowSpan: number | undefined = testServiceDetail.titleList.length;
+                              // TODO: total price set
                               const totalPrice: number | '' =
-                                testServiceDetail.count === '' || testServiceDetail.unitPrice === '' ?
-                                  '' : testServiceDetail.count * testServiceDetail.unitPrice;
-                              return testServiceDetail.titleList.map((title, k) => (
+                                      testServiceDetail.count === '' || testServiceDetail.unitPrice === '' ?
+                                        '' : testServiceDetail.count * testServiceDetail.unitPrice;
+                              return testServiceDetail.titleList.map((title,
+                                                                      k
+                              ) => (
                                 <TableRow key={`${i}-${j}-${k}`}>
                                   {j === 0 && k === 0 && ([
                                     <TableCell key={`${i}-no`} rowSpan={rowSpan}>
@@ -838,62 +852,53 @@ const ProjectEstimateSheetModal = () => {
                                   </TableCell>
                                   {k === 0 && ([
                                     <TableCell key={`${i}-${j}-unit`} rowSpan={detailRowSpan}>
-                                      <DataField required disableLabel
-                                        type="select"
+                                      <SelectField
+                                        required
+                                        disableLabel
                                         name={`testServiceList[${i}].detailList[${j}].unit`}
                                         label="단위"
-                                        value={testServiceDetail.unit}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                         options={['단지', '동']}
                                       />
                                     </TableCell>,
                                     <TableCell key={`${i}-${j}-count`} rowSpan={detailRowSpan}>
-                                      <DataField required disableLabel
+                                      <TextField
+                                        required
+                                        disableLabel
                                         type="number"
                                         name={`testServiceList[${i}].detailList[${j}].count`}
                                         label="수량"
-                                        value={testServiceDetail.count}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                       />
                                     </TableCell>,
                                     <TableCell key={`${i}-${j}-unitPrice`} rowSpan={detailRowSpan}>
-                                      <DataField required disableLabel
-                                        type="amount"
+                                      <TextField
+                                        required
+                                        disableLabel
+                                        type="number"
                                         name={`testServiceList[${i}].detailList[${j}].unitPrice`}
                                         label="단가"
-                                        value={testServiceDetail.unitPrice}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                       />
                                     </TableCell>,
                                     <TableCell key={`${i}-${j}-isIncluded`} rowSpan={detailRowSpan}>
-                                      <DataField required disableLabel
-                                        type="select"
+                                      <SelectField
+                                        required
+                                        disableLabel
                                         name={`testServiceList[${i}].detailList[${j}].isIncluded`}
                                         label="사용"
-                                        value={testServiceDetail.isIncluded}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                         options={['Y', 'N']}
                                       />
-                                      <DataField required disableLabel
-                                        type="amount"
+                                      <TextField
+                                        required
+                                        disableLabel
+                                        type="number"
                                         name={`testServiceList[${i}].detailList[${j}].totalPrice`}
                                         label="금액"
-                                        value={totalPrice}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                       />
                                     </TableCell>,
                                     <TableCell key={`${i}-${j}-memo`} rowSpan={detailRowSpan}>
-                                      <DataField disableLabel
+                                      <TextField
+                                        disableLabel
                                         name={`testServiceList[${i}].detailList[${j}].memo`}
                                         label="비고"
-                                        value={testServiceDetail.memo}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
                                       />
                                     </TableCell>
                                   ])}
@@ -913,8 +918,8 @@ const ProjectEstimateSheetModal = () => {
                   </Box>
                   <Box sx={{
                     display: 'flex',
-                    width: '100%',
-                    mb: '40px',
+                    width:   '100%',
+                    mb:      '40px',
                   }}>
                     사용 문구 Table TBD
                   </Box>

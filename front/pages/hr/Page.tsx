@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -12,7 +15,11 @@ import {
   Select,
   TablePagination,
 } from '@mui/material';
-import { Formik, Form, FormikHelpers } from 'formik';
+import {
+  Formik,
+  Form,
+  FormikHelpers
+} from 'formik';
 import dayjs from 'dayjs';
 import {
   DataField,
@@ -27,6 +34,8 @@ import {
   sexList,
   usePersonnel,
 } from 'services/personnel';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 const initFilter: PersonnelQuery = {
   size: 10,
@@ -36,45 +45,53 @@ const initFilter: PersonnelQuery = {
 const PersonnelPage = () => {
   const navigate = useNavigate();
   const {
-    state: { page },
-    getPage
-  } = usePersonnel();
+          state: { page },
+          getPage
+        } = usePersonnel();
   const [filter, setFilter] = useState<PersonnelQuery>(initFilter);
 
   const handler = {
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+    search: (values: any,
+             { setSubmitting }: FormikHelpers<any>
+            ) => {
       setFilter({
-        sex: arrangeList(values.sex, sexList),
-        hiredType: arrangeList(values.hiredType, hiredTypeList),
-        keyword: values.keyword,
+        sex:         arrangeList(values.sex, sexList),
+        hiredType:   arrangeList(values.hiredType, hiredTypeList),
+        keyword:     values.keyword,
         keywordType: arrangeList(values.keywordType, keywordTypeList),
-        startDate: !values.startDate ? undefined : dayjs(values.startDate).format('YYYY-MM-DD'),
-        endDate: !values.endDate ? undefined : dayjs(values.endDate).format('YYYY-MM-DD'),
-        dateType: arrangeList(values.dateType, dateTypeList),
-        size: values.size,
-        page: values.page,
+        startDate:   !values.startDate ? undefined : dayjs(values.startDate)
+        .format('YYYY-MM-DD'),
+        endDate:     !values.endDate ? undefined : dayjs(values.endDate)
+        .format('YYYY-MM-DD'),
+        dateType:    arrangeList(values.dateType, dateTypeList),
+        size:        values.size,
+        page:        values.page,
       });
       setSubmitting(false);
     },
-    page: (e: any, page: number) => {
+    page:   (e: any,
+             page: number
+            ) => {
       setFilter({
         ...filter,
         page,
       });
     },
-    size: (e: any) => {
+    size:   (e: any) => {
       setFilter({
         ...filter,
         page: 0,
         size: e.target.value
       });
     },
-    clear: () => {
+    clear:  () => {
       setFilter(initFilter);
     },
   };
 
-  const arrangeList = <T, >(list: T[] | undefined, allList: T[]): T[] | undefined => {
+  const arrangeList = <T, >(list: T[] | undefined,
+                            allList: T[]
+  ): T[] | undefined => {
     if (typeof list === 'undefined') {
       return undefined;
     }
@@ -91,41 +108,39 @@ const PersonnelPage = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        height: '50px',
-        mb: '40px',
+        width:          '100%',
+        height:         '50px',
+        mb:             '40px',
       }}>
         <h2>인사 목록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        mb: '40px',
+        width:   '100%',
+        mb:      '40px',
       }}>
         <Formik enableReinitialize
           onSubmit={handler.search}
           initialValues={{
-            page: filter.page,
-            size: filter.size,
-            sex: filter.sex ?? sexList,
-            hiredType: filter.hiredType ?? hiredTypeList,
-            keyword: filter.keyword ?? '',
+            page:        filter.page,
+            size:        filter.size,
+            sex:         filter.sex ?? sexList,
+            hiredType:   filter.hiredType ?? hiredTypeList,
+            keyword:     filter.keyword ?? '',
             keywordType: filter.keywordType ?? keywordTypeList,
-            startDate: filter.startDate ?? null,
-            endDate: filter.endDate ?? null,
-            dateType: filter.dateType ?? dateTypeList,
+            startDate:   filter.startDate ?? null,
+            endDate:     filter.endDate ?? null,
+            dateType:    filter.dateType ?? dateTypeList,
           }}>
           {({
-            values,
-            errors,
-            isSubmitting,
-            setFieldValue,
-            handleChange,
-            handleSubmit,
-            resetForm
-          }) => (
+              values,
+              isSubmitting,
+              handleChange,
+              handleSubmit,
+              resetForm
+            }) => (
             <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
@@ -135,9 +150,6 @@ const PersonnelPage = () => {
                         type="checkbox"
                         name="sex"
                         label="성별"
-                        value={values.sex}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         options={sexList}
                       />
                     </Grid>
@@ -146,74 +158,39 @@ const PersonnelPage = () => {
                         type="checkbox"
                         name="hiredType"
                         label="입사 구분"
-                        value={values.hiredType}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         options={hiredTypeList}
                       />
                     </Grid>
                     <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">검색 대상</FormLabel>
-                          <Select
-                            value={values.keywordType ?? keywordTypeList}
-                            onChange={handleChange}
-                            name="keywordType"
-                            multiple
-                          >
-                            {keywordTypeList.map((item) => (
-                              <MenuItem
-                                key={item}
-                                value={item}
-                                selected={!values.keywordType || values.keywordType.includes(item)}
-                              >
-                                {item}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <SelectField
+                          multiple
+                          label="검색 대상"
+                          name="keywordType"
+                          options={keywordTypeList}
+                        />
                       </Grid>
                       <Grid item sm={8}>
-                        <DataField
+                        <TextField
                           name="keyword"
                           label="검색어"
-                          value={values.keyword}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                     </Grid>
                     <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
-                        <FormControl variant="standard" fullWidth>
-                          <FormLabel component="legend">날짜 대상</FormLabel>
-                          <Select
-                            value={values.dateType ?? dateTypeList}
-                            onChange={handleChange}
-                            name="dateType"
-                            multiple
-                          >
-                            {dateTypeList.map((item) => (
-                              <MenuItem
-                                key={item}
-                                value={item}
-                                selected={!values.dateType || values.dateType.includes(item)}
-                              >
-                                {item}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <SelectField
+                          multiple
+                          label="날짜 대상"
+                          name="dateType"
+                          options={dateTypeList}
+                        />
                       </Grid>
                       <Grid item sm={4}>
                         <DataField
                           type="date"
                           name="startDate"
                           label="시작일"
-                          value={values.startDate ? dayjs(values.startDate).toDate() : null}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid item sm={4}>
@@ -221,9 +198,6 @@ const PersonnelPage = () => {
                           type="date"
                           name="endDate"
                           label="종료일"
-                          value={values.endDate ? dayjs(values.endDate).toDate() : null}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                     </Grid>
@@ -233,10 +207,10 @@ const PersonnelPage = () => {
               <Grid item
                 sm={2}
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
+                  display:        'flex',
+                  flexDirection:  'column',
                   justifyContent: 'space-around',
-                  alignContent: 'center'
+                  alignContent:   'center'
                 }}>
                 <Button
                   disabled={isSubmitting}
@@ -259,19 +233,21 @@ const PersonnelPage = () => {
         </Formik>
       </Box>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
+        display:   'flex',
+        width:     '100%',
         maxHeight: 740,
-        mb: '20px',
+        mb:        '20px',
       }}>
         <Table
           list={page.content}
           columns={[
             {
-              label: 'No.',
-              renderCell: (item, i) => (page.number * page.size) + i + 1,
+              label:      'No.',
+              renderCell: (item,
+                           i
+                          ) => (page.number * page.size) + i + 1,
             }, {
-              label: '이름',
+              label:      '이름',
               renderCell: (item) => (
                 <Link onClick={() => {
                   navigate(`/hr/card/${item.id}`, { state: { filter } });
@@ -280,31 +256,31 @@ const PersonnelPage = () => {
                 </Link>
               )
             }, {
-              label: '성별',
+              label:      '성별',
               renderCell: (item) => item.basic.sex
             }, {
-              label: '생년월일',
+              label:      '생년월일',
               renderCell: (item) => <DateFormat date={item.basic.birthDate} />
             }, {
-              label: '입사 구분',
+              label:      '입사 구분',
               renderCell: (item) => item.company.hiredType
             }, {
-              label: '입사일',
+              label:      '입사일',
               renderCell: (item) => <DateFormat date={item.company.hiredDate} />
             },
           ]}
         />
       </Box>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
+        display:        'flex',
+        width:          '100%',
         justifyContent: 'space-between',
       }}>
         <Grid container spacing={2}>
           <Grid item
             sm={8}
             sx={{
-              display: 'flex',
+              display:        'flex',
               justifyContent: 'flex-start',
             }}>
             <TablePagination

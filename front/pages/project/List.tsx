@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,14 +19,20 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { Formik, FormikHelpers } from 'formik';
-import { Divider, DataField } from 'components';
+import {
+  Formik,
+  FormikHelpers
+} from 'formik';
+import {
+  Divider,
+} from 'components';
 import {
   ProjectFilterView,
   initProjectFilterView,
   projectStatusName,
   useProject,
 } from 'services/project';
+import TextField from 'components/TextField';
 
 type TableCellProperty = {
   key: string;
@@ -40,19 +52,21 @@ const ProjectList = () => {
   const location = useLocation();
   const path = location.pathname;
   const {
-    state: { page },
-    getPage,
-    setAddModal
-  } = useProject();
+          state: { page },
+          getPage,
+          setAddModal
+        } = useProject();
 
   const [filter, setFilter] = useState<ProjectFilterView>(initProjectFilterView);
 
   const handler = {
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+    search:   (values: any,
+               { setSubmitting }: FormikHelpers<any>
+              ) => {
       setFilter(values);
       setSubmitting(false);
     },
-    clear: () => {
+    clear:    () => {
       setFilter(initProjectFilterView);
     },
     addModal: () => {
@@ -62,8 +76,8 @@ const ProjectList = () => {
 
   useEffect(() => {
     getPage({
-      size: filter.size,
-      page: filter.page,
+      size:    filter.size,
+      page:    filter.page,
       keyword: filter.keyword || undefined,
     });
   }, [filter, path]);
@@ -71,26 +85,20 @@ const ProjectList = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '15px' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
+        width:          '100%',
       }}>
         <Formik enableReinitialize initialValues={filter} onSubmit={handler.search}>
           {({
-            values,
-            errors,
-            isSubmitting,
-            setFieldValue,
-            handleSubmit,
-          }) => (
+              isSubmitting,
+              handleSubmit,
+            }) => (
             <Grid container spacing={2}>
               <Grid item sm={9}>
-                <DataField
+                <TextField
                   name="keyword"
                   label="프로젝트명 또는 코드"
-                  value={values.keyword}
-                  setFieldValue={setFieldValue}
-                  errors={errors}
                 />
               </Grid>
               <Grid item sm={3}>
@@ -108,36 +116,38 @@ const ProjectList = () => {
       </Box>
       <Divider variant="middle" />
       <Box sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
+        display:      'flex',
+        flexWrap:     'wrap',
         alignContent: 'space-between',
-        width: '100%',
-        mb: '20px',
+        width:        '100%',
+        mb:           '20px',
       }}>
         <TableContainer sx={{
           display: 'flex',
-          width: '100%',
-          mb: '20px',
+          width:   '100%',
+          mb:      '20px',
         }}>
           <Table
             aria-label="sticky table"
             sx={{
-              border: '1px solid #b9b9b9',
+              border:       '1px solid #b9b9b9',
               borderRadius: '4px',
             }}
             stickyHeader
           >
             <TableHead>
               <TableRow>
-                {columns.map(({ label, ...props }, i) => (
+                {columns.map(({ label, ...props },
+                              i
+                ) => (
                   <TableCell
                     {...props}
                     sx={{
-                      textAlign: 'center',
-                      border: '1px solid #b9b9b9',
-                      backgroundColor: '#0000000D',
-                      fontWeight: 'bold',
-                      borderTopLeftRadius: i === 0 ? '4px' : 0,
+                      textAlign:            'center',
+                      border:               '1px solid #b9b9b9',
+                      backgroundColor:      '#0000000D',
+                      fontWeight:           'bold',
+                      borderTopLeftRadius:  i === 0 ? '4px' : 0,
                       borderTopRightRadius: i === columns.length - 1 ? '4px' : 0,
                     }}>
                     {label}
@@ -146,13 +156,15 @@ const ProjectList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {page.content.map((item, i) => {
+              {page.content.map((item,
+                                 i
+              ) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
                     <TableCell
                       sx={{
-                        textAlign: 'center',
-                        border: '1px solid #b9b9b9',
+                        textAlign:              'center',
+                        border:                 '1px solid #b9b9b9',
                         borderBottomLeftRadius: i === page.content.length - 1 ? '4px' : 0,
                       }}>
                       {item.code}
@@ -167,8 +179,8 @@ const ProjectList = () => {
                       </Link>
                     </TableCell>
                     <TableCell sx={{
-                      textAlign: 'center',
-                      border: '1px solid #b9b9b9',
+                      textAlign:               'center',
+                      border:                  '1px solid #b9b9b9',
                       borderBottomRightRadius: i === page.content.length - 1 ? '4px' : 0,
                     }}>
                       {projectStatusName(item.status)}
@@ -180,10 +192,10 @@ const ProjectList = () => {
           </Table>
         </TableContainer>
         <Box sx={{
-          width: '100%',
-          bottom: 0,
+          width:    '100%',
+          bottom:   0,
           position: 'sticky',
-          height: '30px',
+          height:   '30px',
         }}>
           <Button fullWidth onClick={handler.addModal}>
             등록

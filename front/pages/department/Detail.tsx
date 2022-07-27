@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import {
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import {
   Box,
   Button,
   Grid,
   Paper,
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField, useDialog } from 'components';
+import {
+  Form,
+  Formik,
+  FormikHelpers
+} from 'formik';
+import {
+  useDialog
+} from 'components';
 import {
   DepartmentCategory,
   DepartmentParameter,
@@ -16,6 +25,8 @@ import {
   departmentCategoryName,
   useDepartment,
 } from 'services/department';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 const DepartmentDetail = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -25,18 +36,20 @@ const DepartmentDetail = () => {
   const dialog = useDialog();
 
   const {
-    state: {
-      list,
-      detail
-    },
-    getAll,
-    getOne,
-    clearOne,
-    upsert,
-  } = useDepartment();
+          state: {
+                   list,
+                   detail
+                 },
+          getAll,
+          getOne,
+          clearOne,
+          upsert,
+        } = useDepartment();
 
   const handler = {
-    submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+    submit: (values: any,
+             { setSubmitting, setErrors }: FormikHelpers<any>
+            ) => {
       const errors: any = {};
       const name: string = values.name;
       if (!name) {
@@ -88,73 +101,66 @@ const DepartmentDetail = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        height: '50px',
-        mb: '40px',
+        width:          '100%',
+        height:         '50px',
+        mb:             '40px',
       }}>
         <h2>{id ? '부서 상세 정보' : '부서 등록'}</h2>
       </Box>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        mb: '40px',
+        width:   '100%',
+        mb:      '40px',
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik enableReinitialize
               onSubmit={handler.submit}
               initialValues={{
-                name: detail?.name ?? '',
+                name:     detail?.name ?? '',
                 category: detail?.category ?? '',
                 parentId: detail?.parentId ?? '',
-                memo: detail?.memo ?? ''
+                memo:     detail?.memo ?? ''
               }}>
-              {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
+              {({ values, isSubmitting, handleSubmit }) => (
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField required
+                      <TextField required
                         name="name"
                         label="부서명"
-                        value={values.name}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField required
-                        type="select"
+                      <SelectField
+                        required
                         name="category"
                         label="부서 유형"
-                        value={values.category}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         options={departmentCategoryList.map((category) => ({
-                          key: category as string,
+                          key:  category as string,
                           text: departmentCategoryName(category)
                         }))}
-                        onChange={(e, value) => {
-                          if (value === 'COMPANY') {
-                            setFieldValue('parentId', '');
-                          }
-                        }}
+                        // TODO: onChange event
+                        // onChange={(e,
+                        //            value
+                        // ) => {
+                        //   if (value === 'COMPANY') {
+                        //     setFieldValue('parentId', '');
+                        //   }
+                        // }}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
-                        type="select"
+                      <SelectField
                         name="parentId"
                         label="상위 부서"
-                        value={values.parentId}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={values.category === 'COMPANY'}
                         required={values.category !== 'COMPANY'}
                         options={[
                           {
-                            key: 'root',
+                            key:  'root',
                             text: '최상위'
                           }, ...(
                             detail ? list
@@ -163,7 +169,9 @@ const DepartmentDetail = () => {
                               if (!department.parentId) {
                                 return true;
                               }
-                              const getAncestorIdList = (sourceId: number, temp: number[]): number[] => {
+                              const getAncestorIdList = (sourceId: number,
+                                                         temp: number[]
+                              ): number[] => {
                                 const target: DepartmentShort | undefined = list.find(item => item.id === sourceId);
                                 if (target) {
                                   if (target.parentId) {
@@ -177,28 +185,25 @@ const DepartmentDetail = () => {
                               const ancestorIdList = getAncestorIdList(department.parentId, []);
                               return !ancestorIdList.includes(detail.id);
                             }) : list).map((department) => ({
-                            key: department.id,
+                            key:  department.id,
                             text: department.name
                           }))
                         ]}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <TextField
                         name="memo"
                         label="설명"
-                        value={values.memo}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                       />
                     </Grid>
                   </Grid>
                   <Grid item sm={12}>
                     <Box sx={{
-                      display: 'flex',
+                      display:        'flex',
                       justifyContent: 'flex-end',
-                      width: '100%',
-                      mt: '40px',
+                      width:          '100%',
+                      mt:             '40px',
                     }}>
                       <Button
                         color="secondary"

@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 import {
   Box,
   Button,
   Grid,
   Paper,
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField } from 'components';
+import {
+  Form,
+  Formik,
+  FormikHelpers
+} from 'formik';
 import {
   PasswordChangeParameter,
   PasswordReset,
   passwordResetApi
 } from 'services/user/password_reset';
 import { userApi } from 'services/user';
+import TextField from 'components/TextField';
 
 const PasswordResetForm = () => {
   const navigate = useNavigate();
@@ -36,7 +46,9 @@ const PasswordResetForm = () => {
   const [detail, setDetail] = useState<PasswordReset | undefined>();
 
   const handler = {
-    submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+    submit: (values: any,
+             { setSubmitting, setErrors }: FormikHelpers<any>
+            ) => {
       const errors: any = {};
 
       const password: string = values.password;
@@ -64,14 +76,17 @@ const PasswordResetForm = () => {
         password,
         authKey
       };
-      userApi.validatePassword(params).then(() => {
-        window.alert('비밀번호 변경이 완료되었습니다. 홈으로 이동합니다.');
-        navigate('/');
-      }).catch(e => {
-        console.log(e);
-      }).finally(() => {
-        setSubmitting(false);
-      });
+      userApi.validatePassword(params)
+             .then(() => {
+               window.alert('비밀번호 변경이 완료되었습니다. 홈으로 이동합니다.');
+               navigate('/');
+             })
+             .catch(e => {
+               console.log(e);
+             })
+             .finally(() => {
+               setSubmitting(false);
+             });
     }
   };
 
@@ -80,34 +95,35 @@ const PasswordResetForm = () => {
       passwordResetApi.getOne({
         email,
         authKey
-      }).then(setDetail);
+      })
+                      .then(setDetail);
     }
   }, [email, authKey]);
 
   return (
     <Paper sx={{
-      display: 'flex',
-      flexWrap: 'wrap',
-      width: '100%',
-      height: '100%',
-      overflow: 'hidden',
+      display:        'flex',
+      flexWrap:       'wrap',
+      width:          '100%',
+      height:         '100%',
+      overflow:       'hidden',
       justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center',
+      alignItems:     'center',
+      alignContent:   'center',
     }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'center',
-        width: '100%',
-        height: '50px',
-        mb: '40px',
+        width:          '100%',
+        height:         '50px',
+        mb:             '40px',
       }}>
         <h2>비밀번호 변경</h2>
       </Box>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
-        mb: '40px',
+        display:        'flex',
+        width:          '100%',
+        mb:             '40px',
         justifyContent: 'center',
       }}>
         {!detail && (
@@ -117,40 +133,34 @@ const PasswordResetForm = () => {
           <Formik
             onSubmit={handler.submit}
             initialValues={{
-              password: '',
+              password:      '',
               passwordCheck: '',
             }}>
-            {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
+            {({ isSubmitting, handleSubmit }) => (
               <Form>
                 <Grid container spacing={2}>
                   <Grid item sm={12}>
-                    <DataField
+                    <TextField
                       type="password"
                       name="password"
                       label="비밀번호"
-                      value={values.password}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
                       required
                     />
                   </Grid>
                   <Grid item sm={12}>
-                    <DataField
+                    <TextField
                       type="password"
                       name="passwordCheck"
                       label="비밀번호 확인"
-                      value={values.passwordCheck}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
                       required
                     />
                   </Grid>
                   <Grid item sm={12}>
                     <Box sx={{
-                      display: 'flex',
+                      display:        'flex',
                       justifyContent: 'flex-end',
-                      width: '100%',
-                      mt: '40px',
+                      width:          '100%',
+                      mt:             '40px',
                     }}>
                       <Button
                         disabled={isSubmitting}

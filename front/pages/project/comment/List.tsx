@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -14,8 +17,14 @@ import {
   DeleteForever as DeleteIcon,
   EditOff as ResetIcon,
 } from '@mui/icons-material';
-import { Formik, FormikHelpers } from 'formik';
-import { DataField, DateFormat, useDialog } from 'components';
+import {
+  Formik,
+  FormikHelpers
+} from 'formik';
+import {
+  DateFormat,
+  useDialog
+} from 'components';
 import {
   ProjectComment,
   ProjectCommentAddParameter,
@@ -24,7 +33,7 @@ import {
   useProjectComment,
 } from 'services/project_comment';
 import { useUser } from 'services/user';
-
+import TextField from 'components/TextField';
 
 const ProjectCommentList = () => {
   const dialog = useDialog();
@@ -37,33 +46,37 @@ const ProjectCommentList = () => {
 
   const initFilter: ProjectCommentQuery = {
     projectId: id,
-    page: 0,
-    size: 20,
+    page:      0,
+    size:      20,
   };
 
   const {
-    state: { page },
-    getPage,
-    add,
-    change,
-    remove,
-  } = useProjectComment();
+          state: { page },
+          getPage,
+          add,
+          change,
+          remove,
+        } = useProjectComment();
   const {
-    state: { login }
-  } = useUser();
+          state: { login }
+        } = useUser();
   const [filter, setFilter] = useState<ProjectCommentQuery>(initFilter);
   const [selected, setSelected] = useState<ProjectComment | undefined>();
 
   const handler = {
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+    search: (values: any,
+             { setSubmitting }: FormikHelpers<any>
+            ) => {
       setFilter({
         ...filter,
-        page: 0,
+        page:    0,
         keyword: values.keyword || undefined,
       });
       setSubmitting(false);
     },
-    submit: (values: any, { setSubmitting, setErrors, resetForm }: FormikHelpers<any>) => {
+    submit: (values: any,
+             { setSubmitting, setErrors, resetForm }: FormikHelpers<any>
+            ) => {
       const errors: any = {};
 
       const description: string = values.description;
@@ -92,7 +105,8 @@ const ProjectCommentList = () => {
             });
           }
         });
-      } else {
+      }
+      else {
         const params: ProjectCommentAddParameter = {
           projectId: id,
           description,
@@ -117,26 +131,23 @@ const ProjectCommentList = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '15px' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        height: '100px',
-        mb: '10px',
+        width:          '100%',
+        height:         '100px',
+        mb:             '10px',
       }}>
         <Formik enableReinitialize
           onSubmit={handler.submit}
           initialValues={{
             description: selected?.description ?? '',
           }}>
-          {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
+          {({ isSubmitting, handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
-                <DataField
+                <TextField
                   name="description"
                   label="메모 내용"
-                  setFieldValue={setFieldValue}
-                  errors={errors}
-                  value={values.description}
                 />
               </Grid>
               <Grid item sm={12}>
@@ -154,25 +165,22 @@ const ProjectCommentList = () => {
       </Box>
       <Divider />
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: '10px',
+        width:          '100%',
+        marginBottom:   '10px',
       }}>
         <Formik enableReinitialize
           onSubmit={handler.search}
           initialValues={{
             keyword: '',
           }}>
-          {({ values, errors, setFieldValue, handleSubmit }) => (
+          {({ handleSubmit }) => (
             <Grid container spacing={2}>
               <Grid item sm={12}>
-                <DataField
+                <TextField
                   name="keyword"
                   label="검색(작성자, 내용)"
-                  setFieldValue={setFieldValue}
-                  errors={errors}
-                  value={values.keyword}
                   onKeyDown={(e) => {
                     if (e.key.toLowerCase() === 'enter') {
                       handleSubmit();
@@ -186,9 +194,9 @@ const ProjectCommentList = () => {
       </Box>
       <Divider />
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
+        width:          '100%',
       }}>
         <Grid container spacing={2}>
           {page.content.map((item) => (
@@ -196,13 +204,13 @@ const ProjectCommentList = () => {
               <Grid item
                 sm={12}
                 sx={{
-                  display: 'flex',
+                  display:      'flex',
                   alignContent: 'center',
-                  flexWrap: 'nowrap',
+                  flexWrap:     'nowrap',
                 }}>
                 <Typography sx={{
                   fontWeight: 'bold',
-                  textAlign: 'center'
+                  textAlign:  'center'
                 }}>
                   <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                 </Typography>

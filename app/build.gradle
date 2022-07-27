@@ -18,7 +18,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-validation:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}"
     implementation "org.thymeleaf.extras:thymeleaf-extras-springsecurity5"
@@ -44,15 +43,7 @@ dependencies {
 
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-}
-
-compileJava {
-    options.compilerArgs += [
-            '-Amapstruct.suppressGeneratorTimestamp=false',
-            '-Amapstruct.suppressGeneratorVersionInfoComment=false',
-            '-Amapstruct.verbose=false',
-            '-Amapstruct.defaultComponentModel=spring'
-    ]
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 test {

@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom';
 import {
   Button,
   Grid,
@@ -13,7 +19,11 @@ import {
   TableCell,
   Box
 } from '@mui/material';
-import { Formik, FormikHelpers, Form } from 'formik';
+import {
+  Formik,
+  FormikHelpers,
+  Form
+} from 'formik';
 import { DataField } from 'components';
 import {
   useUser,
@@ -21,6 +31,8 @@ import {
   userRoleName,
   userRoleList,
 } from 'services/user';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 type TableCellProperty = {
   key: string;
@@ -38,10 +50,10 @@ const columns: TableCellProperty[] = [
 ];
 
 const initQuery: UserQuery = {
-  page: 0,
-  size: 10,
-  sort: 'id,DESC',
-  role: userRoleList,
+  page:        0,
+  size:        10,
+  sort:        'id,DESC',
+  role:        userRoleList,
   keywordType: 'by_username'
 };
 
@@ -51,32 +63,36 @@ const UserPage = () => {
   const [filter, setFilter] = useState<UserQuery>(initQuery);
 
   const handler = {
-    toAdd: () => {
+    toAdd:  () => {
       navigate('/user/add');
     },
-    page: (e: any, page: number) => {
+    page:   (e: any,
+             page: number
+            ) => {
       setFilter({
         ...filter,
         page,
       });
     },
-    size: (e: any) => {
+    size:   (e: any) => {
       setFilter({
         ...filter,
         page: 0,
         size: e.target.value
       });
     },
-    clear: () => {
+    clear:  () => {
       setFilter(initQuery);
     },
-    search: (values: any, { setSubmitting }: FormikHelpers<any>) => {
+    search: (values: any,
+             { setSubmitting }: FormikHelpers<any>
+            ) => {
       setFilter({
         ...filter,
-        page: 0,
-        role: values.role,
+        page:        0,
+        role:        values.role,
         keywordType: values.keywordType ?? 'by_username',
-        keyword: values.keyword ?? undefined,
+        keyword:     values.keyword ?? undefined,
       });
       setSubmitting(false);
     }
@@ -89,36 +105,33 @@ const UserPage = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        height: '50px',
-        mb: '40px',
+        width:          '100%',
+        height:         '50px',
+        mb:             '40px',
       }}>
         <h2>유저 목록</h2>
       </Box>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        mb: '40px',
+        width:   '100%',
+        mb:      '40px',
       }}>
         <Formik enableReinitialize
           onSubmit={handler.search}
           initialValues={{
-            page: filter.page,
-            size: filter.size,
-            role: filter.role ?? userRoleList,
-            keyword: filter.keyword ?? '',
+            page:        filter.page,
+            size:        filter.size,
+            role:        filter.role ?? userRoleList,
+            keyword:     filter.keyword ?? '',
             keywordType: filter.keywordType ?? 'by_username',
           }}>
           {({
-            values,
-            errors,
-            setFieldValue,
-            isSubmitting,
-            handleSubmit,
-            resetForm
-          }) => (
+              isSubmitting,
+              handleSubmit,
+              resetForm
+            }) => (
             <Grid container spacing={2}>
               <Grid item sm={10}>
                 <Form>
@@ -128,47 +141,35 @@ const UserPage = () => {
                         type="checkbox"
                         name="role"
                         label="권한"
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        value={userRoleList.map((item) =>
-                          item as string)
-                        }
                         options={userRoleList.map((item) => ({
-                          key: item as string,
+                          key:  item as string,
                           text: userRoleName(item)
                         }))}
                       />
                     </Grid>
                     <Grid container spacing={2} item sm={12}>
                       <Grid item sm={4}>
-                        <DataField
-                          type="select"
+                        <SelectField
                           name="keywordType"
                           label="검색 대상"
-                          value={values.keywordType}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                           options={[
                             {
-                              key: 'by_username',
+                              key:  'by_username',
                               text: '아이디'
                             }, {
-                              key: 'by_name',
+                              key:  'by_name',
                               text: '이름'
                             }, {
-                              key: 'by_email',
+                              key:  'by_email',
                               text: '이메일'
                             }
                           ]}
                         />
                       </Grid>
                       <Grid item sm={8}>
-                        <DataField
+                        <TextField
                           name="keyword"
                           label="검색어"
-                          value={values.keyword}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                     </Grid>
@@ -178,10 +179,10 @@ const UserPage = () => {
               <Grid item
                 sm={2}
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
+                  display:        'flex',
+                  flexDirection:  'column',
                   justifyContent: 'space-around',
-                  alignContent: 'center'
+                  alignContent:   'center'
                 }}>
                 <Button
                   disabled={isSubmitting}
@@ -204,10 +205,10 @@ const UserPage = () => {
         </Formik>
       </Box>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
+        display:   'flex',
+        width:     '100%',
         maxHeight: 740,
-        mb: '20px',
+        mb:        '20px',
       }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
@@ -221,7 +222,9 @@ const UserPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {page.content.map((user, i) => {
+              {page.content.map((user,
+                                 i
+              ) => {
                 const no: number = i + 1;
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
@@ -243,15 +246,15 @@ const UserPage = () => {
         </TableContainer>
       </Box>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
+        display:        'flex',
+        width:          '100%',
         justifyContent: 'space-between',
       }}>
         <Grid container spacing={2}>
           <Grid item
             sm={8}
             sx={{
-              display: 'flex',
+              display:        'flex',
               justifyContent: 'flex-start',
             }}>
             <TablePagination
@@ -266,10 +269,10 @@ const UserPage = () => {
           </Grid>
           <Grid item sm={4}>
             <Box sx={{
-              display: 'flex',
+              display:        'flex',
               justifyContent: 'flex-end',
-              width: '100%',
-              mt: '40px',
+              width:          '100%',
+              mt:             '40px',
             }}>
               <Button onClick={handler.toAdd}>
                 등록

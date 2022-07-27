@@ -1,4 +1,8 @@
-import React, { useState, createRef, useEffect } from 'react';
+import React, {
+  useState,
+  createRef,
+  useEffect
+} from 'react';
 import {
   Box,
   Button,
@@ -8,7 +12,10 @@ import {
   Input,
   InputLabel
 } from '@mui/material';
-import { FormikErrors, FormikValues } from 'formik';
+import {
+  FormikValues,
+  useFormikContext
+} from 'formik';
 import { Tooltip } from 'components';
 import {
   FileItem,
@@ -24,8 +31,6 @@ export type FileInputProps = {
   placeholder?: string;
   tooltip?: string;
   value?: FileItem | FileItemView | null;
-  setFieldValue: (field: string, value: any) => void;
-  errors: FormikErrors<FormikValues>;
   required?: boolean;
   disabled?: boolean;
   helperText?: string | React.ReactNode;
@@ -35,27 +40,26 @@ export type FileInputProps = {
 }
 
 const FileInput = ({
-  variant = 'standard',
-  name,
-  label,
-  placeholder,
-  tooltip,
-  value,
-  setFieldValue,
-  errors,
-  required: requiredProp,
-  disabled,
-  helperText,
-  sx,
-  size,
-  disableLabel
-}: FileInputProps) => {
+                     variant = 'standard',
+                     name,
+                     label,
+                     placeholder,
+                     tooltip,
+                     value,
+                     required: requiredProp,
+                     disabled,
+                     helperText,
+                     sx,
+                     size,
+                     disableLabel
+                   }: FileInputProps) => {
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
   const [params, setParams] = useState<FileItemParameter | undefined>();
   const ref = createRef<HTMLInputElement>();
 
   const required: boolean | undefined = !disableLabel && !disabled && requiredProp;
+  const { setFieldValue, errors } = useFormikContext<FormikValues>();
 
   useEffect(() => {
     if (value) {
@@ -68,13 +72,15 @@ const FileInput = ({
   useEffect(() => {
     if (params) {
       setFieldValue(`${name}-temp`, params);
-    } else {
+    }
+    else {
       if (!value) {
         setFieldValue(`${name}-temp`, undefined);
-      } else {
+      }
+      else {
         setFieldValue(`${name}`, undefined);
         setFieldValue(`${name}-temp`, {
-          id: value.id,
+          id:            value.id,
           requestDelete: true,
         });
       }
@@ -84,7 +90,8 @@ const FileInput = ({
   useEffect(() => {
     if (errors && typeof errors[name] === 'string') {
       setHelperMessage(errors[name]);
-    } else if (helperMessage !== helperText) {
+    }
+    else if (helperMessage !== helperText) {
       setHelperMessage(helperText);
     }
   }, [errors]);
@@ -92,8 +99,8 @@ const FileInput = ({
   return (
     <Box sx={{
       display: 'flex',
-      width: '100%',
-      height: '100%',
+      width:   '100%',
+      height:  '100%',
     }}>
       <Grid container spacing={2} display="flex">
         <Grid item sm={(value || params) ? 8 : 10}>
@@ -160,7 +167,7 @@ const FileInput = ({
         <Grid item
           sm={2}
           sx={{
-            display: 'flex',
+            display:  'flex',
             flexWrap: 'wrap',
           }}>
           <Button fullWidth

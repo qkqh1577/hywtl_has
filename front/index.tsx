@@ -8,7 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import App from './App';
 import { store } from 'services/common';
 import LoginForm from 'pages/user/LoginForm';
-import AuthenticationForm from 'pages/user/AuthenticationForm';
+import AuthenticationPage from 'pages/user/Authentication';
 import 'dayjs/locale/ko';
 import PasswordForgotForm from 'pages/user/PasswordForgotForm';
 import PasswordResetForm from 'pages/user/PasswordResetForm';
@@ -77,7 +77,7 @@ const render = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/user/authenticate" element={<AuthenticationForm />} />
+          <Route path="/user/authenticate" element={<AuthenticationPage />} />
           <Route path="/password-forgot" element={<PasswordForgotForm />} />
           <Route path="/user/password-reset" element={<PasswordResetForm />} />
           <Route path="*" element={

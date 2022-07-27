@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { DataField, SelectProps } from 'components';
-import { UserShort, userApi } from 'services/user';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  UserShort,
+  userApi
+} from 'services/user';
+import SelectField, { SelectFieldProps } from 'components/SelectField';
 
-const UserSelector = (props: Omit<SelectProps, 'type' | 'options'>) => {
+const UserSelector = <Multiple extends boolean | undefined,
+  DisableClearable extends boolean | undefined,
+  FreeSolo extends boolean | undefined>(props: Omit<SelectFieldProps<Multiple, DisableClearable, FreeSolo>, | 'options'>) => {
   const [list, setList] = useState<UserShort[] | null>(null);
   useEffect(() => {
-    userApi.getAll().then(setList).catch(() => setList(null));
+    userApi.getAll()
+           .then(setList)
+           .catch(() => setList(null));
   }, []);
 
   return (
-    <DataField
-      type="select"
+    <SelectField
       options={list?.map((item) => ({
-        key: item.id,
+        key:  item.id,
         text: item.name,
       })) ?? null}
       {...props}

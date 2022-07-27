@@ -1,5 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import {
   Box,
   Button,
@@ -7,8 +13,14 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
-import {DataField, useDialog} from 'components';
+import {
+  Form,
+  Formik,
+  FormikHelpers
+} from 'formik';
+import {
+  useDialog
+} from 'components';
 import {
   BusinessAddParameter,
   BusinessManagerParameter,
@@ -23,6 +35,8 @@ import {
   BusinessView,
   BusinessChangeParameter,
 } from 'services/business';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 const Page = () => {
   const navigate = useNavigate();
@@ -33,16 +47,16 @@ const Page = () => {
 
   const dialog = useDialog();
   const {
-    state: {
-      detail
-    },
-    getOne,
-    clearOne,
-    add,
-    change,
-    remove,
-    checkRegistrationNumber,
-  } = useBusiness();
+          state: {
+                   detail
+                 },
+          getOne,
+          clearOne,
+          add,
+          change,
+          remove,
+          checkRegistrationNumber,
+        } = useBusiness();
 
   const [view, setView] = useState<BusinessView>(initBusinessView);
   const [edit, setEdit] = useState<boolean>(id === null);
@@ -65,8 +79,8 @@ const Page = () => {
         return;
       }
 
-      if(id && edit && detail) {
-        if(registrationNumber === detail.registrationNumber) {
+      if (id && edit && detail) {
+        if (registrationNumber === detail.registrationNumber) {
           setRegistrationNumberHelperText('기존 사업자번호와 동일합니다.');
           return;
         }
@@ -78,63 +92,70 @@ const Page = () => {
       checkRegistrationNumber(params, (e) => {
         if (e) {
           setRegistrationNumberHelperText('이미 등록되어 있는 사업자번호 입니다.');
-        } else {
+        }
+        else {
           setRegistrationNumberHelperText('등록 가능한 사업자번호 입니다.');
         }
       });
     },
 
-    submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+    submit: (values: any,
+             { setSubmitting, setErrors }: FormikHelpers<any>
+            ) => {
       const errors: any = {};
 
       const managerList: BusinessManagerParameter[] = (values.managerList as any[])
-        .filter((manager: any) =>
-          manager.name !== ''
-          || manager.jobTitle !== ''
-          || manager.mobilePhone !== ''
-          || manager.officePhone !== ''
-          || manager.email !== ''
-          || manager.meta !== ''
-          || manager.status !== ''
-        ).map((item, index) => {
-          const managerErrors: any = {};
+      .filter((manager: any) =>
+        manager.name !== ''
+        || manager.jobTitle !== ''
+        || manager.mobilePhone !== ''
+        || manager.officePhone !== ''
+        || manager.email !== ''
+        || manager.meta !== ''
+        || manager.status !== ''
+      )
+      .map((item,
+            index
+      ) => {
+        const managerErrors: any = {};
 
-          const name: string = item.name;
-          if (!name) {
-            managerErrors.name = '담당자명은 필수 입력 항목입니다.';
+        const name: string = item.name;
+        if (!name) {
+          managerErrors.name = '담당자명은 필수 입력 항목입니다.';
+        }
+        const id: number | undefined = item.id || undefined;
+        const jobTitle: string | undefined = item.jobTitle || undefined;
+        const mobilePhone: string | undefined = item.mobilePhone || undefined;
+        const officePhone: string | undefined = item.officePhone || undefined;
+        const email: string | undefined = item.email || undefined;
+        const meta: string[] = item.meta.split(',')
+                                   .map((text: string) => text.trim());
+        const status: BusinessManagerStatus = item.status;
+        if (!status) {
+          managerErrors.status = '담당자 상태는 필수 입력 항목입니다.';
+        }
+
+        const keys = Object.keys(managerErrors);
+        if (keys.length > 0) {
+          for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
+            errors[`managerList[${index}].${keys[errorIndex]}`]
+              = managerErrors[keys[errorIndex]];
           }
-          const id: number | undefined = item.id || undefined;
-          const jobTitle: string | undefined = item.jobTitle || undefined;
-          const mobilePhone: string | undefined = item.mobilePhone || undefined;
-          const officePhone: string | undefined = item.officePhone || undefined;
-          const email: string | undefined = item.email || undefined;
-          const meta: string[] = item.meta.split(',').map((text: string) => text.trim());
-          const status: BusinessManagerStatus = item.status;
-          if (!status) {
-            managerErrors.status = '담당자 상태는 필수 입력 항목입니다.';
-          }
+          return null;
+        }
 
-          const keys = Object.keys(managerErrors);
-          if (keys.length > 0) {
-            for (let errorIndex = 0; errorIndex < keys.length; errorIndex++) {
-              errors[`managerList[${index}].${keys[errorIndex]}`]
-                = managerErrors[keys[errorIndex]];
-            }
-            return null;
-          }
+        const managerParam: BusinessManagerParameter = {
+          id,
+          name,
+          jobTitle,
+          mobilePhone,
+          officePhone,
+          email,
+          meta: meta.length === 0 ? undefined : meta,
+          status,
+        };
 
-          const managerParam: BusinessManagerParameter = {
-            id,
-            name,
-            jobTitle,
-            mobilePhone,
-            officePhone,
-            email,
-            meta: meta.length === 0 ? undefined : meta,
-            status,
-          };
-
-          return managerParam;
+        return managerParam;
       })
       .filter(item => item !== null)
       .map(item => item as BusinessManagerParameter);
@@ -159,7 +180,7 @@ const Page = () => {
         return;
       }
 
-      if(!id) {
+      if (!id) {
         const params: BusinessAddParameter = {
           name,
           representativeName,
@@ -175,8 +196,9 @@ const Page = () => {
           dialog.alert('저장되었습니다.');
           navigate('/business-management');
         });
-      } else {
-        if(edit) {
+      }
+      else {
+        if (edit) {
           const params: BusinessChangeParameter = {
             id,
             name,
@@ -201,7 +223,7 @@ const Page = () => {
     },
 
     delete: () => {
-      if(id) {
+      if (id) {
         remove(id, () => {
           dialog.alert('삭제되었습니다.');
           navigate('/business-management');
@@ -211,34 +233,34 @@ const Page = () => {
 
     updateView: () => {
       setView({
-        name: detail?.name ?? initBusinessView.name,
+        name:               detail?.name ?? initBusinessView.name,
         representativeName: detail?.representativeName ?? initBusinessView.representativeName,
         registrationNumber: detail?.registrationNumber ?? initBusinessView.registrationNumber,
-        address: detail?.address ?? initBusinessView.address,
-        zipCode: detail?.zipCode ?? initBusinessView.zipCode,
-        officePhone: detail?.officePhone ?? initBusinessView.officePhone,
-        memo: detail?.memo ?? initBusinessView.memo,
-        managerList: detail?.managerList.length ?
-          detail?.managerList.map((item) => ({
-          name: item.name,
-          jobTitle: item.jobTitle ?? '',
-          mobilePhone: item.mobilePhone ?? '',
-          officePhone: item.officePhone ?? '',
-          email: item.email ?? '',
-          meta: item.meta?.join() ?? '',
-          status: item.status,
-        })) : initBusinessView.managerList
+        address:            detail?.address ?? initBusinessView.address,
+        zipCode:            detail?.zipCode ?? initBusinessView.zipCode,
+        officePhone:        detail?.officePhone ?? initBusinessView.officePhone,
+        memo:               detail?.memo ?? initBusinessView.memo,
+        managerList:        detail?.managerList.length ?
+                              detail?.managerList.map((item) => ({
+                                name:        item.name,
+                                jobTitle:    item.jobTitle ?? '',
+                                mobilePhone: item.mobilePhone ?? '',
+                                officePhone: item.officePhone ?? '',
+                                email:       item.email ?? '',
+                                meta:        item.meta?.join() ?? '',
+                                status:      item.status,
+                              })) : initBusinessView.managerList
       });
     },
   };
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       getOne(id);
     }
     return () => {
       clearOne();
-    }
+    };
   }, [id]);
 
   useEffect(() => {
@@ -249,8 +271,8 @@ const Page = () => {
     <Paper sx={{ width: '100%', overflow: 'hidden', padding: '30px' }}>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        mb: '40px',
+        width:   '100%',
+        mb:      '40px',
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
@@ -260,63 +282,50 @@ const Page = () => {
               onSubmit={handler.submit}
             >
               {({
-                values,
-                errors,
-                isSubmitting,
-                setFieldValue,
-                handleSubmit,
-              }) => (
+                  values,
+                  isSubmitting,
+                  handleSubmit,
+                  setFieldValue,
+                }) => (
                 <Form>
                   <Box sx={{
-                    display: 'flex',
+                    display:        'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '100%',
-                    height: '50px',
-                    mb: '40px',
+                    alignItems:     'center',
+                    width:          '100%',
+                    height:         '50px',
+                    mb:             '40px',
                   }}>
                     <h2>업체 정보</h2>
                   </Box>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField
+                      <TextField
                         name="name"
                         label="업체명"
-                        value={values.name}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                         required={edit}
                       />
                     </Grid>
                     <Grid item sm={6}>
-                      <DataField
+                      <TextField
                         name="representativeName"
                         label="대표명"
-                        value={values.representativeName}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                       />
                     </Grid>
                     <Grid item sm={6}>
-                      <DataField
+                      <TextField
                         name="officePhone"
                         label="대표 전화번호"
-                        value={values.officePhone}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                         placeholder="-를 제외하고 입력"
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <TextField
                         name="registrationNumber"
                         label="사업자번호"
-                        value={values.registrationNumber}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                         helperText={registrationNumberHelperText}
                         endAdornment={
@@ -338,12 +347,9 @@ const Page = () => {
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <TextField
                         name="address"
                         label="주소"
-                        value={values.address}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                         endAdornment={
                           edit && (
@@ -351,7 +357,7 @@ const Page = () => {
                               variant="outlined"
                               sx={{ mb: '10px' }}
                               onClick={() => {
-                                console.log('TODO')
+                                console.log('TODO');
                               }}
                             >
                               주소 검색
@@ -360,37 +366,31 @@ const Page = () => {
                       />
                     </Grid>
                     <Grid item sm={6}>
-                      <DataField
+                      <TextField
                         name="zipCode"
                         label="우편번호"
-                        value={values.zipCode}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
+                      <TextField
                         name="memo"
                         label="비고"
-                        value={values.memo}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         disabled={!edit}
                       />
                     </Grid>
                   </Grid>
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Box sx={{
-                    display: 'flex',
+                    display:        'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '100%',
-                    height: '50px',
-                    mb: '40px',
+                    alignItems:     'center',
+                    width:          '100%',
+                    height:         '50px',
+                    mb:             '40px',
                   }}>
                     <h2>담당자 정보</h2>
-                    { edit && (
+                    {edit && (
                       <Button
                         variant="contained"
                         color="primary"
@@ -399,29 +399,32 @@ const Page = () => {
                           const managerList = values.managerList;
                           if (Array.isArray(managerList)) {
                             setFieldValue('managerList', [...values.managerList, initBusinessManagerView]);
-                          } else {
+                          }
+                          else {
                             setFieldValue('managerList', [initBusinessManagerView]);
                           }
                         }}
                       >
                         추가
-                    </Button>)}
+                      </Button>)}
                   </Box>
-                  {values.managerList?.map((manager, i) => (
+                  {values.managerList?.map((manager,
+                                            i
+                  ) => (
                     <Box
                       key={i}
                       sx={{
-                        display: 'flex',
+                        display:  'flex',
                         flexWrap: 'wrap',
-                        width: '100%',
-                        mb: '40px',
+                        width:    '100%',
+                        mb:       '40px',
                       }}>
-                      { edit && (
+                      {edit && (
                         <Box sx={{
-                          display: 'flex',
+                          display:        'flex',
                           justifyContent: 'flex-end',
-                          width: '100%',
-                          height: '50px',
+                          width:          '100%',
+                          height:         '50px',
                         }}>
                           <Button
                             variant="contained"
@@ -431,8 +434,11 @@ const Page = () => {
                               const managerList: BusinessManagerView[] = values.managerList;
                               if (managerList.length === 1) {
                                 setFieldValue('managerList', [initBusinessManagerView]);
-                              } else {
-                                setFieldValue('managerList', managerList.filter((m, index) => index !== i));
+                              }
+                              else {
+                                setFieldValue('managerList', managerList.filter((m,
+                                                                                 index
+                                ) => index !== i));
                               }
                             }}
                           >
@@ -442,99 +448,74 @@ const Page = () => {
                       )}
                       <Box
                         sx={{
-                        display: 'flex',
-                        width: '100%',
-                        backgroundColor: (manager.status === 'RESIGNATION' || manager.status === 'LEAVE') ? '#e5e5e5' : undefined
+                          display:         'flex',
+                          width:           '100%',
+                          backgroundColor: (manager.status === 'RESIGNATION' || manager.status === 'LEAVE') ? '#e5e5e5' : undefined
                         }}
                       >
                         <Grid container spacing={2}>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].name`}
                               label="담당자명"
-                              value={manager.name}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                               required
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].jobTitle`}
                               label="호칭"
-                              value={manager.jobTitle}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].mobilePhone`}
                               label="핸드폰"
-                              value={manager.mobilePhone}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                               placeholder="-를 제외하고 입력"
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].officePhone`}
                               label="전화번호"
-                              value={manager.officePhone}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                               placeholder="-를 제외하고 입력"
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].email`}
                               label="이메일"
-                              value={manager.email}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
+                            <TextField
                               name={`managerList[${i}].meta`}
                               label="메타"
-                              value={manager.meta}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
-                            <DataField
-                              type="select"
+                            <SelectField
+                              required
                               name={`managerList[${i}].status`}
                               label="상태"
-                              value={manager.status}
-                              setFieldValue={setFieldValue}
-                              errors={errors}
                               disabled={!edit}
                               options={businessManagerStatusList.map((item) => ({
-                                key: item as string,
+                                key:  item as string,
                                 text: businessManagerStatusName(item)
                               }))}
-                              required
                             />
                           </Grid>
                           {!edit && (
                             <Grid item sm={6}>
-                              <DataField
+                              <TextField
                                 name={`managerList[${i}].projectCount`}
                                 label="담당 프로젝트"
-                                value={''}
-                                setFieldValue={setFieldValue}
-                                errors={errors}
                                 disabled={!edit}
                                 endAdornment={
                                   edit && (
@@ -542,7 +523,7 @@ const Page = () => {
                                       variant="outlined"
                                       sx={{ mb: '10px' }}
                                       onClick={() => {
-                                        console.log("TODO")
+                                        console.log('TODO');
                                       }}
                                     >
                                       상세
@@ -557,12 +538,12 @@ const Page = () => {
                   ))}
 
                   {/* 등록 || 수정 */}
-                  { edit && (
+                  {edit && (
                     <Box sx={{
-                      display: 'flex',
+                      display:        'flex',
                       justifyContent: 'center',
-                      alignItems: 'flex-end',
-                      height: '50px',
+                      alignItems:     'flex-end',
+                      height:         '50px',
 
                     }}>
                       <Button
@@ -574,7 +555,7 @@ const Page = () => {
                           handleSubmit();
                         }}
                       >
-                        { id ? '수정' : '등록'}
+                        {id ? '수정' : '등록'}
                       </Button>
                       <Button
                         variant="contained"
@@ -584,17 +565,17 @@ const Page = () => {
                         취소
                       </Button>
                     </Box>
-                    )}
+                  )}
 
-                    {/* 상세 */}
-                    { (!edit && id) && (
+                  {/* 상세 */}
+                  {(!edit && id) && (
+                    <Box sx={{
+                      display: 'flex',
+                      width:   '100%',
+                    }}>
                       <Box sx={{
-                        display: 'flex',
-                        width: '100%',
-                      }}>
-                      <Box sx={{
-                        display: 'flex',
-                        width: '50%',
+                        display:        'flex',
+                        width:          '50%',
                         justifyContent: 'flex-start',
                       }}>
                         <Button variant="contained" color="primary" onClick={handler.toPage}>
@@ -603,15 +584,15 @@ const Page = () => {
                         <Button
                           variant="contained"
                           color="primary"
-                          sx={{marginLeft: '5px'}}
+                          sx={{ marginLeft: '5px' }}
                           onClick={handler.delete}
                         >
                           삭제
                         </Button>
                       </Box>
                       <Box sx={{
-                        display: 'flex',
-                        width: '50%',
+                        display:        'flex',
+                        width:          '50%',
                         justifyContent: 'flex-end',
                       }}>
                         <Button variant="contained" color="secondary" onClick={handler.toModForm}>
@@ -619,7 +600,7 @@ const Page = () => {
                         </Button>
                       </Box>
                     </Box>
-                    )}
+                  )}
                 </Form>
               )}
             </Formik>

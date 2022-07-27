@@ -2,7 +2,7 @@ import { Department } from 'services/department';
 
 export type UserRole = 'NORMAL' | 'ADMIN' | 'MASTER';
 
-export type UserShort = {
+export interface UserShort {
   id: number;
   name: string;
   username: string;
@@ -12,9 +12,16 @@ export type UserShort = {
   departmentName: string;
 }
 
-export type User = Omit<UserShort, 'departmentId' | 'departmentName'> & {
+export interface User
+  extends Omit<UserShort, 'departmentId' | 'departmentName'> {
   department: Department;
   createdAt: Date;
   loginAt?: Date;
   passwordChangedAt?: Date;
+}
+
+
+export interface UserForm
+  extends User {
+  departmentId: number;
 }

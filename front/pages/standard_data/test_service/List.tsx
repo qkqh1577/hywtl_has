@@ -9,6 +9,8 @@ import {
   useTestServiceTemplate,
 } from 'services/standard_data/test_service_template';
 import TestServiceTemplateSeqModal from 'pages/standard_data/test_service/SeqModal';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 const initQuery: TestServiceTemplateQuery = {
   testType: testTypeList,
@@ -84,9 +86,6 @@ const TestServiceTemplateList = () => {
               testType: filter.testType
             }}>
             {({
-              values,
-              errors,
-              setFieldValue,
               isSubmitting,
               handleSubmit,
               resetForm
@@ -100,21 +99,14 @@ const TestServiceTemplateList = () => {
                           type="checkbox"
                           name="testType"
                           label="실험 타입"
-                          value={values.testType}
                           options={testTypeList}
-                          setFieldValue={setFieldValue}
-                          errors={errors}
                         />
                       </Grid>
                       <Grid container spacing={2} item sm={12}>
                         <Grid item sm={4}>
-                          <DataField
-                            type="select"
+                          <SelectField
                             name="keywordType"
                             label="검색 대상"
-                            value={values.keywordType}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
                             options={[
                               {
                                 key: 'by_title',
@@ -124,12 +116,9 @@ const TestServiceTemplateList = () => {
                           />
                         </Grid>
                         <Grid item sm={8}>
-                          <DataField
+                          <TextField
                             name="keyword"
                             label="검색어"
-                            value={values.keyword}
-                            setFieldValue={setFieldValue}
-                            errors={errors}
                           />
                         </Grid>
                       </Grid>

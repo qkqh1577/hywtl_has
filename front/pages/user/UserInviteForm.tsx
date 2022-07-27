@@ -5,8 +5,14 @@ import {
   Grid,
   Paper
 } from '@mui/material';
-import { Form, Formik, FormikHelpers } from 'formik';
-import { DataField, DepartmentSelector } from 'components';
+import {
+  Form,
+  Formik,
+  FormikHelpers
+} from 'formik';
+import {
+  DepartmentSelector
+} from 'components';
 import {
   UserInvitationInviteParameter,
   useUserInvitation,
@@ -16,6 +22,8 @@ import {
   userRoleList,
   userRoleName,
 } from 'services/user';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
 
 type Parameter = {
   name: string;
@@ -24,9 +32,9 @@ type Parameter = {
   departmentId: number | '';
 }
 const initialParameter: Parameter = {
-  name: '',
-  email: '',
-  userRole: '',
+  name:         '',
+  email:        '',
+  userRole:     '',
   departmentId: '',
 };
 
@@ -34,7 +42,9 @@ const UserInviteForm = () => {
   const { invite } = useUserInvitation();
 
   const handler = {
-    submit: (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
+    submit: (values: any,
+             { setSubmitting, setErrors }: FormikHelpers<any>
+            ) => {
       const error: any = {};
 
       const name: string = values.name;
@@ -76,72 +86,63 @@ const UserInviteForm = () => {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Box sx={{
-        display: 'flex',
+        display:        'flex',
         justifyContent: 'space-between',
-        width: '100%',
-        height: '50px',
-        mb: '40px',
+        width:          '100%',
+        height:         '50px',
+        mb:             '40px',
       }}>
         <h2>유저 초대</h2>
       </Box>
       <Box sx={{
         display: 'flex',
-        width: '100%',
-        mb: '40px',
+        width:   '100%',
+        mb:      '40px',
       }}>
         <Grid container spacing={2}>
           <Grid item sm={12}>
             <Formik initialValues={initialParameter} onSubmit={handler.submit}>
-              {({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => (
+              {({ isSubmitting, handleSubmit }) => (
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField required
+                      <TextField
+                        required
                         name="name"
                         label="이름"
-                        value={values.name}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField required
+                      <TextField
+                        required
                         name="email"
                         label="이메일"
-                        value={values.email}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField required
-                        type="select"
+                      <SelectField
+                        required
                         name="userRole"
                         label="권한"
-                        value={values.userRole}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
                         options={userRoleList.map(item => ({
-                          key: item,
+                          key:  item,
                           text: `${userRoleName(item)} 권한`
                         }))}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DepartmentSelector required
+                      <DepartmentSelector
+                        required
                         name="departmentId"
                         label="소속 부서"
-                        value={values.departmentId}
-                        errors={errors}
-                        setFieldValue={setFieldValue}
                       />
                     </Grid>
                     <Grid item sm={12}>
                       <Box sx={{
-                        display: 'flex',
+                        display:        'flex',
                         justifyContent: 'flex-end',
-                        width: '100%',
-                        mt: '40px',
+                        width:          '100%',
+                        mt:             '40px',
                       }}>
                         <Button
                           disabled={isSubmitting}
