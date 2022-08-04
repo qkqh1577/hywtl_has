@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import Page from 'components/Page';
+import Page from 'services/common/domain/Page';
 import {
   PersonnelAcademic,
   PersonnelBasic,

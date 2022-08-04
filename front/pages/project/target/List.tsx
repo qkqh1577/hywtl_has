@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Box,
   Button,
   Link,
 } from '@mui/material';
-import { Container, DateFormat, Table, UserFormat } from 'components';
+import {
+  DateFormat,
+  Table,
+  UserFormat
+} from 'components';
 import { useProjectTarget } from 'services/project_target';
 import { findModifiedAt } from 'util/DateUtil';
+import PageLayout from 'components/PageLayout';
 
 const ProjectTargetDocumentList = () => {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
   const {
-    state: {
-      list,
-      id,
-    },
-    getList,
-    setId,
-  } = useProjectTarget();
+          state: {
+                   list,
+                   id,
+                 },
+          getList,
+          setId,
+        } = useProjectTarget();
   const [modifiedAt, setModifiedAt] = useState<Date | undefined>();
 
   const handler = {
-    addModal: () => {
+    addModal:    () => {
       setId(null);
     },
     detailModal: (id: number) => {
@@ -42,54 +49,54 @@ const ProjectTargetDocumentList = () => {
   }, [list]);
 
   return (
-    <Container title="실험대상" modifiedAt={modifiedAt}>
-      <Box sx={{
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'row-reverse'
-      }}>
+    <PageLayout
+      title="실험대상"
+      titleRightComponent={
         <Button onClick={handler.addModal}>
           등록
         </Button>
-      </Box>
-      <Table
-        list={list}
-        columns={[
-          {
-            label: '등록일시',
-            align: 'center',
-            width: 150,
-            renderCell: (item) => <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
-          }, {
-            label: '견적 여부',
-            renderCell: (item) => item.confirmed ? 'Y' : 'N',
-            cellStyle: (item) => ({
-              backgroundColor: item.confirmed ? '#c4baf5' : 'inherit'
-            })
-          }, {
-            label: '실험대상 번호',
-            renderCell: (item) =>
-              <Link onClick={() => {
-                handler.detailModal(item.id);
-              }}>
-                {item.code}
-              </Link>
-          }, {
-            label: '대상 동수',
-            renderCell: (item) => item.detailCount,
-          }, {
-            label: '실험 종류',
-            renderCell: (item) => item.testList.join(', ')
-          }, {
-            label: '등록자',
-            renderCell: (item) => <UserFormat user={item.writer} />,
-          }, {
-            label: '비고',
-            renderCell: item => item.memo
-          },
-        ]}
-      />
-    </Container>
+      }
+      modifiedAt={modifiedAt}
+      body={
+        <Table
+          list={list}
+          columns={[
+            {
+              label:      '등록일시',
+              align:      'center',
+              width:      150,
+              renderCell: (item) => <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
+            }, {
+              label:      '견적 여부',
+              renderCell: (item) => item.confirmed ? 'Y' : 'N',
+              cellStyle:  (item) => ({
+                backgroundColor: item.confirmed ? '#c4baf5' : 'inherit'
+              })
+            }, {
+              label:      '실험대상 번호',
+              renderCell: (item) =>
+                            <Link onClick={() => {
+                              handler.detailModal(item.id);
+                            }}>
+                              {item.code}
+                            </Link>
+            }, {
+              label:      '대상 동수',
+              renderCell: (item) => item.detailCount,
+            }, {
+              label:      '실험 종류',
+              renderCell: (item) => item.testList.join(', ')
+            }, {
+              label:      '등록자',
+              renderCell: (item) => <UserFormat user={item.writer} />,
+            }, {
+              label:      '비고',
+              renderCell: item => item.memo
+            },
+          ]}
+        />}
+    />
+
   );
 };
 

@@ -15,14 +15,15 @@ import {
   FormikHelpers
 } from 'formik';
 import {
+  FieldStatus,
   useDialog
 } from 'components';
 import {
   DepartmentCategory,
-  DepartmentParameter,
-  DepartmentShort,
   departmentCategoryList,
   departmentCategoryName,
+  DepartmentParameter,
+  DepartmentShort,
   useDepartment,
 } from 'services/department';
 import TextField from 'components/TextField';
@@ -156,7 +157,7 @@ const DepartmentDetail = () => {
                       <SelectField
                         name="parentId"
                         label="상위 부서"
-                        disabled={values.category === 'COMPANY'}
+                        status={values.category === 'COMPANY' ? FieldStatus.Disabled : undefined}
                         required={values.category !== 'COMPANY'}
                         options={[
                           {

@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
-import { DataField } from 'components';
 import {
   initCompanyView as initView,
   usePersonnel
 } from 'services/personnel';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
+import DateField from 'components/DateField';
 
 type Props = {
   id: number;
@@ -50,10 +50,9 @@ const PersonnelDetailCompany = ({
         <h2>입사 정보</h2>
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DataField
+        <DateField
           required
           disableFuture
-          type="date"
           name={`${FIELD_NAME}.hiredDate`}
           label="입사일"
           openTo="year"

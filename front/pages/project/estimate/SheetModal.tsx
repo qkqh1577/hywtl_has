@@ -21,7 +21,6 @@ import {
 } from 'formik';
 import dayjs from 'dayjs';
 import {
-  DataField,
   Modal,
   RequiredMark,
   Table,
@@ -57,6 +56,7 @@ import { toAmountKor } from 'util/NumberUtil';
 import { FormikProps } from 'formik/dist/types';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import DateField from 'components/DateField';
 
 const reviewDetailColumnList: TableCellProperty<ProjectReviewDetail>[] = [
   {
@@ -734,15 +734,14 @@ const ProjectEstimateSheetModal = () => {
                   }}>
                     <Grid container spacing={2}>
                       <Grid item sm={3}>
-                        <DataField required
-                          type="date"
+                        <DateField
+                          required
                           name="estimateDate"
                           label="견적일자"
                         />
                       </Grid>
                       <Grid item sm={3}>
-                        <DataField
-                          type="date"
+                        <DateField
                           name="expectedStartMonth"
                           label="착수 가능"
                         />

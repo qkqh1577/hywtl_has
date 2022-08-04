@@ -303,22 +303,19 @@ const Page = () => {
                       <TextField
                         name="name"
                         label="업체명"
-                        disabled={!edit}
-                        required={edit}
+                        required
                       />
                     </Grid>
                     <Grid item sm={6}>
                       <TextField
                         name="representativeName"
                         label="대표명"
-                        disabled={!edit}
                       />
                     </Grid>
                     <Grid item sm={6}>
                       <TextField
                         name="officePhone"
                         label="대표 전화번호"
-                        disabled={!edit}
                         placeholder="-를 제외하고 입력"
                       />
                     </Grid>
@@ -326,7 +323,6 @@ const Page = () => {
                       <TextField
                         name="registrationNumber"
                         label="사업자번호"
-                        disabled={!edit}
                         helperText={registrationNumberHelperText}
                         endAdornment={
                           edit && (
@@ -350,7 +346,6 @@ const Page = () => {
                       <TextField
                         name="address"
                         label="주소"
-                        disabled={!edit}
                         endAdornment={
                           edit && (
                             <Button
@@ -369,14 +364,12 @@ const Page = () => {
                       <TextField
                         name="zipCode"
                         label="우편번호"
-                        disabled={!edit}
                       />
                     </Grid>
                     <Grid item sm={12}>
                       <TextField
                         name="memo"
                         label="비고"
-                        disabled={!edit}
                       />
                     </Grid>
                   </Grid>
@@ -458,7 +451,6 @@ const Page = () => {
                             <TextField
                               name={`managerList[${i}].name`}
                               label="담당자명"
-                              disabled={!edit}
                               required
                             />
                           </Grid>
@@ -466,14 +458,12 @@ const Page = () => {
                             <TextField
                               name={`managerList[${i}].jobTitle`}
                               label="호칭"
-                              disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
                             <TextField
                               name={`managerList[${i}].mobilePhone`}
                               label="핸드폰"
-                              disabled={!edit}
                               placeholder="-를 제외하고 입력"
                             />
                           </Grid>
@@ -481,7 +471,6 @@ const Page = () => {
                             <TextField
                               name={`managerList[${i}].officePhone`}
                               label="전화번호"
-                              disabled={!edit}
                               placeholder="-를 제외하고 입력"
                             />
                           </Grid>
@@ -489,14 +478,12 @@ const Page = () => {
                             <TextField
                               name={`managerList[${i}].email`}
                               label="이메일"
-                              disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
                             <TextField
                               name={`managerList[${i}].meta`}
                               label="메타"
-                              disabled={!edit}
                             />
                           </Grid>
                           <Grid item sm={6}>
@@ -504,7 +491,6 @@ const Page = () => {
                               required
                               name={`managerList[${i}].status`}
                               label="상태"
-                              disabled={!edit}
                               options={businessManagerStatusList.map((item) => ({
                                 key:  item as string,
                                 text: businessManagerStatusName(item)
@@ -516,7 +502,6 @@ const Page = () => {
                               <TextField
                                 name={`managerList[${i}].projectCount`}
                                 label="담당 프로젝트"
-                                disabled={!edit}
                                 endAdornment={
                                   edit && (
                                     <Button

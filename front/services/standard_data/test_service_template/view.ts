@@ -11,19 +11,21 @@ export type TestServiceTemplateView = {
   testType: string;
   totalPrice: number | '';
   detailList: TestServiceDetailTemplateView[];
+  edit: boolean;
 }
 
 export const initTestServiceDetailTemplateView: TestServiceDetailTemplateView = {
-  id: '',
+  id:        '',
   titleList: [''],
-  unit: '',
+  unit:      '',
   unitPrice: '',
-  memo: '',
+  memo:      '',
 };
 
 export const initTestServiceTemplateView: TestServiceTemplateView = {
-  title: '',
-  testType: '',
+  edit:       false,
+  title:      '',
+  testType:   '',
   totalPrice: '',
   detailList: [initTestServiceDetailTemplateView],
 };

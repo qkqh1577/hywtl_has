@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import {
+  Box,
+  Button,
+  IconButton
+} from '@mui/material';
 import {
   KeyboardArrowDown as DownIcon,
   KeyboardArrowUp as UpIcon
@@ -8,7 +15,12 @@ import {
   TestServiceTemplateChangeSeqParameter,
   useTestServiceTemplate
 } from 'services/standard_data/test_service_template';
-import { Modal, Table, Tooltip, useDialog } from 'components';
+import {
+  Modal,
+  Table,
+  Tooltip,
+  useDialog
+} from 'components';
 
 type Item = {
   id: number;
@@ -16,28 +28,27 @@ type Item = {
   testType: string;
 }
 
-const TestServiceTemplateSeqModal = () => {
+export default function TestServiceTemplateSeqModal() {
   const dialog = useDialog();
   const {
-    state: {
-      seqList: templateList,
-      seqModal,
-    },
-    setSeqModal,
-    getSeqList,
-    clearSeqList,
-    changeSeq,
-  } = useTestServiceTemplate();
+          seqList: templateList,
+          seqModal,
+          setSeqModal,
+          getSeqList,
+          clearSeqList,
+          changeSeq,
+        } = useTestServiceTemplate();
   const [list, setList] = useState<Item[]>([]);
   const [dirty, setDirty] = useState<boolean>(false);
 
   const handler = {
-    close: () => {
+    close:  () => {
       if (dirty) {
         dialog.rollback(() => {
           setSeqModal(false);
         });
-      } else {
+      }
+      else {
         setSeqModal(false);
       }
     },
@@ -56,7 +67,8 @@ const TestServiceTemplateSeqModal = () => {
   useEffect(() => {
     if (seqModal) {
       getSeqList();
-    } else {
+    }
+    else {
       clearSeqList();
     }
   }, [seqModal]);
@@ -64,8 +76,8 @@ const TestServiceTemplateSeqModal = () => {
   useEffect(() => {
     if (seqModal) {
       setList(templateList.map(item => ({
-        id: item.id,
-        title: item.title,
+        id:       item.id,
+        title:    item.title,
         testType: item.testType,
       })));
     }
@@ -77,26 +89,32 @@ const TestServiceTemplateSeqModal = () => {
         list={list}
         columns={[
           {
-            label: 'No.',
-            renderCell: (item, i) => i + 1,
+            label:      'No.',
+            renderCell: (item,
+                         i
+                        ) => i + 1,
           }, {
-            label: '실험 타입',
+            label:      '실험 타입',
             renderCell: (item) => item.testType,
           }, {
-            label: '용역 항목',
+            label:      '용역 항목',
             renderCell: (item) => item.title,
           }, {
-            label: '순서',
-            renderCell: (item, i) => (
+            label:      '순서',
+            renderCell: (item,
+                         i
+                        ) => (
               <Box sx={{
-                display: 'flex',
+                display:        'flex',
                 justifyContent: 'space-around',
               }}>
                 <Tooltip title="순서 올리기">
                   <IconButton
                     disabled={i === 0}
                     onClick={() => {
-                      const prevList = list.filter((t, k) => k !== i);
+                      const prevList = list.filter((t,
+                                                    k
+                      ) => k !== i);
                       const nextList = [];
                       for (let k = 0; k < prevList.length; k++) {
                         if (nextList.length === i - 1) {
@@ -116,7 +134,9 @@ const TestServiceTemplateSeqModal = () => {
                   <IconButton
                     disabled={i === list.length - 1}
                     onClick={() => {
-                      const prevList = list.filter((t, k) => k !== i);
+                      const prevList = list.filter((t,
+                                                    k
+                      ) => k !== i);
                       const nextList = [];
                       for (let k = 0; k < prevList.length; k++) {
                         nextList.push(prevList[k]);
@@ -138,10 +158,10 @@ const TestServiceTemplateSeqModal = () => {
         ]}
         footer={
           <Box sx={{
-            display: 'flex',
+            display:        'flex',
             justifyContent: 'space-around',
-            width: '100%',
-            height: '50px',
+            width:          '100%',
+            height:         '50px',
           }}>
             <Button onClick={handler.submit}>
               저장
@@ -156,4 +176,3 @@ const TestServiceTemplateSeqModal = () => {
   );
 };
 
-export default TestServiceTemplateSeqModal;

@@ -48,6 +48,13 @@ const PersonnelDetail = () => {
   }
 
   const {
+    getBasic,
+    getCompany,
+    getCareerList,
+    getJobList,
+    getAcademicList,
+    getLanguageList,
+    getLicenseList,
     clearOne,
     update
   } = usePersonnel();
@@ -432,37 +439,22 @@ const PersonnelDetail = () => {
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <PersonnelDetailJobList
                     id={id}
-                    values={values.jobList}
-                    errors={errors}
-                    setFieldValue={setFieldValue}
                   />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <PersonnelDetailAcademicList
                     id={id}
-                    values={values.academicList}
-                    errors={errors}
-                    setFieldValue={setFieldValue}
                   />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <PersonnelDetailCareerList
                     id={id}
-                    values={values.careerList}
-                    errors={errors}
-                    setFieldValue={setFieldValue}
                   />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <PersonnelDetailLicenseList
                     id={id}
-                    values={values.licenseList}
-                    errors={errors}
-                    setFieldValue={setFieldValue}
                   />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <PersonnelDetailLanguageList
                     id={id}
-                    values={values.languageList}
-                    errors={errors}
-                    setFieldValue={setFieldValue}
                   />
                   <Divider sx={{ mt: '40px', mb: '40px' }} />
                   <Grid container spacing={2}>

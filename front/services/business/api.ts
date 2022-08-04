@@ -1,5 +1,5 @@
 import apiClient from 'services/common/api';
-import Page from 'components/Page';
+import Page from 'services/common/domain/Page';
 import {
   Business,
   BusinessAddParameter,

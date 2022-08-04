@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
-import Page from 'components/Page';
+import Page from 'services/common/domain/Page';
 import {
   PersonnelAcademic,
   PersonnelActionType,

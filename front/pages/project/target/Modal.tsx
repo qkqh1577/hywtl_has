@@ -14,7 +14,7 @@ import {
   FormikHelpers
 } from 'formik';
 import {
-  DataField,
+  FieldStatus,
   Modal,
   Table,
   useDialog
@@ -29,6 +29,7 @@ import {
 } from 'services/project_target';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
+import CheckboxField from 'components/CheckboxField';
 
 const ProjectTargetModal = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -225,35 +226,31 @@ const ProjectTargetModal = () => {
               <Grid container spacing={2}>
                 <Grid item sm={1}>
                   <SelectField
-                    readOnly
                     name="confirmed"
                     label="견적 여부"
                     options={['Y', 'N']}
+                    status={FieldStatus.Disabled}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
                     name="code"
                     label="실험대상 번호"
-                    readOnly={!edit}
                     required={edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField
+                  <CheckboxField
                     disableAll
-                    type="checkbox"
                     name="testList"
                     label="실험 종류(단지)"
                     options={['E', 'B']}
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
                     name="memo"
                     label="비고"
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={4}>
@@ -318,7 +315,6 @@ const ProjectTargetModal = () => {
                         disableLabel
                         name={`detailList[${i}].buildingName`}
                         label="건물(동)"
-                        readOnly={!edit}
                         required={edit}
                       />
                     ),
@@ -328,15 +324,13 @@ const ProjectTargetModal = () => {
                     renderCell: (item,
                                  i
                                 ) =>
-                                  <DataField
+                                  <CheckboxField
                                     disableAll
                                     disableLabel
-                                    type="checkbox"
                                     name={`detailList[${i}].testList`}
                                     label="실험 종류(동)"
                                     options={['F', 'P', 'A', '구검']}
                                     required={edit}
-                                    readOnly={!edit}
                                   />
                   }, {
                     label:       '삭제',

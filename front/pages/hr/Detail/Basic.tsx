@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { FormikErrors } from 'formik';
 import {
-  DataField,
   FileInput
 } from 'components';
 import {
@@ -11,6 +10,7 @@ import {
 } from 'services/personnel';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import DateField from 'components/DateField';
 
 type Props = {
   id: number;
@@ -67,10 +67,9 @@ const PersonnelDetailBasic = ({
         />
       </Grid>
       <Grid item sm={6} xs={12}>
-        <DataField
+        <DateField
           required
           disableFuture
-          type="date"
           name={`${FIELD_NAME}.birthDate`}
           label="생년월일"
           openTo="year"

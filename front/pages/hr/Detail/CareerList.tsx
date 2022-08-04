@@ -9,7 +9,6 @@ import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import {
   useFormikContext
 } from 'formik';
-import { DataField } from 'components';
 import {
   PersonnelCareerView,
   initCareerView,
@@ -17,6 +16,7 @@ import {
   usePersonnel
 } from 'services/personnel';
 import TextField from 'components/TextField';
+import DateField from 'components/DateField';
 
 type Props = {
   id: number;
@@ -87,20 +87,18 @@ const PersonnelDetailCareerList = ({
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DateField
                   required
                   disableFuture
-                  type="date"
                   name={`${FIELD_NAME}[${i}].startDate`}
                   label="시작일"
                   openTo="year"
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DateField
                   required
                   disableFuture
-                  type="date"
                   name={`${FIELD_NAME}[${i}].endDate`}
                   label="종료일"
                   openTo="year"

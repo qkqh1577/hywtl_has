@@ -6,13 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
   Grid,
   Link,
-  MenuItem,
   Paper,
-  Select,
   TablePagination,
 } from '@mui/material';
 import {
@@ -22,7 +18,6 @@ import {
 } from 'formik';
 import dayjs from 'dayjs';
 import {
-  DataField,
   DateFormat,
   Table,
 } from 'components';
@@ -36,6 +31,8 @@ import {
 } from 'services/personnel';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import CheckboxField from 'components/CheckboxField';
+import DateField from 'components/DateField';
 
 const initFilter: PersonnelQuery = {
   size: 10,
@@ -135,9 +132,7 @@ const PersonnelPage = () => {
             dateType:    filter.dateType ?? dateTypeList,
           }}>
           {({
-              values,
               isSubmitting,
-              handleChange,
               handleSubmit,
               resetForm
             }) => (
@@ -146,16 +141,14 @@ const PersonnelPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField
-                        type="checkbox"
+                      <CheckboxField
                         name="sex"
                         label="성별"
                         options={sexList}
                       />
                     </Grid>
                     <Grid item sm={12}>
-                      <DataField
-                        type="checkbox"
+                      <CheckboxField
                         name="hiredType"
                         label="입사 구분"
                         options={hiredTypeList}
@@ -187,15 +180,13 @@ const PersonnelPage = () => {
                         />
                       </Grid>
                       <Grid item sm={4}>
-                        <DataField
-                          type="date"
+                        <DateField
                           name="startDate"
                           label="시작일"
                         />
                       </Grid>
                       <Grid item sm={4}>
-                        <DataField
-                          type="date"
+                        <DateField
                           name="endDate"
                           label="종료일"
                         />

@@ -1,11 +1,16 @@
+import { testTypeList } from 'services/standard_data/test_service_template/data';
 
-export type TestServiceTemplateQuery = {
+export interface TestServiceTemplateQuery {
   keywordType?: 'by_title';
   keyword?: string;
   testType: string[];
 }
 
-export type TestServiceDetailTemplateParameter = {
+export const initQuery: TestServiceTemplateQuery = {
+  testType: testTypeList,
+};
+
+export interface TestServiceDetailTemplateParameter {
   id?: number;
   titleList: string[];
   unit: string;
@@ -13,12 +18,12 @@ export type TestServiceDetailTemplateParameter = {
   memo?: string;
 }
 
-export type TestServiceTemplateParameter = {
+export interface TestServiceTemplateParameter {
   title: string;
   testType: string;
   detailList: TestServiceDetailTemplateParameter[];
 }
 
-export type TestServiceTemplateChangeSeqParameter = {
+export interface TestServiceTemplateChangeSeqParameter {
   idList: number[];
 }

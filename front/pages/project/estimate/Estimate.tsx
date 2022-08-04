@@ -1,31 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Container, useDialog } from 'components';
+import { useDialog } from 'components';
 import {
   ProjectEstimateParameter,
   ProjectEstimateView as View,
   initProjectEstimateView as initView,
   useProjectEstimate
 } from 'services/project_estimate';
+import PageLayout from 'components/PageLayout';
+import { Grid } from '@mui/material';
+import DateField from 'components/DateField';
+import SelectField from 'components/SelectField';
 
-const ProjectEstimateDetail = () => {
+export default function ProjectEstimateDetail() {
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 
   const dialog = useDialog();
   const {
-    state: {
-      detail,
-    },
-    getOne,
-    clearOne,
-    upsert,
-  } = useProjectEstimate();
+          state: {
+                   detail,
+                 },
+          getOne,
+          clearOne,
+          upsert,
+        } = useProjectEstimate();
   const [view, setView] = useState<View>(initView);
 
   const handler = {
-    submit: (values: any, callback: () => void) => {
+    submit:     (values: any,
+                 callback: () => void
+                ) => {
       const errors: any = {};
       if (!projectId || !detail) {
         errors.projectId = '프로젝트를 찾을 수 없습니다.';
@@ -42,7 +51,8 @@ const ProjectEstimateDetail = () => {
 
       const params: ProjectEstimateParameter = {
         projectId,
-        receivedDate: receivedDate ? dayjs(receivedDate).format('YYYY-MM-DD') : undefined,
+        receivedDate: receivedDate ? dayjs(receivedDate)
+        .format('YYYY-MM-DD') : undefined,
         figureLevel,
         testLevel,
         reportLevel,
@@ -58,9 +68,9 @@ const ProjectEstimateDetail = () => {
     updateView: () => {
       setView({
         receivedDate: detail?.receivedDate ?? view.receivedDate,
-        figureLevel: detail?.figureLevel ?? view.figureLevel,
-        testLevel: detail?.testLevel ?? view.testLevel,
-        reportLevel: detail?.reportLevel ?? view.reportLevel,
+        figureLevel:  detail?.figureLevel ?? view.figureLevel,
+        testLevel:    detail?.testLevel ?? view.testLevel,
+        reportLevel:  detail?.reportLevel ?? view.reportLevel,
       });
     }
   };
@@ -82,43 +92,40 @@ const ProjectEstimateDetail = () => {
 
   });
   return (
-    <Container
+    <PageLayout
       title="견적 기본 정보"
-      view={view}
-      submit={handler.submit}
-      updateView={handler.updateView}
       modifiedAt={detail?.modifiedAt}
-      fields={[
-        {
-          sm: 3,
-          type: 'date',
-          name: 'receivedDate',
-          label: '견적 의뢰 접수일',
-        },
-        {
-          sm: 3,
-          type: 'select',
-          name: 'figureLevel',
-          label: '모형제작 난이도',
-          options: ['상', '중상', '중', '중하', '하']
-        },
-        {
-          sm: 3,
-          type: 'select',
-          name: 'testLevel',
-          label: '실험 난이도',
-          options: ['상', '중상', '중', '중하', '하']
-        },
-        {
-          sm: 3,
-          type: 'select',
-          name: 'reportLevel',
-          label: '평가 난이도',
-          options: ['상', '중상', '중', '중하', '하']
-        },
-      ]}
+      body={
+        <Grid container spacing={3}>
+          <Grid item sm={3}>
+            <DateField
+              name="receivedDate"
+              label="견적 의뢰 접수일"
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <SelectField
+              name="figureLevel"
+              label="모형제작 난이도"
+              options={['상', '중상', '중', '중하', '하']}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <SelectField
+              name="testLevel"
+              label="실험 난이도"
+              options={['상', '중상', '중', '중하', '하']}
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <SelectField
+              name="reportLevel"
+              label="평가 난이도"
+              options={['상', '중상', '중', '중하', '하']}
+            />
+          </Grid>
+        </Grid>
+      }
     />
   );
 };
-
-export default ProjectEstimateDetail;

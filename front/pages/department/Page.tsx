@@ -20,7 +20,6 @@ import {
   FormikHelpers
 } from 'formik';
 import {
-  DataField,
   Table,
   TableCellProperty
 } from 'components';
@@ -33,6 +32,7 @@ import {
 } from 'services/department';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import CheckboxField from 'components/CheckboxField';
 
 const columns: TableCellProperty<DepartmentShort>[] = [
   {
@@ -153,8 +153,7 @@ const DepartmentPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField
-                        type="checkbox"
+                      <CheckboxField
                         name="category"
                         label="부서 유형"
                         options={departmentCategoryList.map(item => ({

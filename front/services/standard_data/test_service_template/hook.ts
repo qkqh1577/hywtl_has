@@ -1,16 +1,37 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/common/reducer';
 import {
   TestServiceTemplateChangeSeqParameter,
   TestServiceTemplateParameter,
   TestServiceTemplateQuery,
   testServiceTemplateActions,
+  initQuery,
 } from 'services/standard_data/test_service_template';
 
 export default function useTestServiceTemplate() {
-  const state = useSelector((state: RootState) => state.testServiceTemplate);
+  const {
+          filter,
+          list,
+          detail,
+          seqModal,
+          seqList,
+        } = useSelector((state: RootState) => state.testServiceTemplate);
   const dispatch = useDispatch();
+
+  const setFilter = useCallback(
+    (query: TestServiceTemplateQuery) =>
+      dispatch(testServiceTemplateActions.setFilter(query)),
+    [dispatch]
+  );
+
+  const clearFilter = useCallback(
+    () => dispatch(testServiceTemplateActions.setFilter(initQuery)),
+    [dispatch]
+  );
 
   const getList = useCallback(
     (query: TestServiceTemplateQuery) =>
@@ -37,19 +58,26 @@ export default function useTestServiceTemplate() {
   );
 
   const add = useCallback(
-    (params: TestServiceTemplateParameter, callback: () => void) =>
+    (params: TestServiceTemplateParameter,
+     callback: () => void
+    ) =>
       dispatch(testServiceTemplateActions.add({ params, callback })),
     [dispatch]
   );
 
   const change = useCallback(
-    (id: number, params: TestServiceTemplateParameter, callback: () => void) =>
+    (id: number,
+     params: TestServiceTemplateParameter,
+     callback: () => void
+    ) =>
       dispatch(testServiceTemplateActions.change({ id, params, callback })),
     [dispatch]
   );
 
   const changeSeq = useCallback(
-    (params: TestServiceTemplateChangeSeqParameter, callback: () => void) =>
+    (params: TestServiceTemplateChangeSeqParameter,
+     callback: () => void
+    ) =>
       dispatch(testServiceTemplateActions.changeSeq({ params, callback })),
     [dispatch]
   );
@@ -73,7 +101,13 @@ export default function useTestServiceTemplate() {
   );
 
   return {
-    state,
+    filter,
+    list,
+    detail,
+    seqModal,
+    seqList,
+    setFilter,
+    clearFilter,
     getList,
     clearList,
     getOne,

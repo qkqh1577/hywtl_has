@@ -1,32 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, useDialog } from 'components';
+import { useDialog } from 'components';
 import useProject from 'services/project/hook';
 import {
   ProjectBasicParameter,
   ProjectBasicView as View,
   initProjectBasicView as initView,
 } from 'services/project';
+import PageLayout from 'components/PageLayout';
+import { Grid } from '@mui/material';
+import TextField from 'components/TextField';
+import UserSelector from 'components/UserSelector';
+import SelectField from 'components/SelectField';
 
-const ProjectBasicDetail = () => {
+export default function ProjectBasicDetail() {
 
   const { id: idString } = useParams<{ id: string }>();
   const projectId = !idString || Number.isNaN(+idString) ? undefined : +idString;
 
   const dialog = useDialog();
   const {
-    state: {
-      basic: detail
-    },
-    getBasic: getOne,
-    setBasic: setOne,
-    clearBasic: clearOne,
-    updateBasic: update,
-  } = useProject();
+          state:       {
+                         basic: detail
+                       },
+          getBasic:    getOne,
+          setBasic:    setOne,
+          clearBasic:  clearOne,
+          updateBasic: update,
+        } = useProject();
   const [view, setView] = useState<View>(initView);
 
   const handler = {
-    submit: (values: any, callback: () => void) => {
+    submit:     (values: any,
+                 callback: () => void
+                ) => {
       const errors: any = {};
       if (!projectId || !detail) {
         errors.projectId = '프로젝트를 찾을 수 없습니다.';
@@ -107,25 +117,25 @@ const ProjectBasicDetail = () => {
     },
     updateView: () => {
       setView({
-        name: detail?.name ?? initView.name,
-        code: detail?.code ?? initView.code,
-        alias: detail?.alias ?? initView.alias,
-        salesManagerId: detail?.salesManager.id ?? initView.salesManagerId,
+        name:             detail?.name ?? initView.name,
+        code:             detail?.code ?? initView.code,
+        alias:            detail?.alias ?? initView.alias,
+        salesManagerId:   detail?.salesManager.id ?? initView.salesManagerId,
         projectManagerId: detail?.projectManager.id ?? initView.projectManagerId,
-        address: detail?.address ?? initView.address,
-        purpose1: detail?.purpose1 ?? initView.purpose1,
-        purpose2: detail?.purpose2 ?? initView.purpose2,
-        lotArea: detail?.lotArea ?? initView.lotArea,
-        totalArea: detail?.totalArea ?? initView.totalArea,
-        buildingCount: detail?.buildingCount ?? initView.buildingCount,
-        householdCount: detail?.householdCount ?? initView.householdCount,
-        floorCount: detail?.floorCount ?? initView.floorCount,
-        baseCount: detail?.baseCount ?? initView.baseCount,
-        clientName: detail?.clientName ?? initView.clientName,
-        isClientLH: (detail && typeof detail.isClientLH === 'boolean') ? (detail.isClientLH ? '예' : '아니요') : initView.isClientLH,
-        clientManager: detail?.clientManager ?? initView.clientManager,
-        clientPhone: detail?.clientPhone ?? initView.clientPhone,
-        clientEmail: detail?.clientEmail ?? initView.clientEmail,
+        address:          detail?.address ?? initView.address,
+        purpose1:         detail?.purpose1 ?? initView.purpose1,
+        purpose2:         detail?.purpose2 ?? initView.purpose2,
+        lotArea:          detail?.lotArea ?? initView.lotArea,
+        totalArea:        detail?.totalArea ?? initView.totalArea,
+        buildingCount:    detail?.buildingCount ?? initView.buildingCount,
+        householdCount:   detail?.householdCount ?? initView.householdCount,
+        floorCount:       detail?.floorCount ?? initView.floorCount,
+        baseCount:        detail?.baseCount ?? initView.baseCount,
+        clientName:       detail?.clientName ?? initView.clientName,
+        isClientLH:       (detail && typeof detail.isClientLH === 'boolean') ? (detail.isClientLH ? '예' : '아니요') : initView.isClientLH,
+        clientManager:    detail?.clientManager ?? initView.clientManager,
+        clientPhone:      detail?.clientPhone ?? initView.clientPhone,
+        clientEmail:      detail?.clientEmail ?? initView.clientEmail,
       });
     }
   };
@@ -144,127 +154,140 @@ const ProjectBasicDetail = () => {
   }, [detail]);
 
   return (
-    <Container
+    <PageLayout
       title="기본 정보"
-      view={view}
-      submit={handler.submit}
       modifiedAt={detail?.modifiedAt}
-      updateView={handler.updateView}
-      fields={[
-        {
-          sm: 2,
-          name: 'code',
-          label: '프로젝트 코드',
-          required: true
-        },
-        {
-          sm: 6,
-          name: 'name',
-          label: '프로젝트명',
-          required: true,
-        },
-        {
-          sm: 2,
-          name: 'alias',
-          label: '프로젝트 닉네임',
-          helperText: '※최대 5글자',
-        },
-        {
-          sm: 2,
-          type: 'user',
-          name: 'salesManagerId',
-          label: '영업 담당자',
-          required: true,
-        },
-        {
-          sm: 6,
-          name: 'address',
-          label: '주소',
-        },
-        {
-          sm: 2,
-          name: 'purpose1',
-          label: '건물 용도1',
-        },
-        {
-          sm: 2,
-          name: 'purpose2',
-          label: '건물 용도1',
-        },
-        {
-          sm: 2,
-          type: 'user',
-          name: 'projectManagerId',
-          label: '담당 PM',
-          required: true,
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'buildingCount',
-          label: '총 동 수',
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'householdCount',
-          label: '건물 당 세대 수',
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'floorCount',
-          label: '층 수',
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'baseCount',
-          label: '지하층 수',
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'lotArea',
-          label: '대지면적',
-        },
-        {
-          sm: 2,
-          type: 'number',
-          name: 'totalArea',
-          label: '연면적',
-        },
-        {
-          sm: 3,
-          type: 'number',
-          name: 'clientName',
-          label: '업체',
-        },
-        {
-          sm: 2,
-          type: 'select',
-          name: 'isClientLH',
-          label: '업체 LH 여부',
-          options: ['예', '아니요'],
-        },
-        {
-          sm: 2,
-          name: 'clientManager',
-          label: '업체 담당자',
-        },
-        {
-          sm: 2,
-          name: 'clientPhone',
-          label: '업체 담당자 핸드폰',
-        },
-        {
-          sm: 3,
-          name: 'clientEmail',
-          label: '업체 담당자 이메일',
-        }
-      ]}
+      body={
+        <Grid container spacing={3}>
+          <Grid item sm={2}>
+            <TextField
+              required
+              name="code"
+              label="프로젝트 코드"
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <TextField
+              required
+              name="name"
+              label="프로젝트명"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              name="alias"
+              label="프로젝트 닉네임"
+              helperText="※최대 5글자"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <UserSelector
+              required
+              name="salesManagerId"
+              label="영업 담당자"
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <TextField
+              name="address"
+              label="주소"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              name="purpose1"
+              label="건물 용도1"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              name="purpose2"
+              label="건물 용도2"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <UserSelector
+              required
+              name="projectManagerId"
+              label="담당 PM"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="buildingCount"
+              label="총 동 수"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="householdCount"
+              label="건물 당 세대 수"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="floorCount"
+              label="층 수"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="baseCount"
+              label="지하층 수"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="lotArea"
+              label="대지면적"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              type="number"
+              name="totalArea"
+              label="연면적"
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <TextField
+              name="clientName"
+              label="업체"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <SelectField
+              name="isClientLH"
+              label="업체 LH 여부"
+              options={['예', '아니요']}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              name="clientManager"
+              label="업체 담당자"
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <TextField
+              name="clientPhone"
+              label="업체 담당자 핸드폰"
+            />
+          </Grid>
+          <Grid item sm={3}>
+            <TextField
+              name="clientEmail"
+              label="업체 담당자 이메일"
+            />
+          </Grid>
+        </Grid>
+      }
     />
   );
 };
 
-export default ProjectBasicDetail;

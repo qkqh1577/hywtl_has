@@ -1,12 +1,24 @@
 import React, { SyntheticEvent } from 'react';
 import { TextFieldProps } from '@mui/material';
 import { InputProps as MuiInputProps } from '@mui/material/Input/Input';
-import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
+
+export enum FieldStatus {
+  /** 정상 상태, 드래그 가능, 편집 가능, 필드 제공 */
+  Idle,
+  /** 잠금 모드, 드래그 불가, 편집 불가, 필드 제공 */
+  Disabled,
+  /** 읽기 모드, 드래그 가능, 편집 불가, 필드 제공 */
+  ReadOnly,
+  /** 보기 모드, 드래그 가능, 편집 불가, 필드 미제공 */
+  View,
+}
+
+export interface FieldValue<T = any> {
+  value: T;
+  edit: boolean | undefined;
+}
 
 export type DataFieldValue = string | number;
-export type DataFieldType =
-  | 'checkbox'
-  | 'date';
 
 export interface Option {
   key: DataFieldValue;
@@ -30,7 +42,6 @@ export interface Props
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | SyntheticEvent,
               value?: DataFieldValue | DataFieldValue[]
   ) => void;
-  type?: DataFieldType;
   variant?: 'standard' | 'filled' | 'outlined';
 }
 
@@ -48,47 +59,6 @@ export interface CommonProps
       | 'size'
       | 'sx'
       | 'variant'> {
-  type?: DataFieldType;
-}
-
-export interface CheckboxProps
-  extends Props {
-  allText?: string;
-  disableAll?: boolean;
-  options: Option[] | DataFieldValue[] | null;
-}
-
-export interface DateProps
-  extends Props,
-          Pick<DatePickerProps,
-            'cancelText'
-            | 'clearText'
-            | 'clearable'
-            | 'disableCloseOnSelect'
-            | 'disableFuture'
-            | 'disableHighlightToday'
-            | 'disableOpenPicker'
-            | 'disablePast'
-            | 'inputFormat'
-            | 'mask'
-            | 'maxDate'
-            | 'minDate'
-            | 'okText'
-            | 'onAccept'
-            | 'onClose'
-            | 'onMonthChange'
-            | 'onOpen'
-            | 'onViewChange'
-            | 'onYearChange'
-            | 'openTo'
-            | 'showDaysOutsideCurrentMonth'
-            | 'showTodayButton'
-            | 'showToolbar'
-            | 'todayText'
-            | 'toolbarFormat'
-            | 'toolbarPlaceholder'
-            | 'toolbarTitle'> {
-  format?: string;
 }
 
 export const isDataFieldValue = (value: any): value is DataFieldValue => {
@@ -96,12 +66,4 @@ export const isDataFieldValue = (value: any): value is DataFieldValue => {
 };
 export const isOption = (value: any): value is Option => {
   return !isDataFieldValue(value) && isDataFieldValue((value as Option).key);
-};
-
-export const isCheckbox = (props: Props): props is CheckboxProps => {
-  return props.type === 'checkbox';
-};
-
-export const isDate = (props: Props): props is DateProps => {
-  return props.type === 'date';
 };

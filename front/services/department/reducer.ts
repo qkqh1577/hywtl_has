@@ -1,5 +1,5 @@
 import { createReducer } from 'typesafe-actions';
-import Page, { initial } from 'components/Page';
+import Page, { initial } from 'services/common/domain/Page';
 import {
   Department,
   DepartmentActionType,

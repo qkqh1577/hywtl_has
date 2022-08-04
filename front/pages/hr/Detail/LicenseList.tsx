@@ -9,7 +9,6 @@ import { DeleteForever as DeleteIcon } from '@mui/icons-material';
 import {
   useFormikContext
 } from 'formik';
-import { DataField } from 'components';
 import {
   PersonnelLicenseView,
   initLicenseView,
@@ -17,6 +16,7 @@ import {
   usePersonnel
 } from 'services/personnel';
 import TextField from 'components/TextField';
+import DateField from 'components/DateField';
 
 type Props = {
   id: number;
@@ -106,10 +106,9 @@ const PersonnelDetailLicenseList = ({
                 />
               </Grid>
               <Grid item>
-                <DataField
+                <DateField
                   required
                   disableFuture
-                  type="date"
                   name={`${FIELD_NAME}[${i}].qualifiedDate`}
                   label="인가일"
                   openTo="year"

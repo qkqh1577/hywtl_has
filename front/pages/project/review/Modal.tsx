@@ -15,26 +15,24 @@ import {
   FormikHelpers
 } from 'formik';
 import {
-  DataField,
+  FieldStatus,
   Modal,
   Table,
   Tooltip,
   useDialog
 } from 'components';
 import {
+  initProjectDetailReview as initDetailView,
+  initProjectReview as initView,
   ProjectReviewDetailParameter,
   ProjectReviewParameter,
   ProjectReviewStatus,
-  ProjectReviewView as View,
-  initProjectDetailReview as initDetailView,
-  initProjectReview as initView,
   projectReviewStatusList,
   projectReviewStatusName,
+  ProjectReviewView as View,
   useProjectReview,
 } from 'services/project_review';
-import {
-  projectSpecialWindLoadConditionName
-} from 'services/project';
+import { projectSpecialWindLoadConditionName } from 'services/project';
 import {
   FileItemParameter,
   fileItemToView,
@@ -43,6 +41,7 @@ import {
 import FileUploadButton from 'components/FileUploadButton';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import CheckboxField from 'components/CheckboxField';
 
 const ProjectReviewModal = () => {
   const { id: idString } = useParams<{ id: string }>();
@@ -318,7 +317,7 @@ const ProjectReviewModal = () => {
                     name="confirmed"
                     label="견적 여부"
                     options={['Y', 'N']}
-                    disabled
+                    status={FieldStatus.Disabled}
                   />
                 </Grid>
                 <Grid item sm={2}>
@@ -330,7 +329,6 @@ const ProjectReviewModal = () => {
                       key:  item as string,
                       text: projectReviewStatusName(item),
                     }))}
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
@@ -338,7 +336,6 @@ const ProjectReviewModal = () => {
                     required
                     name="code"
                     label="형상비 번호"
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={1}>
@@ -346,17 +343,14 @@ const ProjectReviewModal = () => {
                     type="number"
                     name="langFigureCount"
                     label="대지모형 개수"
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DataField
+                  <CheckboxField
                     disableAll
-                    type="checkbox"
                     name="testList"
                     label="실험 종류(단지)"
                     options={['E', 'B']}
-                    readOnly={!edit}
                   />
                 </Grid>
                 <Grid item sm={4}>
@@ -461,8 +455,7 @@ const ProjectReviewModal = () => {
                                   <TextField disableLabel
                                     name={`detailList[${i}].buildingName`}
                                     label="건물(동)"
-                                    required={edit}
-                                    readOnly={!edit}
+                                    required
                                   />
                   }, {
                     label:      '층수',
@@ -474,8 +467,7 @@ const ProjectReviewModal = () => {
                                     type="number"
                                     name={`detailList[${i}].floorCount`}
                                     label="층수"
-                                    required={edit}
-                                    readOnly={!edit}
+                                    required
                                   />
                   }, {
                     label:      '지하층수',
@@ -486,7 +478,6 @@ const ProjectReviewModal = () => {
                                     type="number"
                                     name={`detailList[${i}].baseCount`}
                                     label="지하층 수"
-                                    readOnly={!edit}
                                   />
                   }, {
                     label:      '높이(m)',
@@ -498,8 +489,7 @@ const ProjectReviewModal = () => {
                                     type="number"
                                     name={`detailList[${i}].height`}
                                     label="높이(m)"
-                                    required={edit}
-                                    readOnly={!edit}
+                                    required
                                   />
                   }, {
                     label:      '면적(㎡)',
@@ -511,8 +501,7 @@ const ProjectReviewModal = () => {
                                     type="number"
                                     name={`detailList[${i}].area`}
                                     label="면적(㎡)"
-                                    required={edit}
-                                    readOnly={!edit}
+                                    required
                                   />
                   }, {
                     label:      '형상비',
@@ -548,13 +537,11 @@ const ProjectReviewModal = () => {
                     renderCell: (item,
                                  i
                                 ) =>
-                                  <DataField
+                                  <CheckboxField
                                     disableAll
                                     disableLabel
-                                    type="checkbox"
                                     name={`detailList[${i}].specialWindLoadConditionList`}
                                     label="특별풍하중 조건"
-                                    readOnly={!edit}
                                     options={
                                       ['1', '2', '3', '4', '5']
                                       .map((key) => ({
@@ -574,15 +561,13 @@ const ProjectReviewModal = () => {
                     renderCell: (item,
                                  i
                                 ) =>
-                                  <DataField
+                                  <CheckboxField
                                     disableAll
                                     disableLabel
-                                    type="checkbox"
                                     name={`detailList[${i}].testList`}
                                     label="실험 종류(동)"
                                     options={['F', 'P', 'A', '구검']}
                                     required={edit}
-                                    readOnly={!edit}
                                   />
                   }, {
                     label:      '비고1',
@@ -593,17 +578,16 @@ const ProjectReviewModal = () => {
                                     disableLabel
                                     name={`detailList[${i}].memo1`}
                                     label="비고1"
-                                    readOnly={!edit}
                                   />
                   }, {
                     label:      '비고2',
                     renderCell: (item,
                                  i
                                 ) =>
-                                  <TextField disableLabel
+                                  <TextField
+                                    disableLabel
                                     name={`detailList[${i}].memo2`}
                                     label="비고2"
-                                    readOnly={!edit}
                                   />
                   }, {
                     label:       '삭제',

@@ -24,7 +24,6 @@ import {
   FormikHelpers,
   Form
 } from 'formik';
-import { DataField } from 'components';
 import {
   useUser,
   UserQuery,
@@ -33,6 +32,7 @@ import {
 } from 'services/user';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
+import CheckboxField from 'components/CheckboxField';
 
 type TableCellProperty = {
   key: string;
@@ -137,8 +137,7 @@ const UserPage = () => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item sm={12}>
-                      <DataField
-                        type="checkbox"
+                      <CheckboxField
                         name="role"
                         label="권한"
                         options={userRoleList.map((item) => ({
