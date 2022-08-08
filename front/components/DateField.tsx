@@ -1,13 +1,8 @@
 import { DatePicker } from '@mui/x-date-pickers';
-import React, {
-  useMemo,
-} from 'react';
+import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
 import { TextField } from '@mui/material';
-import {
-  FieldStatus,
-  FieldValue
-} from 'components/DataFieldProps';
+import { FieldStatus } from 'components/DataFieldProps';
 import {
   FormikValues,
   useFormikContext
@@ -51,21 +46,11 @@ export default function DateField(props: DateFieldProps) {
           ...rest
         } = props;
   const { values, errors, setErrors, setFieldValue } = useFormikContext<FormikValues>();
-  const error = useMemo(() => !!errors[name], [errors]);
-  const {
-          value,
-          edit
-        } = useMemo<FieldValue<Dayjs>>(() => ({
-    value: values[name] ?? '',
-    edit:  values.edit !== false
-  }), [values]);
-  const {
-          disabled,
-          readOnly
-        } = useMemo(() => ({
-    disabled: status === FieldStatus.Disabled,
-    readOnly: status === FieldStatus.ReadOnly || edit,
-  }), [status, edit]);
+  const value = values[name];
+  const edit = values.edit || typeof values.edit === 'undefined';
+  const disabled = status === FieldStatus.Disabled;
+  const readOnly = status === FieldStatus.ReadOnly && !edit;
+  const error = !!errors[name];
 
   const onError: DatePickerProps<Dayjs>['onError'] = (reason) => {
     switch (reason) {

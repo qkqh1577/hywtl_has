@@ -1,51 +1,45 @@
-import { combineReducers, Reducer } from 'redux';
-import { departmentReducer, DepartmentState } from 'services/department';
-import { userReducer, UserState } from 'services/user';
-import { userInvitationReducer, UserInvitationState } from 'services/user/invitation';
-import { personnelReducer, PersonnelState } from 'services/personnel';
-import { projectReducer, ProjectState } from 'services/project';
-import { projectReviewReducer, ProjectReviewState } from 'services/project_review';
-import { projectTargetReducer, ProjectTargetState } from 'services/project_target';
-import { projectEstimateReducer, ProjectEstimateState } from 'services/project_estimate';
-import { projectCommentReducer, ProjectCommentState } from 'services/project_comment';
-import { passwordResetReducer, PasswordResetState } from 'services/user/password_reset';
-import { testServiceTemplateReducer, TestServiceTemplateState} from 'services/standard_data/test_service_template';
-import { businessReducer, BusinessState } from 'services/business';
-import { dialogReducer, DialogState } from 'components';
+import {
+  combineReducers,
+  Reducer
+} from 'redux';
+import {
+  userReducer,
+  UserState
+} from 'user/repository/reducer';
+import {
+  LoginState,
+  MenuState,
+  loginReducer,
+  menuReducer,
+} from 'App/repository/reducer';
+import {
+  DialogState,
+  dialogReducer,
+} from 'components/Dialog';
+import {
+  departmentReducer,
+  DepartmentState
+} from 'department/repository/reducer';
 
-export type RootState = {
-  department: DepartmentState;
+export interface RootState {
   user: UserState;
-  userInvitation: UserInvitationState;
-  passwordReset: PasswordResetState;
-  personnel: PersonnelState;
-  project: ProjectState;
-  projectReview: ProjectReviewState;
-  projectTarget: ProjectTargetState;
-  projectEstimate: ProjectEstimateState;
-  projectComment: ProjectCommentState;
-  business: BusinessState;
-  testServiceTemplate: TestServiceTemplateState;
+  login: LoginState;
+  department: DepartmentState;
+  menu: MenuState;
   dialog: DialogState;
 }
 
 const reducer = combineReducers<RootState>({
+  user:       userReducer,
+  login:      loginReducer,
   department: departmentReducer,
-  user: userReducer,
-  userInvitation: userInvitationReducer,
-  passwordReset: passwordResetReducer,
-  personnel: personnelReducer,
-  project: projectReducer,
-  projectReview: projectReviewReducer,
-  projectTarget: projectTargetReducer,
-  projectEstimate: projectEstimateReducer,
-  projectComment: projectCommentReducer,
-  dialog: dialogReducer,
-  testServiceTemplate: testServiceTemplateReducer,
-  business: businessReducer,
+  menu:       menuReducer,
+  dialog:     dialogReducer,
 });
 
-const rootReducer: Reducer = (state, action) => {
+const rootReducer: Reducer = (state,
+                              action
+) => {
   if (action.type === 'user/logout') {
     return reducer(undefined, action);
   }

@@ -6,12 +6,14 @@ type Page<T> = {
   number: number;
 }
 
-export const initial: Page<any> = {
-  content: [],
-  totalPages: 0,
+export const pageSizeList = [10, 25, 100];
+
+export const initialPage: Page<any> = {
+  content:       [],
+  totalPages:    0,
   totalElements: 0,
-  size: 0,
-  number: 0,
+  size:          pageSizeList[0],
+  number:        0,
 };
 
 export default Page;

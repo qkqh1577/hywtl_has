@@ -49,7 +49,7 @@ public class UserInvitation extends CustomEntity {
 
     @NotNull
     @Column(nullable = false, updatable = false)
-    private UserRole userRole;
+    private UserRole role;
 
     //////////////////////////////////
     //// constructor
@@ -58,12 +58,12 @@ public class UserInvitation extends CustomEntity {
         String email,
         String name,
         Department department,
-        UserRole userRole
+        UserRole role
     ) {
         this.email = email;
         this.name = name;
         this.department = department;
-        this.userRole = userRole;
+        this.role = role;
     }
 
     //////////////////////////////////
@@ -86,13 +86,13 @@ public class UserInvitation extends CustomEntity {
         String email,
         String name,
         Department department,
-        UserRole userRole
+        UserRole role
     ) {
         return new UserInvitation(
             email,
             name,
             department,
-            userRole
+            role
         );
     }
 

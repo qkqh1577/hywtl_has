@@ -16,8 +16,8 @@ public class UserChangeParameter {
     @NotBlank(message = "user.email.not-blank")
     private String email;
 
-    @NotNull(message = "user.user-role.not-null")
-    private UserRole userRole;
+    @NotNull(message = "user.role.not-null")
+    private UserRole role;
 
     @NotNull(message = "user.department-id.not-null")
     private Long departmentId;

@@ -81,14 +81,14 @@ export default function SelectField<Multiple extends boolean | undefined,
           options:  propsOptions,
           ...       rest
         } = props;
-  const { values, errors, handleChange } = useFormikContext<FormikValues>();
-  const error = useMemo(() => !!errors[name], [errors]);
+  const { values, errors, setFieldValue } = useFormikContext<FormikValues>();
   const value = values[name] ?? defaultValue;
-  const edit = values.edit;
+  const edit = values.edit || typeof values.edit === 'undefined';
   const disabled = status === FieldStatus.Disabled;
-  const readOnly = status === FieldStatus.ReadOnly || edit;
+  const readOnly = status === FieldStatus.ReadOnly && !edit;
+  const error = !!errors[name];
+  console.log(value);
   const options: Option[] = useMemo(() => {
-    console.log(propsOptions);
     if (!propsOptions) {
       return [];
     }
@@ -111,7 +111,7 @@ export default function SelectField<Multiple extends boolean | undefined,
     if (propsOnChange) {
       propsOnChange(event, value, reason, details);
     }
-    handleChange(event);
+    setFieldValue(name, value);
   };
 
   const renderInput: RenderInput = (params) => {
@@ -130,7 +130,10 @@ export default function SelectField<Multiple extends boolean | undefined,
           ...params.InputProps,
           readOnly,
           startAdornment,
-          endAdornment,
+          endAdornment: <>
+                          {endAdornment}
+                          {params.InputProps.endAdornment}
+                        </>
         }}
       />
     );
@@ -150,7 +153,7 @@ export default function SelectField<Multiple extends boolean | undefined,
                  .filter(arrange)
                  .map(v => `${v.text}`)
                  .join()
-          : `${getValue(options, value)?.text}` ?? ''
+          : `${getValue(options, value)?.text ?? ''}`
       }
       renderInput={renderInput}
       value={value}

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import {
   DataFieldValue,
   FieldStatus,
-  FieldValue,
   isOption,
   Option
 } from 'components/DataFieldProps';
@@ -40,10 +39,16 @@ export interface CheckboxFieldProps
   helperText?: string;
 }
 
-function isChecked(options: Option[],
+function isChecked(values: DataFieldValue[] | undefined,
                    value: DataFieldValue
 ): boolean {
-  return options.filter((option) => option.key === value).length === 1;
+  if (typeof values === 'undefined') {
+    return true;
+  }
+  if (values.length === 0) {
+    return false;
+  }
+  return values.filter((v) => v === value).length === 1;
 }
 
 export default function CheckboxField(props: CheckboxFieldProps) {
@@ -61,24 +66,11 @@ export default function CheckboxField(props: CheckboxFieldProps) {
           ...      rest
         } = props;
   const { values, errors, setFieldValue } = useFormikContext<FormikValues>();
-  const {
-          value,
-          edit
-        } = useMemo<FieldValue<DataFieldValue[]>>(() => {
-    return {
-      value: values[name] ?? [],
-      edit:  values.edit !== false
-    };
-  }, [values]);
-  const {
-          disabled,
-          readOnly
-        } = useMemo(() => ({
-    disabled: status === FieldStatus.Disabled,
-    readOnly: status === FieldStatus.ReadOnly || edit,
-  }), [status, edit]);
-
-  const error = useMemo<boolean | undefined>(() => !!errors[name], [errors]);
+  const value: DataFieldValue[] | undefined = values[name];
+  const edit = values.edit || typeof values.edit === 'undefined';
+  const disabled = status === FieldStatus.Disabled;
+  const readOnly = status === FieldStatus.ReadOnly && !edit;
+  const error = !!errors[name];
   const options = useMemo(() => {
     return propsOptions.map((option) => {
       if (isOption(option)) {
@@ -91,7 +83,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
     });
   }, [propsOptions]);
 
-  const allChecked = options.length === value.length;
+  const allChecked = typeof value === 'undefined' || options.length === value.length;
 
   return (
     <FormControl
@@ -117,7 +109,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                 onChange={() => {
                   setFieldValue(name, allChecked
                     ? []
-                    : options.map(option => option.key)
+                    : undefined
                   );
                 }}
               />
@@ -129,7 +121,29 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                   key,
                   text
                 } = option;
-          const checked = isChecked(options, key);
+          const checked = isChecked(value, key);
+
+          const onChange = () => {
+            if (checked) {
+              if (typeof value === 'undefined') {
+                setFieldValue(
+                  name,
+                  options.map(
+                    (option) => option.key)
+                         .filter((v) => v !== key)
+                );
+              }
+              else {
+                setFieldValue(
+                  name,
+                  value.filter((v) => v !== key)
+                );
+              }
+            }
+            else {
+              setFieldValue(name, [...(value ?? []), key]);
+            }
+          };
           return (
             <FormControlLabel
               key={key}
@@ -141,12 +155,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                   name={name}
                   value={key}
                   checked={checked}
-                  onChange={() => {
-                    setFieldValue(name, checked
-                      ? value.filter(v => v !== key)
-                      : [...value, key]
-                    );
-                  }}
+                  onChange={onChange}
                 />
               }
             />

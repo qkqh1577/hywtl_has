@@ -92,7 +92,7 @@ public class UserService {
             params.getName(),
             params.getEmail(),
             userInvitation.getDepartment(),
-            userInvitation.getUserRole()
+            userInvitation.getRole()
         );
         this.checkEmailUsed(instance);
         this.checkUsernameUsed(instance);
@@ -106,7 +106,7 @@ public class UserService {
         instance.change(
             params.getName(),
             params.getEmail(),
-            params.getUserRole(),
+            params.getRole(),
             departmentRepository.findById(params.getDepartmentId())
                 .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId()))
         );

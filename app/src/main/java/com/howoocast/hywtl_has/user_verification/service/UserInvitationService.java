@@ -58,7 +58,7 @@ public class UserInvitationService {
             params.getName(),
             departmentRepository.findById(params.getDepartmentId())
                 .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId())),
-            params.getUserRole()
+            params.getRole()
         );
 
         // 메일 발송 이벤트 등록

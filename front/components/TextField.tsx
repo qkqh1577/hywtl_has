@@ -1,7 +1,4 @@
-import React, {
-  useCallback,
-  useMemo
-} from 'react';
+import React, { useCallback } from 'react';
 import {
   StandardTextFieldProps,
   TextField as MuiTextField
@@ -11,11 +8,7 @@ import {
   useFormikContext
 } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
-import {
-  DataFieldValue,
-  FieldStatus,
-  FieldValue
-} from 'components/DataFieldProps';
+import { FieldStatus } from 'components/DataFieldProps';
 
 export interface TextFieldProps
   extends Omit<StandardTextFieldProps,
@@ -54,21 +47,11 @@ export default function TextField(props: TextFieldProps) {
           ...restProps
         } = props;
   const { values, errors, handleChange } = useFormikContext<FormikValues>();
-  const {
-          value,
-          edit
-        } = useMemo<FieldValue<DataFieldValue>>(() => ({
-    value: values[name] ?? '',
-    edit:  values.edit !== false
-  }), [values]);
-  const {
-          disabled,
-          readOnly
-        } = useMemo(() => ({
-    disabled: status === FieldStatus.Disabled,
-    readOnly: status === FieldStatus.ReadOnly || edit,
-  }), [status, edit]);
-  const error = useMemo(() => !!errors[name], [errors]);
+  const value = values[name];
+  const edit = values.edit || typeof values.edit === 'undefined';
+  const disabled = status === FieldStatus.Disabled;
+  const readOnly = status === FieldStatus.ReadOnly && !edit;
+  const error = !!errors[name];
 
   const fieldProps: FieldProps = {
     name,

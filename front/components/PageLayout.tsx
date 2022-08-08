@@ -4,6 +4,11 @@ import {
   Paper
 } from '@mui/material';
 import Title, { TitleProps } from 'components/Title';
+import {
+  Form,
+  Formik,
+  FormikConfig,
+} from 'formik';
 
 interface PageLayoutProps
   extends TitleProps {
@@ -18,16 +23,25 @@ interface SearchPageLayoutProps
   filter: React.ReactNode;
 }
 
-function isSearchForm(props: PageLayoutProps): props is SearchPageLayoutProps {
-  return typeof (props as any).filter !== 'undefined';
+interface FormikLayoutProps<T>
+  extends PageLayoutProps {
+  formik: FormikConfig<T>;
 }
 
-export default function PageLayout(props: PageLayoutProps | SearchPageLayoutProps) {
+
+export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutProps | FormikLayoutProps<T>) {
+
+  function isFormikForm(props: PageLayoutProps): props is FormikLayoutProps<T> {
+    return typeof (props as any).formik !== 'undefined';
+  }
+
+  function isSearchForm(props: PageLayoutProps): props is SearchPageLayoutProps {
+    return typeof (props as any).filter !== 'undefined';
+  }
+
   const {
           title,
           titleRightComponent,
-          body,
-          footer,
           modals,
         } = props;
   return (
@@ -46,6 +60,27 @@ export default function PageLayout(props: PageLayoutProps | SearchPageLayoutProp
           }}
         />
       )}
+      {isFormikForm(props) && (
+        <Formik {...props.formik}>
+          <Form>
+            <PageContent {...props} />
+          </Form>
+        </Formik>
+      )}
+      {!isFormikForm(props) && (
+        <PageContent {...props} />
+      )}
+      {modals}
+    </Paper>
+  );
+};
+
+function PageContent({
+                       body,
+                       footer
+                     }: Pick<PageLayoutProps, | 'body' | 'footer'>) {
+  return (
+    <>
       <Box
         children={body}
         sx={{
@@ -64,7 +99,6 @@ export default function PageLayout(props: PageLayoutProps | SearchPageLayoutProp
           }}
         />
       )}
-      {modals}
-    </Paper>
+    </>
   );
-};
+}

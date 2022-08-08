@@ -19,6 +19,6 @@ public class UserInviteParameter {
     @NotNull(message = "user-verification.department-id.not-null")
     private Long departmentId;
 
-    @NotNull(message = "user-verification.user-role.not-null")
-    private UserRole userRole;
+    @NotNull(message = "user-verification.role.not-null")
+    private UserRole role;
 }

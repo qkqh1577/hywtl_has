@@ -12,7 +12,7 @@ public class UserInvitationView {
     private String email;
     private String name;
     private DepartmentView department;
-    private UserRole userRole;
+    private UserRole role;
 
     private LocalDateTime createdAt;
 
@@ -21,7 +21,7 @@ public class UserInvitationView {
         target.email = source.getEmail();
         target.name = source.getName();
         target.department = DepartmentView.assemble(source.getDepartment());
-        target.userRole = source.getUserRole();
+        target.role = source.getRole();
         target.createdAt = source.getCreatedAt();
         return target;
     }
