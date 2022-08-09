@@ -4,8 +4,8 @@ import {
   useRoutes
 } from 'react-router-dom';
 
-import userRoutes from 'routes/user';
-import LoginRoutes from 'routes/app';
+import userRoutes from 'user/routes';
+import appRoutes from 'App/route';
 
 export interface AppRoutes
   extends RouteProps {
@@ -15,7 +15,7 @@ export interface AppRoutes
 const Routes = () => {
   const routes: AppRoutes[] = [
     ...userRoutes,
-    ...LoginRoutes,
+    ...appRoutes,
   ];
 
   return useRoutes(routes as RouteObject[]);

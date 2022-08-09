@@ -1,18 +1,28 @@
 import { Button } from '@mui/material';
-import React from 'react';
-import { useFormikContext } from 'formik';
-import { UserQuery } from 'user/parameter/query';
+import React, { useContext } from 'react';
+import { FormikContext } from 'formik';
 
 export default function () {
 
-  const { isSubmitting, handleSubmit } = useFormikContext<UserQuery>();
-  return (
-    <Button
-      children="검색"
-      disabled={isSubmitting}
-      onClick={() => {
-        handleSubmit();
-      }}
-    />
-  );
+  const formikContext = useContext(FormikContext);
+  if (formikContext) {
+    const { isSubmitting, handleSubmit } = formikContext;
+    return (
+      <Button
+        children="검색"
+        disabled={isSubmitting}
+        onClick={() => {
+          handleSubmit();
+        }}
+      />
+    );
+  }
+  else {
+    return (
+      <Button
+        children="검색"
+      />
+    );
+  }
+
 }

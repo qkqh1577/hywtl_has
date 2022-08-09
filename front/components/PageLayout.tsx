@@ -6,11 +6,11 @@ import {
 import Title, { TitleProps } from 'components/Title';
 import {
   Form,
-  Formik,
-  FormikConfig,
+  FormikContextType,
+  FormikProvider,
 } from 'formik';
 
-interface PageLayoutProps
+export interface PageLayoutProps
   extends TitleProps {
   body: React.ReactNode;
   footer?: React.ReactNode;
@@ -18,14 +18,14 @@ interface PageLayoutProps
   modals?: JSX.Element | JSX.Element[];
 }
 
-interface SearchPageLayoutProps
+export interface SearchPageLayoutProps
   extends PageLayoutProps {
   filter: React.ReactNode;
 }
 
-interface FormikLayoutProps<T>
+export interface FormikLayoutProps<T>
   extends PageLayoutProps {
-  formik: FormikConfig<T>;
+  formik: FormikContextType<T>;
 }
 
 
@@ -61,11 +61,11 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
         />
       )}
       {isFormikForm(props) && (
-        <Formik {...props.formik}>
+        <FormikProvider value={props.formik}>
           <Form>
             <PageContent {...props} />
           </Form>
-        </Formik>
+        </FormikProvider>
       )}
       {!isFormikForm(props) && (
         <PageContent {...props} />

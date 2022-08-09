@@ -4,15 +4,16 @@ import {
 } from '@mui/icons-material';
 import React from 'react';
 import { IconButton } from '@mui/material';
-import useMenu from 'App/service/menuHook';
 
-export default function () {
+export interface ToggleButtonProps {
+  openMenu: boolean;
+  toggleMenu: () => void;
+}
 
-  const { open, toggleMenu } = useMenu();
-
-  const onClick = () => {
-    toggleMenu();
-  };
+export default function ({
+                           openMenu:   open,
+                           toggleMenu: onClick
+                         }: ToggleButtonProps) {
   return (
     <IconButton
       onClick={onClick}

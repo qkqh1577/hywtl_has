@@ -1,24 +1,27 @@
 import { createAction } from 'typesafe-actions';
 import { UserQuery } from 'user/parameter/query';
-import Page from 'services/common/domain/Page';
+import { UserVO } from 'user/domain/user';
+import UserChangeParameter from 'user/parameter/ChangeParamter';
 import {
-  UserId,
-  UserVO
-} from 'user/domain/user';
+  FormikHelpers,
+} from 'formik';
+import Page from 'services/common/domain/Page';
+
+export interface FormikSubmit<Values>
+  extends FormikHelpers<any> {
+  values: Values;
+}
 
 export enum UserAction {
-  setFilter = 'user/setFilter',
-  getPage   = 'user/getPage',
-  setPage   = 'user/setPage',
-  getOne    = 'user/getOne',
-  setOne    = 'user/setOne',
-
+  setFilter = 'user/filter/set',
+  setPage   = 'user/page/set',
+  setOne    = 'user/one/set',
+  change    = 'user/change',
 }
 
 export const userAction = {
   setFilter: createAction(UserAction.setFilter)<UserQuery>(),
-  getPage:   createAction(UserAction.getPage)<UserQuery>(),
   setPage:   createAction(UserAction.setPage)<Page<UserVO>>(),
-  getOne:    createAction(UserAction.getOne)<UserId>(),
   setOne:    createAction(UserAction.setOne)<UserVO>(),
+  change:    createAction(UserAction.change)<FormikSubmit<UserChangeParameter>>(),
 };

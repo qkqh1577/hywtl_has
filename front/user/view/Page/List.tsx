@@ -31,7 +31,7 @@ const columns: TableCellProperty[] = [
 ];
 
 export interface ListProps {
-  page: Page<UserVO>;
+  page: Page<UserVO> | undefined;
 }
 
 export default function ({
@@ -50,8 +50,15 @@ export default function ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {page.content.map((user,
-                             i
+          {(!page || page.content.length === 0) && (
+            <TableRow>
+              <TableCell colSpan={6}>
+                결과가 없습니다.
+              </TableCell>
+            </TableRow>
+          )}
+          {page && page.content.map((user,
+                                     i
           ) => {
             const no = i + 1 + page.size * page.number;
             return (

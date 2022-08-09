@@ -107,8 +107,8 @@ public class UserService {
             params.getName(),
             params.getEmail(),
             params.getRole(),
-            departmentRepository.findById(params.getDepartmentId())
-                .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId()))
+            departmentRepository.findById(params.getDepartment().getId())
+                .orElseThrow(() -> new NotFoundException("department", params.getDepartment().getId()))
         );
         this.checkEmailUsed(instance);
     }

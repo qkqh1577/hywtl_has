@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
+import React, {
+  useCallback,
+  useContext
+} from 'react';
 import {
   StandardTextFieldProps,
   TextField as MuiTextField
 } from '@mui/material';
 import {
-  FormikValues,
-  useFormikContext
+  FormikContext,
 } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { FieldStatus } from 'components/DataFieldProps';
@@ -27,7 +29,7 @@ export interface TextFieldProps
 
 interface FieldProps
   extends Pick<StandardTextFieldProps,
-    | 'onChange' | 'InputProps' | 'label' | 'error' | 'helperText' | 'value' | 'disabled' | 'required'> {
+    | 'type' | 'fullWidth' | 'variant' | 'onChange' | 'InputProps' | 'label' | 'error' | 'helperText' | 'value' | 'disabled' | 'required'> {
   name: string;
 }
 
@@ -46,42 +48,67 @@ export default function TextField(props: TextFieldProps) {
           status,
           ...restProps
         } = props;
-  const { values, errors, handleChange } = useFormikContext<FormikValues>();
-  const value = values[name];
-  const edit = values.edit || typeof values.edit === 'undefined';
-  const disabled = status === FieldStatus.Disabled;
-  const readOnly = status === FieldStatus.ReadOnly && !edit;
-  const error = !!errors[name];
 
-  const fieldProps: FieldProps = {
-    name,
-    value,
-    label:      disableLabel ? undefined : label,
-    error,
-    helperText: error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
-    disabled,
-    required:   edit && required,
-    onChange:   useCallback((e: any) => {
-      if (onChange) {
-        onChange(e);
+  const formikContext = useContext(FormikContext);
+  if (formikContext) {
+    const { values, errors, handleChange } = formikContext;
+    const value = values[name];
+    const edit = values.edit || typeof values.edit === 'undefined';
+    const error = !!errors[name];
+    const disabled = status === FieldStatus.Disabled;
+    const readOnly = status === FieldStatus.ReadOnly && !edit;
+
+    const fieldProps: FieldProps = {
+      type,
+      fullWidth:  true,
+      variant:    'standard',
+      name,
+      value,
+      label:      disableLabel ? undefined : label,
+      error,
+      helperText: error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
+      disabled,
+      required:   edit && required,
+      onChange:   useCallback((e: any) => {
+        if (onChange) {
+          onChange(e);
+        }
+        handleChange(e);
+      }, [handleChange, onChange]),
+      InputProps: {
+        ...InputProps,
+        readOnly,
+        startAdornment,
+        endAdornment,
       }
-      handleChange(e);
-    }, [handleChange, onChange]),
-    InputProps: {
-      ...InputProps,
-      readOnly,
-      startAdornment,
-      endAdornment,
-    }
-  };
+    };
 
-  return (
-    <MuiTextField
-      fullWidth
-      variant="standard"
-      type={type}
-      {...restProps}
-      {...fieldProps}
-    />
-  );
+    return (
+      <MuiTextField
+        {...restProps}
+        {...fieldProps}
+      />
+    );
+  }
+  else {
+    const fieldProps: FieldProps = {
+      type,
+      fullWidth:  true,
+      variant:    'standard',
+      name,
+      label:      disableLabel ? undefined : label,
+      InputProps: {
+        ...InputProps,
+        readOnly: true,
+        startAdornment,
+        endAdornment,
+      }
+    };
+    return (
+      <MuiTextField
+        {...restProps}
+        {...fieldProps}
+      />
+    );
+  }
 }

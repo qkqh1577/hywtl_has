@@ -4,21 +4,21 @@ import {
 } from 'redux';
 import {
   userReducer,
-  UserState
+  UserState,
 } from 'user/repository/reducer';
 import {
-  LoginState,
-  MenuState,
   loginReducer,
   menuReducer,
+  LoginState,
+  MenuState,
 } from 'App/repository/reducer';
 import {
-  DialogState,
   dialogReducer,
+  DialogState,
 } from 'components/Dialog';
 import {
   departmentReducer,
-  DepartmentState
+  DepartmentState,
 } from 'department/repository/reducer';
 
 export interface RootState {

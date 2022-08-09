@@ -6,17 +6,20 @@ import {
 } from '@mui/material';
 import ToAddPageButton from 'user/view/Page/Footer/ToAddPageButton';
 import React from 'react';
-import Page, { pageSizeList } from 'services/common/domain/Page';
+import Page, {
+  initialPage,
+  pageSizeList
+} from 'services/common/domain/Page';
 import { UserVO } from 'user/domain/user';
 
 export interface FooterProps {
-  page: Page<UserVO>;
+  page: Page<UserVO> | undefined;
   onPageChange: TablePaginationProps['onPageChange'];
   onRowsPerPageChange: TablePaginationProps['onRowsPerPageChange'];
 }
 
 export default function ({
-                           page,
+                           page = initialPage,
                            onPageChange,
                            onRowsPerPageChange
                          }: FooterProps) {

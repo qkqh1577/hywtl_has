@@ -14,25 +14,34 @@ import {
 
 import logo from 'assets/logo.png';
 import { AppBar } from 'layouts';
-import ReactRouter from 'routes';
+import ReactRouter from 'services/routes';
 import useDialog, {
   Alert,
   Confirm
 } from 'components/Dialog';
 import { ThemeProvider } from '@mui/styles';
 import mainTheme from 'App/view/App/theme';
-import LogoutButton from 'App/view/App/LogoutButton';
+import LogoutButton, { LogoutButtonProps } from 'App/view/App/LogoutButton';
 import useLogin from 'App/service/loginHook';
 import SearchBar from 'App/view/App/SearchBar';
 import NotificationButton from 'App/view/App/NotificationButton';
 import AccountButton from 'App/view/App/AccountButton';
-import MenuDrawer from 'App/view/App/MenuDrawer';
+import MenuDrawer, { MenuDrawerProps } from 'App/view/App/MenuDrawer';
+import useMenu from 'App/service/menuHook';
+
+interface Props
+  extends LogoutButtonProps,
+          MenuDrawerProps {
+  isLoginPage: boolean;
+}
 
 export default function () {
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { alert } = useDialog();
-  const { user, getLoginUser } = useLogin();
+  const { alert, confirm } = useDialog();
+  const { user, getLoginUser, logout } = useLogin();
+  const { open, menu, toggleMenu } = useMenu();
 
   useEffect(() => {
     if (pathname !== '/login') {
@@ -47,6 +56,28 @@ export default function () {
       }
     }
   }, [user, pathname]);
+
+  return (
+    <App
+      isLoginPage={pathname === '/login'}
+      menu={menu}
+      openMenu={open}
+      toggleMenu={toggleMenu}
+      handleLogout={() => {
+        confirm({
+          children:     '로그아웃하시겠습니까?',
+          confirmText:  '로그아웃',
+          afterConfirm: () => {
+            logout();
+          }
+        });
+      }}
+    />
+  );
+}
+
+function App(props: Props) {
+  const { isLoginPage } = props;
 
   return (
     <ThemeProvider theme={mainTheme}>
@@ -78,18 +109,18 @@ export default function () {
                 flexWrap:       'nowrap',
                 justifyContent: 'flex-end',
               }}>
-              {pathname !== '/login' && (
+              {!isLoginPage && (
                 <>
                   <SearchBar />
                   <NotificationButton />
                   <AccountButton />
-                  <LogoutButton />
+                  <LogoutButton {...props} />
                 </>
               )}
             </Grid>
           </Toolbar>
         </AppBar>
-        {pathname !== '/login' && (<MenuDrawer />)}
+        {!isLoginPage && (<MenuDrawer {...props} />)}
         <Box
           component="main"
           sx={{
@@ -115,4 +146,4 @@ export default function () {
       <Confirm />
     </ThemeProvider>
   );
-};
+}

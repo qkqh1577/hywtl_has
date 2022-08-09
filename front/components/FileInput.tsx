@@ -16,7 +16,7 @@ import {
   FormikValues,
   useFormikContext
 } from 'formik';
-import { Tooltip } from 'components';
+import Tooltip from 'components/Tooltip';
 import {
   FileItem,
   FileItemParameter,

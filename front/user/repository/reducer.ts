@@ -1,30 +1,23 @@
 import { createReducer } from 'typesafe-actions';
-import Page, { initialPage } from 'services/common/domain/Page';
+import Page from 'services/common/domain/Page';
 import { UserVO } from 'user/domain/user';
+import { UserQuery } from 'user/parameter/query';
 import { UserAction } from 'user/domain/action';
-import {
-  initialUserQuery,
-  UserQuery
-} from 'user/parameter/query';
 
 export interface UserState {
-  filter: UserQuery;
-  page: Page<UserVO>;
-  detail: UserVO | undefined;
+  filter?: UserQuery;
+  page?: Page<UserVO>;
+  detail?: UserVO;
 }
 
-const initial: UserState = {
-  filter: initialUserQuery,
-  page:   initialPage,
-  detail: undefined
-};
+const initialState: UserState = {};
 
-export const userReducer = createReducer(initial, {
+export const userReducer = createReducer(initialState, {
   [UserAction.setFilter]: (state,
                            action
                           ) => ({
     ...state,
-    filter: action.payload,
+    filter: action.payload
   }),
   [UserAction.setPage]:   (state,
                            action
@@ -37,5 +30,5 @@ export const userReducer = createReducer(initial, {
                           ) => ({
     ...state,
     detail: action.payload,
-  }),
+  })
 });

@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '@mui/material';
-import { useFormikContext } from 'formik';
-import { UserVO } from 'user/domain/user';
+import { FormikContext } from 'formik';
 
 export default function () {
+  const formikContext = useContext(FormikContext);
+  if (formikContext) {
+    const { handleSubmit, isSubmitting } = formikContext;
 
-  const { handleSubmit, isSubmitting } = useFormikContext<UserVO>();
-
-  const onClick = () => {
-    handleSubmit();
-  };
-  return (
-    <Button
-      children="저장"
-      onClick={onClick}
-      disabled={isSubmitting}
-    />
-  );
+    const onClick = () => {
+      handleSubmit();
+    };
+    return (
+      <Button
+        children="저장"
+        onClick={onClick}
+        disabled={isSubmitting}
+      />
+    );
+  }
+  else {
+    return (
+      <Button
+        children="저장"
+      />
+    );
+  }
 }

@@ -7,11 +7,11 @@ import {
 } from '@mui/material';
 import Fade from 'components/Fade';
 import React from 'react';
-import ToggleButton from 'App/view/App/ToggleButton';
+import ToggleButton, { ToggleButtonProps } from 'App/view/App/ToggleButton';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import useMenu from 'App/service/menuHook';
 import MenuNode from 'App/view/App/MenuNode';
+import { Menu } from 'App/domain/menu';
 
 const AppDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -36,12 +36,17 @@ const AppDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'ope
   }),
 );
 
-export default function () {
+export interface MenuDrawerProps
+  extends ToggleButtonProps {
+  menu: Menu[];
+}
+
+export default function (props: MenuDrawerProps) {
 
   const {
-          open,
+          openMenu: open,
           menu,
-        } = useMenu();
+        } = props;
 
   return (
     <AppDrawer variant="permanent" open={open}>
@@ -70,7 +75,7 @@ export default function () {
           backgroundColor: '#c4baf5',
           borderRadius:    '4px'
         }}>
-          <ToggleButton />
+          <ToggleButton {...props} />
         </Box>
       </Toolbar>
       <Divider />

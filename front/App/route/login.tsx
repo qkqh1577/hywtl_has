@@ -1,10 +1,10 @@
 import useLogin from 'App/service/loginHook';
 import LoginForm from 'App/view/LoginForm';
-import { AppRoutes } from 'routes/index';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from 'services/routes';
 
-function LoginElement() {
+function Element() {
   const navigate = useNavigate();
   const { user } = useLogin();
 
@@ -18,9 +18,9 @@ function LoginElement() {
 }
 
 
-const LoginRoutes: AppRoutes[] = [{
+const loginRoute: AppRoutes = {
   path:    '/login',
-  element: <LoginElement />
-}];
+  element: <Element />
+};
 
-export default LoginRoutes;
+export default loginRoute;
