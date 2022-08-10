@@ -14,9 +14,11 @@ import {
   UserQuery
 } from 'user/parameter/query';
 import { RootState } from 'services/common/reducer';
+import { useFormik } from 'formik';
 
 function Element() {
   const dispatch = useDispatch();
+
   const { filter, page } = useSelector((root: RootState) => root.user);
 
   const setFilter = useCallback((nextFilter?: Partial<UserQuery>) => {
@@ -27,19 +29,23 @@ function Element() {
     dispatch(userAction.setFilter(filter && !nextFilter ? filter : result));
   }, [dispatch]);
 
+  const formik = useFormik<UserQuery>({
+    initialValues: filter ?? initialUserQuery,
+    onSubmit:      (values) => {
+      setFilter({
+        ...values,
+        page: 0,
+      });
+    }
+  });
+
   useEffect(() => {
     setFilter();
   }, []);
 
   return (
     <UserPage
-      pageQuery={filter}
-      onSubmit={(values) => {
-        setFilter({
-          ...values,
-          page: 0,
-        });
-      }}
+      formik={formik}
       page={page}
       onPageChange={(event,
                      page

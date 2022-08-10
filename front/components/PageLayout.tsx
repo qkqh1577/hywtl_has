@@ -35,10 +35,6 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
     return typeof (props as any).formik !== 'undefined';
   }
 
-  function isSearchForm(props: PageLayoutProps): props is SearchPageLayoutProps {
-    return typeof (props as any).filter !== 'undefined';
-  }
-
   const {
           title,
           titleRightComponent,
@@ -50,16 +46,6 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       overflow: 'hidden'
     }}>
       <Title title={title} titleRightComponent={titleRightComponent} />
-      {isSearchForm(props) && (
-        <Box
-          children={props.filter}
-          sx={{
-            display: 'flex',
-            width:   '100%',
-            mb:      '40px',
-          }}
-        />
-      )}
       {isFormikForm(props) && (
         <FormikProvider value={props.formik}>
           <Form>
@@ -75,23 +61,34 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
   );
 };
 
-function PageContent({
-                       body,
-                       footer
-                     }: Pick<PageLayoutProps, | 'body' | 'footer'>) {
+function PageContent(props: PageLayoutProps) {
+  function isSearchForm(props: PageLayoutProps): props is SearchPageLayoutProps {
+    return typeof (props as any).filter !== 'undefined';
+  }
+
   return (
     <>
+      {isSearchForm(props) && (
+        <Box
+          children={props.filter}
+          sx={{
+            display: 'flex',
+            width:   '100%',
+            mb:      '40px',
+          }}
+        />
+      )}
       <Box
-        children={body}
+        children={props.body}
         sx={{
           display: 'flex',
           width:   '100%',
           mb:      '40px',
         }}
       />
-      {footer && (
+      {props.footer && (
         <Box
-          children={footer}
+          children={props.footer}
           sx={{
             display: 'flex',
             width:   '100%',

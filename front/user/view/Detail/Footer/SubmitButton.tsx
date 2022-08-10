@@ -4,25 +4,18 @@ import { FormikContext } from 'formik';
 
 export default function () {
   const formikContext = useContext(FormikContext);
-  if (formikContext) {
-    const { handleSubmit, isSubmitting } = formikContext;
 
-    const onClick = () => {
+  const onClick = () => {
+    if (formikContext) {
+      const { handleSubmit } = formikContext;
       handleSubmit();
-    };
-    return (
-      <Button
-        children="저장"
-        onClick={onClick}
-        disabled={isSubmitting}
-      />
-    );
-  }
-  else {
-    return (
-      <Button
-        children="저장"
-      />
-    );
-  }
+    }
+  };
+  return (
+    <Button
+      children="저장"
+      onClick={onClick}
+      disabled={formikContext?.isSubmitting}
+    />
+  );
 }

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import React from 'react';
 
-export default function () {
+export default function UserPageFooterAddButton () {
 
   const navigate = useNavigate();
   const onClick = () => {

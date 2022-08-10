@@ -4,7 +4,7 @@ import {
   TablePagination,
   TablePaginationProps
 } from '@mui/material';
-import ToAddPageButton from 'user/view/Page/Footer/ToAddPageButton';
+import AddButton from 'user/view/Page/Footer/AddButton';
 import React from 'react';
 import Page, {
   initialPage,
@@ -48,7 +48,7 @@ export default function ({
           width:          '100%',
           mt:             '40px',
         }}>
-          <ToAddPageButton />
+          <AddButton />
         </Box>
       </Grid>
     </Grid>

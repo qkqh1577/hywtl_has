@@ -79,8 +79,8 @@ export default function CheckboxField(props: CheckboxFieldProps) {
       };
     });
   }, [options]);
-
   const formikContext = useContext(FormikContext);
+
   if (formikContext) {
     const { values, errors, setFieldValue } = formikContext;
     const value: DataFieldValue[] | undefined = values ? values[name] : undefined;

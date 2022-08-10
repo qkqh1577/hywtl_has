@@ -1,13 +1,14 @@
 import React from 'react';
-import PageLayout from 'components/PageLayout';
-import SearchForm, { SearchFormProps } from 'user/view/Page/SearchForm';
+import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
+import SearchForm from 'user/view/Page/SearchForm';
 import List, { ListProps } from 'user/view/Page/List';
 import Footer, { FooterProps } from 'user/view/Page/Footer';
+import { UserQuery } from 'user/parameter/query';
 
 interface Props
-  extends SearchFormProps,
-          ListProps,
-          FooterProps {
+  extends ListProps,
+          FooterProps,
+          Pick<FormikLayoutProps<UserQuery>, |'formik'> {
 }
 
 export default function (props: Props) {
@@ -15,10 +16,10 @@ export default function (props: Props) {
   return (
     <PageLayout
       title="유저 목록"
-      filter={<SearchForm {...props} />}
+      filter={<SearchForm />}
       body={<List {...props} />}
-      footer={<Footer {...props} />
-      }
+      footer={<Footer {...props} />}
+      formik={props.formik}
     />
   );
 };

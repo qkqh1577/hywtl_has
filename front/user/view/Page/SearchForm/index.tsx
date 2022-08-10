@@ -2,11 +2,6 @@ import {
   Box,
   Grid
 } from '@mui/material';
-import {
-  Form,
-  Formik,
-  FormikConfig
-} from 'formik';
 import CheckboxField from 'components/CheckboxField';
 import {
   userRoleList,
@@ -15,19 +10,12 @@ import {
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import React from 'react';
-import {
-  keywordTypeList,
-  UserQuery
-} from 'user/parameter/query';
+import { keywordTypeList } from 'user/parameter/query';
 import ClearButton from 'user/view/Page/SearchForm/ClearButton';
 import SubmitButton from 'user/view/Page/SearchForm/SubmitButton';
 
-export interface SearchFormProps {
-  pageQuery: UserQuery | undefined;
-  onSubmit: FormikConfig<UserQuery>['onSubmit'];
-}
 
-function Element() {
+export default function () {
   return (
     <Grid container spacing={2}>
       <Grid item sm={10}>
@@ -80,30 +68,5 @@ function Element() {
         </Box>
       </Grid>
     </Grid>
-  );
-}
-
-export default function (props: SearchFormProps) {
-
-  const {
-          pageQuery,
-          onSubmit,
-        } = props;
-  if (!pageQuery || !onSubmit) {
-    return (<Element />);
-  }
-
-  return (
-    <Formik
-      enableReinitialize
-      onSubmit={onSubmit}
-      initialValues={pageQuery}
-    >
-      <Form style={{
-        width: '100%'
-      }}>
-        <Element />
-      </Form>
-    </Formik>
   );
 }

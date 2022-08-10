@@ -7,31 +7,21 @@ import { FormikContext } from 'formik';
 export default function () {
 
   const formikContext = useContext(FormikContext);
-  if (formikContext) {
-    const { isSubmitting } = formikContext;
-    const { rollback } = useDialog();
-    const navigate = useNavigate();
-    const onClick = () => {
+  const { rollback } = useDialog();
+  const navigate = useNavigate();
+  const onClick = () => {
+    if (formikContext) {
       rollback(() => {
         navigate('/user');
       });
-    };
-    return (
-      <Button
-        color="secondary"
-        children="취소"
-        onClick={onClick}
-        disabled={isSubmitting}
-      />
-    );
-  }
-  else {
-    return (
-      <Button
-        color="secondary"
-        children="취소"
-      />
-    );
-  }
-
+    }
+  };
+  return (
+    <Button
+      color="secondary"
+      children="취소"
+      onClick={onClick}
+      disabled={formikContext?.isSubmitting}
+    />
+  );
 }

@@ -10,28 +10,19 @@ import {
 export default function () {
 
   const formikContext = useContext(FormikContext);
-  if (formikContext) {
-    const { resetForm, setValues } = formikContext;
 
-    const onClick = () => {
+  const onClick = () => {
+    if (formikContext) {
+      const { resetForm, setValues } = formikContext;
       resetForm();
       setValues(initialUserQuery);
-    };
-    return (
-      <Button
-        color="secondary"
-        onClick={onClick}
-        children="초기화"
-      />
-    );
-  }
-  else {
-    return (
-      <Button
-        color="secondary"
-        children="초기화"
-      />
-    );
-  }
-
+    }
+  };
+  return (
+    <Button
+      color="secondary"
+      onClick={onClick}
+      children="초기화"
+    />
+  );
 }
