@@ -20,7 +20,7 @@ function Element() {
   const dispatch = useDispatch();
 
   const { filter, page } = useSelector((root: RootState) => root.user);
-
+  // TODO: formikProps
   const setFilter = useCallback((nextFilter?: Partial<UserQuery>) => {
     const result: UserQuery = {
       ...(filter ?? initialUserQuery),

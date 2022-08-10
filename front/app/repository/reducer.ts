@@ -73,7 +73,7 @@ export const initMenuState: MenuState = {
       title:    '견적서 관리',
       children: [{
         title: '용역항목 관리',
-        path:  '/test-service',
+        path:  '/estimate/template',
       }, {
         title: '견적서 내용 관리',
       }]

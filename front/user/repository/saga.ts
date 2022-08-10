@@ -48,7 +48,7 @@ function* watchChange() {
       }));
     }
     finally {
-      formik.setSubmitting(false);
+      yield call(formik.setSubmitting, false);
     }
   }
 }

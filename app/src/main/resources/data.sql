@@ -75,13 +75,13 @@ INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_
 INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (7, '최종평가보고서');
 INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (8, '구조물 동특성 자료 수급');
 INSERT INTO hywtl_has_api.test_service_detail_template_title_list (test_service_detail_template_id, title_list) VALUES (8, '풍하중 검토 및 구조설계 반영');
-INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (1, '2022-05-20 16:43:43.918093', 1, null, null, null, 1, 1, '공통', '자연기류 형성');
+INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (1, '2022-05-20 16:43:43.918093', 1, null, null, null, 1, 1, 'COMMON', '자연기류 형성');
 INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (2, '2022-05-20 16:46:09.571086', 1, null, null, null, 1, 2, 'F', '주골조설계용 풍하중');
 INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (3, '2022-05-23 15:41:08.289271', 1, null, null, null, 1, 3, 'A', '부가적인 공기력진동');
 INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (4, '2022-05-23 15:44:06.278263', 1, null, null, '2022-05-23 15:44:14.959638', 1, 4, 'P', '외장재설계용 풍하중');
 INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (5, '2022-05-23 15:54:40.662695', 1, null, null, null, 1, 5, 'E', '보행자 풍쾌적도 및 풍안전도');
 INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (6, '2022-05-23 15:59:09.733309', 1, null, null, null, 1, 6, 'B', '빌딩풍 시뮬레이션');
-INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (7, '2022-05-23 15:59:59.762333', 1, null, null, null, 1, 7, '구검', '구조설계사 구조협력');
+INSERT INTO hywtl_has_api.test_service_template (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, seq, test_type, title) VALUES (7, '2022-05-23 15:59:59.762333', 1, null, null, null, 1, 7, 'REVIEW', '구조설계사 구조협력');
 INSERT INTO hywtl_has_api.test_service_template_detail_list (test_service_template_id, detail_list_id) VALUES (1, 1);
 INSERT INTO hywtl_has_api.test_service_template_detail_list (test_service_template_id, detail_list_id) VALUES (2, 2);
 INSERT INTO hywtl_has_api.test_service_template_detail_list (test_service_template_id, detail_list_id) VALUES (3, 3);

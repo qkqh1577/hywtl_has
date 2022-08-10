@@ -21,7 +21,7 @@ export const departmentReducer = createReducer(initialState, {
                                  action
                                 ) => ({
     ...state,
-    filter: action.payload,
+    filter: action.payload.values,
   }),
   [DepartmentAction.setPage]:   (state,
                                  action

@@ -104,7 +104,6 @@ export default function SelectField(props: SelectFieldProps) {
     const readOnly = status === FieldStatus.ReadOnly && !edit;
     const error = !!errors[name];
 
-
     const fieldProps: FieldProps = {
       select:      true,
       fullWidth:   true,

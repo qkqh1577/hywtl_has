@@ -9,6 +9,7 @@ import reducer from 'services/reducer';
 import userSaga from 'user/repository/saga';
 import loginUserSaga from 'app/repository/saga';
 import departmentSaga from 'department/repository/saga';
+import estimateTemplateSaga from 'estimate/repository/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -17,6 +18,7 @@ function* saga() {
     userSaga(),
     loginUserSaga(),
     departmentSaga(),
+    estimateTemplateSaga(),
   ]);
 }
 

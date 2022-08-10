@@ -20,6 +20,10 @@ import {
   departmentReducer,
   DepartmentState,
 } from 'department/repository/reducer';
+import {
+  estimateTemplateReducer,
+  EstimateTemplateState
+} from 'estimate/repository/reducer';
 
 export interface RootState {
   user: UserState;
@@ -27,14 +31,16 @@ export interface RootState {
   department: DepartmentState;
   menu: MenuState;
   dialog: DialogState;
+  estimateTemplate: EstimateTemplateState;
 }
 
 const reducer = combineReducers<RootState>({
-  user:       userReducer,
-  login:      loginReducer,
-  department: departmentReducer,
-  menu:       menuReducer,
-  dialog:     dialogReducer,
+  user:             userReducer,
+  login:            loginReducer,
+  department:       departmentReducer,
+  menu:             menuReducer,
+  dialog:           dialogReducer,
+  estimateTemplate: estimateTemplateReducer,
 });
 
 const rootReducer: Reducer = (state,

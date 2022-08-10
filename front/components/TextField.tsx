@@ -52,7 +52,7 @@ export default function TextField(props: TextFieldProps) {
   const formikContext = useContext(FormikContext);
   if (formikContext) {
     const { values, errors, handleChange } = formikContext;
-    const value = values[name];
+    const value = values[name] ?? '';
     const edit = values.edit || typeof values.edit === 'undefined';
     const error = !!errors[name];
     const disabled = status === FieldStatus.Disabled;

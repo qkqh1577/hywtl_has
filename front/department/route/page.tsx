@@ -40,7 +40,7 @@ function Element() {
                     helper
                    ) => {
       setFilter({
-        values,
+        values: { ...values, page: 0 },
         ...helper
       });
     }

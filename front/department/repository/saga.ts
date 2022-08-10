@@ -27,7 +27,7 @@ function* watchFilter() {
       yield put(departmentAction.setPage(undefined));
     }
     finally {
-      formik.setSubmitting(false);
+      yield call(formik.setSubmitting, false);
     }
   }
 }
@@ -67,7 +67,7 @@ function* watchUpsert() {
       }));
     }
     finally {
-      formik.setSubmitting(false);
+      yield call(formik.setSubmitting, false);
     }
   }
 }

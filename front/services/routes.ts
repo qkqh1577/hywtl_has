@@ -7,6 +7,7 @@ import {
 import userRoutes from 'user/route';
 import appRoutes from 'app/route';
 import departmentRoutes from 'department/route';
+import estimateTemplateRoutes from 'estimate/route';
 
 export interface AppRoute
   extends RouteProps {
@@ -18,6 +19,7 @@ const Routes = () => {
     ...userRoutes,
     ...appRoutes,
     ...departmentRoutes,
+    ...estimateTemplateRoutes,
   ];
 
   return useRoutes(routes as RouteObject[]);
