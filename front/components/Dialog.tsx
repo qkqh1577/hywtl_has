@@ -22,7 +22,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { RootState } from 'services/common/reducer';
+import { RootState } from 'services/reducer';
 
 type AlertStatus = 'ok' | 'warn' | 'error';
 type AlertProps = {

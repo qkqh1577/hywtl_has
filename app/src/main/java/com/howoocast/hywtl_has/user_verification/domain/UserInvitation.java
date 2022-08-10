@@ -45,7 +45,7 @@ public class UserInvitation extends CustomEntity {
 
     @NotNull
     @ManyToOne
-    private Department department; // 소속 부서
+    private Department department; // 소속 조직
 
     @NotNull
     @Column(nullable = false, updatable = false)

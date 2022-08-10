@@ -3,7 +3,7 @@ import {
   DepartmentId
 } from 'department/domain/department';
 import { Option } from 'components/DataFieldProps';
-import { pageSizeList } from 'services/common/domain/Page';
+import { pageSizeList } from 'type/Page';
 
 export interface DepartmentQuery {
   page: number;
@@ -17,7 +17,7 @@ export interface DepartmentQuery {
 
 export const keywordTypeList: Option[] = [{
   key:  'by_name',
-  text: '이름'
+  text: '조직명'
 }];
 
 export const initialDepartmentQuery: DepartmentQuery = {

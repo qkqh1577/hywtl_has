@@ -9,7 +9,7 @@ import {
   fork,
 } from 'redux-saga/effects';
 import { UserVO } from 'user/domain/user';
-import Page from 'services/common/domain/Page';
+import Page from 'type/Page';
 import { userApi } from 'user/repository/api';
 import { dialogActions } from 'components/Dialog';
 
@@ -24,13 +24,8 @@ function* getPage() {
 function* watchId() {
   while (true) {
     const { id } = yield take('user/id/set');
-    try {
-      const detail: UserVO = yield call(userApi.getOne, id);
-      yield put(userAction.setOne(detail));
-    }
-    catch (e) {
-
-    }
+    const detail: UserVO = yield call(userApi.getOne, id);
+    yield put(userAction.setOne(detail));
   }
 }
 

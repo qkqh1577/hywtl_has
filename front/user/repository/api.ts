@@ -1,5 +1,5 @@
-import apiClient from 'services/common/api';
-import Page from 'services/common/domain/Page';
+import apiClient from 'services/api';
+import Page from 'type/Page';
 import { UserQuery } from 'user/parameter/query';
 import {
   UserId,

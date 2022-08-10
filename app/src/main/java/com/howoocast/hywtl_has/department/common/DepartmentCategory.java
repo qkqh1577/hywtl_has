@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.department.common;
 
 /**
- * 부서 유형
+ * 조직 유형
  */
 public enum DepartmentCategory {
     /**

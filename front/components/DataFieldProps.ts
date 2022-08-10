@@ -29,7 +29,10 @@ export function isOption(value: any): value is Option {
 
 export function getValue<T = unknown>(values: FormikValues,
                                       name: string
-): T {
+): T | undefined {
+  if (!values) {
+    return undefined;
+  }
   const key = name.includes('.') ? name.split('.')[0] : name;
   const value = values[key];
   if (!name.includes('.')) {

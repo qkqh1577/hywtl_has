@@ -35,12 +35,12 @@ public enum UserJobPosition {
     TEAM_LEADER,
 
     /**
-     * 부서장
+     * 파트장
      */
     PART_LEADER,
 
     /**
-     * 부서원
+     * 파트원
      */
     PART_MEMBER
 }

@@ -1,6 +1,6 @@
 import { UserRole } from 'user/domain/user';
 import { Option } from 'components/DataFieldProps';
-import { pageSizeList } from 'services/common/domain/Page';
+import { pageSizeList } from 'type/Page';
 
 export interface UserQuery {
   page: number;

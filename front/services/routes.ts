@@ -4,18 +4,20 @@ import {
   useRoutes
 } from 'react-router-dom';
 
-import userRoutes from 'user/routes';
-import appRoutes from 'App/route';
+import userRoutes from 'user/route';
+import appRoutes from 'app/route';
+import departmentRoutes from 'department/route';
 
-export interface AppRoutes
+export interface AppRoute
   extends RouteProps {
   // extension wrapper
 }
 
 const Routes = () => {
-  const routes: AppRoutes[] = [
+  const routes: AppRoute[] = [
     ...userRoutes,
     ...appRoutes,
+    ...departmentRoutes,
   ];
 
   return useRoutes(routes as RouteObject[]);

@@ -5,7 +5,7 @@ import UserChangeParameter from 'user/parameter/ChangeParamter';
 import {
   FormikHelpers,
 } from 'formik';
-import Page from 'services/common/domain/Page';
+import Page from 'type/Page';
 
 export interface FormikSubmit<Values>
   extends FormikHelpers<any> {

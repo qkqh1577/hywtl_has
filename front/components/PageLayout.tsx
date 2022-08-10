@@ -23,15 +23,21 @@ export interface SearchPageLayoutProps
   filter: React.ReactNode;
 }
 
-export interface FormikLayoutProps<T>
-  extends PageLayoutProps {
+
+export interface FormikLayoutProps<T> {
   formik: FormikContextType<T>;
 }
 
+interface FormikPageLayoutProps<T>
+  extends PageLayoutProps,
+          FormikLayoutProps<T> {
 
-export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutProps | FormikLayoutProps<T>) {
+}
 
-  function isFormikForm(props: PageLayoutProps): props is FormikLayoutProps<T> {
+
+export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutProps | FormikPageLayoutProps<T>) {
+
+  function isFormikForm(props: PageLayoutProps): props is FormikPageLayoutProps<T> {
     return typeof (props as any).formik !== 'undefined';
   }
 

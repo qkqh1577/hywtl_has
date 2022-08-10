@@ -21,7 +21,7 @@ import {
   FileItem,
   FileItemParameter,
   FileItemView
-} from 'services/common/file-item';
+} from 'file-item';
 import { getObjectPostPosition } from 'util/KoreanLetterUtil';
 
 export type FileInputProps = {

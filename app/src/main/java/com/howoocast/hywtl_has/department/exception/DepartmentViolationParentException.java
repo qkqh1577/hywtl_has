@@ -7,7 +7,7 @@ public class DepartmentViolationParentException extends CustomExceptionAdaptor {
     public DepartmentViolationParentException() {
         super(
             "department.reference.violation",
-            "자신의 하위 부서를 상위 부서로 선택할 수 없습니다."
+            "자신의 하위 조직을 상위 조직으로 선택할 수 없습니다."
         );
     }
 }

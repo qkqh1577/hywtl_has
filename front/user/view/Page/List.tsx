@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
@@ -12,67 +11,66 @@ import {
   UserVO
 } from 'user/domain/user';
 import React from 'react';
-import Page from 'services/common/domain/Page';
-
-type TableCellProperty = {
-  key: string;
-  label: string;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  style?: any;
-}
-
-const columns: TableCellProperty[] = [
-  { key: 'no', label: 'No.', style: { minWidth: 50 } },
-  { key: 'userId', label: '아이디', style: { minWidth: 100 } },
-  { key: 'name', label: '이름', style: { minWidth: 100 } },
-  { key: 'email', label: '이메일', style: { minWidth: 100 } },
-  { key: 'role', label: '권한', style: { minWidth: 100 } },
-  { key: 'department', label: '소속', style: { minWidth: 100 } },
-];
+import Page from 'type/Page';
+import TableCell, { TableCellProps } from 'type/TableCell';
 
 export interface ListProps {
   page: Page<UserVO> | undefined;
 }
 
-export default function ({
-                           page,
-                         }: ListProps) {
+const columnProps: TableCellProps[] = [{
+  key:      'no',
+  children: 'No.',
+}, {
+  key:      'username',
+  children: '아이디',
+}, {
+  key:      'name',
+  children: '이름',
+}, {
+  key:      'email',
+  children: '이메일'
+}, {
+  key:      'role',
+  children: '권한',
+}, {
+  key:      'department',
+  children: '소속'
+}];
+
+export default function ({ page }: ListProps) {
   return (
     <TableContainer>
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
-            {columns.map(({ label, ...props }) => (
-              <TableCell {...props}>
-                {label}
-              </TableCell>
+            {columnProps.map((props) => (
+              <TableCell {...props} />
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={6}>
-                결과가 없습니다.
-              </TableCell>
+              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
             </TableRow>
           )}
-          {page && page.content.map((user,
+          {page && page.content.map((item,
                                      i
           ) => {
             const no = i + 1 + page.size * page.number;
             return (
-              <TableRow hover role="checkbox" key={user.id}>
+              <TableRow hover role="checkbox" key={item.id}>
                 <TableCell>{no}</TableCell>
                 <TableCell>
-                  <Link to={`/user/${user.id}`}>
-                    {user.username}
+                  <Link to={`/user/${item.id}`}>
+                    {item.username}
                   </Link>
                 </TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{userRoleName(user.role)}</TableCell>
-                <TableCell>{user.department.name}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{userRoleName(item.role)}</TableCell>
+                <TableCell>{item.department.name}</TableCell>
               </TableRow>
             );
           })}

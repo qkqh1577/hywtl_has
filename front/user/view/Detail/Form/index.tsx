@@ -45,7 +45,7 @@ export default function () {
         <DepartmentSelector
           required
           name="department.id"
-          label="소속 부서"
+          label="소속 조직"
         />
       </Grid>
     </Grid>

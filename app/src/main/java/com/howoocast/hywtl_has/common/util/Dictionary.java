@@ -46,8 +46,8 @@ public class Dictionary extends HashMap<String, String> {
         this.put("count", "수량");
         this.put("created", "생성");
         this.put("date", "일자");
-        this.put("department", "부서");
-        this.put("department.name", "부서명");
+        this.put("department", "조직");
+        this.put("department.name", "조직명");
         this.put("description", "내용");
         this.put("detail", "상세");
         this.put("document", "자료");

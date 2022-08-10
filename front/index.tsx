@@ -8,8 +8,8 @@ import {
 import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import App from 'App/view/App';
-import { store } from 'services/common';
+import App from 'app/view/App';
+import { store } from 'services';
 import 'dayjs/locale/ko';
 
 const render = () => {

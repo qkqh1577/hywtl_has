@@ -6,7 +6,7 @@ import Form from 'user/view/Detail/Form';
 
 interface Props
   extends FooterProps,
-          Pick<FormikLayoutProps<UserVO>, |'formik'> {
+          FormikLayoutProps<UserVO> {
 }
 
 export default function (props: Props) {

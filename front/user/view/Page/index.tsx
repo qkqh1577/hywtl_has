@@ -8,7 +8,7 @@ import { UserQuery } from 'user/parameter/query';
 interface Props
   extends ListProps,
           FooterProps,
-          Pick<FormikLayoutProps<UserQuery>, |'formik'> {
+          FormikLayoutProps<UserQuery> {
 }
 
 export default function (props: Props) {

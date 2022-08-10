@@ -1,5 +1,5 @@
 import { createReducer } from 'typesafe-actions';
-import Page from 'services/common/domain/Page';
+import Page from 'type/Page';
 import { UserVO } from 'user/domain/user';
 import { UserQuery } from 'user/parameter/query';
 import { UserAction } from 'user/domain/action';

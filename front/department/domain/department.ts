@@ -1,7 +1,9 @@
+import { UserVO } from 'user/domain/user';
+
 export type DepartmentId = number & { readonly _brand: symbol }
 
 /**
- * 부서 유형
+ * 조직 유형
  */
 export enum DepartmentCategory {
   /** 회사 */
@@ -27,7 +29,7 @@ export const departmentCategoryList: DepartmentCategory[] = [
   DepartmentCategory.EXTRA
 ];
 
-export function departmentCategoryName(category: DepartmentCategory) {
+export function departmentCategoryName(category: DepartmentCategory | '') {
   switch (category) {
     case DepartmentCategory.COMPANY:
       return '회사';
@@ -41,6 +43,8 @@ export function departmentCategoryName(category: DepartmentCategory) {
       return '개인';
     case DepartmentCategory.EXTRA:
       return '기타';
+    default:
+      return '-';
   }
 }
 
@@ -52,14 +56,24 @@ export interface DepartmentVO {
   id?: DepartmentId;
   name: string;
   parent?: DepartmentVO;
-  category: DepartmentCategory;
+  category: DepartmentCategory | '';
   seq: number;
-  parentId?: number;
+  parentId?: number | '';
   memo?: string;
+  childrenList?: DepartmentVO[];
+  userList?: UserVO[];
+}
+
+export interface DepartmentShort
+  extends DepartmentVO {
+  userCount: number;
+  childrenCount: number;
 }
 
 export const initialDepartment: DepartmentVO = {
   name:     '',
-  category: DepartmentCategory.EXTRA,
+  category: '',
   seq:      0,
+  parentId: '',
+  memo:     ''
 };

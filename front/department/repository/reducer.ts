@@ -1,26 +1,20 @@
-import { DepartmentVO } from 'department/domain/department';
-import Page, { initialPage } from 'services/common/domain/Page';
+import {
+  DepartmentShort,
+  DepartmentVO
+} from 'department/domain/department';
+import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
 import { DepartmentAction } from 'department/domain/action';
-import {
-  DepartmentQuery,
-  initialDepartmentQuery
-} from 'department/parameter/query';
-
+import { DepartmentQuery } from 'department/parameter/query';
 
 export interface DepartmentState {
-  filter: DepartmentQuery;
-  page: Page<DepartmentVO>;
-  list: DepartmentVO[] | undefined;
-  detail: DepartmentVO | undefined;
+  filter?: DepartmentQuery;
+  page?: Page<DepartmentShort>;
+  list?: DepartmentShort[];
+  detail?: DepartmentVO;
 }
 
-const initialState: DepartmentState = {
-  filter: initialDepartmentQuery,
-  page:   initialPage,
-  list:   undefined,
-  detail: undefined,
-};
+const initialState: DepartmentState = {};
 
 export const departmentReducer = createReducer(initialState, {
   [DepartmentAction.setFilter]: (state,
@@ -34,6 +28,12 @@ export const departmentReducer = createReducer(initialState, {
                                 ) => ({
     ...state,
     page: action.payload,
+  }),
+  [DepartmentAction.setList]:   (state,
+                                 action
+                                ) => ({
+    ...state,
+    list: action.payload,
   }),
   [DepartmentAction.setOne]:    (state,
                                  action
