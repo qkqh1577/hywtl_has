@@ -3,10 +3,10 @@ import CheckboxField from 'components/CheckboxField';
 import {
   departmentCategoryList,
   departmentCategoryName
-} from 'department/domain/department';
+} from 'department/domain';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
-import { keywordTypeList } from 'department/parameter/query';
+import { keywordTypeList } from 'department/query';
 import React from 'react';
 import SearchForm from 'layouts/SearchForm';
 

@@ -2,7 +2,10 @@ import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
 import { TextField } from '@mui/material';
-import { FieldStatus } from 'components/DataFieldProps';
+import {
+  FieldStatus,
+  getValue
+} from 'components/DataFieldProps';
 import {
   FormikValues,
   useFormikContext
@@ -46,7 +49,7 @@ export default function DateField(props: DateFieldProps) {
           ...rest
         } = props;
   const { values, errors, setErrors, setFieldValue } = useFormikContext<FormikValues>();
-  const value = values[name];
+  const value = getValue<Dayjs | null>(values, name) ?? null;
   const edit = values.edit || typeof values.edit === 'undefined';
   const disabled = status === FieldStatus.Disabled;
   const readOnly = status === FieldStatus.ReadOnly && !edit;

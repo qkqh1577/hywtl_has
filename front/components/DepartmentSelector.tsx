@@ -4,9 +4,9 @@ import React, {
 } from 'react';
 import {
   departmentApi
-} from 'department/repository/api';
+} from 'department/api';
 import SelectField, { SelectFieldProps } from 'components/SelectField';
-import { DepartmentVO } from 'department/domain/department';
+import { DepartmentVO } from 'department/domain';
 
 const DepartmentSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
   const [list, setList] = useState<DepartmentVO[]>([]);

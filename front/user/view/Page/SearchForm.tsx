@@ -4,12 +4,11 @@ import CheckboxField from 'components/CheckboxField';
 import {
   userRoleList,
   userRoleName
-} from 'user/domain/user';
+} from 'user/domain';
 import SelectField from 'components/SelectField';
-import { keywordTypeList } from 'user/parameter/query';
+import { keywordTypeList } from 'user/query';
 import TextField from 'components/TextField';
 import React from 'react';
-
 
 export default function () {
   return (

@@ -1,13 +1,12 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
 import SearchForm from 'user/view/Page/SearchForm';
-import List, { ListProps } from 'user/view/Page/List';
-import Footer, { FooterProps } from 'user/view/Page/Footer';
-import { UserQuery } from 'user/parameter/query';
+import List from 'user/view/Page/List';
+import Footer, { UserPageFooterProps } from 'user/view/Page/Footer';
+import { UserQuery } from 'user/query';
 
 interface Props
-  extends ListProps,
-          FooterProps,
+  extends UserPageFooterProps,
           FormikLayoutProps<UserQuery> {
 }
 

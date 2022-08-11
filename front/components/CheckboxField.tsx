@@ -5,6 +5,7 @@ import React, {
 import {
   DataFieldValue,
   FieldStatus,
+  getValue,
   isOption,
   Option
 } from 'components/DataFieldProps';
@@ -83,7 +84,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
 
   if (formikContext) {
     const { values, errors, setFieldValue } = formikContext;
-    const value: DataFieldValue[] | undefined = values ? values[name] : undefined;
+    const value = values ? getValue<DataFieldValue[]>(values, name) : undefined;
     const edit = values.edit || typeof values.edit === 'undefined';
     const disabled = status === FieldStatus.Disabled;
     const readOnly = status === FieldStatus.ReadOnly && !edit;

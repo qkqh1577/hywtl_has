@@ -10,7 +10,11 @@ import {
   FormikContext,
 } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
-import { FieldStatus } from 'components/DataFieldProps';
+import {
+  DataFieldValue,
+  FieldStatus,
+  getValue
+} from 'components/DataFieldProps';
 
 export interface TextFieldProps
   extends Omit<StandardTextFieldProps,
@@ -52,7 +56,7 @@ export default function TextField(props: TextFieldProps) {
   const formikContext = useContext(FormikContext);
   if (formikContext) {
     const { values, errors, handleChange } = formikContext;
-    const value = values[name] ?? '';
+    const value = getValue<DataFieldValue>(values, name) ?? '';
     const edit = values.edit || typeof values.edit === 'undefined';
     const error = !!errors[name];
     const disabled = status === FieldStatus.Disabled;

@@ -5,19 +5,13 @@ import {
   Button,
   Grid,
   TablePagination,
-  TablePaginationProps
+  TablePaginationProps,
 } from '@mui/material';
 import Page, {
   initialPage,
   pageSizeList
 } from 'type/Page';
-import { UserVO } from 'user/domain/user';
-
-export interface FooterProps {
-  page: Page<UserVO> | undefined;
-  onPageChange: TablePaginationProps['onPageChange'];
-  onRowsPerPageChange: TablePaginationProps['onRowsPerPageChange'];
-}
+import { UserVO } from 'user/domain';
 
 function AddButton() {
 
@@ -33,11 +27,16 @@ function AddButton() {
   );
 }
 
+export interface UserPageFooterProps
+  extends Pick<TablePaginationProps, | 'onPageChange' | 'onRowsPerPageChange'> {
+  page: Page<UserVO> | undefined;
+}
+
 export default function ({
                            page = initialPage,
                            onPageChange,
-                           onRowsPerPageChange
-                         }: FooterProps) {
+                           onRowsPerPageChange,
+                         }: UserPageFooterProps) {
   return (
     <Grid container spacing={2}>
       <Grid item

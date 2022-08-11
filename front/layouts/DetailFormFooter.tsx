@@ -48,6 +48,7 @@ function SubmitButton() {
 export interface DetailFormFooterProps {
   left?: React.ReactNode;
   right?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function DetailFormFooter(props: DetailFormFooterProps) {
@@ -59,21 +60,26 @@ export default function DetailFormFooter(props: DetailFormFooterProps) {
       width:          '100%',
       mt:             '40px',
     }}>
-      <Box sx={{
-        display: 'flex',
-        width:   '50%',
-      }}>
-        {props.left}
-      </Box>
-      <Box sx={{
-        display:        'flex',
-        justifyContent: 'flex-end',
-        width:          '50%',
-      }}>
-        <CancelButton />
-        <SubmitButton />
-        {props.right}
-      </Box>
+      {props.children}
+      {!props.children && (
+        <>
+          <Box sx={{
+            display: 'flex',
+            width:   '50%',
+          }}>
+            {props.left}
+          </Box>
+          <Box sx={{
+            display:        'flex',
+            justifyContent: 'flex-end',
+            width:          '50%',
+          }}>
+            <CancelButton />
+            <SubmitButton />
+            {props.right}
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

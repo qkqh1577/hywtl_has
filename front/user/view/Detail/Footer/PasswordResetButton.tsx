@@ -4,7 +4,7 @@ import {
   FormikContext,
   FormikContextType,
 } from 'formik';
-import { UserVO } from 'user/domain/user';
+import { UserVO } from 'user/domain';
 
 export interface PasswordResetButtonProps {
   handlePassword: () => void;

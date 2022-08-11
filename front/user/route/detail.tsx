@@ -7,7 +7,7 @@ import useDialog from 'components/Dialog';
 import {
   initialUser,
   UserVO
-} from 'user/domain/user';
+} from 'user/domain';
 import UserDetail from 'user/view/Detail';
 import { AppRoute } from 'services/routes';
 import {
@@ -21,8 +21,8 @@ import {
 import {
   FormikSubmit,
   userAction
-} from 'user/domain/action';
-import UserChangeParameter from 'user/parameter/ChangeParamter';
+} from 'user/action';
+import UserChangeParameter from 'user/parameter';
 
 function Element() {
   const id = useId();

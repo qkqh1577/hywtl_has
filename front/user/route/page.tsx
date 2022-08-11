@@ -8,46 +8,76 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import { userAction } from 'user/domain/action';
+import {
+  FormikSubmit,
+  userAction
+} from 'user/action';
 import {
   initialUserQuery,
   UserQuery
-} from 'user/parameter/query';
+} from 'user/query';
 import { RootState } from 'services/reducer';
 import { useFormik } from 'formik';
+import { pageSizeList } from 'type/Page';
 
 function Element() {
   const dispatch = useDispatch();
 
   const { filter, page } = useSelector((root: RootState) => root.user);
-  // TODO: formikProps
-  const setFilter = useCallback((nextFilter?: Partial<UserQuery>) => {
+  const setFilter = useCallback((formikProps: FormikSubmit<Partial<UserQuery>>) => {
     const result: UserQuery = {
       ...(filter ?? initialUserQuery),
-      ...(nextFilter ?? initialUserQuery),
+      ...formikProps.values,
     };
-    dispatch(userAction.setFilter(filter && !nextFilter ? filter : result));
+    dispatch(userAction.setFilter({
+      ...formikProps,
+      values: result
+    }));
   }, [dispatch]);
 
   const formik = useFormik<UserQuery>({
-    initialValues: filter ?? initialUserQuery,
-    onSubmit:      setFilter
+    initialValues: initialUserQuery,
+    onSubmit:      (values,
+                    helper
+                   ) => {
+      setFilter({
+        values: {
+          ...values,
+          page: 0,
+        },
+        ...helper
+      });
+    }
   });
 
   useEffect(() => {
-    setFilter();
+    setFilter(formik);
   }, []);
 
   return (
     <UserPage
-      formik={formik}
       page={page}
-      onPageChange={(event,
-                     page
-      ) => setFilter({ page })}
-      onRowsPerPageChange={(event) => {
-        const size = +(event.target.value) || 10;
-        setFilter({ size, page: 0 });
+      formik={formik}
+      onPageChange={(e,
+                     pageNum
+      ) => {
+        setFilter({
+          ...formik,
+          values: {
+            ...filter,
+            page: pageNum,
+          },
+        });
+      }}
+      onRowsPerPageChange={(e) => {
+        setFilter({
+          ...formik,
+          values: {
+            ...filter,
+            size: +(e.target.value) || pageSizeList[0],
+            page: 0,
+          },
+        });
       }}
     />
   );

@@ -10,7 +10,7 @@ import {
   departmentCategoryList,
   departmentCategoryName,
   DepartmentVO
-} from 'department/domain/department';
+} from 'department/domain';
 import {
   FormikContext,
   FormikContextType

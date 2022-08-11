@@ -14,10 +14,10 @@ import { useFormik } from 'formik';
 import {
   DepartmentVO,
   initialDepartment
-} from 'department/domain/department';
-import { FormikSubmit } from 'user/domain/action';
-import { DepartmentParameter } from 'department/parameter/parameter';
-import { departmentAction } from 'department/domain/action';
+} from 'department/domain';
+import { FormikSubmit } from 'user/action';
+import { DepartmentParameter } from 'department/parameter';
+import { departmentAction } from 'department/action';
 
 
 function Element() {

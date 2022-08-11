@@ -3,7 +3,7 @@ import {
   FormikContext,
   FormikContextType,
 } from 'formik';
-import { UserVO } from 'user/domain/user';
+import { UserVO } from 'user/domain';
 import TextField from 'components/TextField';
 import { FieldStatus } from 'components/DataFieldProps';
 

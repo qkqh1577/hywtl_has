@@ -6,6 +6,7 @@ import {
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 
+
 export interface SearchFormProps {
   children: JSX.Element;
 }
@@ -32,11 +33,15 @@ function SubmitButton() {
 function ClearButton() {
 
   const formikContext = useContext(FormikContext);
+  const onClick = () => {
+    formikContext?.handleReset();
+    formikContext?.handleSubmit();
+  };
 
   return (
     <Button
       color="secondary"
-      onClick={formikContext?.handleReset}
+      onClick={onClick}
       children="초기화"
     />
   );

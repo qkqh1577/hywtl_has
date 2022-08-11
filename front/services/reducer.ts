@@ -5,7 +5,7 @@ import {
 import {
   userReducer,
   UserState,
-} from 'user/repository/reducer';
+} from 'user/reducer';
 import {
   loginReducer,
   menuReducer,
@@ -19,11 +19,11 @@ import {
 import {
   departmentReducer,
   DepartmentState,
-} from 'department/repository/reducer';
+} from 'department/reducer';
 import {
   estimateTemplateReducer,
   EstimateTemplateState
-} from 'estimate/repository/reducer';
+} from 'estimate_template/reducer';
 
 export interface RootState {
   user: UserState;

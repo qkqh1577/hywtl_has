@@ -2,7 +2,7 @@ import Page from 'type/Page';
 import {
   departmentCategoryName,
   DepartmentShort
-} from 'department/domain/department';
+} from 'department/domain';
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import TableCell, { TableCellProps } from 'type/TableCell';
+import TableCell, { TableCellProps } from 'components/TableCell';
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -12,11 +12,11 @@ import {
 import {
   DepartmentQuery,
   initialDepartmentQuery
-} from 'department/parameter/query';
-import { departmentAction } from 'department/domain/action';
+} from 'department/query';
+import { departmentAction } from 'department/action';
 import { useFormik } from 'formik';
 import React from 'react';
-import { FormikSubmit } from 'user/domain/action';
+import { FormikSubmit } from 'user/action';
 
 function Element() {
 

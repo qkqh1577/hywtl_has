@@ -7,7 +7,7 @@ import {
 import userRoutes from 'user/route';
 import appRoutes from 'app/route';
 import departmentRoutes from 'department/route';
-import estimateTemplateRoutes from 'estimate/route';
+import estimateTemplateRoutes from 'estimate_template/route';
 
 export interface AppRoute
   extends RouteProps {

@@ -6,7 +6,7 @@ import SelectField from 'components/SelectField';
 import {
   userRoleList,
   userRoleName
-} from 'user/domain/user';
+} from 'user/domain';
 import DepartmentSelector from 'components/DepartmentSelector';
 
 export default function () {

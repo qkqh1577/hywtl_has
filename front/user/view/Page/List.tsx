@@ -8,15 +8,12 @@ import {
 import { Link } from 'react-router-dom';
 import {
   userRoleName,
-  UserVO
-} from 'user/domain/user';
+  UserVO,
+} from 'user/domain';
 import React from 'react';
+import TableCell, { TableCellProps } from 'components/TableCell';
 import Page from 'type/Page';
-import TableCell, { TableCellProps } from 'type/TableCell';
 
-export interface ListProps {
-  page: Page<UserVO> | undefined;
-}
 
 const columnProps: TableCellProps[] = [{
   key:      'no',
@@ -38,7 +35,11 @@ const columnProps: TableCellProps[] = [{
   children: '소속'
 }];
 
-export default function ({ page }: ListProps) {
+interface Props {
+  page: Page<UserVO> | undefined;
+}
+
+export default function ({ page }: Props) {
   return (
     <TableContainer>
       <Table stickyHeader aria-label="sticky table">

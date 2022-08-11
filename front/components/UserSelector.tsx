@@ -4,9 +4,9 @@ import React, {
 } from 'react';
 import {
   userApi
-} from 'user/repository/api';
+} from 'user/api';
 import SelectField, { SelectFieldProps } from 'components/SelectField';
-import { UserVO } from 'user/domain/user';
+import { UserVO } from 'user/domain';
 
 const UserSelector = <Multiple extends boolean | undefined,
   DisableClearable extends boolean | undefined,

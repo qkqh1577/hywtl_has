@@ -11,7 +11,7 @@ import Page, {
   initialPage,
   pageSizeList
 } from 'type/Page';
-import { DepartmentShort } from 'department/domain/department';
+import { DepartmentShort } from 'department/domain';
 
 export interface FooterProps {
   page: Page<DepartmentShort> | undefined;

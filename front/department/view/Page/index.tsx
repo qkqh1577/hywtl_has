@@ -1,6 +1,6 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
-import { DepartmentQuery } from 'department/parameter/query';
+import { DepartmentQuery } from 'department/query';
 import TreeViewButton from 'department/view/Page/TreeViewButton';
 import SearchForm from './SearchForm';
 import List, { ListProps } from './List';

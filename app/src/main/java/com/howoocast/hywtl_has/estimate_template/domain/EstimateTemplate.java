@@ -1,0 +1,83 @@
+package com.howoocast.hywtl_has.estimate_template.domain;
+
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+@Slf4j
+@Getter
+@Entity
+@Table(name = EstimateTemplate.KEY)
+@Where(clause = "deleted_at is null")
+@SQLDelete(sql = "update " + EstimateTemplate.KEY + " set deleted_at = now() where id = ?")
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class EstimateTemplate extends CustomEntity {
+
+    public static final String KEY = "estimate_template";
+
+    @NotBlank
+    @Column(nullable = false)
+    private String title; // 용역 항목명
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TestType testType; // 실험 타입
+
+    @NotNull
+    @Column(nullable = false)
+    private Integer seq; // 정렬 순서
+
+    @NotEmpty
+    @OneToMany(cascade = CascadeType.ALL)
+    @OrderBy("seq asc")
+    private List<EstimateTemplateDetail> detailList; // 세부 항목 목록
+
+    public static EstimateTemplate of(
+        String title,
+        TestType testType,
+        Integer seq,
+        List<EstimateTemplateDetail> detailList
+    ) {
+        EstimateTemplate instance = new EstimateTemplate();
+        instance.title = title;
+        instance.testType = testType;
+        instance.seq = seq;
+        instance.detailList = detailList;
+        return instance;
+    }
+
+    public void change(
+        String title,
+        TestType testType,
+        List<EstimateTemplateDetail> detailList
+    ) {
+        this.title = title;
+        this.testType = testType;
+        this.detailList = detailList;
+    }
+
+
+    public void changeSeq(Integer seq) {
+        this.seq = seq;
+    }
+}

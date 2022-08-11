@@ -31,7 +31,6 @@ export interface FormikLayoutProps<T> {
 interface FormikPageLayoutProps<T>
   extends PageLayoutProps,
           FormikLayoutProps<T> {
-
 }
 
 

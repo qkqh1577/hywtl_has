@@ -1,6 +1,6 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
-import { UserVO } from 'user/domain/user';
+import { UserVO } from 'user/domain';
 import Footer, { FooterProps } from 'user/view/Detail/Footer';
 import Form from 'user/view/Detail/Form';
 
