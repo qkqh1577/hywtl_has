@@ -1,7 +1,8 @@
 import { createReducer } from 'typesafe-actions';
 import {
   LoginAction,
-  MenuAction
+  MenuAction,
+  ProjectDrawerAction
 } from 'app/domain/action';
 import { LoginUser } from 'app/domain/login';
 import { Menu } from 'app/domain/menu';
@@ -105,5 +106,26 @@ export const menuReducer = createReducer(initMenuState, {
   [MenuAction.toggleMenuOpen]: (state) => ({
     ...state,
     open: !state.open
+  })
+});
+
+export interface ProjectDrawerState {
+  open: boolean;
+  filterOpen: boolean;
+}
+
+const initialProjectDrawerState: ProjectDrawerState = {
+  open:       true,
+  filterOpen: false,
+};
+
+export const projectDrawerReducer = createReducer(initialProjectDrawerState, {
+  [ProjectDrawerAction.toggleMenu]:   (state) => ({
+    ...state,
+    open: !state.open
+  }),
+  [ProjectDrawerAction.toggleFilter]: (state) => ({
+    ...state,
+    filterOpen: !state.filterOpen
   })
 });

@@ -11,6 +11,8 @@ import {
   menuReducer,
   LoginState,
   MenuState,
+  ProjectDrawerState,
+  projectDrawerReducer,
 } from 'app/repository/reducer';
 import {
   dialogReducer,
@@ -24,6 +26,10 @@ import {
   estimateTemplateReducer,
   EstimateTemplateState
 } from 'estimate_template/reducer';
+import {
+  projectReducer,
+  ProjectState
+} from 'project/reducer';
 
 export interface RootState {
   user: UserState;
@@ -32,6 +38,8 @@ export interface RootState {
   menu: MenuState;
   dialog: DialogState;
   estimateTemplate: EstimateTemplateState;
+  project: ProjectState;
+  projectDrawer: ProjectDrawerState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -41,6 +49,8 @@ const reducer = combineReducers<RootState>({
   menu:             menuReducer,
   dialog:           dialogReducer,
   estimateTemplate: estimateTemplateReducer,
+  project:          projectReducer,
+  projectDrawer:    projectDrawerReducer,
 });
 
 const rootReducer: Reducer = (state,

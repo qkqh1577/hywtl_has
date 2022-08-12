@@ -8,7 +8,7 @@ import {
 import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import App from 'app/view/App';
+import App from 'app/route/app';
 import store from 'services/store';
 import 'dayjs/locale/ko';
 

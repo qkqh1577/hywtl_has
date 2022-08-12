@@ -10,6 +10,7 @@ import userSaga from 'user/saga';
 import loginUserSaga from 'app/repository/saga';
 import departmentSaga from 'department/saga';
 import estimateTemplateSaga from 'estimate_template/saga';
+import projectSaga from 'project/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -19,6 +20,7 @@ function* saga() {
     loginUserSaga(),
     departmentSaga(),
     estimateTemplateSaga(),
+    projectSaga(),
   ]);
 }
 

@@ -1,13 +1,13 @@
 import { ActionType } from 'typesafe-actions';
 import {
   LoginAction,
-  loginAction
+  loginAction,
 } from 'app/domain/action';
 import {
   call,
   put,
   takeLatest,
-  takeEvery
+  takeEvery,
 } from 'redux-saga/effects';
 import { LoginUser } from 'app/domain/login';
 import { loginUserApi } from 'app/repository/api';
