@@ -1,5 +1,5 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
+import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateQuery } from 'estimate_template/query';
 import SearchForm from './SearchForm';
 import List, { ListProps } from './List';

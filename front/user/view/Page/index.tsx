@@ -1,5 +1,5 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
+import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import SearchForm from 'user/view/Page/SearchForm';
 import List from 'user/view/Page/List';
 import Footer, { UserPageFooterProps } from 'user/view/Page/Footer';

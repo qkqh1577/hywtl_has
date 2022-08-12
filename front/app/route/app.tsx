@@ -86,6 +86,7 @@ export default function () {
 
   useEffect(() => {
     if (!page) {
+      setFilter(formik);
       setList([]);
     }
     else {

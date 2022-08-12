@@ -4,7 +4,7 @@ import {
   Button,
   CssBaseline,
 } from '@mui/material';
-import { AppBar } from 'layouts';
+import AppBar from 'layouts/AppBar';
 import ReactRouter from 'services/routes';
 import {
   Alert,

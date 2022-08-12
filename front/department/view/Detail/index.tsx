@@ -1,5 +1,5 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
+import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { DepartmentVO } from 'department/domain';
 import Form from 'department/view/Detail/Form';
 import Footer from 'department/view/Detail/Footer';

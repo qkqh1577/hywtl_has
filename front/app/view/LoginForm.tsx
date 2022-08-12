@@ -15,7 +15,7 @@ import {
 } from 'formik';
 import { LoginParameter } from 'app/domain/parameter';
 import useLogin from 'app/service/loginHook';
-import PageLayout from 'components/PageLayout';
+import PageLayout from 'layouts/PageLayout';
 
 const LoginForm = () => {
   const { login } = useLogin();

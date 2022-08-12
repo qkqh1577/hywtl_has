@@ -1,6 +1,6 @@
 import Drawer from 'layouts/Drawer';
 import React from 'react';
-import { FormikLayoutProps } from 'components/PageLayout';
+import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectQuery } from 'project/query';
 import {
   Form,

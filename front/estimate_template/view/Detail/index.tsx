@@ -1,5 +1,5 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'components/PageLayout';
+import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateVO } from 'estimate_template/domain';
 import Form from './Form';
 import Footer from './Footer';

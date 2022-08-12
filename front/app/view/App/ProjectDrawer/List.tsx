@@ -49,8 +49,9 @@ export default function ({ list, openMenu: open, onRowClick }: ListProps) {
           {list && list.map((item) => (
             <TableRow
               hover
-              role="button"
               key={item.id}
+              role="button"
+              sx={{ cursor: 'pointer' }}
               onClick={() => {
                 onRowClick(item);
               }}
