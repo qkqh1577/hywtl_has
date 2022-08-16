@@ -23,9 +23,9 @@ public class BusinessPredicateBuilder {
 
         if (Objects.isNull(keywordType) || Objects.equals(keywordType, "by_name")) {
             criteria.and(business.name.containsIgnoreCase(keywordStr));
-        } else if (Objects.equals(keywordType, "by_representativeName")) {
+        } else if (Objects.equals(keywordType, "by_ceo_name")) {
             criteria.and(business.representativeName.containsIgnoreCase(keywordStr));
-        } else if (Objects.equals(keywordType, "by_registrationNumber")) {
+        } else if (Objects.equals(keywordType, "by_registration_number")) {
             criteria.and(business.registrationNumber.containsIgnoreCase(keywordStr));
         }
 

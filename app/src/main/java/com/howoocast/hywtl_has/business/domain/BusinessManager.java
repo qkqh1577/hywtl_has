@@ -1,7 +1,13 @@
 package com.howoocast.hywtl_has.business.domain;
 
-import com.howoocast.hywtl_has.business.common.BusinessManagerStatus;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +16,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -18,32 +23,55 @@ import java.util.List;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "business_manager")
+@Table(name = BusinessManager.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update business_manager set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + BusinessManager.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BusinessManager extends CustomEntity {
 
+    public static final String KEY = "business_manager";
+
+    /**
+     * 담당자명
+     */
     @NotBlank
-    @Column(nullable=false)
-    private String name; // 담당자명
+    @Column(nullable = false)
+    private String name;
 
-    private String jobTitle; // 호칭
+    /**
+     * 호칭
+     */
+    private String jobTitle;
 
-    private String mobilePhone; // 핸드폰
+    /**
+     * 핸드폰
+     */
+    private String mobilePhone;
 
-    private String officePhone; // 전화번호
+    /**
+     * 전화번호
+     */
+    private String officePhone;
 
-    private String email; // 이메일
+    /**
+     * 이메일
+     */
+    private String email;
 
+    /**
+     * 메타
+     */
     @ElementCollection
-    private List<String> meta; // 메타
+    private List<String> meta; //
 
+    /**
+     * 상태
+     */
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
-    private BusinessManagerStatus status; // 상태
+    @Column(nullable = false)
+    private BusinessManagerStatus status;
 
     public static BusinessManager of(
         String name,
@@ -66,13 +94,13 @@ public class BusinessManager extends CustomEntity {
     }
 
     public void change(
-            String name,
-            String jobTitle,
-            String mobilePhone,
-            String officePhone,
-            String email,
-            List<String> meta,
-            BusinessManagerStatus status
+        String name,
+        String jobTitle,
+        String mobilePhone,
+        String officePhone,
+        String email,
+        List<String> meta,
+        BusinessManagerStatus status
     ) {
         this.name = name;
         this.jobTitle = jobTitle;

@@ -33,7 +33,7 @@ public class BusinessService {
     private final BusinessRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<BusinessShortView> page(@Nullable Predicate predicate, Pageable pageable) {
+    public Page<BusinessShortView> findAll(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
@@ -41,13 +41,21 @@ public class BusinessService {
     }
 
     @Transactional(readOnly = true)
-    public List<BusinessView> getList(@Nullable Predicate predicate) {
+    public List<BusinessView> findAll(@Nullable Predicate predicate) {
         Pageable pageable = Pageable.ofSize(Integer.MAX_VALUE);
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
             .map(BusinessView::assemble)
             .getContent();
+    }
+
+    @Transactional(readOnly = true)
+    public List<BusinessShortView> findByRegistrationNumber(String registrationNumber) {
+        return repository.findByRegistrationNumber(registrationNumber)
+            .stream()
+            .map(BusinessShortView::assemble)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -79,12 +87,11 @@ public class BusinessService {
 
         Business business = Business.of(
             params.getName(),
-            params.getRepresentativeName(),
+            params.getCeoName(),
             params.getRegistrationNumber(),
             params.getAddress(),
-            params.getZipCode(),
             params.getOfficePhone(),
-            params.getMemo(),
+            params.getNote(),
             managerList
         );
 
@@ -114,7 +121,7 @@ public class BusinessService {
                     BusinessManager manager = business.getManagerList().stream()
                         .filter(item -> item.getId().equals(managerParameter.getId()))
                         .findFirst()
-                        .orElseThrow(() -> new NotFoundException("business-manager", managerParameter.getId()));
+                        .orElseThrow(() -> new NotFoundException(BusinessManager.KEY, managerParameter.getId()));
                     manager.change(
                         managerParameter.getName(),
                         managerParameter.getJobTitle(),
@@ -131,12 +138,11 @@ public class BusinessService {
 
         business.change(
             params.getName(),
-            params.getRepresentativeName(),
+            params.getCeoName(),
             params.getRegistrationNumber(),
             params.getAddress(),
-            params.getZipCode(),
             params.getOfficePhone(),
-            params.getMemo(),
+            params.getNote(),
             managerList
         );
     }
@@ -152,15 +158,17 @@ public class BusinessService {
     }
 
     private Business load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("business", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Business.KEY, id));
     }
 
     private void checkRegistrationNumber(String registrationNumber, @Nullable Long id) {
-        repository.findByRegistrationNumber(registrationNumber).ifPresent((instance) -> {
-            if (Objects.isNull(id) || !Objects.equals(instance.getId(), id)) {
-                throw new DuplicatedValueException("business", "registration-number", registrationNumber);
-            }
-        });
+        repository.findByRegistrationNumber(registrationNumber)
+            .stream()
+            .filter(instance -> !Objects.equals(id, instance.getId()))
+            .findFirst()
+            .ifPresent((instance) -> {
+                throw new DuplicatedValueException(Business.KEY, "registration-number", registrationNumber);
+            });
     }
 }
 

@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.business.parameter;
 
+import com.howoocast.hywtl_has.business.domain.Business;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,21 +12,20 @@ import java.util.List;
 @Setter
 public class BusinessParameter {
 
-    @NotBlank(message = "business.name.not-blank")
+    @NotBlank(message = Business.KEY + ".name.not-blank")
     private String name;
 
-    private String representativeName;
+    private String ceoName;
 
-    @NotBlank(message = "business.registration-number.not-blank")
+    private String officePhone;
+
+    @NotBlank(message = Business.KEY + ".registration-number.not-blank")
     private String registrationNumber;
 
     private String address;
 
-    private String zipCode;
+    private String note;
 
-    private String officePhone;
-
-    private String memo;
-
+    @NotEmpty(message = Business.KEY + ".manager-list.not-empty")
     private List<BusinessManagerParameter> managerList;
 }

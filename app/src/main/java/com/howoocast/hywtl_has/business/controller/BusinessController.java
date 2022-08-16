@@ -30,7 +30,7 @@ public class BusinessController {
         @RequestParam(required = false) String keyword,
         Pageable pageable
     ) {
-        return businessService.page(
+        return businessService.findAll(
             new BusinessPredicateBuilder()
                 .keyword(keywordType, keyword)
                 .build(),
@@ -38,12 +38,19 @@ public class BusinessController {
         );
     }
 
+    @GetMapping(value = "/business", params = "registrationNumber")
+    public List<BusinessShortView> getList(
+        @RequestParam String registrationNumber
+    ) {
+        return businessService.findByRegistrationNumber(registrationNumber);
+    }
+
     @GetMapping("/business/all")
     public List<BusinessView> getList(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword
     ) {
-        return businessService.getList(
+        return businessService.findAll(
             new BusinessPredicateBuilder()
                 .keywordForModal(keywordType, keyword)
                 .build()
