@@ -16,7 +16,7 @@ public class UserPredicateBuilder {
 
     public UserPredicateBuilder role(@Nullable List<UserRole> roleList) {
         if (Objects.nonNull(roleList)) {
-            criteria.and(user.userRole.in(roleList));
+            criteria.and(user.role.in(roleList));
         }
         return this;
     }

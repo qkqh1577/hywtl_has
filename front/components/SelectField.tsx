@@ -1,71 +1,61 @@
 import {
-  Autocomplete,
-  AutocompleteProps,
+  MenuItem,
+  StandardTextFieldProps,
   TextField
 } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useMemo
+} from 'react';
 import {
   DataFieldValue,
   FieldStatus,
+  getValue,
   isOption,
   Option
 } from 'components/DataFieldProps';
-import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete/Autocomplete';
 import {
-  FormikValues,
-  useFormikContext
+  FormikContext,
 } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 
-export interface SelectFieldProps<Multiple extends boolean | undefined,
-  DisableClearable extends boolean | undefined,
-  FreeSolo extends boolean | undefined>
-  extends Omit<AutocompleteProps<Option, Multiple, DisableClearable, FreeSolo>,
-    | 'options'
-    | 'renderInput'
-    | 'getOptionLabel'
-    | 'isOptionEqualToValue'
+export interface SelectFieldProps
+  extends Omit<StandardTextFieldProps,
+    | 'name'
     | 'label'
-    | 'disabled'
-    | 'readOnly'> {
+    | 'value'
+    | 'fullWidth'
+    | 'disabled'> {
   options: Option[] | DataFieldValue[] | null;
   disableLabel?: boolean;
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
   label: string;
-  helperText?: string;
-  required?: boolean;
   status?: FieldStatus;
+  multiple?: boolean;
 }
 
-type RenderInput = (params: AutocompleteRenderInputParams) => React.ReactNode;
-
-function isOptionEqualToValue(option: Option,
-                              value: any
-) {
-  if (!value) {
-    return false;
-  }
-  if (isOption(value)) {
-    return option.key === value.key;
-  }
-  return option.key === value;
+interface FieldProps
+  extends Pick<StandardTextFieldProps,
+    | 'select'
+    | 'fullWidth'
+    | 'variant'
+    | 'onChange'
+    | 'InputProps'
+    | 'SelectProps'
+    | 'label'
+    | 'error'
+    | 'helperText'
+    | 'value'
+    | 'disabled'
+    | 'required'
+    | 'children'> {
+  name: string;
 }
 
-function getValue(options: Option[],
-                  value: any
-): Option | undefined {
-  return options.find(option => isOptionEqualToValue(option, value));
-}
-
-function arrange<T, >(item: T | undefined): item is T {
-  return typeof item !== 'undefined';
-}
-
-export default function SelectField<Multiple extends boolean | undefined,
-  DisableClearable extends boolean | undefined,
-  FreeSolo extends boolean | undefined>(props: SelectFieldProps<Multiple, DisableClearable, FreeSolo>) {
+export default function SelectField(props: SelectFieldProps) {
   const {
           name,
           label,
@@ -77,86 +67,114 @@ export default function SelectField<Multiple extends boolean | undefined,
           status,
           multiple,
           defaultValue,
-          onChange: propsOnChange,
-          options:  propsOptions,
-          ...       rest
+          InputProps,
+          SelectProps,
+          onChange,
+          options,
+          ...restProps
         } = props;
-  const { values, errors, handleChange } = useFormikContext<FormikValues>();
-  const error = useMemo(() => !!errors[name], [errors]);
-  const value = values[name] ?? defaultValue;
-  const edit = values.edit;
-  const disabled = status === FieldStatus.Disabled;
-  const readOnly = status === FieldStatus.ReadOnly || edit;
-  const options: Option[] = useMemo(() => {
-    console.log(propsOptions);
-    if (!propsOptions) {
-      return [];
+
+  const children = useMemo(() => {
+    if (!options) {
+      return null;
     }
-    return propsOptions.map((option) => {
+    return options.map((option) => {
       if (isOption(option)) {
-        return option;
+
+        return (
+          <MenuItem key={option.key} value={option.key}>
+            {option.text}
+          </MenuItem>
+        );
       }
-      return {
-        key:  option,
-        text: option,
-      };
+      return (
+        <MenuItem key={option} value={option}>
+          {option}
+        </MenuItem>
+      );
     });
-  }, [propsOptions]);
+  }, [options]);
 
-  const onChange: typeof props['onChange'] = (event,
-                                              value,
-                                              reason,
-                                              details
-  ) => {
-    if (propsOnChange) {
-      propsOnChange(event, value, reason, details);
-    }
-    handleChange(event);
-  };
+  const formikContext = useContext(FormikContext);
+  if (formikContext) {
+    const { values, errors, handleChange } = formikContext;
+    const value = getValue<any>(values, name) ?? defaultValue ?? '';
+    const edit = values.edit || typeof values.edit === 'undefined';
+    const disabled = status === FieldStatus.Disabled;
+    const readOnly = status === FieldStatus.ReadOnly && !edit;
+    const error = !!errors[name];
 
-  const renderInput: RenderInput = (params) => {
+    const fieldProps: FieldProps = {
+      select:      true,
+      fullWidth:   true,
+      variant:     'standard',
+      name,
+      value:       children === null || !options || options.length === 0 ? '' : value,
+      label:       disableLabel ? undefined : label,
+      error,
+      helperText:  error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
+      disabled,
+      required:    edit && required,
+      onChange:    useCallback((e: any) => {
+        if (onChange) {
+          onChange(e);
+        }
+        handleChange(e);
+      }, [handleChange, onChange]),
+      InputProps:  {
+        ...InputProps,
+        readOnly,
+        startAdornment,
+        endAdornment: <>
+                        {endAdornment}
+                        {InputProps?.endAdornment}
+                      </>,
+      },
+      SelectProps: {
+        ...SelectProps,
+        multiple,
+      },
+      children
+    };
+
     return (
       <TextField
-        {...params}
-        fullWidth
-        variant="standard"
-        name={name}
-        required={edit && required}
-        disabled={disabled}
-        label={disableLabel ? undefined : label}
-        error={error}
-        helperText={error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
-        InputProps={{
-          ...params.InputProps,
-          readOnly,
-          startAdornment,
-          endAdornment,
-        }}
+        {...restProps}
+        {...fieldProps}
       />
     );
-  };
 
-  return (
-    <Autocomplete
-      fullWidth
-      {...rest}
-      multiple={multiple}
-      getOptionLabel={(option) => `${option.text}`}
-      isOptionEqualToValue={isOptionEqualToValue}
-      options={options}
-      inputValue={
-        Array.isArray(value)
-          ? value.map(v => getValue(options, v))
-                 .filter(arrange)
-                 .map(v => `${v.text}`)
-                 .join()
-          : `${getValue(options, value)?.text}` ?? ''
-      }
-      renderInput={renderInput}
-      value={value}
-      onChange={onChange}
-      disabled={disabled}
-      readOnly={readOnly}
-    />
-  );
+  }
+  else {
+    const fieldProps: FieldProps = {
+      select:      true,
+      fullWidth:   true,
+      variant:     'standard',
+      name,
+      label:       disableLabel ? undefined : label,
+      InputProps:  {
+        ...InputProps,
+        readOnly:     true,
+        startAdornment,
+        endAdornment: <>
+                        {endAdornment}
+                        {InputProps?.endAdornment}
+                      </>,
+      },
+      SelectProps: {
+        ...SelectProps,
+        multiple,
+      },
+      value:       '',
+      children
+    };
+
+    return (
+      <TextField
+        {...restProps}
+        {...fieldProps}
+      />
+    );
+  }
+
 }

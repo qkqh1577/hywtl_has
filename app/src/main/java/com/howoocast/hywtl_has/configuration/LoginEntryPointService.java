@@ -22,7 +22,7 @@ public class LoginEntryPointService implements UserDetailsService {
             User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getUserRole().name())
+                .roles(user.getRole().name())
                 .build()
         ).orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
     }

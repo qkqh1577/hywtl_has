@@ -29,11 +29,11 @@ public class PersonnelJob extends CustomEntity {
 
     @NotNull
     @ManyToOne
-    private Department department; // 부서
+    private Department department; // 조직
 
     @NotBlank
     @Column(nullable = false)
-    private String jobTitle; // 직함 - 부서 내 호칭
+    private String jobTitle; // 직함 - 조직 내 호칭
 
     @NotBlank
     @Column(nullable = false)
@@ -45,7 +45,7 @@ public class PersonnelJob extends CustomEntity {
 
     private String jobClass; // 직급 - 직위 내에서의 구분 단위. ex) n호봉, 주임, 책임...
 
-    private String jobDuty; // 직책, 부서 내 책임. ex) 팀장, 본부장, 실장...
+    private String jobDuty; // 직책, 조직 내 책임. ex) 팀장, 본부장, 실장...
 
     public static PersonnelJob of(
         Department department,

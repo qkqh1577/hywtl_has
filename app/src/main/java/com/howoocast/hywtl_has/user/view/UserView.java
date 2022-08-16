@@ -14,7 +14,7 @@ public class UserView {
     private String email;
     private String name;
     private DepartmentView department;
-    private UserRole userRole;
+    private UserRole role;
     private LocalDateTime createdAt;
     private LocalDateTime loginAt;
     private LocalDateTime passwordChangedAt;
@@ -26,7 +26,7 @@ public class UserView {
         target.email = source.getEmail();
         target.name = source.getName();
         target.department = DepartmentView.assemble(source.getDepartment());
-        target.userRole = source.getUserRole();
+        target.role = source.getRole();
         target.createdAt = source.getCreatedAt();
         target.loginAt = source.getLoginAt();
         target.passwordChangedAt = source.getPasswordChangedAt();

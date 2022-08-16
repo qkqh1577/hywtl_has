@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 
 type Props = {
-  date?: Date;
+  date: Date | null | undefined;
   format?: string;
   prefix?: string;
   postfix?: string;

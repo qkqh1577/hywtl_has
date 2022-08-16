@@ -3,27 +3,27 @@ import React, {
   useState
 } from 'react';
 import {
-  UserShort,
   userApi
-} from 'services/user';
+} from 'user/api';
 import SelectField, { SelectFieldProps } from 'components/SelectField';
+import { UserVO } from 'user/domain';
 
 const UserSelector = <Multiple extends boolean | undefined,
   DisableClearable extends boolean | undefined,
   FreeSolo extends boolean | undefined>(props: Omit<SelectFieldProps<Multiple, DisableClearable, FreeSolo>, | 'options'>) => {
-  const [list, setList] = useState<UserShort[] | null>(null);
+  const [list, setList] = useState<UserVO[]>([]);
   useEffect(() => {
-    userApi.getAll()
+    userApi.getList()
            .then(setList)
-           .catch(() => setList(null));
+           .catch(() => setList([]));
   }, []);
 
   return (
     <SelectField
-      options={list?.map((item) => ({
-        key:  item.id,
+      options={list.map((item) => ({
+        key:  item.id as number,
         text: item.name,
-      })) ?? null}
+      }))}
       {...props}
     />
   );

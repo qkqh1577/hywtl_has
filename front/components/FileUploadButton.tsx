@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { FileItemView, fileToView } from 'services/common/file-item';
+import { FileItemView, fileToView } from 'file-item';
 import { Button } from '@mui/material';
 
 export type FileUploadButtonProps = {

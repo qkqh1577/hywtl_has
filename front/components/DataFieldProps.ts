@@ -1,6 +1,4 @@
-import React, { SyntheticEvent } from 'react';
-import { TextFieldProps } from '@mui/material';
-import { InputProps as MuiInputProps } from '@mui/material/Input/Input';
+import { FormikValues } from 'formik';
 
 export enum FieldStatus {
   /** 정상 상태, 드래그 가능, 편집 가능, 필드 제공 */
@@ -13,11 +11,6 @@ export enum FieldStatus {
   View,
 }
 
-export interface FieldValue<T = any> {
-  value: T;
-  edit: boolean | undefined;
-}
-
 export type DataFieldValue = string | number;
 
 export interface Option {
@@ -25,45 +18,25 @@ export interface Option {
   text: DataFieldValue;
 }
 
-export interface Props
-  extends Pick<MuiInputProps
-    , 'autoFocus'
-      | 'disabled'
-      | 'placeholder'
-      | 'readOnly'
-      | 'required'
-      | 'size'
-      | 'sx'> {
-  disableLabel?: boolean;
-  helperText?: string | React.ReactNode;
-  label: string;
-  name: string;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | SyntheticEvent,
-              value?: DataFieldValue | DataFieldValue[]
-  ) => void;
-  variant?: 'standard' | 'filled' | 'outlined';
-}
-
-export interface CommonProps
-  extends Pick<TextFieldProps
-    , 'autoFocus'
-      | 'disabled'
-      | 'error'
-      | 'helperText'
-      | 'id'
-      | 'label'
-      | 'name'
-      | 'placeholder'
-      | 'required'
-      | 'size'
-      | 'sx'
-      | 'variant'> {
-}
-
-export const isDataFieldValue = (value: any): value is DataFieldValue => {
+export function isDataFieldValue(value: any): value is DataFieldValue {
   return value === null || typeof value === 'string' || typeof value === 'number';
-};
-export const isOption = (value: any): value is Option => {
+}
+
+export function isOption(value: any): value is Option {
   return !isDataFieldValue(value) && isDataFieldValue((value as Option).key);
-};
+}
+
+
+export function getValue<T = unknown>(values: FormikValues,
+                                      name: string
+): T | undefined {
+  if (!values) {
+    return undefined;
+  }
+  const key = name.includes('.') ? name.split('.')[0] : name;
+  const value = values[key];
+  if (!name.includes('.')) {
+    return value;
+  }
+  return getValue(value, name.substring(key.length + 1));
+}

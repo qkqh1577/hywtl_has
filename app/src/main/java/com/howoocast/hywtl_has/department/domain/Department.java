@@ -40,16 +40,16 @@ public class Department extends CustomEntity {
 
     @NotBlank
     @Column(nullable = false)
-    private String name; // 부서 이름, 부서명
+    private String name; // 조직 이름, 조직명
 
     @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DepartmentCategory category; // 부서 유형
+    private DepartmentCategory category; // 조직 유형
 
     @JsonBackReference
     @ManyToOne
-    private Department parent; // 상위 부서
+    private Department parent; // 상위 조직
 
     @NotNull
     @Column(nullable = false)
@@ -60,7 +60,7 @@ public class Department extends CustomEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "parent")
     @OrderBy("seq")
-    private List<Department> childrenList; // 하위 부서 리스트
+    private List<Department> childrenList; // 하위 조직 리스트
 
     @JsonManagedReference
     @OneToMany(mappedBy = "department")
