@@ -1,5 +1,5 @@
 import PageLayout from 'layouts/PageLayout';
-import ProjectStatusBar, { ProjectStatusBarProps } from 'project/view/Container/Status';
+import ProjectStatusBar, { ProjectStatusBarProps } from 'project/view/Container/Status';import React from 'react';
 
 interface Props {
   projectStatusBarProps: ProjectStatusBarProps;

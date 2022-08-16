@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,6 +11,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import App from 'app/route/app';
 import store from 'services/store';
 import 'dayjs/locale/ko';
+import { ThemeProvider } from '@mui/styles';
+import mainTheme from 'app/view/App/theme';
+import {
+  Alert,
+  Confirm
+} from 'components/Dialog';
+import {
+  Box,
+  CssBaseline
+} from '@mui/material';
 
 const render = () => {
 
@@ -21,10 +31,22 @@ const render = () => {
           <Route path="*" element={
             <Provider store={store}>
               <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">
-                <App />
+                <ThemeProvider theme={mainTheme}>
+                  <CssBaseline />
+                  <Box sx={{
+                    display: 'flex',
+                    width:   '100%',
+                    height:  '100vh'
+                  }}>
+                    <App />
+                  </Box>
+                  <Alert />
+                  <Confirm />
+                </ThemeProvider>
               </LocalizationProvider>
             </Provider>
-          } />
+          }
+          />
         </Routes>
       </Router>
     </React.StrictMode>,

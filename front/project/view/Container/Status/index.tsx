@@ -3,8 +3,14 @@ import SectionLayout from 'layouts/SectionLayout';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
   ProjectContractStatus,
+  projectContractStatusList,
+  projectContractStatusName,
   ProjectEstimateExpectation,
+  projectEstimateExpectationList,
+  projectEstimateExpectationName,
   ProjectEstimateStatus,
+  projectEstimateStatusList,
+  projectEstimateStatusName,
   ProjectProgressStatus,
   projectProgressStatusList,
   projectProgressStatusName
@@ -49,25 +55,25 @@ export default function ProjectStatusBar(props: ProjectStatusBarProps) {
           <SelectField
             name="estimateExpectation"
             label="견적 분류"
-            options={projectProgressStatusList.map((item) => ({
+            options={projectEstimateExpectationList.map((item) => ({
               key:  item as string,
-              text: projectProgressStatusName(item)
+              text: projectEstimateExpectationName(item)
             }))}
           />
           <SelectField
             name="estimateStatus"
             label="견적 상태"
-            options={projectProgressStatusList.map((item) => ({
+            options={projectEstimateStatusList.map((item) => ({
               key:  item as string,
-              text: projectProgressStatusName(item)
+              text: projectEstimateStatusName(item)
             }))}
           />
           <SelectField
             name="contractStatus"
             label="계약 상태"
-            options={projectProgressStatusList.map((item) => ({
+            options={projectContractStatusList.map((item) => ({
               key:  item as string,
-              text: projectProgressStatusName(item)
+              text: projectContractStatusName(item)
             }))}
           />
         </Box>

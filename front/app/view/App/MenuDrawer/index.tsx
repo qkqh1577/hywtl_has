@@ -1,7 +1,7 @@
 import {
+  Button,
   Divider,
   List,
-  Typography
 } from '@mui/material';
 import React from 'react';
 import MenuNode from 'app/view/App/MenuNode';
@@ -23,12 +23,9 @@ export default function (props: MenuDrawerProps) {
 
   return (
     <Drawer open={openMenu}>
-      <Typography sx={{
-        ml:       '19px',
-        fontSize: '16px'
-      }}>
+      <Button>
         새탭에서 간트 열기
-      </Typography>
+      </Button>
       <Divider />
       <List component="div" sx={{
         display:  'flex',

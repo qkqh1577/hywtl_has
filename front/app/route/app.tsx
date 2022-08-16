@@ -31,15 +31,15 @@ import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
 export default function () {
 
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { alert, confirm } = useDialog();
+  const { pathname } = useLocation();
+  const isProjectPage = useMemo(() => pathname.startsWith('/project'), [pathname]);
+  const isLoginPage = useMemo(() => pathname === '/login', [pathname]);
+  const { alert } = useDialog();
   const { user, getLoginUser, logout } = useLogin();
   const { open: openMenu, menu, toggleMenu } = useMenu();
   const { open: openProjectMenu, filterOpen } = useSelector((root: RootState) => root.projectDrawer);
   const { page } = useSelector((root: RootState) => root.project);
-  const isProjectPage = useMemo(() => pathname.startsWith('/project'), [pathname]);
-  const isLoginPage = useMemo(() => pathname === '/login', [pathname]);
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const toggleFilter = useCallback(() => dispatch(projectDrawerAction.toggleFilter()), [dispatch]);
   const toggleProjectMenu = useCallback(() => dispatch(projectDrawerAction.toggleMenu()), [dispatch]);
@@ -55,16 +55,6 @@ export default function () {
       });
     }
   });
-
-  const handleLogout = () => {
-    confirm({
-      children:     '로그아웃하시겠습니까?',
-      confirmText:  '로그아웃',
-      afterConfirm: () => {
-        logout();
-      }
-    });
-  };
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
     navigate(`/project/${item.id}/basic`);
@@ -105,7 +95,7 @@ export default function () {
     <App
       isLoginPage={isLoginPage}
       isProjectPage={isProjectPage}
-      loginButtonProps={{ handleLogout }}
+      logoutButtonProps={{ handleLogout: logout }}
       menuDrawerProps={{
         menu,
         openMenu,
