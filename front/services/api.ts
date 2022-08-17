@@ -12,21 +12,27 @@ export class HttpClient {
   constructor() {
     this.client = axios.create({
       paramsSerializer: (parameter: any) =>
-        queryString.stringify(parameter, {
-          arrayFormat: 'brackets',
-          encode: true,
-        })
+                          queryString.stringify(parameter, {
+                            arrayFormat: 'brackets',
+                            encode:      true,
+                          })
     });
   }
 
-  get = async (url: string, parameter?: any, config?: any) => {
+  get = async (url: string,
+               parameter?: any,
+               config?: any
+  ) => {
     return await this.client.get(url, {
-      parameter,
+      params: parameter,
       ...config,
     });
   };
 
-  post = async (url: string, parameter?: FormData | any, config?: any) => {
+  post = async (url: string,
+                parameter?: FormData | any,
+                config?: any
+  ) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
     const c = isFormData(parameter) ? {
       ...config,
@@ -40,7 +46,10 @@ export class HttpClient {
     });
   };
 
-  put = async (url: string, parameter?: FormData | any, config?: any) => {
+  put = async (url: string,
+               parameter?: FormData | any,
+               config?: any
+  ) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
     const c = isFormData(parameter) ? {
       ...config,
@@ -54,7 +63,10 @@ export class HttpClient {
     });
   };
 
-  patch = async (url: string, parameter?: FormData | any, config?: any) => {
+  patch = async (url: string,
+                 parameter?: FormData | any,
+                 config?: any
+  ) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
     const c = isFormData(parameter) ? {
       ...config,
@@ -68,7 +80,10 @@ export class HttpClient {
     });
   };
 
-  delete = async (url: string, parameter?: any, config?: any) => {
+  delete = async (url: string,
+                  parameter?: any,
+                  config?: any
+  ) => {
     return await this.client.delete(url, {
       params: parameter,
       ...config,
