@@ -25,9 +25,9 @@ public class ProjectReviewDetailView {
 
     private List<String> testList;
 
-    private String memo1;
+    private String note1;
 
-    private String memo2;
+    private String note2;
 
     public static ProjectReviewDetailView assemble(ProjectReviewDetail source) {
         ProjectReviewDetailView target = new ProjectReviewDetailView();
@@ -40,8 +40,8 @@ public class ProjectReviewDetailView {
         target.ratio = source.getRatio();
         target.specialWindLoadConditionList = source.getSpecialWindLoadConditionList();
         target.testList = source.getTestList();
-        target.memo1 = source.getMemo1();
-        target.memo2 = source.getMemo2();
+        target.note1 = source.getNote1();
+        target.note2 = source.getNote2();
         return target;
     }
 }

@@ -76,7 +76,7 @@ public class DepartmentService {
             parameter.getCategory(),
             parent,
             seq,
-            parameter.getMemo()
+            parameter.getNote()
         );
         if (Objects.isNull(id)) {
             instance = repository.save(instance);
@@ -98,7 +98,7 @@ public class DepartmentService {
 
     private Department load(Long id) {
         return repository.findById(id)
-            .orElseThrow(() -> new NotFoundException("department", id));
+            .orElseThrow(() -> new NotFoundException(Department.KEY, id));
     }
 
     @Nullable
@@ -111,7 +111,7 @@ public class DepartmentService {
         repository.findByNameAndCategory(instance.getName(), instance.getCategory())
             .ifPresent(department -> {
                 if (Objects.isNull(instance.getId()) || !Objects.equals(instance.getId(), department.getId())) {
-                    throw new DuplicatedValueException("department", "name", instance.getName());
+                    throw new DuplicatedValueException(Department.KEY, "name", instance.getName());
                 }
             });
     }

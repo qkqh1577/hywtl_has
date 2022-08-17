@@ -15,11 +15,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_estimate_custom_sheet")
+@Table(name = ProjectEstimateCustomSheet.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_estimate_custom_sheet set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + ProjectEstimateCustomSheet.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEstimateCustomSheet extends CustomEntity {
+
+    public static final String KEY = "project_estimate_custom_sheet";
 
 }

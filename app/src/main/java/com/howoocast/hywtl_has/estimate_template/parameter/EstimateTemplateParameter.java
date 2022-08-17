@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.estimate_template.parameter;
 
+import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplate;
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -12,12 +13,12 @@ import lombok.Setter;
 @Setter
 public class EstimateTemplateParameter {
 
-    @NotBlank(message = "estimate-template.title.not-blank")
+    @NotBlank(message = EstimateTemplate.KEY + ".title.not_blank")
     private String title;
 
-    @NotNull(message = "estimate-template.test-type.not-null")
+    @NotNull(message = EstimateTemplate.KEY + ".test_type.not_null")
     private TestType testType;
 
-    @NotEmpty(message = "test-service-template.detail-list.not-empty")
+    @NotEmpty(message = EstimateTemplate.KEY + ".detail_list.not_empty")
     private List<EstimateTemplateDetailParameter> detailList;
 }

@@ -34,23 +34,35 @@ public class EstimateTemplate extends CustomEntity {
 
     public static final String KEY = "estimate_template";
 
+    /**
+     * 용역 항목명
+     */
     @NotBlank
     @Column(nullable = false)
-    private String title; // 용역 항목명
+    private String title;
 
+    /**
+     * 실험 타입
+     */
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TestType testType; // 실험 타입
+    private TestType testType;
 
+    /**
+     * 정렬 순서
+     */
     @NotNull
     @Column(nullable = false)
-    private Integer seq; // 정렬 순서
+    private Integer seq;
 
+    /**
+     * 세부 항목 목록
+     */
     @NotEmpty
     @OneToMany(cascade = CascadeType.ALL)
     @OrderBy("seq asc")
-    private List<EstimateTemplateDetail> detailList; // 세부 항목 목록
+    private List<EstimateTemplateDetail> detailList;
 
     public static EstimateTemplate of(
         String title,

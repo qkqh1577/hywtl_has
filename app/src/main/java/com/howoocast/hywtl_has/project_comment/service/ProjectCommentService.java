@@ -67,6 +67,6 @@ public class ProjectCommentService {
     }
 
     private ProjectComment load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project_comment", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(ProjectComment.KEY, id));
     }
 }

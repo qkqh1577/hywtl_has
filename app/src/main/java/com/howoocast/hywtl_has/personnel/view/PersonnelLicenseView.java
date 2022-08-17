@@ -14,7 +14,7 @@ public class PersonnelLicenseView {
     private String organizationName;
     private String qualifiedNumber;
     private LocalDate qualifiedDate;
-    private String memo;
+    private String note;
 
     public static PersonnelLicenseView assemble(PersonnelLicense source) {
         PersonnelLicenseView target = new PersonnelLicenseView();
@@ -23,7 +23,7 @@ public class PersonnelLicenseView {
         target.organizationName = source.getOrganizationName();
         target.qualifiedNumber = source.getQualifiedNumber();
         target.qualifiedDate = source.getQualifiedDate();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         return target;
     }
 }

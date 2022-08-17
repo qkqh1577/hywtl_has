@@ -14,12 +14,12 @@ public class UserFinder extends CustomFinder<User> {
     protected UserFinder(
         UserRepository repository
     ) {
-        super("user", repository);
+        super(User.KEY, repository);
         this.repository = repository;
     }
 
     public User load(String username) {
         return repository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
+            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
     }
 }

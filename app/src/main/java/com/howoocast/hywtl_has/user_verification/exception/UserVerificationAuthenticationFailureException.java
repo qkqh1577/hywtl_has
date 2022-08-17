@@ -8,8 +8,8 @@ public class UserVerificationAuthenticationFailureException extends CustomExcept
     @RequiredArgsConstructor
     public enum UserInvitationAuthenticationFailureExceptionType {
 
-        EXPIRED("user-invitation.expired", "코드가 만료되었습니다."),
-        ILLEGAL_KEY("user-invitation.illegal-key", "정상적이지 않은 코드입니다.");
+        EXPIRED("user_invitation.expired", "코드가 만료되었습니다."),
+        ILLEGAL_KEY("user_invitation.illegal_key", "정상적이지 않은 코드입니다.");
 
         private final String code;
         private final String message;

@@ -66,7 +66,7 @@ export default function () {
       </Grid>
       <Grid item sm={12}>
         <TextField
-          name="memo"
+          name="note"
           label="설명"
         />
       </Grid>

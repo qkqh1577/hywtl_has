@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 public class ProjectCommentAddParameter {
 
-    @NotNull(message = "project-comment.project-id.not-null")
+    @NotNull(message = "project_comment.project_id.not_null")
     private Long projectId;
 
-    @NotBlank(message = "project-comment.description.not-blank")
+    @NotBlank(message = "project_comment.description.not_blank")
     private String description;
 
 }

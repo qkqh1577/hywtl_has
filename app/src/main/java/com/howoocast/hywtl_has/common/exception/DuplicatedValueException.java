@@ -8,7 +8,7 @@ public class DuplicatedValueException extends CustomExceptionAdaptor {
         String value
     ) {
         super(
-            String.format("%s.%s.unique.violation", entityName, property),
+            String.format("%s.%s.unique_violation", entityName, property),
             String.format("이미 사용 중인 값입니다. %s", value)
         );
     }

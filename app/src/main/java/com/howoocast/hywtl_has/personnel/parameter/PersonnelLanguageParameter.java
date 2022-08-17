@@ -11,18 +11,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelLanguageParameter extends CustomParameter<PersonnelLanguage> {
 
-    @NotBlank(message = "personnel.language.name.not-blank")
+    @NotBlank(message = "personnel.language.name.not_blank")
     private String name;
 
-    @NotBlank(message = "personnel.language.type.not-blank")
+    @NotBlank(message = "personnel.language.type.not_blank")
     private String type;
 
     private String grade;
 
-    @NotBlank(message = "personnel.language.organization-name.not-blank")
+    @NotBlank(message = "personnel.language.organization_name.not_blank")
     private String organizationName;
 
-    @NotNull(message = "personnel.language.certified-date.not-null")
+    @NotNull(message = "personnel.language.certified_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate certifiedDate;
 

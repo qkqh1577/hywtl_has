@@ -30,69 +30,82 @@ import org.springframework.lang.Nullable;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "department")
+@Table(name = Department.KEY)
 @DynamicUpdate
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update department set deleted_at = now() where id=?")
+@SQLDelete(sql = "update " + Department.KEY + " set deleted_at = now() where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Department extends CustomEntity {
 
+    public static final String KEY = "department";
+
+    /**
+     * 조직 이름, 조직명
+     */
     @NotBlank
     @Column(nullable = false)
-    private String name; // 조직 이름, 조직명
+    private String name;
 
+    /**
+     * 조직 유형
+     */
     @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DepartmentCategory category; // 조직 유형
+    private DepartmentCategory category;
 
+    /**
+     * 상위 조직
+     */
     @JsonBackReference
     @ManyToOne
-    private Department parent; // 상위 조직
+    private Department parent;
 
+    /**
+     * 노출 순서, 동일 뎁스에서만 유효
+     */
     @NotNull
     @Column(nullable = false)
-    private Integer seq; // 노출 순서, 동일 뎁스에서만 유효
+    private Integer seq;
 
-    private String memo; // 설명
+    /**
+     * 설명
+     */
+    private String note;
 
+    /**
+     * 하위 조직 리스트
+     */
     @JsonManagedReference
     @OneToMany(mappedBy = "parent")
     @OrderBy("seq")
-    private List<Department> childrenList; // 하위 조직 리스트
+    private List<Department> childrenList;
 
+    /**
+     * 소속 유저 리스트
+     */
     @JsonManagedReference
     @OneToMany(mappedBy = "department")
     @OrderBy("id")
-    private List<User> userList; // 소속 유저 리스트
+    private List<User> userList;
 
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static Department of() {
         return new Department();
     }
 
-    //////////////////////////////////
-    //// checker
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
     public void update(
         String name,
         DepartmentCategory category,
         @Nullable Department parent,
         Integer seq,
-        String memo
+        String note
     ) {
         this.name = name;
         this.category = category;
         this.parent = parent;
         this.seq = seq;
-        this.memo = memo;
+        this.note = note;
     }
 
     public void changeParent(

@@ -2,12 +2,14 @@ package com.howoocast.hywtl_has.project_target.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_target.domain.ProjectTarget;
 import com.howoocast.hywtl_has.project_target.domain.ProjectTargetDetail;
 import com.howoocast.hywtl_has.project_target.parameter.ProjectTargetParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_target.repository.ProjectTargetRepository;
 import com.howoocast.hywtl_has.project_target.view.ProjectTargetView;
+import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
@@ -46,22 +48,22 @@ public class ProjectTargetService {
         ProjectTargetParameter parameter
     ) {
         repository.findByCode(parameter.getCode()).ifPresent(instance -> {
-            throw new DuplicatedValueException("project-target", "code", parameter.getCode());
+            throw new DuplicatedValueException("project_target", "code", parameter.getCode());
         });
         ProjectTarget instance = ProjectTarget.of(
-            projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException("project", projectId)),
+            projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException(Project.KEY, projectId)),
             parameter.getCode(),
-            parameter.getMemo(),
+            parameter.getNote(),
             parameter.getTestList(),
             parameter.getDetailList().stream()
                 .map(detailParam -> ProjectTargetDetail.of(
                     detailParam.getBuildingName(),
                     detailParam.getTestList(),
-                    detailParam.getMemo()
+                    detailParam.getNote()
                 ))
                 .collect(Collectors.toList()),
             userRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)))
+                .orElseThrow(() -> new NotFoundException(User.KEY, String.format("username: %s", username)))
         );
         return ProjectTargetView.assemble(repository.save(instance));
     }
@@ -70,7 +72,7 @@ public class ProjectTargetService {
     public void change(Long id, ProjectTargetParameter parameter) {
         repository.findByCode(parameter.getCode()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("project-target", "code", parameter.getCode());
+                throw new DuplicatedValueException("project_target", "code", parameter.getCode());
             }
         });
         ProjectTarget instance = this.load(id);
@@ -80,17 +82,17 @@ public class ProjectTargetService {
                     return ProjectTargetDetail.of(
                         detailParam.getBuildingName(),
                         detailParam.getTestList(),
-                        detailParam.getMemo()
+                        detailParam.getNote()
                     );
                 }
                 ProjectTargetDetail detailInstance = instance.getDetailList().stream()
                     .filter(item -> item.getId().equals(detailParam.getId()))
                     .findFirst()
-                    .orElseThrow(() -> new NotFoundException("project-target-detail", detailParam.getId()));
+                    .orElseThrow(() -> new NotFoundException("project_target_detail", detailParam.getId()));
                 detailInstance.change(
                     detailParam.getBuildingName(),
                     detailParam.getTestList(),
-                    detailParam.getMemo()
+                    detailParam.getNote()
                 );
                 return detailInstance;
             }).collect(Collectors.toList());
@@ -99,7 +101,7 @@ public class ProjectTargetService {
             parameter.getCode(),
             parameter.getTestList(),
             detailList,
-            parameter.getMemo()
+            parameter.getNote()
         );
 
         // TODO: 삭제된 항목 deleted 처리
@@ -114,6 +116,6 @@ public class ProjectTargetService {
     private ProjectTarget load(Long id) {
         return repository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("project-target", id));
+            .orElseThrow(() -> new NotFoundException("project_target", id));
     }
 }

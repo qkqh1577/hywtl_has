@@ -52,7 +52,7 @@ public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
     @Column(nullable = false)
     private Boolean isIncluded; // 금액 사용 여부 (총액에 포함 여부)
 
-    private String memo; // 비고
+    private String note; // 비고
 
     @NotNull
     @Column(nullable = false)
@@ -65,7 +65,7 @@ public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
         Long unitPrice,
         Long totalPrice,
         Boolean isIncluded,
-        String memo,
+        String note,
         Integer seq
     ) {
         ProjectEstimateSheetTestServiceDetail instance =
@@ -76,7 +76,7 @@ public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
         instance.unitPrice = unitPrice;
         instance.totalPrice = totalPrice;
         instance.isIncluded = isIncluded;
-        instance.memo = memo;
+        instance.note = note;
         instance.seq = seq;
         return instance;
     }
@@ -87,13 +87,13 @@ public class ProjectEstimateSheetTestServiceDetail extends CustomEntity {
         Long unitPrice,
         Long totalPrice,
         Boolean isIncluded,
-        String memo
+        String note
     ) {
         this.unit = unit;
         this.count = count;
         this.unitPrice = unitPrice;
         this.totalPrice = totalPrice;
         this.isIncluded = isIncluded;
-        this.memo = memo;
+        this.note = note;
     }
 }

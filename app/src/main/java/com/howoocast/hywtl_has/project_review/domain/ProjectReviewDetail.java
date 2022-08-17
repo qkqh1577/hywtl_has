@@ -57,9 +57,9 @@ public class ProjectReviewDetail extends CustomEntity {
     @ElementCollection
     private List<String> testList; // 실험 종류
 
-    private String memo1; // 비고1
+    private String note1; // 비고1
 
-    private String memo2; // 비고2
+    private String note2; // 비고2
 
     public static ProjectReviewDetail of(
         String buildingName,
@@ -69,8 +69,8 @@ public class ProjectReviewDetail extends CustomEntity {
         Double area,
         List<String> specialWindLoadConditionList,
         List<String> testList,
-        String memo1,
-        String memo2
+        String note1,
+        String note2
     ) {
         ProjectReviewDetail instance = new ProjectReviewDetail();
         instance.buildingName = buildingName;
@@ -81,8 +81,8 @@ public class ProjectReviewDetail extends CustomEntity {
         instance.ratio = height / Math.sqrt(area);
         instance.specialWindLoadConditionList = specialWindLoadConditionList;
         instance.testList = testList;
-        instance.memo1 = memo1;
-        instance.memo2 = memo2;
+        instance.note1 = note1;
+        instance.note2 = note2;
         return instance;
     }
 
@@ -94,8 +94,8 @@ public class ProjectReviewDetail extends CustomEntity {
         Double area,
         List<String> specialWindLoadConditionList,
         List<String> testList,
-        String memo1,
-        String memo2
+        String note1,
+        String note2
     ) {
         this.buildingName = buildingName;
         this.floorCount = floorCount;
@@ -105,7 +105,7 @@ public class ProjectReviewDetail extends CustomEntity {
         this.ratio = height / Math.sqrt(area);
         this.specialWindLoadConditionList = specialWindLoadConditionList;
         this.testList = testList;
-        this.memo1 = memo1;
-        this.memo2 = memo2;
+        this.note1 = note1;
+        this.note2 = note2;
     }
 }

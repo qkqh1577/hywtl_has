@@ -14,20 +14,20 @@ public class BusinessParameter {
 
     private Long id;
 
-    @NotBlank(message = Business.KEY + ".name.not-blank")
+    @NotBlank(message = Business.KEY + ".name.not_blank")
     private String name;
 
     private String ceoName;
 
     private String officePhone;
 
-    @NotBlank(message = Business.KEY + ".registration-number.not-blank")
+    @NotBlank(message = Business.KEY + ".registration_number.not_blank")
     private String registrationNumber;
 
     private String address;
 
     private String note;
 
-    @NotEmpty(message = Business.KEY + ".manager-list.not-empty")
+    @NotEmpty(message = Business.KEY + ".manager_list.not_empty")
     private List<BusinessManagerParameter> managerList;
 }

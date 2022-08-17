@@ -14,18 +14,18 @@ import lombok.Setter;
 @Setter
 public class ProjectReviewParameter {
 
-    @NotNull(message = "project-review.status.not-null")
+    @NotNull(message = "project_review.status.not_null")
     private ProjectReviewStatus status;
 
-    @NotBlank(message = "project-review.code.not-blank")
+    @NotBlank(message = "project_review.code.not_blank")
     private String code;
 
-    @Min(value = 0, message = "project.land-figure-count.positive")
+    @Min(value = 0, message = "project.land_figure_count.positive")
     private Integer landFigureCount;
 
     private List<String> testList;
 
-    @NotEmpty(message = "project-review.detail-list.not-empty")
+    @NotEmpty(message = "project_review.detail_list.not_empty")
     private List<ProjectReviewDetailParameter> detailList;
 
     private List<FileItemParameter> fileList;

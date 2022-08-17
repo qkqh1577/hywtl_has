@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.user.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
@@ -72,7 +73,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserView get(String username) {
         User instance = repository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
+            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
         return UserView.assemble(instance);
     }
 
@@ -81,8 +82,9 @@ public class UserService {
         String email = parameter.getEmail();
         UserInvitation userInvitation = userInvitationRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(
-                "user-verification.user-invitation",
-                String.format("email: %s", email)
+                "user_verification.user_invitation",
+                "email",
+                email
             ));
         userInvitation.checkValid(invalidateDuration, parameter.getAuthKey());
 
@@ -108,7 +110,7 @@ public class UserService {
             parameter.getEmail(),
             parameter.getRole(),
             departmentRepository.findById(parameter.getDepartment().getId())
-                .orElseThrow(() -> new NotFoundException("department", parameter.getDepartment().getId()))
+                .orElseThrow(() -> new NotFoundException(Department.KEY, parameter.getDepartment().getId()))
         );
         this.checkEmailUsed(instance);
     }
@@ -122,15 +124,19 @@ public class UserService {
     @Transactional
     public void validatePassword(UserValidatePasswordParameter parameter) {
         PasswordReset passwordReset = passwordResetRepository.findByEmail(parameter.getEmail())
-            .orElseThrow(() -> new NotFoundException("user-verification.password-reset",
-                String.format("email: %s", parameter.getEmail())));
+            .orElseThrow(() -> new NotFoundException(
+                "user_verification.password_reset",
+                "email",
+                parameter.getEmail()
+            ));
         passwordReset.checkValid(invalidateDuration, parameter.getAuthKey());
 
         User instance = repository.findByEmail(parameter.getEmail())
             .orElseThrow(
                 () -> new NotFoundException(
-                    "user",
-                    String.format("email: %s", (parameter.getEmail()))
+                    User.KEY,
+                    "email",
+                    parameter.getEmail()
                 )
             );
         instance.validatePassword(parameter.getPassword());
@@ -145,14 +151,14 @@ public class UserService {
     }
 
     private User load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("user", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(User.KEY, id));
     }
 
     private void checkEmailUsed(User instance) {
         String email = instance.getEmail();
         repository.findByEmail(email).ifPresent(target -> {
             if (!Objects.equals(instance.getId(), target.getId())) {
-                throw new DuplicatedValueException("user", "email", email);
+                throw new DuplicatedValueException(User.KEY, "email", email);
             }
         });
     }
@@ -161,7 +167,7 @@ public class UserService {
         String username = instance.getUsername();
         repository.findByUsername(username).ifPresent(target -> {
             if (!Objects.equals(instance.getId(), target.getId())) {
-                throw new DuplicatedValueException("user", "username", username);
+                throw new DuplicatedValueException(User.KEY, "username", username);
             }
         });
     }

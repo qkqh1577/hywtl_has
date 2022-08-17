@@ -20,13 +20,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_comment")
+@Table(name = ProjectComment.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_comment set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + ProjectComment.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectComment extends CustomEntity {
 
+    public static final String KEY = "project_comment";
     @ManyToOne
     private Project project;
 
@@ -37,9 +38,6 @@ public class ProjectComment extends CustomEntity {
     @Column(nullable = false)
     private String description;
 
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
     protected ProjectComment(
         Project project,
         User writer,
@@ -50,13 +48,6 @@ public class ProjectComment extends CustomEntity {
         this.description = description;
     }
 
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
-
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static ProjectComment of(
         Project project,
         User writer,
@@ -69,9 +60,6 @@ public class ProjectComment extends CustomEntity {
         );
     }
 
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
     public void changeDescription(String description) {
         this.description = description;
     }

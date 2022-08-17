@@ -55,7 +55,7 @@ public class DepartmentController {
 
     @GetMapping(value = "/departments", params = "type")
     public List<? extends DepartmentItemView> list(@RequestParam String type) {
-        if (type.equals("as-list")) {
+        if (type.equals("as_list")) {
             return departmentService.list();
         }
         return departmentService.itemList();

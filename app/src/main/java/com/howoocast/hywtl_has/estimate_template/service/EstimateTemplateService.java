@@ -67,7 +67,7 @@ public class EstimateTemplateService {
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitPrice(),
-                detailParams.getMemo(),
+                detailParams.getNote(),
                 i + 1
             ));
         }
@@ -91,7 +91,7 @@ public class EstimateTemplateService {
                     detailParams.getTitleList(),
                     detailParams.getUnit(),
                     detailParams.getUnitPrice(),
-                    detailParams.getMemo(),
+                    detailParams.getNote(),
                     i + 1
                 ));
                 continue;
@@ -105,7 +105,7 @@ public class EstimateTemplateService {
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitPrice(),
-                detailParams.getMemo(),
+                detailParams.getNote(),
                 i + 1
             );
             detailList.add(detailInstance);

@@ -33,7 +33,7 @@ public class PersonnelLicense {
     @Column(nullable = false)
     protected LocalDate qualifiedDate; // 승인 일자
 
-    protected String memo; // 비고
+    protected String note; // 비고
 
     public static PersonnelLicense of(
         String name,
@@ -41,7 +41,7 @@ public class PersonnelLicense {
         String organizationName,
         String qualifiedNumber,
         LocalDate qualifiedDate,
-        String memo
+        String note
     ) {
         return new PersonnelLicense(
             name,
@@ -49,7 +49,7 @@ public class PersonnelLicense {
             organizationName,
             qualifiedNumber,
             qualifiedDate,
-            memo
+            note
         );
     }
 

@@ -15,7 +15,7 @@ public class BusinessManagerParameter {
 
     private Long id;
 
-    @NotBlank(message = BusinessManager.KEY + ".name.not-blank")
+    @NotBlank(message = BusinessManager.KEY + ".name.not_blank")
     private String name;
 
     private String jobTitle;
@@ -28,6 +28,6 @@ public class BusinessManagerParameter {
 
     private List<String> meta;
 
-    @NotNull(message = BusinessManager.KEY + ".status.not-null")
+    @NotNull(message = BusinessManager.KEY + ".status.not_null")
     private BusinessManagerStatus status; // 상태:  재직, 퇴사, 휴직
 }

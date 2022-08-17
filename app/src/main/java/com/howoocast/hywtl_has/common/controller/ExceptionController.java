@@ -56,7 +56,7 @@ public class ExceptionController {
         nextSet = new HashSet<>();
         message = message.replace(".", " ");
         for (String key : keySet) {
-            if (key.contains("-")) {
+            if (key.contains("_")) {
                 if (message.contains(key)) {
                     message = message.replace(key, dictionary.get(key));
                 }
@@ -66,7 +66,7 @@ public class ExceptionController {
         }
 
         keySet = nextSet;
-        message = message.replace("-", " ");
+        message = message.replace("_", " ");
         for (String key : keySet) {
             if (message.contains(key)) {
                 message = message.replace(key, dictionary.get(key));
@@ -87,14 +87,14 @@ public class ExceptionController {
 
                 if (Objects.isNull(message)) {
                     return new ErrorBody(
-                        "system.method-argument-not-valid.field.is-null",
+                        "system.method_argument_not_valid.field.is_null",
                         "알 수 없는 에러가 발생하였습니다."
                     );
                 }
                 return new ErrorBody(code, message);
             })
             .orElse(new ErrorBody(
-                "system.method-argument-not-valid.field.is-null",
+                "system.method_argument_not_valid.field.is_null",
                 "알 수 없는 에러가 발생하였습니다."
             ));
     }

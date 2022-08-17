@@ -33,13 +33,14 @@ import org.springframework.lang.Nullable;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project_estimate_sheet")
+@Table(name = ProjectEstimateSheet.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project_estimate_sheet set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + ProjectEstimateSheet.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEstimateSheet extends CustomEntity {
 
+    public static final String KEY = "project_estimate_sheet";
     @JsonBackReference
     @Getter(AccessLevel.NONE)
     @NotNull
@@ -58,7 +59,7 @@ public class ProjectEstimateSheet extends CustomEntity {
     @Column(nullable = false)
     private String title; // 견적 번호
 
-    private String memo; // 비고
+    private String note; // 비고
 
     @NotNull
     @ManyToOne
@@ -103,7 +104,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         Boolean confirmed,
         ProjectEstimateSheetStatus status,
         String title,
-        String memo,
+        String note,
         User writer,
         LocalDate estimateDate,
         LocalDate expectedStartMonth,
@@ -122,7 +123,7 @@ public class ProjectEstimateSheet extends CustomEntity {
             confirmed,
             status,
             title,
-            memo,
+            note,
             estimateDate,
             expectedStartMonth,
             salesTeamLeader,
@@ -141,7 +142,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         Boolean confirmed,
         ProjectEstimateSheetStatus status,
         String title,
-        String memo,
+        String note,
         User writer,
         LocalDate estimateDate,
         LocalDate expectedStartMonth,
@@ -159,7 +160,7 @@ public class ProjectEstimateSheet extends CustomEntity {
             confirmed,
             status,
             title,
-            memo,
+            note,
             writer,
             estimateDate,
             expectedStartMonth,
@@ -180,7 +181,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         Boolean confirmed,
         ProjectEstimateSheetStatus status,
         String title,
-        String memo,
+        String note,
         User writer,
         LocalDate estimateDate,
         LocalDate expectedStartMonth,
@@ -198,7 +199,7 @@ public class ProjectEstimateSheet extends CustomEntity {
             confirmed,
             status,
             title,
-            memo,
+            note,
             writer,
             estimateDate,
             expectedStartMonth,
@@ -218,7 +219,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         Boolean confirmed,
         ProjectEstimateSheetStatus status,
         String title,
-        String memo,
+        String note,
         LocalDate estimateDate,
         LocalDate expectedStartMonth,
         User salesTeamLeader,
@@ -232,7 +233,7 @@ public class ProjectEstimateSheet extends CustomEntity {
         this.confirmed = confirmed;
         this.status = status;
         this.title = title;
-        this.memo = memo;
+        this.note = note;
         this.estimateDate = estimateDate;
         this.expectedStartMonth = expectedStartMonth;
         this.salesTeamLeader = salesTeamLeader;

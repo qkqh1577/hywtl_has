@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 public class UserPasswordChangeParameter {
 
-    @NotBlank(message = "user.now-password.not-blank")
+    @NotBlank(message = "user.now_password.not_blank")
     private String nowPassword;
 
-    @NotBlank(message = "user.new-password.not-blank")
+    @NotBlank(message = "user.new_password.not_blank")
     private String newPassword;
 }
