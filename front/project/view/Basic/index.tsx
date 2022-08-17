@@ -1,11 +1,13 @@
 import React from 'react';
-import ProjectContainer from 'project/view/Container';
-import { ProjectContainerStatusBar } from 'project/view/Container/Status';
+import { Box } from '@mui/material';
 
-interface Props {
-  statusBarProps: ProjectContainerStatusBar;
-}
+export default function ProjectBasic() {
 
-export default function ProjectBasic(props: Props) {
-
+  return (
+    <Box sx={{
+      width: '100%',
+    }}>
+      기본정보
+    </Box>
+  );
 }

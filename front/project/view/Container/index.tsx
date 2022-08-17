@@ -6,7 +6,11 @@ import { Box } from '@mui/material';
 import ProjectContainerTitle from 'project/view/Container/Title';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
 
-export default function ProjectContainer() {
+interface Props {
+  children: React.ReactNode;
+}
+
+export default function ProjectContainer(props: Props) {
 
   return (
     <PageLayout
@@ -24,9 +28,7 @@ export default function ProjectContainer() {
           <ProjectContainerTab />
         </Box>
       }
-      body={
-        <div>test</div>
-      }
+      body={props.children}
     />
   );
 }
