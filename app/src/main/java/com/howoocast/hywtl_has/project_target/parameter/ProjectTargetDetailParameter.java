@@ -11,10 +11,10 @@ public class ProjectTargetDetailParameter {
 
     private Long id;
 
-    @NotBlank(message = "project-target-detail.building-name.not-blank")
+    @NotBlank(message = "project_target_detail.building_name.not_blank")
     private String buildingName;
 
     private List<String> testList;
 
-    private String memo;
+    private String note;
 }

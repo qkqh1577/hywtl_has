@@ -15,25 +15,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class ProjectEstimateSheetParameter {
 
-    @NotNull(message = "project.estimate.sheet.confirm.not-null")
+    @NotNull(message = "project.estimate.sheet.confirm.not_null")
     private Boolean confirmed;
 
-    @NotNull(message = "project.estimate.sheet.status.not-null")
+    @NotNull(message = "project.estimate.sheet.status.not_null")
     private ProjectEstimateSheetStatus status;
 
-    @NotBlank(message = "project.estimate.sheet.title.not-blank")
+    @NotBlank(message = "project.estimate.sheet.title.not_blank")
     private String title;
 
-    private String memo;
+    private String note;
 
-    @NotNull(message = "project.estimate.sheet.estimate-date.not-null")
+    @NotNull(message = "project.estimate.sheet.estimate_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate estimateDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expectedStartMonth;
 
-    @NotNull(message = "project.estimate.sheet.sales-team-leader-id.not-null")
+    @NotNull(message = "project.estimate.sheet.sales_team_leader_id.not_null")
     private Long salesTeamLeaderId;
 
     private Long salesManagementLeaderId;
@@ -42,15 +42,15 @@ public class ProjectEstimateSheetParameter {
 
     private Integer finalReportPeriod;
 
-    @NotNull(message = "project.estimate.sheet.project-review-id.not-null", groups = OnAdd.class)
+    @NotNull(message = "project.estimate.sheet.project_review_id.not_null", groups = OnAdd.class)
     private Long reviewId;
 
-    @NotEmpty(message = "project.estimate.sheet.test-service-list.not-empty")
+    @NotEmpty(message = "project.estimate.sheet.test_service_list.not_empty")
     private List<ProjectEstimateSheetTestServiceParameter> testServiceList;
 
     private Long specialDiscount;
 
-    @NotEmpty(message = "project.estimate.sheet.comment-list.not-empty")
+    @NotEmpty(message = "project.estimate.sheet.comment_list.not_empty")
     private List<ProjectEstimateSheetCommentParameter> commentList;
 
 }

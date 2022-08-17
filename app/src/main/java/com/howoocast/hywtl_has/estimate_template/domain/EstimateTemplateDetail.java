@@ -26,41 +26,56 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SQLDelete(sql = "update " + EstimateTemplateDetail.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EstimateTemplateDetail  extends CustomEntity {
+public class EstimateTemplateDetail extends CustomEntity {
 
     public static final String KEY = "estimate_template_detail";
 
+    /**
+     * 세부 항목 문구 목록
+     */
     @NotEmpty
     @ElementCollection
-    private List<String> titleList; // 세부 항목 문구 목록
+    private List<String> titleList;
 
+    /**
+     * 단위
+     */
     @NotBlank
     @Column(nullable = false)
-    private String unit; // 단위
+    private String unit;
 
+    /**
+     * 단가
+     */
     @NotNull
     @Column(nullable = false)
-    private Long unitPrice; // 단가
+    private Long unitPrice;
 
-    private String memo; // 비고
+    /**
+     * 비고
+     */
+    private String note;
 
+    /**
+     * 정렬 순서
+     */
     @NotNull
     @Column(nullable = false)
-    private Integer seq; // 정렬 순서
+    private Integer seq;
 
 
     public static EstimateTemplateDetail of(
         List<String> titleList,
         String unit,
         Long unitPrice,
-        String memo,
+        String note,
         Integer seq
     ) {
         EstimateTemplateDetail instance = new EstimateTemplateDetail();
         instance.titleList = titleList;
         instance.unit = unit;
         instance.unitPrice = unitPrice;
-        instance.memo = memo;
+        instance.note = note;
         instance.seq = seq;
         return instance;
     }
@@ -69,13 +84,13 @@ public class EstimateTemplateDetail  extends CustomEntity {
         List<String> titleList,
         String unit,
         Long unitPrice,
-        String memo,
+        String note,
         Integer seq
     ) {
         this.titleList = titleList;
         this.unit = unit;
         this.unitPrice = unitPrice;
-        this.memo = memo;
+        this.note = note;
         this.seq = seq;
     }
 }

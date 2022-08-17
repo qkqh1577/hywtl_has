@@ -2,7 +2,9 @@ package com.howoocast.hywtl_has.user_verification.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.event.UserInvitationAddEvent;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
@@ -36,7 +38,7 @@ public class UserInvitationService {
     public UserInvitationView authenticate(String email, String authKey) {
         UserInvitation instance = repository.findByEmail(email)
             .orElseThrow(
-                () -> new NotFoundException("user-verification.user-invitation", String.format("email: %s", email)));
+                () -> new NotFoundException("user_verification.user_invitation", "email", email));
         instance.checkValid(invalidateDuration, authKey);
         return UserInvitationView.assemble(instance);
     }
@@ -46,7 +48,7 @@ public class UserInvitationService {
         String email = parameter.getEmail();
         // 기 가입자 이메일 사용 체크
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new DuplicatedValueException("user", "email", email);
+            throw new DuplicatedValueException(User.KEY, "email", email);
         }
 
         // 기존 코드 무효화
@@ -57,7 +59,7 @@ public class UserInvitationService {
             email,
             parameter.getName(),
             departmentRepository.findById(parameter.getDepartmentId())
-                .orElseThrow(() -> new NotFoundException("department", parameter.getDepartmentId())),
+                .orElseThrow(() -> new NotFoundException(Department.KEY, parameter.getDepartmentId())),
             parameter.getRole()
         );
 

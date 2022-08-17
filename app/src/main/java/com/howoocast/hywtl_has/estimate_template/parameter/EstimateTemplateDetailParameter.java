@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.estimate_template.parameter;
 
+import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplateDetail;
 import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -14,15 +15,15 @@ public class EstimateTemplateDetailParameter {
 
     private Long id;
 
-    @NotEmpty(message = "estimate-template-detail.title-list.not-empty")
+    @NotEmpty(message = EstimateTemplateDetail.KEY + ".title_list.not_empty")
     private List<String> titleList;
 
-    @NotBlank(message = "estimate-template-detail.unit.not-blank")
+    @NotBlank(message = EstimateTemplateDetail.KEY + ".unit.not_blank")
     private String unit;
 
-    @NotNull(message = "estimate-template-detail.unit-price.not-null")
-    @Min(value = 0, message = "estimate-template-detail.unit-price.positive")
+    @NotNull(message = EstimateTemplateDetail.KEY + ".unit_price.not_null")
+    @Min(value = 0, message = EstimateTemplateDetail.KEY + ".unit_price.positive")
     private Long unitPrice;
 
-    private String memo;
+    private String note;
 }

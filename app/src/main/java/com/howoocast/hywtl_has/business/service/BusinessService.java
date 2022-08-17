@@ -143,7 +143,7 @@ public class BusinessService {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
                 throw new IllegalRequestException(
-                    Business.KEY + ".manager-list.delete.violation",
+                    Business.KEY + ".manager_list.delete_violation",
                     "담당자가 존재하는 업체는 삭제할 수 없습니다."
                 );
             }
@@ -162,7 +162,7 @@ public class BusinessService {
             .filter(instance -> !Objects.equals(id, instance.getId()))
             .findFirst()
             .ifPresent((instance) -> {
-                throw new DuplicatedValueException(Business.KEY, "registration-number", registrationNumber);
+                throw new DuplicatedValueException(Business.KEY, "registration_number", registrationNumber);
             });
     }
 

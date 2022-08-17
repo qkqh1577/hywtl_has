@@ -49,7 +49,7 @@ export default function () {
     children: '단가',
     required: edit,
   }, {
-    key:      'memo',
+    key:      'note',
     children: '비고',
   }, {
     key:      'seq',
@@ -103,7 +103,7 @@ export default function () {
               <TableCell>
                 <TextField
                   disableLabel
-                  name={`detailList.${i}.memo`}
+                  name={`detailList.${i}.note`}
                   label="비고"
                 />
               </TableCell>

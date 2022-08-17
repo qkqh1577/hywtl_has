@@ -35,55 +35,78 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = User.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update user set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + User.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends CustomEntity {
 
+    public static final String KEY = "user";
+
+    /**
+     * 사용자명
+     */
     @NotBlank
     @Column(nullable = false)
-    private String name; // 사용자명
+    private String name;
 
+    /**
+     * 로그인 아이디
+     */
     @NotBlank
     @Column(nullable = false, updatable = false)
-    private String username; // 로그인 아이디
+    private String username;
 
+    /**
+     * 로그인 비밀번호
+     */
     @NotBlank
     @Column(nullable = false)
-    private String password; // 로그인 비밀번호
+    private String password;
 
+    /**
+     * 이메일
+     */
     @NotBlank
     @Column(nullable = false)
-    private String email; // 이메일
+    private String email;
 
+    /**
+     * 소속 조직
+     */
     @NotNull
     @ManyToOne
-    private Department department; // 소속 조직
+    private Department department;
 
     @NotNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    /**
+     * 최근 접속일시
+     */
     @Column(insertable = false)
-    private LocalDateTime loginAt; // 최근 접속일시
+    private LocalDateTime loginAt;
 
+    /**
+     * 잠김 처리일시
+     */
     @Column(insertable = false)
-    private LocalDateTime lockedAt; // 잠김 처리일시
+    private LocalDateTime lockedAt;
 
+    /**
+     * 비밀번호 변경일시
+     */
     @Column(nullable = false)
-    private LocalDateTime passwordChangedAt; // 비밀번호 변경일시
+    private LocalDateTime passwordChangedAt;
 
     @JsonManagedReference
     @Getter(AccessLevel.NONE)
     @OneToOne(mappedBy = "user")
     private Personnel personnel;
 
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
     protected User(
         String username,
         String password,
@@ -100,18 +123,12 @@ public class User extends CustomEntity {
         this.setPassword(password);
     }
 
-    //////////////////////////////////
-    //// getter - setter
-    //////////////////////////////////
     private void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
         this.passwordChangedAt = LocalDateTime.now();
         this.lockedAt = null;
     }
 
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static User of(
         String username,
         String password,
@@ -141,9 +158,6 @@ public class User extends CustomEntity {
         }
     }
 
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
     public void change(
         String name,
         String email,

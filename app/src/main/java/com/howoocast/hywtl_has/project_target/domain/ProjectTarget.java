@@ -47,7 +47,7 @@ public class ProjectTarget extends CustomEntity {
     @Column(nullable = false)
     private String code; // 실험 대상 번호
 
-    private String memo; // 비고
+    private String note; // 비고
 
     @ElementCollection
     private List<String> testList; // 실험 종류(단지) 목록
@@ -67,7 +67,7 @@ public class ProjectTarget extends CustomEntity {
     public static ProjectTarget of(
         Project project,
         String code,
-        String memo,
+        String note,
         @Nullable List<String> testList,
         List<ProjectTargetDetail> detailList,
         User writer
@@ -75,7 +75,7 @@ public class ProjectTarget extends CustomEntity {
         ProjectTarget instance = new ProjectTarget();
         instance.project = project;
         instance.code = code;
-        instance.memo = memo;
+        instance.note = note;
         instance.testList = testList;
         instance.detailList = detailList;
         instance.writer = writer;
@@ -86,11 +86,11 @@ public class ProjectTarget extends CustomEntity {
         String code,
         @Nullable List<String> testList,
         List<ProjectTargetDetail> detailList,
-        String memo
+        String note
     ) {
         this.code = code;
         this.testList = testList;
         this.detailList = detailList;
-        this.memo = memo;
+        this.note = note;
     }
 }

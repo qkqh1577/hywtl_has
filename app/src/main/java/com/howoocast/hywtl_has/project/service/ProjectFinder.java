@@ -11,6 +11,6 @@ public class ProjectFinder extends CustomFinder<Project> {
     protected ProjectFinder(
         ProjectRepository repository
     ) {
-        super("project", repository);
+        super(Project.KEY, repository);
     }
 }

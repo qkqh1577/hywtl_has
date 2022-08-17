@@ -25,7 +25,7 @@ public class ProjectTargetShortView {
 
     private UserShortView writer;
 
-    private String memo;
+    private String note;
 
     private LocalDateTime createdAt;
 
@@ -40,7 +40,7 @@ public class ProjectTargetShortView {
         target.detailCount = source.getDetailList().size();
         target.testList = getTestList(source);
         target.writer = UserShortView.assemble(source.getWriter());
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();
         return target;

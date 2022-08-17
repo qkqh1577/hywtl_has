@@ -41,12 +41,15 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Slf4j
 @Getter
 @Entity
-@Table(name = "file_item")
+@Table(name = FileItem.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update file_item set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@SQLDelete(sql = "update " + FileItem.KEY
+    + " set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileItem extends CustomEntity {
+
+    public static final String KEY = "file_item";
 
     @NotBlank
     @Column(nullable = false, updatable = false)

@@ -14,7 +14,7 @@ public class ProjectReviewFinder extends CustomFinder<ProjectReview> {
     protected ProjectReviewFinder(
         ProjectReviewRepository repository
     ) {
-        super("project-review", repository);
+        super("project_review", repository);
         this.repository = repository;
     }
 

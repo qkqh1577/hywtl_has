@@ -13,7 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class ProjectOrderParameter {
 
-    @Min(value = 0, message = "project-order.amount.positive")
+    @Min(value = 0, message = "project_order.amount.positive")
     private Long amount;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

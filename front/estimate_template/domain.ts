@@ -92,7 +92,7 @@ export interface EstimateTemplateDetailVO {
   titleList: string[];
   unit: TestUnit | '';
   unitPrice: number | '';
-  memo?: string;
+  note?: string;
 }
 
 export const initialEstimateTemplateDetailVO: EstimateTemplateDetailVO = {
@@ -100,7 +100,7 @@ export const initialEstimateTemplateDetailVO: EstimateTemplateDetailVO = {
   titleList: [],
   unit:      '',
   unitPrice: '',
-  memo:      ''
+  note:      ''
 };
 
 export interface EstimateTemplateVO {

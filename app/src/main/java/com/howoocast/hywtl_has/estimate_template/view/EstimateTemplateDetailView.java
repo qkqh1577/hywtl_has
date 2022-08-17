@@ -15,7 +15,7 @@ public class EstimateTemplateDetailView {
 
     private Long unitPrice;
 
-    private String memo;
+    private String note;
 
 
     public static EstimateTemplateDetailView assemble(EstimateTemplateDetail source) {
@@ -24,7 +24,7 @@ public class EstimateTemplateDetailView {
         target.titleList = source.getTitleList();
         target.unit = source.getUnit();
         target.unitPrice = source.getUnitPrice();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         return target;
     }
 }

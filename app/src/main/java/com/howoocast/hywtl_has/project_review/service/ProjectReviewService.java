@@ -55,7 +55,7 @@ public class ProjectReviewService {
     @Transactional
     public ProjectReviewView add(Long projectId, String username, ProjectReviewParameter parameter) {
         if (repository.findByCode(parameter.getCode()).isPresent()) {
-            throw new DuplicatedValueException("project-review", "code", parameter.getCode());
+            throw new DuplicatedValueException("project_review", "code", parameter.getCode());
         }
 
         Project project = projectFinder.load(projectId);
@@ -78,8 +78,8 @@ public class ProjectReviewService {
                     item.getArea(),
                     item.getSpecialWindLoadConditionList(),
                     item.getTestList(),
-                    item.getMemo1(),
-                    item.getMemo2()
+                    item.getNote1(),
+                    item.getNote2()
                 )
             ),
             Optional.ofNullable(parameter.getFileList())
@@ -98,7 +98,7 @@ public class ProjectReviewService {
     public void change(Long id, ProjectReviewParameter parameter) {
         repository.findByCode(parameter.getCode()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("project-review", "code", parameter.getCode());
+                throw new DuplicatedValueException("project_review", "code", parameter.getCode());
             }
         });
 
@@ -114,14 +114,14 @@ public class ProjectReviewService {
                         detailParam.getArea(),
                         detailParam.getSpecialWindLoadConditionList(),
                         detailParam.getTestList(),
-                        detailParam.getMemo1(),
-                        detailParam.getMemo2()
+                        detailParam.getNote1(),
+                        detailParam.getNote2()
                     );
                 }
                 ProjectReviewDetail detailInstance = instance.getDetailList().stream()
                     .filter(item -> item.getId().equals(detailParam.getId()))
                     .findFirst()
-                    .orElseThrow(() -> new NotFoundException("project-review", detailParam.getId()));
+                    .orElseThrow(() -> new NotFoundException("project_review", detailParam.getId()));
                 detailInstance.change(
                     detailParam.getBuildingName(),
                     detailParam.getFloorCount(),
@@ -130,8 +130,8 @@ public class ProjectReviewService {
                     detailParam.getArea(),
                     detailParam.getSpecialWindLoadConditionList(),
                     detailParam.getTestList(),
-                    detailParam.getMemo1(),
-                    detailParam.getMemo2()
+                    detailParam.getNote1(),
+                    detailParam.getNote2()
                 );
                 return detailInstance;
             })
@@ -161,6 +161,6 @@ public class ProjectReviewService {
     }
 
     private ProjectReview load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project-review", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("project_review", id));
     }
 }

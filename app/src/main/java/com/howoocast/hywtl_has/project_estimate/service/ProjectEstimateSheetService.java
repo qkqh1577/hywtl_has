@@ -57,14 +57,14 @@ public class ProjectEstimateSheetService {
         User salesManagementLeader = userFinder.find(parameter.getSalesManagementLeaderId());
 
         ProjectReview review = projectReviewRepository.findById(parameter.getReviewId())
-            .orElseThrow(() -> new NotFoundException("project-review", parameter.getReviewId()));
+            .orElseThrow(() -> new NotFoundException("project_review", parameter.getReviewId()));
 
         ProjectEstimateSheet instance = ProjectEstimateSheet.of(
             projectFinder.load(projectId),
             parameter.getConfirmed(),
             parameter.getStatus(),
             parameter.getTitle(),
-            parameter.getMemo(),
+            parameter.getNote(),
             writer,
             parameter.getEstimateDate(),
             parameter.getExpectedStartMonth(),
@@ -86,7 +86,7 @@ public class ProjectEstimateSheetService {
                             detailParams.getUnitPrice(),
                             detailParams.getTotalPrice(),
                             detailParams.getIsIncluded(),
-                            detailParams.getMemo(),
+                            detailParams.getNote(),
                             detailParams.getSeq()
                         )
                     ),
@@ -109,7 +109,7 @@ public class ProjectEstimateSheetService {
             parameter.getConfirmed(),
             parameter.getStatus(),
             parameter.getTitle(),
-            parameter.getMemo(),
+            parameter.getNote(),
             parameter.getEstimateDate(),
             parameter.getExpectedStartMonth(),
             salesTeamLeader,
@@ -119,19 +119,19 @@ public class ProjectEstimateSheetService {
             ListConvertor.make(
                 parameter.getTestServiceList(),
                 instance.getTestServiceList(),
-                "project-estimate.sheet.test-service",
+                "project.estimate.sheet.test_service",
                 (i, p) -> i.change(
                     ListConvertor.make(
                         p.getDetailList(),
                         i.getDetailList(),
-                        "project-estimate.sheet.test-service-detail",
+                        "project.estimate.sheet.test_service_detail",
                         (di, dp) -> di.change(
                             dp.getUnit(),
                             dp.getCount(),
                             dp.getUnitPrice(),
                             dp.getTotalPrice(),
                             dp.getIsIncluded(),
-                            dp.getMemo()
+                            dp.getNote()
                         )
                     )
                 )
@@ -153,6 +153,6 @@ public class ProjectEstimateSheetService {
     }
 
     private ProjectEstimateSheet load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("project-estimate-sheet", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(ProjectEstimateSheet.KEY, id));
     }
 }

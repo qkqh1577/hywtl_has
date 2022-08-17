@@ -11,16 +11,16 @@ import lombok.Setter;
 @Setter
 public class UserChangeParameter {
 
-    @NotBlank(message = "user.name.not-blank")
+    @NotBlank(message = "user.name.not_blank")
     private String name;
 
-    @NotBlank(message = "user.email.not-blank")
+    @NotBlank(message = "user.email.not_blank")
     private String email;
 
-    @NotNull(message = "user.role.not-null")
+    @NotNull(message = "user.role.not_null")
     private UserRole role;
 
-    @NotNull(message = "user.department.not-null")
+    @NotNull(message = "user.department.not_null")
     private DepartmentIdParameter department;
 
 }

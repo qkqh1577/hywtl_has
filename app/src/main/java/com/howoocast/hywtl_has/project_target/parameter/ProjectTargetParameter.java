@@ -10,14 +10,14 @@ import lombok.Setter;
 @Setter
 public class ProjectTargetParameter {
 
-    @NotBlank(message = "project-target.code.not-blank")
+    @NotBlank(message = "project_target.code.not_blank")
     private String code;
 
     private List<String> testList;
 
-    private String memo;
+    private String note;
 
-    @NotEmpty(message = "project-target.detail-list.not-empty")
+    @NotEmpty(message = "project_target.detail_list.not_empty")
     private List<ProjectTargetDetailParameter> detailList;
 
 }

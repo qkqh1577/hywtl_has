@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.department.parameter;
 
+import com.howoocast.hywtl_has.department.domain.Department;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class DepartmentIdParameter {
 
-    @NotNull(message = "department.id.not-null")
+    @NotNull(message = Department.KEY + ".id.not_null")
     private Long id;
 }

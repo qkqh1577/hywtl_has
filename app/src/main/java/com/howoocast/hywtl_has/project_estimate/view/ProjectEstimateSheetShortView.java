@@ -17,7 +17,7 @@ public class ProjectEstimateSheetShortView {
 
     private String title;
 
-    private String memo;
+    private String note;
 
     private UserShortView writer;
 
@@ -31,7 +31,7 @@ public class ProjectEstimateSheetShortView {
         target.confirmed = source.getConfirmed();
         target.status = source.getStatus();
         target.title = source.getTitle();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         target.writer = UserShortView.assemble(source.getWriter());
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();

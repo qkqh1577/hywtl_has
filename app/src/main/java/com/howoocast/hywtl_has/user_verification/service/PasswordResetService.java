@@ -33,7 +33,7 @@ public class PasswordResetService {
     public PasswordResetView authenticate(String email, String authKey) {
         PasswordReset instance = repository.findByEmail(email)
             .orElseThrow(
-                () -> new NotFoundException("user-verification.password-reset", String.format("email: %s", email))
+                () -> new NotFoundException("user_verification.password_reset", "email", email)
             );
         instance.checkValid(invalidateDuration, authKey);
         return PasswordResetView.assemble(instance);
@@ -47,7 +47,7 @@ public class PasswordResetService {
     @Transactional
     public void reset(Long userId) {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException("user", userId));
+            .orElseThrow(() -> new NotFoundException(User.KEY, userId));
         this.resetByEmail(user.getEmail());
     }
 
@@ -57,7 +57,7 @@ public class PasswordResetService {
             .ifPresent(instance -> repository.deleteById(instance.getId()));
 
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException("user", String.format("email: %s", email)));
+            .orElseThrow(() -> new NotFoundException(User.KEY, "email", email));
         user.lock();
         PasswordReset passwordReset = PasswordReset.of(
             email,

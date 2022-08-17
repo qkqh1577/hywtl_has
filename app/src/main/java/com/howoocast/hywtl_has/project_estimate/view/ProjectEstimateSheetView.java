@@ -21,7 +21,7 @@ public class ProjectEstimateSheetView {
 
     private String title;
 
-    private String memo;
+    private String note;
 
     private LocalDate estimateDate;
 
@@ -49,7 +49,7 @@ public class ProjectEstimateSheetView {
         target.confirmed = source.getConfirmed();
         target.status = source.getStatus();
         target.title = source.getTitle();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         target.estimateDate = source.getEstimateDate();
         target.expectedStartMonth = source.getExpectedStartMonth();
         target.salesTeamLeader = UserShortView.assemble(source.getSalesTeamLeader());

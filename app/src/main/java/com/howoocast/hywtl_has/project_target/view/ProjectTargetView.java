@@ -18,7 +18,7 @@ public class ProjectTargetView {
 
     private List<String> testList;
 
-    private String memo;
+    private String note;
 
     private UserShortView writer;
 
@@ -31,7 +31,7 @@ public class ProjectTargetView {
             .map(List::size).map(size -> size > 0).orElse(Boolean.FALSE);
         target.code = source.getCode();
         target.testList = source.getTestList();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         target.writer = UserShortView.assemble(source.getWriter());
         target.detailList = source.getDetailList().stream()
             .map(ProjectTargetDetailView::assemble)

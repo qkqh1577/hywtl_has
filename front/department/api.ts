@@ -10,7 +10,7 @@ import { DepartmentParameter } from 'department/parameter';
 
 class DepartmentApi {
   async getList(): Promise<DepartmentShort[]> {
-    const { data } = await apiClient.get('/departments', { type: 'as-list' });
+    const { data } = await apiClient.get('/departments', { type: 'as_list' });
     return data;
   }
 

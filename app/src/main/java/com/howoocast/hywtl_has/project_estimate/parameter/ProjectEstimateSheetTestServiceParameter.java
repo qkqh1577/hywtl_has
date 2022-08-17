@@ -14,15 +14,15 @@ import lombok.Setter;
 @Setter
 public class ProjectEstimateSheetTestServiceParameter extends CustomIdParameter {
 
-    @NotNull(message = "project.estimate.sheet.test-service.id.not-null", groups = OnEdit.class)
+    @NotNull(message = "project.estimate.sheet.test_service.id.not_null", groups = OnEdit.class)
     private Long id;
 
-    @NotBlank(message = "project.estimate.sheet.test-service.title.not-blank", groups = OnAdd.class)
+    @NotBlank(message = "project.estimate.sheet.test_service.title.not_blank", groups = OnAdd.class)
     private String title;
 
-    @NotEmpty(message = "project.estimate.sheet.test-service.detail-list.not-empty")
+    @NotEmpty(message = "project.estimate.sheet.test_service.detail_list.not_empty")
     private List<ProjectEstimateSheetTestServiceDetailParameter> detailList;
 
-    @NotNull(message = "project.estimate.sheet.test-service.seq.not-null", groups = OnAdd.class)
+    @NotNull(message = "project.estimate.sheet.test_service.seq.not_null", groups = OnAdd.class)
     private Integer seq;
 }

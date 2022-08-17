@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class ProjectEstimateSheetCommentParameter {
 
-    @NotNull(message = "project.estimate.sheet.comment.seq.not-null")
+    @NotNull(message = "project.estimate.sheet.comment.seq.not_null")
     private Integer seq;
 
-    @NotBlank(message = "project.estimate.sheet.comment.description.not-blank")
+    @NotBlank(message = "project.estimate.sheet.comment.description.not_blank")
     private String description;
 
-    @NotNull(message = "project.estimate.sheet.comment.in-use.not-null")
+    @NotNull(message = "project.estimate.sheet.comment.in_use.not_null")
     private Boolean inUse;
 }

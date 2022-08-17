@@ -30,7 +30,6 @@ public class HomeController {
     @GetMapping("/{*path}")
     public ModelAndView pathIndexView(ModelAndView mav, @PathVariable String path) {
         mav.setViewName("index");
-        log.debug("[trim path] {}", path);
         mav.addObject("path", path);
         return mav;
     }

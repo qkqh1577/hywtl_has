@@ -59,7 +59,7 @@ export interface DepartmentVO {
   category: DepartmentCategory | '';
   seq: number;
   parentId?: number | '';
-  memo?: string;
+  note?: string;
   childrenList?: DepartmentVO[];
   userList?: UserVO[];
 }
@@ -75,5 +75,5 @@ export const initialDepartment: DepartmentVO = {
   category: '',
   seq:      0,
   parentId: '',
-  memo:     ''
+  note:     ''
 };

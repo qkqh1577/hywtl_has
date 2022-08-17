@@ -17,7 +17,7 @@ public class DepartmentView {
 
     private Integer seq;
 
-    private String memo;
+    private String note;
 
     private Long parentId;
 
@@ -31,7 +31,7 @@ public class DepartmentView {
         target.name = source.getName();
         target.category = source.getCategory();
         target.seq = source.getSeq();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         if (Objects.nonNull(source.getParent())) {
             target.parentId = source.getParent().getId();
         }

@@ -14,28 +14,28 @@ public class ProjectReviewDetailParameter {
 
     private Long id;
 
-    @NotBlank(message = "project-review.detail.building-name.not-blank")
+    @NotBlank(message = "project_review.detail.building_name.not_blank")
     private String buildingName;
 
-    @NotNull(message = "project-review.detail.floor-count.not-null")
+    @NotNull(message = "project_review.detail.floor_count.not_null")
     private Integer floorCount;
 
     private Integer baseCount;
 
-    @NotNull(message = "project-review.detail.height.not-null")
-    @DecimalMin(value = "0.0", message = "project-review.detail.height.positive")
+    @NotNull(message = "project_review.detail.height.not_null")
+    @DecimalMin(value = "0.0", message = "project_review.detail.height.positive")
     private Double height;
 
-    @NotNull(message = "project-review.detail.area.not-null")
-    @DecimalMin(value = "0.0", message = "project-review.detail.area.positive")
+    @NotNull(message = "project_review.detail.area.not_null")
+    @DecimalMin(value = "0.0", message = "project_review.detail.area.positive")
     private Double area;
 
     private List<String> specialWindLoadConditionList;
 
-    @NotEmpty(message = "project-review.detail.test-list.not-empty")
+    @NotEmpty(message = "project_review.detail.test_list.not_empty")
     private List<String> testList;
 
-    private String memo1;
+    private String note1;
 
-    private String memo2;
+    private String note2;
 }

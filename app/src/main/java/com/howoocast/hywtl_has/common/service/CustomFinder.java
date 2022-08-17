@@ -45,7 +45,7 @@ public abstract class CustomFinder<D extends CustomEntity> {
                 .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalRequestException(String.format("%s.not-allowed-method", entityName), "잘못된 요청입니다.");
+            throw new IllegalRequestException(String.format("%s.not_allowed_method", entityName), "잘못된 요청입니다.");
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class CustomFinder<D extends CustomEntity> {
             return executor.findAll(predicate, pageable);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalRequestException(String.format("%s.not-allowed-method", entityName), "잘못된 요청입니다.");
+            throw new IllegalRequestException(String.format("%s.not_allowed_method", entityName), "잘못된 요청입니다.");
         }
     }
 

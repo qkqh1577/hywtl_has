@@ -21,7 +21,7 @@ public class ProjectEstimateSheetTestServiceDetailView {
 
     private Boolean isIncluded;
 
-    private String memo;
+    private String note;
 
     public static ProjectEstimateSheetTestServiceDetailView assemble(ProjectEstimateSheetTestServiceDetail source) {
         ProjectEstimateSheetTestServiceDetailView target = new ProjectEstimateSheetTestServiceDetailView();
@@ -32,7 +32,7 @@ public class ProjectEstimateSheetTestServiceDetailView {
         target.unitPrice = source.getUnitPrice();
         target.totalPrice = source.getTotalPrice();
         target.isIncluded = source.getIsIncluded();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         return target;
     }
 }

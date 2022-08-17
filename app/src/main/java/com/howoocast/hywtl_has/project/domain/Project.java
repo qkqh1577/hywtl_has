@@ -25,13 +25,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "project")
+@Table(name = Project.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update project set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + Project.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project extends CustomEntity {
 
+    public static final String KEY = "project";
     @NotNull
     @Embedded
     @AttributeOverrides({

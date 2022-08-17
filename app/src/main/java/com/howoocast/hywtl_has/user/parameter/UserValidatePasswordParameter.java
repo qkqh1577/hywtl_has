@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 public class UserValidatePasswordParameter {
 
-    @NotBlank(message = "user.email.not-blank")
+    @NotBlank(message = "user.email.not_blank")
     private String email;
 
-    @NotBlank(message = "user.password.not-blank")
+    @NotBlank(message = "user.password.not_blank")
     private String password;
 
-    @NotBlank(message = "user.auth-key.not-blank")
+    @NotBlank(message = "user.auth_key.not_blank")
     private String authKey;
 }

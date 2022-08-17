@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class PasswordResetParameter {
 
-    @NotBlank(message = "user-verification.email.not-blank")
+    @NotBlank(message = "user_verification.email.not_blank")
     private String email;
 
 }

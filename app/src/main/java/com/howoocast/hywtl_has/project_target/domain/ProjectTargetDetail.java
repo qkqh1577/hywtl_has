@@ -33,27 +33,27 @@ public class ProjectTargetDetail extends CustomEntity {
     @ElementCollection
     private List<String> testList; // 실험 종류
 
-    private String memo; // 비고
+    private String note; // 비고
 
     public static ProjectTargetDetail of(
         String buildingName,
         List<String> testList,
-        String memo
+        String note
     ) {
         ProjectTargetDetail instance = new ProjectTargetDetail();
         instance.buildingName = buildingName;
         instance.testList = testList;
-        instance.memo = memo;
+        instance.note = note;
         return instance;
     }
 
     public void change(
         String buildingName,
         List<String> testList,
-        String memo
+        String note
     ) {
         this.buildingName = buildingName;
         this.testList = testList;
-        this.memo = memo;
+        this.note = note;
     }
 }

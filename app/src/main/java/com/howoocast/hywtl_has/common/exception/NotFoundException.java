@@ -4,15 +4,22 @@ public class NotFoundException extends CustomExceptionAdaptor {
 
     public NotFoundException(String code, Long id) {
         super(
-            String.format("%s.not-found", code),
+            String.format("%s.not_found", code),
             String.format("요청 항목을 찾을 수 없습니다. id: %d", id)
         );
     }
 
     public NotFoundException(String code, String message) {
         super(
-            String.format("%s.not-found", code),
+            String.format("%s.not_found", code),
             String.format("요청 항목을 찾을 수 없습니다. %s", message)
+        );
+    }
+
+    public NotFoundException(String code, String fieldName, String message) {
+        super(
+            String.format("%s.not_found", code),
+            String.format("요청 항목을 찾을 수 없습니다. %s: %s ", fieldName, message)
         );
     }
 }

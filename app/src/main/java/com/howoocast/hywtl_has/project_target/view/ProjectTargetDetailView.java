@@ -13,14 +13,14 @@ public class ProjectTargetDetailView {
 
     private List<String> testList;
 
-    private String memo;
+    private String note;
 
     public static ProjectTargetDetailView assemble(ProjectTargetDetail source) {
         ProjectTargetDetailView target = new ProjectTargetDetailView();
         target.id = source.getId();
         target.buildingName = source.getBuildingName();
         target.testList = source.getTestList();
-        target.memo = source.getMemo();
+        target.note = source.getNote();
         return target;
     }
 }

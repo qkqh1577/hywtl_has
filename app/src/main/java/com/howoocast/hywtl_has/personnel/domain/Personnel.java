@@ -26,12 +26,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "personnel")
+@Table(name = Personnel.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update personnel set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+@SQLDelete(sql = "update " + Personnel.KEY
+    + " set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Personnel extends CustomEntity {
+
+    public static final String KEY = "personnel";
 
     @JsonBackReference
     @OneToOne

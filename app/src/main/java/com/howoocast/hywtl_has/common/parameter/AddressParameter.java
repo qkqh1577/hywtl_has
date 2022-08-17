@@ -9,13 +9,13 @@ import lombok.Setter;
 @Setter
 public class AddressParameter {
 
-    @NotBlank(message = "address.depth1.not-blank")
+    @NotBlank(message = "address.depth1.not_blank")
     private String depth1;
 
-    @NotBlank(message = "address.depth2.not-blank")
+    @NotBlank(message = "address.depth2.not_blank")
     private String depth2;
 
-    @NotBlank(message = "address.road.not-blank")
+    @NotBlank(message = "address.road.not_blank")
     private String road;
 
     private String landNumber;
@@ -24,9 +24,9 @@ public class AddressParameter {
 
     private String extra;
 
-    @NotNull(message = "address.latitude.not-null")
+    @NotNull(message = "address.latitude.not_null")
     private Double latitude;
 
-    @NotNull(message = "address.longitude.not-null")
+    @NotNull(message = "address.longitude.not_null")
     private Double longitude;
 }
