@@ -34,15 +34,15 @@ public class ProjectOrderParameter {
     @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectChangeOrderBuilder {
 
-        private final ProjectOrderParameter params;
+        private final ProjectOrderParameter parameter;
 
         public void action(Project instance) {
             instance.changeOrder(
-                params.amount,
-                params.receivedDate,
-                params.beginDate,
-                params.closeDate,
-                params.isOnGoing
+                parameter.amount,
+                parameter.receivedDate,
+                parameter.beginDate,
+                parameter.closeDate,
+                parameter.isOnGoing
             );
         }
 

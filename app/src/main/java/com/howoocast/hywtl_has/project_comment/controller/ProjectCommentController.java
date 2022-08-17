@@ -49,19 +49,19 @@ public class ProjectCommentController {
     @PostMapping("/project-comments")
     public ProjectCommentView add(
         Authentication authentication,
-        @Valid @RequestBody ProjectCommentAddParameter params) {
+        @Valid @RequestBody ProjectCommentAddParameter parameter) {
         return projectCommentService.add(
             authentication.getName(),
-            params
+            parameter
         );
     }
 
     @PatchMapping("/project-comments/{id}")
     public ProjectCommentView changeDescription(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectCommentChangeParameter params
+        @Valid @RequestBody ProjectCommentChangeParameter parameter
     ) {
-        projectCommentService.change(id, params);
+        projectCommentService.change(id, parameter);
         return projectCommentService.get(id);
     }
 

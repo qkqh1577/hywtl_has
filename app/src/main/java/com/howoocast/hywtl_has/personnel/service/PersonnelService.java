@@ -48,22 +48,22 @@ public class PersonnelService {
     }
 
     @Transactional
-    public void update(Long id, PersonnelParameter params) {
+    public void update(Long id, PersonnelParameter parameter) {
         Personnel personnel = this.find(id);
         personnel.change(
-            params.getBasic().imageItem(fileItemService.build(params.getBasic().getImage())).build(),
-            params.getCompany().build(),
-            ListConvertor.make(params.getJobList().stream()
+            parameter.getBasic().imageItem(fileItemService.build(parameter.getBasic().getImage())).build(),
+            parameter.getCompany().build(),
+            ListConvertor.make(parameter.getJobList().stream()
                 .peek(item -> item.setDepartment(
                     departmentRepository.findById(item.getDepartmentId())
                         .orElseThrow(() -> new NotFoundException("department", item.getDepartmentId())))
                 )
                 .collect(Collectors.toList())
             ),
-            ListConvertor.make(params.getAcademicList()),
-            ListConvertor.make(params.getCareerList()),
-            ListConvertor.make(params.getLicenseList()),
-            ListConvertor.make(params.getLanguageList())
+            ListConvertor.make(parameter.getAcademicList()),
+            ListConvertor.make(parameter.getCareerList()),
+            ListConvertor.make(parameter.getLicenseList()),
+            ListConvertor.make(parameter.getLanguageList())
         );
     }
 

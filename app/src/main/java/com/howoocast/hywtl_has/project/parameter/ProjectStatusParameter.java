@@ -22,10 +22,10 @@ public class ProjectStatusParameter {
     @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectBasicStatusChangeBuilder {
 
-        private final ProjectStatusParameter params;
+        private final ProjectStatusParameter parameter;
 
         public void action(Project instance) {
-            instance.changeStatus(params.status);
+            instance.changeStatus(parameter.status);
         }
 
     }

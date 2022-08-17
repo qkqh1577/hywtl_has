@@ -77,20 +77,20 @@ public class UserService {
     }
 
     @Transactional
-    public UserView add(UserAddParameter params) {
-        String email = params.getEmail();
+    public UserView add(UserAddParameter parameter) {
+        String email = parameter.getEmail();
         UserInvitation userInvitation = userInvitationRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(
                 "user-verification.user-invitation",
                 String.format("email: %s", email)
             ));
-        userInvitation.checkValid(invalidateDuration, params.getAuthKey());
+        userInvitation.checkValid(invalidateDuration, parameter.getAuthKey());
 
         User instance = User.of(
-            params.getUsername(),
-            params.getPassword(),
-            params.getName(),
-            params.getEmail(),
+            parameter.getUsername(),
+            parameter.getPassword(),
+            parameter.getName(),
+            parameter.getEmail(),
             userInvitation.getDepartment(),
             userInvitation.getRole()
         );
@@ -101,39 +101,39 @@ public class UserService {
     }
 
     @Transactional
-    public void change(Long id, UserChangeParameter params) {
+    public void change(Long id, UserChangeParameter parameter) {
         User instance = this.load(id);
         instance.change(
-            params.getName(),
-            params.getEmail(),
-            params.getRole(),
-            departmentRepository.findById(params.getDepartment().getId())
-                .orElseThrow(() -> new NotFoundException("department", params.getDepartment().getId()))
+            parameter.getName(),
+            parameter.getEmail(),
+            parameter.getRole(),
+            departmentRepository.findById(parameter.getDepartment().getId())
+                .orElseThrow(() -> new NotFoundException("department", parameter.getDepartment().getId()))
         );
         this.checkEmailUsed(instance);
     }
 
     @Transactional
-    public void changePassword(Long id, UserPasswordChangeParameter params) {
+    public void changePassword(Long id, UserPasswordChangeParameter parameter) {
         User instance = this.load(id);
-        instance.changePassword(params.getNowPassword(), params.getNewPassword());
+        instance.changePassword(parameter.getNowPassword(), parameter.getNewPassword());
     }
 
     @Transactional
-    public void validatePassword(UserValidatePasswordParameter params) {
-        PasswordReset passwordReset = passwordResetRepository.findByEmail(params.getEmail())
+    public void validatePassword(UserValidatePasswordParameter parameter) {
+        PasswordReset passwordReset = passwordResetRepository.findByEmail(parameter.getEmail())
             .orElseThrow(() -> new NotFoundException("user-verification.password-reset",
-                String.format("email: %s", params.getEmail())));
-        passwordReset.checkValid(invalidateDuration, params.getAuthKey());
+                String.format("email: %s", parameter.getEmail())));
+        passwordReset.checkValid(invalidateDuration, parameter.getAuthKey());
 
-        User instance = repository.findByEmail(params.getEmail())
+        User instance = repository.findByEmail(parameter.getEmail())
             .orElseThrow(
                 () -> new NotFoundException(
                     "user",
-                    String.format("email: %s", (params.getEmail()))
+                    String.format("email: %s", (parameter.getEmail()))
                 )
             );
-        instance.validatePassword(params.getPassword());
+        instance.validatePassword(parameter.getPassword());
         passwordResetRepository.deleteById(passwordReset.getId());
     }
 

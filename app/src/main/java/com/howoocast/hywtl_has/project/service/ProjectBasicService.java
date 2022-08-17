@@ -25,16 +25,16 @@ public class ProjectBasicService {
     }
 
     @Transactional
-    public void update(Long projectId, ProjectBasicParameter params) {
-        params.changeBuilder()
-            .salesManager(userFinder.load(params.getSalesManagerId()))
-            .projectManager(userFinder.load(params.getProjectManagerId()))
+    public void update(Long projectId, ProjectBasicParameter parameter) {
+        parameter.changeBuilder()
+            .salesManager(userFinder.load(parameter.getSalesManagerId()))
+            .projectManager(userFinder.load(parameter.getProjectManagerId()))
             .action(finder.load(projectId));
     }
 
     @Transactional
-    public void update(Long projectId, ProjectStatusParameter params) {
-        params.statusChangeBuilder()
+    public void update(Long projectId, ProjectStatusParameter parameter) {
+        parameter.statusChangeBuilder()
             .action(finder.load(projectId));
     }
 }

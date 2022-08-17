@@ -62,17 +62,17 @@ public class EstimateTemplateController {
     }
 
     @PostMapping("/estimate-templates")
-    public EstimateTemplateView add(@Valid @RequestBody EstimateTemplateParameter params) {
-        return service.add(params);
+    public EstimateTemplateView add(@Valid @RequestBody EstimateTemplateParameter parameter) {
+        return service.add(parameter);
     }
 
     @PostMapping("/estimate-templates/seq")
-    public void changeSeq(@Valid @RequestBody EstimateTemplateChangeSeqParameter params) {
-        service.changeSeq(params);
+    public void changeSeq(@Valid @RequestBody EstimateTemplateChangeSeqParameter parameter) {
+        service.changeSeq(parameter);
     }
 
     @PatchMapping("/estimate-templates/{id}")
-    public void change(@PathVariable Long id, @Valid @RequestBody EstimateTemplateParameter params) {
-        service.change(id, params);
+    public void change(@PathVariable Long id, @Valid @RequestBody EstimateTemplateParameter parameter) {
+        service.change(id, parameter);
     }
 }

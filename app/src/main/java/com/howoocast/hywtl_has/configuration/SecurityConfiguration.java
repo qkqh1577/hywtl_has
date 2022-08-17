@@ -37,10 +37,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .loginPage("/login")
             .defaultSuccessUrl("/")
             .successHandler(new LoginSuccessHandler(userRepository, invalidateDuration))
+            .permitAll()
             .and()
             .logout()
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login")
+            .and()
+            .anonymous()
             .and()
             .authorizeRequests()
             .antMatchers(
@@ -64,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .permitAll()
             .antMatchers("/**")
             // TODO: 권한 및 url 체계 확정 후 denyAll 전환
-            .authenticated()
+            .permitAll()
 
         ;
     }

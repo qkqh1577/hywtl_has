@@ -29,9 +29,9 @@ public class ProjectEstimateController {
     @PutMapping("/projects/{id}/estimate")
     public ProjectEstimateView upsert(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectEstimateParameter params
+        @Valid @RequestBody ProjectEstimateParameter parameter
     ) {
-        projectEstimateService.upsert(id, params);
+        projectEstimateService.upsert(id, parameter);
         return projectEstimateService.getOne(id);
     }
 }

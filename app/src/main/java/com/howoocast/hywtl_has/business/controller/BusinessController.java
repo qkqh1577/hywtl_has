@@ -2,7 +2,6 @@ package com.howoocast.hywtl_has.business.controller;
 
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
-import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.service.BusinessService;
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
@@ -10,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,24 @@ public class BusinessController {
     public Page<BusinessShortView> page(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
-        Pageable pageable
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
     ) {
-        return businessService.page(
-            new BusinessPredicateBuilder()
-                .keyword(keywordType, keyword)
-                .build(),
-            pageable
+        return BusinessMapper.toShortView(
+            businessService.findAll(
+                new BusinessPredicateBuilder()
+                    .keyword(keywordType, keyword)
+                    .build(),
+                pageable
+            )
+        );
+    }
+
+    @GetMapping(value = "/business", params = "registrationNumber")
+    public List<BusinessShortView> getList(
+        @RequestParam String registrationNumber
+    ) {
+        return BusinessMapper.toShortView(
+            businessService.findByRegistrationNumber(registrationNumber)
         );
     }
 
@@ -43,40 +55,30 @@ public class BusinessController {
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword
     ) {
-        return businessService.getList(
-            new BusinessPredicateBuilder()
-                .keywordForModal(keywordType, keyword)
-                .build()
+        return BusinessMapper.toView(
+            businessService.findAll(
+                new BusinessPredicateBuilder()
+                    .keywordForModal(keywordType, keyword)
+                    .build()
+            )
         );
     }
 
     @GetMapping("/business/{id}")
     public BusinessView get(@PathVariable Long id) {
-        return businessService.get(id);
+        return BusinessMapper.toView(businessService.get(id));
     }
 
-    @PostMapping("/business")
-    public BusinessView add(@Valid @RequestBody BusinessParameter params) {
-        return businessService.add(params);
-    }
-
-
-    @PostMapping("/business/registration-number/check")
-    public void checkRegistrationNumber(
-        @Valid @RequestBody BusinessRegistrationNumberCheckParameter params
+    @PutMapping({"/business", "/business/{id}"})
+    public void upsert(
+        @PathVariable(required = false) Long id,
+        @Valid @RequestBody BusinessParameter parameter
     ) {
-        businessService.checkRegistrationNumber(params);
-    }
-
-    @PatchMapping("/business/{id}")
-    public BusinessView change(
-        @PathVariable Long id,
-        @Valid @RequestBody BusinessParameter params
-    ) {
-        businessService.change(id, params);
-        return businessService.get(id);
+        businessService.upsert(id, parameter);
     }
 
     @DeleteMapping("/business/{id}")
-    public void delete(@PathVariable Long id) { businessService.delete(id); }
+    public void delete(@PathVariable Long id) {
+        businessService.delete(id);
+    }
 }

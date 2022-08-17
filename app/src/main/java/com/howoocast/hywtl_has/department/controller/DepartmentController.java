@@ -69,14 +69,14 @@ public class DepartmentController {
     @PutMapping({"/departments", "/departments/{id}"})
     public DepartmentView put(
         @PathVariable(required = false) Long id,
-        @Valid @RequestBody DepartmentParameter params
+        @Valid @RequestBody DepartmentParameter parameter
     ) {
-        return departmentService.upsert(id, params);
+        return departmentService.upsert(id, parameter);
     }
 
     @PostMapping("/departments/tree")
-    public List<? extends DepartmentItemView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter params) {
-        departmentService.changeTree(params);
+    public List<? extends DepartmentItemView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter parameter) {
+        departmentService.changeTree(parameter);
         return departmentService.list();
     }
 }

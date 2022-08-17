@@ -44,19 +44,19 @@ public class ProjectCommentService {
     }
 
     @Transactional
-    public ProjectCommentView add(String username, ProjectCommentAddParameter params) {
+    public ProjectCommentView add(String username, ProjectCommentAddParameter parameter) {
         ProjectComment instance = ProjectComment.of(
-            projectFinder.load(params.getProjectId()),
+            projectFinder.load(parameter.getProjectId()),
             userFinder.load(username),
-            params.getDescription()
+            parameter.getDescription()
         );
         return ProjectCommentView.assemble(repository.save(instance));
     }
 
     @Transactional
-    public void change(Long id, ProjectCommentChangeParameter params) {
+    public void change(Long id, ProjectCommentChangeParameter parameter) {
         ProjectComment instance = this.load(id);
-        instance.changeDescription(params.getDescription());
+        instance.changeDescription(parameter.getDescription());
     }
 
     @Transactional

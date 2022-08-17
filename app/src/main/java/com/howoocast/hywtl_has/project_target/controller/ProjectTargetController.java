@@ -40,17 +40,17 @@ public class ProjectTargetController {
     public ProjectTargetView add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @RequestBody ProjectTargetParameter params
+        @Valid @RequestBody ProjectTargetParameter parameter
     ) {
-        return service.add(projectId, authentication.getName(), params);
+        return service.add(projectId, authentication.getName(), parameter);
     }
 
     @PatchMapping("/project/targets/{id}")
     public ProjectTargetView change(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectTargetParameter params
+        @Valid @RequestBody ProjectTargetParameter parameter
     ) {
-        service.change(id, params);
+        service.change(id, parameter);
         return service.get(id);
     }
 

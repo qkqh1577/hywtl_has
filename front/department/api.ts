@@ -24,8 +24,8 @@ class DepartmentApi {
     return data;
   }
 
-  async upsert(params: DepartmentParameter): Promise<void> {
-    const { data } = await apiClient.put(`/departments${params.id ? `/${params.id}` : ''}`, params);
+  async upsert(parameter: DepartmentParameter): Promise<void> {
+    const { data } = await apiClient.put(`/departments${parameter.id ? `/${parameter.id}` : ''}`, parameter);
     return data;
   }
 }

@@ -43,17 +43,17 @@ public class ProjectTargetService {
     public ProjectTargetView add(
         Long projectId,
         String username,
-        ProjectTargetParameter params
+        ProjectTargetParameter parameter
     ) {
-        repository.findByCode(params.getCode()).ifPresent(instance -> {
-            throw new DuplicatedValueException("project-target", "code", params.getCode());
+        repository.findByCode(parameter.getCode()).ifPresent(instance -> {
+            throw new DuplicatedValueException("project-target", "code", parameter.getCode());
         });
         ProjectTarget instance = ProjectTarget.of(
             projectRepository.findById(projectId).orElseThrow(() -> new NotFoundException("project", projectId)),
-            params.getCode(),
-            params.getMemo(),
-            params.getTestList(),
-            params.getDetailList().stream()
+            parameter.getCode(),
+            parameter.getMemo(),
+            parameter.getTestList(),
+            parameter.getDetailList().stream()
                 .map(detailParam -> ProjectTargetDetail.of(
                     detailParam.getBuildingName(),
                     detailParam.getTestList(),
@@ -67,14 +67,14 @@ public class ProjectTargetService {
     }
 
     @Transactional
-    public void change(Long id, ProjectTargetParameter params) {
-        repository.findByCode(params.getCode()).ifPresent(instance -> {
+    public void change(Long id, ProjectTargetParameter parameter) {
+        repository.findByCode(parameter.getCode()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("project-target", "code", params.getCode());
+                throw new DuplicatedValueException("project-target", "code", parameter.getCode());
             }
         });
         ProjectTarget instance = this.load(id);
-        List<ProjectTargetDetail> detailList = params.getDetailList().stream()
+        List<ProjectTargetDetail> detailList = parameter.getDetailList().stream()
             .map(detailParam -> {
                 if (Objects.isNull(detailParam.getId())) {
                     return ProjectTargetDetail.of(
@@ -96,10 +96,10 @@ public class ProjectTargetService {
             }).collect(Collectors.toList());
 
         instance.change(
-            params.getCode(),
-            params.getTestList(),
+            parameter.getCode(),
+            parameter.getTestList(),
             detailList,
-            params.getMemo()
+            parameter.getMemo()
         );
 
         // TODO: 삭제된 항목 deleted 처리

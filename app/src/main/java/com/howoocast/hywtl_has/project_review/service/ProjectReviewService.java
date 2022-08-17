@@ -53,9 +53,9 @@ public class ProjectReviewService {
     }
 
     @Transactional
-    public ProjectReviewView add(Long projectId, String username, ProjectReviewParameter params) {
-        if (repository.findByCode(params.getCode()).isPresent()) {
-            throw new DuplicatedValueException("project-review", "code", params.getCode());
+    public ProjectReviewView add(Long projectId, String username, ProjectReviewParameter parameter) {
+        if (repository.findByCode(parameter.getCode()).isPresent()) {
+            throw new DuplicatedValueException("project-review", "code", parameter.getCode());
         }
 
         Project project = projectFinder.load(projectId);
@@ -63,13 +63,13 @@ public class ProjectReviewService {
 
         ProjectReview instance = ProjectReview.of(
             project,
-            params.getStatus(),
-            params.getCode(),
-            params.getLandFigureCount(),
-            params.getTestList(),
+            parameter.getStatus(),
+            parameter.getCode(),
+            parameter.getLandFigureCount(),
+            parameter.getTestList(),
             writer,
             ListConvertor.make(
-                params.getDetailList(),
+                parameter.getDetailList(),
                 item -> ProjectReviewDetail.of(
                     item.getBuildingName(),
                     item.getFloorCount(),
@@ -82,7 +82,7 @@ public class ProjectReviewService {
                     item.getMemo2()
                 )
             ),
-            Optional.ofNullable(params.getFileList())
+            Optional.ofNullable(parameter.getFileList())
                 .map(list -> list.stream()
                     .map(fileItemService::build)
                     .map(Objects::requireNonNull)
@@ -95,15 +95,15 @@ public class ProjectReviewService {
     }
 
     @Transactional
-    public void change(Long id, ProjectReviewParameter params) {
-        repository.findByCode(params.getCode()).ifPresent(instance -> {
+    public void change(Long id, ProjectReviewParameter parameter) {
+        repository.findByCode(parameter.getCode()).ifPresent(instance -> {
             if (!instance.getId().equals(id)) {
-                throw new DuplicatedValueException("project-review", "code", params.getCode());
+                throw new DuplicatedValueException("project-review", "code", parameter.getCode());
             }
         });
 
         ProjectReview instance = this.load(id);
-        List<ProjectReviewDetail> detailList = params.getDetailList().stream()
+        List<ProjectReviewDetail> detailList = parameter.getDetailList().stream()
             .map(detailParam -> {
                 if (Objects.isNull(detailParam.getId())) {
                     return ProjectReviewDetail.of(
@@ -138,12 +138,12 @@ public class ProjectReviewService {
             .collect(Collectors.toList());
 
         instance.change(
-            params.getStatus(),
-            params.getCode(),
-            params.getLandFigureCount(),
-            params.getTestList(),
+            parameter.getStatus(),
+            parameter.getCode(),
+            parameter.getLandFigureCount(),
+            parameter.getTestList(),
             detailList,
-            Optional.ofNullable(params.getFileList())
+            Optional.ofNullable(parameter.getFileList())
                 .map(list -> list.stream()
                     .map(fileItemService::build)
                     .map(Objects::requireNonNull)

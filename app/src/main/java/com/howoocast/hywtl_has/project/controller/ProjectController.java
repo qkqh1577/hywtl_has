@@ -45,8 +45,8 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
-    public ProjectView add(@Valid @RequestBody ProjectBasicParameter params) {
-        return projectService.add(params);
+    public ProjectView add(@Valid @RequestBody ProjectBasicParameter parameter) {
+        return projectService.add(parameter);
     }
 
 }

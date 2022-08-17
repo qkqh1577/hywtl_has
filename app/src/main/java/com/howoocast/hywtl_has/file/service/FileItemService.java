@@ -44,39 +44,39 @@ public class FileItemService {
     }
 
     @Nullable
-    public FileItem build(@Nullable FileItemParameter params) {
-        if (Objects.isNull(params)) {
+    public FileItem build(@Nullable FileItemParameter parameter) {
+        if (Objects.isNull(parameter)) {
             return null;
         }
-        if (Objects.isNull(params.getId()) && Objects.isNull(params.getRequestDelete())
+        if (Objects.isNull(parameter.getId()) && Objects.isNull(parameter.getRequestDelete())
             && Objects.isNull(
-            params.getMultipartFile())) {
+            parameter.getMultipartFile())) {
             // 요청이 전부 빈 경우
             throw new FileSystemException(FileSystemExceptionType.ILLEGAL_REQUEST);
         }
 
-        if (Objects.nonNull(params.getId())) {
+        if (Objects.nonNull(parameter.getId())) {
             // 요청에 파일 id가 있는 경우
             Optional<FileItem> optional = fileItemRepository.findById(
-                params.getId());
-            if (Objects.isNull(params.getRequestDelete()) || !params.getRequestDelete()) {
+                parameter.getId());
+            if (Objects.isNull(parameter.getRequestDelete()) || !parameter.getRequestDelete()) {
                 // 기존 파일을 그대로 사용 시
                 return optional.orElseThrow(
                     () -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            fileItemRepository.findById(params.getId()).ifPresent(fileItem ->
+            fileItemRepository.findById(parameter.getId()).ifPresent(fileItem ->
                 fileItemRepository.deleteById(fileItem.getId())
             );
         }
 
-        if (Objects.isNull(params.getMultipartFile())) {
+        if (Objects.isNull(parameter.getMultipartFile())) {
             return null;
         }
 
         // 신규 파일 처리
         return fileItemRepository.save(FileItem.of(
-            params.getMultipartFile(),
+            parameter.getMultipartFile(),
             rootPath,
             extensionList,
             maxSizeLimit

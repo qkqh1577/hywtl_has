@@ -40,17 +40,17 @@ public class ProjectReviewController {
     public ProjectReviewView add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @ModelAttribute ProjectReviewParameter params
+        @Valid @ModelAttribute ProjectReviewParameter parameter
     ) {
-        return projectReviewService.add(projectId, authentication.getName(), params);
+        return projectReviewService.add(projectId, authentication.getName(), parameter);
     }
 
     @PatchMapping("/project/reviews/{id}")
     public ProjectReviewView change(
         @PathVariable Long id,
-        @Valid @ModelAttribute ProjectReviewParameter params
+        @Valid @ModelAttribute ProjectReviewParameter parameter
     ) {
-        projectReviewService.change(id, params);
+        projectReviewService.change(id, parameter);
         return projectReviewService.getOne(id);
     }
 

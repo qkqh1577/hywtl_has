@@ -14,7 +14,7 @@ export default function useLogin() {
   const dispatch = useDispatch();
 
   const login = useCallback(
-    (params: LoginParameter) => dispatch(loginAction.login(params)),
+    (parameter: LoginParameter) => dispatch(loginAction.login(parameter)),
     [dispatch]
   );
 

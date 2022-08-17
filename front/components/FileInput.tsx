@@ -55,7 +55,7 @@ const FileInput = ({
                    }: FileInputProps) => {
   const [mouseEnter, setMouseEnter] = useState<boolean>(false);
   const [helperMessage, setHelperMessage] = useState<React.ReactNode | undefined>(helperText);
-  const [params, setParams] = useState<FileItemParameter | undefined>();
+  const [parameter, setParameter] = useState<FileItemParameter | undefined>();
   const ref = createRef<HTMLInputElement>();
 
   const required: boolean | undefined = !disableLabel && !disabled && requiredProp;
@@ -63,15 +63,15 @@ const FileInput = ({
 
   useEffect(() => {
     if (value) {
-      setParams({
+      setParameter({
         id: value.id,
       });
     }
   }, [value]);
 
   useEffect(() => {
-    if (params) {
-      setFieldValue(`${name}-temp`, params);
+    if (parameter) {
+      setFieldValue(`${name}-temp`, parameter);
     }
     else {
       if (!value) {
@@ -85,7 +85,7 @@ const FileInput = ({
         });
       }
     }
-  }, [params]);
+  }, [parameter]);
 
   useEffect(() => {
     if (errors && typeof errors[name] === 'string') {
@@ -103,7 +103,7 @@ const FileInput = ({
       height:  '100%',
     }}>
       <Grid container spacing={2} display="flex">
-        <Grid item sm={(value || params) ? 8 : 10}>
+        <Grid item sm={(value || parameter) ? 8 : 10}>
           <Tooltip
             open={mouseEnter && !!value && typeof tooltip === 'string'}
             placement="bottom-start"
@@ -129,7 +129,7 @@ const FileInput = ({
               <Input disabled
                 type="text"
                 id={`params-${name}.filename`}
-                value={params?.multipartFile?.name ?? value?.filename ?? ''}
+                value={parameter?.multipartFile?.name ?? value?.filename ?? ''}
                 error={typeof errors[name] === 'string'}
                 placeholder={placeholder ?? `${label}${getObjectPostPosition(label)} 입력해 주세요`}
                 onMouseEnter={() => {
@@ -154,8 +154,8 @@ const FileInput = ({
             onChange={(e) => {
               const { files } = e.target;
               if (files && files.length > 0) {
-                setParams({
-                  ...params,
+                setParameter({
+                  ...parameter,
                   requestDelete: true,
                   multipartFile: files[0],
                 });
@@ -177,12 +177,12 @@ const FileInput = ({
             {value ? '변경' : '추가'}
           </Button>
         </Grid>
-        {(value || params) && (
+        {(value || parameter) && (
           <Grid item sm={2} display="flex">
             <Button fullWidth
               color="secondary"
               onClick={() => {
-                setParams(undefined);
+                setParameter(undefined);
               }}>
               삭제
             </Button>

@@ -30,8 +30,8 @@ public class UserInvitationController {
     }
 
     @PostMapping("/user-verification/user-invitation")
-    public UserInvitationView invite(@Valid @RequestBody UserInviteParameter params) {
-        return userInvitationService.invite(params);
+    public UserInvitationView invite(@Valid @RequestBody UserInviteParameter parameter) {
+        return userInvitationService.invite(parameter);
     }
 
 }

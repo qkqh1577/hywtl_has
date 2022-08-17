@@ -24,13 +24,13 @@ public class ProjectEstimateService {
     }
 
     @Transactional
-    public void upsert(Long id, ProjectEstimateParameter params) {
+    public void upsert(Long id, ProjectEstimateParameter parameter) {
         Project instance = finder.load(id);
         instance.changeEstimate(
-            params.getReceivedDate(),
-            params.getFigureLevel(),
-            params.getTestLevel(),
-            params.getReportLevel()
+            parameter.getReceivedDate(),
+            parameter.getFigureLevel(),
+            parameter.getTestLevel(),
+            parameter.getReportLevel()
         );
     }
 }

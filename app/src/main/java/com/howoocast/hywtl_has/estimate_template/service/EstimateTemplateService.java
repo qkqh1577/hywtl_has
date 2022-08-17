@@ -58,11 +58,11 @@ public class EstimateTemplateService {
     }
 
     @Transactional
-    public EstimateTemplateView add(EstimateTemplateParameter params) {
+    public EstimateTemplateView add(EstimateTemplateParameter parameter) {
 
         List<EstimateTemplateDetail> detailList = new ArrayList<>();
-        for (int i = 0; i < params.getDetailList().size(); i++) {
-            EstimateTemplateDetailParameter detailParams = params.getDetailList().get(i);
+        for (int i = 0; i < parameter.getDetailList().size(); i++) {
+            EstimateTemplateDetailParameter detailParams = parameter.getDetailList().get(i);
             detailList.add(EstimateTemplateDetail.of(
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
@@ -72,8 +72,8 @@ public class EstimateTemplateService {
             ));
         }
         EstimateTemplate instance = EstimateTemplate.of(
-            params.getTitle(),
-            params.getTestType(),
+            parameter.getTitle(),
+            parameter.getTestType(),
             repository.findNextSeq() + 1,
             detailList
         );
@@ -81,11 +81,11 @@ public class EstimateTemplateService {
     }
 
     @Transactional
-    public void change(Long id, EstimateTemplateParameter params) {
+    public void change(Long id, EstimateTemplateParameter parameter) {
         EstimateTemplate instance = this.load(id);
         List<EstimateTemplateDetail> detailList = new ArrayList<>();
-        for (int i = 0; i < params.getDetailList().size(); i++) {
-            EstimateTemplateDetailParameter detailParams = params.getDetailList().get(i);
+        for (int i = 0; i < parameter.getDetailList().size(); i++) {
+            EstimateTemplateDetailParameter detailParams = parameter.getDetailList().get(i);
             if (Objects.isNull(detailParams.getId())) {
                 detailList.add(EstimateTemplateDetail.of(
                     detailParams.getTitleList(),
@@ -112,15 +112,15 @@ public class EstimateTemplateService {
         }
         // TODO: 삭제 항목 delete 처리
         instance.change(
-            params.getTitle(),
-            params.getTestType(),
+            parameter.getTitle(),
+            parameter.getTestType(),
             detailList
         );
     }
 
     @Transactional
-    public void changeSeq(EstimateTemplateChangeSeqParameter params) {
-        List<Long> idList = params.getIdList();
+    public void changeSeq(EstimateTemplateChangeSeqParameter parameter) {
+        List<Long> idList = parameter.getIdList();
         for (int i = 0; i < idList.size(); i++) {
             this.load(idList.get(i)).changeSeq(i + 1);
         }

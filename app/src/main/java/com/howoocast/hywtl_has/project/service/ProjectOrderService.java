@@ -22,8 +22,8 @@ public class ProjectOrderService {
     }
 
     @Transactional
-    public void update(Long projectId, ProjectOrderParameter params) {
-        params.changeOrderBuilder()
+    public void update(Long projectId, ProjectOrderParameter parameter) {
+        parameter.changeOrderBuilder()
             .action(finder.load(projectId));
     }
 

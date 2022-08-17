@@ -2,15 +2,14 @@ package com.howoocast.hywtl_has.business.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
-import com.howoocast.hywtl_has.business.exception.BusinessDeleteException;
+import com.howoocast.hywtl_has.business.parameter.BusinessManagerParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
-import com.howoocast.hywtl_has.business.parameter.BusinessRegistrationNumberCheckParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
-import com.howoocast.hywtl_has.business.view.BusinessShortView;
-import com.howoocast.hywtl_has.business.view.BusinessView;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.querydsl.core.types.Predicate;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +18,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,75 +31,78 @@ public class BusinessService {
     private final BusinessRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<BusinessShortView> page(@Nullable Predicate predicate, Pageable pageable) {
+    public Page<Business> findAll(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
-            .orElse(repository.findAll(pageable))
-            .map(BusinessShortView::assemble);
+            .orElse(repository.findAll(pageable));
     }
 
     @Transactional(readOnly = true)
-    public List<BusinessView> getList(@Nullable Predicate predicate) {
+    public List<Business> findAll(@Nullable Predicate predicate) {
         Pageable pageable = Pageable.ofSize(Integer.MAX_VALUE);
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
-            .map(BusinessView::assemble)
             .getContent();
     }
 
     @Transactional(readOnly = true)
-    public BusinessView get(Long id) {
-        return BusinessView.assemble(this.load(id));
+    public List<Business> findByRegistrationNumber(String registrationNumber) {
+        return repository.findByRegistrationNumber(registrationNumber);
     }
 
     @Transactional(readOnly = true)
-    public void checkRegistrationNumber(BusinessRegistrationNumberCheckParameter params) {
-        this.checkRegistrationNumber(params.getRegistrationNumber(), params.getId());
+    public Business get(Long id) {
+        return this.load(id);
     }
 
     @Transactional
-    public BusinessView add(BusinessParameter params) {
-        this.checkRegistrationNumber(params.getRegistrationNumber(), null);
+    public void upsert(@Nullable Long pathId, BusinessParameter parameter) {
+        Long id = Objects.isNull(pathId) ? parameter.getId() : pathId;
 
-        List<BusinessManager> managerList = Optional.ofNullable(params.getManagerList())
-            .map(list -> list.stream()
-                .map(manager -> BusinessManager.of(
-                    manager.getName(),
-                    manager.getJobTitle(),
-                    manager.getMobilePhone(),
-                    manager.getOfficePhone(),
-                    manager.getEmail(),
-                    manager.getMeta(),
-                    manager.getStatus()))
-                .collect(Collectors.toList())
-            ).orElse(Collections.emptyList());
+        this.checkRegistrationNumber(parameter.getRegistrationNumber(), id);
+
+        if (Objects.isNull(id)) {
+            this.add(parameter);
+        } else {
+            this.change(id, parameter);
+        }
+    }
+
+    private void add(BusinessParameter parameter) {
+        List<BusinessManager> managerList = parameter.getManagerList().stream()
+            .map(this::ofDomain)
+            .collect(Collectors.toList());
 
         Business business = Business.of(
-            params.getName(),
-            params.getRepresentativeName(),
-            params.getRegistrationNumber(),
-            params.getAddress(),
-            params.getZipCode(),
-            params.getOfficePhone(),
-            params.getMemo(),
+            parameter.getName(),
+            parameter.getCeoName(),
+            parameter.getRegistrationNumber(),
+            parameter.getAddress(),
+            parameter.getOfficePhone(),
+            parameter.getNote(),
             managerList
         );
 
-        return BusinessView.assemble(repository.save(business));
+        repository.save(business);
     }
 
-    @Transactional
-    public void change(Long id, BusinessParameter params) {
-        this.checkRegistrationNumber(params.getRegistrationNumber(), id);
+    private void change(Long id, BusinessParameter parameter) {
 
-        Business business = this.load(id);
+        Business instance = this.load(id);
 
-        List<BusinessManager> managerList = Optional.ofNullable(params.getManagerList())
-            .map(managerParameterList -> managerParameterList.stream()
-                .map(managerParameter -> {
-                    if (Objects.isNull(managerParameter.getId())) {
-                        return BusinessManager.of(
+        List<BusinessManager> managerList = new ArrayList<>();
+        for (BusinessManagerParameter managerParameter : parameter.getManagerList()) {
+            Long managerId = managerParameter.getId();
+            if (Objects.isNull(managerId)) {
+                // add
+                BusinessManager managerInstance = this.ofDomain(managerParameter);
+                managerList.add(managerInstance);
+            } else {
+                // change
+                instance.findManagerByManagerId(managerId)
+                    .ifPresentOrElse((managerInstance) -> {
+                        managerInstance.change(
                             managerParameter.getName(),
                             managerParameter.getJobTitle(),
                             managerParameter.getMobilePhone(),
@@ -110,57 +111,71 @@ public class BusinessService {
                             managerParameter.getMeta(),
                             managerParameter.getStatus()
                         );
-                    }
-                    BusinessManager manager = business.getManagerList().stream()
-                        .filter(item -> item.getId().equals(managerParameter.getId()))
-                        .findFirst()
-                        .orElseThrow(() -> new NotFoundException("business-manager", managerParameter.getId()));
-                    manager.change(
-                        managerParameter.getName(),
-                        managerParameter.getJobTitle(),
-                        managerParameter.getMobilePhone(),
-                        managerParameter.getOfficePhone(),
-                        managerParameter.getEmail(),
-                        managerParameter.getMeta(),
-                        managerParameter.getStatus()
-                    );
-                    return manager;
-                })
-                .collect(Collectors.toList())
-            ).orElse(Collections.emptyList());
+                        managerList.add(managerInstance);
+                    }, () -> {
+                        throw new NotFoundException(BusinessManager.KEY, managerId);
+                    });
+            }
+        }
 
-        business.change(
-            params.getName(),
-            params.getRepresentativeName(),
-            params.getRegistrationNumber(),
-            params.getAddress(),
-            params.getZipCode(),
-            params.getOfficePhone(),
-            params.getMemo(),
+        instance.getManagerList().stream()
+            .filter(prevManager -> managerList.stream()
+                .noneMatch(nextManager -> Objects.equals(prevManager.getId(), nextManager.getId()))
+            ).forEach(removedManager -> {
+                // TODO: removed manager
+            });
+
+        instance.change(
+            parameter.getName(),
+            parameter.getCeoName(),
+            parameter.getRegistrationNumber(),
+            parameter.getAddress(),
+            parameter.getOfficePhone(),
+            parameter.getNote(),
             managerList
         );
+
     }
+
 
     @Transactional
     public void delete(Long id) {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
-                throw new BusinessDeleteException();
+                throw new IllegalRequestException(
+                    Business.KEY + ".manager-list.delete.violation",
+                    "담당자가 존재하는 업체는 삭제할 수 없습니다."
+                );
             }
+            // TODO: 프로젝트 담당이 있는 담당자가 있는 경우 해당 담당자를 삭제할 수 없다
             repository.deleteById(instance.getId());
         });
     }
 
     private Business load(Long id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("business", id));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(Business.KEY, id));
     }
 
     private void checkRegistrationNumber(String registrationNumber, @Nullable Long id) {
-        repository.findByRegistrationNumber(registrationNumber).ifPresent((instance) -> {
-            if (Objects.isNull(id) || !Objects.equals(instance.getId(), id)) {
-                throw new DuplicatedValueException("business", "registration-number", registrationNumber);
-            }
-        });
+        repository.findByRegistrationNumber(registrationNumber)
+            .stream()
+            .filter(instance -> !Objects.equals(id, instance.getId()))
+            .findFirst()
+            .ifPresent((instance) -> {
+                throw new DuplicatedValueException(Business.KEY, "registration-number", registrationNumber);
+            });
+    }
+
+    private BusinessManager ofDomain(BusinessManagerParameter parameter) {
+        return BusinessManager.of(
+            parameter.getName(),
+            parameter.getJobTitle(),
+            parameter.getMobilePhone(),
+            parameter.getOfficePhone(),
+            parameter.getEmail(),
+            parameter.getMeta(),
+            parameter.getStatus()
+        );
     }
 }
 

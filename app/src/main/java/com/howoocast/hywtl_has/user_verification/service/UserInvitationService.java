@@ -42,8 +42,8 @@ public class UserInvitationService {
     }
 
     @Transactional
-    public UserInvitationView invite(UserInviteParameter params) {
-        String email = params.getEmail();
+    public UserInvitationView invite(UserInviteParameter parameter) {
+        String email = parameter.getEmail();
         // 기 가입자 이메일 사용 체크
         if (userRepository.findByEmail(email).isPresent()) {
             throw new DuplicatedValueException("user", "email", email);
@@ -55,10 +55,10 @@ public class UserInvitationService {
 
         UserInvitation userInvitation = UserInvitation.of(
             email,
-            params.getName(),
-            departmentRepository.findById(params.getDepartmentId())
-                .orElseThrow(() -> new NotFoundException("department", params.getDepartmentId())),
-            params.getRole()
+            parameter.getName(),
+            departmentRepository.findById(parameter.getDepartmentId())
+                .orElseThrow(() -> new NotFoundException("department", parameter.getDepartmentId())),
+            parameter.getRole()
         );
 
         // 메일 발송 이벤트 등록
