@@ -2,11 +2,11 @@ package com.howoocast.hywtl_has.business.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
-import com.howoocast.hywtl_has.business.exception.BusinessDeleteException;
 import com.howoocast.hywtl_has.business.parameter.BusinessManagerParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
@@ -118,6 +118,13 @@ public class BusinessService {
             }
         }
 
+        instance.getManagerList().stream()
+            .filter(prevManager -> managerList.stream()
+                .noneMatch(nextManager -> Objects.equals(prevManager.getId(), nextManager.getId()))
+            ).forEach(removedManager -> {
+                // TODO: removed manager
+            });
+
         instance.change(
             parameter.getName(),
             parameter.getCeoName(),
@@ -127,14 +134,20 @@ public class BusinessService {
             parameter.getNote(),
             managerList
         );
+
     }
+
 
     @Transactional
     public void delete(Long id) {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
-                throw new BusinessDeleteException();
+                throw new IllegalRequestException(
+                    Business.KEY + ".manager-list.delete.violation",
+                    "담당자가 존재하는 업체는 삭제할 수 없습니다."
+                );
             }
+            // TODO: 프로젝트 담당이 있는 담당자가 있는 경우 해당 담당자를 삭제할 수 없다
             repository.deleteById(instance.getId());
         });
     }
