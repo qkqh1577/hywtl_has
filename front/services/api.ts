@@ -1,8 +1,8 @@
 import axios from 'axios';
 import queryString from 'qs';
 
-const isFormData = (params: FormData | any | undefined): params is FormData => {
-  return params && (params as FormData).append !== undefined;
+const isFormData = (parameter: FormData | any | undefined): parameter is FormData => {
+  return parameter && (parameter as FormData).append !== undefined;
 };
 
 export class HttpClient {
@@ -11,66 +11,66 @@ export class HttpClient {
 
   constructor() {
     this.client = axios.create({
-      paramsSerializer: (params: any) =>
-        queryString.stringify(params, {
+      paramsSerializer: (parameter: any) =>
+        queryString.stringify(parameter, {
           arrayFormat: 'brackets',
           encode: true,
         })
     });
   }
 
-  get = async (url: string, params?: any, config?: any) => {
+  get = async (url: string, parameter?: any, config?: any) => {
     return await this.client.get(url, {
-      params,
+      parameter,
       ...config,
     });
   };
 
-  post = async (url: string, params?: FormData | any, config?: any) => {
+  post = async (url: string, parameter?: FormData | any, config?: any) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
-    const c = isFormData(params) ? {
+    const c = isFormData(parameter) ? {
       ...config,
       headers: {
         ...h,
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.post(url, params, {
+    return await this.client.post(url, parameter, {
       ...c,
     });
   };
 
-  put = async (url: string, params?: FormData | any, config?: any) => {
+  put = async (url: string, parameter?: FormData | any, config?: any) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
-    const c = isFormData(params) ? {
+    const c = isFormData(parameter) ? {
       ...config,
       headers: {
         ...h,
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.put(url, params, {
+    return await this.client.put(url, parameter, {
       ...c,
     });
   };
 
-  patch = async (url: string, params?: FormData | any, config?: any) => {
+  patch = async (url: string, parameter?: FormData | any, config?: any) => {
     const h = config && config.headers ? (config.headers as any) : undefined;
-    const c = isFormData(params) ? {
+    const c = isFormData(parameter) ? {
       ...config,
       headers: {
         ...h,
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.patch(url, params, {
+    return await this.client.patch(url, parameter, {
       ...c,
     });
   };
 
-  delete = async (url: string, params?: any, config?: any) => {
+  delete = async (url: string, parameter?: any, config?: any) => {
     return await this.client.delete(url, {
-      params: params,
+      params: parameter,
       ...config,
     });
   };

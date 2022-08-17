@@ -18,12 +18,12 @@ class EstimateTemplateApi {
     return data;
   }
 
-  async upsert(params: EstimateTemplateParameter): Promise<void> {
-    if (params.id) {
-      const { data } = await apiClient.patch(`/estimate-templates/${params.id}`, params);
+  async upsert(parameter: EstimateTemplateParameter): Promise<void> {
+    if (parameter.id) {
+      const { data } = await apiClient.patch(`/estimate-templates/${parameter.id}`, parameter);
       return data;
     }
-    const { data } = await apiClient.post('/estimate-templates', params);
+    const { data } = await apiClient.post('/estimate-templates', parameter);
     return data;
   }
 }

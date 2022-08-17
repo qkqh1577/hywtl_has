@@ -24,7 +24,7 @@ public class BusinessPredicateBuilder {
         if (Objects.isNull(keywordType) || Objects.equals(keywordType, "by_name")) {
             criteria.and(business.name.containsIgnoreCase(keywordStr));
         } else if (Objects.equals(keywordType, "by_ceo_name")) {
-            criteria.and(business.representativeName.containsIgnoreCase(keywordStr));
+            criteria.and(business.ceoName.containsIgnoreCase(keywordStr));
         } else if (Objects.equals(keywordType, "by_registration_number")) {
             criteria.and(business.registrationNumber.containsIgnoreCase(keywordStr));
         }
@@ -42,15 +42,12 @@ public class BusinessPredicateBuilder {
 
         if (Objects.isNull(keywordType) || Objects.equals(keywordType, "by_name")) {
             criteria.and(business.name.containsIgnoreCase(keywordStr));
-        } else if (Objects.equals(keywordType, "by_representativeName")) {
-            criteria.and(business.representativeName.containsIgnoreCase(keywordStr));
+        } else if (Objects.equals(keywordType, "by_ceo_name")) {
+            criteria.and(business.ceoName.containsIgnoreCase(keywordStr));
+        } else if (Objects.equals(keywordType, "by_registration_number")) {
+            criteria.and(business.registrationNumber.containsIgnoreCase(keywordStr));
         }
 
-        return this;
-    }
-
-    public BusinessPredicateBuilder registrationNumberIs(String registrationNumber) {
-        criteria.and(business.registrationNumber.eq(registrationNumber));
         return this;
     }
 

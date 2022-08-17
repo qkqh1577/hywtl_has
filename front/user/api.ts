@@ -23,8 +23,8 @@ class UserApi {
     return data;
   }
 
-  async change(params: UserChangeParameter): Promise<void> {
-    const { id, ...rest } = params;
+  async change(parameter: UserChangeParameter): Promise<void> {
+    const { id, ...rest } = parameter;
     const { data } = await apiClient.patch(`/users/${id}`, rest);
     return data;
   }

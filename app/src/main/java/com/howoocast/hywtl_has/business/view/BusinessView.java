@@ -15,9 +15,9 @@ public class BusinessView {
     private Long id;
     private String name;
     private String ceoName;
-    private String officePhone;
     private String registrationNumber;
     private String address;
+    private String officePhone;
     private String note;
     private List<BusinessManagerView> managerList;
 
@@ -26,9 +26,9 @@ public class BusinessView {
         target.id = business.getId();
         target.name = business.getName();
         target.ceoName = business.getCeoName();
-        target.officePhone = business.getOfficePhone();
         target.registrationNumber = business.getRegistrationNumber();
         target.address = business.getAddress();
+        target.officePhone = business.getOfficePhone();
         target.note = business.getNote();
         target.managerList = Optional.ofNullable(business.getManagerList())
             .map(BusinessView::toView)

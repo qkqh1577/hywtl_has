@@ -50,11 +50,11 @@ const LoginForm = () => {
         return;
       }
 
-      const params: LoginParameter = {
+      const parameter: LoginParameter = {
         username,
         password
       };
-      login(params);
+      login(parameter);
     },
   };
 

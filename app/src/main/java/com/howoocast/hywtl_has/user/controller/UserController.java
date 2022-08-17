@@ -76,13 +76,13 @@ public class UserController {
     }
 
     @PostMapping("/user/invite")
-    public UserView add(@Valid @RequestBody UserAddParameter params) {
-        return userService.add(params);
+    public UserView add(@Valid @RequestBody UserAddParameter parameter) {
+        return userService.add(parameter);
     }
 
     @PostMapping("/user/password-validate")
-    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter params) {
-        userService.validatePassword(params);
+    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter parameter) {
+        userService.validatePassword(parameter);
     }
 
     @PostMapping("/users/{id}/reset-password")
@@ -91,14 +91,14 @@ public class UserController {
     }
 
     @PatchMapping("/users/{id}")
-    public UserView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter params) {
-        userService.change(id, params);
+    public UserView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter parameter) {
+        userService.change(id, parameter);
         return userService.get(id);
     }
 
     @PatchMapping("/users/{id}/password")
-    public UserView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter params) {
-        userService.changePassword(id, params);
+    public UserView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter parameter) {
+        userService.changePassword(id, parameter);
         return userService.get(id);
     }
 

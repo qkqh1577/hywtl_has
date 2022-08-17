@@ -43,22 +43,22 @@ public class ProjectEstimateSheetController {
     public ProjectEstimateSheetView add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Validated(ValidationGroup.OnAdd.class) @Valid @RequestBody ProjectEstimateSheetParameter params
+        @Validated(ValidationGroup.OnAdd.class) @Valid @RequestBody ProjectEstimateSheetParameter parameter
     ) {
         return projectEstimateSheetService.add(
             projectId,
             Optional.ofNullable(authentication).map(Authentication::getName)
                 .orElseThrow(() -> new UserLoginException(UserLoginExceptionType.NOT_AUTHENTICATED)),
-            params
+            parameter
         );
     }
 
     @PatchMapping("/project/estimate/sheets/{id}")
     public void change(
         @PathVariable Long id,
-        @Validated(ValidationGroup.OnEdit.class) @Valid @RequestBody ProjectEstimateSheetParameter params
+        @Validated(ValidationGroup.OnEdit.class) @Valid @RequestBody ProjectEstimateSheetParameter parameter
     ) {
-        projectEstimateSheetService.change(id, params);
+        projectEstimateSheetService.change(id, parameter);
     }
 
 }

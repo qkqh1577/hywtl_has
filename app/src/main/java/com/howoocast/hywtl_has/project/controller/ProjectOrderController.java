@@ -27,8 +27,8 @@ public class ProjectOrderController {
     }
 
     @PutMapping("/projects/{projectId}/order")
-    public ProjectOrderView update(@PathVariable Long projectId, @Valid @RequestBody ProjectOrderParameter params) {
-        projectOrderService.update(projectId, params);
+    public ProjectOrderView update(@PathVariable Long projectId, @Valid @RequestBody ProjectOrderParameter parameter) {
+        projectOrderService.update(projectId, parameter);
         return projectOrderService.getOne(projectId);
     }
 }

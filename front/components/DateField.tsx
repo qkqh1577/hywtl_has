@@ -106,11 +106,11 @@ export default function DateField(props: DateFieldProps) {
     setFieldValue(name, date);
   };
 
-  const renderInput: DatePickerProps<Dayjs>['renderInput'] = (params) => {
+  const renderInput: DatePickerProps<Dayjs>['renderInput'] = (parameter) => {
 
     return (
       <TextField
-        {...params}
+        {...parameter}
         fullWidth
         variant="standard"
         name={name}
@@ -119,7 +119,7 @@ export default function DateField(props: DateFieldProps) {
         error={error}
         helperText={error ? errors[name] ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
         InputProps={{
-          ...params.InputProps,
+          ...parameter.InputProps,
           readOnly,
         }}
       />

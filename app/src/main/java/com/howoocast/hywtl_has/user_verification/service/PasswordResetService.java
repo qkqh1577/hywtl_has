@@ -40,8 +40,8 @@ public class PasswordResetService {
     }
 
     @Transactional
-    public void reset(PasswordResetParameter params) {
-        this.resetByEmail(params.getEmail());
+    public void reset(PasswordResetParameter parameter) {
+        this.resetByEmail(parameter.getEmail());
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class PasswordResetController {
     }
 
     @PostMapping("/user-verification/password-reset")
-    public void reset(@Valid @RequestBody PasswordResetParameter params) {
-        passwordResetService.reset(params);
+    public void reset(@Valid @RequestBody PasswordResetParameter parameter) {
+        passwordResetService.reset(parameter);
     }
 }

@@ -12,6 +12,8 @@ import java.util.List;
 @Setter
 public class BusinessParameter {
 
+    private Long id;
+
     @NotBlank(message = Business.KEY + ".name.not-blank")
     private String name;
 

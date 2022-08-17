@@ -66,7 +66,7 @@ public class ProjectBasicParameter {
     @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectOfBuilder {
 
-        private final ProjectBasicParameter params;
+        private final ProjectBasicParameter parameter;
 
         private User salesManager;
 
@@ -84,9 +84,9 @@ public class ProjectBasicParameter {
 
         public Project build() {
             return Project.of(
-                params.name,
-                params.code,
-                params.alias,
+                parameter.name,
+                parameter.code,
+                parameter.alias,
                 this.salesManager,
                 this.projectManager
             );
@@ -96,7 +96,7 @@ public class ProjectBasicParameter {
     @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ProjectBasicChangeBuilder {
 
-        private final ProjectBasicParameter params;
+        private final ProjectBasicParameter parameter;
 
         private User salesManager;
 
@@ -114,25 +114,25 @@ public class ProjectBasicParameter {
 
         public void action(Project instance) {
             instance.changeBasic(
-                params.name,
-                params.code,
-                params.alias,
+                parameter.name,
+                parameter.code,
+                parameter.alias,
                 salesManager,
                 projectManager,
-                params.address,
-                params.purpose1,
-                params.purpose2,
-                params.lotArea,
-                params.totalArea,
-                params.buildingCount,
-                params.householdCount,
-                params.floorCount,
-                params.baseCount,
-                params.clientName,
-                params.isClientLH,
-                params.clientManager,
-                params.clientPhone,
-                params.clientEmail
+                parameter.address,
+                parameter.purpose1,
+                parameter.purpose2,
+                parameter.lotArea,
+                parameter.totalArea,
+                parameter.buildingCount,
+                parameter.householdCount,
+                parameter.floorCount,
+                parameter.baseCount,
+                parameter.clientName,
+                parameter.isClientLH,
+                parameter.clientManager,
+                parameter.clientPhone,
+                parameter.clientEmail
             );
         }
     }

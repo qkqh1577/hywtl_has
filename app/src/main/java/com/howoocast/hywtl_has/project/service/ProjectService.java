@@ -40,10 +40,10 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectView add(ProjectBasicParameter params) {
-        Project instance = params.ofBuilder()
-            .salesManager(userFinder.load(params.getSalesManagerId()))
-            .projectManager(userFinder.load(params.getProjectManagerId()))
+    public ProjectView add(ProjectBasicParameter parameter) {
+        Project instance = parameter.ofBuilder()
+            .salesManager(userFinder.load(parameter.getSalesManagerId()))
+            .projectManager(userFinder.load(parameter.getProjectManagerId()))
             .build();
         return ProjectView.assemble(repository.save(instance));
     }

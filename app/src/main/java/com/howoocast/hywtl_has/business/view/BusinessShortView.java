@@ -15,9 +15,9 @@ public class BusinessShortView {
     private Long id;
     private String name;
     private String ceoName;
-    private String officePhone;
     private String registrationNumber;
     private String address;
+    private String officePhone;
     private String note;
     private Integer managerCount;
     private Integer projectCount;

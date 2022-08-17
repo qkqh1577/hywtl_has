@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.business.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -107,10 +108,10 @@ public class Business extends CustomEntity {
         this.managerList = managerList;
     }
 
-    public Optional<BusinessManager> findById(Long id) {
-        if (this.managerList == null || this.managerList.isEmpty()) {
-            throw new NotFoundException(BusinessManager.KEY, id);
+    public Optional<BusinessManager> findManagerByManagerId(Long managerId) {
+        if (Objects.isNull(this.managerList) || this.managerList.isEmpty()) {
+            throw new NotFoundException(BusinessManager.KEY, managerId);
         }
-        return this.managerList.stream().filter(manager -> manager.getId().equals(id)).findFirst();
+        return this.managerList.stream().filter(manager -> manager.getId().equals(managerId)).findFirst();
     }
 }

@@ -62,35 +62,35 @@ public class DepartmentService {
     }
 
     @Transactional
-    public DepartmentView upsert(@Nullable Long id, DepartmentParameter params) {
+    public DepartmentView upsert(@Nullable Long id, DepartmentParameter parameter) {
 
-        Department parent = this.find(params.getParentId());
-        Integer seq = repository.countByParent_Id(params.getParentId()) + 1;
+        Department parent = this.find(parameter.getParentId());
+        Integer seq = repository.countByParent_Id(parameter.getParentId()) + 1;
 
         Department instance = Optional.ofNullable(id)
             .map(this::load)
             .orElse(Department.of());
 
         instance.update(
-            params.getName(),
-            params.getCategory(),
+            parameter.getName(),
+            parameter.getCategory(),
             parent,
             seq,
-            params.getMemo()
+            parameter.getMemo()
         );
         if (Objects.isNull(id)) {
             instance = repository.save(instance);
         }
         this.checkName(instance);
         this.checkParent(instance);
-        arrangeChildrenSeq(params.getParentId());
+        arrangeChildrenSeq(parameter.getParentId());
         return DepartmentView.assemble(instance);
     }
 
 
     @Transactional
-    public void changeTree(DepartmentChangeTreeParameter params) {
-        params.getList().forEach(item -> this.load(item.getId()).changeParent(
+    public void changeTree(DepartmentChangeTreeParameter parameter) {
+        parameter.getList().forEach(item -> this.load(item.getId()).changeParent(
             this.find(item.getParentId()),
             item.getSeq()
         ));

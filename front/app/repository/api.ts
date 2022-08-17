@@ -3,10 +3,10 @@ import apiClient from 'services/api';
 import { LoginUser } from 'app/domain/login';
 
 class LoginUserApi {
-  async login(params: LoginParameter): Promise<void> {
+  async login(parameter: LoginParameter): Promise<void> {
     const form = new FormData();
-    form.append('username', params.username);
-    form.append('password', params.password);
+    form.append('username', parameter.username);
+    form.append('password', parameter.password);
     const { data } = await apiClient.post('/login', form, {
       headers: {
         'Content-Type': 'multipart/form-data'

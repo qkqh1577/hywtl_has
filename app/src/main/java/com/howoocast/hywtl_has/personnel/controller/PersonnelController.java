@@ -99,8 +99,8 @@ public class PersonnelController {
     @PutMapping("/personnels/{id}")
     public void update(
         @PathVariable Long id,
-        @Valid @ModelAttribute PersonnelParameter params
+        @Valid @ModelAttribute PersonnelParameter parameter
     ) {
-        personnelService.update(id, params);
+        personnelService.update(id, parameter);
     }
 }

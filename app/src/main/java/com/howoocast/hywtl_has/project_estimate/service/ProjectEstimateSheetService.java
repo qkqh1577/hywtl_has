@@ -50,31 +50,31 @@ public class ProjectEstimateSheetService {
     }
 
     @Transactional
-    public ProjectEstimateSheetView add(Long projectId, String username, ProjectEstimateSheetParameter params) {
+    public ProjectEstimateSheetView add(Long projectId, String username, ProjectEstimateSheetParameter parameter) {
 
         User writer = userFinder.load(username);
-        User salesTeamLeader = userFinder.load(params.getSalesTeamLeaderId());
-        User salesManagementLeader = userFinder.find(params.getSalesManagementLeaderId());
+        User salesTeamLeader = userFinder.load(parameter.getSalesTeamLeaderId());
+        User salesManagementLeader = userFinder.find(parameter.getSalesManagementLeaderId());
 
-        ProjectReview review = projectReviewRepository.findById(params.getReviewId())
-            .orElseThrow(() -> new NotFoundException("project-review", params.getReviewId()));
+        ProjectReview review = projectReviewRepository.findById(parameter.getReviewId())
+            .orElseThrow(() -> new NotFoundException("project-review", parameter.getReviewId()));
 
         ProjectEstimateSheet instance = ProjectEstimateSheet.of(
             projectFinder.load(projectId),
-            params.getConfirmed(),
-            params.getStatus(),
-            params.getTitle(),
-            params.getMemo(),
+            parameter.getConfirmed(),
+            parameter.getStatus(),
+            parameter.getTitle(),
+            parameter.getMemo(),
             writer,
-            params.getEstimateDate(),
-            params.getExpectedStartMonth(),
+            parameter.getEstimateDate(),
+            parameter.getExpectedStartMonth(),
             salesTeamLeader,
             salesManagementLeader,
-            params.getEngineeringPeriod(),
-            params.getFinalReportPeriod(),
+            parameter.getEngineeringPeriod(),
+            parameter.getFinalReportPeriod(),
             review,
             ListConvertor.make(
-                params.getTestServiceList(),
+                parameter.getTestServiceList(),
                 testServiceParams -> ProjectEstimateSheetTestService.of(
                     testServiceParams.getTitle(),
                     ListConvertor.make(
@@ -93,31 +93,31 @@ public class ProjectEstimateSheetService {
                     testServiceParams.getSeq()
                 )
             ),
-            params.getSpecialDiscount(),
-            toCommentList(params.getCommentList())
+            parameter.getSpecialDiscount(),
+            toCommentList(parameter.getCommentList())
         );
         return ProjectEstimateSheetView.assemble(repository.save(instance));
     }
 
     @Transactional
-    public void change(Long id, ProjectEstimateSheetParameter params) {
+    public void change(Long id, ProjectEstimateSheetParameter parameter) {
         ProjectEstimateSheet instance = this.load(id);
-        User salesTeamLeader = userFinder.load(params.getSalesTeamLeaderId());
-        User salesManagementLeader = userFinder.find(params.getSalesManagementLeaderId());
+        User salesTeamLeader = userFinder.load(parameter.getSalesTeamLeaderId());
+        User salesManagementLeader = userFinder.find(parameter.getSalesManagementLeaderId());
 
         instance.change(
-            params.getConfirmed(),
-            params.getStatus(),
-            params.getTitle(),
-            params.getMemo(),
-            params.getEstimateDate(),
-            params.getExpectedStartMonth(),
+            parameter.getConfirmed(),
+            parameter.getStatus(),
+            parameter.getTitle(),
+            parameter.getMemo(),
+            parameter.getEstimateDate(),
+            parameter.getExpectedStartMonth(),
             salesTeamLeader,
             salesManagementLeader,
-            params.getEngineeringPeriod(),
-            params.getFinalReportPeriod(),
+            parameter.getEngineeringPeriod(),
+            parameter.getFinalReportPeriod(),
             ListConvertor.make(
-                params.getTestServiceList(),
+                parameter.getTestServiceList(),
                 instance.getTestServiceList(),
                 "project-estimate.sheet.test-service",
                 (i, p) -> i.change(
@@ -136,14 +136,14 @@ public class ProjectEstimateSheetService {
                     )
                 )
             ),
-            params.getSpecialDiscount(),
-            toCommentList(params.getCommentList())
+            parameter.getSpecialDiscount(),
+            toCommentList(parameter.getCommentList())
         );
     }
 
-    private List<ProjectEstimateSheetComment> toCommentList(List<ProjectEstimateSheetCommentParameter> params) {
+    private List<ProjectEstimateSheetComment> toCommentList(List<ProjectEstimateSheetCommentParameter> parameter) {
         return ListConvertor.make(
-            params,
+            parameter,
             p -> ProjectEstimateSheetComment.of(
                 p.getSeq(),
                 p.getDescription(),
