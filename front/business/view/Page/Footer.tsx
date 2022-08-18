@@ -23,7 +23,7 @@ export interface FooterProps {
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/business/add');
+    navigate('/business-management/add');
   };
   return (
     <Button

@@ -1,5 +1,5 @@
 /* 업체 */
-import { ProjectId } from "project/domain";
+import { ProjectId } from 'project/domain';
 
 export type BusinessId = number & { readonly _brand: symbol }
 
@@ -8,30 +8,57 @@ export function BusinessId(id: number) {
 }
 
 export interface BusinessVO {
-  id?: BusinessId;
+  id: BusinessId | '';
   name: string;
   ceoName?: string;
   officePhone?: string;
   registrationNumber: string;
-  fax?:string
+  fax?: string;
   address?: string;
   note?: string;
-  managerList?: BusinessManagerVO[];
+  managerList: BusinessManagerVO[];
 }
 
-export interface BusinessShort extends BusinessVO {
+export interface BusinessShort
+  extends BusinessVO {
   managerCount: number;
   projectCount: number;
 }
 
 export const initialBusiness: BusinessVO = {
-  address: "",
-  ceoName: "",
-  managerList: [],
-  name: "",
-  note: "",
-  officePhone: "",
-  registrationNumber: ""
+  id:                 '',
+  address:            '',
+  ceoName:            '',
+  managerList:        [],
+  name:               '',
+  note:               '',
+  officePhone:        '',
+  registrationNumber: ''
+};
+
+export enum BusinessManagerStatus {
+  /* 재직 상태 */
+
+  /* 재직 */
+  IN_OFFICE   = 'IN_OFFICE',
+  /* 퇴사 */
+  RESIGNATION = 'RESIGNATION',
+  /* 휴직 */
+  // LEAVE = 'LEAVE',
+}
+
+export const businessManagerStatusList: BusinessManagerStatus[] = [
+  BusinessManagerStatus.IN_OFFICE,
+  BusinessManagerStatus.RESIGNATION
+];
+
+export function businessManagerStatusName(status: BusinessManagerStatus) {
+  switch (status) {
+    case BusinessManagerStatus.IN_OFFICE:
+      return '재직';
+    case BusinessManagerStatus.RESIGNATION:
+      return '퇴사';
+  }
 }
 
 /* 업체 담당자 */
@@ -53,30 +80,17 @@ export interface BusinessManagerVO {
   status: BusinessManagerStatus;
 }
 
-export enum BusinessManagerStatus {
-  /* 재직 상태 */
+export const initialBusinessManagerVO: BusinessManagerVO = {
+  name:        '',
+  jobTitle:    '',
+  department:  '',
+  mobilePhone: '',
+  officePhone: '',
+  email:       '',
+  meta:        [],
+  status:      BusinessManagerStatus.IN_OFFICE,
+};
 
-  /* 재직 */
-  IN_OFFICE = 'IN_OFFICE',
-  /* 퇴사 */
-  RESIGNATION = 'RESIGNATION',
-  /* 휴직 */
-  // LEAVE = 'LEAVE',
-}
-
-export const businessManagerStatusList: BusinessManagerStatus[] = [
-  BusinessManagerStatus.IN_OFFICE,
-  BusinessManagerStatus.RESIGNATION
-]
-
-export function businessManagerStatusName(status: BusinessManagerStatus) {
-  switch (status) {
-    case BusinessManagerStatus.IN_OFFICE:
-      return '재직';
-    case BusinessManagerStatus.RESIGNATION:
-      return '퇴사';
-  }
-}
 
 /* 참여 or 경쟁 프로젝트 정보 */
 
@@ -102,17 +116,17 @@ export enum InvolvedType {
   /* 관계사 유형*/
 
   /* 발주처 */
-  ORDERER = 'ORDERER',
+  ORDERER       = 'ORDERER',
   /* 시공사 */
-  BUILDER = 'BUILDER',
+  BUILDER       = 'BUILDER',
   /* 건축설계사무소 */
   ARCHITECTURAL = 'ARCHITECTURAL',
   /* 구조설계사무소 */
-  STRUCTURAL = 'STRUCTURAL',
+  STRUCTURAL    = 'STRUCTURAL',
   /* 시행사 */
-  ENFORCER = 'ENFORCER',
+  ENFORCER      = 'ENFORCER',
   /* 소개자 */
-  RECOMMENDER = 'RECOMMENDER',
+  RECOMMENDER   = 'RECOMMENDER',
 }
 
 export const involvedTypeList: InvolvedType[] = [
@@ -126,11 +140,17 @@ export const involvedTypeList: InvolvedType[] = [
 
 export function involvedTypeName(type: InvolvedType | '') {
   switch (type) {
-    case InvolvedType.ORDERER: return '발주처';
-    case InvolvedType.BUILDER: return '시공사';
-    case InvolvedType.ARCHITECTURAL: return '건축설계사무소';
-    case InvolvedType.STRUCTURAL: return '구조설계사무소';
-    case InvolvedType.ENFORCER: return '시행사';
-    case InvolvedType.RECOMMENDER: return '소개자';
+    case InvolvedType.ORDERER:
+      return '발주처';
+    case InvolvedType.BUILDER:
+      return '시공사';
+    case InvolvedType.ARCHITECTURAL:
+      return '건축설계사무소';
+    case InvolvedType.STRUCTURAL:
+      return '구조설계사무소';
+    case InvolvedType.ENFORCER:
+      return '시행사';
+    case InvolvedType.RECOMMENDER:
+      return '소개자';
   }
 }
