@@ -60,6 +60,8 @@ export default function () {
     navigate(`/project/sales-management/${item.id}/basic`);
   };
 
+  const openProjectAddModal = useCallback(() => dispatch(projectAction.setAddModal(true)), [dispatch]);
+
   useEffect(() => {
     if (pathname !== '/login') {
       if (user === null) {
@@ -108,7 +110,8 @@ export default function () {
         formik:     projectFormik,
         toggleFilter,
         onRowClick,
-        list
+        list,
+        openProjectAddModal
       }}
     />
   );

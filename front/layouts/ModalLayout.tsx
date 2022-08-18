@@ -7,23 +7,23 @@ import {
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 
-interface Props {
+export interface ModalLayoutProps {
   open: boolean;
   title: string;
   width?: string | number;
   onClose: () => void;
-  children: React.ReactElement;
   sx?: any;
+  children: React.ReactNode;
 }
 
-const ModalLayout = ({
-                       open,
-                       title,
-                       width = '80vw',
-                       onClose,
-                       children,
-                       sx
-                     }: Props) => {
+export default function ModalLayout({
+                                      open,
+                                      title,
+                                      width = '80vw',
+                                      onClose,
+                                      children,
+                                      sx
+                                    }: ModalLayoutProps) {
   return (
     <Modal
       open={open}
@@ -77,5 +77,3 @@ const ModalLayout = ({
     </Modal>
   );
 };
-
-export default ModalLayout;

@@ -1,14 +1,15 @@
 import PageLayout from 'layouts/PageLayout';
 import React from 'react';
 import { Box } from '@mui/material';
-import ProjectContainerTitle from 'project/view/Container/Title';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
 import ProjectContainerTab from 'project/view/Container/Tab';
+import ProjectAddModal, { AddModalProps } from 'project/view/AddModal';
 
 interface Props {
   children: React.ReactNode;
   statusBar: React.ReactNode;
   title: React.ReactNode;
+  addModalProps: AddModalProps;
 }
 
 export default function ProjectContainer(props: Props) {
@@ -29,6 +30,9 @@ export default function ProjectContainer(props: Props) {
         </Box>
       }
       body={props.children}
+      modals={[
+        <ProjectAddModal {...props.addModalProps} />
+      ]}
     />
   );
 }

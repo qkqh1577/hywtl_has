@@ -23,7 +23,7 @@ export default function (props: SearchFormProps) {
       padding:        '4px'
     }}>
       <TextField
-        name="name"
+        name="keyword"
         label="프로젝트명 검색"
       />
       <IconButton onClick={props.toggleFilter}>

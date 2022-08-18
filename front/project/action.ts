@@ -12,7 +12,8 @@ export enum ProjectAction {
   setFilter    = 'project/sales/filter/set',
   setPage      = 'project/sales/page/set',
   setOne       = 'project/sales/one/set',
-  updateStatus = 'project/sales/status/update'
+  updateStatus = 'project/sales/status/update',
+  setAddModal  = 'project/sales/addModal/set'
 }
 
 export const projectAction = {
@@ -20,4 +21,5 @@ export const projectAction = {
   setPage:      createAction(ProjectAction.setPage)<Page<ProjectShortVO> | undefined>(),
   setOne:       createAction(ProjectAction.setOne)<ProjectVO | undefined>(),
   updateStatus: createAction(ProjectAction.updateStatus)<FormikSubmit<ProjectStatusParameter>>(),
+  setAddModal:  createAction(ProjectAction.setAddModal)<boolean>(),
 };
