@@ -14,28 +14,33 @@ import { BusinessParameter } from '../parameter';
 import { businessAction } from '../action';
 import { useFormik } from 'formik';
 import {
-  BusinessVO,
   initialBusiness
 } from '../domain';
-import BusinessDetail from 'business/view/Detail';
+import BusinessDetail, { FormValues } from 'business/view/Detail';
+import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/RegistrationNumberCheckButton';
 
 function Element() {
+  const id = useId();
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.business);
-  const id = useId();
   const upsert = useCallback((formikProps: FormikSubmit<BusinessParameter>) => {
     dispatch(businessAction.upsert(formikProps));
   }, [dispatch]);
 
-  const formik = useFormik<BusinessVO>({
+  const formik = useFormik<FormValues>({
     enableReinitialize: true,
-    initialValues:      detail && detail.id === id ? detail : initialBusiness,
+    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialBusiness },
     onSubmit:           (values,
                          helpers
                         ) => {
       upsert({ values, ...helpers });
     }
   });
+
+  const handleRegistrationNumberSubmit: RegistrationNumberCheckButtonProps['handleRegistrationNumberSubmit'] = useCallback(
+    (registrationNumber) => {
+
+    }, []);
 
   useEffect(() => {
     if (id) {
@@ -49,12 +54,13 @@ function Element() {
   return (
     <BusinessDetail
       formik={formik}
+      handleRegistrationNumberSubmit={handleRegistrationNumberSubmit}
     />
   );
 }
 
 const businessDetailRoute: AppRoute = {
-  path:    '/business/:id',
+  path:    '/business-management/:id',
   element: <Element />,
 };
 

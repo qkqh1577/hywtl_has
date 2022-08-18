@@ -3,7 +3,6 @@ import Page from 'type/Page';
 import { BusinessShort } from 'business/domain';
 import { TableCellProps } from 'components/TableCell';
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -13,7 +12,6 @@ import {
 } from '@mui/material';
 import {
   Link,
-  useNavigate
 } from 'react-router-dom';
 
 export interface ListProps {
@@ -74,7 +72,7 @@ export default function ({ page }: ListProps) {
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다."></TableCell>
+              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,
@@ -85,7 +83,7 @@ export default function ({ page }: ListProps) {
               <TableRow hover role="checkbox" key={item.id}>
                 <TableCell>{no}</TableCell>
                 <TableCell>
-                  <Link to={`/business/${item.id}`}>
+                  <Link to={`/business-management/${item.id}`}>
                     {item.name}
                   </Link>
                 </TableCell>

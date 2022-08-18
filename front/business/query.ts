@@ -27,7 +27,7 @@ export const keywordTypeList: Option[] = [
 export const initialBusinessQuery: BusinessQuery = {
   page:        0,
   size:        pageSizeList[0],
-  sort:        'name desc',
+  sort:        'id,desc',
   keyword:     '',
   keywordType: keywordTypeList[0].key as string,
 };

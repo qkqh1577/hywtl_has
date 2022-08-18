@@ -8,7 +8,8 @@ const Divider = (props: DividerProps) => {
     {...rest}
     variant={variant}
     sx={{
-      m: '8px',
+      m:     '8px',
+      width: '100%',
       ...(sx ?? {})
     }}
   />;
