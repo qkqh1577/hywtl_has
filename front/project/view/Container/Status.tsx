@@ -1,20 +1,14 @@
 import React from 'react';
-import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
-  ProjectContractStatus,
   projectContractStatusList,
   projectContractStatusName,
-  ProjectEstimateExpectation,
   projectEstimateExpectationList,
   projectEstimateExpectationName,
-  ProjectEstimateStatus,
   projectEstimateStatusList,
   projectEstimateStatusName,
-  ProjectProgressStatus,
   projectProgressStatusList,
-  projectProgressStatusName
+  projectProgressStatusName,
 } from 'project/domain';
-import { TestType } from 'estimate_template/domain';
 import {
   Box,
   Typography
@@ -47,29 +41,6 @@ function DataBox(props: DataBoxProps) {
   );
 }
 
-export interface ProjectStatus {
-  progressStatus: ProjectProgressStatus | '';
-  estimateExpectation: ProjectEstimateExpectation | '';
-  estimateStatus: ProjectEstimateStatus | '';
-  contractStatus: ProjectContractStatus | '';
-  testType?: TestType[];
-  progress: number | '';
-  amount: number | '';
-}
-
-export const initialProjectStatus: ProjectStatus = {
-  progressStatus:      '',
-  estimateExpectation: '',
-  estimateStatus:      '',
-  contractStatus:      '',
-  progress:            '',
-  amount:              ''
-};
-
-export interface ProjectContainerStatusBar
-  extends FormikLayoutProps<ProjectStatus> {
-}
-
 export default function ProjectContainerStatusBar() {
 
   return (
@@ -84,6 +55,7 @@ export default function ProjectContainerStatusBar() {
         width={10}
         children={
           <SelectField
+            required
             disableLabel
             name="progressStatus"
             label="진행 현황"

@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.project.controller;
 
-import com.howoocast.hywtl_has.project.parameter.ProjectBasicParameter;
+import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
 import com.howoocast.hywtl_has.project.service.ProjectService;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
@@ -26,27 +26,29 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping("/projects")
+    @GetMapping("/project/sales")
     public Page<ProjectShortView> page(
         @RequestParam(required = false) String keyword,
         Pageable pageable
     ) {
-        return projectService.page(
-            new ProjectPredicateBuilder()
-                .keyword(keyword)
-                .build(),
-            pageable
+        return ProjectMapper.toShortView(
+            projectService.page(
+                new ProjectPredicateBuilder()
+                    .keyword(keyword)
+                    .build(),
+                pageable
+            )
         );
     }
 
-    @GetMapping("/projects/{id}")
+    @GetMapping("/project/sales/{id}")
     public ProjectView getOne(@PathVariable Long id) {
-        return projectService.getOne(id);
+        return ProjectMapper.toView(projectService.getOne(id));
     }
 
-    @PostMapping("/projects")
-    public ProjectView add(@Valid @RequestBody ProjectBasicParameter parameter) {
-        return projectService.add(parameter);
+    @PostMapping("/project/sales")
+    public void add(@Valid @RequestBody ProjectAddParameter parameter) {
+        projectService.add(parameter);
     }
 
 }

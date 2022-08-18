@@ -14,8 +14,8 @@ import {
   EstimateTemplateQuery,
   initialEstimateTemplateQuery
 } from 'estimate_template/query';
-import { FormikSubmit } from 'user/action';
 import { estimateTemplateAction } from 'estimate_template/action';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
 

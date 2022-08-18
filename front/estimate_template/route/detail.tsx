@@ -14,8 +14,8 @@ import useId from 'services/useId';
 import { initialEstimateTemplateVO } from 'estimate_template/domain';
 import useDialog from 'components/Dialog';
 import { estimateTemplateAction } from 'estimate_template/action';
-import { FormikSubmit } from 'user/action';
 import { EstimateTemplateParameter } from 'estimate_template/parameter';
+import { FormikSubmit } from 'type/Form';
 
 
 function Element() {

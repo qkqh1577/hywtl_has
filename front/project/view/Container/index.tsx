@@ -1,13 +1,13 @@
 import PageLayout from 'layouts/PageLayout';
-import ProjectContainerStatusBar from 'project/view/Container/Status';
 import React from 'react';
-import ProjectContainerTab from 'project/view/Container/Tab';
 import { Box } from '@mui/material';
 import ProjectContainerTitle from 'project/view/Container/Title';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
+import ProjectContainerTab from 'project/view/Container/Tab';
 
 interface Props {
   children: React.ReactNode;
+  statusBar: React.ReactNode;
 }
 
 export default function ProjectContainer(props: Props) {
@@ -24,7 +24,7 @@ export default function ProjectContainer(props: Props) {
           width:    '100%',
 
         }}>
-          <ProjectContainerStatusBar />
+          {props.statusBar}
           <ProjectContainerTab />
         </Box>
       }

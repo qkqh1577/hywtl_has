@@ -3,9 +3,9 @@ import {
   EstimateTemplateShort,
   EstimateTemplateVO
 } from 'estimate_template/domain';
-import { FormikSubmit } from 'user/action';
 import { EstimateTemplateQuery } from 'estimate_template/query';
 import { EstimateTemplateParameter } from 'estimate_template/parameter';
+import { FormikSubmit } from 'type/Form';
 
 export enum EstimateTemplateAction {
   setFilter = 'estimate/template/filter/set',

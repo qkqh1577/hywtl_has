@@ -1,6 +1,6 @@
 import { AppRoute } from 'services/routes';
 import React from 'react';
-import ProjectContainer from 'project/view/Container';
+import ProjectContainer from 'project/route/container';
 import ProjectBasic from 'project/view/Basic';
 
 function Element() {
@@ -13,7 +13,7 @@ function Element() {
 }
 
 const projectBasicRoute: AppRoute = {
-  path:    '/project/:id/basic',
+  path:    '/project/sales-management/:id/basic',
   element: <Element />
 };
 

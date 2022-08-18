@@ -1,9 +1,8 @@
 import { AppRoute } from 'services/routes';
 import React from 'react';
-import ProjectContainer from 'project/view/Container';
 import useId from 'services/useId';
 import ProjectBuilding from 'project/view/Building';
-
+import ProjectContainer from 'project/route/container';
 
 function Element() {
   const id = useId();
@@ -20,7 +19,7 @@ function Element() {
 }
 
 const projectBuildingRoute: AppRoute = {
-  path:    '/project/:id/building',
+  path:    '/project/sales-management/:id/building',
   element: <Element />
 };
 

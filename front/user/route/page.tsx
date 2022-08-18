@@ -8,10 +8,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import {
-  FormikSubmit,
-  userAction
-} from 'user/action';
+import { userAction } from 'user/action';
 import {
   initialUserQuery,
   UserQuery
@@ -19,6 +16,7 @@ import {
 import { RootState } from 'services/reducer';
 import { useFormik } from 'formik';
 import { pageSizeList } from 'type/Page';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const dispatch = useDispatch();

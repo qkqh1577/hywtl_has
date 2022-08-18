@@ -73,7 +73,7 @@ export default function ProjectContainerTab() {
               color:           '#000'
             }}
             onClick={() => {
-              navigate(`/project/${id}/${props.path}`);
+              navigate(`/project/sales-management/${id}/${props.path}`);
             }}
           />
         );

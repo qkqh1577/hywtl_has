@@ -1,154 +1,116 @@
 package com.howoocast.hywtl_has.project.domain;
 
-import com.howoocast.hywtl_has.project.common.ProjectStatus;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasic {
 
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    private String code; // 코드
+    /**
+     * 프로젝트 번호
+     */
+    private String code;
 
+    /**
+     * 프로젝트 닉네임
+     */
     @NotBlank
     @Column(nullable = false)
-    private String name; // 이름
+    private String alias;
 
-    private String alias; // 별칭
+    /**
+     * 프로젝트명, 프로젝트 풀네임
+     */
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
 
+    /**
+     * 견적 구분
+     */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @NotNull
     @Column(nullable = false)
-    private ProjectStatus status; // 상태
+    private ProjectEstimateType estimateType;
 
-
-    @NotNull
+    /**
+     * 문의 접수자
+     */
     @ManyToOne
-    @JoinColumn(name = "basic__sales_manager_id")
-    private User salesManager; // 영업 당담자
+    private User receptionManager;
 
-    @NotNull
+    /**
+     * 영업 당담자
+     */
     @ManyToOne
-    @JoinColumn(name = "basic__project_manager_id")
-    private User projectManager; // 담당 PM
+    private User salesManager;
 
-    // TODO: 주소 컴포넌트 개발 이후 변경
-    private String address;
+    /**
+     * 담당 PM
+     */
+    @ManyToOne
+    private User projectManager;
 
-    private String purpose1; // 건물 용도 1
+    /**
+     * 예상 착수 시기
+     */
+    private LocalDate expectedMonth;
 
-    private String purpose2; // 건물 용도 2
+    /**
+     * 요청 일정
+     */
+    private LocalDate requestedMonth;
 
-    private Double lotArea; // 대지면적
+    /**
+     * LH 여부
+     */
+    private Boolean isLh;
 
-    private Double totalArea; // 연면적
-
-    private Integer buildingCount; // 총 동 수
-
-    private Integer householdCount; // 건물 당 세대 수
-
-    private Integer floorCount; // 층 수
-
-    private Integer baseCount; // 지하층 수
-
-    private String clientName; // 업체명
-
-    private Boolean isClientLH; // 업체 LH 여부
-
-    private String clientManager; // 업체 담당자
-
-    private String clientPhone; // 업체 담당자 핸드폰
-
-    private String clientEmail; // 업체 담당자 이메일
-
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;
-
-
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static ProjectBasic of(
+        @Nullable String code,
+        String name,
+        String alias,
+        ProjectEstimateType estimateType,
+        User receptionManager
+    ) {
+        ProjectBasic instance = new ProjectBasic();
+        instance.name = name;
+        instance.code = code;
+        instance.alias = alias;
+        instance.estimateType = estimateType;
+        instance.receptionManager = receptionManager;
+        return instance;
+    }
+
+    public void changeCode(String code) {
+        this.code = code;
+    }
+
+    public void change(
         String name,
         String code,
         String alias,
         User salesManager,
         User projectManager
     ) {
-        ProjectBasic instance = new ProjectBasic();
-        instance.name = name;
-        instance.code = code;
-        instance.alias = alias;
-        instance.salesManager = salesManager;
-        instance.projectManager = projectManager;
-        instance.status = ProjectStatus.TEMPLATE;
-        instance.modifiedAt = LocalDateTime.now();
-        return instance;
-    }
-
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
-    public void change(
-        String name,
-        String code,
-        String alias,
-        User salesManager,
-        User projectManager,
-        String address,
-        String purpose1,
-        String purpose2,
-        Double lotArea,
-        Double totalArea,
-        Integer buildingCount,
-        Integer householdCount,
-        Integer floorCount,
-        Integer baseCount,
-        String clientName,
-        Boolean isClientLH,
-        String clientManager,
-        String clientPhone,
-        String clientEmail
-    ) {
         this.name = name;
         this.code = code;
         this.alias = alias;
         this.salesManager = salesManager;
         this.projectManager = projectManager;
-        this.address = address;
-        this.purpose1 = purpose1;
-        this.purpose2 = purpose2;
-        this.lotArea = lotArea;
-        this.totalArea = totalArea;
-        this.buildingCount = buildingCount;
-        this.householdCount = householdCount;
-        this.floorCount = floorCount;
-        this.baseCount = baseCount;
-        this.clientName = clientName;
-        this.isClientLH = isClientLH;
-        this.clientManager = clientManager;
-        this.clientPhone = clientPhone;
-        this.clientEmail = clientEmail;
-        this.modifiedAt = LocalDateTime.now();
     }
 
-    public void change(ProjectStatus status) {
-        this.status = status;
-        this.modifiedAt = LocalDateTime.now();
-    }
 }

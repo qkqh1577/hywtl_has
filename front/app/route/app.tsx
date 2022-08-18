@@ -18,7 +18,6 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectDrawerAction } from 'app/domain/action';
-import { FormikSubmit } from 'user/action';
 import {
   initialProjectQuery,
   ProjectQuery
@@ -27,6 +26,7 @@ import { projectAction } from 'project/action';
 import { useFormik } from 'formik';
 import { ProjectShortVO } from 'project/domain';
 import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
+import { FormikSubmit } from 'type/Form';
 
 export default function () {
 
@@ -57,7 +57,7 @@ export default function () {
   });
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
-    navigate(`/project/${item.id}/basic`);
+    navigate(`/project/sales-management/${item.id}/basic`);
   };
 
   useEffect(() => {
