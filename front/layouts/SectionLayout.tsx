@@ -21,7 +21,7 @@ export interface SectionLayoutProps<T>
   disableFold?: boolean;
   titleRightComponent?: React.ReactNode;
   modals?: JSX.Element | JSX.Element[];
-  body: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export default function SectionLayout<T extends object>(props: SectionLayoutProps<T>) {
@@ -70,7 +70,7 @@ export default function SectionLayout<T extends object>(props: SectionLayoutProp
       <FormikProvider value={props.formik}>
         <Form>
           <Box
-            children={props.body}
+            children={props.children}
             sx={{
               display: 'flex',
               width:   '100%',

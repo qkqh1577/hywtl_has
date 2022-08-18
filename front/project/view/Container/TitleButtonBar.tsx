@@ -12,7 +12,7 @@ export default function ProjectContainerTitleButtonBar() {
     <Box sx={{
       width:          '100%',
       display:        'flex',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
     }}>
       <IconButton children={<DeleteIcon />} onClick={() => {}} />
       <IconButton children={<StarIcon />} onClick={() => {}} />

@@ -35,4 +35,5 @@ function* watchId() {
 
 export default function* projectSaga() {
   yield fork(watchFilter);
+  yield fork(watchId);
 }

@@ -8,13 +8,14 @@ import ProjectContainerTab from 'project/view/Container/Tab';
 interface Props {
   children: React.ReactNode;
   statusBar: React.ReactNode;
+  title: React.ReactNode;
 }
 
 export default function ProjectContainer(props: Props) {
 
   return (
     <PageLayout
-      title={<ProjectContainerTitle />}
+      title={props.title}
       titleRightComponent={<ProjectContainerTitleButtonBar />}
       filter={
         <Box sx={{
@@ -22,7 +23,6 @@ export default function ProjectContainer(props: Props) {
           display:  'flex',
           flexWrap: 'wrap',
           width:    '100%',
-
         }}>
           {props.statusBar}
           <ProjectContainerTab />

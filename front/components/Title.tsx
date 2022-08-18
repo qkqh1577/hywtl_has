@@ -23,7 +23,7 @@ export default function Title(props: TitleProps) {
       flexWrap:       'nowrap',
       width:          '100%',
       justifyContent: 'space-between',
-      height:         '50px',
+      minHeight:      '50px',
     }}>
       <Box
         children={typeof title === 'object' ? title : <Typography variant={titleVariant ?? 'h4'} children={title} />}

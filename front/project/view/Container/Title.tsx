@@ -4,16 +4,24 @@ import {
   Typography
 } from '@mui/material';
 
-export default function ProjectContainerTitle() {
+interface Props {
+  code?: string;
+  name?: string;
+}
 
+export default function ProjectContainerTitle({ name, code }: Props) {
   return (
     <Box sx={{
       display: 'flex',
       width:   '100%',
-      height:  '40px'
+      height:  '100%'
     }}>
-      <Typography variant="h5">[ProjectCode]</Typography>
-      <Typography variant="h5">[ProjectTitle]</Typography>
+      <Typography variant="h5" fontWeight={600}>
+        {name && '['}
+        {name && !code ? '가등록' : code}
+        {name && ']'}
+      </Typography>
+      <Typography variant="h5">{name}</Typography>
     </Box>
   );
 }

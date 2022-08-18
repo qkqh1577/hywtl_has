@@ -21,13 +21,13 @@ import {
 } from 'type/Form';
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
+import ProjectContainerTitle from 'project/view/Container/Title';
 
 export function StatusBar() {
 
   const id = useId();
   const { detail } = useSelector((root: RootState) => root.project);
   const dispatch = useDispatch();
-
 
   const formik = useFormik<FormikPartial<ProjectStatusBar>>({
     enableReinitialize: true,
@@ -55,7 +55,17 @@ export function StatusBar() {
     <FormikProvider value={formik}>
       <ProjectContainerStatusBar />
     </FormikProvider>
+  );
+}
 
+export function Title() {
+  const { detail } = useSelector((root: RootState) => root.project);
+
+  return (
+    <ProjectContainerTitle
+      code={detail?.code}
+      name={detail?.name}
+    />
   );
 }
 
@@ -67,6 +77,7 @@ export default function (props: Props) {
 
   return (
     <ProjectContainer
+      title={<Title />}
       statusBar={<StatusBar />}
       children={props.children}
     />

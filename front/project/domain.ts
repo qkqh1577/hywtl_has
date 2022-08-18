@@ -1,5 +1,6 @@
 import { TestType } from 'estimate_template/domain';
 import { FormikPartial } from 'type/Form';
+import { UserVO } from 'user/domain';
 
 export type ProjectId = number & { readonly _brand: unique symbol; }
 
@@ -232,4 +233,34 @@ export interface ProjectShortVO {
 export interface ProjectVO
   extends ProjectStatus {
   id: ProjectId;
+  code?: string;
+  name: string;
+  alias: string;
+  estimateType: ProjectEstimateType;
+  receptionManager: UserVO;
+  salesManager?: UserVO;
+  projectManager?: UserVO;
+  expectedMonth?: Date;
+  requestedMonth?: Date;
+  isLh?: boolean;
+  modifiedAt?: Date;
 }
+
+export const initialProjectVO: FormikPartial<ProjectVO> = {
+  id:                  '',
+  code:                '',
+  name:                '',
+  alias:               '',
+  estimateType:        '',
+  receptionManager:    '',
+  salesManager:        '',
+  projectManager:      '',
+  expectedMonth:       '',
+  requestedMonth:      '',
+  isLh:                '',
+  progressStatus:      '',
+  estimateExpectation: '',
+  estimateStatus:      '',
+  contractStatus:      '',
+  modifiedAt:          '',
+};
