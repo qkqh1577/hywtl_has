@@ -13,7 +13,7 @@ export default function (props: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>
-        <Typography>업체 정보</Typography>
+        <Typography variant="h6">업체 정보</Typography>
       </Grid>
       <Grid item sm={12}>
         <TextField

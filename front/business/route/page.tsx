@@ -8,7 +8,6 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import { FormikSubmit } from 'user/action';
 import {
   BusinessQuery,
   initialBusinessQuery
@@ -16,6 +15,7 @@ import {
 import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
 import BusinessPage from 'business/view/Page';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const dispatch = useDispatch();

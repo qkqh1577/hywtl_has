@@ -1,4 +1,5 @@
-import {BusinessVO} from "business/domain";
+import { BusinessVO } from 'business/domain';
 
-export interface BusinessParameter extends BusinessVO {
+export interface BusinessParameter
+  extends BusinessVO {
 }

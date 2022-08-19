@@ -31,7 +31,3 @@ export const initialBusinessQuery: BusinessQuery = {
   keyword:     '',
   keywordType: keywordTypeList[0].key as string,
 };
-
-export interface RegistrationNumberQuery {
-  registrationNumber: string;
-}

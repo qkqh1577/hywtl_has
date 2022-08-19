@@ -1,9 +1,8 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { BusinessVO } from 'business/domain';
-import Form from 'business/view/Detail/Form';
+import Form, { BusinessFormProps } from 'business/view/Detail/Form';
 import Footer from 'business/view/Detail/Footer';
-import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/RegistrationNumberCheckButton';
 
 export interface FormValues
   extends BusinessVO {
@@ -11,9 +10,8 @@ export interface FormValues
 }
 
 interface Props
-  extends RegistrationNumberCheckButtonProps,
+  extends BusinessFormProps,
           FormikLayoutProps<FormValues> {
-
 }
 
 export default function BusinessDetail(props: Props) {

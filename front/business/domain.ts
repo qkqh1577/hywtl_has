@@ -1,42 +1,8 @@
 /* 업체 */
 import { ProjectId } from 'project/domain';
 
-export type BusinessId = number & { readonly _brand: symbol }
 
-export function BusinessId(id: number) {
-  return id as BusinessId;
-}
-
-export interface BusinessVO {
-  id: BusinessId | '';
-  name: string;
-  ceoName?: string;
-  officePhone?: string;
-  registrationNumber: string;
-  fax?: string;
-  address?: string;
-  note?: string;
-  managerList: BusinessManagerVO[];
-}
-
-export interface BusinessShort
-  extends BusinessVO {
-  managerCount: number;
-  projectCount: number;
-}
-
-export const initialBusiness: BusinessVO = {
-  id:                 '',
-  address:            '',
-  ceoName:            '',
-  managerList:        [],
-  name:               '',
-  note:               '',
-  officePhone:        '',
-  registrationNumber: ''
-};
-
-  /** 재직 상태 */
+/** 재직 상태 */
 export enum BusinessManagerStatus {
   /** 재직 */
   IN_OFFICE   = 'IN_OFFICE',
@@ -57,6 +23,8 @@ export function businessManagerStatusName(status: BusinessManagerStatus) {
       return '재직';
     case BusinessManagerStatus.RESIGNATION:
       return '퇴사';
+    default:
+      return '-';
   }
 }
 
@@ -90,13 +58,48 @@ export const initialBusinessManagerVO: BusinessManagerVO = {
   status:      BusinessManagerStatus.IN_OFFICE,
 };
 
+export type BusinessId = number & { readonly _brand: symbol }
+
+export function BusinessId(id: number) {
+  return id as BusinessId;
+}
+
+export interface BusinessVO {
+  id: BusinessId | '';
+  name: string;
+  ceoName?: string;
+  officePhone?: string;
+  registrationNumber: string;
+  fax?: string;
+  address?: string;
+  note?: string;
+  managerList: BusinessManagerVO[];
+}
+
+export interface BusinessShort
+  extends BusinessVO {
+  managerCount: number;
+  projectCount: number;
+}
+
+export const initialBusiness: BusinessVO = {
+  id:                 '',
+  address:            '',
+  ceoName:            '',
+  managerList:        [initialBusinessManagerVO],
+  name:               '',
+  note:               '',
+  officePhone:        '',
+  registrationNumber: ''
+};
+
 
 /* 참여 or 경쟁 프로젝트 정보 */
 
 export interface InvolvedProjectVO {
   id?: ProjectId;
   name: string;
-  projectCode: string;
+  code: string;
   involvedType: InvolvedType;
   manager: string;
   beginDate: Date;
@@ -105,15 +108,14 @@ export interface InvolvedProjectVO {
 
 export interface RivalProjectVO {
   id?: ProjectId;
-  projectCode: string;
+  code: string;
   name: string;
   bidBeginDate: Date;
   bidCloseDate: Date;
   win: string;
 }
 
-
-  /** 관계사 유형*/
+/** 관계사 유형 */
 export enum InvolvedType {
   /** 발주처 */
   ORDERER       = 'ORDERER',
@@ -152,5 +154,7 @@ export function involvedTypeName(type: InvolvedType | '') {
       return '시행사';
     case InvolvedType.RECOMMENDER:
       return '소개자';
+    default:
+      return '-';
   }
 }

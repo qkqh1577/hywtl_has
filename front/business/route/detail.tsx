@@ -9,7 +9,6 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import { FormikSubmit } from 'user/action';
 import { BusinessParameter } from 'business/parameter';
 import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
@@ -19,15 +18,20 @@ import {
 import BusinessDetail, {
   FormValues
 } from 'business/view/Detail';
-import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/RegistrationNumberCheckButton';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.business);
+  const { detail, involvedProjectList, rivalProjectList } = useSelector((root: RootState) => root.business);
+  const checkRegistrationNumber = useCallback((registrationNumber: string) =>
+      dispatch(businessAction.setRegistrationNumber(registrationNumber))
+    , [dispatch]);
   const upsert = useCallback((formikProps: FormikSubmit<BusinessParameter>) => {
     dispatch(businessAction.upsert(formikProps));
   }, [dispatch]);
+
+  const isDetail = detail && detail.id === id;
 
   const formik = useFormik<FormValues>({
     enableReinitialize: true,
@@ -38,11 +42,7 @@ function Element() {
       upsert({ values, ...helpers });
     }
   });
-
-  const handleRegistrationNumberSubmit: RegistrationNumberCheckButtonProps['handleRegistrationNumberSubmit'] = useCallback(
-    (registrationNumber) => {
-
-    }, []);
+  const edit = formik.values.edit;
 
   useEffect(() => {
     if (id) {
@@ -51,12 +51,18 @@ function Element() {
         id
       });
     }
+    else {
+      dispatch(businessAction.setOne(undefined));
+    }
   }, [id]);
 
   return (
     <BusinessDetail
       formik={formik}
-      handleRegistrationNumberSubmit={handleRegistrationNumberSubmit}
+      handleRegistrationNumberSubmit={checkRegistrationNumber}
+      involvedProjectList={isDetail && !edit ? involvedProjectList : undefined}
+      rivalProjectList={isDetail && !edit ? rivalProjectList : undefined}
+      businessName={formik.values.name}
     />
   );
 }
