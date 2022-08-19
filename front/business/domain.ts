@@ -36,14 +36,13 @@ export const initialBusiness: BusinessVO = {
   registrationNumber: ''
 };
 
+  /** 재직 상태 */
 export enum BusinessManagerStatus {
-  /* 재직 상태 */
-
-  /* 재직 */
+  /** 재직 */
   IN_OFFICE   = 'IN_OFFICE',
-  /* 퇴사 */
+  /** 퇴사 */
   RESIGNATION = 'RESIGNATION',
-  /* 휴직 */
+  /** 휴직 */
   // LEAVE = 'LEAVE',
 }
 
@@ -112,20 +111,19 @@ export interface RivalProjectVO {
 }
 
 
+  /** 관계사 유형*/
 export enum InvolvedType {
-  /* 관계사 유형*/
-
-  /* 발주처 */
+  /** 발주처 */
   ORDERER       = 'ORDERER',
-  /* 시공사 */
+  /** 시공사 */
   BUILDER       = 'BUILDER',
-  /* 건축설계사무소 */
+  /** 건축설계사무소 */
   ARCHITECTURAL = 'ARCHITECTURAL',
-  /* 구조설계사무소 */
+  /** 구조설계사무소 */
   STRUCTURAL    = 'STRUCTURAL',
-  /* 시행사 */
+  /** 시행사 */
   ENFORCER      = 'ENFORCER',
-  /* 소개자 */
+  /** 소개자 */
   RECOMMENDER   = 'RECOMMENDER',
 }
 

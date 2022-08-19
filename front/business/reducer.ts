@@ -10,8 +10,8 @@ export interface BusinessState {
   page?: Page<BusinessShort>
   list?: BusinessShort[];
   detail?: BusinessVO;
-  InvolvedProjectList?: InvolvedProjectVO[];
-  RivalProjectList?: RivalProjectVO[];
+  involvedProjectList?: InvolvedProjectVO[];
+  rivalProjectList?: RivalProjectVO[];
 }
 
 const initialState: BusinessState = {};
