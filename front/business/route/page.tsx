@@ -12,7 +12,7 @@ import { FormikSubmit } from 'user/action';
 import {
   BusinessQuery,
   initialBusinessQuery
-} from '../query';
+} from 'business/query';
 import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
 import BusinessPage from 'business/view/Page';

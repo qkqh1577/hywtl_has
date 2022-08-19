@@ -39,8 +39,6 @@ function* watchRegistrationNumber() {
     const { payload: formik } = yield take('business/registration-number/set');
     try {
       const page: Page<BusinessShort> = yield call(businessApi.getPage, formik.values);
-      /* 사업자 등록 번호 중복 확인 로직 */
-      // page.content.filter(business => business.registrationNumber === )
       yield put(businessAction.setPage(page));
     }
     catch (e) {

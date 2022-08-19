@@ -1,8 +1,8 @@
-import { BusinessQuery, RegistrationNumberQuery } from "./query";
-import { BusinessShort, BusinessVO, InvolvedProjectVO, RivalProjectVO } from "./domain";
+import { BusinessQuery, RegistrationNumberQuery } from "business/query";
+import { BusinessShort, BusinessVO, InvolvedProjectVO, RivalProjectVO } from "business/domain";
 import Page from "type/Page";
 import { createReducer } from "typesafe-actions";
-import {BusinessAction} from "./action";
+import {BusinessAction} from "business/action";
 
 export interface BusinessState {
   filter?: BusinessQuery;

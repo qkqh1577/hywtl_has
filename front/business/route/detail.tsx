@@ -10,12 +10,12 @@ import React, {
   useEffect
 } from 'react';
 import { FormikSubmit } from 'user/action';
-import { BusinessParameter } from '../parameter';
-import { businessAction } from '../action';
+import { BusinessParameter } from 'business/parameter';
+import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
 import {
   initialBusiness
-} from '../domain';
+} from 'business/domain';
 import BusinessDetail, { FormValues } from 'business/view/Detail';
 import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/RegistrationNumberCheckButton';
 
