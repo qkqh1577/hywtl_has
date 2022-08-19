@@ -60,7 +60,7 @@ function* watchList() {
 
 function* watchInvolvedProjectList() {
   while (true) {
-    const { id } = yield take('business/id/involved-project-list/request');
+    const { id } = yield take('business/id/involved-project-list/set');
     const list: InvolvedProjectVO[] = yield call(businessApi.getInvolvedProjectList, id);
     yield put(businessAction.setInvolvedProjectList(list));
   }
@@ -68,7 +68,7 @@ function* watchInvolvedProjectList() {
 
 function* watchRivalProjectList() {
   while (true) {
-    const { id } = yield take('business/id/rival-project-list/request');
+    const { id } = yield take('business/id/rival-project-list/set');
     const list: RivalProjectVO[] = yield call(businessApi.getRivalProjectList, id);
     yield put(businessAction.setRivalProjectList(list));
   }

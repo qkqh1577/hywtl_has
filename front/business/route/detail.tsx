@@ -16,7 +16,9 @@ import { useFormik } from 'formik';
 import {
   initialBusiness
 } from 'business/domain';
-import BusinessDetail, { FormValues } from 'business/view/Detail';
+import BusinessDetail, {
+  FormValues
+} from 'business/view/Detail';
 import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/RegistrationNumberCheckButton';
 
 function Element() {

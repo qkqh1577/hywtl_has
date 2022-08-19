@@ -96,6 +96,7 @@ export const initialBusinessManagerVO: BusinessManagerVO = {
 export interface InvolvedProjectVO {
   id?: ProjectId;
   name: string;
+  projectCode: string;
   involvedType: InvolvedType;
   manager: string;
   beginDate: Date;
@@ -104,6 +105,7 @@ export interface InvolvedProjectVO {
 
 export interface RivalProjectVO {
   id?: ProjectId;
+  projectCode: string;
   name: string;
   bidBeginDate: Date;
   bidCloseDate: Date;
