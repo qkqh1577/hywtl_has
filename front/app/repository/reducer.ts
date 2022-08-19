@@ -42,7 +42,7 @@ export const initMenuState: MenuState = {
       title:    '영업본부',
       children: [{
         title: '영업정보 관리',
-        path:  '/project',
+        path:  '/project/sales-management',
       }, {
         title: '수금 관리',
       }, {
@@ -66,15 +66,15 @@ export const initMenuState: MenuState = {
     title:    '관리자 메뉴',
     children: [{
       title: '사용자 관리',
-      path:  '/user',
+      path:  '/user-management',
     }, {
       title: '조직 관리',
-      path:  '/department',
+      path:  '/department-management',
     }, {
       title:    '견적서 관리',
       children: [{
         title: '용역항목 관리',
-        path:  '/estimate/template',
+        path:  '/estimate/template-management',
       }, {
         title: '견적서 내용 관리',
       }]

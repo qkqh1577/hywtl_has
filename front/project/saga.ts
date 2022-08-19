@@ -9,7 +9,10 @@ import {
   ProjectAction
 } from 'project/action';
 import Page from 'type/Page';
-import { ProjectShortVO } from 'project/domain';
+import {
+  ProjectShortVO,
+  ProjectVO
+} from 'project/domain';
 import { projectApi } from 'project/api';
 
 function* watchFilter() {
@@ -21,7 +24,16 @@ function* watchFilter() {
   }
 }
 
+function* watchId() {
+  while (true) {
+    const { id } = yield take('project/sales/id/set');
+    const detail: ProjectVO = yield call(projectApi.getOne, id);
+    yield put(projectAction.setOne(detail));
+  }
+}
+
 
 export default function* projectSaga() {
   yield fork(watchFilter);
+  yield fork(watchId);
 }

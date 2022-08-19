@@ -6,7 +6,7 @@ import {
   DepartmentVO
 } from 'department/domain';
 import { DepartmentParameter } from 'department/parameter';
-import { FormikSubmit } from 'user/action';
+import { FormikSubmit } from 'type/Form';
 
 export enum DepartmentAction {
   setFilter = 'department/filter/set',

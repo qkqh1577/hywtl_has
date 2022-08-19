@@ -15,9 +15,9 @@ import {
   DepartmentVO,
   initialDepartment
 } from 'department/domain';
-import { FormikSubmit } from 'user/action';
 import { DepartmentParameter } from 'department/parameter';
 import { departmentAction } from 'department/action';
+import { FormikSubmit } from 'type/Form';
 
 
 function Element() {
@@ -56,7 +56,7 @@ function Element() {
 }
 
 const departmentDetailRoute: AppRoute = {
-  path:    '/department/:id',
+  path:    '/department-management/:id',
   element: <Element />
 };
 

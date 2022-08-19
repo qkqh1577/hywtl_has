@@ -1,13 +1,13 @@
 import { pageSizeList } from 'type/Page';
 
 export interface ProjectQuery {
-  name: string;
+  keyword: string;
   page: number;
   size: number;
 }
 
 export const initialProjectQuery: ProjectQuery = {
-  name: '',
+  keyword: '',
   page: 0,
   size: pageSizeList[0]
 };

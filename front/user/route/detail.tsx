@@ -19,10 +19,10 @@ import {
   useFormik,
 } from 'formik';
 import {
-  FormikSubmit,
   userAction
 } from 'user/action';
 import UserChangeParameter from 'user/parameter';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const id = useId();
@@ -77,7 +77,7 @@ function Element() {
 }
 
 const userDetailRoute: AppRoute = {
-  path:    '/user/:id',
+  path:    '/user-management/:id',
   element: <Element />
 };
 

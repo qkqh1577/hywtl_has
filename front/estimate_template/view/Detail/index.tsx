@@ -3,14 +3,11 @@ import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateVO } from 'estimate_template/domain';
 import Form from './Form';
 import Footer from './Footer';
+import { FormikEditable } from 'type/Form';
 
-export interface FormValues
-  extends EstimateTemplateVO {
-  edit: boolean;
-}
 
 interface Props
-  extends FormikLayoutProps<FormValues> {
+  extends FormikLayoutProps<FormikEditable<EstimateTemplateVO>> {
 
 }
 

@@ -1,3 +1,7 @@
+import { TestType } from 'estimate_template/domain';
+import { FormikPartial } from 'type/Form';
+import { UserVO } from 'user/domain';
+
 export type ProjectId = number & { readonly _brand: unique symbol; }
 
 export function ProjectId(id: number) {
@@ -48,6 +52,37 @@ export const projectProgressStatusList: ProjectProgressStatus[] = [
   ProjectProgressStatus.SERVICE_ON_GOING,
   ProjectProgressStatus.SERVICE_COMPLETE,
   ProjectProgressStatus.SERVICE_HOLDING
+];
+
+/**
+ * 견적 구분
+ */
+export enum ProjectEstimateType {
+  /** 일반 */
+  DEFAULT = 'DEFAULT',
+  /** 나라장터 입찰 */
+  G2B     = 'G2B',
+  /** 기업 입찰 */
+  COMPANY = 'COMPANY'
+}
+
+export function projectEstimateTypeName(type: ProjectEstimateType | '') {
+  switch (type) {
+    case ProjectEstimateType.DEFAULT:
+      return '일반';
+    case ProjectEstimateType.G2B:
+      return '나라장터 입찰';
+    case ProjectEstimateType.COMPANY:
+      return '기업 입찰';
+    default:
+      return '-';
+  }
+}
+
+export const projectEstimateTypeList: ProjectEstimateType[] = [
+  ProjectEstimateType.DEFAULT,
+  ProjectEstimateType.G2B,
+  ProjectEstimateType.COMPANY
 ];
 
 /**
@@ -107,7 +142,7 @@ export enum ProjectEstimateStatus {
   /** 견적 완료 */
   COMPLETE = 'COMPLETE',
   /** 대비 견적 */
-  CONTRAST = 'CONTRAST',
+  COMPARE  = 'COMPARE',
 }
 
 export function projectEstimateStatusName(status: ProjectEstimateStatus | '') {
@@ -118,7 +153,7 @@ export function projectEstimateStatusName(status: ProjectEstimateStatus | '') {
       return '견적 전';
     case ProjectEstimateStatus.COMPLETE:
       return '견적 완료';
-    case ProjectEstimateStatus.CONTRAST:
+    case ProjectEstimateStatus.COMPARE:
       return '대비 견적';
     default:
       return '-';
@@ -129,7 +164,7 @@ export const projectEstimateStatusList: ProjectEstimateStatus[] = [
   ProjectEstimateStatus.ORAL,
   ProjectEstimateStatus.BEFORE,
   ProjectEstimateStatus.COMPLETE,
-  ProjectEstimateStatus.CONTRAST
+  ProjectEstimateStatus.COMPARE
 ];
 
 /**
@@ -163,10 +198,69 @@ export const projectContractStatusList: ProjectContractStatus[] = [
   ProjectContractStatus.CHANGE,
 ];
 
+export interface ProjectStatus {
+  progressStatus: ProjectProgressStatus;
+  estimateExpectation: ProjectEstimateExpectation;
+  estimateStatus: ProjectEstimateStatus;
+  contractStatus: ProjectContractStatus;
+}
+
+export interface ProjectStatusBar
+  extends ProjectStatus {
+  testType?: TestType[];
+  progress: number;
+  amount: number;
+}
+
+export const initialProjectStatusBar: FormikPartial<ProjectStatusBar> = {
+  progressStatus:      '',
+  estimateExpectation: '',
+  estimateStatus:      '',
+  contractStatus:      '',
+  testType:            '',
+  progress:            '',
+  amount:              ''
+};
+
 export interface ProjectShortVO {
   id: ProjectId;
-  code: string;
+  code?: string;
   name: string;
   status: ProjectProgressStatus;
   alias: string;
 }
+
+export interface ProjectVO
+  extends ProjectStatus {
+  id: ProjectId;
+  code?: string;
+  name: string;
+  alias: string;
+  estimateType: ProjectEstimateType;
+  receptionManager: UserVO;
+  salesManager?: UserVO;
+  projectManager?: UserVO;
+  expectedMonth?: Date;
+  requestedMonth?: Date;
+  isLh?: boolean;
+  modifiedAt?: Date;
+}
+
+export const initialProjectVO: FormikPartial<ProjectVO> = {
+  id:                  '',
+  code:                '',
+  name:                '',
+  alias:               '',
+  estimateType:        '',
+  receptionManager:    '',
+  salesManager:        '',
+  projectManager:      '',
+  expectedMonth:       '',
+  requestedMonth:      '',
+  isLh:                '',
+  progressStatus:      '',
+  estimateExpectation: '',
+  estimateStatus:      '',
+  contractStatus:      '',
+  modifiedAt:          '',
+};

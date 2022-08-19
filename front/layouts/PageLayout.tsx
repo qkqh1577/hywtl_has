@@ -61,7 +61,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       {!isFormikForm(props) && (
         <PageContent {...props} />
       )}
-      {modals}
+      {Array.isArray(modals) ? modals.map(modal => <Box key={modal.type}>{modal}</Box>) : modals}
     </Paper>
   );
 };

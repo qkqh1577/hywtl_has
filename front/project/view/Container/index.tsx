@@ -1,18 +1,38 @@
 import PageLayout from 'layouts/PageLayout';
-import ProjectStatusBar, { ProjectStatusBarProps } from 'project/view/Container/Status';import React from 'react';
+import React from 'react';
+import { Box } from '@mui/material';
+import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
+import ProjectContainerTab from 'project/view/Container/Tab';
+import ProjectAddModal, { AddModalProps } from 'project/view/AddModal';
 
 interface Props {
-  projectStatusBarProps: ProjectStatusBarProps;
+  children: React.ReactNode;
+  statusBar: React.ReactNode;
+  title: React.ReactNode;
+  addModalProps: AddModalProps;
 }
 
 export default function ProjectContainer(props: Props) {
 
   return (
     <PageLayout
-      filter={<ProjectStatusBar {...props.projectStatusBarProps} />}
-      body={
-        <div>test</div>
+      title={props.title}
+      titleRightComponent={<ProjectContainerTitleButtonBar />}
+      filter={
+        <Box sx={{
+          border:   '1px solid #0000001f',
+          display:  'flex',
+          flexWrap: 'wrap',
+          width:    '100%',
+        }}>
+          {props.statusBar}
+          <ProjectContainerTab />
+        </Box>
       }
+      body={props.children}
+      modals={[
+        <ProjectAddModal {...props.addModalProps} />
+      ]}
     />
   );
 }
