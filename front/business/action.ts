@@ -1,9 +1,9 @@
 import {createAction} from "typesafe-actions";
-import {FormikSubmit} from "../user/action";
-import { BusinessQuery, RegistrationNumberQuery } from "./query";
-import Page from "../type/Page";
-import { BusinessShort, BusinessVO, InvolvedProjectVO, RivalProjectVO } from "./domain";
-import {BusinessParameter} from "./parameter";
+import {FormikSubmit} from "user/action";
+import { BusinessQuery, RegistrationNumberQuery } from "business/query";
+import Page from "type/Page";
+import { BusinessShort, BusinessVO, InvolvedProjectVO, RivalProjectVO } from "business/domain";
+import {BusinessParameter} from "business/parameter";
 
 export enum BusinessAction {
   setFilter = 'business/filter/set',

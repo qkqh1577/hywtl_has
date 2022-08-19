@@ -30,7 +30,7 @@ import {
   projectReducer,
   ProjectState
 } from 'project/reducer';
-import { businessReducer, BusinessState } from "../business/reducer";
+import { businessReducer, BusinessState } from "business/reducer";
 
 export interface RootState {
   user: UserState;

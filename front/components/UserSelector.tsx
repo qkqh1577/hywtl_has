@@ -8,9 +8,7 @@ import {
 import SelectField, { SelectFieldProps } from 'components/SelectField';
 import { UserVO } from 'user/domain';
 
-const UserSelector = <Multiple extends boolean | undefined,
-  DisableClearable extends boolean | undefined,
-  FreeSolo extends boolean | undefined>(props: Omit<SelectFieldProps<Multiple, DisableClearable, FreeSolo>, | 'options'>) => {
+const UserSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
   const [list, setList] = useState<UserVO[]>([]);
   useEffect(() => {
     userApi.getList()

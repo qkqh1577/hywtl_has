@@ -18,7 +18,6 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectDrawerAction } from 'app/domain/action';
-import { FormikSubmit } from 'user/action';
 import {
   initialProjectQuery,
   ProjectQuery
@@ -27,13 +26,14 @@ import { projectAction } from 'project/action';
 import { useFormik } from 'formik';
 import { ProjectShortVO } from 'project/domain';
 import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
+import { FormikSubmit } from 'type/Form';
 
 export default function () {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const isProjectPage = useMemo(() => pathname.startsWith('/project'), [pathname]);
+  const isProjectPage = useMemo(() => pathname.startsWith('/project/sales-management'), [pathname]);
   const isLoginPage = useMemo(() => pathname === '/login', [pathname]);
   const { alert } = useDialog();
   const { user, getLoginUser, logout } = useLogin();
@@ -57,8 +57,10 @@ export default function () {
   });
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
-    navigate(`/project/${item.id}/basic`);
+    navigate(`/project/sales-management/${item.id}/basic`);
   };
+
+  const openProjectAddModal = useCallback(() => dispatch(projectAction.setAddModal(true)), [dispatch]);
 
   useEffect(() => {
     if (pathname !== '/login') {
@@ -78,7 +80,6 @@ export default function () {
     if (isProjectPage) {
       if (!page) {
         setFilter(projectFormik);
-        setList([]);
       }
       else {
         if (page.number === 0) {
@@ -108,7 +109,8 @@ export default function () {
         formik:     projectFormik,
         toggleFilter,
         onRowClick,
-        list
+        list,
+        openProjectAddModal
       }}
     />
   );

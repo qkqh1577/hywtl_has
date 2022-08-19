@@ -2,15 +2,8 @@ import { createAction } from 'typesafe-actions';
 import { UserQuery } from 'user/query';
 import { UserVO } from 'user/domain';
 import UserChangeParameter from 'user/parameter';
-import {
-  FormikHelpers,
-} from 'formik';
 import Page from 'type/Page';
-
-export interface FormikSubmit<Values>
-  extends FormikHelpers<any> {
-  values: Values;
-}
+import { FormikSubmit } from 'type/Form';
 
 export enum UserAction {
   setFilter = 'user/filter/set',

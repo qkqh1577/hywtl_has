@@ -16,7 +16,7 @@ import {
 import { departmentAction } from 'department/action';
 import { useFormik } from 'formik';
 import React from 'react';
-import { FormikSubmit } from 'user/action';
+import { FormikSubmit } from 'type/Form';
 
 function Element() {
 
@@ -71,7 +71,7 @@ function Element() {
 }
 
 const departmentPageRoute: AppRoute = {
-  path:    '/department',
+  path:    '/department-management',
   element: <Element />
 };
 

@@ -1,6 +1,6 @@
 import React, {
-  useCallback,
-  useContext
+  useContext,
+  useMemo,
 } from 'react';
 import {
   StandardTextFieldProps,
@@ -39,16 +39,16 @@ interface FieldProps
 
 export default function TextField(props: TextFieldProps) {
   const {
+          name,
           disableLabel,
           helperText,
           label,
-          name,
           InputProps,
           type = 'text',
-          onChange,
           startAdornment,
           endAdornment,
           required,
+          onChange,
           status,
           ...restProps
         } = props;
@@ -56,11 +56,12 @@ export default function TextField(props: TextFieldProps) {
   const formikContext = useContext(FormikContext);
   if (formikContext) {
     const { values, errors, handleChange } = formikContext;
-    const value = getValue<DataFieldValue>(values, name) ?? '';
-    const edit = values.edit || typeof values.edit === 'undefined';
+    const value = useMemo(() => getValue<DataFieldValue>(values, name) ?? '', [values]);
+    const edit = useMemo(() => values.edit || typeof values.edit === 'undefined', [values]);
     const error = !!errors[name];
     const disabled = status === FieldStatus.Disabled;
-    const readOnly = status === FieldStatus.ReadOnly && !edit;
+    const readOnly = status === FieldStatus.ReadOnly || !edit;
+
 
     const fieldProps: FieldProps = {
       type,
@@ -73,12 +74,12 @@ export default function TextField(props: TextFieldProps) {
       helperText: error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
       disabled,
       required:   edit && required,
-      onChange:   useCallback((e: any) => {
+      onChange:   (e) => {
         if (onChange) {
           onChange(e);
         }
         handleChange(e);
-      }, [handleChange, onChange]),
+      },
       InputProps: {
         ...InputProps,
         readOnly,

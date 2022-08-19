@@ -1,14 +1,7 @@
 package com.howoocast.hywtl_has.project.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import com.howoocast.hywtl_has.project.common.ProjectStatus;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -21,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -33,156 +27,36 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Project extends CustomEntity {
 
     public static final String KEY = "project";
+
     @NotNull
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "code", column = @Column(name = "basic__code")),
-        @AttributeOverride(name = "name", column = @Column(name = "basic__name")),
-        @AttributeOverride(name = "alias", column = @Column(name = "basic__alias")),
-        @AttributeOverride(name = "status", column = @Column(name = "basic__status")),
-        @AttributeOverride(name = "address", column = @Column(name = "basic__address")),
-        @AttributeOverride(name = "purpose1", column = @Column(name = "basic__purpose1")),
-        @AttributeOverride(name = "purpose2", column = @Column(name = "basic__purpose2")),
-        @AttributeOverride(name = "lotArea", column = @Column(name = "basic__lot_area")),
-        @AttributeOverride(name = "totalArea", column = @Column(name = "basic__total_area")),
-        @AttributeOverride(name = "buildingCount", column = @Column(name = "basic__building_count")),
-        @AttributeOverride(name = "householdCount", column = @Column(name = "basic__household_count")),
-        @AttributeOverride(name = "floorCount", column = @Column(name = "basic__floor_count")),
-        @AttributeOverride(name = "baseCount", column = @Column(name = "basic__base_count")),
-        @AttributeOverride(name = "clientName", column = @Column(name = "basic__client_name")),
-        @AttributeOverride(name = "isClientLH", column = @Column(name = "basic__is_client_lh")),
-        @AttributeOverride(name = "clientManager", column = @Column(name = "basic__client_manager")),
-        @AttributeOverride(name = "clientPhone", column = @Column(name = "basic__client_phone")),
-        @AttributeOverride(name = "clientEmail", column = @Column(name = "basic__client_email")),
-        @AttributeOverride(name = "modifiedAt", column = @Column(name = "basic__modified_at"))
-    })
     private ProjectBasic basic;
 
+    @NotNull
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "amount", column = @Column(name = "order__amount")),
-        @AttributeOverride(name = "receivedDate", column = @Column(name = "order__received_date")),
-        @AttributeOverride(name = "beginDate", column = @Column(name = "order__begin_date")),
-        @AttributeOverride(name = "closeDate", column = @Column(name = "order__close_date")),
-        @AttributeOverride(name = "isOnGoing", column = @Column(name = "order__is_on_going")),
-        @AttributeOverride(name = "modifiedAt", column = @Column(name = "order__modified_at"))
-    })
-    private ProjectOrder order;
+    private ProjectStatus status;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "receivedDate", column = @Column(name = "estimate__received_date")),
-        @AttributeOverride(name = "figureLevel", column = @Column(name = "estimate__figure_level")),
-        @AttributeOverride(name = "testLevel", column = @Column(name = "estimate__test_level")),
-        @AttributeOverride(name = "reportLevel", column = @Column(name = "estimate__report_level")),
-        @AttributeOverride(name = "modifiedAt", column = @Column(name = "estimate__modified_at"))
-    })
-    private ProjectEstimate estimate;
-
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static Project of(
+        @Nullable String code,
         String name,
-        String code,
         String alias,
-        User salesManager,
-        User projectManager
+        ProjectEstimateType estimateType,
+        User receptionManager,
+        ProjectProgressStatus progressStatus
     ) {
         Project instance = new Project();
         instance.basic = ProjectBasic.of(
-            name,
             code,
+            name,
             alias,
-            salesManager,
-            projectManager
+            estimateType,
+            receptionManager
+        );
+        instance.status = ProjectStatus.of(
+            progressStatus
         );
         return instance;
     }
 
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
-    public void changeStatus(ProjectStatus status) {
-        this.basic.change(status);
-    }
 
-    public void changeBasic(
-        String name,
-        String code,
-        String alias,
-        User salesManager,
-        User projectManager,
-        String address,
-        String purpose1,
-        String purpose2,
-        Double lotArea,
-        Double totalArea,
-        Integer buildingCount,
-        Integer householdCount,
-        Integer floorCount,
-        Integer baseCount,
-        String clientName,
-        Boolean isClientLH,
-        String clientManager,
-        String clientPhone,
-        String clientEmail) {
-        this.basic.change(
-            name,
-            code,
-            alias,
-            salesManager,
-            projectManager,
-            address,
-            purpose1,
-            purpose2,
-            lotArea,
-            totalArea,
-            buildingCount,
-            householdCount,
-            floorCount,
-            baseCount,
-            clientName,
-            isClientLH,
-            clientManager,
-            clientPhone,
-            clientEmail
-        );
-    }
-
-    public void changeOrder(
-        Long amount,
-        LocalDate receivedDate,
-        LocalDate beginDate,
-        LocalDate closeDate,
-        Boolean isOnGoing
-    ) {
-        if (Objects.isNull(this.order)) {
-            this.order = new ProjectOrder();
-        }
-        this.order.change(
-            amount,
-            receivedDate,
-            beginDate,
-            closeDate,
-            isOnGoing
-        );
-    }
-
-    public void changeEstimate(
-        LocalDate receivedDate,
-        String figureLevel,
-        String testLevel,
-        String reportLevel
-    ) {
-        if (Objects.isNull(this.estimate)) {
-            this.estimate = ProjectEstimate.of();
-        }
-        this.estimate.change(
-            receivedDate,
-            figureLevel,
-            testLevel,
-            reportLevel
-        );
-    }
 }

@@ -23,7 +23,7 @@ function AddButton() {
 
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/department/add');
+    navigate('/department-management/add');
   };
   return (
     <Button
