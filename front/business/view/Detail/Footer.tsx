@@ -6,6 +6,7 @@ import {
   Box,
   Button
 } from '@mui/material';
+import { businessApi } from 'business/api';
 
 function ListButton() {
   const navigate = useNavigate();
@@ -20,8 +21,11 @@ function ListButton() {
   );
 }
 
-function RemoveButton() {
-  const onClick = () => {console.log('remove!');};
+function RemoveButton(detail) {
+  const formikContext = useContext(FormikContext);
+  const onClick = () => {
+    businessApi.delete(formikContext?.values.id);
+  };
   return (
     <Button
       color="secondary"
