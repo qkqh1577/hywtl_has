@@ -98,10 +98,10 @@ export default function SelectField(props: SelectFieldProps) {
   const formikContext = useContext(FormikContext);
   if (formikContext) {
     const { values, errors, handleChange } = formikContext;
-    const value = getValue<any>(values, name) ?? defaultValue ?? '';
-    const edit = values.edit || typeof values.edit === 'undefined';
+    const value = useMemo(() => getValue<any>(values, name) ?? '', [values]);
+    const edit = useMemo(() => values.edit || typeof values.edit === 'undefined', [values]);
     const disabled = status === FieldStatus.Disabled;
-    const readOnly = status === FieldStatus.ReadOnly && !edit;
+    const readOnly = status === FieldStatus.ReadOnly || !edit;
     const error = !!errors[name];
 
     const fieldProps: FieldProps = {

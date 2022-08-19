@@ -57,7 +57,7 @@ function Element() {
 }
 
 const estimateTemplateListRoute: AppRoute = {
-  path:    '/estimate/template',
+  path:    '/estimate/template-management',
   element: <Element />
 };
 

@@ -13,7 +13,8 @@ import {
 } from 'react-redux';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useMemo
 } from 'react';
 import ProjectContainer from 'project/view/Container';
 import { projectAction } from 'project/action';
@@ -36,9 +37,10 @@ export function StatusBar() {
   const { detail } = useSelector((root: RootState) => root.project);
   const dispatch = useDispatch();
 
+  const initialValues = useMemo(() => toPartial(detail, initialProjectStatusBar), [detail]);
   const formik = useFormik<FormikPartial<ProjectStatusBar>>({
     enableReinitialize: true,
-    initialValues:      toPartial(detail, initialProjectStatusBar),
+    initialValues,
     onSubmit:           (values,
                          helper
                         ) => {
@@ -57,6 +59,10 @@ export function StatusBar() {
       });
     }
   }, [id]);
+
+  if (!detail || detail.id !== id) {
+    return <ProjectContainerStatusBar />;
+  }
 
   return (
     <FormikProvider value={formik}>

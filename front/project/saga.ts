@@ -25,8 +25,8 @@ function* watchFilter() {
 }
 
 function* watchId() {
-  while(true) {
-    const {id} = yield take('project/sales/id/set');
+  while (true) {
+    const { id } = yield take('project/sales/id/set');
     const detail: ProjectVO = yield call(projectApi.getOne, id);
     yield put(projectAction.setOne(detail));
   }

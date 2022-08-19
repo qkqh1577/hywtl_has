@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.controller;
 
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
+import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
 import com.howoocast.hywtl_has.project.service.ProjectService;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +51,14 @@ public class ProjectController {
     @PostMapping("/project/sales")
     public void add(@Valid @RequestBody ProjectAddParameter parameter) {
         projectService.add(parameter);
+    }
+
+    @PatchMapping("/project/sales/{id}/status")
+    public void updateStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectStatusUpdateParameter parameter
+    ) {
+        projectService.updateProjectStatus(id, parameter);
     }
 
 }

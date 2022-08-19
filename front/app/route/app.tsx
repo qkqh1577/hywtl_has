@@ -33,7 +33,7 @@ export default function () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const isProjectPage = useMemo(() => pathname.startsWith('/project'), [pathname]);
+  const isProjectPage = useMemo(() => pathname.startsWith('/project/sales-management'), [pathname]);
   const isLoginPage = useMemo(() => pathname === '/login', [pathname]);
   const { alert } = useDialog();
   const { user, getLoginUser, logout } = useLogin();
@@ -80,7 +80,6 @@ export default function () {
     if (isProjectPage) {
       if (!page) {
         setFilter(projectFormik);
-        setList([]);
       }
       else {
         if (page.number === 0) {

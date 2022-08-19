@@ -71,7 +71,7 @@ function Element() {
 }
 
 const departmentPageRoute: AppRoute = {
-  path:    '/department',
+  path:    '/department-management',
   element: <Element />
 };
 

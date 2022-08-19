@@ -36,10 +36,6 @@ public class Project extends CustomEntity {
     @Embedded
     private ProjectStatus status;
 
-
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static Project of(
         @Nullable String code,
         String name,

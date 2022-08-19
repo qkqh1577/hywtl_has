@@ -8,15 +8,20 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import EstimateTemplateDetail, { FormValues } from 'estimate_template/view/Detail';
+import EstimateTemplateDetail from 'estimate_template/view/Detail';
 import { useFormik } from 'formik';
 import useId from 'services/useId';
-import { initialEstimateTemplateVO } from 'estimate_template/domain';
+import {
+  EstimateTemplateVO,
+  initialEstimateTemplateVO
+} from 'estimate_template/domain';
 import useDialog from 'components/Dialog';
 import { estimateTemplateAction } from 'estimate_template/action';
 import { EstimateTemplateParameter } from 'estimate_template/parameter';
-import { FormikSubmit } from 'type/Form';
-
+import {
+  FormikEditable,
+  FormikSubmit
+} from 'type/Form';
 
 function Element() {
   const id = useId();
@@ -29,8 +34,7 @@ function Element() {
     [dispatch]
   );
 
-
-  const formik = useFormik<FormValues>({
+  const formik = useFormik<FormikEditable<EstimateTemplateVO>>({
     enableReinitialize: true,
     initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialEstimateTemplateVO },
     onSubmit:           (values,
@@ -61,7 +65,7 @@ function Element() {
 }
 
 const estimateTemplateDetailRoute: AppRoute = {
-  path:    '/estimate/template/:id',
+  path:    '/estimate/template-management/:id',
   element: <Element />
 };
 

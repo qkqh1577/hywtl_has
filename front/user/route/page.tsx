@@ -82,7 +82,7 @@ function Element() {
 }
 
 const userPageRoute: AppRoute = {
-  path:    '/user',
+  path:    '/user-management',
   element: <Element />
 };
 

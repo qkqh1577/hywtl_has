@@ -42,3 +42,7 @@ export interface FormikSubmit<Values>
   extends FormikHelpers<any> {
   values: Values;
 }
+
+export type FormikEditable<T extends object> = T & {
+  edit: boolean;
+}

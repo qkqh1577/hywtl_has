@@ -64,7 +64,7 @@ export default function ({ page }: ListProps) {
               <TableRow hover role="checkbox" key={item.id}>
                 <TableCell>{no}</TableCell>
                 <TableCell>
-                  <Link to={`/department/${item.id}`}>
+                  <Link to={`/department-management/${item.id}`}>
                     {item.name}
                   </Link>
                 </TableCell>

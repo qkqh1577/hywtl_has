@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Embeddable
@@ -16,6 +17,7 @@ public class ProjectStatus {
     /**
      * 진행 현황
      */
+    @Setter
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProjectProgressStatus progressStatus;
@@ -23,18 +25,21 @@ public class ProjectStatus {
     /**
      * 견적 분류
      */
+    @Setter
     @Enumerated(EnumType.STRING)
     private ProjectEstimateExpectation estimateExpectation;
 
     /**
      * 견적 상태
      */
+    @Setter
     @Enumerated(EnumType.STRING)
     private ProjectEstimateStatus estimateStatus;
 
     /**
      * 계약 상태
      */
+    @Setter
     @Enumerated(EnumType.STRING)
     private ProjectContractStatus contractStatus;
 
@@ -45,4 +50,5 @@ public class ProjectStatus {
         instance.progressStatus = progressStatus;
         return instance;
     }
+
 }
