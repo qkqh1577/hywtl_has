@@ -9,21 +9,26 @@ import { EstimateTemplateParameter } from 'estimate_template/parameter';
 
 class EstimateTemplateApi {
   async getList(query: EstimateTemplateQuery): Promise<EstimateTemplateShort[]> {
-    const { data } = await apiClient.get('/estimate-templates', query);
+    const { data } = await apiClient.get('/estimate-template', query);
     return data;
   }
 
   async getOne(id: EstimateTemplateId): Promise<EstimateTemplateVO> {
-    const { data } = await apiClient.get(`/estimate-templates/${id}`);
+    const { data } = await apiClient.get(`/estimate-template/${id}`);
     return data;
   }
 
   async upsert(parameter: EstimateTemplateParameter): Promise<void> {
     if (parameter.id) {
-      const { data } = await apiClient.patch(`/estimate-templates/${parameter.id}`, parameter);
+      const { data } = await apiClient.patch(`/estimate-template/${parameter.id}`, parameter);
       return data;
     }
-    const { data } = await apiClient.post('/estimate-templates', parameter);
+    const { data } = await apiClient.post('/estimate-template', parameter);
+    return data;
+  }
+
+  async changeSeq(idList: EstimateTemplateId[]): Promise<void> {
+    const { data } = await apiClient.post('/estimate-template/seq', { idList });
     return data;
   }
 }

@@ -65,7 +65,7 @@ function Element() {
 }
 
 const estimateTemplateDetailRoute: AppRoute = {
-  path:    '/estimate/template-management/:id',
+  path:    '/estimate-template-management/:id',
   element: <Element />
 };
 
