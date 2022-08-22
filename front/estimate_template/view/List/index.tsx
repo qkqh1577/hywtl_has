@@ -3,11 +3,15 @@ import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateQuery } from 'estimate_template/query';
 import SearchForm from './SearchForm';
 import List, { ListProps } from './List';
-import Footer from './Footer';
+import Footer, { FooterProps } from './Footer';
+import SeqModal, { EstimateTemplateSeqModalProps } from './SeqModal';
 
 interface Props
   extends ListProps,
-          FormikLayoutProps<EstimateTemplateQuery> {}
+          FooterProps,
+          FormikLayoutProps<EstimateTemplateQuery> {
+  modalProps: EstimateTemplateSeqModalProps;
+}
 
 export default function EstimateTemplateList(props: Props) {
 
@@ -16,8 +20,9 @@ export default function EstimateTemplateList(props: Props) {
       title="용역 항목 관리 목록"
       filter={<SearchForm />}
       body={<List {...props} />}
-      footer={<Footer />}
+      footer={<Footer {...props} />}
       formik={props.formik}
+      modals={<SeqModal {...props.modalProps} />}
     />
   );
 }

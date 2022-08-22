@@ -56,7 +56,7 @@ export default function ({ list }: ListProps) {
               <TableCell>{i + 1}</TableCell>
               <TableCell>{testTypeName(item.testType)}</TableCell>
               <TableCell>
-                <Link to={`/estimate/template/${item.id}`}>
+                <Link to={`/estimate-template/${item.id}`}>
                   {item.title}
                 </Link>
               </TableCell>

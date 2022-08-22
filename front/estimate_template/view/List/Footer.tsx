@@ -5,11 +5,18 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function OrderModalButton() {
+export interface FooterProps {
+  onSeqModalOpen: () => void;
+}
+
+function OrderModalButton({
+                            onSeqModalOpen: onClick
+                          }: FooterProps) {
 
   return (
     <Button
       children="순서 설정"
+      onClick={onClick}
     />
   );
 }
@@ -27,7 +34,7 @@ function AddButton() {
   );
 }
 
-export default function () {
+export default function (props: FooterProps) {
 
   return (
     <Box sx={{
@@ -36,7 +43,7 @@ export default function () {
       justifyContent: 'flex-end',
       mt:             '40px',
     }}>
-      <OrderModalButton />
+      <OrderModalButton onSeqModalOpen={props.onSeqModalOpen} />
       <AddButton />
     </Box>
   );
