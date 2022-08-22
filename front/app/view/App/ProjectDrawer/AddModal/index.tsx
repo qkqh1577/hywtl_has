@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
+import ModalLayout from 'layouts/ModalLayout';
 import {
   Box,
   Button,
@@ -18,16 +18,20 @@ import { FormikProvider } from 'formik';
 import { FormikPartial } from 'type/Form';
 
 export interface AddModalProps
-  extends Omit<ModalLayoutProps, | 'children' | 'title' | 'width'>,
-          FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
+  extends FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export default function ProjectAddModal({
-                                          open,
-                                          onClose,
-                                          formik
-                                        }: AddModalProps) {
+export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps) {
 
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onSubmit = () => {
+    formik.handleSubmit();
+  };
   return (
     <ModalLayout
       open={open}
@@ -128,7 +132,7 @@ export default function ProjectAddModal({
             height:         '30px',
             justifyContent: 'center'
           }}>
-            <Button>
+            <Button onClick={onSubmit}>
               등록
             </Button>
             <Button onClick={onClose}>

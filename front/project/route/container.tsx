@@ -12,7 +12,6 @@ import {
   useSelector
 } from 'react-redux';
 import React, {
-  useCallback,
   useEffect,
   useMemo
 } from 'react';
@@ -26,10 +25,6 @@ import {
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
 import ProjectContainerTitle from 'project/view/Container/Title';
-import {
-  initialProjectAddParameter,
-  ProjectAddParameter
-} from 'project/parameter';
 
 export function StatusBar() {
 
@@ -88,28 +83,11 @@ interface Props {
 
 export default function (props: Props) {
 
-  const { addModal } = useSelector((root: RootState) => root.project);
-  const dispatch = useDispatch();
-  const onClose = useCallback(() => dispatch(projectAction.setAddModal(false)), [dispatch]);
-  const addModalFormik = useFormik<FormikPartial<ProjectAddParameter>>({
-    initialValues: initialProjectAddParameter,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      console.log(values);
-    }
-  });
-
   return (
     <ProjectContainer
       title={<Title />}
       statusBar={<StatusBar />}
       children={props.children}
-      addModalProps={{
-        open:   !!addModal,
-        onClose,
-        formik: addModalFormik,
-      }}
     />
   );
 }
