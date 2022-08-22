@@ -3,19 +3,19 @@ import { Option } from 'components/DataFieldProps';
 
 export interface EstimateContentQuery {
   testType: TestType[] | undefined;
-  keywordType: string
+  keywordType: string;
   keyword: string;
 }
 
 export const keywordTypeList: Option[] = [
   {
-    key: 'by_name',
+    key:  'by_name',
     text: '이름'
   }
-]
+];
 
 export const initialEstimateContentQuery: EstimateContentQuery = {
-  keyword: '',
+  keyword:     '',
   keywordType: keywordTypeList[0].key as string,
-  testType: undefined,
-}
+  testType:    undefined,
+};

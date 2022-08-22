@@ -19,7 +19,6 @@ import { useFormik } from 'formik';
 import EstimateContentList from 'admin/estimate/content/view/List';
 
 function Element() {
-  console.log('hi in list page');
   const dispatch = useDispatch();
   const { list, filter } = useSelector((root: RootState) => root.estimateContent);
   const setFilter = useCallback((formikProps: FormikSubmit<Partial<EstimateContentQuery>>) => {
@@ -36,8 +35,10 @@ function Element() {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: filter ?? initialEstimateContentQuery,
-    onSubmit: (values, helper) => {
+    initialValues:      filter ?? initialEstimateContentQuery,
+    onSubmit:           (values,
+                         helper
+                        ) => {
       setFilter({
         values,
         ...helper
@@ -49,15 +50,18 @@ function Element() {
     setFilter(formik);
   }, []);
 
-  return(
-    <EstimateContentList  formik={formik} list={list}/>
-  )
+  return (
+    <EstimateContentList
+      formik={formik}
+      list={list}
+    />
+  );
 
 }
 
 const estimateContentListRoute: AppRoute = {
-  path: '/admin/estimate/content-management',
+  path:    '/admin/estimate/content-management',
   element: <Element />
-}
+};
 
 export default estimateContentListRoute;
