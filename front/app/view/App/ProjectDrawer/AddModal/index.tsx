@@ -9,6 +9,8 @@ import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
 import SelectField from 'components/SelectField';
 import {
+  projectEstimateTypeList,
+  projectEstimateTypeName,
   ProjectProgressStatus,
   projectProgressStatusName
 } from 'project/domain';
@@ -63,14 +65,14 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <TextField
                   required
-                  name="프로젝트 닉네임"
-                  label="alias"
+                  name="alias"
+                  label="프로젝트 닉네임"
                 />
               </Grid>
               <Grid item sm={6}>
                 <UserSelector
                   required
-                  name="receptionManager"
+                  name="receptionManagerId"
                   label="문의 접수자"
                 />
               </Grid>
@@ -87,6 +89,17 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
                     text: projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)
                   }]}
                 />
+              </Grid>
+              <Grid item sm={6}>
+                <SelectField
+                  required
+                  name="estimateType"
+                  label="견적 구분"
+                  options={projectEstimateTypeList.map((item) => ({
+                    key: item as string,
+                    text: projectEstimateTypeName(item),
+                  }))}
+                  />
               </Grid>
             </Grid>
           </Box>

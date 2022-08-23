@@ -27,13 +27,9 @@ import { useFormik } from 'formik';
 import { ProjectShortVO } from 'project/domain';
 import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
 import {
-  FormikPartial,
   FormikSubmit
 } from 'type/Form';
-import {
-  initialProjectAddParameter,
-  ProjectAddParameter
-} from 'project/parameter';
+import projectAddModalRoute from 'app/route/projectAddModal';
 
 export default function () {
 
@@ -46,7 +42,7 @@ export default function () {
   const { user, getLoginUser, logout } = useLogin();
   const { open: openMenu, menu, toggleMenu } = useMenu();
   const { open: openProjectMenu, filterOpen } = useSelector((root: RootState) => root.projectDrawer);
-  const { page, addModal: openProjectAddModal } = useSelector((root: RootState) => root.project);
+  const { page } = useSelector((root: RootState) => root.project);
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const toggleFilter = useCallback(() => dispatch(projectDrawerAction.toggleFilter()), [dispatch]);
   const toggleProjectMenu = useCallback(() => dispatch(projectDrawerAction.toggleMenu()), [dispatch]);
@@ -66,23 +62,6 @@ export default function () {
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
     navigate(`/project/sales-management/${item.id}/basic`);
   };
-
-  const setProjectAddModal = useCallback((open: boolean) => dispatch(projectAction.setAddModal(open)), [dispatch]);
-  const addProject = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectAddParameter>>) =>
-      dispatch(projectAction.add(formikProps))
-    , [dispatch]);
-
-  const addModalFormik = useFormik<FormikPartial<ProjectAddParameter>>({
-    initialValues: initialProjectAddParameter,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      addProject({
-        values,
-        ...helper,
-      });
-    }
-  });
 
   useEffect(() => {
     if (pathname !== '/login') {
@@ -132,9 +111,7 @@ export default function () {
         toggleFilter,
         onRowClick,
         list,
-        addModalFormik: addModalFormik,
-        openAddModal: openProjectAddModal,
-        setAddModal: setProjectAddModal,
+        projectAddModal: projectAddModalRoute(),
       }}
     />
   );
