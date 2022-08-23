@@ -1,0 +1,23 @@
+### project memo add
+POST http://localhost:8080/project/sales/1/memo
+Content-Type: application/json
+
+{
+  "description": "한양풍동실험연구소",
+  "category": "LOG"
+}
+
+### project memo get
+GET http://localhost:8080/project/sales/1/memo
+
+### project memo change
+PATCH http://localhost:8080/project/sales/memo/1
+Content-Type: application/json
+
+{
+  "description": "한양풍동실험연구소_변경",
+  "category": "LOG"
+}
+
+### project memo delete
+DELETE http://localhost:8080/project/sales/memo/1
