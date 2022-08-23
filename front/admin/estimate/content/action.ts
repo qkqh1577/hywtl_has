@@ -5,16 +5,18 @@ import {
   EstimateContentShort,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
+import { EstimateContentParameter } from 'admin/estimate/content/parameter';
 
 export enum EstimateContentAction {
   setFilter = 'admin/estimate/content/filter/set',
   setList   = 'admin/estimate/content/list/set',
   setOne    = 'admin/estimate/content/one/set',
+  upsert    = 'admin/estimate/content/upsert'
 }
 
 export const estimateContentAction = {
   setFilter: createAction(EstimateContentAction.setFilter)<FormikSubmit<EstimateContentQuery>>(),
-  setList: createAction(EstimateContentAction.setList)<EstimateContentShort[]>(),
-  setOne: createAction(EstimateContentAction.setOne)<EstimateContentVO>(),
-
-}
+  setList:   createAction(EstimateContentAction.setList)<EstimateContentShort[]>(),
+  setOne:    createAction(EstimateContentAction.setOne)<EstimateContentVO>(),
+  upsert:    createAction(EstimateContentAction.upsert)<FormikSubmit<EstimateContentParameter>>(),
+};

@@ -43,5 +43,4 @@ export const estimateContentReducer = createReducer(initialEstimateContentState,
       detail: action.payload,
     }
   )
-
 });

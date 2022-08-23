@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import { AppRoute } from 'services/routes';
 import useId from 'services/useId';
 import EstimateContentDetail from 'admin/estimate/content/view/Detail';
@@ -9,17 +12,30 @@ import {
 import { RootState } from 'services/reducer';
 import useDialog from 'components/Dialog';
 import { useFormik } from 'formik';
-import { FormikEditable } from 'type/Form';
+import {
+  FormikEditable,
+  FormikSubmit
+} from 'type/Form';
 import {
   EstimateContentVO,
   initialEstimateContentVO
 } from 'admin/estimate/content/domain';
+import { EstimateContentParameter } from 'admin/estimate/content/parameter';
+import {
+  EstimateContentAction,
+  estimateContentAction
+} from 'admin/estimate/content/action';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.estimateContent);
   const { error } = useDialog();
+  const upsert = useCallback(
+    (formikProps: FormikSubmit<EstimateContentParameter>) =>
+      dispatch(estimateContentAction.upsert(formikProps)),
+    [dispatch]
+  );
 
   const formik = useFormik<FormikEditable<EstimateContentVO>>({
     enableReinitialize: true,
@@ -31,24 +47,24 @@ function Element() {
         error('수정 상태가 아닙니다.');
         return;
       }
-      // upsert({ values, ...helper });
+      upsert({ values, ...helper });
     }
   });
 
   useEffect(() => {
     if (id) {
       dispatch({
-        type: 'admin/estimate/content/one/set',
+        type: EstimateContentAction.setOne,
         id,
       });
     }
   }, [dispatch]);
 
   return (
-    <EstimateContentDetail />
+    <EstimateContentDetail
+      formik={formik} />
   );
 }
-
 
 const estimateContentDetailRoute: AppRoute = {
   path:    '/admin/estimate/content/:id',
