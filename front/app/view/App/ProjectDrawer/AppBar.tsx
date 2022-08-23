@@ -1,6 +1,5 @@
 import {
   Box,
-  Button
 } from '@mui/material';
 import IconButton from 'components/IconButton';
 import {
@@ -12,14 +11,15 @@ import React from 'react';
 export interface ProjectAppBarProps {
   openMenu: boolean;
   toggleMenu: () => void;
-  openProjectAddModal: () => void;
+  projectAddModal: React.ReactNode;
 }
 
 export default function ProjectAppBar({
                                         openMenu,
                                         toggleMenu,
-                                        openProjectAddModal,
+                                        projectAddModal
                                       }: ProjectAppBarProps) {
+
   return (
     <Box sx={{
       width:          '340px',
@@ -30,7 +30,7 @@ export default function ProjectAppBar({
       alignContent:   'flex-end',
       borderRight:    '1px solid rgb(245, 245, 245)'
     }}>
-      <Button onClick={openProjectAddModal}>신규 프로젝트 등록</Button>
+      {projectAddModal}
       <IconButton
         tooltip={'프로젝트 메뉴 ' + (openMenu ? '접기' : '펴기')}
         onClick={toggleMenu}

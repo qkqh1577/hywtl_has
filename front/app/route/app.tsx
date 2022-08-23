@@ -26,7 +26,10 @@ import { projectAction } from 'project/action';
 import { useFormik } from 'formik';
 import { ProjectShortVO } from 'project/domain';
 import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
-import { FormikSubmit } from 'type/Form';
+import {
+  FormikSubmit
+} from 'type/Form';
+import projectAddModalRoute from 'app/route/projectAddModal';
 
 export default function () {
 
@@ -59,8 +62,6 @@ export default function () {
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
     navigate(`/project/sales-management/${item.id}/basic`);
   };
-
-  const openProjectAddModal = useCallback(() => dispatch(projectAction.setAddModal(true)), [dispatch]);
 
   useEffect(() => {
     if (pathname !== '/login') {
@@ -110,7 +111,7 @@ export default function () {
         toggleFilter,
         onRowClick,
         list,
-        openProjectAddModal
+        projectAddModal: projectAddModalRoute(),
       }}
     />
   );

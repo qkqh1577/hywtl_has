@@ -6,6 +6,7 @@ import {
   ProjectVO
 } from 'project/domain';
 import apiClient from 'services/api';
+import { ProjectAddParameter } from 'project/parameter';
 
 class ProjectApi {
   async getPage(query: ProjectQuery): Promise<Page<ProjectShortVO>> {
@@ -18,6 +19,10 @@ class ProjectApi {
     return data;
   }
 
+  async add(params: ProjectAddParameter): Promise<void> {
+    const { data } = await apiClient.post('/project/sales', params);
+    return data;
+  }
 
 }
 

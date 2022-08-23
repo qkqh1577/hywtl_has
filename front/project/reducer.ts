@@ -11,32 +11,36 @@ export interface ProjectState {
   filter?: ProjectQuery;
   page?: Page<ProjectShortVO>;
   detail?: ProjectVO;
-  addModal?: boolean;
+  addModal: boolean;
 }
 
-const initial: ProjectState = {};
+const initial: ProjectState = {
+  addModal: false
+};
 
 export const projectReducer = createReducer(initial, {
-  [ProjectAction.setFilter]: (state,
-                              action
-                             ) => ({
+  [ProjectAction.setFilter]:   (state,
+                                action
+                               ) => ({
     ...state,
     filter: action.payload.values,
   }),
-  [ProjectAction.setPage]:   (state,
-                              action
-                             ) => ({
+  [ProjectAction.setPage]:     (state,
+                                action
+                               ) => ({
     ...state,
     page: action.payload,
   }),
-  [ProjectAction.setOne]:    (state,
-                              action
-                             ) => ({
+  [ProjectAction.setOne]:      (state,
+                                action
+                               ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectAction.setAddModal]:(state, action) => ({
+  [ProjectAction.setAddModal]: (state,
+                                action
+                               ) => ({
     ...state,
-    addModal: action.payload,
+    addModal: action.payload
   })
 });

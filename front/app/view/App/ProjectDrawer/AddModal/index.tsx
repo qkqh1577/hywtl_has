@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
+import ModalLayout from 'layouts/ModalLayout';
 import {
   Box,
   Button,
@@ -9,6 +9,8 @@ import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
 import SelectField from 'components/SelectField';
 import {
+  projectEstimateTypeList,
+  projectEstimateTypeName,
   ProjectProgressStatus,
   projectProgressStatusName
 } from 'project/domain';
@@ -18,16 +20,20 @@ import { FormikProvider } from 'formik';
 import { FormikPartial } from 'type/Form';
 
 export interface AddModalProps
-  extends Omit<ModalLayoutProps, | 'children' | 'title' | 'width'>,
-          FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
+  extends FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-export default function ProjectAddModal({
-                                          open,
-                                          onClose,
-                                          formik
-                                        }: AddModalProps) {
+export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps) {
 
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onSubmit = () => {
+    formik.handleSubmit();
+  };
   return (
     <ModalLayout
       open={open}
@@ -59,14 +65,14 @@ export default function ProjectAddModal({
               <Grid item sm={6}>
                 <TextField
                   required
-                  name="프로젝트 닉네임"
-                  label="alias"
+                  name="alias"
+                  label="프로젝트 닉네임"
                 />
               </Grid>
               <Grid item sm={6}>
                 <UserSelector
                   required
-                  name="receptionManager"
+                  name="receptionManagerId"
                   label="문의 접수자"
                 />
               </Grid>
@@ -83,6 +89,17 @@ export default function ProjectAddModal({
                     text: projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)
                   }]}
                 />
+              </Grid>
+              <Grid item sm={6}>
+                <SelectField
+                  required
+                  name="estimateType"
+                  label="견적 구분"
+                  options={projectEstimateTypeList.map((item) => ({
+                    key: item as string,
+                    text: projectEstimateTypeName(item),
+                  }))}
+                  />
               </Grid>
             </Grid>
           </Box>
@@ -128,7 +145,7 @@ export default function ProjectAddModal({
             height:         '30px',
             justifyContent: 'center'
           }}>
-            <Button>
+            <Button onClick={onSubmit}>
               등록
             </Button>
             <Button onClick={onClose}>
