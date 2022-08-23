@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FormikContext } from 'formik';
+import { estimateContentApi } from 'admin/estimate/content/api';
 
 
 function ListButton() {
@@ -23,8 +24,9 @@ function ListButton() {
 }
 
 function RemoveButton() {
+  const formikContext = useContext(FormikContext);
   const onClick = () => {
-    console.log('remove!');
+    estimateContentApi.delete(formikContext?.values.id);
   };
   return (
     <Button
@@ -49,10 +51,10 @@ function EditButton() {
   );
 }
 
-export default function (){
+export default function () {
   const formikContext = useContext(FormikContext);
   const edit: boolean = formikContext?.values.edit ?? true;
-  return(
+  return (
     <DetailFormFooter
       children={!edit
         ? (
@@ -73,5 +75,5 @@ export default function (){
         : undefined
       }
     />
-  )
+  );
 }

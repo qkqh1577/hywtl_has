@@ -68,6 +68,10 @@ class EstimateContentApi {
       return data;
     }
   }
+
+  async delete(id:EstimateContentId): Promise<void>{
+    await apiClient.delete(`/admin/estimate/content/${id}`);
+  }
 }
 
 export const estimateContentApi = new EstimateContentApi();
