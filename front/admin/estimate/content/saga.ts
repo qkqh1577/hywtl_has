@@ -2,7 +2,10 @@ import {
   estimateContentAction,
   EstimateContentAction
 } from 'admin/estimate/content/action';
-import { EstimateContentShort } from 'admin/estimate/content/domain';
+import {
+  EstimateContentShort,
+  EstimateContentVO
+} from 'admin/estimate/content/domain';
 import { estimateContentApi } from 'admin/estimate/content/api';
 import {
   call,
@@ -20,6 +23,15 @@ function* watchFilter() {
   }
 }
 
+function* watchId() {
+  while (true) {
+    const { id } = yield take(EstimateContentAction.setOne);
+    const detail: EstimateContentVO = yield call(estimateContentApi.getOne, id);
+    yield put(estimateContentAction.setOne(detail));
+  }
+}
+
 export default function* estimateContentSaga() {
   yield fork(watchFilter);
+  yield fork(watchId);
 };

@@ -2,6 +2,7 @@ import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentId,
   EstimateContentShort,
+  EstimateContentVO,
   TestType
 } from 'admin/estimate/content/domain';
 import apiClient from 'services/api';
@@ -35,6 +36,11 @@ class EstimateContentApi {
     );
     // const { data } = await apiClient.get('/admin/estimate/content', query);
     // return data;
+  }
+
+  async getOne(id: EstimateContentId): Promise<EstimateContentVO> {
+    const { data } = await apiClient.get(`/admin/estimate/content/${id}`);
+    return data;
   }
 
 }
