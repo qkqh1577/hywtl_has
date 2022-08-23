@@ -84,10 +84,12 @@ interface Props {
 export default function (props: Props) {
 
   return (
-    <ProjectContainer
-      title={<Title />}
-      statusBar={<StatusBar />}
-      children={props.children}
-    />
+    <>
+      <ProjectContainer
+        title={<Title />}
+        statusBar={<StatusBar />}
+        children={props.children}
+      />
+    </>
   );
 }
