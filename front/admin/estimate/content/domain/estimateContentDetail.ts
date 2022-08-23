@@ -10,7 +10,7 @@ export interface EstimateContentDetailVO {
   description: string;
 }
 
-export const initialEstimateContentDetail: EstimateContentDetailVO = {
+export const initialEstimateContentDetailVO: EstimateContentDetailVO = {
   id: '',
   description: '',
 }
