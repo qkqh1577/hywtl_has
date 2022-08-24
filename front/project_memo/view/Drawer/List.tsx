@@ -22,12 +22,14 @@ export default function ProjectMemoList({ list }: ProjectMemoListProps) {
       width:    '100%',
     }}>
       {list.map((item) => (
-        <Box sx={{
-          display: 'flex',
-          width:   '100%',
-          border:  '1px solid #000',
-          margin:  '12px 0'
-        }}>
+        <Box
+          key={item.id}
+          sx={{
+            display: 'flex',
+            width:   '100%',
+            border:  '1px solid #000',
+            margin:  '12px 0'
+          }}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
               <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
