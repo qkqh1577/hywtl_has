@@ -67,7 +67,7 @@ export default function ({ list }: ListProps) {
               key={item.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>
-                <Link to={`/admin/estimate/content/${item.id}`}>
+                <Link to={`/admin/estimate/content-management/${item.id}`}>
                   {item.name}
                 </Link>
               </TableCell>
