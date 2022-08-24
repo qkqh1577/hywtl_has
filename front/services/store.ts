@@ -12,6 +12,7 @@ import departmentSaga from 'department/saga';
 import estimateTemplateSaga from 'estimate_template/saga';
 import projectSaga from 'project/saga';
 import businessSaga from "../business/saga";
+import projectMemoSaga from 'project_memo/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -22,7 +23,8 @@ function* saga() {
     departmentSaga(),
     estimateTemplateSaga(),
     projectSaga(),
-    businessSaga()
+    businessSaga(),
+    projectMemoSaga(),
   ]);
 }
 

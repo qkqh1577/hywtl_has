@@ -30,6 +30,38 @@ import {
   FormikSubmit
 } from 'type/Form';
 import projectAddModalRoute from 'app/route/projectAddModal';
+import {
+  initialProjectMemoQuery,
+  ProjectMemoQuery
+} from 'project_memo/parameter';
+import { projectMemoAction } from 'project_memo/action';
+import ProjectMemoDrawer from 'project_memo/view/Drawer';
+
+function ProjectMemoDrawerRoute() {
+
+  const dispatch = useDispatch();
+  const setFilter = useCallback((formikProps: FormikSubmit<ProjectMemoQuery>) =>
+      dispatch(projectMemoAction.setFilter(formikProps))
+    , [dispatch]);
+
+  const formik = useFormik<ProjectMemoQuery>({
+    initialValues: initialProjectMemoQuery,
+    onSubmit:      (values,
+                    helper
+                   ) => {
+      setFilter({
+        values,
+        ...helper
+      });
+    }
+  });
+
+  return (
+    <ProjectMemoDrawer
+      formik={formik}
+    />
+  );
+}
 
 export default function () {
 
@@ -104,15 +136,16 @@ export default function () {
         toggleMenu
       }}
       projectDrawerProps={{
-        openMenu:   openProjectMenu,
-        toggleMenu: toggleProjectMenu,
-        openFilter: filterOpen,
-        formik:     projectFormik,
+        openMenu:        openProjectMenu,
+        toggleMenu:      toggleProjectMenu,
+        openFilter:      filterOpen,
+        formik:          projectFormik,
         toggleFilter,
         onRowClick,
         list,
         projectAddModal: projectAddModalRoute(),
       }}
+      projectMemoDrawer={<ProjectMemoDrawerRoute />}
     />
   );
 }

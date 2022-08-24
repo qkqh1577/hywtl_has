@@ -14,6 +14,7 @@ interface Props {
   logoutButtonProps: LogoutButtonProps;
   menuDrawerProps: MenuDrawerProps;
   projectDrawerProps: ProjectDrawerProps;
+  projectMemoDrawer: React.ReactNode;
 }
 
 export default function App(props: Props) {
@@ -59,6 +60,7 @@ export default function App(props: Props) {
         }}>
         <ReactRouter />
       </Box>
+      {isProjectPage && props.projectMemoDrawer}
     </Box>
   );
 }

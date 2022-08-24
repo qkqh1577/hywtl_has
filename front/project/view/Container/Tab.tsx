@@ -21,8 +21,11 @@ const propsList: ButtonProps[] = [{
   children: '단지 정보',
   path:     'building',
 }, {
-  children: '견적/게약',
+  children: '견적/계약',
   path:     'estimate_contract',
+}, {
+  children: '진행 정보',
+  path:     'progress',
 }, {
   children: '자료',
   path:     'document',
