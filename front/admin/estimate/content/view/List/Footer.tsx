@@ -5,11 +5,17 @@ import {
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
-function OrderModalButton() {
+export interface FooterProps {
+  onSeqModalOpen: () => void;
+}
 
+function OrderModalButton({
+                            onSeqModalOpen: onClick
+                          }: FooterProps) {
   return (
     <Button
       children="순서 설정"
+      onClick={onClick}
     />
   );
 }
@@ -27,16 +33,16 @@ function AddButton() {
   );
 }
 
-export default function () {
-  return(
+export default function (props: FooterProps) {
+  return (
     <Box sx={{
       display:        'flex',
       width:          '100%',
       justifyContent: 'flex-end',
       mt:             '40px',
     }}>
-      <OrderModalButton />
+      <OrderModalButton onSeqModalOpen={props.onSeqModalOpen} />
       <AddButton />
     </Box>
-  )
+  );
 };
