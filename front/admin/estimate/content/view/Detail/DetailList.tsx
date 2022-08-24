@@ -107,6 +107,7 @@ export default function () {
                       <Tooltip title="순서 올리기">
                         <IconButton
                           disabled={i === 0}
+                          children={<UpIcon />}
                           onClick={() => {
                             const prevList = list.filter((t,
                                                           k
@@ -120,13 +121,12 @@ export default function () {
                             }
                             formikContext!.setFieldValue('detailList', detailList);
                           }}
-                        >
-                          <UpIcon />
-                        </IconButton>
+                        />
                       </Tooltip>
                       <Tooltip title="순서 내리기">
                         <IconButton
-                          disabled={i === 0}
+                          disabled={i === list.length - 1}
+                          children={<DownIcon />}
                           onClick={() => {
                             const prevList = list.filter((t,
                                                           k
@@ -140,9 +140,7 @@ export default function () {
                             }
                             formikContext!.setFieldValue('detailList', detailList);
                           }}
-                        >
-                          <DownIcon />
-                        </IconButton>
+                        />
                       </Tooltip>
                     </Box>
                   </TableCell>
