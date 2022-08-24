@@ -3,8 +3,7 @@ import {
   EstimateContentId,
   EstimateContentShort,
   EstimateContentVO,
-  TestType,
-  testTypeName
+  TestType
 } from 'admin/estimate/content/domain';
 import apiClient from 'services/api';
 import { EstimateContentDetailId } from 'admin/estimate/content/domain/estimateContentDetail';
@@ -19,19 +18,19 @@ class EstimateContentApi {
         {
           id:          EstimateContentId(1),
           name:        'test1',
-          testType:    TestType.A,
+          testType:    [TestType.A, TestType.E],
           detailCount: 5
         },
         {
           id:          EstimateContentId(2),
           name:        'test2',
-          testType:    TestType.B,
+          testType:    [TestType.A, TestType.B],
           detailCount: 2
         },
         {
           id:          EstimateContentId(3),
           name:        'test3',
-          testType:    TestType.E,
+          testType:    [TestType.COMMON, TestType.REVIEW],
           detailCount: 3
         }
       ]
@@ -47,7 +46,7 @@ class EstimateContentApi {
         {
           id:          EstimateContentId(1),
           name:        'test1',
-          testType:    TestType.A,
+          testType:    [TestType.A, TestType.B],
           detailList: [
             {
               id: EstimateContentDetailId(1),

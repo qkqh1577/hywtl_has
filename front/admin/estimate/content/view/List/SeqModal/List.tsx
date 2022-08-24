@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   EstimateContentShort,
-  testTypeName
 } from 'admin/estimate/content/domain';
 import {
   Box,
@@ -46,7 +45,7 @@ export default function EstimateContentSeqModalList({
             <TableRow key={item.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{testTypeName(item.testType)}</TableCell>
+              <TableCell>{item.testType}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
               <TableCell>
                 <Box sx={{

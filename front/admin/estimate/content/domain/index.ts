@@ -2,7 +2,6 @@
  * 실험 타입
  */
 import {
-  EstimateContentDetailId,
   EstimateContentDetailVO
 } from 'admin/estimate/content/domain/estimateContentDetail';
 
@@ -64,7 +63,7 @@ export function EstimateContentId(id: number) {
 export interface EstimateContentVO {
   id?: EstimateContentId | '';
   name: string;
-  testType: TestType | '';
+  testType: TestType[] | '';
   detailList: EstimateContentDetailVO[];
 }
 

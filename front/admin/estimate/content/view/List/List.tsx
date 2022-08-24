@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   EstimateContentShort,
-  testTypeName
 } from 'admin/estimate/content/domain';
 import TableCell, { TableCellProps } from 'components/TableCell';
 import {
@@ -37,6 +36,7 @@ const columnProps: TableCellProps[] = [
 ];
 
 export default function ({ list }: ListProps) {
+
   return (
     <TableContainer>
       <Table
@@ -71,7 +71,7 @@ export default function ({ list }: ListProps) {
                   {item.name}
                 </Link>
               </TableCell>
-              <TableCell>{testTypeName(item.testType)}</TableCell>
+              <TableCell>{item.testType}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
             </TableRow>
           ))}

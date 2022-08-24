@@ -11,6 +11,7 @@ interface Props {
   onClick: ButtonProps['onClick'];
   children: React.ReactNode;
   tooltip?: string;
+  disabled?: boolean;
 }
 
 export default function IconButton(props: Props) {
@@ -28,6 +29,7 @@ export default function IconButton(props: Props) {
     }}>
       <Tooltip title={props.tooltip}>
         <MuiIconButton
+          disabled={props.disabled}
           onClick={props.onClick}
           sx={{
             display:         'flex',
