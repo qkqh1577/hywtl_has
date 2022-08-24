@@ -72,6 +72,12 @@ class EstimateContentApi {
   async delete(id:EstimateContentId): Promise<void>{
     await apiClient.delete(`/admin/estimate/content/${id}`);
   }
+
+  async changeSeq(idList: EstimateContentId[]): Promise<void> {
+    const { data } = await apiClient.post('/admin/estimate/content/sequence');
+    return data;
+  }
+
 }
 
 export const estimateContentApi = new EstimateContentApi();
