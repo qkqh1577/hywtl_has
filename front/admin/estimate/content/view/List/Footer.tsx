@@ -23,7 +23,7 @@ function OrderModalButton({
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('admin/estimate/content/add');
+    navigate('/admin/estimate/content-management/add');
   };
   return (
     <Button
