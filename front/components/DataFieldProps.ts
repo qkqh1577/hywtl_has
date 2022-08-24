@@ -40,3 +40,66 @@ export function getValue<T = unknown>(values: FormikValues,
   }
   return getValue(value, name.substring(key.length + 1));
 }
+
+export function isEmpty(value: unknown): boolean {
+  if (typeof value === 'undefined' || value === null) {
+    return true;
+  }
+  if (typeof value === 'string') {
+    return value === '' || value.trim() === '';
+  }
+
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (keys.length === 0) {
+      return true;
+    }
+    return keys
+    .filter(key => value.hasOwnProperty(key))
+    .map(key => value[key])
+    .map(item => isEmpty(item))
+    .filter(flag => !flag)
+      .length === 0;
+  }
+  // NaN
+  return typeof value === 'number' && !value && value !== 0;
+}
+
+export type Value = {
+  [key: string]: any;
+}
+
+export function compress(values: Value): Value {
+  const result: Value = {};
+  const keys = Object.keys(values);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const value = values[key];
+    if (!isEmpty(value)) {
+      result[key] = typeof value === 'object' ? compress(value) : value;
+    }
+  }
+  return result;
+}
+
+export function equals<T = unknown>(a: T,
+                                    b: T
+): boolean {
+  if (isEmpty(a) && isEmpty(b)) {
+    return true;
+  }
+  if (typeof a === 'object' && typeof b === 'object') {
+    const compressedA = compress(a);
+    const compressedB = compress(b);
+    const keys = Object.keys(compressedA);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      if (!equals(compressedA[key], compressedB[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return a === b;
+}
