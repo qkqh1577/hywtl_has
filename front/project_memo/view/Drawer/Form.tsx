@@ -21,7 +21,7 @@ export default function ProjectMemoForm({
     }}>
 
       <Button onClick={() => {
-        setOpen(!open);
+        setOpen(false);
       }}>
         close
       </Button>
