@@ -86,4 +86,7 @@ INSERT INTO hywtl_has_api.business_manager_list (business_id, manager_list_id) V
 INSERT INTO hywtl_has_api.business_manager_meta (business_manager_id, meta) VALUES (1, '김기업 차장');
 INSERT INTO hywtl_has_api.business_manager_meta (business_manager_id, meta) VALUES (1, '김차장');
 INSERT INTO hywtl_has_api.project (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, alias, code, estimate_type, expected_month, is_lh, name, requested_month, contract_status, estimate_expectation, estimate_status, progress_status, project_manager_id, reception_manager_id, sales_manager_id) VALUES (1, '2022-08-18 13:45:40.574908', null, null, null, null, null, '반포자이', '22001', 'DEFAULT', null, null, '서울 반포 자이 풍동 실험', null, null, null, null, 'UNDER_CONTRACT', null, 1, null);
+INSERT INTO hywtl_has_api.project_memo (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, category, description, project_id, writer_id) VALUES (1, '2022-08-24 16:15:57.266584', null, null, null, null, null, 'LOG', '한양풍동실험연구소', 1, 1);
+INSERT INTO hywtl_has_api.project_memo (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, category, description, project_id, writer_id) VALUES (2, '2022-08-24 16:16:08.677098', null, null, null, null, null, 'BASIC', '메모 테스트', 1, 1);
+
 set FOREIGN_KEY_CHECKS = 1;

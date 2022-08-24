@@ -1,6 +1,9 @@
 import { createAction } from 'typesafe-actions';
 import { FormikSubmit } from 'type/Form';
-import { ProjectMemoQuery } from 'project_memo/parameter';
+import {
+  ProjectMemoParameter,
+  ProjectMemoQuery
+} from 'project_memo/parameter';
 import Page from 'type/Page';
 import { ProjectMemoVO } from 'project_memo/domain';
 
@@ -15,5 +18,5 @@ export const projectMemoAction = {
   setProjectId: createAction(ProjectMemoAction.setProjectId)<number | undefined>(),
   setFilter:    createAction(ProjectMemoAction.setFilter)<FormikSubmit<ProjectMemoQuery>>(),
   setPage:      createAction(ProjectMemoAction.setPage)<Page<ProjectMemoVO>>(),
-
+  add:          createAction(ProjectMemoAction.add)<FormikSubmit<ProjectMemoParameter>>(),
 };

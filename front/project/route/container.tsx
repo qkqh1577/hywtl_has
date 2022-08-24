@@ -12,6 +12,7 @@ import {
   useSelector
 } from 'react-redux';
 import React, {
+  useCallback,
   useEffect,
   useMemo
 } from 'react';
@@ -25,12 +26,15 @@ import {
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
 import ProjectContainerTitle from 'project/view/Container/Title';
+import { projectMemoAction } from 'project_memo/action';
 
 export function StatusBar() {
 
   const id = useId();
   const { detail } = useSelector((root: RootState) => root.project);
   const dispatch = useDispatch();
+
+  const setProjectMemoProjectId = useCallback((projectId: number | undefined) => dispatch(projectMemoAction.setProjectId(projectId)), [dispatch]);
 
   const initialValues = useMemo(() => toPartial(detail, initialProjectStatusBar), [detail]);
   const formik = useFormik<FormikPartial<ProjectStatusBar>>({
@@ -53,6 +57,7 @@ export function StatusBar() {
         id,
       });
     }
+    setProjectMemoProjectId(id);
   }, [id]);
 
   if (!detail || detail.id !== id) {

@@ -3,8 +3,8 @@ POST http://localhost:8080/project/sales/1/memo
 Content-Type: application/json
 
 {
-  "description": "한양풍동실험연구소",
-  "category": "LOG"
+  "description": "메모 테스트",
+  "category": "BASIC"
 }
 
 ### project memo get

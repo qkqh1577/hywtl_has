@@ -1,4 +1,7 @@
-import { ProjectMemoQuery } from 'project_memo/parameter';
+import {
+  ProjectMemoParameter,
+  ProjectMemoQuery
+} from 'project_memo/parameter';
 import Page from 'type/Page';
 import {
   ProjectMemoId,
@@ -18,6 +21,13 @@ class ProjectMemoApi {
 
   async getOne(id: ProjectMemoId): Promise<ProjectMemoVO> {
     const { data } = await apiClient.get(`/project/sales/memo/${id}`);
+    return data;
+  }
+
+  async add(projectId: ProjectId,
+            params: ProjectMemoParameter
+  ): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${projectId}/memo`, params);
     return data;
   }
 

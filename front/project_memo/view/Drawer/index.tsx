@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { FormikProvider } from 'formik';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectMemoQuery } from 'project_memo/parameter';
-import { Button } from '@mui/material';
+import ProjectMemoForm from 'project_memo/view/Drawer/Form';
+import ProjectMemoList, { ProjectMemoListProps } from 'project_memo/view/Drawer/List';
 
 interface Props
-  extends FormikLayoutProps<ProjectMemoQuery> {
-
+  extends ProjectMemoListProps,
+          FormikLayoutProps<ProjectMemoQuery> {
 }
 
 export default function ProjectMemoDrawer(props: Props) {
@@ -17,11 +18,8 @@ export default function ProjectMemoDrawer(props: Props) {
   return (
     <Drawer open={open} direction="right">
       <FormikProvider value={props.formik}>
-        <Button onClick={() => {
-          setOpen(!open);
-        }}>
-          close
-        </Button>
+        <ProjectMemoForm open={open} setOpen={setOpen} />
+        <ProjectMemoList list={props.list} />
       </FormikProvider>
     </Drawer>
   );

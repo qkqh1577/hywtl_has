@@ -13,3 +13,8 @@ export const initialProjectMemoQuery: ProjectMemoQuery = {
   keywordType: '',
   category:    undefined,
 };
+
+export interface ProjectMemoParameter {
+  description: string;
+  category: ProjectMemoCategory;
+}
