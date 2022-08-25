@@ -1,6 +1,8 @@
 import React, {
   useContext,
+  useEffect,
   useMemo,
+  useState,
 } from 'react';
 import {
   StandardTextFieldProps,
@@ -12,6 +14,7 @@ import {
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import {
   DataFieldValue,
+  equals,
   FieldStatus,
   getValue
 } from 'components/DataFieldProps';
@@ -33,87 +36,120 @@ export interface TextFieldProps
 
 interface FieldProps
   extends Pick<StandardTextFieldProps,
-    | 'type' | 'fullWidth' | 'variant' | 'onChange' | 'InputProps' | 'label' | 'error' | 'helperText' | 'value' | 'disabled' | 'required'> {
+    | 'type'
+    | 'onChange'
+    | 'onBlur'
+    | 'InputProps'
+    | 'label'
+    | 'error'
+    | 'helperText'
+    | 'value'
+    | 'disabled'
+    | 'required'> {
   name: string;
+}
+
+interface ViewProps
+  extends Omit<TextFieldProps, | 'status'
+                               | 'startAdornment'
+                               | 'endAdornment'
+                               | 'disableLabel'
+                               | 'label'>,
+          Pick<StandardTextFieldProps, | 'label'
+                                       | 'value'> {
+
+}
+
+function TextFieldView(props: ViewProps) {
+  return (<MuiTextField fullWidth variant="standard" {...props} />);
 }
 
 export default function TextField(props: TextFieldProps) {
   const {
           name,
-          disableLabel,
-          helperText,
-          label,
           InputProps,
           type = 'text',
           startAdornment,
           endAdornment,
           required,
           onChange,
+          onBlur,
           status,
-          ...restProps
+          label:        propsLabel,
+          disableLabel: propsDisableLabel,
+          helperText:   propsHelperText,
+          ...           restProps
         } = props;
-
   const formikContext = useContext(FormikContext);
-  if (formikContext) {
-    const { values, errors, handleChange } = formikContext;
-    const value = useMemo(() => getValue<DataFieldValue>(values, name) ?? '', [values]);
-    const edit = useMemo(() => values.edit || typeof values.edit === 'undefined', [values]);
-    const error = !!errors[name];
-    const disabled = status === FieldStatus.Disabled;
-    const readOnly = status === FieldStatus.ReadOnly || !edit;
+  const values = formikContext?.values ?? {};
+  const errors = formikContext?.errors ?? {};
+  const handleChange = formikContext?.handleChange ?? undefined;
 
+  const formikValue = getValue<DataFieldValue>(values, name) ?? '';
+  const formikEdit = values.edit || typeof values.edit === 'undefined';
+  const formikError = !!errors[name];
 
-    const fieldProps: FieldProps = {
-      type,
-      fullWidth:  true,
-      variant:    'standard',
-      name,
-      value,
-      label:      disableLabel ? undefined : label,
-      error,
-      helperText: error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText,
-      disabled,
-      required:   edit && required,
-      onChange:   (e) => {
-        if (onChange) {
-          onChange(e);
-        }
-        handleChange(e);
-      },
-      InputProps: {
-        ...InputProps,
-        readOnly,
-        startAdornment,
-        endAdornment,
+  const [value, setValue] = useState<any>('');
+  const [edit, setEdit] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+
+  const label = useMemo(() => propsDisableLabel ? undefined : propsLabel, [propsDisableLabel, propsLabel]);
+  const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
+
+  const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
+  const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
+
+  useEffect(() => {
+    if (!equals(value, formikValue)) {
+      setValue(formikValue);
+    }
+  }, [formikValue]);
+
+  useEffect(() => {
+    if (formikEdit !== edit) {
+      setEdit(formikEdit);
+    }
+  }, [formikEdit]);
+
+  useEffect(() => {
+    if (formikError !== error) {
+      setError(formikError);
+    }
+  }, [formikError]);
+
+  const fieldProps: FieldProps = {
+    type,
+    name,
+    value,
+    label,
+    error,
+    helperText,
+    disabled,
+    required:   edit && required,
+    onChange:   (e) => {
+      if (onChange) {
+        onChange(e);
       }
-    };
-
-    return (
-      <MuiTextField
-        {...restProps}
-        {...fieldProps}
-      />
-    );
-  }
-  else {
-    const fieldProps: FieldProps = {
-      type,
-      fullWidth:  true,
-      variant:    'standard',
-      name,
-      label:      disableLabel ? undefined : label,
-      InputProps: {
-        ...InputProps,
-        readOnly: true,
-        startAdornment,
-        endAdornment,
+      setValue(e.target.value ?? '');
+    },
+    onBlur:     (e) => {
+      if (onBlur) {
+        onBlur(e);
       }
-    };
-    return (
-      <MuiTextField
-        {...restProps}
-        {...fieldProps}
-      />
-    );
-  }
+      handleChange(e);
+    },
+    InputProps: {
+      ...InputProps,
+      readOnly,
+      startAdornment,
+      endAdornment,
+    }
+  };
+
+  return (
+    <TextFieldView
+      {...restProps}
+      {...fieldProps}
+    />
+  );
 }

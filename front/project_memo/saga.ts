@@ -11,6 +11,7 @@ import { ProjectMemoVO } from 'project_memo/domain';
 import { projectMemoApi } from 'project_memo/api';
 import { RootState } from 'services/reducer';
 import { dialogActions } from 'components/Dialog';
+import { ProjectId } from 'project/domain';
 
 function* watchFilter() {
   while (true) {
@@ -40,6 +41,28 @@ function* getProjectId() {
   return projectId;
 }
 
+function* watchAdd() {
+  while (true) {
+    const { payload: formik } = yield take(projectMemoAction.add);
+    try {
+      const projectId: ProjectId = yield call(getProjectId);
+      yield call(projectMemoApi.add, projectId, formik.values);
+      yield put(dialogActions.openAlert('등록하였습니다.'));
+      yield call(formik.setFieldValue, 'description', '');
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        status:   'error',
+        children: e as string,
+      }));
+    }
+    finally {
+      yield call(formik.setSubmitting, false);
+    }
+  }
+}
+
 export default function* projectMemoSaga() {
   yield fork(watchFilter);
+  yield fork(watchAdd);
 }

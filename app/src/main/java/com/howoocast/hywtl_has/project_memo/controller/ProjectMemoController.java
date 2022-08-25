@@ -5,7 +5,6 @@ import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoParameter;
 import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoPredicateBuilder;
 import com.howoocast.hywtl_has.project_memo.service.ProjectMemoService;
 import com.howoocast.hywtl_has.project_memo.view.ProjectMemoView;
-import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,18 +35,16 @@ public class ProjectMemoController {
     @GetMapping("/project/sales/{projectId}/memo")
     public Page<ProjectMemoView> page(
         @PathVariable Long projectId,
-        @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false, name = "category[]") List<ProjectMemoCategory> categoryList,
+        @RequestParam(required = false) ProjectMemoCategory category,
         @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable
     ) {
         return ProjectMemoMapper.toView(
             service.page(
                 new ProjectMemoPredicateBuilder(
                     projectId,
-                    keywordType,
                     keyword,
-                    categoryList
+                    category
                 )
                     .build(),
                 pageable

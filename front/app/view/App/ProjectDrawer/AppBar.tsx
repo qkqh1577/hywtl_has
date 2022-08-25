@@ -9,14 +9,14 @@ import {
 import React from 'react';
 
 export interface ProjectAppBarProps {
-  openMenu: boolean;
-  toggleMenu: () => void;
+  open: boolean;
+  toggle: () => void;
   projectAddModal: React.ReactNode;
 }
 
 export default function ProjectAppBar({
-                                        openMenu,
-                                        toggleMenu,
+                                        open,
+                                        toggle,
                                         projectAddModal
                                       }: ProjectAppBarProps) {
 
@@ -32,9 +32,9 @@ export default function ProjectAppBar({
     }}>
       {projectAddModal}
       <IconButton
-        tooltip={'프로젝트 메뉴 ' + (openMenu ? '접기' : '펴기')}
-        onClick={toggleMenu}
-        children={openMenu ? <LeftIcon /> : <RightIcon />}
+        tooltip={'프로젝트 메뉴 ' + (open ? '접기' : '펴기')}
+        onClick={toggle}
+        children={open ? <LeftIcon /> : <RightIcon />}
       />
     </Box>
   );
