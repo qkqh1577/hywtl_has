@@ -15,8 +15,8 @@ public class EstimateContentParameter {
     @NotBlank(message = EstimateContent.KEY + ".name.not_blank")
     private String name;
 
-    @NotEmpty(message = EstimateContent.KEY + ".test_type.not_empty")
-    private List<TestType> testType;
+    @NotEmpty(message = EstimateContent.KEY + ".test_type_list.not_empty")
+    private List<TestType> testTypeList;
 
     @NotEmpty(message = EstimateContent.KEY + ".detail_list.not_empty")
     private List<String> detailList;

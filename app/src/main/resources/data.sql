@@ -91,7 +91,7 @@ INSERT INTO hywtl_has_api.project_memo (id, created_at, created_by, deleted_at, 
 INSERT INTO hywtl_has_api.estimate_content (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, name, seq) VALUES (1, '2022-08-25 16:31:36.320680', null, null, null, null, null, 'test', 1);
 INSERT INTO hywtl_has_api.estimate_content_detail_list (estimate_content_id, detail_list) VALUES (1, '테스트1');
 INSERT INTO hywtl_has_api.estimate_content_detail_list (estimate_content_id, detail_list) VALUES (1, '테스트2');
-INSERT INTO hywtl_has_api.estimate_content_test_type (estimate_content_id, test_type) VALUES (1, 0);
-INSERT INTO hywtl_has_api.estimate_content_test_type (estimate_content_id, test_type) VALUES (1, 1);
-INSERT INTO hywtl_has_api.estimate_content_test_type (estimate_content_id, test_type) VALUES (1, 2);
+INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 0);
+INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 1);
+INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 2);
 set FOREIGN_KEY_CHECKS = 1;

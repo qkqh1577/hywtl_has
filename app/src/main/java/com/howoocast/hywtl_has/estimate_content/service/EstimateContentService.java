@@ -53,7 +53,7 @@ public class EstimateContentService {
         if (Objects.isNull(id)) {
             EstimateContent instance = EstimateContent.of(
                 parameter.getName(),
-                parameter.getTestType(),
+                parameter.getTestTypeList(),
                 parameter.getDetailList(),
                 getNextSequence()
             );
@@ -64,7 +64,7 @@ public class EstimateContentService {
         EstimateContent instance = this.load(id);
         instance.change(
             parameter.getName(),
-            parameter.getTestType(),
+            parameter.getTestTypeList(),
             parameter.getDetailList()
         );
     }
