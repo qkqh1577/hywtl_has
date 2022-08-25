@@ -101,6 +101,22 @@ function* watchUpsert() {
   }
 }
 
+function* watchDelete() {
+  while (true) {
+    const { payload: id } = yield take(BusinessAction.delete);
+    try {
+      yield call(businessApi.delete, id);
+      yield put(dialogActions.openAlert('삭제 했습니다.'));
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        children: '삭제에 실패했습니다.',
+        status:   'error',
+      }));
+    }
+  }
+}
+
 export default function* businessSaga() {
   yield fork(watchFilter);
   yield fork(watchRegistrationNumber);
@@ -108,4 +124,5 @@ export default function* businessSaga() {
   yield fork(watchRivalProjectList);
   yield fork(watchId);
   yield fork(watchUpsert);
+  yield fork(watchDelete);
 };

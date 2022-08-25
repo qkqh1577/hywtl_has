@@ -4,6 +4,7 @@ import {
 } from 'business/query';
 import Page from 'type/Page';
 import {
+  BusinessId,
   BusinessShort,
   BusinessVO,
   InvolvedProjectVO,
@@ -20,6 +21,7 @@ export enum BusinessAction {
   setInvolvedProjectList = 'business/id/involved-project-list/set',
   setRivalProjectList    = 'business/id/rival-project-list/set',
   upsert                 = 'business/upsert',
+  delete                 = 'business/delete',
 }
 
 export const businessAction = {
@@ -30,4 +32,5 @@ export const businessAction = {
   setRivalProjectList:    createAction(BusinessAction.setRivalProjectList)<RivalProjectVO[]>(),
   setOne:                 createAction(BusinessAction.setOne)<BusinessVO | undefined>(),
   upsert:                 createAction(BusinessAction.upsert)<FormikSubmit<BusinessParameter>>(),
+  delete:                 createAction(BusinessAction.delete)<BusinessId>(),
 };

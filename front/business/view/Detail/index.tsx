@@ -2,7 +2,7 @@ import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { BusinessVO } from 'business/domain';
 import Form, { BusinessFormProps } from 'business/view/Detail/Form';
-import Footer from 'business/view/Detail/Footer';
+import Footer, { FooterProps } from 'business/view/Detail/Footer';
 
 export interface FormValues
   extends BusinessVO {
@@ -11,6 +11,7 @@ export interface FormValues
 
 interface Props
   extends BusinessFormProps,
+          FooterProps,
           FormikLayoutProps<FormValues> {
 }
 
@@ -19,7 +20,7 @@ export default function BusinessDetail(props: Props) {
     <PageLayout
       title={props.formik.values?.id ? '업체 정보 상세' : '업체 등록'}
       body={<Form {...props} />}
-      footer={<Footer />}
+      footer={<Footer removeButton={props.removeButton} />}
       formik={props.formik}
     />
   );
