@@ -7,10 +7,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { FormikContext } from 'formik';
 
-export interface RemoveButtonProps {
-  onRemove: () => void;
-}
-
 function ListButton() {
   const navigate = useNavigate();
   const onClick = () => {
@@ -25,15 +21,6 @@ function ListButton() {
   );
 }
 
-function RemoveButton(props: RemoveButtonProps) {
-  return (
-    <Button
-      color="secondary"
-      children="삭제"
-      onClick={props.onRemove}
-    />
-  );
-}
 
 function EditButton() {
   const formikContext = useContext(FormikContext);
@@ -49,7 +36,11 @@ function EditButton() {
   );
 }
 
-export default function (props: RemoveButtonProps) {
+export interface FooterProps {
+  removeButton: React.ReactNode;
+}
+
+export default function (props: FooterProps) {
   const formikContext = useContext(FormikContext);
   const edit: boolean = formikContext?.values.edit ?? true;
   return (
@@ -65,7 +56,7 @@ export default function (props: RemoveButtonProps) {
               width: '50%',
             }}>
               <ListButton />
-              <RemoveButton {...props} />
+              {props.removeButton}
             </Box>
             <EditButton />
           </Box>

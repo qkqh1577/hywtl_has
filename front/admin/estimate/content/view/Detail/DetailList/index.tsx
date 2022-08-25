@@ -23,14 +23,12 @@ import {
   KeyboardArrowDown as DownIcon,
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
-import Footer, { AddDescriptionProps } from 'admin/estimate/content/view/Detail/DetailList/Footer';
 
-interface Props
-  extends AddDescriptionProps {
-
+export interface DetailListProps {
+  detailListFooter: React.ReactNode;
 }
 
-export default function (props: Props) {
+export default function (props: DetailListProps) {
   const { error } = useDialog();
   const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
@@ -158,9 +156,7 @@ export default function (props: Props) {
             );
           })}
         </TableBody>
-        {edit && (
-          <Footer {...props} />
-        )}
+        {edit && props.detailListFooter}
       </Table>
     </TableContainer>
   );

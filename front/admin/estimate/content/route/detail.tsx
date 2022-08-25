@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useContext,
   useEffect,
 } from 'react';
 import { AppRoute } from 'services/routes';
@@ -11,7 +12,11 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import useDialog from 'components/Dialog';
-import { useFormik } from 'formik';
+import {
+  FormikContext,
+  FormikContextType,
+  useFormik
+} from 'formik';
 import {
   FormikEditable,
   FormikPartial,
@@ -26,15 +31,55 @@ import {
   EstimateContentAction,
   estimateContentAction
 } from 'admin/estimate/content/action';
+import EstimateContentRemoveButton from 'admin/estimate/content/view/Detail/Footer/RemoveButton';
+import { EstimateContentId } from 'admin/estimate/content/domain';
+import AddDescription from 'admin/estimate/content/view/Detail/DetailList/Footer';
 
 interface WithDescription
   extends FormikPartial<EstimateContentParameter> {
   newDescription: string;
 }
 
-function isWithDescription(values: FormikPartial<EstimateContentParameter>): values is WithDescription {
-  return typeof (values as any).newDescription === 'string';
+function DetailListFooterRoute() {
+
+  const { error } = useDialog();
+  const formik: FormikContextType<WithDescription> = useContext(FormikContext);
+
+  return (
+    <AddDescription
+      onClick={() => {
+        const { values } = formik;
+        const { newDescription, detailList } = values;
+        if (!newDescription) {
+          error('추가할 내용이 없습니다.');
+          return;
+        }
+        formik.setFieldValue('detailList', [...(detailList || []), newDescription]);
+        formik.setFieldValue('newDescription', '');
+      }}
+    />
+  );
 }
+
+
+function RemoveButtonRoute() {
+
+  const id = useId();
+  const dispatch = useDispatch();
+  const remove = useCallback((id: EstimateContentId) => estimateContentAction.delete(id), [dispatch]);
+
+  return (
+    <EstimateContentRemoveButton
+      onClick={() => {
+        if (id) {
+          remove(EstimateContentId(id));
+        }
+        // TODO: 없으면 예외처리
+      }}
+    />
+  );
+}
+
 
 function Element() {
   const id = useId();
@@ -76,18 +121,8 @@ function Element() {
   return (
     <EstimateContentDetail
       formik={formik}
-      onClick={() => {
-        const { values } = formik;
-        if (isWithDescription(values)) {
-          const { newDescription, detailList } = values;
-          if (!newDescription) {
-            error('추가할 내용이 없습니다.');
-            return;
-          }
-          formik.setFieldValue('detailList', [...(detailList || []), newDescription]);
-          formik.setFieldValue('newDescription', '');
-        }
-      }}
+      detailListFooter={<DetailListFooterRoute />}
+      removeButton={<RemoveButtonRoute />}
     />
   );
 }

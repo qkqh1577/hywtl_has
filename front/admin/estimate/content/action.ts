@@ -13,7 +13,8 @@ export enum EstimateContentAction {
   setList   = 'admin/estimate/content/list/set',
   setOne    = 'admin/estimate/content/one/set',
   upsert    = 'admin/estimate/content/upsert',
-  changeSeq = 'admin/estimate/content/changeSeq'
+  changeSeq = 'admin/estimate/content/changeSeq',
+  delete    = 'admin/estimate/content/delete',
 }
 
 export const estimateContentAction = {
@@ -22,4 +23,5 @@ export const estimateContentAction = {
   setOne:    createAction(EstimateContentAction.setOne)<EstimateContentVO>(),
   upsert:    createAction(EstimateContentAction.upsert)<FormikSubmit<EstimateContentParameter>>(),
   changeSeq: createAction(EstimateContentAction.changeSeq)<EstimateContentId[]>(),
+  delete:    createAction(EstimateContentAction.delete)<EstimateContentId>(),
 };

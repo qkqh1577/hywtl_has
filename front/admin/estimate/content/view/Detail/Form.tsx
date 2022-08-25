@@ -9,18 +9,16 @@ import {
   testTypeList,
   testTypeName
 } from 'admin/estimate/content/domain';
-import DetailList from 'admin/estimate/content/view/Detail/DetailList';
+import DetailList, { DetailListProps } from 'admin/estimate/content/view/Detail/DetailList';
 import CheckboxField from 'components/CheckboxField';
 import {
   FormikContext,
   FormikContextType
 } from 'formik';
 import { FormikEditable } from 'type/Form';
-import { AddDescriptionProps } from 'admin/estimate/content/view/Detail/DetailList/Footer';
 
 interface Props
-  extends AddDescriptionProps {
-
+  extends DetailListProps {
 }
 
 export default function Form(props: Props) {
