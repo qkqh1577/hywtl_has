@@ -25,6 +25,7 @@ interface Props
 export default function Form(props: Props) {
   const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
+
   return (
     <Box sx={{
       display:  'flex',
@@ -58,7 +59,7 @@ export default function Form(props: Props) {
               </Grid>)}
             {!edit && (
               <Grid item sm={12}>
-                {formikContext.values.testType.map(testTypeName)
+                {formikContext.values.testTypeList.map(testTypeName)
                               .join(', ')}
               </Grid>
             )}
@@ -72,7 +73,7 @@ export default function Form(props: Props) {
             </Grid>
           </Grid>
         </Grid>
-        {edit && (<VariableList {...props}/>)}
+        {formikContext?.values.id && edit && (<VariableList {...props}/>)}
       </Grid>
     </Box>
   );

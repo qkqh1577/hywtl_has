@@ -18,7 +18,6 @@ export interface VariableListProps {
 }
 
 export default function VariableList({ variableList }: VariableListProps) {
-  console.log(variableList);
   return (
     <Grid container item sm={4}>
       <Grid item sm={12}>

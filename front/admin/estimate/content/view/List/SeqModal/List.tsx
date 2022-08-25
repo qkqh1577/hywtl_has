@@ -46,7 +46,7 @@ export default function EstimateContentSeqModalList({
             <TableRow key={item.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{item.testType.map(testTypeName).join(', ')}</TableCell>
+              <TableCell>{item.testTypeList.map(testTypeName).join(', ')}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
               <TableCell>
                 <Box sx={{

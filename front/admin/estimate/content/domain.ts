@@ -58,7 +58,7 @@ export function EstimateContentId(id: number) {
 export interface EstimateContentVO {
   id: EstimateContentId;
   name: string;
-  testType: TestType[];
+  testTypeList: TestType[];
   detailList: string[];
 }
 

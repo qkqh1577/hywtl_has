@@ -8,6 +8,6 @@ export interface EstimateContentParameter
 export const initialEstimateContentParameter: FormikPartial<EstimateContentParameter> = {
   id:         '',
   name:       '',
-  testType:   '',
+  testTypeList:   '',
   detailList: [],
 };

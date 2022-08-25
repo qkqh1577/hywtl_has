@@ -71,7 +71,7 @@ export default function ({ list }: ListProps) {
                   {item.name}
                 </Link>
               </TableCell>
-              <TableCell>{item.testType.map(testTypeName).join(', ')}</TableCell>
+              <TableCell>{item.testTypeList.map(testTypeName).join(', ')}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
             </TableRow>
           ))}

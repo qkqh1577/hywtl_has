@@ -106,7 +106,6 @@ function Element() {
     }
   });
   const edit = formik.values.edit;
-  const isDetail = detail && detail.id === id;
 
   useEffect(() => {
     if (id) {
@@ -119,8 +118,6 @@ function Element() {
       })
     }
   }, [id]);
-  console.log('isDetail : ', isDetail);
-  console.log('edit : ', edit);
   return (
     <EstimateContentDetail
       formik={formik}
