@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  convertFromEnumToName,
   EstimateContentShort,
+  testTypeName,
 } from 'admin/estimate/content/domain';
 import TableCell, { TableCellProps } from 'components/TableCell';
 import {
@@ -71,7 +71,7 @@ export default function ({ list }: ListProps) {
                   {item.name}
                 </Link>
               </TableCell>
-              <TableCell>{convertFromEnumToName(item.testType)}</TableCell>
+              <TableCell>{item.testType.map(testTypeName).join(', ')}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
             </TableRow>
           ))}

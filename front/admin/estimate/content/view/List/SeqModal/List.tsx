@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  convertFromEnumToName,
   EstimateContentShort,
+  testTypeName,
 } from 'admin/estimate/content/domain';
 import {
   Box,
@@ -46,7 +46,7 @@ export default function EstimateContentSeqModalList({
             <TableRow key={item.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{convertFromEnumToName(item.testType)}</TableCell>
+              <TableCell>{item.testType.map(testTypeName).join(', ')}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
               <TableCell>
                 <Box sx={{

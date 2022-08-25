@@ -45,5 +45,4 @@ export interface FormikSubmit<Values>
 
 export type FormikEditable<T extends object> = T & {
   edit: boolean;
-  newDescription?: string;
 }

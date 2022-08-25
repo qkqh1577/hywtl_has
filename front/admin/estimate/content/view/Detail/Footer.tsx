@@ -6,8 +6,10 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FormikContext } from 'formik';
-import { estimateContentApi } from 'admin/estimate/content/api';
 
+export interface RemoveButtonProps {
+  onRemove: () => void;
+}
 
 function ListButton() {
   const navigate = useNavigate();
@@ -23,16 +25,12 @@ function ListButton() {
   );
 }
 
-function RemoveButton() {
-  const formikContext = useContext(FormikContext);
-  const onClick = () => {
-    estimateContentApi.delete(formikContext?.values.id);
-  };
+function RemoveButton(props: RemoveButtonProps) {
   return (
     <Button
       color="secondary"
       children="삭제"
-      onClick={onClick}
+      onClick={props.onRemove}
     />
   );
 }
@@ -51,7 +49,7 @@ function EditButton() {
   );
 }
 
-export default function () {
+export default function (props: RemoveButtonProps) {
   const formikContext = useContext(FormikContext);
   const edit: boolean = formikContext?.values.edit ?? true;
   return (
@@ -67,7 +65,7 @@ export default function () {
               width: '50%',
             }}>
               <ListButton />
-              <RemoveButton />
+              <RemoveButton {...props} />
             </Box>
             <EditButton />
           </Box>

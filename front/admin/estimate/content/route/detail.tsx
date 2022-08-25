@@ -1,6 +1,6 @@
 import React, {
   useCallback,
-  useEffect
+  useEffect,
 } from 'react';
 import { AppRoute } from 'services/routes';
 import useId from 'services/useId';
@@ -14,37 +14,50 @@ import useDialog from 'components/Dialog';
 import { useFormik } from 'formik';
 import {
   FormikEditable,
-  FormikSubmit
+  FormikPartial,
+  FormikSubmit,
+  toValues
 } from 'type/Form';
 import {
-  EstimateContentVO,
-  initialEstimateContentVO
-} from 'admin/estimate/content/domain';
-import { EstimateContentParameter } from 'admin/estimate/content/parameter';
+  EstimateContentParameter,
+  initialEstimateContentParameter
+} from 'admin/estimate/content/parameter';
 import {
   EstimateContentAction,
   estimateContentAction
 } from 'admin/estimate/content/action';
+
+interface WithDescription
+  extends FormikPartial<EstimateContentParameter> {
+  newDescription: string;
+}
+
+function isWithDescription(values: FormikPartial<EstimateContentParameter>): values is WithDescription {
+  return typeof (values as any).newDescription === 'string';
+}
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.estimateContent);
   const { error } = useDialog();
-  const upsert = useCallback(
-    (formikProps: FormikSubmit<EstimateContentParameter>) =>
-      dispatch(estimateContentAction.upsert(formikProps)),
+  const upsert = useCallback((formikProps: FormikSubmit<FormikPartial<EstimateContentParameter>>) =>
+      dispatch(estimateContentAction.upsert({
+        ...formikProps,
+        values: toValues(formikProps.values) as EstimateContentParameter,
+      })),
     [dispatch]
   );
 
-  const formik = useFormik<FormikEditable<EstimateContentVO>>({
+  const formik = useFormik<FormikEditable<FormikPartial<EstimateContentParameter>>>({
     enableReinitialize: true,
-    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialEstimateContentVO },
+    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialEstimateContentParameter },
     onSubmit:           (values,
                          helper
                         ) => {
       if (!values.edit) {
         error('수정 상태가 아닙니다.');
+        helper.setSubmitting(false);
         return;
       }
       upsert({ values, ...helper });
@@ -58,11 +71,24 @@ function Element() {
         id,
       });
     }
-  }, [dispatch]);
+  }, [id]);
 
   return (
     <EstimateContentDetail
-      formik={formik} />
+      formik={formik}
+      onClick={() => {
+        const { values } = formik;
+        if (isWithDescription(values)) {
+          const { newDescription, detailList } = values;
+          if (!newDescription) {
+            error('추가할 내용이 없습니다.');
+            return;
+          }
+          formik.setFieldValue('detailList', [...(detailList || []), newDescription]);
+          formik.setFieldValue('newDescription', '');
+        }
+      }}
+    />
   );
 }
 

@@ -1,10 +1,6 @@
 /**
  * 실험 타입
  */
-import {
-  EstimateContentDetailVO
-} from 'admin/estimate/content/domain/estimateContentDetail';
-
 export enum TestType {
   /** 공통 */
   COMMON = 'COMMON',
@@ -43,11 +39,6 @@ export function testTypeName(testType: TestType | '') {
   }
 }
 
-export function convertFromEnumToName (list : TestType[] | string ):string {
-  return (Array.isArray(list) ? list.map(testType => testTypeName(testType)) : []).join(',');
-}
-
-
 export const testTypeList: TestType[] = [
   TestType.COMMON,
   TestType.F,
@@ -64,20 +55,12 @@ export function EstimateContentId(id: number) {
   return id as EstimateContentId;
 }
 
-
 export interface EstimateContentVO {
-  id?: EstimateContentId | '';
+  id: EstimateContentId;
   name: string;
-  testType: TestType[] | '';
-  detailList: EstimateContentDetailVO[];
+  testType: TestType[];
+  detailList: string[];
 }
-
-export const initialEstimateContentVO: EstimateContentVO = {
-  id:         '',
-  name:      '',
-  testType:   '',
-  detailList: [],
-};
 
 export interface EstimateContentShort
   extends Omit<EstimateContentVO, |'detailList'> {

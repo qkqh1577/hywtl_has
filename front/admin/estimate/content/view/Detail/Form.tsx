@@ -16,8 +16,14 @@ import {
   FormikContextType
 } from 'formik';
 import { FormikEditable } from 'type/Form';
+import { AddDescriptionProps } from 'admin/estimate/content/view/Detail/DetailList/Footer';
 
-export default function Form() {
+interface Props
+  extends AddDescriptionProps {
+
+}
+
+export default function Form(props: Props) {
   const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
   return (
@@ -38,7 +44,7 @@ export default function Form() {
               label="이름"
             />
           </Grid>
-          {edit ? (
+          {edit && (
             <Grid item sm={12}>
               <CheckboxField
                 required
@@ -49,13 +55,11 @@ export default function Form() {
                   text: testTypeName(item)
                 }))}
               />
-            </Grid>) : (
+            </Grid>)}
+          {!edit && (
             <Grid item sm={12}>
-              <TextField
-                required
-                name="testType"
-                label="실험 타입"
-              />
+              {formikContext.values.testType.map(testTypeName)
+                            .join(', ')}
             </Grid>
           )}
         </Grid>
@@ -64,7 +68,7 @@ export default function Form() {
             <h2>내용</h2>
           </Grid>
           <Grid item sm={12}>
-            <DetailList />
+            <DetailList {...props} />
           </Grid>
         </Grid>
       </Grid>

@@ -14,7 +14,6 @@ import {
   Table,
   TableBody,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
 } from '@mui/material';
@@ -24,12 +23,14 @@ import {
   KeyboardArrowDown as DownIcon,
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
-import {
-  EstimateContentDetailId,
-  EstimateContentDetailVO,
-} from 'admin/estimate/content/domain/estimateContentDetail';
+import Footer, { AddDescriptionProps } from 'admin/estimate/content/view/Detail/DetailList/Footer';
 
-export default function () {
+interface Props
+  extends AddDescriptionProps {
+
+}
+
+export default function (props: Props) {
   const { error } = useDialog();
   const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
@@ -55,19 +56,6 @@ export default function () {
       hidden:   !edit,
     }
   ];
-  const addDescription = () => {
-    // 새로운 문구 등록
-    formikContext!.setFieldValue(
-      'detailList',
-      [...list, { description: formikContext?.values.newDescription }]
-    );
-
-    // 초기화
-    formikContext!.setFieldValue(
-      'newDescription',
-      ''
-    )
-  }
 
   return (
     <TableContainer>
@@ -84,18 +72,21 @@ export default function () {
                      i
           ) => {
             return (
-              <TableRow key={detail.id || `added-${i}`}>
+              <TableRow key={i}>
                 <TableCell>
                   {i + 1}
                 </TableCell>
                 <TableCell>
-                  {!edit ? list[i].description : (<TextField
-                    required
-                    disableLabel
-                    type=" text"
-                    name={`detailList.${i}.description`}
-                    label="문구"
-                  />)}
+                  {!edit && detail}
+                  {edit && (
+                    <TextField
+                      required
+                      disableLabel
+                      type=" text"
+                      name={`detailList.${i}`}
+                      label="문구"
+                    />
+                  )}
                 </TableCell>
                 {edit && (
                   <TableCell>
@@ -112,7 +103,7 @@ export default function () {
                             const prevList = list.filter((t,
                                                           k
                             ) => k !== i);
-                            const detailList: EstimateContentDetailVO[] = [];
+                            const detailList: string[] = [];
                             for (let k = 0; k < prevList.length; k++) {
                               if (detailList.length === i - 1) {
                                 detailList.push(detail);
@@ -131,7 +122,7 @@ export default function () {
                             const prevList = list.filter((t,
                                                           k
                             ) => k !== i);
-                            const detailList: EstimateContentDetailVO[] = [];
+                            const detailList: string[] = [];
                             for (let k = 0; k < prevList.length; k++) {
                               detailList.push(prevList[k]);
                               if (detailList.length === i + 1) {
@@ -168,33 +159,7 @@ export default function () {
           })}
         </TableBody>
         {edit && (
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={1}>
-                신규
-              </TableCell>
-              <TableCell colSpan={2}>
-                <TextField
-                  disableLabel
-                  type="text"
-                  name="newDescription"
-                  label="문구"
-                />
-              </TableCell>
-              <TableCell colSpan={1}>
-                <Box sx={{
-                  display:        'flex',
-                  flexWrap:       'nowrap',
-                  width:          '100%',
-                  justifyContent: 'right',
-                }}>
-                  <Button onClick={addDescription}>
-                    추가
-                  </Button>
-                </Box>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
+          <Footer {...props} />
         )}
       </Table>
     </TableContainer>
