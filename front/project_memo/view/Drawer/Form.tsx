@@ -1,17 +1,29 @@
 import {
   Box,
-  Button
+  Button,
+  Grid,
+  Typography
 } from '@mui/material';
+import {
+  ArrowRight as RightIcon,
+} from '@mui/icons-material';
 import React from 'react';
+import IconButton from 'components/IconButton';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
+import {
+  projectMemoCategoryList,
+  projectMemoCategoryName
+} from 'project_memo/domain';
 
 export interface ProjectMemoFormProps {
-  open: boolean;
   setOpen: (open: boolean) => void;
+  onSubmit: () => void;
 }
 
 export default function ProjectMemoForm({
-                                          open,
-                                          setOpen
+                                          setOpen,
+                                          onSubmit,
                                         }: ProjectMemoFormProps) {
   return (
     <Box sx={{
@@ -19,12 +31,54 @@ export default function ProjectMemoForm({
       flexWrap: 'wrap',
       width:    '100%'
     }}>
-
-      <Button onClick={() => {
-        setOpen(false);
+      <Box sx={{
+        display:  'flex',
+        width:    '100%',
+        flexWrap: 'nowrap',
       }}>
-        close
-      </Button>
+        <IconButton
+          children={<RightIcon />}
+          onClick={() => {
+            setOpen(false);
+          }}
+        />
+        <Typography>메모</Typography>
+      </Box>
+      <Box sx={{
+        display:  'flex',
+        width:    '100%',
+        flexWrap: 'nowrap'
+      }}>
+        <Grid container spacing={2}>
+          <Grid item sm={12}>
+            <TextField
+              required
+              disableLabel
+              multiline
+              name="description"
+              label="본문"
+              placeholder="메모 입력"
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <SelectField
+              required
+              disableLabel
+              name="category"
+              label="카테고리"
+              options={projectMemoCategoryList.map(item => ({
+                key:  item as string,
+                text: projectMemoCategoryName(item),
+              }))}
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <Button onClick={onSubmit}>
+              작성 완료
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 }

@@ -4,8 +4,6 @@ import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.howoocast.hywtl_has.project_memo.domain.QProjectMemo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import org.springframework.lang.Nullable;
 
@@ -15,20 +13,17 @@ public class ProjectMemoPredicateBuilder {
     private final BooleanBuilder criteria = new BooleanBuilder();
 
     private final Long projectId;
-    private final String keywordType;
     private final String keyword;
-    private final List<ProjectMemoCategory> categoryList;
+    private final ProjectMemoCategory category;
 
     public ProjectMemoPredicateBuilder(
         Long projectId,
-        @Nullable String keywordType,
         @Nullable String keyword,
-        @Nullable List<ProjectMemoCategory> categoryList
+        @Nullable ProjectMemoCategory category
     ) {
         this.projectId = projectId;
         this.keyword = keyword;
-        this.keywordType = keywordType;
-        this.categoryList = Objects.isNull(categoryList) ? Collections.emptyList() : categoryList;
+        this.category = category;
     }
 
     private void projectId() {
@@ -41,26 +36,17 @@ public class ProjectMemoPredicateBuilder {
         }
 
         BooleanBuilder criteria = new BooleanBuilder();
-
-        boolean isAll =
-            Objects.isNull(this.keywordType) || this.keywordType.isEmpty() || this.keywordType.equals("all");
-
-        if (isAll || Objects.equals(this.keywordType, "by_description")) {
-            criteria.or(projectMemo.description.containsIgnoreCase(this.keyword));
-        }
-
-        if (isAll || Objects.equals(this.keywordType, "by_user_name")) {
-            criteria.or(projectMemo.writer.name.containsIgnoreCase(this.keyword));
-        }
+        criteria.or(projectMemo.description.containsIgnoreCase(this.keyword));
+        criteria.or(projectMemo.writer.name.containsIgnoreCase(this.keyword));
         this.criteria.and(criteria);
     }
 
     private void category() {
-        if (this.categoryList.isEmpty()) {
+        if (this.category == null) {
             return;
         }
 
-        this.criteria.and(projectMemo.category.in(this.categoryList));
+        this.criteria.and(projectMemo.category.eq(this.category));
     }
 
     public Predicate build() {

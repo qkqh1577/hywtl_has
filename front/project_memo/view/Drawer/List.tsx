@@ -30,7 +30,7 @@ export default function ProjectMemoList({ list }: ProjectMemoListProps) {
             border:  '1px solid #000',
             margin:  '12px 0'
           }}>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             <Grid item sm={12}>
               <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
             </Grid>

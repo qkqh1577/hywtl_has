@@ -48,6 +48,7 @@ function* watchAdd() {
       const projectId: ProjectId = yield call(getProjectId);
       yield call(projectMemoApi.add, projectId, formik.values);
       yield put(dialogActions.openAlert('등록하였습니다.'));
+      yield call(formik.setFieldValue, 'description', '');
     }
     catch (e) {
       yield put(dialogActions.openAlert({

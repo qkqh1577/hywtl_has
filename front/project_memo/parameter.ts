@@ -1,8 +1,8 @@
 import { ProjectMemoCategory } from 'project_memo/domain';
+import { FormikPartial } from 'type/Form';
 
 export interface ProjectMemoQuery {
   page: number;
-  keywordType: string;
   keyword: string;
   category: ProjectMemoCategory[] | undefined;
 }
@@ -10,7 +10,6 @@ export interface ProjectMemoQuery {
 export const initialProjectMemoQuery: ProjectMemoQuery = {
   page:        0,
   keyword:     '',
-  keywordType: '',
   category:    undefined,
 };
 
@@ -18,3 +17,8 @@ export interface ProjectMemoParameter {
   description: string;
   category: ProjectMemoCategory;
 }
+
+export const initialProjectMemoParameter: FormikPartial<ProjectMemoParameter> = {
+  description: '',
+  category:    '',
+};

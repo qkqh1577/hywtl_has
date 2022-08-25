@@ -20,7 +20,7 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
       title="기본 정보"
       formik={props.formik}
     >
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item sm={3}>
           <TextField
             status={FieldStatus.Disabled}

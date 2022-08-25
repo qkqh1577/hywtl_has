@@ -11,8 +11,8 @@ import React, {
 } from 'react';
 import App from 'app/view/App';
 import ProjectMemoDrawerRoute from 'project_memo/route/drawer';
-import ProjectDrawerRoute from 'project/route/drawer';
-import ProjectAppBarRoute from 'project/route/appBar';
+import ProjectDrawerRoute from 'app/route/projectDrawer';
+import ProjectAppBarRoute from 'app/route/projectAppBar';
 
 export default function () {
 

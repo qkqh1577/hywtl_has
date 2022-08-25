@@ -54,7 +54,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
             display: 'flex',
             width:   '40%',
           }}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               <Grid item sm={12}>
                 <TextField
                   required
@@ -109,7 +109,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
             height:  'calc(100% - 40px)',
             border:  '1px solid #0000001f',
           }}>
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
               <Grid item sm={12}>
                 견적 의뢰처 TBD
               </Grid>
