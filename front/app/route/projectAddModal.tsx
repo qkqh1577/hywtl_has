@@ -18,7 +18,7 @@ import {
 import { useFormik } from 'formik';
 import { Button } from '@mui/material';
 
-export default function projectAddModalRoute() {
+export default function ProjectAddModalRoute() {
   const [open, setOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
   const addProject = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectAddParameter>>) =>

@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import MenuDrawer, { MenuDrawerProps } from 'app/view/App/MenuDrawer';
-import ProjectDrawer, { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
 import AppBar from 'app/view/App/Bar';
 import ReactRouter from 'services/routes';
 
@@ -13,8 +12,9 @@ interface Props {
   isProjectPage: boolean;
   logoutButtonProps: LogoutButtonProps;
   menuDrawerProps: MenuDrawerProps;
-  projectDrawerProps: ProjectDrawerProps;
+  projectDrawer: React.ReactNode;
   projectMemoDrawer: React.ReactNode;
+  projectAppBar: React.ReactNode;
 }
 
 export default function App(props: Props) {
@@ -23,7 +23,6 @@ export default function App(props: Props) {
           isProjectPage,
           logoutButtonProps,
           menuDrawerProps,
-          projectDrawerProps
         } = props;
 
   return (
@@ -35,13 +34,12 @@ export default function App(props: Props) {
       {!isLoginPage && (
         <>
           <AppBar
-            isProjectPage={isProjectPage}
+            projectAppBar={props.projectAppBar}
             logoutButtonProps={logoutButtonProps}
-            projectDrawerProps={projectDrawerProps}
             menuDrawerProps={menuDrawerProps}
           />
           <MenuDrawer {...props.menuDrawerProps} />
-          {isProjectPage && (<ProjectDrawer {...props.projectDrawerProps} />)}
+          {props.projectDrawer}
         </>
       )}
       <Box

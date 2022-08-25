@@ -1,14 +1,12 @@
 import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
 import { Box } from '@mui/material';
-import ProjectAppBar from 'app/view/App/ProjectDrawer/AppBar';
 import SearchBar from 'app/view/App/SearchBar';
 import NotificationButton from 'app/view/App/NotificationButton';
 import AccountButton from 'app/view/App/AccountButton';
 import LogoutButton, { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import React from 'react';
 import MenuAppBar from 'app/view/App/MenuDrawer/AppBar';
-import { ProjectDrawerProps } from 'app/view/App/ProjectDrawer';
 import { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 
 const StyledAppBar = styled(MuiAppBar, {
@@ -19,19 +17,16 @@ const StyledAppBar = styled(MuiAppBar, {
 }));
 
 interface Props {
-  isProjectPage: boolean;
-  projectDrawerProps: ProjectDrawerProps;
+  projectAppBar: React.ReactNode;
   logoutButtonProps: LogoutButtonProps;
   menuDrawerProps: MenuDrawerProps;
 }
 
-export default function AppBar({
-                                 isProjectPage,
-                                 projectDrawerProps,
-                                 logoutButtonProps,
-                                 menuDrawerProps
-                               }: Props) {
-
+export default function AppBar(props: Props) {
+  const {
+          logoutButtonProps,
+          menuDrawerProps
+        } = props;
   return (
     <StyledAppBar color="transparent">
       <Box sx={{
@@ -47,7 +42,7 @@ export default function AppBar({
           display: 'flex',
         }}>
           <MenuAppBar {...menuDrawerProps} />
-          {isProjectPage && (<ProjectAppBar {...projectDrawerProps} />)}
+          {props.projectAppBar}
         </Box>
         <Box sx={{
           display:         'flex',
