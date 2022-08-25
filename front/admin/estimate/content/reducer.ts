@@ -1,6 +1,7 @@
 import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentShort,
+  EstimateContentVariableVO,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
 import {
@@ -12,6 +13,7 @@ export interface EstimateContentState {
   filter?: EstimateContentQuery;
   list?: EstimateContentShort[];
   detail?: EstimateContentVO;
+  variableList?: EstimateContentVariableVO[];
 }
 
 const initialEstimateContentState: EstimateContentState = {};
@@ -42,5 +44,10 @@ export const estimateContentReducer = createReducer(initialEstimateContentState,
       ...state,
       detail: action.payload,
     }
-  )
+  ),
+
+  [EstimateContentAction.setVariableList]: (state, action) => ({
+    ...state,
+    variableList: action.payload,
+})
 });

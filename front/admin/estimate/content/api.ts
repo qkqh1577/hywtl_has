@@ -2,6 +2,7 @@ import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentId,
   EstimateContentShort,
+  EstimateContentVariableVO,
   EstimateContentVO,
   TestType
 } from 'admin/estimate/content/domain';
@@ -64,6 +65,33 @@ const testData: EstimateContentVO[] = [
   }
 ];
 
+const variableTestData: EstimateContentVariableVO[] = [
+  {
+    name: '{experiment_num}',
+    note: '실험동수'
+  },
+  {
+    name: '{total_apartment_num}',
+    note: '총 동 수',
+  },
+  {
+    name: '{experiment_week}',
+    note: '설풍 납품 가능 주',
+  },
+  {
+    name: '{report_week}',
+    note: '최종보고서 납품 가능 주',
+  },
+  {
+    name: '{total_price}',
+    note: '총 금액(부가세 미포함)',
+  },
+  {
+    name: '{total_price_kor}',
+    note: '한글 표기 총 금액(부가세 미포함)',
+  }
+]
+
 class EstimateContentApi {
 
   async getList(query: EstimateContentQuery): Promise<EstimateContentShort[]> {
@@ -96,6 +124,11 @@ class EstimateContentApi {
     return data;
   }
 
+  async getVariableList(): Promise<EstimateContentVariableVO[]> {
+    // const { data } = await apiClient.get('/admin/estimate/content/variable');
+    // return data;
+    return variableTestData;
+  }
 }
 
 export const estimateContentApi = new EstimateContentApi();

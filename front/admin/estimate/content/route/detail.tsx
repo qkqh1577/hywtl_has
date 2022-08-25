@@ -82,7 +82,7 @@ function RemoveButtonRoute() {
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.estimateContent);
+  const { detail, variableList } = useSelector((root: RootState) => root.estimateContent);
   const { error } = useDialog();
   const upsert = useCallback((formikProps: FormikSubmit<FormikPartial<EstimateContentParameter>>) =>
       dispatch(estimateContentAction.upsert({
@@ -91,7 +91,6 @@ function Element() {
       })),
     [dispatch]
   );
-
   const formik = useFormik<FormikEditable<FormikPartial<EstimateContentParameter>>>({
     enableReinitialize: true,
     initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialEstimateContentParameter },
@@ -106,6 +105,8 @@ function Element() {
       upsert({ values, ...helper });
     }
   });
+  const edit = formik.values.edit;
+  const isDetail = detail && detail.id === id;
 
   useEffect(() => {
     if (id) {
@@ -113,14 +114,19 @@ function Element() {
         type: EstimateContentAction.setOne,
         id,
       });
+      dispatch({
+        type: EstimateContentAction.setVariableList
+      })
     }
   }, [id]);
-
+  console.log('isDetail : ', isDetail);
+  console.log('edit : ', edit);
   return (
     <EstimateContentDetail
       formik={formik}
       detailListFooter={<DetailListFooterRoute />}
       removeButton={<RemoveButtonRoute />}
+      variableList = { edit ? variableList : undefined}
     />
   );
 }

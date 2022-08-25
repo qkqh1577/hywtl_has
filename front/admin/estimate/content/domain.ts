@@ -66,3 +66,8 @@ export interface EstimateContentShort
   extends Omit<EstimateContentVO, |'detailList'> {
   detailCount: number;
 }
+
+export interface EstimateContentVariableVO{
+  name: string;
+  note: string;
+}

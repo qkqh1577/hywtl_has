@@ -4,6 +4,7 @@ import {
 } from 'admin/estimate/content/action';
 import {
   EstimateContentShort,
+  EstimateContentVariableVO,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
 import { estimateContentApi } from 'admin/estimate/content/api';
@@ -87,6 +88,13 @@ function* watchDelete() {
   }
 }
 
+function* watchVariableList() {
+  while (true) {
+    yield take(EstimateContentAction.setOne);
+    const list: EstimateContentVariableVO[] = yield call(estimateContentApi.getVariableList);
+    yield put(estimateContentAction.setVariableList(list));
+  }
+}
 
 export default function* estimateContentSaga() {
   yield fork(watchFilter);
@@ -94,4 +102,5 @@ export default function* estimateContentSaga() {
   yield fork(watchUpsert);
   yield fork(watchSeq);
   yield fork(watchDelete);
+  yield fork(watchVariableList);
 };

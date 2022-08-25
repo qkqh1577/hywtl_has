@@ -16,9 +16,10 @@ import {
   FormikContextType
 } from 'formik';
 import { FormikEditable } from 'type/Form';
+import VariableList, { VariableListProps } from 'admin/estimate/content/view/Detail/VariableList';
 
 interface Props
-  extends DetailListProps {
+  extends DetailListProps, VariableListProps {
 }
 
 export default function Form(props: Props) {
@@ -31,44 +32,47 @@ export default function Form(props: Props) {
       width:    '100%',
     }}>
       <Grid container spacing={2}>
-        <Grid item sm={12}>
-          <h2>실험 정보</h2>
-        </Grid>
-        <Grid container item sm={4}>
+        <Grid container item sm={8}>
           <Grid item sm={12}>
-            <TextField
-              required
-              name="name"
-              label="이름"
-            />
+            <h2>실험 정보</h2>
           </Grid>
-          {edit && (
+          <Grid container item sm={6}>
             <Grid item sm={12}>
-              <CheckboxField
+              <TextField
                 required
-                name="testType"
-                label="실험 타입"
-                options={testTypeList.map((item) => ({
-                  key:  item as string,
-                  text: testTypeName(item)
-                }))}
+                name="name"
+                label="이름"
               />
-            </Grid>)}
-          {!edit && (
-            <Grid item sm={12}>
-              {formikContext.values.testType.map(testTypeName)
-                            .join(', ')}
             </Grid>
-          )}
-        </Grid>
-        <Grid container item spacing={2}>
-          <Grid item sm={12}>
-            <h2>내용</h2>
+            {edit && (
+              <Grid item sm={12}>
+                <CheckboxField
+                  required
+                  name="testType"
+                  label="실험 타입"
+                  options={testTypeList.map((item) => ({
+                    key:  item as string,
+                    text: testTypeName(item)
+                  }))}
+                />
+              </Grid>)}
+            {!edit && (
+              <Grid item sm={12}>
+                {formikContext.values.testType.map(testTypeName)
+                              .join(', ')}
+              </Grid>
+            )}
           </Grid>
-          <Grid item sm={12}>
-            <DetailList {...props} />
+          <Grid container item spacing={2}>
+            <Grid item sm={12}>
+              <h2>내용</h2>
+            </Grid>
+            <Grid item sm={12}>
+              <DetailList {...props} />
+            </Grid>
           </Grid>
         </Grid>
+        {edit && (<VariableList {...props}/>)}
       </Grid>
     </Box>
   );
