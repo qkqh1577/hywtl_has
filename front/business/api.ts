@@ -80,7 +80,7 @@ class BusinessApi {
   }
 
   async delete(id:BusinessId): Promise<void>{
-    await apiClient.delete(`/business/${id}`);
+    const { data } = await apiClient.delete(`/business/${id}`);
   }
 
 }
