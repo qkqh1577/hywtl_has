@@ -57,7 +57,7 @@ function* watchUpsert() {
 
 function* watchSeq() {
   while (true) {
-    const { payload: idList } = yield take(estimateContentAction.changeSeq);
+    const { payload: idList } = yield take(EstimateContentAction.changeSeq);
     try {
       yield call(estimateContentApi.changeSeq, idList);
       yield put(dialogActions.openAlert('저장하였습니다.'));
@@ -71,10 +71,27 @@ function* watchSeq() {
   }
 }
 
+function* watchDelete() {
+  while (true) {
+    const { payload: id } = yield take(EstimateContentAction.delete);
+    try {
+      yield call(estimateContentApi.delete, id);
+      yield put(dialogActions.openAlert('삭제 했습니다.'));
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        children: '삭제에 실패했습니다.',
+        status:   'error',
+      }));
+    }
+  }
+}
+
 
 export default function* estimateContentSaga() {
   yield fork(watchFilter);
   yield fork(watchId);
   yield fork(watchUpsert);
   yield fork(watchSeq);
+  yield fork(watchDelete);
 };

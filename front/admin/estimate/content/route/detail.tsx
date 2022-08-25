@@ -61,12 +61,11 @@ function DetailListFooterRoute() {
   );
 }
 
-
 function RemoveButtonRoute() {
 
   const id = useId();
   const dispatch = useDispatch();
-  const remove = useCallback((id: EstimateContentId) => estimateContentAction.delete(id), [dispatch]);
+  const remove = useCallback((id: EstimateContentId) => dispatch(estimateContentAction.delete(id)), [dispatch]);
 
   return (
     <EstimateContentRemoveButton
@@ -74,7 +73,6 @@ function RemoveButtonRoute() {
         if (id) {
           remove(EstimateContentId(id));
         }
-        // TODO: 없으면 예외처리
       }}
     />
   );
