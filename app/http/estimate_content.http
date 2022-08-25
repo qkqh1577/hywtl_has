@@ -15,8 +15,8 @@ PUT http://localhost:8080/admin/estimate/content
 Content-Type: application/json
 
 {
-  "name": "test6",
-  "testType": [
+  "name": "test1",
+  "testTypeList": [
     "COMMON",
     "F",
     "P"
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 {
   "name": "test_modified",
-  "testType": [
+  "testTypeList": [
     "COMMON",
     "F"
   ],

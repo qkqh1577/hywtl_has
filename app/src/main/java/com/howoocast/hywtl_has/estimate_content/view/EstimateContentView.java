@@ -10,14 +10,14 @@ public class EstimateContentView {
 
     private Long id;
     private String name;
-    private List<TestType> testType;
+    private List<TestType> testTypeList;
     private List<String> detailList;
 
     public static EstimateContentView assemble(EstimateContent source) {
         EstimateContentView target = new EstimateContentView();
         target.id = source.getId();
         target.name = source.getName();
-        target.testType = source.getTestType();
+        target.testTypeList = source.getTestTypeList();
         target.detailList = source.getDetailList();
         return target;
     }

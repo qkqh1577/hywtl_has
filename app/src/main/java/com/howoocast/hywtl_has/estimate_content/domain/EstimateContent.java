@@ -43,7 +43,7 @@ public class EstimateContent extends CustomEntity {
      */
     @NotEmpty
     @ElementCollection
-    private List<TestType> testType;
+    private List<TestType> testTypeList;
 
     /**
      * 문구
@@ -61,14 +61,14 @@ public class EstimateContent extends CustomEntity {
 
     public static EstimateContent of(
         String name,
-        List<TestType> testType,
+        List<TestType> testTypeList,
         List<String> detailList,
         Long seq
     ) {
         EstimateContent instance = new EstimateContent();
         instance.change(
             name,
-            testType,
+            testTypeList,
             detailList
         );
         instance.changeSeq(seq);
@@ -77,11 +77,11 @@ public class EstimateContent extends CustomEntity {
 
     public void change(
         String name,
-        List<TestType> testType,
+        List<TestType> testTypeList,
         List<String> detailList
     ) {
         this.name = name;
-        this.testType = testType;
+        this.testTypeList = testTypeList;
         this.detailList = detailList;
     }
 
