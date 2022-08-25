@@ -43,6 +43,11 @@ export function testTypeName(testType: TestType | '') {
   }
 }
 
+export function convertFromEnumToName (list : TestType[] | string ):string {
+  return (Array.isArray(list) ? list.map(testType => testTypeName(testType)) : []).join(',');
+}
+
+
 export const testTypeList: TestType[] = [
   TestType.COMMON,
   TestType.F,
