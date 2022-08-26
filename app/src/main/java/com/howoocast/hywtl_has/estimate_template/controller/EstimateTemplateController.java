@@ -29,7 +29,7 @@ public class EstimateTemplateController {
     private final EstimateTemplateService service;
 
 
-    @GetMapping("/estimate-templates")
+    @GetMapping("/estimate-template")
     public List<EstimateTemplateShortView> getList(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
@@ -44,7 +44,7 @@ public class EstimateTemplateController {
     }
 
     @SuppressWarnings("unused")
-    @GetMapping(value = "/estimate-templates", params = "type")
+    @GetMapping(value = "/estimate-template", params = "type")
     public List<EstimateTemplateView> getFullList(
         @RequestParam String type,
         @RequestParam(required = false, name = "testType[]") List<TestType> testTypeList
@@ -56,22 +56,22 @@ public class EstimateTemplateController {
         );
     }
 
-    @GetMapping("/estimate-templates/{id}")
+    @GetMapping("/estimate-template/{id}")
     public EstimateTemplateView getOne(@PathVariable Long id) {
         return service.getOne(id);
     }
 
-    @PostMapping("/estimate-templates")
+    @PostMapping("/estimate-template")
     public EstimateTemplateView add(@Valid @RequestBody EstimateTemplateParameter parameter) {
         return service.add(parameter);
     }
 
-    @PostMapping("/estimate-templates/seq")
+    @PostMapping("/estimate-template/seq")
     public void changeSeq(@Valid @RequestBody EstimateTemplateChangeSeqParameter parameter) {
         service.changeSeq(parameter);
     }
 
-    @PatchMapping("/estimate-templates/{id}")
+    @PatchMapping("/estimate-template/{id}")
     public void change(@PathVariable Long id, @Valid @RequestBody EstimateTemplateParameter parameter) {
         service.change(id, parameter);
     }

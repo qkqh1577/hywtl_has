@@ -32,5 +32,5 @@ export const estimateTemplateReducer = createReducer(initialEstimateTemplateStat
                                       ) => ({
     ...state,
     detail: action.payload
-  })
+  }),
 });

@@ -50,7 +50,23 @@ function* watchUpsert() {
     finally {
       yield call(formik.setSubmitting, false);
     }
+  }
+}
 
+function* watchSeq() {
+  while (true) {
+    const { payload: idList } = yield take(estimateTemplateAction.changeSeq);
+    try {
+      yield call(estimateTemplateApi.changeSeq, idList);
+      yield put(dialogActions.openAlert('저장하였습니다.'));
+    }
+    catch (e) {
+      console.log(e);
+      yield put(dialogActions.openAlert({
+        children: '저장에 실패하였습니다.',
+        status:   'error'
+      }));
+    }
   }
 }
 
@@ -58,4 +74,5 @@ export default function* estimateTemplateSaga() {
   yield fork(watchFilter);
   yield fork(watchId);
   yield fork(watchUpsert);
+  yield fork(watchSeq);
 }

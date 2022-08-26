@@ -78,6 +78,11 @@ class BusinessApi {
     const { data } = await apiClient.put(`/business${params.id ? `/${params.id}` : ''}`, params);
     return data;
   }
+
+  async delete(id:BusinessId): Promise<void>{
+    const { data } = await apiClient.delete(`/business/${id}`);
+  }
+
 }
 
 export const businessApi = new BusinessApi();

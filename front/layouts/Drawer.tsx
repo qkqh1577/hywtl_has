@@ -8,6 +8,7 @@ interface Props {
   closedWidth?: number;
   open: boolean;
   children: React.ReactNode;
+  direction?: 'left' | 'right';
 }
 
 export default function Drawer(props: Props) {
@@ -16,7 +17,9 @@ export default function Drawer(props: Props) {
     ({ theme, open }) => ({
       '& .MuiDrawer-paper': {
         position:   'relative',
+        right:      props.direction === 'right' ? 0 : 'inherit',
         whiteSpace: 'nowrap',
+        border:     '1px solid #0000001f',
         width:      `${props.openedWidth ?? 260}px`,
         paddingTop: '64px',
         transition: theme.transitions.create('width', {

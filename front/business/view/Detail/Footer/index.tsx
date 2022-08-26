@@ -20,17 +20,6 @@ function ListButton() {
   );
 }
 
-function RemoveButton() {
-  const onClick = () => {console.log('remove!');};
-  return (
-    <Button
-      color="secondary"
-      children="삭제"
-      onClick={onClick}
-    />
-  );
-}
-
 function EditButton() {
   const formikContext = useContext(FormikContext);
   const onClick = () => {
@@ -45,10 +34,13 @@ function EditButton() {
   );
 }
 
-export default function () {
+export interface FooterProps {
+  removeButton: React.ReactNode;
+}
+
+export default function (props: FooterProps) {
   const formikContext = useContext(FormikContext);
   const edit: boolean = formikContext?.values.edit ?? true;
-
   return (
     <DetailFormFooter
       children={!edit
@@ -62,7 +54,7 @@ export default function () {
               width: '50%'
             }}>
               <ListButton />
-              <RemoveButton />
+              {props.removeButton}
             </Box>
             <EditButton />
           </Box>

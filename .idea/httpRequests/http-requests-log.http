@@ -1,0 +1,614 @@
+GET http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T164758.200.json
+
+###
+
+POST http://localhost:8080/admin/estimate/content/sequence
+Content-Type: application/json
+
+{
+  "idList": [
+    2,
+    1,
+    3,
+    4
+  ]
+}
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test6",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test1",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test4",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+GET http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T164728.200.json
+
+###
+
+GET http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T163959.500.json
+
+###
+
+GET http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T163831.500.json
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test4",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test2",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+DELETE http://localhost:8080/admin/estimate/content/1
+
+###
+
+DELETE http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T163637.405.json
+
+###
+
+PUT http://localhost:8080/admin/estimate/content/1
+Content-Type: application/json
+
+{
+  "name": "test_modified",
+  "testType": [
+    "COMMON",
+    "F"
+  ],
+  "detailList": [
+    "테스트1_",
+    "테스트2_",
+    "테스트3"
+  ]
+}
+
+###
+
+GET http://localhost:8080/admin/estimate/content
+
+<> 2022-08-25T163224.500.json
+
+###
+
+GET http://localhost:8080/admin/estimate/content/1
+
+<> 2022-08-25T163219.200.json
+
+###
+
+GET http://localhost:8080/admin/estimate/content/variable
+
+<> 2022-08-25T163154.200.json
+
+###
+
+PUT http://localhost:8080/admin/estimate/content
+Content-Type: application/json
+
+{
+  "name": "test",
+  "testType": [
+    "COMMON",
+    "F",
+    "P"
+  ],
+  "detailList": [
+    "테스트1",
+    "테스트2"
+  ]
+}
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "한양풍동실험연구소",
+  "category": "COMPANY"
+}
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "편집",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-20T174646-5.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "실험",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-20T174646-4.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-20T174646-3.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "모형",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-20T174646-2.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "영업",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-20T174646-1.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-20T174646.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "HQ",
+  "parentId": 1
+}
+
+<> 2022-04-20T174645.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "한양풍동실험연구소",
+  "category": "COMPANY"
+}
+
+<> 2022-04-20T174645.500.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "편집",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T151305-1.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "실험",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T151305.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T151304-5.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "모형",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T151304-4.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "영업",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T151304-3.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T151304-2.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "HQ",
+  "parentId": 1
+}
+
+<> 2022-04-12T151304-1.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "한양풍동실험연구소",
+  "category": "COMPANY"
+}
+
+<> 2022-04-12T151304.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "편집",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T144049-7.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "실험",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T144049-6.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T144049-5.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "모형",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T144049-4.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "영업",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T144049-3.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T144049-2.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "HQ",
+  "parentId": 1
+}
+
+<> 2022-04-12T144049-1.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "한양풍동실험연구소",
+  "category": "COMPANY"
+}
+
+<> 2022-04-12T144049.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "편집",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T105613.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "실험",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T105612-6.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "PART",
+  "parentId": 3
+}
+
+<> 2022-04-12T105612-5.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "모형",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T105612-4.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "영업",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T105612-3.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "TEAM",
+  "parentId": 2
+}
+
+<> 2022-04-12T105612-2.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "기술",
+  "category": "HQ",
+  "parentId": 1
+}
+
+<> 2022-04-12T105612-1.200.json
+
+###
+
+POST http://localhost:8080/departments
+Content-Type: application/json
+
+{
+  "name": "한양풍동실험연구소",
+  "category": "COMPANY"
+}
+
+<> 2022-04-12T105612.200.json
+
+###
+

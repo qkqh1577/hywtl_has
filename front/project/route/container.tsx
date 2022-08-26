@@ -26,16 +26,15 @@ import {
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
 import ProjectContainerTitle from 'project/view/Container/Title';
-import {
-  initialProjectAddParameter,
-  ProjectAddParameter
-} from 'project/parameter';
+import { projectMemoAction } from 'project_memo/action';
 
 export function StatusBar() {
 
   const id = useId();
   const { detail } = useSelector((root: RootState) => root.project);
   const dispatch = useDispatch();
+
+  const setProjectMemoProjectId = useCallback((projectId: number | undefined) => dispatch(projectMemoAction.setProjectId(projectId)), [dispatch]);
 
   const initialValues = useMemo(() => toPartial(detail, initialProjectStatusBar), [detail]);
   const formik = useFormik<FormikPartial<ProjectStatusBar>>({
@@ -58,6 +57,7 @@ export function StatusBar() {
         id,
       });
     }
+    setProjectMemoProjectId(id);
   }, [id]);
 
   if (!detail || detail.id !== id) {
@@ -88,28 +88,13 @@ interface Props {
 
 export default function (props: Props) {
 
-  const { addModal } = useSelector((root: RootState) => root.project);
-  const dispatch = useDispatch();
-  const onClose = useCallback(() => dispatch(projectAction.setAddModal(false)), [dispatch]);
-  const addModalFormik = useFormik<FormikPartial<ProjectAddParameter>>({
-    initialValues: initialProjectAddParameter,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      console.log(values);
-    }
-  });
-
   return (
-    <ProjectContainer
-      title={<Title />}
-      statusBar={<StatusBar />}
-      children={props.children}
-      addModalProps={{
-        open:   !!addModal,
-        onClose,
-        formik: addModalFormik,
-      }}
-    />
+    <>
+      <ProjectContainer
+        title={<Title />}
+        statusBar={<StatusBar />}
+        children={props.children}
+      />
+    </>
   );
 }

@@ -13,12 +13,28 @@ import { BusinessParameter } from 'business/parameter';
 import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
 import {
+  BusinessId,
   initialBusiness
 } from 'business/domain';
 import BusinessDetail, {
   FormValues
 } from 'business/view/Detail';
 import { FormikSubmit } from 'type/Form';
+import BusinessRemoveButton from 'business/view/Detail/Footer/RemoveButton';
+
+function RemoveButtonRoute() {
+  const id = useId();
+  const dispatch = useDispatch();
+  const remove = useCallback((id: BusinessId) => dispatch(businessAction.delete(id)), [dispatch]);
+
+  return (
+    <BusinessRemoveButton onClick={() => {
+      if (id) {
+        remove(BusinessId(id));
+      }
+    }} />
+  );
+}
 
 function Element() {
   const id = useId();
@@ -63,6 +79,7 @@ function Element() {
       involvedProjectList={isDetail && !edit ? involvedProjectList : undefined}
       rivalProjectList={isDetail && !edit ? rivalProjectList : undefined}
       businessName={formik.values.name}
+      removeButton={<RemoveButtonRoute />}
     />
   );
 }

@@ -1,6 +1,7 @@
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import { AppRoute } from 'services/routes';
 import EstimateTemplateList from 'estimate_template/view/List';
@@ -16,21 +17,31 @@ import {
 } from 'estimate_template/query';
 import { estimateTemplateAction } from 'estimate_template/action';
 import { FormikSubmit } from 'type/Form';
+import { EstimateTemplateShort } from 'estimate_template/domain';
+import { estimateTemplateApi } from 'estimate_template/api';
 
 function Element() {
 
   const dispatch = useDispatch();
   const { list, filter } = useSelector((root: RootState) => root.estimateTemplate);
   const setFilter = useCallback((formikProps: FormikSubmit<Partial<EstimateTemplateQuery>>) => {
-    const result: EstimateTemplateQuery = {
-      ...(filter ?? initialEstimateTemplateQuery),
-      ...formikProps.values,
-    };
-    dispatch(estimateTemplateAction.setFilter({
-      ...formikProps,
-      values: result
-    }));
-  }, [dispatch]);
+      const result: EstimateTemplateQuery = {
+        ...(filter ?? initialEstimateTemplateQuery),
+        ...formikProps.values,
+      };
+      dispatch(estimateTemplateAction.setFilter({
+        ...formikProps,
+        values: result
+      }));
+    },
+    [dispatch]
+  );
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [itemList, setItemList] = useState<EstimateTemplateShort[]>([]);
+  const changeSeq = useCallback((list) =>
+      dispatch(estimateTemplateAction.changeSeq(list.map(item => item.id)))
+    , [dispatch]);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      filter ?? initialEstimateTemplateQuery,
@@ -52,12 +63,36 @@ function Element() {
     <EstimateTemplateList
       formik={formik}
       list={list}
+      onSeqModalOpen={() => {
+        setModalOpen(true);
+        estimateTemplateApi.getList({
+          sort:        'seq,asc',
+          keyword:     '',
+          keywordType: '',
+          testType:    undefined,
+        })
+                           .then((list) => {
+                             setItemList(list);
+                           });
+      }}
+      modalProps={{
+        open:     modalOpen,
+        list:     itemList,
+        setList:  setItemList,
+        onClose:  () => {
+          setModalOpen(false);
+          setItemList([]);
+        },
+        onSubmit: () => {
+          changeSeq(list);
+        },
+      }}
     />
   );
 }
 
 const estimateTemplateListRoute: AppRoute = {
-  path:    '/estimate/template-management',
+  path:    '/estimate-template-management',
   element: <Element />
 };
 
