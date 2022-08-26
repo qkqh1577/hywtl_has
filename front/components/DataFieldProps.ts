@@ -16,6 +16,8 @@ export type DataFieldValue = string | number;
 export interface Option {
   key: DataFieldValue;
   text: DataFieldValue;
+  disabled?: boolean;
+  invisible?: boolean;
 }
 
 export function isDataFieldValue(value: any): value is DataFieldValue {

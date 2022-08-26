@@ -29,6 +29,9 @@ public class HomeController {
 
     @GetMapping("/{*path}")
     public ModelAndView pathIndexView(ModelAndView mav, @PathVariable String path) {
+        if (path.startsWith("static")) {
+            return mav;
+        }
         mav.setViewName("index");
         mav.addObject("path", path);
         return mav;

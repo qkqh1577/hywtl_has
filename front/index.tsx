@@ -34,9 +34,10 @@ const render = () => {
                 <ThemeProvider theme={mainTheme}>
                   <CssBaseline />
                   <Box sx={{
-                    display: 'flex',
-                    width:   '100%',
-                    height:  '100vh'
+                    display:    'flex',
+                    width:      '100%',
+                    height:     '100vh',
+                    fontFamily: 'Noto Sans KR'
                   }}>
                     <App />
                   </Box>

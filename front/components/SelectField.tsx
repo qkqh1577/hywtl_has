@@ -74,15 +74,18 @@ export default function SelectField(props: SelectFieldProps) {
           ...restProps
         } = props;
 
-  const children = useMemo(() => {
+  const children = useMemo((): React.ReactNode[] | null => {
     if (!options) {
       return null;
     }
-    return options.map((option) => {
+    return options
+    .map((option) => {
       if (isOption(option)) {
-
+        if (option.invisible) {
+          return null;
+        }
         return (
-          <MenuItem key={option.key} value={option.key}>
+          <MenuItem key={option.key} value={option.key} disabled={option.disabled}>
             {option.text}
           </MenuItem>
         );
@@ -92,7 +95,8 @@ export default function SelectField(props: SelectFieldProps) {
           {option}
         </MenuItem>
       );
-    });
+    })
+    .filter(option => option !== null);
   }, [options]);
 
   const formikContext = useContext(FormikContext);
