@@ -3,13 +3,13 @@ import Page from 'type/Page';
 import { BusinessShort } from 'business/domain';
 import { TableCellProps } from 'components/TableCell';
 import {
-  Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
+import { Table } from 'layouts/Table';
 import {
   Link,
 } from 'react-router-dom';

@@ -15,15 +15,16 @@ export default function MenuAppBar({
 
   return (
     <Box sx={{
-      width:          '260px',
-      padding:        '12px 4px',
+      width:          '220px',
+      height:         '100%',
       display:        'flex',
-      flexWrap:       'wrap',
+      flexWrap:       'nowrap',
       justifyContent: 'space-between',
+      paddingRight:   '10px',
       alignContent:   'flex-end',
       borderRight:    '1px solid rgb(245, 245, 245)'
     }}>
-      <img src={logo} width="auto" height="30px" alt="한양풍동실험연구소_로고" />
+      <img src={logo} width="auto" height="70%" alt="한양풍동실험연구소_로고" />
       <Box sx={{
         display:         'flex',
         justifyContent:  'center',

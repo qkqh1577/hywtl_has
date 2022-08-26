@@ -3,11 +3,6 @@ import {
   useNavigate
 } from 'react-router-dom';
 import {
-  CancelPresentation as UnusableIcon,
-  Folder as MenuGroupIcon,
-  HorizontalRule as MenuIcon
-} from '@mui/icons-material';
-import {
   List,
   ListItem,
   ListItemIcon,
@@ -15,7 +10,30 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Menu } from 'app/domain/menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus
+} from '@fortawesome/free-solid-svg-icons';
+import { ColorPalette } from 'app/view/App/theme';
 
+library.add(
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus
+);
 
 interface MenuNodeProps {
   menu: Menu;
@@ -24,47 +42,47 @@ interface MenuNodeProps {
 
 export default function MenuNode({
                                    menu,
-                                   depth = 0,
+                                   depth = 1,
                                  }: MenuNodeProps) {
-
   const navigate = useNavigate();
   const location = useLocation();
-  const getIcon = () => {
-    if (menu.children) {
-      return MenuGroupIcon;
-    }
-    if (menu.path) {
-      return MenuIcon;
-    }
-    return UnusableIcon;
-  };
-  const icon = getIcon();
   return (
     <>
       <ListItem
         button
         disabled={!menu.path && !menu.children}
         sx={{
-          padding: 0,
-          paddingLeft:     `${8 + (depth ?? 0) * 12}px`,
-          backgroundColor: location.pathname === menu.path ? 'rgb(245,244,250)' : 'transparent',
+          padding:         '0 10px',
+          marginBottom:    '5px',
+          height:          '40px',
+          color:           ColorPalette.White,
+          backgroundColor: location.pathname === menu.path ? ColorPalette.Blue['2'] : 'transparent',
         }}
         onClick={() => {
           if (menu.path) {
             navigate(menu.path);
           }
         }}>
-        <ListItemIcon>
-          {React.createElement(icon)}
+        <ListItemIcon sx={{
+          minWidth:    'initial',
+          marginRight: '10px',
+        }}>
+          <FontAwesomeIcon icon={menu.icon} color={ColorPalette.Blue['2']} fontSize={depth === 1 ? '16px' : '6px'} />
         </ListItemIcon>
-        <ListItemText primary={menu.title} />
+        <ListItemText
+          disableTypography
+          primary={menu.title}
+          sx={{
+            fontSize: '13px',
+            color:    ColorPalette.Grey['3']
+          }}
+        />
       </ListItem>
       {menu.children && (
         <List component="div" sx={{
           display:  'flex',
           width:    '100%',
           flexWrap: 'wrap',
-          padding:  0,
         }}>
           {menu.children.map((item) => (
             <MenuNode key={item.title} menu={item} depth={depth + 1} />

@@ -30,14 +30,15 @@ export const ColorPalette = {
   DarkGray: '#252627',
   Grey:     {
     '1': '#9b9ea4',
-    '2': '#b2b4b7'
-  }
+    '2': '#b2b4b7',
+    '3': '#94a6ca'
+  },
+  White:    '#fff',
 };
 
 const mainTheme = createTheme({
   typography: {
     fontFamily: ['Noto Sans KR'].join(','),
-    fontSize:   12
   },
   palette:    {
     primary:   {
@@ -139,18 +140,10 @@ const mainTheme = createTheme({
       }
     },
     MuiButton:      {
-      defaultProps:   {
+      defaultProps: {
         color:   'primary',
         variant: 'contained',
       },
-      styleOverrides: {
-        root: {
-          fontFamily: 'Noto Sans KR',
-          maxHeight:  '30px',
-          minWidth:   '70px',
-          fontSize:   '10px',
-        }
-      }
     }
   }
 });
