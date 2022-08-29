@@ -11,16 +11,17 @@ interface Props {
   tooltip?: string;
   disabled?: boolean;
   children: React.ReactNode;
+  size?: string;
 }
 
-export default function IconButton({ children, onClick, tooltip, disabled }: Props) {
+export default function IconButton({ children, onClick, tooltip, disabled, size }: Props) {
 
   const icon = (
     <MuiIconButton
       sx={{
         fontSize:        '11px',
-        width:           '22px',
-        height:          '22px',
+        width:           size ?? '22px',
+        height:          size ?? '22px',
         color:           ColorPalette.White,
         backgroundColor: ColorPalette.Blue['2'],
         marginLeft:      '10px'

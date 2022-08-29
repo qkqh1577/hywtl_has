@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import TableCell, { TableCellProps } from 'components/TableCell';
 import React, { useMemo } from 'react';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface ListProps {
   list: ProjectShortVO[];
@@ -32,7 +33,34 @@ export default function ({ list, openMenu: open, onRowClick }: ListProps) {
   }], [open]);
   return (
     <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+      <Table
+        stickyHeader
+        aria-label="sticky table"
+        sx={{
+          backgroundColor:   ColorPalette.White,
+          borderLeft:        `1px solid ${ColorPalette.Blue['7']}`,
+          borderTop:         `1px solid ${ColorPalette.Blue['7']}`,
+          borderRadius:      '5px',
+          '& th, & td':      {
+            textAlign:       'center',
+            fontSize:        '12px',
+            height:          '36px',
+            padding:         '0 10px',
+            backgroundColor: 'transparent',
+            color:           ColorPalette.DarkGray,
+          },
+          '& th':            {
+            fontWeight:   'bold',
+            borderBottom: `5px solid ${ColorPalette.Blue['7']}`,
+          },
+          '& th:last-child': {
+            borderRight: `1px solid ${ColorPalette.Blue['7']}`,
+          },
+          '& td':            {
+            borderRight:  `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottom: `1px solid ${ColorPalette.Blue['7']}`,
+          },
+        }}>
         <TableHead>
           <TableRow>
             {columnProps.map((props) => (

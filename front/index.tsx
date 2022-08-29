@@ -35,6 +35,9 @@ import {
   faAngleUp,
   faAngleLeft,
   faAngleRight,
+  faStar,
+  faTrash,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -50,6 +53,9 @@ library.add(
   faAngleUp,
   faAngleLeft,
   faAngleRight,
+  faStar,
+  faTrash,
+  faXmark,
 );
 
 const render = () => {

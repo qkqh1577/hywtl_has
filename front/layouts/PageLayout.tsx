@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
-  Paper
+  Paper,
+  Typography
 } from '@mui/material';
 import { TitleProps } from 'components/Title';
 import {
@@ -50,23 +51,25 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       width:    '100%',
       height:   '100%',
       overflow: 'hidden',
-      padding:  '20px 0',
     }}>
       <Box sx={{
         display:        'flex',
         flexWrap:       'nowrap',
         width:          '100%',
         justifyContent: 'space-between',
-        padding:        '0 20px 20px 20px',
+        padding:        '20px'
       }}>
-        <Box sx={{
-          fontSize:   '18px',
-          lineHeight: '26px',
-          color:      ColorPalette.DarkGray,
-          fontWeight: 'bold'
-        }}>
-          {title}
-        </Box>
+        {typeof title === 'string' && (
+          <Typography sx={{
+            fontSize:   '18px',
+            lineHeight: '26px',
+            color:      ColorPalette.DarkGray,
+            fontWeight: 'bold'
+          }}>
+            {title}
+          </Typography>
+        )}
+        {typeof title !== 'string' && title}
         {titleRightComponent && (
           <Box sx={{
             display:        'flex',
@@ -98,10 +101,14 @@ function PageContent(props: PageLayoutProps) {
     return typeof (props as any).filter !== 'undefined';
   }
 
+  const filterRef = useRef<HTMLDivElement>(null);
+  const filterHeight = filterRef.current?.offsetHeight ?? 0;
+
   return (
     <>
       {isSearchForm(props) && (
         <Box
+          ref={filterRef}
           children={props.filter}
           sx={{
             display: 'flex',
@@ -110,12 +117,19 @@ function PageContent(props: PageLayoutProps) {
         />
       )}
       <Box sx={{
-        display:   'flex',
-        width:     '100%',
-        flexWrap:  'wrap',
-        padding:   '20px 20px 0 20px',
-        overflowY: 'scroll',
-        height:    'calc(100% - 240px)' // TODO: 실제 계산 높이 필요
+        display:                      'flex',
+        width:                        '100%',
+        flexWrap:                     'wrap',
+        padding:                      '20px',
+        overflowY:                    'scroll',
+        height:                       `calc(100% - ${filterHeight + 66}px)`, // TODO: 실제 계산 높이 필요
+        '&::-webkit-scrollbar':       {
+          width:           '10px',
+          backgroundColor: ColorPalette.Blue['7']
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: ColorPalette.DarkBlue['5']
+        }
       }}>
         <Box
           children={props.body}
@@ -134,7 +148,6 @@ function PageContent(props: PageLayoutProps) {
           />
         )}
       </Box>
-
     </>
   );
 }

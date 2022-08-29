@@ -40,8 +40,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
       title="신규 프로젝트 등록"
       onClose={onClose}
       width="45vw"
-    >
-      <FormikProvider value={formik}>
+      children={<FormikProvider value={formik}>
         <Box sx={{
           display:        'flex',
           width:          '100%',
@@ -96,10 +95,10 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
                   name="estimateType"
                   label="견적 구분"
                   options={projectEstimateTypeList.map((item) => ({
-                    key: item as string,
+                    key:  item as string,
                     text: projectEstimateTypeName(item),
                   }))}
-                  />
+                />
               </Grid>
             </Grid>
           </Box>
@@ -145,15 +144,24 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
             height:         '30px',
             justifyContent: 'center'
           }}>
-            <Button onClick={onSubmit}>
-              등록
-            </Button>
-            <Button onClick={onClose}>
-              취소
-            </Button>
           </Box>
         </Box>
       </FormikProvider>
-    </ModalLayout>
+      }
+      footer={
+        <>
+          <Button
+            children="등록"
+            onClick={onSubmit}
+            sx={{
+              marginRight: '20px',
+            }}
+          />
+          <Button onClick={onClose}>
+            취소
+          </Button>
+        </>
+      }
+    />
   );
 }

@@ -14,6 +14,7 @@ interface Props
 export default function BusinessPage(props: Props) {
   return (
     <PageLayout
+      title="업체 관리"
       filter={<SearchForm />}
       body={<List {...props} />}
       footer={<Footer {...props} />}

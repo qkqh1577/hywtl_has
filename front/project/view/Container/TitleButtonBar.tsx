@@ -1,10 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import {
-  Delete as DeleteIcon,
-  Star as StarIcon,
-} from '@mui/icons-material';
-import IconButton from 'components/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function ProjectContainerTitleButtonBar() {
 
@@ -14,8 +11,23 @@ export default function ProjectContainerTitleButtonBar() {
       display:        'flex',
       justifyContent: 'flex-end',
     }}>
-      <IconButton children={<DeleteIcon />} onClick={() => {}} />
-      <IconButton children={<StarIcon />} onClick={() => {}} />
+      <FontAwesomeIcon
+        icon="trash"
+        style={{
+          width:       '18px',
+          height:      '18px',
+          color:       ColorPalette.Blue['3'],
+          marginRight: '20px'
+        }}
+      />
+      <FontAwesomeIcon
+        icon="star"
+        style={{
+          width:  '18px',
+          height: '18px',
+          color:  ColorPalette.Blue['1'],
+        }}
+      />
     </Box>
   );
 }
