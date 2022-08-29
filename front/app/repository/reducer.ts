@@ -77,6 +77,7 @@ export const initMenuState: MenuState = {
         path:  '/estimate-template-management',
       }, {
         title: '견적서 내용 관리',
+        path: '/admin/estimate/content-management'
       }]
     }, {
       title:    '계약서 관리',
