@@ -105,7 +105,6 @@ function Element() {
       upsert({ values, ...helper });
     }
   });
-  const edit = formik.values.edit;
 
   useEffect(() => {
     if (id) {
@@ -113,17 +112,17 @@ function Element() {
         type: EstimateContentAction.setOne,
         id,
       });
-      dispatch({
-        type: EstimateContentAction.setVariableList
-      })
     }
+    dispatch({
+      type: EstimateContentAction.setVariableList
+    });
   }, [id]);
   return (
     <EstimateContentDetail
       formik={formik}
       detailListFooter={<DetailListFooterRoute />}
       removeButton={<RemoveButtonRoute />}
-      variableList = { edit ? variableList : undefined}
+      variableList={variableList}
     />
   );
 }

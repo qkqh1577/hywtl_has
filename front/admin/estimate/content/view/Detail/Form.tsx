@@ -73,7 +73,7 @@ export default function Form(props: Props) {
             </Grid>
           </Grid>
         </Grid>
-        {formikContext?.values.id && edit && (<VariableList {...props}/>)}
+        {edit && (<VariableList {...props}/>)}
       </Grid>
     </Box>
   );

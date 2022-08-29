@@ -90,7 +90,7 @@ function* watchDelete() {
 
 function* watchVariableList() {
   while (true) {
-    yield take(EstimateContentAction.setOne);
+    yield take(EstimateContentAction.setVariableList);
     const list: EstimateContentVariableVO[] = yield call(estimateContentApi.getVariableList);
     yield put(estimateContentAction.setVariableList(list));
   }

@@ -21,10 +21,8 @@ class EstimateContentApi {
   }
 
   async upsert(parameter: EstimateContentParameter): Promise<void> {
-    if (parameter.id) {
-      const { data } = await apiClient.put(`/admin/estimate/content${parameter.id ? `/${parameter.id}` : ''}`, parameter);
-      return data;
-    }
+    const { data } = await apiClient.put(`/admin/estimate/content${parameter.id ? `/${parameter.id}` : ''}`, parameter);
+    return data;
   }
 
   async delete(id: EstimateContentId): Promise<void> {
