@@ -11,29 +11,8 @@ import {
 import React from 'react';
 import { Menu } from 'app/domain/menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faChartGantt,
-  faFilePowerpoint,
-  faAddressCard,
-  faBuilding,
-  faListOl,
-  faGear,
-  faCircle,
-  faMinus
-} from '@fortawesome/free-solid-svg-icons';
 import { ColorPalette } from 'app/view/App/theme';
 
-library.add(
-  faChartGantt,
-  faFilePowerpoint,
-  faAddressCard,
-  faBuilding,
-  faListOl,
-  faGear,
-  faCircle,
-  faMinus
-);
 
 interface MenuNodeProps {
   menu: Menu;

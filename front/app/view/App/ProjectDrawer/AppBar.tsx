@@ -2,11 +2,8 @@ import {
   Box,
 } from '@mui/material';
 import IconButton from 'components/IconButton';
-import {
-  ChevronLeft as LeftIcon,
-  ChevronRight as RightIcon
-} from '@mui/icons-material';
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface ProjectAppBarProps {
   open: boolean;
@@ -22,19 +19,21 @@ export default function ProjectAppBar({
 
   return (
     <Box sx={{
-      width:          '340px',
-      padding:        '12px 4px',
+      width:          '310px',
+      height:         '100%',
       display:        'flex',
-      flexWrap:       'wrap',
+      flexWrap:       'nowrap',
       justifyContent: 'space-between',
-      alignContent:   'flex-end',
+      alignContent:   'center',
+      padding:        '10px 10px',
+      boxSizing:      'border-box',
       borderRight:    '1px solid rgb(245, 245, 245)'
     }}>
       {projectAddModal}
       <IconButton
         tooltip={'프로젝트 메뉴 ' + (open ? '접기' : '펴기')}
         onClick={toggle}
-        children={open ? <LeftIcon /> : <RightIcon />}
+        children={<FontAwesomeIcon icon={open ? 'angle-left' : 'angle-right'} />}
       />
     </Box>
   );

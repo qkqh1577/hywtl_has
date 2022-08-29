@@ -18,7 +18,7 @@ export interface ProjectDrawerProps
 export default function ProjectDrawer(props: ProjectDrawerProps) {
 
   return (
-    <Drawer open={props.openMenu} openedWidth={340}>
+    <Drawer open={props.openMenu} openedWidth={310}>
       <FormikProvider value={props.formik}>
         <Form>
           <SearchForm {...props} />

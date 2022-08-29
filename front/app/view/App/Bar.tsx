@@ -27,8 +27,8 @@ export default function AppBar(props: Props) {
       zIndex:          theme.zIndex.drawer + 1,
       width:           '100%',
       height:          '50px',
-      padding:         '10px',
       display:         'flex',
+      padding:         0,
       flexWrap:        'nowrap',
       backgroundColor: ColorPalette.DarkBlue[2]
     })}>

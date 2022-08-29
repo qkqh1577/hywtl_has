@@ -5,8 +5,9 @@ import React, {
   useState,
 } from 'react';
 import {
-  StandardTextFieldProps,
-  TextField as MuiTextField
+  Box,
+  TextField as MuiTextField,
+  Typography
 } from '@mui/material';
 import {
   FormikContext,
@@ -18,13 +19,23 @@ import {
   FieldStatus,
   getValue
 } from 'components/DataFieldProps';
+import {
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  StandardTextFieldProps
+} from '@mui/material/TextField/TextField';
+import { ColorPalette } from 'app/view/App/theme';
+import RequiredMark from 'components/RequiredMark';
+
+type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | OutlinedTextFieldProps;
 
 export interface TextFieldProps
-  extends Omit<StandardTextFieldProps,
+  extends Omit<MuiTextFieldProps,
     | 'name'
     | 'label'
     | 'value'
     | 'fullWidth'
+    | 'variant'
     | 'disabled'> {
   disableLabel?: boolean;
   endAdornment?: React.ReactNode;
@@ -35,15 +46,17 @@ export interface TextFieldProps
 }
 
 interface FieldProps
-  extends Pick<StandardTextFieldProps,
+  extends Pick<MuiTextFieldProps,
     | 'type'
     | 'onChange'
     | 'onBlur'
     | 'InputProps'
+    | 'inputProps'
     | 'label'
     | 'error'
     | 'helperText'
     | 'value'
+    | 'variant'
     | 'disabled'
     | 'required'> {
   name: string;
@@ -55,13 +68,18 @@ interface ViewProps
                                | 'endAdornment'
                                | 'disableLabel'
                                | 'label'>,
-          Pick<StandardTextFieldProps, | 'label'
-                                       | 'value'> {
-
+          Pick<MuiTextFieldProps,
+            | 'value'
+            | 'variant'> {
 }
 
 function TextFieldView(props: ViewProps) {
-  return (<MuiTextField fullWidth variant="standard" {...props} />);
+  return (
+    <MuiTextField
+      fullWidth
+      {...props}
+    />
+  );
 }
 
 export default function TextField(props: TextFieldProps) {
@@ -75,6 +93,7 @@ export default function TextField(props: TextFieldProps) {
           onChange,
           onBlur,
           status,
+          size,
           label:        propsLabel,
           disableLabel: propsDisableLabel,
           helperText:   propsHelperText,
@@ -99,6 +118,28 @@ export default function TextField(props: TextFieldProps) {
   const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
   const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
 
+  const variant = propsDisableLabel ? 'outlined' : 'standard';
+
+  const mappingByShape = (
+    outlined: string,
+    smallOutlined: string,
+    labelStandard: string
+  ) => {
+    return variant === 'outlined' ? (size === 'small' ? smallOutlined : outlined) : labelStandard;
+  };
+
+  const inputProps: MuiTextFieldProps['inputProps'] = {
+    style: {
+      padding:      '0 10px',
+      height:       mappingByShape('32px', '24px', '40px'),
+      fontSize:     mappingByShape('13px', '11px', '13px'),
+      color:        ColorPalette.DarkGray,
+      border:       variant === 'outlined' ? `1px solid ${ColorPalette.Blue['7']}` : 'none',
+      borderBottom: `1px solid ${ColorPalette.Blue['7']}`,
+      borderRadius: variant === 'outlined' ? '5px' : '0',
+    }
+  };
+
   useEffect(() => {
     if (!equals(value, formikValue)) {
       setValue(formikValue);
@@ -121,11 +162,11 @@ export default function TextField(props: TextFieldProps) {
     type,
     name,
     value,
-    label,
+    variant,
     error,
     helperText,
     disabled,
-    required:   edit && required,
+    inputProps,
     onChange:   (e) => {
       if (onChange) {
         onChange(e);
@@ -143,8 +184,33 @@ export default function TextField(props: TextFieldProps) {
       readOnly,
       startAdornment,
       endAdornment,
-    }
+    },
   };
+
+  if (variant === 'standard') {
+    return (
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        flex:           1,
+        justifyContent: 'space-between',
+      }}>
+        <Typography sx={{
+          fontSize:    '13px',
+          marginRight: '20px',
+          maxHeight:   inputProps.style!.height!,
+          color:       ColorPalette.Grey['1'],
+        }}>
+          <RequiredMark required={edit && required} text={label} />
+        </Typography>
+        <TextFieldView
+          {...restProps}
+          {...fieldProps}
+        />
+      </Box>
+    );
+  }
 
   return (
     <TextFieldView

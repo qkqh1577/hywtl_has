@@ -14,7 +14,6 @@ export function Table(props: TableProps) {
         borderLeft:      `1px solid ${ColorPalette.Blue['7']}`,
         borderTop:       `1px solid ${ColorPalette.Blue['7']}`,
         borderRadius:    '5px',
-
         '& th, & td':      {
           textAlign:       'center',
           fontSize:        '13px',

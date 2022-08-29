@@ -16,7 +16,7 @@ import {
   useDispatch,
 } from 'react-redux';
 import { useFormik } from 'formik';
-import { Button } from '@mui/material';
+import Button from 'layouts/Button';
 
 export default function ProjectAddModalRoute() {
   const [open, setOpen] = useState<boolean>(false);
@@ -41,7 +41,7 @@ export default function ProjectAddModalRoute() {
   };
   return (
     <>
-      <Button onClick={onClick}>신규 프로젝트 등록</Button>
+      <Button shape="small" onClick={onClick}>신규 프로젝트 등록</Button>
       <ProjectAddModal
         open={open}
         setOpen={setOpen}

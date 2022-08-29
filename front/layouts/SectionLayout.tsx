@@ -1,19 +1,17 @@
 import React from 'react';
 import {
   Box,
-  Typography
+  Typography,
 } from '@mui/material';
-import {
-  ArrowUpward as UpIcon,
-  ArrowDownward as DownIcon,
-} from '@mui/icons-material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Form,
   FormikProvider,
 } from 'formik';
 import { FormikLayoutProps } from 'layouts/PageLayout';
-import IconButton from 'components/IconButton';
 import DateFormat from 'components/DateFormat';
+import { ColorPalette } from 'app/view/App/theme';
+import IconButton from 'components/IconButton';
 
 export interface SectionLayoutProps<T>
   extends FormikLayoutProps<T> {
@@ -47,22 +45,29 @@ export default function SectionLayout<T extends object>(props: SectionLayoutProp
         width:          '100%',
         display:        'flex',
         justifyContent: 'space-between',
+        paddingBottom:  '10px'
       }}>
-        <Box>
+        <Box sx={{
+          display:  'flex',
+          flexWrap: 'nowrap'
+        }}>
           <Typography>{title}</Typography>
           {!disableFold && (
             <IconButton
-              children={shrink ? <DownIcon /> : <UpIcon />}
+              children={<FontAwesomeIcon icon={shrink ? 'angle-down' : 'angle-up'} />}
               onClick={() => {
                 formik.setFieldValue('shrink', !shrink);
               }}
             />
           )}
         </Box>
-        <Box>
+        <Box sx={{
+          display:  'flex',
+          flexWrap: 'nowrap'
+        }}>
           {titleRightComponent}
-          <Typography>최종수정일시</Typography>
-          <Typography>
+          <Typography fontSize="12px" fontWeight="bold" marginRight="5px">최종수정일시</Typography>
+          <Typography fontSize="12px">
             <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
           </Typography>
         </Box>
@@ -72,9 +77,11 @@ export default function SectionLayout<T extends object>(props: SectionLayoutProp
           <Box
             children={props.children}
             sx={{
-              display: 'flex',
-              width:   '100%',
-              mb:      '40px',
+              display:      'flex',
+              width:        '100%',
+              padding:      '15px 20px',
+              border:       `1px solid ${ColorPalette.Blue['7']}`,
+              borderRadius: '5px',
             }}
           />
         </Form>

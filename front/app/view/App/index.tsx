@@ -50,7 +50,7 @@ export default function App(props: Props) {
           overflow:        'auto',
           paddingLeft:     0,
           paddingRight:    0,
-          paddingTop:      !isLoginPage ? '64px' : 0,
+          paddingTop:      !isLoginPage ? '50px' : 0,
         }}>
         <ReactRouter />
       </Box>

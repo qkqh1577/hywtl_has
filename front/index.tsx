@@ -21,6 +21,36 @@ import {
   Box,
   CssBaseline
 } from '@mui/material';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus,
+  faAngleDown,
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus,
+  faAngleDown,
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+);
 
 const render = () => {
 

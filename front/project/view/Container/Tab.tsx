@@ -8,6 +8,7 @@ import {
   useNavigate
 } from 'react-router-dom';
 import useId from 'services/useId';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface ButtonProps {
   children: string;
@@ -48,32 +49,37 @@ export default function ProjectContainerTab() {
 
   return (
     <Box sx={{
-      display:        'flex',
-      flexWrap:       'nowrap',
-      padding:        '4px 24px',
-      paddingBottom:  0,
-      width:          '100%',
-      height:         '48px',
-      justifyContent: 'space-around',
-      alignItems:     'flex-end',
-      alignContent:   'flex-end',
+      display:                    'flex',
+      flexWrap:                   'nowrap',
+      padding:                    '0 20px',
+      width:                      '100%',
+      justifyContent:             'space-between',
+      borderBottom:               `2px solid ${ColorPalette.Blue['7']}`,
+      height:                     '38px',
+      '& > div:not(:last-child)': {
+        marginRight: '5px',
+      }
     }}>
       {propsList.map((props) => {
-
         const selected = pathname.endsWith(`/${props.path}`);
         return (
-          <Button
+          <Box
             key={props.path}
-            variant={'outlined'}
             children={props.children}
             sx={{
-              borderRadius:    0,
-              border:          '1px solid #0000001f',
-              width:           `${100 / (propsList.length + 1)}%`,
-              height:          '36px',
-              backgroundColor: selected ? 'rgb(241, 234, 255)' : '#fff',
+              flex:            1,
+              display:         'flex',
+              justifyContent:  'center',
+              alignItems:      'center',
+              borderRadius:    '5px 5px 0 0',
+              border:          `2px solid ${ColorPalette.Blue['7']}`,
+              borderBottom:    'none',
+              height:          '38px',
+              backgroundColor: selected ? ColorPalette.White : ColorPalette.Blue['7'],
               cursor:          selected ? 'default' : 'pointer',
-              color:           '#000'
+              fontSize:        '14px',
+              fontWeight:      selected ? 'bold' : 'inherit',
+              color:           ColorPalette.DarkGray,
             }}
             onClick={() => {
               navigate(`/project/sales-management/${id}/${props.path}`);

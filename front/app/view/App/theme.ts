@@ -121,11 +121,6 @@ const mainTheme = createTheme({
       defaultProps:   {
         fontFamily: 'Noto Sans KR',
       },
-      styleOverrides: {
-        root: {
-          fontFamily: 'Noto Sans KR',
-        }
-      }
     },
     MuiLink:        {
       styleOverrides: {

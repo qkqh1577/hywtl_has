@@ -10,7 +10,6 @@ export default function ({ statusBar }: Props) {
 
   return (
     <Box sx={{
-      border:   '1px solid #0000001f',
       display:  'flex',
       flexWrap: 'wrap',
       width:    '100%',

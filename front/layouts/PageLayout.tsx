@@ -3,12 +3,13 @@ import {
   Box,
   Paper
 } from '@mui/material';
-import Title, { TitleProps } from 'components/Title';
+import { TitleProps } from 'components/Title';
 import {
   Form,
   FormikContextType,
   FormikProvider,
 } from 'formik';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface PageLayoutProps
   extends TitleProps {
@@ -33,7 +34,6 @@ interface FormikPageLayoutProps<T>
           FormikLayoutProps<T> {
 }
 
-
 export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutProps | FormikPageLayoutProps<T>) {
 
   function isFormikForm(props: PageLayoutProps): props is FormikPageLayoutProps<T> {
@@ -48,9 +48,36 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
   return (
     <Paper sx={{
       width:    '100%',
-      overflow: 'hidden'
+      height:   '100%',
+      overflow: 'hidden',
+      padding:  '20px 0',
     }}>
-      <Title title={title} titleRightComponent={titleRightComponent} />
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        padding:        '0 20px 20px 20px',
+      }}>
+        <Box sx={{
+          fontSize:   '18px',
+          lineHeight: '26px',
+          color:      ColorPalette.DarkGray,
+          fontWeight: 'bold'
+        }}>
+          {title}
+        </Box>
+        {titleRightComponent && (
+          <Box sx={{
+            display:        'flex',
+            width:          '50%',
+            flexWrap:       'nowrap',
+            justifyContent: 'right',
+          }}>
+            {titleRightComponent}
+          </Box>
+        )}
+      </Box>
       {isFormikForm(props) && (
         <FormikProvider value={props.formik}>
           <Form>
@@ -79,28 +106,35 @@ function PageContent(props: PageLayoutProps) {
           sx={{
             display: 'flex',
             width:   '100%',
-            mb:      '40px',
           }}
         />
       )}
-      <Box
-        children={props.body}
-        sx={{
-          display: 'flex',
-          width:   '100%',
-          mb:      '40px',
-        }}
-      />
-      {props.footer && (
+      <Box sx={{
+        display:   'flex',
+        width:     '100%',
+        flexWrap:  'wrap',
+        padding:   '20px 20px 0 20px',
+        overflowY: 'scroll',
+        height:    'calc(100% - 240px)' // TODO: 실제 계산 높이 필요
+      }}>
         <Box
-          children={props.footer}
+          children={props.body}
           sx={{
             display: 'flex',
             width:   '100%',
-            mb:      '40px',
           }}
         />
-      )}
+        {props.footer && (
+          <Box
+            children={props.footer}
+            sx={{
+              display: 'flex',
+              width:   '100%',
+            }}
+          />
+        )}
+      </Box>
+
     </>
   );
 }
