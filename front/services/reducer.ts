@@ -36,10 +36,6 @@ import {
   EstimateContentState
 } from 'admin/estimate/content/reducer';
 import {
-  businessReducer,
-  BusinessState
-} from 'business/reducer';
-import {
   projectMemoReducer,
   ProjectMemoState
 } from 'project_memo/reducer';
