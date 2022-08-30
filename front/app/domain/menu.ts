@@ -5,5 +5,4 @@ export interface Menu {
   path?: string;
   children?: Menu[];
   icon: IconName;
-  depth: number;
 }

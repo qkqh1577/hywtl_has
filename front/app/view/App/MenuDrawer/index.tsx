@@ -1,13 +1,12 @@
 import {
   Box,
-  List,
 } from '@mui/material';
-import React from 'react';
-import MenuNode from 'app/view/App/MenuNode';
+import React, { useRef } from 'react';
 import { Menu } from 'app/domain/menu';
 import Drawer from 'layouts/Drawer';
 import Button from 'layouts/Button';
 import { ColorPalette } from 'app/view/App/theme';
+import Depth1Menu from 'app/view/App/MenuDrawer/Depth1Menu';
 
 export interface MenuDrawerProps {
   menu: Menu[];
@@ -22,6 +21,8 @@ export default function (props: MenuDrawerProps) {
           menu,
         } = props;
 
+  const ganttBoxRef = useRef<HTMLDivElement>(null);
+  const ganttBoxHeight = ganttBoxRef.current?.offsetHeight;
   return (
     <Drawer open={openMenu} padding="10px" openedWidth={230} sx={{
       backgroundColor: ColorPalette.DarkBlue['1'],
@@ -40,27 +41,30 @@ export default function (props: MenuDrawerProps) {
         display:                      'flex',
         width:                        '100%',
         overflowY:                    'scroll',
-        height:                       'calc(100% - 58px)',
+        height:                       `calc(100% - ${ganttBoxHeight ?? 58}px)`,
         '&::-webkit-scrollbar':       {
           width:           '10px',
-          backgroundColor: ColorPalette.DarkBlue['5']
+          backgroundColor: ColorPalette._697183
         },
         '&::-webkit-scrollbar-thumb': {
-          backgroundColor: ColorPalette.DarkBlue['4']
+          backgroundColor: ColorPalette._4c576d
         }
       }}>
-        <List component="div" sx={{
-          display:  'flex',
-          width:    '100%',
-          flexWrap: 'wrap',
-          padding:  '10px',
+        <Box sx={{
+          display:      'flex',
+          width:        '100%',
+          flexWrap:     'wrap',
+          padding:      '10px',
+          alignContent: 'flex-start',
         }}>
           {menu.map((item) => (
-            <MenuNode key={item.title} menu={item} />
+            <Depth1Menu
+              key={item.title}
+              {...item}
+            />
           ))}
-        </List>
+        </Box>
       </Box>
     </Drawer>
   );
-
 }
