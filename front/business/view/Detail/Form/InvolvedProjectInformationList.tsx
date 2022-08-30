@@ -65,7 +65,9 @@ export default function ({ list }: Props) {
           title="참여 프로젝트 정보"
           titleRightComponent={
             <SelectField
-              disableLabel
+              labelProps={{
+                disableLabel: true,
+              }}
               name="involvedProjectFilter"
               label="참여 프로젝트 정보 필터"
               options={involvedTypeList.map((type) => ({

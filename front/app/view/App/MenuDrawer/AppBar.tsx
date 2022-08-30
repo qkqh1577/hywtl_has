@@ -19,8 +19,6 @@ export default function MenuAppBar({
       justifyContent: 'space-between',
       padding:        '10px 10px',
       alignContent:   'center',
-      boxSizing:      'border-box',
-      borderRight:    '1px solid rgb(245, 245, 245)'
     }}>
       <img src={logo} width="auto" height="70%" alt="한양풍동실험연구소_로고" />
       <IconButton

@@ -53,7 +53,9 @@ export default function ProjectMemoForm({
           <Grid item sm={12}>
             <TextField
               required
-              disableLabel
+              labelProps={{
+                disableLabel: true,
+              }}
               multiline
               name="description"
               label="본문"
@@ -63,7 +65,9 @@ export default function ProjectMemoForm({
           <Grid item sm={6}>
             <SelectField
               required
-              disableLabel
+              labelProps={{
+                disableLabel: true,
+              }}
               name="category"
               label="카테고리"
               options={projectMemoCategoryList.map(item => ({

@@ -33,7 +33,9 @@ export default function () {
     >
       <Form>
         <TextField
-          disableLabel
+          labelProps={{
+            disableLabel: true,
+          }}
           name="keyword"
           label="통합검색"
           placeholder="통합검색"

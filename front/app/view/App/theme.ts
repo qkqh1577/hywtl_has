@@ -9,14 +9,14 @@ import Thin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.otf';
 import Regular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.otf';
 
 export const ColorPalette = {
-  DarkBlue: {
+  DarkBlue:  {
     '1': '#2d3a54',
     '2': '#242e43',
     '3': '#414d65',
     '4': '#4c576d',
     '5': '#697183',
   },
-  Blue:     {
+  Blue:      {
     '1': '#386dd6',
     '2': '#4c9eeb',
     '3': '#9bb6ea',
@@ -26,14 +26,33 @@ export const ColorPalette = {
     '7': '#e4e9f2',
     '8': '#f1f5fc',
   },
-  Yellow:   '#ffb72b',
-  DarkGray: '#252627',
-  Grey:     {
+  Yellow:    '#ffb72b',
+  DarkGray:  '#252627',
+  Grey:      {
     '1': '#9b9ea4',
     '2': '#b2b4b7',
     '3': '#94a6ca'
   },
-  White:    '#fff',
+  White:     '#fff',
+  '_fff':    '#fff',
+  '_9b9ea4': '#9b9ea4',
+  '_b2b4b7': '#b2b4b7',
+  '_94a6ca': '#94a6ca',
+  '_ffb72b': '#ffb72b',
+  '_252627': '#252627',
+  '_386dd6': '#386dd6',
+  '_4c9eeb': '#4c9eeb',
+  '_9bb6ea': '#9bb6ea',
+  '_d7e2f7': '#d7e2f7',
+  '_d2e7fa': '#d2e7fa',
+  '_cddaf5': '#cddaf5',
+  '_e4e9f2': '#e4e9f2',
+  '_f1f5fc': '#f1f5fc',
+  '_2d3a54': '#2d3a54',
+  '_242e43': '#242e43',
+  '_414d65': '#414d65',
+  '_4c576d': '#4c576d',
+  '_697183': '#697183',
 };
 
 const mainTheme = createTheme({

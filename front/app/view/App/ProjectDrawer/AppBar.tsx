@@ -4,6 +4,7 @@ import {
 import IconButton from 'components/IconButton';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface ProjectAppBarProps {
   open: boolean;
@@ -19,15 +20,14 @@ export default function ProjectAppBar({
 
   return (
     <Box sx={{
-      width:          '310px',
-      height:         '100%',
-      display:        'flex',
-      flexWrap:       'nowrap',
-      justifyContent: 'space-between',
-      alignContent:   'center',
-      padding:        '10px 10px',
-      boxSizing:      'border-box',
-      borderRight:    '1px solid rgb(245, 245, 245)'
+      width:           '310px',
+      height:          '100%',
+      display:         'flex',
+      flexWrap:        'nowrap',
+      justifyContent:  'space-between',
+      alignContent:    'center',
+      padding:         '10px 10px',
+      backgroundColor: ColorPalette._414d65
     }}>
       {projectAddModal}
       <IconButton

@@ -1,5 +1,5 @@
 import Drawer from 'layouts/Drawer';
-import React from 'react';
+import React, { useRef } from 'react';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectQuery } from 'project/query';
 import {
@@ -8,6 +8,7 @@ import {
 } from 'formik';
 import SearchForm, { SearchFormProps } from 'app/view/App/ProjectDrawer/SearchForm';
 import List, { ListProps } from 'app/view/App/ProjectDrawer/List';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface ProjectDrawerProps
   extends SearchFormProps,
@@ -17,14 +18,18 @@ export interface ProjectDrawerProps
 
 export default function ProjectDrawer(props: ProjectDrawerProps) {
 
+  const searchFormRef = useRef<HTMLDivElement>(null);
+
   return (
-    <Drawer open={props.openMenu} openedWidth={310}>
+    <Drawer open={props.openMenu} openedWidth={310} sx={{
+      backgroundColor: ColorPalette._f1f5fc,
+    }}>
       <FormikProvider value={props.formik}>
         <Form>
-          <SearchForm {...props} />
+          <SearchForm {...props} searchFormRef={searchFormRef} />
         </Form>
       </FormikProvider>
-      <List {...props} />
+      <List {...props} searchFormRef={searchFormRef} />
     </Drawer>
   );
 }

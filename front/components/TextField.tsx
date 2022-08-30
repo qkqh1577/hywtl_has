@@ -17,17 +17,12 @@ import {
   DataFieldValue,
   equals,
   FieldStatus,
-  getValue
+  getValue,
+  LabelProps,
+  MuiTextFieldProps
 } from 'components/DataFieldProps';
-import {
-  FilledTextFieldProps,
-  OutlinedTextFieldProps,
-  StandardTextFieldProps
-} from '@mui/material/TextField/TextField';
 import { ColorPalette } from 'app/view/App/theme';
 import RequiredMark from 'components/RequiredMark';
-
-type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | OutlinedTextFieldProps;
 
 export interface TextFieldProps
   extends Omit<MuiTextFieldProps,
@@ -35,13 +30,12 @@ export interface TextFieldProps
     | 'label'
     | 'value'
     | 'fullWidth'
-    | 'variant'
     | 'disabled'> {
-  disableLabel?: boolean;
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
   label: string;
+  labelProps?: LabelProps;
   status?: FieldStatus;
 }
 
@@ -66,14 +60,13 @@ interface ViewProps
   extends Omit<TextFieldProps, | 'status'
                                | 'startAdornment'
                                | 'endAdornment'
-                               | 'disableLabel'
-                               | 'label'>,
-          Pick<MuiTextFieldProps,
-            | 'value'
-            | 'variant'> {
+                               | 'label'
+                               | 'labelProps'>,
+          Pick<MuiTextFieldProps, | 'value'
+                                  | 'variant'> {
 }
 
-function TextFieldView(props: ViewProps) {
+function FieldView(props: ViewProps) {
   return (
     <MuiTextField
       fullWidth
@@ -86,7 +79,8 @@ export default function TextField(props: TextFieldProps) {
   const {
           name,
           InputProps,
-          type = 'text',
+          type    = 'text',
+          variant = 'standard',
           startAdornment,
           endAdornment,
           required,
@@ -94,10 +88,10 @@ export default function TextField(props: TextFieldProps) {
           onBlur,
           status,
           size,
-          label:        propsLabel,
-          disableLabel: propsDisableLabel,
-          helperText:   propsHelperText,
-          ...           restProps
+          labelProps,
+          label:      propsLabel,
+          helperText: propsHelperText,
+          ...         restProps
         } = props;
   const formikContext = useContext(FormikContext);
   const values = formikContext?.values ?? {};
@@ -112,31 +106,40 @@ export default function TextField(props: TextFieldProps) {
   const [edit, setEdit] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
-  const label = useMemo(() => propsDisableLabel ? undefined : propsLabel, [propsDisableLabel, propsLabel]);
+  const label = useMemo(() => labelProps?.disableLabel ? undefined : propsLabel, [propsLabel, labelProps]);
   const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
 
   const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
   const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
 
-  const variant = propsDisableLabel ? 'outlined' : 'standard';
-
   const mappingByShape = (
     outlined: string,
     smallOutlined: string,
-    labelStandard: string
+    labelStandard: string,
+    standard?: string,
   ) => {
-    return variant === 'outlined' ? (size === 'small' ? smallOutlined : outlined) : labelStandard;
+    if (variant === 'outlined') {
+      if (size === 'small') {
+        return smallOutlined;
+      }
+      return outlined;
+    }
+    if (labelProps?.disableLabel) {
+      return standard;
+    }
+    return labelStandard;
   };
 
   const inputProps: MuiTextFieldProps['inputProps'] = {
     style: {
-      padding:      '0 10px',
-      height:       mappingByShape('32px', '24px', '40px'),
-      fontSize:     mappingByShape('13px', '11px', '13px'),
-      color:        ColorPalette.DarkGray,
-      border:       variant === 'outlined' ? `1px solid ${ColorPalette.Blue['7']}` : 'none',
-      borderBottom: `1px solid ${ColorPalette.Blue['7']}`,
-      borderRadius: variant === 'outlined' ? '5px' : '0',
+      padding:         '0 10px',
+      height:          mappingByShape('32px', '24px', '40px'),
+      fontSize:        mappingByShape('13px', '11px', '13px'),
+      color:           ColorPalette._252627,
+      border:          variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
+      borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
+      borderRadius:    variant === 'outlined' ? '5px' : '0',
+      backgroundColor: ColorPalette._fff,
     }
   };
 
@@ -187,7 +190,9 @@ export default function TextField(props: TextFieldProps) {
     },
   };
 
-  if (variant === 'standard') {
+
+  if (!labelProps?.disableLabel) {
+
     return (
       <Box sx={{
         display:        'flex',
@@ -195,27 +200,56 @@ export default function TextField(props: TextFieldProps) {
         width:          '100%',
         flex:           1,
         justifyContent: 'space-between',
+        height:         '100%',
       }}>
-        <Typography sx={{
-          fontSize:    '13px',
-          marginRight: '20px',
-          maxHeight:   inputProps.style!.height!,
-          color:       ColorPalette.Grey['1'],
+        <Box sx={{
+          display:    'flex',
+          flexWrap:   'nowrap',
+          height:     '100%',
+          alignItems: 'center',
         }}>
-          <RequiredMark required={edit && required} text={label} />
-        </Typography>
-        <TextFieldView
-          {...restProps}
-          {...fieldProps}
-        />
+          <Typography sx={{
+            fontSize:  '13px',
+            color:     ColorPalette.Grey['1'],
+            wordBreak: 'keep-all',
+            width:     '110px'
+          }}>
+            <RequiredMark required={edit && required} text={label} />
+          </Typography>
+        </Box>
+        <Box sx={{
+          display:  'flex',
+          height:   '100%',
+          flexWrap: 'nowrap',
+          width:    'calc(100% - 130px)',
+        }}>
+          <FieldView
+            {...restProps}
+            {...fieldProps}
+          />
+        </Box>
       </Box>
     );
   }
 
   return (
-    <TextFieldView
-      {...restProps}
-      {...fieldProps}
-    />
+    <Box sx={{
+      display:        'flex',
+      flexWrap:       'nowrap',
+      width:          '100%',
+      flex:           1,
+      justifyContent: 'space-between',
+    }}>
+      <Box sx={{
+        display:  'flex',
+        flexWrap: 'nowrap',
+        width:    '100%',
+      }}>
+        <FieldView
+          {...restProps}
+          {...fieldProps}
+        />
+      </Box>
+    </Box>
   );
 }

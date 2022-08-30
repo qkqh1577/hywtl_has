@@ -1,4 +1,9 @@
 import { FormikValues } from 'formik';
+import {
+  FilledTextFieldProps,
+  OutlinedTextFieldProps,
+  StandardTextFieldProps
+} from '@mui/material/TextField/TextField';
 
 export enum FieldStatus {
   /** 정상 상태, 드래그 가능, 편집 가능, 필드 제공 */
@@ -11,7 +16,14 @@ export enum FieldStatus {
   View,
 }
 
+export type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | OutlinedTextFieldProps;
+
 export type DataFieldValue = string | number;
+
+export interface LabelProps {
+  disableLabel?: boolean;
+  width?: number;
+}
 
 export interface Option {
   key: DataFieldValue;

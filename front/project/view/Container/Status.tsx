@@ -14,11 +14,13 @@ import {
   Typography
 } from '@mui/material';
 import SelectField from 'components/SelectField';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface DataBoxProps {
   title: string;
   width: number;
   children: React.ReactNode;
+  backgroundColor: string;
 }
 
 function DataBox(props: DataBoxProps) {
@@ -29,8 +31,9 @@ function DataBox(props: DataBoxProps) {
       flexDirection:   'column',
       alignContent:    'stretch',
       alignItems:      'center',
-      backgroundColor: '#ccc',
-      padding:         '4px 12px',
+      backgroundColor: props.backgroundColor,
+      padding:         '10px',
+      borderRadius:    '5px',
       flex:            1,
     }}>
       <Typography sx={{ fontSize: '12px', textAlign: 'center' }}>
@@ -63,10 +66,14 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="진행 현황"
           width={10}
+          backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
               required
-              disableLabel
+              variant="outlined"
+              labelProps={{
+                disableLabel: true,
+              }}
               name="progressStatus"
               label="진행 현황"
               options={projectProgressStatusList.map((item) => ({
@@ -79,9 +86,13 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="견적 분류"
           width={10}
+          backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
-              disableLabel
+              variant="outlined"
+              labelProps={{
+                disableLabel: true,
+              }}
               name="estimateExpectation"
               label="견적 분류"
               options={projectEstimateExpectationList.map((item) => ({
@@ -94,9 +105,13 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="견적 상태"
           width={10}
+          backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
-              disableLabel
+              variant="outlined"
+              labelProps={{
+                disableLabel: true,
+              }}
               name="estimateStatus"
               label="견적 상태"
               options={projectEstimateStatusList.map((item) => ({
@@ -109,9 +124,13 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="계약 상태"
           width={10}
+          backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
-              disableLabel
+              variant="outlined"
+              labelProps={{
+                disableLabel: true,
+              }}
               name="contractStatus"
               label="계약 상태"
               options={projectContractStatusList.map((item) => ({
@@ -134,6 +153,7 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="실험 종류"
           width={6}
+          backgroundColor={ColorPalette._cddaf5}
           children={
             <Box>TBD</Box>
           }
@@ -141,6 +161,7 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="진행율"
           width={6}
+          backgroundColor={ColorPalette._cddaf5}
           children={
             <Box>TBD</Box>
           }
@@ -148,6 +169,7 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="계약 금액"
           width={10}
+          backgroundColor={ColorPalette._cddaf5}
           children={
             <Box>TBD</Box>
           }
@@ -155,6 +177,7 @@ export default function ProjectContainerStatusBar() {
         <DataBox
           title="최근 수금"
           width={20}
+          backgroundColor={ColorPalette._cddaf5}
           children={
             <Box>TBD</Box>
           }

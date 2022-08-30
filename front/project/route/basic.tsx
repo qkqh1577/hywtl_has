@@ -28,9 +28,19 @@ function Element() {
     }
   });
 
+  const businessFormik = useFormik({
+    initialValues: {},
+    onSubmit:      (values) => {
+
+    }
+  });
+
   return (
     <ProjectContainer>
-      <ProjectBasic basicFormik={formik} />
+      <ProjectBasic
+        basicFormik={formik}
+        businessFormik={businessFormik}
+      />
     </ProjectContainer>
   );
 }

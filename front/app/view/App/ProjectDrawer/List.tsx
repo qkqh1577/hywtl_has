@@ -1,4 +1,5 @@
 import {
+  ProjectId,
   projectProgressStatusName,
   ProjectShortVO
 } from 'project/domain';
@@ -17,48 +18,95 @@ export interface ListProps {
   list: ProjectShortVO[];
   openMenu: boolean;
   onRowClick: (item: ProjectShortVO) => void;
+  searchFormRef: React.RefObject<HTMLDivElement>;
 }
 
-export default function ({ list, openMenu: open, onRowClick }: ListProps) {
+export default function ({ list: p, openMenu: open, onRowClick, searchFormRef }: ListProps) {
+
+  const list: ProjectShortVO[] = [];
+  if (p && p.length > 0) {
+    for (let i = 0; i < 250; i++) {
+      list.push({ ...p[0], id: ProjectId(i), });
+    }
+  }
+
+  const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
 
   const columnProps: TableCellProps[] = useMemo(() => [{
     key:      'code',
     children: open ? '프로젝트번호' : '번호',
+    sx:       {
+      width: '48px',
+    }
   }, {
     key:      'name',
     children: open ? '프로젝트 이름' : '이름',
   }, {
     key:      'progressStatus',
     children: '진행현황',
+    sx:       {
+      width: '58px',
+    }
   }], [open]);
   return (
-    <TableContainer>
+    <TableContainer sx={{
+      width:                        '100%',
+      overflowX:                    'hidden',
+      overflowY:                    'scroll',
+      height:                       `calc(100% - ${searchFormHeight}px)`,
+      padding:                      '0 10px',
+      '&::-webkit-scrollbar':       {
+        width:           '10px',
+        height:          '10px',
+        backgroundColor: ColorPalette._e4e9f2,
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: ColorPalette._697183,
+      }
+    }}>
       <Table
         stickyHeader
         aria-label="sticky table"
         sx={{
-          backgroundColor:   ColorPalette.White,
-          borderLeft:        `1px solid ${ColorPalette.Blue['7']}`,
-          borderTop:         `1px solid ${ColorPalette.Blue['7']}`,
-          borderRadius:      '5px',
-          '& th, & td':      {
+          maxWidth:                                      '280px',
+          backgroundColor:                               ColorPalette.White,
+          borderRadius:                                  '5px',
+          '& th, & td':                                  {
             textAlign:       'center',
             fontSize:        '12px',
             height:          '36px',
             padding:         '0 10px',
             backgroundColor: 'transparent',
+            borderLeft:      `1px solid ${ColorPalette.Blue['7']}`,
+            borderTop:       `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottom:    'none',
             color:           ColorPalette.DarkGray,
           },
-          '& th':            {
-            fontWeight:   'bold',
-            borderBottom: `5px solid ${ColorPalette.Blue['7']}`,
+          '& th':                                        {
+            fontWeight:      'bold',
+            borderBottom:    `5px solid ${ColorPalette.Blue['7']}`,
+            backgroundColor: ColorPalette._fff,
           },
-          '& th:last-child': {
+          '& th:first-of-type':                          {
+            borderTopLeftRadius: '5px',
+          },
+          '& th:last-child':                             {
+            borderRight:          `1px solid ${ColorPalette.Blue['7']}`,
+            borderTopRightRadius: '5px',
+          },
+          '& td:last-child':                             {
             borderRight: `1px solid ${ColorPalette.Blue['7']}`,
           },
-          '& td':            {
-            borderRight:  `1px solid ${ColorPalette.Blue['7']}`,
+          '& tbody > tr:first-of-type > td ':            {
             borderBottom: `1px solid ${ColorPalette.Blue['7']}`,
+          },
+          '& tbody > tr:last-child > td:first-of-type ': {
+            borderBottom:           `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottomLeftRadius: '5px',
+          },
+          '& tbody > tr:last-child > td:last-child ':    {
+            borderBottom:            `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottomRightRadius: '5px',
           },
         }}>
         <TableHead>

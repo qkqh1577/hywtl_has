@@ -19,7 +19,9 @@ export default function ProjectMemoDrawerFilter(props: Props) {
     <Grid container spacing={2}>
       <Grid item sm={6}>
         <SelectField
-          disableLabel
+          labelProps={{
+            disableLabel: true,
+          }}
           name="category"
           label="카테고리"
           options={projectMemoCategoryList.map(item => ({
@@ -30,7 +32,9 @@ export default function ProjectMemoDrawerFilter(props: Props) {
       </Grid>
       <Grid item sm={6}>
         <TextField
-          disableLabel
+          labelProps={{
+            disableLabel: true,
+          }}
           name="keyword"
           label="검색어"
           placeholder="검색어 입력 후 엔터"

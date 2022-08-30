@@ -26,6 +26,9 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
             status={FieldStatus.Disabled}
             name="code"
             label="프로젝트 번호"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={3}>
@@ -33,6 +36,9 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
             required
             name="alias"
             label="프로젝트 닉네임"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={6}>
@@ -40,6 +46,9 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
             required
             name="name"
             label="프로젝트 풀네임"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={3}>
@@ -58,18 +67,27 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
             required
             name="receptionManager.id"
             label="문의 접수자"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={3}>
           <UserSelector
             name="salesManager.id"
             label="영업 담당자"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={3}>
           <UserSelector
             name="projectManager.id"
             label="담당 PM"
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
         <Grid item sm={3}>
@@ -89,6 +107,9 @@ export default function ProjectBasicSection(props: FormikLayoutProps<FormikParti
               key:  'false',
               text: '아니오'
             }]}
+            labelProps={{
+              width: 7 * 13
+            }}
           />
         </Grid>
       </Grid>
