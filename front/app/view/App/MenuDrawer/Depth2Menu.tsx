@@ -94,12 +94,19 @@ export default function Depth2Menu(props: Props) {
                 height:     '38px',
                 alignItems: 'center'
               }}>
-              <Typography sx={{
-                fontSize: '13px',
-                color:    ColorPalette._94a6ca,
-              }}>
-                {`- ${child.title}`}
-              </Typography>
+              <Typography
+                children={`- ${child.title}`}
+                onClick={() => {
+                  if (child.path) {
+                    navigate(child.path);
+                  }
+                }}
+                sx={{
+                  fontSize: '13px',
+                  color:    ColorPalette._94a6ca,
+                  cursor:   child.path ? 'pointer' : 'default'
+                }}
+              />
             </Box>
           ))}
         </Box>
