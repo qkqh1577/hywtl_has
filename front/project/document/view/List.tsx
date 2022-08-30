@@ -7,6 +7,8 @@ import {
   TableRow
 } from '@mui/material';
 import TableCell, { TableCellProps } from 'components/TableCell';
+import { DocumentShort } from 'project/document/domain';
+import dayjs from 'dayjs';
 
 const columnProps: TableCellProps[] = [{
   key:      'no',
@@ -34,8 +36,13 @@ const columnProps: TableCellProps[] = [{
   children: '등록자'
 }];
 
+export interface ListProps {
+  receivedList?: DocumentShort[];
+  sentList?: DocumentShort[];
+  buildingList?: DocumentShort[];
+}
 
-export default function () {
+export default function ({ receivedList, sentList, buildingList }: ListProps) {
   return (
     <TableContainer>
       <Table>
@@ -47,7 +54,99 @@ export default function () {
           </TableRow>
         </TableHead>
         <TableBody>
-
+          {Array.isArray(receivedList) && receivedList.map((item,
+                                                            i
+          ) => (
+            <TableRow key={i}>
+              <TableCell>
+                {i + 1}
+              </TableCell>
+              <TableCell>
+                {item.code}
+              </TableCell>
+              <TableCell>
+                {"파일"}
+              </TableCell>
+              <TableCell>
+                {item.recipient}
+              </TableCell>
+              <TableCell>
+                {item.mailFile}
+              </TableCell>
+              <TableCell>
+                {item.note}
+              </TableCell>
+              <TableCell>
+                {dayjs(item.createdAt)
+                .format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell>
+                {item.createdBy.name}
+              </TableCell>
+            </TableRow>
+          ))}
+          {Array.isArray(sentList) && sentList.map((item,
+                                                    i
+          ) => (
+            <TableRow key={i}>
+              <TableCell>
+                {i + 1}
+              </TableCell>
+              <TableCell>
+                {item.code}
+              </TableCell>
+              <TableCell>
+                {"파일"}
+              </TableCell>
+              <TableCell>
+                {item.recipient}
+              </TableCell>
+              <TableCell>
+                {item.mailFile}
+              </TableCell>
+              <TableCell>
+                {item.note}
+              </TableCell>
+              <TableCell>
+                {dayjs(item.createdAt)
+                .format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell>
+                {item.createdBy.name}
+              </TableCell>
+            </TableRow>
+          ))}
+          {Array.isArray(buildingList) && buildingList.map((item,
+                                                            i
+          ) => (
+            <TableRow key={i}>
+              <TableCell>
+                {i + 1}
+              </TableCell>
+              <TableCell>
+                {item.code}
+              </TableCell>
+              <TableCell>
+                {"파일"}
+              </TableCell>
+              <TableCell>
+                {item.recipient}
+              </TableCell>
+              <TableCell>
+                {item.mailFile}
+              </TableCell>
+              <TableCell>
+                {item.note}
+              </TableCell>
+              <TableCell>
+                {dayjs(item.createdAt)
+                .format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell>
+                {item.createdBy.name}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

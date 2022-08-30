@@ -9,28 +9,34 @@ import {
   take
 } from 'redux-saga/effects';
 import {
+  DocumentShort,
   DocumentVO
 } from 'project/document/domain';
 import { documentApi } from 'project/document/api';
+import { ProjectId } from 'project/domain';
 
-function* watchGetAllList() {
+function* watchAllList() {
   while (true) {
-    // yield take(DocumentAction.setList);
-    // const { projectId } = yield take(DocumentAction.setOne);
-    // const list: DocumentShort[] = yield call(documentApi.getList, {type: 'received'});
+    const { payload: id } = yield take(documentAction.setAllList);
+    yield fork(fetchSentList, id);
+    yield fork(fetchReceivedList, id);
+    yield fork(fetchBuildingList, id);
   }
 }
 
-function* watchSentList() {
-  while (true) {
-
-  }
+function* fetchSentList(id: ProjectId) {
+  const list: DocumentShort[] = yield call(documentApi.getSentList, id);
+  yield put(documentAction.setSentList(list));
 }
 
-function* watchBuildingList() {
-  while (true) {
+function* fetchReceivedList(id: ProjectId) {
+  const list: DocumentShort[] = yield call(documentApi.getReceivedList, id);
+  yield put(documentAction.setReceivedList(list));
+}
 
-  }
+function* fetchBuildingList(id: ProjectId) {
+  const list: DocumentShort[] = yield call(documentApi.getBuildingList, id);
+  yield put(documentAction.setBuildingList(list));
 }
 
 function* watchId() {
@@ -42,8 +48,6 @@ function* watchId() {
 }
 
 export default function* documentSaga() {
-  // yield fork(watchReceivedList);
-  // yield fork(watchSentList);
-  // yield fork(watchBuildingList);
+  yield fork(watchAllList);
   yield fork(watchId);
 };

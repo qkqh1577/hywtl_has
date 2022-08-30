@@ -5,7 +5,12 @@ import {
   Typography
 } from '@mui/material';
 
-export default function Header() {
+export interface HeaderProps {
+  title: string;
+  modifiedAt?: Date;
+}
+
+export default function Header({title, modifiedAt}: HeaderProps) {
   return (
     <Box sx={{
       width:          '100%',
@@ -13,14 +18,14 @@ export default function Header() {
       justifyContent: 'space-between',
     }}>
       <Box>
-        <Typography>받은 자료</Typography>
+        <Typography>{title}</Typography>
       </Box>
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
       }}>
         <Button>+등록</Button>
-        <Typography>최종수정일시 2022-01-01 10:02</Typography>
+        <Typography>{modifiedAt}</Typography>
       </Box>
     </Box>
   );

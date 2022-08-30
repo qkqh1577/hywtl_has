@@ -14,21 +14,23 @@ export interface DocumentVO {
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
-  file: FileItem; // 파일
+  file?: FileItem; // 파일
   mailFile?: FileItem; // 메일 파일
   note?: string; // 비고
 }
 
 export interface DocumentShort extends DocumentVO{
+  type: DocumentType;
   mailFileId?: number;
   createdAt: Date; // 등록 일시
   modifiedAt?: Date; // 수정 일시
 }
 
+
 /**
  * 자료 타입
  */
-enum DocumentType {
+export enum DocumentType {
 
   /**
    * 받은 자료

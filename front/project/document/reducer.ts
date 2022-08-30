@@ -5,17 +5,30 @@ import {
 import { createReducer } from 'typesafe-actions';
 import { DocumentAction } from 'project/document/action';
 
-export interface DocumentState{
-  list?: DocumentShort[];
+export interface ProjectDocumentState{
+  receivedList?: DocumentShort[];
+  sentList?: DocumentShort[];
+  buildingList?: DocumentShort[];
   detail?: DocumentVO;
 }
 
-const initialDocumentState: DocumentState = {};
+const initialDocumentState: ProjectDocumentState = {};
 
-export const documentReducer = createReducer(initialDocumentState, {
-  [DocumentAction.setList]: (state, action) => ({
+export const projectDocumentReducer = createReducer(initialDocumentState, {
+
+  [DocumentAction.setReceivedList]: (state, action) => ({
     ...state,
-    list: action.payload
+    receivedList: action.payload
+  }),
+
+  [DocumentAction.setSentList]: (state, action) => ({
+    ...state,
+    sentList: action.payload
+  }),
+
+  [DocumentAction.setBuildingList]: (state, action) => ({
+    ...state,
+    buildingList: action.payload
   }),
 
   [DocumentAction.setOne]: (state, action) => ({
