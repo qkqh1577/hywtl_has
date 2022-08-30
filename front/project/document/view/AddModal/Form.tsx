@@ -9,12 +9,15 @@ import TextField from 'components/TextField';
 
 export interface UploadFieldProps {
   accept: string;
+  name: string;
+  label?: string;
 }
 
-function UploadField({ accept }: UploadFieldProps) {
+function UploadField({ accept, name, label }: UploadFieldProps) {
   return (
     <Box>
       <input
+        name= {name}
         accept={accept}
         multiple
         type="file"
@@ -37,7 +40,7 @@ export default function Form(props: Props) {
         />
       </Grid>
       <Grid item sm={12}>
-        <UploadField accept="jpg/* | jpeg/* | webp/* | png/* | gif/* | bmp/* | pdf/* | zip/*" />
+        <UploadField name="file" accept="jpg/* | jpeg/* | webp/* | png/* | gif/* | bmp/* | pdf/* | zip/*" />
       </Grid>
       <Grid item>
         <Typography>
@@ -48,7 +51,7 @@ export default function Form(props: Props) {
         </Typography>
       </Grid>
       <Grid item sm={12}>
-        <UploadField accept="eml/*" />
+        <UploadField name="emailFile" accept="eml/*" />
       </Grid>
       <Grid item>
         <Typography>

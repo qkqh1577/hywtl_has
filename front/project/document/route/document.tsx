@@ -98,7 +98,7 @@ function Element() {
             setModalOpen(false);
           },
           onSubmit: () => {
-            formik.handleSubmit();
+            addModalFormik.handleSubmit();
           },
           formik: addModalFormik,
         }}
