@@ -1,0 +1,36 @@
+# TODO: customize this file
+spring:
+    datasource:
+        url: # TODO: fix here
+        username: # TODO: fix here
+        password: # TODO: fix here
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: create
+        properties:
+            hibernate.cache.region_prefix: local
+
+application:
+    front-url: http://localhost:8080
+    mail:
+        invalidate-duration: P180D
+        username: caster@howoocast.com
+        password: zozo@123123
+        host: smtp.office365.com
+        port: 587
+        auth: true
+        starttls: true
+        name: 발송자
+        dev-receiver: # TODO: fix here
+    file:
+        root-path: # TODO: fix here
+
+logging:
+    level:
+        root: INFO
+        web: DEBUG
+        com.howoocast: DEBUG
+
+server:
+    port: 8080
