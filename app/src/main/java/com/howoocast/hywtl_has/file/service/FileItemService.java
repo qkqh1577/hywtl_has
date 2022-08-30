@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Setter
@@ -41,6 +42,19 @@ public class FileItemService {
     public FileItem getByFileKey(String fileKey) {
         return fileItemRepository.findByFileKey(fileKey)
             .orElseThrow(() -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
+    }
+
+    @Nullable
+    public FileItem build(@Nullable MultipartFile file) {
+        if (Objects.isNull(file) || file.isEmpty()) {
+            return null;
+        }
+        return fileItemRepository.save(FileItem.of(
+            file,
+            rootPath,
+            extensionList,
+            maxSizeLimit
+        ));
     }
 
     @Nullable
