@@ -6,11 +6,20 @@ import {
 } from '@mui/material';
 
 export interface HeaderProps {
-  title: string;
+  title?: string;
   modifiedAt?: Date;
+  onModalOpen: () => void
 }
 
-export default function Header({title, modifiedAt}: HeaderProps) {
+function AddModalButton({
+                          onModalOpen: onClick
+                        }: HeaderProps) {
+  return (
+    <Button onClick={onClick}>+등록</Button>
+  )
+}
+
+export default function Header({title, modifiedAt, onModalOpen}: HeaderProps) {
   return (
     <Box sx={{
       width:          '100%',
@@ -24,7 +33,7 @@ export default function Header({title, modifiedAt}: HeaderProps) {
         display: 'flex',
         alignItems: 'center',
       }}>
-        <Button>+등록</Button>
+        <AddModalButton  onModalOpen={onModalOpen}/>
         <Typography>{modifiedAt}</Typography>
       </Box>
     </Box>

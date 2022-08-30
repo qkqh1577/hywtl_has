@@ -3,37 +3,46 @@ import {
   DocumentVO
 } from 'project/document/domain';
 import { createReducer } from 'typesafe-actions';
-import { DocumentAction } from 'project/document/action';
+import { ProjectDocumentAction } from 'project/document/action';
+import { FormikPartial } from 'type/Form';
 
-export interface ProjectDocumentState{
+export interface ProjectDocumentState {
   receivedList?: DocumentShort[];
   sentList?: DocumentShort[];
   buildingList?: DocumentShort[];
-  detail?: DocumentVO;
+  detail?: FormikPartial<DocumentVO>;
 }
 
 const initialDocumentState: ProjectDocumentState = {};
 
 export const projectDocumentReducer = createReducer(initialDocumentState, {
 
-  [DocumentAction.setReceivedList]: (state, action) => ({
+  [ProjectDocumentAction.setReceivedList]: (state,
+                                            action
+                                           ) => ({
     ...state,
     receivedList: action.payload
   }),
 
-  [DocumentAction.setSentList]: (state, action) => ({
+  [ProjectDocumentAction.setSentList]: (state,
+                                        action
+                                       ) => ({
     ...state,
     sentList: action.payload
   }),
 
-  [DocumentAction.setBuildingList]: (state, action) => ({
+  [ProjectDocumentAction.setBuildingList]: (state,
+                                            action
+                                           ) => ({
     ...state,
     buildingList: action.payload
   }),
 
-  [DocumentAction.setOne]: (state, action) => ({
+  [ProjectDocumentAction.setOne]: (state,
+                                   action
+                                  ) => ({
     ...state,
     detail: action.payload,
   })
-})
+});
 

@@ -165,7 +165,7 @@ const buildingList: DocumentShort[] = [
   },
 ];
 
-class DocumentApi {
+class ProjectDocumentApi {
 
   async getReceivedList(id: ProjectId): Promise<DocumentShort[]> {
     // const { data } = await apiClient.get(`/project/sales/${id}/document?type=`, 'RECEIVED');
@@ -190,6 +190,16 @@ class DocumentApi {
     return data;
   }
 
+  async add(id: number): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${id}/document`);
+    return data;
+  }
+
+  async update(id: number): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/document/${id}`);
+    return data;
+  }
+
 }
 
-export const documentApi = new DocumentApi();
+export const projectDocumentApi = new ProjectDocumentApi();

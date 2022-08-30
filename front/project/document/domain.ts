@@ -2,6 +2,10 @@ import {
   UserVO
 } from 'user/domain';
 import { FileItem } from 'file-item';
+import {
+  FormikEditable,
+  FormikPartial
+} from 'type/Form';
 
 export type DocumentId = number & { readonly _brand: symbol }
 
@@ -14,7 +18,7 @@ export interface DocumentVO {
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
-  file?: FileItem; // 파일
+  file: FileItem; // 파일
   mailFile?: FileItem; // 메일 파일
   note?: string; // 비고
 }
@@ -26,6 +30,15 @@ export interface DocumentShort extends DocumentVO{
   modifiedAt?: Date; // 수정 일시
 }
 
+export const initialDocumentVO: FormikPartial<DocumentVO> = {
+  id: '',
+  code: '',
+  createdBy: '',
+  recipient: '',
+  file: '',
+  mailFile: '',
+  note: '',
+}
 
 /**
  * 자료 타입
