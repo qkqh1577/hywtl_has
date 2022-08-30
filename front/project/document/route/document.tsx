@@ -16,7 +16,6 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { useFormik } from 'formik';
-import { FormValues } from 'business/view/Detail';
 import {
   FormikEditable,
   FormikPartial,
@@ -32,13 +31,17 @@ import {
   DocumentVO,
   initialDocumentVO
 } from 'project/document/domain';
-import { initialProjectAddParameter } from 'project/parameter';
 
 function Element() {
   const id = useId();
   const { error } = useDialog();
   const dispatch = useDispatch();
-  const { receivedList, sentList, buildingList, detail } = useSelector((root: RootState) => root.projectDocument);
+  const {
+    receivedList,
+    sentList,
+    buildingList,
+    detail
+  } = useSelector((root: RootState) => root.projectDocument);
 
   const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
       dispatch(projectDocumentAction.add({
@@ -49,10 +52,10 @@ function Element() {
 
   const formik = useFormik<FormikEditable<FormikPartial<DocumentVO>>>({
     enableReinitialize: true,
-    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialDocumentVO },
-    onSubmit:           (values,
-                         helper
-                        ) => {
+    initialValues: detail ? { edit: false, ...detail } : { edit: true, ...initialDocumentVO },
+    onSubmit: (values,
+      helper
+    ) => {
       if (!values.edit) {
         error('수정 상태가 아닙니다.');
         helper.setSubmitting(false);
@@ -68,7 +71,7 @@ function Element() {
         addDocument({ values, ...helper });
       }
     }
-  )
+  );
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -90,12 +93,14 @@ function Element() {
           setModalOpen(true);
         }}
         modalProps={{
-          open:     modalOpen,
-          onClose:  () => {
+          open: modalOpen,
+          onClose: () => {
             setModalOpen(false);
           },
           onSubmit: () => {
+            formik.handleSubmit();
           },
+          formik: addModalFormik,
         }}
       />
     </ProjectContainer>
@@ -103,7 +108,7 @@ function Element() {
 }
 
 const projectDocumentRoute: AppRoute = {
-  path:    '/project/sales-management/:id/document',
+  path: '/project/sales-management/:id/document',
   element: <Element />
 };
 

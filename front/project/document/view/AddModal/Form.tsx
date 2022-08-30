@@ -7,18 +7,18 @@ import {
 } from '@mui/material';
 import TextField from 'components/TextField';
 
-function UploadField() {
+export interface UploadFieldProps {
+  accept: string;
+}
+
+function UploadField({ accept }: UploadFieldProps) {
   return (
     <Box>
       <input
+        accept={accept}
+        multiple
         type="file"
       />
-      <Button
-        variant="contained"
-        component="label"
-      >
-        Upload File
-      </Button>
     </Box>
   );
 }
@@ -37,7 +37,7 @@ export default function Form(props: Props) {
         />
       </Grid>
       <Grid item sm={12}>
-        <UploadField />
+        <UploadField accept="jpg/* | jpeg/* | webp/* | png/* | gif/* | bmp/* | pdf/* | zip/*" />
       </Grid>
       <Grid item>
         <Typography>
@@ -48,7 +48,7 @@ export default function Form(props: Props) {
         </Typography>
       </Grid>
       <Grid item sm={12}>
-        <UploadField />
+        <UploadField accept="eml/*" />
       </Grid>
       <Grid item>
         <Typography>

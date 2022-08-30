@@ -7,18 +7,27 @@ import {
 import Header, { HeaderProps } from 'project/document/view/Header';
 import List, { ListProps } from 'project/document/view/List';
 import ProjectDocumentModal, { ProjectDocumentModalProps } from 'project/document/view/AddModal';
+import { FormikLayoutProps } from 'layouts/PageLayout';
+import { FormikPartial } from 'type/Form';
+import { ProjectDocumentParameter } from 'project/document/parameter';
 
 interface Props
   extends ListProps,
-          HeaderProps {
+    HeaderProps{
   modalProps: ProjectDocumentModalProps;
 }
 
-export default function ProjectDocument({ receivedList, sentList, buildingList, onModalOpen, modalProps }: Props) {
+export default function ProjectDocument({
+  receivedList,
+  sentList,
+  buildingList,
+  onModalOpen,
+  modalProps
+}: Props) {
   return (
     <Box sx={{
-      width:    '100%',
-      display:  'flex',
+      width: '100%',
+      display: 'flex',
       flexWrap: 'wrap',
     }}>
       <Grid container spacing={2}>
@@ -36,10 +45,15 @@ export default function ProjectDocument({ receivedList, sentList, buildingList, 
         </Grid>
       </Grid>
       <Paper sx={{
-        width:    '100%',
+        width: '100%',
         overflow: 'hidden'
       }}>
-        <ProjectDocumentModal open={modalProps.open} onSubmit={modalProps.onSubmit} onClose={modalProps.onClose} />
+        <ProjectDocumentModal
+          open={modalProps.open}
+          onSubmit={modalProps.onSubmit}
+          onClose={modalProps.onClose}
+          formik={modalProps.formik}
+        />
       </Paper>
     </Box>
   );
