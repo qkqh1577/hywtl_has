@@ -1,11 +1,11 @@
 package com.howoocast.hywtl_has.project_memo.controller;
 
+import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoParameter;
 import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoPredicateBuilder;
 import com.howoocast.hywtl_has.project_memo.service.ProjectMemoService;
 import com.howoocast.hywtl_has.project_memo.view.ProjectMemoView;
-import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,11 +68,8 @@ public class ProjectMemoController {
         @Valid @RequestBody ProjectMemoParameter parameter
     ) {
 
-        String username =
-            Objects.isNull(authentication) || Objects.isNull(authentication.getName()) || authentication.getName()
-                .isEmpty() ? "admin" : authentication.getName();
         service.add(
-            username,
+            UsernameExtractor.get(authentication),
             projectId,
             parameter
         );

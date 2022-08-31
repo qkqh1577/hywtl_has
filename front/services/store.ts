@@ -11,6 +11,7 @@ import loginUserSaga from 'app/repository/saga';
 import departmentSaga from 'department/saga';
 import estimateTemplateSaga from 'estimate_template/saga';
 import projectSaga from 'project/saga';
+import estimateContentSaga from 'admin/estimate/content/saga';
 import businessSaga from "../business/saga";
 import projectMemoSaga from 'project_memo/saga';
 
@@ -24,6 +25,7 @@ function* saga() {
     estimateTemplateSaga(),
     projectSaga(),
     businessSaga(),
+    estimateContentSaga(),
     projectMemoSaga(),
   ]);
 }

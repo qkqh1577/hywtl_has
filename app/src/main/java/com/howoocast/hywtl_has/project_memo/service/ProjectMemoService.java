@@ -3,11 +3,13 @@ package com.howoocast.hywtl_has.project_memo.service;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project.service.ProjectFinder;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
 import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoParameter;
 import com.howoocast.hywtl_has.project_memo.repository.ProjectMemoRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user.service.UserFinder;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,13 +49,9 @@ public class ProjectMemoService {
         Long projectId,
         ProjectMemoParameter parameter
     ) {
-        User writer = userRepository.findByUsername(username).orElseThrow(() -> {
-            throw new NotFoundException(User.KEY, "username", username);
-        });
+        User writer = new UserFinder(userRepository).byUsername(username);
 
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
-            throw new NotFoundException(Project.KEY, projectId);
-        });
+        Project project = new ProjectFinder(projectRepository).byId(projectId);
 
         ProjectMemo instance = ProjectMemo.of(
             project,

@@ -30,10 +30,11 @@ import {
   projectReducer,
   ProjectState
 } from 'project/reducer';
+import { businessReducer, BusinessState } from "business/reducer";
 import {
-  businessReducer,
-  BusinessState
-} from 'business/reducer';
+  estimateContentReducer,
+  EstimateContentState
+} from 'admin/estimate/content/reducer';
 import {
   projectMemoReducer,
   ProjectMemoState
@@ -49,6 +50,7 @@ export interface RootState {
   project: ProjectState;
   projectDrawer: ProjectDrawerState;
   business: BusinessState;
+  estimateContent: EstimateContentState;
   projectMemo: ProjectMemoState;
 }
 
@@ -62,6 +64,7 @@ const reducer = combineReducers<RootState>({
   project:          projectReducer,
   projectDrawer:    projectDrawerReducer,
   business:         businessReducer,
+  estimateContent: estimateContentReducer,
   projectMemo:      projectMemoReducer,
 });
 

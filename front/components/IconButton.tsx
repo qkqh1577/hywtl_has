@@ -41,5 +41,4 @@ export default function IconButton({ children, onClick, tooltip, disabled, size 
       children={icon}
     />
   );
-
 }
