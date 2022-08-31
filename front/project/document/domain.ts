@@ -1,9 +1,7 @@
 import {
   UserVO
 } from 'user/domain';
-import { FileItem } from 'file-item';
 import {
-  FormikEditable,
   FormikPartial
 } from 'type/Form';
 
@@ -18,8 +16,8 @@ export interface ProjectDocumentVO {
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
-  file: FileItem; // 파일
-  mailFile?: FileItem; // 메일 파일
+  file: File; // 파일
+  mailFile?: File; // 메일 파일
   note?: string; // 비고
 }
 

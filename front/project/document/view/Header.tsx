@@ -11,13 +11,13 @@ import {
 
 export interface HeaderProps {
   modifiedAt?: Date;
-  onModalOpen: (type: ProjectDocumentType) => void;
+  onAddModalOpen: (type: ProjectDocumentType) => void;
   type: ProjectDocumentType;
 }
 
 function AddModalButton({
                           type,
-                          onModalOpen: onClick
+                          onAddModalOpen: onClick
                         }: HeaderProps) {
   return (
     <Button onClick={() => {
@@ -28,7 +28,7 @@ function AddModalButton({
   );
 }
 
-export default function Header({ type, modifiedAt, onModalOpen }: HeaderProps) {
+export default function Header({ type, modifiedAt, onAddModalOpen }: HeaderProps) {
   return (
     <Box sx={{
       width:          '100%',
@@ -42,7 +42,7 @@ export default function Header({ type, modifiedAt, onModalOpen }: HeaderProps) {
         display:    'flex',
         alignItems: 'center',
       }}>
-        <AddModalButton type={type} onModalOpen={onModalOpen} />
+        <AddModalButton type={type} onAddModalOpen={onAddModalOpen} />
         <Typography>{modifiedAt}</Typography>
       </Box>
     </Box>

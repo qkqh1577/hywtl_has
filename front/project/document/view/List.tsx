@@ -8,8 +8,13 @@ import {
   TableRow
 } from '@mui/material';
 import TableCell, { TableCellProps } from 'components/TableCell';
-import { ProjectDocumentShort } from 'project/document/domain';
+import {
+  ProjectDocumentId,
+  ProjectDocumentShort,
+  ProjectDocumentVO
+} from 'project/document/domain';
 import dayjs from 'dayjs';
+import { FormikPartial } from 'type/Form';
 
 const columnProps: TableCellProps[] = [{
   key:      'no',
@@ -41,9 +46,10 @@ export interface ListProps {
   receivedList?: ProjectDocumentShort[];
   sentList?: ProjectDocumentShort[];
   buildingList?: ProjectDocumentShort[];
+  onDetailModalOpen: (id: ProjectDocumentId) => void;
 }
 
-export default function ({ receivedList, sentList, buildingList }: ListProps) {
+export default function ({ receivedList, sentList, buildingList, onDetailModalOpen }: ListProps) {
   return (
     <TableContainer>
       <Table>
@@ -72,10 +78,12 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                     ml:                           1,
                     '&.MuiButtonBase-root:hover': {
                       bgcolor: 'transparent'
-                    }
+                    },
+                    margin: 0,
+                    padding: 0,
                   }}
                   onClick={() => {
-                    console.log('click');
+                    onDetailModalOpen(item.id);
                   }}
                 >
                   {item.code}
@@ -110,7 +118,25 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                 {i + 1}
               </TableCell>
               <TableCell>
-                {item.code}
+                <Button
+                  variant="text"
+                  disableElevation
+                  disableRipple
+                  size="small"
+                  sx={{
+                    ml:                           1,
+                    '&.MuiButtonBase-root:hover': {
+                      bgcolor: 'transparent'
+                    },
+                    margin: 0,
+                    padding: 0,
+                  }}
+                  onClick={() => {
+                    onDetailModalOpen(item.id);
+                  }}
+                >
+                  {item.code}
+                </Button>
               </TableCell>
               <TableCell>
                 {'파일'}
@@ -141,7 +167,25 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                 {i + 1}
               </TableCell>
               <TableCell>
-                {item.code}
+                <Button
+                  variant="text"
+                  disableElevation
+                  disableRipple
+                  size="small"
+                  sx={{
+                    ml:                           1,
+                    '&.MuiButtonBase-root:hover': {
+                      bgcolor: 'transparent'
+                    },
+                    margin: 0,
+                    padding: 0,
+                  }}
+                  onClick={() => {
+                    onDetailModalOpen(item.id);
+                  }}
+                >
+                  {item.code}
+                </Button>
               </TableCell>
               <TableCell>
                 {'파일'}

@@ -44,7 +44,7 @@ function* fetchBuildingList(id: ProjectId) {
 
 function* watchId() {
   while (true) {
-    const { id } = yield take(ProjectDocumentAction.setOne);
+    const { payload: id } = yield take(projectDocumentAction.setId);
     const detail: ProjectDocumentVO = yield call(projectDocumentApi.getOne, id);
     yield put(projectDocumentAction.setOne(detail));
   }

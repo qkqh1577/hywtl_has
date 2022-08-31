@@ -17,7 +17,6 @@ import {
 import { RootState } from 'services/reducer';
 import { useFormik } from 'formik';
 import {
-  FormikEditable,
   FormikPartial,
   FormikSubmit,
   toValues
@@ -28,9 +27,10 @@ import {
 } from 'project/document/parameter';
 import useDialog from 'components/Dialog';
 import {
+  initialProjectDocumentVO,
+  ProjectDocumentId,
   ProjectDocumentType,
   ProjectDocumentVO,
-  initialProjectDocumentVO,
 } from 'project/document/domain';
 import { ProjectId } from 'project/domain';
 
@@ -52,33 +52,19 @@ function Element() {
       })),
     [dispatch]);
 
-  const detailModalFormik = useFormik<FormikEditable<FormikPartial<ProjectDocumentVO>>>({
-    enableReinitialize: true,
-    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialProjectDocumentVO },
-    onSubmit:           (values,
-                         helper
-                        ) => {
-      if (!values.edit) {
-        error('수정 상태가 아닙니다.');
-        helper.setSubmitting(false);
-        return;
-      }
-    }
-  });
-
   const addModalFormik = useFormik<FormikPartial<ProjectDocumentParameter>>(
     {
       initialValues: initialProjectDocumentParameter,
       onSubmit:      (values,
                       helper
                      ) => {
-        console.log({ values, id });
+        console.log('click시 보여준다.');
         if (!id) {
           error('프로젝트가 선택되지 않았습니다.');
           helper.setSubmitting(false);
           return;
         }
-        if (!modalOpen) {
+        if (!addModalOpen) {
           error('자료 형식이 선택되지 않았습니다.');
           helper.setSubmitting(false);
           return;
@@ -88,7 +74,7 @@ function Element() {
           values: {
             ...values,
             projectId: ProjectId(id),
-            type:      modalOpen,
+            type:      addModalOpen,
           },
           ...helper
         });
@@ -96,8 +82,22 @@ function Element() {
     }
   );
 
+  const getDetail = useCallback((id: ProjectDocumentId) => {
+    return dispatch(projectDocumentAction.setId(id));
+  }, [dispatch]);
 
-  const [modalOpen, setModalOpen] = useState<ProjectDocumentType>();
+  const detailFormik = useFormik<FormikPartial<ProjectDocumentVO>>({
+    enableReinitialize: true,
+    initialValues:      initialProjectDocumentVO,
+    onSubmit:           (values,
+                         helper
+                        ) => {
+
+    }
+  });
+
+  const [addModalOpen, setAddModalOpen] = useState<ProjectDocumentType>();
+  const [detailModalOpen, setDetailModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
@@ -112,18 +112,35 @@ function Element() {
         receivedList={receivedList}
         sentList={sentList}
         buildingList={buildingList}
-        onModalOpen={(type: ProjectDocumentType) => {
-          setModalOpen(type);
+        onAddModalOpen={(type: ProjectDocumentType) => {
+          setAddModalOpen(type);
         }}
-        modalProps={{
-          open:     typeof modalOpen !== 'undefined',
+        addModalProps={{
+          open:     typeof addModalOpen !== 'undefined',
           onClose:  () => {
-            setModalOpen(undefined);
+            setAddModalOpen(undefined);
           },
           onSubmit: () => {
             addModalFormik.handleSubmit();
           },
           formik:   addModalFormik,
+        }}
+        onDetailModalOpen={(id: ProjectDocumentId) => {
+          getDetail(id);
+          setDetailModalOpen(true);
+        }}
+        detailModalProps={{
+          open:     detailModalOpen,
+          onClose:  () => {
+            setDetailModalOpen(false);
+          },
+          onEdit:   () => {
+            console.log('수정 버튼 클릭');
+          },
+          onDelete: () => {
+            console.log('삭제 버튼 클릭');
+          },
+          detail:   detail
         }}
       />
     </ProjectContainer>

@@ -1,10 +1,10 @@
 import ProjectDocumentModalButtonBlock, {
   ProjectDocumentModalButtonBlockProps
-} from 'project/document/view/AddModal/ButtonBlock';
+} from 'project/document/view/Modals/AddModal/ButtonBlock';
 import ModalLayout from 'layouts/ModalLayout';
 import { Box } from '@mui/material';
 import React from 'react';
-import Form from 'project/document/view/AddModal/Form';
+import Form from 'project/document/view/Modals/AddModal/Form';
 import { FormikProvider } from 'formik';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { FormikPartial } from 'type/Form';
