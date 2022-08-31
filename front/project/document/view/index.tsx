@@ -2,8 +2,8 @@ import React from 'react';
 import {
   Box,
 } from '@mui/material';
-import { ListProps } from 'project/document/view/List';
 import {
+  ProjectDocumentShort,
   ProjectDocumentType,
 } from 'project/document/domain';
 import ProjectDocumentSection from 'project/document/view/Section';
@@ -12,12 +12,14 @@ import {
   OnDetailModalOpen
 } from 'project/document/route/document';
 
-interface Props
-  extends ListProps {
+interface Props {
   addModal: React.ReactNode;
   detailModal: React.ReactNode;
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
+  receivedList: ProjectDocumentShort[];
+  sentList: ProjectDocumentShort[];
+  buildingList: ProjectDocumentShort[];
 }
 
 export default function ProjectDocument(props: Props) {
