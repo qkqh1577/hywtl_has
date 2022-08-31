@@ -76,6 +76,7 @@ function* watchUpdate() {
     try {
       yield call(projectDocumentApi.update, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
+      yield put(projectDocumentAction.setId(formik.values.id));
     }
     catch (e) {
       yield put(dialogActions.openAlert({

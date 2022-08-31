@@ -4,7 +4,7 @@ import {
   Button
 } from '@mui/material';
 
-export interface ProjectDocumentDetailModalButtonBlockProps {
+interface Props {
   onDelete: () => void;
   onEdit: () => void;
   onClose: () => void;
@@ -14,7 +14,7 @@ export default function ProjectDocumentDetailModalButtonBlock({
                                                                 onDelete,
                                                                 onEdit,
                                                                 onClose,
-                                                              }: ProjectDocumentDetailModalButtonBlockProps) {
+                                                              }: Props) {
   return (
     <Box sx={{
       display:        'flex',

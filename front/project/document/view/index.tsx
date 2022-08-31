@@ -1,78 +1,61 @@
 import React from 'react';
 import {
   Box,
-  Grid,
-  Paper
 } from '@mui/material';
-import Header from 'project/document/view/Header';
-import List, { ListProps } from 'project/document/view/List';
+import { ListProps } from 'project/document/view/List';
 import {
-  ProjectDocumentId,
   ProjectDocumentType,
 } from 'project/document/domain';
-import ProjectDocumentModal, { ProjectDocumentModalProps } from 'project/document/view/Modals/AddModal';
-import ProjectDocumentDetailModal, { ProjectDocumentDetailModalProps } from 'project/document/view/Modals/DetailModal';
+import ProjectDocumentSection from 'project/document/view/Section';
+import {
+  OnAddModalOpen,
+  OnDetailModalOpen
+} from 'project/document/route/document';
 
 interface Props
   extends ListProps {
-  addModalProps: ProjectDocumentModalProps;
-  onAddModalOpen: (type: ProjectDocumentType) => void;
-  detailModalProps: ProjectDocumentDetailModalProps;
-  onDetailModalOpen: (id: ProjectDocumentId) => void;
+  addModal: React.ReactNode;
+  detailModal: React.ReactNode;
+  onAddModalOpen: OnAddModalOpen;
+  onDetailModalOpen: OnDetailModalOpen;
 }
 
-export default function ProjectDocument({
-                                          receivedList,
-                                          sentList,
-                                          buildingList,
-                                          addModalProps,
-                                          onAddModalOpen,
-                                          detailModalProps,
-                                          onDetailModalOpen,
-                                        }: Props) {
+export default function ProjectDocument(props: Props) {
+  const {
+          receivedList,
+          sentList,
+          buildingList,
+          addModal,
+          onAddModalOpen,
+          detailModal,
+          onDetailModalOpen,
+        } = props;
   return (
     <Box sx={{
       width:    '100%',
       display:  'flex',
       flexWrap: 'wrap',
     }}>
-      <Grid container spacing={2}>
-        <Grid item sm={12}>
-          <Header type={ProjectDocumentType.RECEIVED} onAddModalOpen={onAddModalOpen} />
-          <List receivedList={receivedList} onDetailModalOpen={onDetailModalOpen}/>
-        </Grid>
-        <Grid item sm={12}>
-          <Header type={ProjectDocumentType.SENT} onAddModalOpen={onAddModalOpen} />
-          <List sentList={sentList} onDetailModalOpen={onDetailModalOpen} />
-        </Grid>
-        <Grid item sm={12}>
-          <Header type={ProjectDocumentType.BUILDING} onAddModalOpen={onAddModalOpen} />
-          <List buildingList={buildingList} onDetailModalOpen={onDetailModalOpen} />
-        </Grid>
-      </Grid>
-      <Paper sx={{
-        width:    '100%',
-        overflow: 'hidden'
-      }}>
-        <ProjectDocumentModal
-          open={addModalProps.open}
-          onSubmit={addModalProps.onSubmit}
-          onClose={addModalProps.onClose}
-          formik={addModalProps.formik}
-        />
-      </Paper>
-      <Paper sx={{
-        width:    '100%',
-        overflow: 'hidden'
-      }}>
-        <ProjectDocumentDetailModal
-          open={detailModalProps.open}
-          onClose={detailModalProps.onClose}
-          onEdit={detailModalProps.onEdit}
-          onDelete={detailModalProps.onDelete}
-          detail = {detailModalProps.detail}
-        />
-      </Paper>
+      <ProjectDocumentSection
+        type={ProjectDocumentType.RECEIVED}
+        list={receivedList}
+        onAddModalOpen={onAddModalOpen}
+        onDetailModalOpen={onDetailModalOpen}
+      />
+      <ProjectDocumentSection
+        type={ProjectDocumentType.SENT}
+        list={sentList}
+        onAddModalOpen={onAddModalOpen}
+        onDetailModalOpen={onDetailModalOpen}
+      />
+      <ProjectDocumentSection
+        type={ProjectDocumentType.BUILDING}
+        list={buildingList}
+        onAddModalOpen={onAddModalOpen}
+        onDetailModalOpen={onDetailModalOpen}
+      />
+      {addModal}
+      {detailModal}
     </Box>
   );
 };

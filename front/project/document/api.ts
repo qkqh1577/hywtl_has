@@ -4,7 +4,10 @@ import {
   ProjectDocumentVO
 } from 'project/document/domain';
 import { ProjectId } from 'project/domain';
-import { ProjectDocumentParameter } from 'project/document/parameter';
+import {
+  ProjectDocumentParameter,
+  ProjectDocumentUpdateParameter
+} from 'project/document/parameter';
 
 class ProjectDocumentApi {
 
@@ -44,8 +47,8 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async update(id: number): Promise<void> {
-    const { data } = await apiClient.patch(`/project/sales/document/${id}`);
+  async update(params: ProjectDocumentUpdateParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/document/${params.id}`, params);
     return data;
   }
 

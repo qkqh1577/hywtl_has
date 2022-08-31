@@ -1,13 +1,16 @@
 import { createAction } from 'typesafe-actions';
 import {
   ProjectDocumentShort,
+  ProjectDocumentType,
   ProjectDocumentVO,
 } from 'project/document/domain';
 import {
-  FormikPartial,
   FormikSubmit
 } from 'type/Form';
-import { ProjectDocumentParameter } from 'project/document/parameter';
+import {
+  ProjectDocumentParameter,
+  ProjectDocumentUpdateParameter
+} from 'project/document/parameter';
 
 export enum ProjectDocumentAction {
   setReceivedList = 'project/sales/projectId/document/received-list/set',
@@ -17,7 +20,8 @@ export enum ProjectDocumentAction {
   setId           = 'project/sales/projectId/document/id/set',
   setOne          = 'project/sales/projectId/document/one/set',
   add             = 'project/sales/projectId/document/modal/add',
-  update          = 'project/sales/projectId/document/modal/update'
+  update          = 'project/sales/projectId/document/modal/update',
+  addModal        = 'project/sales/projectId/document/addModal',
 }
 
 export const projectDocumentAction = {
@@ -26,7 +30,8 @@ export const projectDocumentAction = {
   setBuildingList: createAction(ProjectDocumentAction.setBuildingList)<ProjectDocumentShort[]>(),
   setAllList:      createAction(ProjectDocumentAction.setAllList)<number>(),
   setId:           createAction(ProjectDocumentAction.setId)<number>(),
-  setOne:          createAction(ProjectDocumentAction.setOne)<ProjectDocumentVO>(),
+  setOne:          createAction(ProjectDocumentAction.setOne)<ProjectDocumentVO |undefined>(),
   add:             createAction(ProjectDocumentAction.add)<FormikSubmit<ProjectDocumentParameter>>(),
-  update:          createAction(ProjectDocumentAction.update)<FormikSubmit<ProjectDocumentParameter>>(),
+  update:          createAction(ProjectDocumentAction.update)<FormikSubmit<ProjectDocumentUpdateParameter>>(),
+  addModal:        createAction(ProjectDocumentAction.addModal)<ProjectDocumentType | undefined>(),
 };

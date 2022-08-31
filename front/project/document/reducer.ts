@@ -1,16 +1,18 @@
 import {
   ProjectDocumentShort,
+  ProjectDocumentType,
   ProjectDocumentVO
 } from 'project/document/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectDocumentAction } from 'project/document/action';
-import { FormikPartial } from 'type/Form';
 
 export interface ProjectDocumentState {
   receivedList?: ProjectDocumentShort[];
   sentList?: ProjectDocumentShort[];
   buildingList?: ProjectDocumentShort[];
-  detail?: FormikPartial<ProjectDocumentVO>;
+  detail?: ProjectDocumentVO;
+  addModal?: ProjectDocumentType;
+  detailModal?: ProjectDocumentVO;
 }
 
 const initialDocumentState: ProjectDocumentState = {};
@@ -38,11 +40,17 @@ export const projectDocumentReducer = createReducer(initialDocumentState, {
     buildingList: action.payload
   }),
 
-  [ProjectDocumentAction.setOne]: (state,
-                                   action
-                                  ) => ({
+  [ProjectDocumentAction.setOne]:      (state,
+                                        action
+                                       ) => ({
     ...state,
     detail: action.payload,
-  })
+  }),
+  [ProjectDocumentAction.addModal]:    (state,
+                                        action
+                                       ) => ({
+    ...state,
+    addModal: action.payload,
+  }),
 });
 

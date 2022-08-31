@@ -24,11 +24,11 @@ function isFileInput(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): e 
   return typeof files !== 'undefined';
 }
 
-function UploadField({ accept, name, label }: UploadFieldProps) {
+function UploadField({ accept, name }: UploadFieldProps) {
   const formikContext = useContext(FormikContext);
   const onChange: InputProps['onChange'] = (e) => {
     if (formikContext && isFileInput(e)) {
-      console.log(e.target.files![0])
+      console.log(e.target.files![0]);
       formikContext.setFieldValue(name, e.target.files![0]);
     }
   };
@@ -46,10 +46,7 @@ function UploadField({ accept, name, label }: UploadFieldProps) {
   );
 }
 
-interface Props {
-}
-
-export default function Form(props: Props) {
+export default function Form() {
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>

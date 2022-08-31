@@ -4,6 +4,7 @@ import {
 import {
   FormikPartial
 } from 'type/Form';
+import { FileItemView } from 'file-item';
 
 export type ProjectDocumentId = number & { readonly _brand: symbol }
 
@@ -16,8 +17,8 @@ export interface ProjectDocumentVO {
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
-  file: File; // 파일
-  mailFile?: File; // 메일 파일
+  file: FileItemView // 파일
+  mailFile?: FileItemView; // 메일 파일
   note?: string; // 비고
 }
 
