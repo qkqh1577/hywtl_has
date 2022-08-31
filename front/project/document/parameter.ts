@@ -1,20 +1,21 @@
-import {
-  DocumentType,
-} from 'project/document/domain';
 import { FormikPartial } from 'type/Form';
-import { FileItem } from 'file-item';
 import { ProjectId } from 'project/domain';
+import { DocumentType } from 'project/document/domain';
 
 export interface ProjectDocumentParameter {
-  recipient: string,
+  projectId: ProjectId;
+  recipient: string;
   file: File;
   mailFile?: File;
   note: string;
+  type: DocumentType;
 }
 
 export const initialProjectDocumentParameter: FormikPartial<ProjectDocumentParameter> = {
+  projectId: '',
   recipient: '',
   file:      '',
   mailFile:  '',
   note:      '',
+  type:      ''
 };

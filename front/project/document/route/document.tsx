@@ -45,17 +45,10 @@ function Element() {
           detail
         } = useSelector((root: RootState) => root.projectDocument);
 
-  const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>,
-                                   projectId: ProjectId,
-                                   type: DocumentType
-    ) =>
+  const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
       dispatch(projectDocumentAction.add({
-        formik: {
-          ...formikProps,
-          values: toValues(formikProps.values) as ProjectDocumentParameter,
-        },
-        projectId,
-        type
+        ...formikProps,
+        values: toValues(formikProps.values) as ProjectDocumentParameter,
       })),
     [dispatch]);
 
@@ -92,15 +85,17 @@ function Element() {
         }
 
         addDocument({
-            values,
-            ...helper
+          values: {
+            ...values,
+            projectId: ProjectId(id),
+            type:      modalOpen,
           },
-          ProjectId(id),
-          modalOpen
-        );
+          ...helper
+        });
       }
     }
   );
+
 
   const [modalOpen, setModalOpen] = useState<DocumentType>();
 
@@ -135,7 +130,9 @@ function Element() {
   );
 }
 
-const projectDocumentRoute: AppRoute = {
+const projectDocumentRoute
+        :
+        AppRoute = {
   path:    '/project/sales-management/:id/document',
   element: <Element />
 };
