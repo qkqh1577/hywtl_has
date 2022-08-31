@@ -7,14 +7,14 @@ import {
   FormikPartial
 } from 'type/Form';
 
-export type DocumentId = number & { readonly _brand: symbol }
+export type ProjectDocumentId = number & { readonly _brand: symbol }
 
-export function DocumentId(id: number) {
-  return id as DocumentId;
+export function ProjectDocumentId(id: number) {
+  return id as ProjectDocumentId;
 }
 
-export interface DocumentVO {
-  id: DocumentId;
+export interface ProjectDocumentVO {
+  id: ProjectDocumentId;
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
@@ -23,15 +23,15 @@ export interface DocumentVO {
   note?: string; // 비고
 }
 
-export interface DocumentShort
-  extends DocumentVO {
-  type: DocumentType;
+export interface ProjectDocumentShort
+  extends ProjectDocumentVO {
+  type:   ProjectDocumentType;
   mailFileId?: number;
   createdAt: Date; // 등록 일시
   modifiedAt?: Date; // 수정 일시
 }
 
-export const initialDocumentVO: FormikPartial<DocumentVO> = {
+export const initialProjectDocumentVO: FormikPartial<ProjectDocumentVO> = {
   id:        '',
   code:      '',
   createdBy: '',
@@ -44,7 +44,7 @@ export const initialDocumentVO: FormikPartial<DocumentVO> = {
 /**
  * 자료 타입
  */
-export enum DocumentType {
+export enum ProjectDocumentType {
 
   /**
    * 받은 자료
@@ -62,21 +62,21 @@ export enum DocumentType {
   BUILDING = 'BUILDING',
 }
 
-export function documentTypeName(type: DocumentType) {
+export function projectDocumentTypeName(type: ProjectDocumentType) {
   switch (type) {
-    case DocumentType.RECEIVED:
+    case ProjectDocumentType.RECEIVED:
       return '받은 자료';
-    case DocumentType.SENT:
+    case ProjectDocumentType.SENT:
       return '보낸 자료';
-    case DocumentType.BUILDING:
+    case ProjectDocumentType.BUILDING:
       return '형상비 검토 자료';
     default:
       return '-';
   }
 }
 
-export const documentTypeList: DocumentType[] = [
-  DocumentType.RECEIVED,
-  DocumentType.SENT,
-  DocumentType.BUILDING
+export const documentTypeList: ProjectDocumentType[] = [
+  ProjectDocumentType.RECEIVED,
+  ProjectDocumentType.SENT,
+  ProjectDocumentType.BUILDING
 ];

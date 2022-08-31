@@ -9,8 +9,8 @@ import {
   take
 } from 'redux-saga/effects';
 import {
-  DocumentShort,
-  DocumentVO
+  ProjectDocumentShort,
+  ProjectDocumentVO
 } from 'project/document/domain';
 import {
   projectDocumentApi
@@ -28,24 +28,24 @@ function* watchAllList() {
 }
 
 function* fetchSentList(id: ProjectId) {
-  const list: DocumentShort[] = yield call(projectDocumentApi.getSentList, id);
+  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getSentList, id);
   yield put(projectDocumentAction.setSentList(list));
 }
 
 function* fetchReceivedList(id: ProjectId) {
-  const list: DocumentShort[] = yield call(projectDocumentApi.getReceivedList, id);
+  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getReceivedList, id);
   yield put(projectDocumentAction.setReceivedList(list));
 }
 
 function* fetchBuildingList(id: ProjectId) {
-  const list: DocumentShort[] = yield call(projectDocumentApi.getBuildingList, id);
+  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getBuildingList, id);
   yield put(projectDocumentAction.setBuildingList(list));
 }
 
 function* watchId() {
   while (true) {
     const { id } = yield take(ProjectDocumentAction.setOne);
-    const detail: DocumentVO = yield call(projectDocumentApi.getOne, id);
+    const detail: ProjectDocumentVO = yield call(projectDocumentApi.getOne, id);
     yield put(projectDocumentAction.setOne(detail));
   }
 }

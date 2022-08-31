@@ -28,9 +28,9 @@ import {
 } from 'project/document/parameter';
 import useDialog from 'components/Dialog';
 import {
-  DocumentType,
-  DocumentVO,
-  initialDocumentVO
+  ProjectDocumentType,
+  ProjectDocumentVO,
+  initialProjectDocumentVO,
 } from 'project/document/domain';
 import { ProjectId } from 'project/domain';
 
@@ -52,9 +52,9 @@ function Element() {
       })),
     [dispatch]);
 
-  const formik = useFormik<FormikEditable<FormikPartial<DocumentVO>>>({
+  const detailModalFormik = useFormik<FormikEditable<FormikPartial<ProjectDocumentVO>>>({
     enableReinitialize: true,
-    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialDocumentVO },
+    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialProjectDocumentVO },
     onSubmit:           (values,
                          helper
                         ) => {
@@ -97,7 +97,7 @@ function Element() {
   );
 
 
-  const [modalOpen, setModalOpen] = useState<DocumentType>();
+  const [modalOpen, setModalOpen] = useState<ProjectDocumentType>();
 
   useEffect(() => {
     if (id) {
@@ -112,7 +112,7 @@ function Element() {
         receivedList={receivedList}
         sentList={sentList}
         buildingList={buildingList}
-        onModalOpen={(type: DocumentType) => {
+        onModalOpen={(type: ProjectDocumentType) => {
           setModalOpen(type);
         }}
         modalProps={{

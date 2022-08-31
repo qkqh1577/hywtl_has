@@ -1,29 +1,29 @@
 import apiClient from 'services/api';
 import {
-  DocumentShort,
-  DocumentVO
+  ProjectDocumentShort,
+  ProjectDocumentVO
 } from 'project/document/domain';
 import { ProjectId } from 'project/domain';
 import { ProjectDocumentParameter } from 'project/document/parameter';
 
 class ProjectDocumentApi {
 
-  async getReceivedList(id: ProjectId): Promise<DocumentShort[]> {
+  async getReceivedList(id: ProjectId): Promise<ProjectDocumentShort[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'RECEIVED' });
     return data;
   }
 
-  async getSentList(id: ProjectId): Promise<DocumentShort[]> {
+  async getSentList(id: ProjectId): Promise<ProjectDocumentShort[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'SENT' });
     return data;
   }
 
-  async getBuildingList(id: ProjectId): Promise<DocumentShort[]> {
+  async getBuildingList(id: ProjectId): Promise<ProjectDocumentShort[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'BUILDING' });
     return data;
   }
 
-  async getOne(id: number): Promise<DocumentVO> {
+  async getOne(id: number): Promise<ProjectDocumentVO> {
     const { data } = await apiClient.get(`/project/sales/document/${id}`);
     return data;
   }

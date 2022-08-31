@@ -5,14 +5,14 @@ import {
   Typography
 } from '@mui/material';
 import {
-  DocumentType,
-  documentTypeName
+  ProjectDocumentType,
+  projectDocumentTypeName
 } from 'project/document/domain';
 
 export interface HeaderProps {
   modifiedAt?: Date;
-  onModalOpen: (type: DocumentType) => void;
-  type: DocumentType;
+  onModalOpen: (type: ProjectDocumentType) => void;
+  type: ProjectDocumentType;
 }
 
 function AddModalButton({
@@ -36,7 +36,7 @@ export default function Header({ type, modifiedAt, onModalOpen }: HeaderProps) {
       justifyContent: 'space-between',
     }}>
       <Box>
-        <Typography>{documentTypeName(type)}</Typography>
+        <Typography>{projectDocumentTypeName(type)}</Typography>
       </Box>
       <Box sx={{
         display:    'flex',

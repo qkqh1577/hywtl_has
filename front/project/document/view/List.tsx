@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Table,
   TableBody,
   TableContainer,
@@ -7,7 +8,7 @@ import {
   TableRow
 } from '@mui/material';
 import TableCell, { TableCellProps } from 'components/TableCell';
-import { DocumentShort } from 'project/document/domain';
+import { ProjectDocumentShort } from 'project/document/domain';
 import dayjs from 'dayjs';
 
 const columnProps: TableCellProps[] = [{
@@ -37,9 +38,9 @@ const columnProps: TableCellProps[] = [{
 }];
 
 export interface ListProps {
-  receivedList?: DocumentShort[];
-  sentList?: DocumentShort[];
-  buildingList?: DocumentShort[];
+  receivedList?: ProjectDocumentShort[];
+  sentList?: ProjectDocumentShort[];
+  buildingList?: ProjectDocumentShort[];
 }
 
 export default function ({ receivedList, sentList, buildingList }: ListProps) {
@@ -62,10 +63,26 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                 {i + 1}
               </TableCell>
               <TableCell>
-                {item.code}
+                <Button
+                  variant="text"
+                  disableElevation
+                  disableRipple
+                  size="small"
+                  sx={{
+                    ml:                           1,
+                    '&.MuiButtonBase-root:hover': {
+                      bgcolor: 'transparent'
+                    }
+                  }}
+                  onClick={() => {
+                    console.log('click');
+                  }}
+                >
+                  {item.code}
+                </Button>
               </TableCell>
               <TableCell>
-                {"파일"}
+                {'파일'}
               </TableCell>
               <TableCell>
                 {item.recipient}
@@ -96,7 +113,7 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                 {item.code}
               </TableCell>
               <TableCell>
-                {"파일"}
+                {'파일'}
               </TableCell>
               <TableCell>
                 {item.recipient}
@@ -127,7 +144,7 @@ export default function ({ receivedList, sentList, buildingList }: ListProps) {
                 {item.code}
               </TableCell>
               <TableCell>
-                {"파일"}
+                {'파일'}
               </TableCell>
               <TableCell>
                 {item.recipient}

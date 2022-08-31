@@ -7,12 +7,12 @@ import {
 import Header from 'project/document/view/Header';
 import List, { ListProps } from 'project/document/view/List';
 import ProjectDocumentModal, { ProjectDocumentModalProps } from 'project/document/view/AddModal';
-import { DocumentType } from 'project/document/domain';
+import { ProjectDocumentType } from 'project/document/domain';
 
 interface Props
   extends ListProps {
   modalProps: ProjectDocumentModalProps;
-  onModalOpen: (type: DocumentType) => void;
+  onModalOpen: (type: ProjectDocumentType) => void;
 }
 
 export default function ProjectDocument({
@@ -30,15 +30,15 @@ export default function ProjectDocument({
     }}>
       <Grid container spacing={2}>
         <Grid item sm={12}>
-          <Header type={DocumentType.RECEIVED} onModalOpen={onModalOpen} />
+          <Header type={ProjectDocumentType.RECEIVED} onModalOpen={onModalOpen} />
           <List receivedList={receivedList} />
         </Grid>
         <Grid item sm={12}>
-          <Header type={DocumentType.SENT} onModalOpen={onModalOpen} />
+          <Header type={ProjectDocumentType.SENT} onModalOpen={onModalOpen} />
           <List sentList={sentList} />
         </Grid>
         <Grid item sm={12}>
-          <Header type={DocumentType.BUILDING} onModalOpen={onModalOpen} />
+          <Header type={ProjectDocumentType.BUILDING} onModalOpen={onModalOpen} />
           <List buildingList={buildingList} />
         </Grid>
       </Grid>

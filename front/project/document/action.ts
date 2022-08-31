@@ -1,7 +1,7 @@
 import { createAction } from 'typesafe-actions';
 import {
-  DocumentShort,
-  DocumentVO,
+  ProjectDocumentShort,
+  ProjectDocumentVO,
 } from 'project/document/domain';
 import { FormikSubmit } from 'type/Form';
 import { ProjectDocumentParameter } from 'project/document/parameter';
@@ -17,11 +17,11 @@ export enum ProjectDocumentAction {
 }
 
 export const projectDocumentAction = {
-  setReceivedList: createAction(ProjectDocumentAction.setReceivedList)<DocumentShort[]>(),
-  setSentList:     createAction(ProjectDocumentAction.setSentList)<DocumentShort[]>(),
-  setBuildingList: createAction(ProjectDocumentAction.setBuildingList)<DocumentShort[]>(),
+  setReceivedList: createAction(ProjectDocumentAction.setReceivedList)<ProjectDocumentShort[]>(),
+  setSentList:     createAction(ProjectDocumentAction.setSentList)<ProjectDocumentShort[]>(),
+  setBuildingList: createAction(ProjectDocumentAction.setBuildingList)<ProjectDocumentShort[]>(),
   setAllList:      createAction(ProjectDocumentAction.setAllList)<number>(),
-  setOne:          createAction(ProjectDocumentAction.setOne)<DocumentVO>(),
+  setOne:          createAction(ProjectDocumentAction.setOne)<ProjectDocumentVO>(),
   add:             createAction(ProjectDocumentAction.add)<FormikSubmit<ProjectDocumentParameter>>(),
   update:          createAction(ProjectDocumentAction.update)<FormikSubmit<ProjectDocumentParameter>>(),
 };
