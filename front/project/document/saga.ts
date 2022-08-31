@@ -52,10 +52,10 @@ function* watchId() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: formik } = yield take(ProjectDocumentAction.add);
+    const { payload: { formik, projectId, type } } = yield take(ProjectDocumentAction.add);
     console.log(formik.values);
     try {
-      yield call(projectDocumentApi.add, formik.values);
+      yield call(projectDocumentApi.add, formik.values, projectId, type);
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {

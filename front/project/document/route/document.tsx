@@ -45,10 +45,17 @@ function Element() {
           detail
         } = useSelector((root: RootState) => root.projectDocument);
 
-  const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
+  const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>,
+                                   projectId: ProjectId,
+                                   type: DocumentType
+    ) =>
       dispatch(projectDocumentAction.add({
-        ...formikProps,
-        values: toValues(formikProps.values) as ProjectDocumentParameter,
+        formik: {
+          ...formikProps,
+          values: toValues(formikProps.values) as ProjectDocumentParameter,
+        },
+        projectId,
+        type
       })),
     [dispatch]);
 
@@ -85,13 +92,12 @@ function Element() {
         }
 
         addDocument({
-          values: {
-            ...values,
-            projectId: ProjectId(id),
-            type:      modalOpen,
+            values,
+            ...helper
           },
-          ...helper
-        });
+          ProjectId(id),
+          modalOpen
+        );
       }
     }
   );

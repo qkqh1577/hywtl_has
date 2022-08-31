@@ -28,10 +28,13 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async add(params: ProjectDocumentParameter): Promise<void> {
+  async add(params: ProjectDocumentParameter,
+            id: number,
+            type: any
+  ): Promise<void> {
     const formData = new FormData();
     formData.append('recipient', params.recipient);
-    formData.append('type', params.type);
+    formData.append('type', type);
     formData.append('file', params.file);
     if (params.mailFile) {
       formData.append('mailFile', params.mailFile);
@@ -40,7 +43,7 @@ class ProjectDocumentApi {
       formData.append('note', params.note);
     }
 
-    const { data } = await apiClient.post(`/project/sales/${params.projectId}/document`, formData);
+    const { data } = await apiClient.post(`/project/sales/${id}/document`, formData);
     return data;
   }
 
