@@ -1,5 +1,4 @@
 import {
-  ProjectId,
   projectProgressStatusName,
   ProjectShortVO
 } from 'project/domain';
@@ -21,14 +20,7 @@ export interface ListProps {
   searchFormRef: React.RefObject<HTMLDivElement>;
 }
 
-export default function ({ list: p, openMenu: open, onRowClick, searchFormRef }: ListProps) {
-
-  const list: ProjectShortVO[] = [];
-  if (p && p.length > 0) {
-    for (let i = 0; i < 250; i++) {
-      list.push({ ...p[0], id: ProjectId(i), });
-    }
-  }
+export default function ({ list, openMenu: open, onRowClick, searchFormRef }: ListProps) {
 
   const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
 
@@ -137,7 +129,7 @@ export default function ({ list: p, openMenu: open, onRowClick, searchFormRef }:
             >
               <TableCell>{item.code}</TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>{projectProgressStatusName(item.status)}</TableCell>
+              <TableCell>{projectProgressStatusName(item.progressStatus)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

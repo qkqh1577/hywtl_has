@@ -33,7 +33,7 @@ export function projectProgressStatusName(status: ProjectProgressStatus | '') {
     case ProjectProgressStatus.UNDER_CONTRACT:
       return '등록';
     case ProjectProgressStatus.BEFORE_SERVICE:
-      return '용역개시전먼ㅇ라ㅣㅁ너아리먼이ㅏㅓㅁㄴㅇ리';
+      return '용역개시전';
     case ProjectProgressStatus.SERVICE_ON_GOING:
       return '용역진행중';
     case ProjectProgressStatus.SERVICE_COMPLETE:
@@ -226,7 +226,7 @@ export interface ProjectShortVO {
   id: ProjectId;
   code?: string;
   name: string;
-  status: ProjectProgressStatus;
+  progressStatus: ProjectProgressStatus;
   alias: string;
 }
 

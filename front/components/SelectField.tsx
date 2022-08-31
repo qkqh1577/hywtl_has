@@ -70,7 +70,6 @@ interface ViewProps
                                  | 'options'>,
           Pick<MuiTextFieldProps, | 'value'
                                   | 'variant'> {
-  fieldRef: React.RefObject<HTMLDivElement>;
 }
 
 function FieldView(props: ViewProps) {
@@ -78,7 +77,6 @@ function FieldView(props: ViewProps) {
   return <TextField
     fullWidth
     select
-    ref={props.fieldRef}
     {...props}
   />;
 }
@@ -192,7 +190,7 @@ export default function SelectField(props: SelectFieldProps) {
       ...SelectProps,
       multiple,
       sx:        {
-        height:               '32px',
+        height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
         color:                ColorPalette._252627,
         border:               variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
@@ -201,12 +199,24 @@ export default function SelectField(props: SelectFieldProps) {
         backgroundColor:      ColorPalette._fff,
         '& .MuiSvgIcon-root': {
           color: ColorPalette._386dd6,
-        }
+        },
+        '&::after':           {
+          borderBottom: `1px solid ${ColorPalette._0047d3}`,
+        },
+        '&:hover::before':    {
+          borderBottom: `1px solid ${ColorPalette._0047d3} !important`,
+        },
+        '&:hover > fieldset': {
+          borderColor: `${ColorPalette._0047d3} !important`
+        },
+        '& > fieldset':       {
+          borderWidth: '1px !important',
+        },
       },
       MenuProps: {
         sx: {
           '& > .MuiMenu-paper': {
-            marginTop:    variant === 'outlined' ? '-8px' : '4px',
+            marginTop:    variant === 'outlined' ? '-8px' : '8px',
             marginLeft:   variant === 'outlined' ? '8px' : 0,
             overflowY:    'scroll',
             borderRadius: '5px',
@@ -261,21 +271,22 @@ export default function SelectField(props: SelectFieldProps) {
         }}>
           <Typography sx={{
             fontSize:  '13px',
-            color:     ColorPalette.Grey['1'],
+            color:     ColorPalette._9b9ea4,
             wordBreak: 'keep-all',
             width:     '110px'
           }}>
             <RequiredMark required={edit && required} text={label} />
           </Typography>
         </Box>
-        <Box sx={{
-          display:  'flex',
-          height:   '100%',
-          flexWrap: 'nowrap',
-          width:    'calc(100% - 130px)',
-        }}>
+        <Box
+          ref={fieldRef}
+          sx={{
+            display:  'flex',
+            height:   '100%',
+            flexWrap: 'nowrap',
+            width:    'calc(100% - 130px)',
+          }}>
           <FieldView
-            fieldRef={fieldRef}
             {...restProps}
             {...fieldProps}
           />
@@ -292,13 +303,14 @@ export default function SelectField(props: SelectFieldProps) {
       flex:           1,
       justifyContent: 'space-between',
     }}>
-      <Box sx={{
-        display:  'flex',
-        flexWrap: 'nowrap',
-        width:    '100%',
-      }}>
+      <Box
+        ref={fieldRef}
+        sx={{
+          display:  'flex',
+          flexWrap: 'nowrap',
+          width:    '100%',
+        }}>
         <FieldView
-          fieldRef={fieldRef}
           {...restProps}
           {...fieldProps}
         />

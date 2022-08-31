@@ -11,8 +11,7 @@ import List, { ListProps } from 'app/view/App/ProjectDrawer/List';
 import { ColorPalette } from 'app/view/App/theme';
 
 export interface ProjectDrawerProps
-  extends SearchFormProps,
-          ListProps,
+  extends Omit<SearchFormProps & ListProps, |'searchFormRef'>,
           FormikLayoutProps<ProjectQuery> {
 }
 
