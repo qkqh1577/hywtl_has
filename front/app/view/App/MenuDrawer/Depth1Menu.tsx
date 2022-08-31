@@ -22,15 +22,15 @@ export default function Depth1Menu(props: Props) {
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const onClick = () => {
-    if (props.path) {
-      console.log(props);
-      navigate(props.path);
-    }
-  };
   const [open, setOpen] = useState<boolean>(true);
   const active = props.path && !props.children && pathname.startsWith(props.path);
-
+  const childActive = props.path && pathname.startsWith(props.path);
+  const clickable = typeof props.path === 'string' && !props.children;
+  const onClick = () => {
+    if (clickable) {
+      navigate(props.path!);
+    }
+  };
   return (
     <Box
       onClick={onClick}
@@ -41,7 +41,7 @@ export default function Depth1Menu(props: Props) {
         display:      'flex',
         flexWrap:     'wrap',
         alignItems:   'center',
-        cursor:       props.path ? 'pointer' : 'default'
+        cursor:       clickable ? 'pointer' : 'default'
       }}>
       <Box sx={{
         display:         'flex',
@@ -61,7 +61,7 @@ export default function Depth1Menu(props: Props) {
           <FontAwesomeIcon
             icon={props.icon}
             style={{
-              color:    ColorPalette._4c9eeb,
+              color:    active ? ColorPalette._0047d3 : ColorPalette._4c9eeb,
               padding:  '0 10px',
               fontSize: '16px',
             }}
@@ -70,7 +70,7 @@ export default function Depth1Menu(props: Props) {
             children={props.title}
             sx={{
               fontSize: '13px',
-              color:    ColorPalette._94a6ca,
+              color:    childActive ? ColorPalette._fff : ColorPalette._94a6ca,
             }}
           />
         </Box>
@@ -93,16 +93,14 @@ export default function Depth1Menu(props: Props) {
       </Box>
       {props.children && (
         <Collapse in={open}>
-          <Box
-            sx={{
-              display:         'flex',
-              width:           '100%',
-              flexWrap:        'wrap',
-              backgroundColor: ColorPalette._242e43,
-              paddingLeft:     '30px',
-              marginTop:       '5px',
-              alignContent:    'flex-start',
-            }}>
+          <Box sx={{
+            display:         'flex',
+            width:           '100%',
+            flexWrap:        'wrap',
+            backgroundColor: ColorPalette._242e43,
+            marginTop:       '5px',
+            alignContent:    'flex-start',
+          }}>
             {props.children.map(child => (
               <Depth2Menu key={child.title} {...child} />
             ))}

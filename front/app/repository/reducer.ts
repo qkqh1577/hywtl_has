@@ -40,9 +40,11 @@ export const initMenuState: MenuState = {
   }, {
     title:    '프로젝트',
     icon:     'file-powerpoint',
+    path:     '/project',
     children: [{
       title:    '영업본부',
       icon:     'circle',
+      path:     '/project/sales-management',
       children: [{
         title: '영업정보 관리',
         path:  '/project/sales-management',
@@ -76,23 +78,25 @@ export const initMenuState: MenuState = {
   }, {
     title:    '관리자 메뉴',
     icon:     'gear',
+    path:     '/admin',
     children: [{
       title: '사용자 관리',
-      path:  '/user-management',
+      path:  '/admin/user-management',
       icon:  'circle',
     }, {
       title: '조직 관리',
-      path:  '/department-management',
+      path:  '/admin/department-management',
       icon:  'circle',
     }, {
       title:    '견적서 관리',
       icon:     'circle',
       children: [{
         title: '용역항목 관리',
-        path:  '/estimate-template-management',
+        path:  '/admin/estimate/template-management',
         icon:  'minus',
       }, {
         title: '견적서 내용 관리',
+        path:  '/admin/estimate/content-management',
         icon:  'minus',
       }]
     }, {

@@ -53,6 +53,7 @@ export const ColorPalette = {
   '_414d65': '#414d65',
   '_4c576d': '#4c576d',
   '_697183': '#697183',
+  '_0047d3': '#0047d3'
 };
 
 const mainTheme = createTheme({

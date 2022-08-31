@@ -8,6 +8,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from 'react';
 import {
@@ -69,7 +70,7 @@ interface ViewProps
                                  | 'options'>,
           Pick<MuiTextFieldProps, | 'value'
                                   | 'variant'> {
-
+  fieldRef: React.RefObject<HTMLDivElement>;
 }
 
 function FieldView(props: ViewProps) {
@@ -77,6 +78,7 @@ function FieldView(props: ViewProps) {
   return <TextField
     fullWidth
     select
+    ref={props.fieldRef}
     {...props}
   />;
 }
@@ -101,11 +103,14 @@ export default function SelectField(props: SelectFieldProps) {
           ...         restProps
         } = props;
 
+  const fieldRef = useRef<HTMLDivElement>(null);
+
   const children = useMemo((): React.ReactNode[] | null => {
     if (!options) {
       return null;
     }
-    return options
+
+    return [{ key: '', text: '선택' }, ...options]
     .map((option) => {
       if (isOption(option)) {
         if (option.invisible) {
@@ -201,21 +206,25 @@ export default function SelectField(props: SelectFieldProps) {
       MenuProps: {
         sx: {
           '& > .MuiMenu-paper': {
-            marginTop:    variant === 'outlined' ? '0' : '5px',
+            marginTop:    variant === 'outlined' ? '-8px' : '4px',
+            marginLeft:   variant === 'outlined' ? '8px' : 0,
             overflowY:    'scroll',
             borderRadius: '5px',
             boxShadow:    `2px 2px 10px 0px ${ColorPalette._b2b4b7}`,
             maxHeight:    `${28 * 5}px`,
+            width:        fieldRef.current?.offsetWidth ? `${fieldRef.current!.offsetWidth}px` : 'auto',
 
             '& > ul':      {
               padding:      0,
               borderRadius: '5px 0 0 5px',
             },
             '& > ul > li': {
-              fontSize: '13px',
-              color:    ColorPalette._252627,
-              height:   '28px',
-              padding:  '0 10px',
+              fontSize:   '13px',
+              color:      ColorPalette._252627,
+              minHeight:  '28px',
+              padding:    '0 10px',
+              wordBreak:  'break-all',
+              whiteSpace: 'break-spaces',
             },
 
             '&::-webkit-scrollbar':       {
@@ -266,6 +275,7 @@ export default function SelectField(props: SelectFieldProps) {
           width:    'calc(100% - 130px)',
         }}>
           <FieldView
+            fieldRef={fieldRef}
             {...restProps}
             {...fieldProps}
           />
@@ -288,6 +298,7 @@ export default function SelectField(props: SelectFieldProps) {
         width:    '100%',
       }}>
         <FieldView
+          fieldRef={fieldRef}
           {...restProps}
           {...fieldProps}
         />
