@@ -98,7 +98,20 @@ export default function ProjectDocumentSection(props: Props) {
               <TableRow key={item.id}>
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>
-                  <Button onClick={() => {
+                  <Button
+                    variant="text"
+                    disableElevation
+                    disableRipple
+                    size="small"
+                    sx={{
+                      ml:                           1,
+                      '&.MuiButtonBase-root:hover': {
+                        bgcolor: 'transparent'
+                      },
+                      margin: 0,
+                      padding: 0,
+                    }}
+                    onClick={() => {
                     props.onDetailModalOpen(item.id);
                   }}>
                     {item.code}
