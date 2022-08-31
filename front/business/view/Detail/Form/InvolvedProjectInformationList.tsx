@@ -62,11 +62,12 @@ export default function ({ list }: Props) {
     <Grid container spacing={2}>
       <Grid item sm={12}>
         <Title
-          titleVariant="h6"
           title="참여 프로젝트 정보"
           titleRightComponent={
             <SelectField
-              disableLabel
+              labelProps={{
+                disableLabel: true,
+              }}
               name="involvedProjectFilter"
               label="참여 프로젝트 정보 필터"
               options={involvedTypeList.map((type) => ({

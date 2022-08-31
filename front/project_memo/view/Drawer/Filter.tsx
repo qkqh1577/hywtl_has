@@ -1,5 +1,5 @@
 import {
-  Grid
+  Box,
 } from '@mui/material';
 import SelectField from 'components/SelectField';
 import {
@@ -16,10 +16,25 @@ interface Props {
 export default function ProjectMemoDrawerFilter(props: Props) {
 
   return (
-    <Grid container spacing={2}>
-      <Grid item sm={6}>
+    <Box sx={{
+      width:          '100%',
+      padding:        '0 10px',
+      display:        'flex',
+      justifyContent: 'space-between',
+      flexWrap:       'unwrap',
+      flex:           1,
+      alignItems:     'center',
+    }}>
+      <Box sx={{
+        display:     'flex',
+        width:       '120px',
+        marginRight: '10px',
+      }}>
         <SelectField
-          disableLabel
+          variant="outlined"
+          labelProps={{
+            disableLabel: true,
+          }}
           name="category"
           label="카테고리"
           options={projectMemoCategoryList.map(item => ({
@@ -27,16 +42,18 @@ export default function ProjectMemoDrawerFilter(props: Props) {
             text: projectMemoCategoryName(item),
           }))}
         />
-      </Grid>
-      <Grid item sm={6}>
-        <TextField
-          disableLabel
-          name="keyword"
-          label="검색어"
-          placeholder="검색어 입력 후 엔터"
-          onKeyDown={props.onKeyDown}
-        />
-      </Grid>
-    </Grid>
+      </Box>
+      <TextField
+        variant="outlined"
+        labelProps={{
+          disableLabel: true,
+        }}
+        name="keyword"
+        label="검색어"
+        placeholder="검색어 입력 후 엔터"
+        onKeyDown={props.onKeyDown}
+      />
+    </Box>
+
   );
 }

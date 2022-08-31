@@ -70,7 +70,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
         } = props;
 
   const children = useMemo(() => {
-    return options.map((option) => {
+    return options.map((option): Option => {
       if (isOption(option)) {
         return option;
       }
@@ -126,7 +126,9 @@ export default function CheckboxField(props: CheckboxFieldProps) {
           {children.map((option) => {
             const {
                     key,
-                    text
+                    text,
+                    disabled: childDisabled,
+                    invisible
                   } = option;
             const checked = isChecked(value, key);
 
@@ -151,13 +153,16 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                 setFieldValue(name, [...(value ?? []), key]);
               }
             };
+            if (invisible) {
+              return null;
+            }
             return (
               <FormControlLabel
                 key={key}
                 label={text}
                 control={
                   <Checkbox
-                    disabled={disabled}
+                    disabled={disabled || childDisabled}
                     readOnly={readOnly}
                     name={name}
                     value={key}
@@ -205,9 +210,14 @@ export default function CheckboxField(props: CheckboxFieldProps) {
           {children.map((option) => {
             const {
                     key,
-                    text
+                    text,
+                    disabled: childDisabled,
+                    invisible
                   } = option;
             const checked = false;
+            if (invisible) {
+              return null;
+            }
 
             return (
               <FormControlLabel
@@ -215,6 +225,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                 label={text}
                 control={
                   <Checkbox
+                    disabled={childDisabled}
                     readOnly={readOnly}
                     name={name}
                     value={key}

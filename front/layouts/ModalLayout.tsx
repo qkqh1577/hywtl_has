@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
-  IconButton,
   Modal,
-  Paper
+  Paper,
+  Typography
 } from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
+import { ColorPalette } from 'app/view/App/theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface ModalLayoutProps {
   open: boolean;
   title: string;
   width?: string | number;
   onClose: () => void;
-  sx?: any;
   children: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export default function ModalLayout({
@@ -22,8 +23,11 @@ export default function ModalLayout({
                                       width = '80vw',
                                       onClose,
                                       children,
-                                      sx
+                                      footer,
                                     }: ModalLayoutProps) {
+
+  const footerRef = useRef<HTMLDivElement>(null);
+  const footerHeight = footerRef.current?.offsetHeight ?? 0;
   return (
     <Modal
       open={open}
@@ -38,7 +42,6 @@ export default function ModalLayout({
       disableEscapeKeyDown
     >
       <Paper sx={{
-        ...(sx ?? {}),
         position:  'absolute',
         top:       '50%',
         left:      '50%',
@@ -48,30 +51,60 @@ export default function ModalLayout({
         height:    '100%',
         maxHeight: '80vh',
         overflow:  'hidden',
-        bgColor:   '#777',
-        p:         4,
+        bgColor:   ColorPalette.Grey['2'],
+        boxShadow: `4px 4px 20px 0px ${ColorPalette.DarkGray}`
       }}>
         <Box sx={{
-          display:        'flex',
-          justifyContent: 'space-between',
-          width:          '100%',
-          height:         '50px',
-          mb:             '40px',
+          display:         'flex',
+          justifyContent:  'space-between',
+          width:           '100%',
+          height:          '50px',
+          padding:         '0 20px',
+          alignItems:      'center',
+          backgroundColor: ColorPalette.DarkBlue['1'],
+          color:           ColorPalette.White,
         }}>
-          <h2>
-            {title}
-          </h2>
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
+          <Typography sx={{
+            fontSize:   '18px',
+            fontWeight: 'bold',
+          }}
+            children={title}
+          />
+          <FontAwesomeIcon
+            icon="xmark"
+            fontSize="18px"
+            onClick={onClose}
+          />
         </Box>
         <Box sx={{
-          display:  'flex',
-          mb:       '40px',
-          height:   'calc(100% - 90px)',
-          overflow: 'auto'
+          display:        'flex',
+          height:         'calc(100% - 50px)',
+          padding:        '20px',
+          justifyContent: 'center',
+          flexWrap:       'wrap',
+          alignItems:     'space-between',
+          flex:           1,
         }}>
-          {children}
+          <Box sx={{
+            display: 'flex',
+            width:   '100%',
+            height:  `calc(100% - ${footerHeight + 40}px)`,
+          }}>
+            {children}
+          </Box>
+          {footer && (
+            <Box
+              ref={footerRef}
+              sx={{
+                width:          '100%',
+                justifyContent: 'center',
+                display:        'flex',
+                alignItems:     'center',
+                flex:           1,
+              }}
+              children={footer}
+            />
+          )}
         </Box>
       </Paper>
     </Modal>

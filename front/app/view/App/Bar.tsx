@@ -1,6 +1,7 @@
-import { styled } from '@mui/material/styles';
-import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
-import { Box } from '@mui/material';
+import {
+  AppBar as MuiAppBar,
+  Box
+} from '@mui/material';
 import SearchBar from 'app/view/App/SearchBar';
 import NotificationButton from 'app/view/App/NotificationButton';
 import AccountButton from 'app/view/App/AccountButton';
@@ -8,13 +9,7 @@ import LogoutButton, { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import React from 'react';
 import MenuAppBar from 'app/view/App/MenuDrawer/AppBar';
 import { MenuDrawerProps } from 'app/view/App/MenuDrawer';
-
-const StyledAppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  width:  '100%',
-}));
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   projectAppBar: React.ReactNode;
@@ -28,25 +23,31 @@ export default function AppBar(props: Props) {
           menuDrawerProps
         } = props;
   return (
-    <StyledAppBar color="transparent">
+    <MuiAppBar sx={(theme) => ({
+      zIndex:          theme.zIndex.drawer + 1,
+      width:           '100%',
+      height:          '50px',
+      display:         'flex',
+      padding:         0,
+      flexWrap:        'nowrap',
+      backgroundColor: ColorPalette.DarkBlue[2]
+    })}>
       <Box sx={{
-        top:             0,
-        position:        'absolute',
-        width:           '100%',
-        height:          '56px',
-        backgroundColor: '#3c3757',
-        display:         'flex',
-        justifyContent:  'space-between',
+        display:        'flex',
+        height:         '100%',
+        width:          '100%',
+        justifyContent: 'space-between',
       }}>
         <Box sx={{
           display: 'flex',
+          height:  '100%',
         }}>
           <MenuAppBar {...menuDrawerProps} />
           {props.projectAppBar}
         </Box>
         <Box sx={{
-          display:         'flex',
-          backgroundColor: '#3c3757',
+          display: 'flex',
+          height:  '100%',
         }}>
           <SearchBar />
           <NotificationButton />
@@ -54,6 +55,7 @@ export default function AppBar(props: Props) {
           <LogoutButton {...logoutButtonProps} />
         </Box>
       </Box>
-    </StyledAppBar>
+
+    </MuiAppBar>
   );
 }

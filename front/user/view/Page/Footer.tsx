@@ -17,7 +17,7 @@ function AddButton() {
 
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/user/add');
+    navigate('/admin/user-management/add');
   };
   return (
     <Button

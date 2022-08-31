@@ -45,7 +45,9 @@ export default function ({ index, edit, titleList }: Props) {
         return (
           <TextField
             required
-            disableLabel
+            labelProps={{
+              disableLabel: true,
+            }}
             key={name}
             name={name}
             label="세부 항목명"

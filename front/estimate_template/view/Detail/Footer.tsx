@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 function ListButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/estimate/template');
+    navigate('/admin/estimate/template-management');
   };
 
   return (

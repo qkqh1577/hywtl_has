@@ -21,6 +21,44 @@ import {
   Box,
   CssBaseline
 } from '@mui/material';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus,
+  faAngleDown,
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+  faStar,
+  faTrash,
+  faXmark,
+  faPen,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(
+  faChartGantt,
+  faFilePowerpoint,
+  faAddressCard,
+  faBuilding,
+  faListOl,
+  faGear,
+  faCircle,
+  faMinus,
+  faAngleDown,
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+  faStar,
+  faTrash,
+  faXmark,
+  faPen,
+);
 
 const render = () => {
 
@@ -34,9 +72,10 @@ const render = () => {
                 <ThemeProvider theme={mainTheme}>
                   <CssBaseline />
                   <Box sx={{
-                    display: 'flex',
-                    width:   '100%',
-                    height:  '100vh'
+                    display:    'flex',
+                    width:      '100%',
+                    height:     '100vh',
+                    fontFamily: 'Noto Sans KR'
                   }}>
                     <App />
                   </Box>

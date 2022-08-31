@@ -226,7 +226,7 @@ export interface ProjectShortVO {
   id: ProjectId;
   code?: string;
   name: string;
-  status: ProjectProgressStatus;
+  progressStatus: ProjectProgressStatus;
   alias: string;
 }
 
