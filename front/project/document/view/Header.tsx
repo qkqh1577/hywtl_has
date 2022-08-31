@@ -4,22 +4,31 @@ import {
   Button,
   Typography
 } from '@mui/material';
+import {
+  DocumentType,
+  documentTypeName
+} from 'project/document/domain';
 
 export interface HeaderProps {
-  title?: string;
   modifiedAt?: Date;
-  onModalOpen: () => void
+  onModalOpen: (type: DocumentType) => void;
+  type: DocumentType;
 }
 
 function AddModalButton({
+                          type,
                           onModalOpen: onClick
                         }: HeaderProps) {
   return (
-    <Button onClick={onClick}>+등록</Button>
-  )
+    <Button onClick={() => {
+      onClick(type);
+    }}>
+      +등록
+    </Button>
+  );
 }
 
-export default function Header({title, modifiedAt, onModalOpen}: HeaderProps) {
+export default function Header({ type, modifiedAt, onModalOpen }: HeaderProps) {
   return (
     <Box sx={{
       width:          '100%',
@@ -27,13 +36,13 @@ export default function Header({title, modifiedAt, onModalOpen}: HeaderProps) {
       justifyContent: 'space-between',
     }}>
       <Box>
-        <Typography>{title}</Typography>
+        <Typography>{documentTypeName(type)}</Typography>
       </Box>
       <Box sx={{
-        display: 'flex',
+        display:    'flex',
         alignItems: 'center',
       }}>
-        <AddModalButton  onModalOpen={onModalOpen}/>
+        <AddModalButton type={type} onModalOpen={onModalOpen} />
         <Typography>{modifiedAt}</Typography>
       </Box>
     </Box>

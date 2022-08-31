@@ -4,6 +4,7 @@ import {
   DocumentVO
 } from 'project/document/domain';
 import { ProjectId } from 'project/domain';
+import { ProjectDocumentParameter } from 'project/document/parameter';
 
 class ProjectDocumentApi {
 
@@ -27,8 +28,19 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async add(id: number): Promise<void> {
-    const { data } = await apiClient.post(`/project/sales/${id}/document`);
+  async add(params: ProjectDocumentParameter): Promise<void> {
+    const formData = new FormData();
+    formData.append('recipient', params.recipient);
+    formData.append('type', params.type);
+    formData.append('file', params.file);
+    if (params.mailFile) {
+      formData.append('mailFile', params.mailFile);
+    }
+    if (params.note) {
+      formData.append('note', params.note);
+    }
+
+    const { data } = await apiClient.post(`/project/sales/${params.projectId}/document`, formData);
     return data;
   }
 

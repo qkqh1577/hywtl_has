@@ -28,20 +28,22 @@ import {
 } from 'project/document/parameter';
 import useDialog from 'components/Dialog';
 import {
+  DocumentType,
   DocumentVO,
   initialDocumentVO
 } from 'project/document/domain';
+import { ProjectId } from 'project/domain';
 
 function Element() {
   const id = useId();
   const { error } = useDialog();
   const dispatch = useDispatch();
   const {
-    receivedList,
-    sentList,
-    buildingList,
-    detail
-  } = useSelector((root: RootState) => root.projectDocument);
+          receivedList,
+          sentList,
+          buildingList,
+          detail
+        } = useSelector((root: RootState) => root.projectDocument);
 
   const addDocument = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
       dispatch(projectDocumentAction.add({
@@ -52,10 +54,10 @@ function Element() {
 
   const formik = useFormik<FormikEditable<FormikPartial<DocumentVO>>>({
     enableReinitialize: true,
-    initialValues: detail ? { edit: false, ...detail } : { edit: true, ...initialDocumentVO },
-    onSubmit: (values,
-      helper
-    ) => {
+    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialDocumentVO },
+    onSubmit:           (values,
+                         helper
+                        ) => {
       if (!values.edit) {
         error('수정 상태가 아닙니다.');
         helper.setSubmitting(false);
@@ -67,20 +69,40 @@ function Element() {
   const addModalFormik = useFormik<FormikPartial<ProjectDocumentParameter>>(
     {
       initialValues: initialProjectDocumentParameter,
-      onSubmit: (values, helper) => {
-        addDocument({ values, ...helper });
+      onSubmit:      (values,
+                      helper
+                     ) => {
+        console.log({ values, id });
+        if (!id) {
+          error('프로젝트가 선택되지 않았습니다.');
+          helper.setSubmitting(false);
+          return;
+        }
+        if (!modalOpen) {
+          error('자료 형식이 선택되지 않았습니다.');
+          helper.setSubmitting(false);
+          return;
+        }
+
+        addDocument({
+          values: {
+            ...values,
+            projectId: ProjectId(id),
+            type:      modalOpen,
+          },
+          ...helper
+        });
       }
     }
   );
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<DocumentType>();
 
   useEffect(() => {
-      if (id) {
-        dispatch(projectDocumentAction.setAllList(id));
-      }
-    }, [id]
-  );
+    if (id) {
+      dispatch(projectDocumentAction.setAllList(id));
+    }
+  }, [id]);
 
 
   return (
@@ -89,18 +111,18 @@ function Element() {
         receivedList={receivedList}
         sentList={sentList}
         buildingList={buildingList}
-        onModalOpen={() => {
-          setModalOpen(true);
+        onModalOpen={(type: DocumentType) => {
+          setModalOpen(type);
         }}
         modalProps={{
-          open: modalOpen,
-          onClose: () => {
-            setModalOpen(false);
+          open:     typeof modalOpen !== 'undefined',
+          onClose:  () => {
+            setModalOpen(undefined);
           },
           onSubmit: () => {
             addModalFormik.handleSubmit();
           },
-          formik: addModalFormik,
+          formik:   addModalFormik,
         }}
       />
     </ProjectContainer>
@@ -108,7 +130,7 @@ function Element() {
 }
 
 const projectDocumentRoute: AppRoute = {
-  path: '/project/sales-management/:id/document',
+  path:    '/project/sales-management/:id/document',
   element: <Element />
 };
 

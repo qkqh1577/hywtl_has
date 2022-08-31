@@ -52,7 +52,8 @@ function* watchId() {
 
 function* watchAdd() {
   while (true) {
-    const { payload : formik } = yield take(ProjectDocumentAction.add);
+    const { payload: formik } = yield take(ProjectDocumentAction.add);
+    console.log(formik.values);
     try {
       yield call(projectDocumentApi.add, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
@@ -60,9 +61,10 @@ function* watchAdd() {
     catch (e) {
       yield put(dialogActions.openAlert({
         children: '저장에 실패하였습니다.',
-        status: 'error',
-      }))
-    }finally {
+        status:   'error',
+      }));
+    }
+    finally {
       yield call(formik.setSubmitting, false);
     }
   }
@@ -78,9 +80,10 @@ function* watchUpdate() {
     catch (e) {
       yield put(dialogActions.openAlert({
         children: '저장에 실패하였습니다.',
-        status: 'error',
-      }))
-    }finally {
+        status:   'error',
+      }));
+    }
+    finally {
       yield call(formik.setSubmitting, false);
     }
   }

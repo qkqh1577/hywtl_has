@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {
+  ChangeEvent,
+  useContext
+} from 'react';
 import {
   Box,
-  Button,
   Grid,
+  Input,
+  InputProps,
   Typography
 } from '@mui/material';
 import TextField from 'components/TextField';
+import { FormikContext } from 'formik';
 
 export interface UploadFieldProps {
   accept: string;
@@ -13,14 +18,29 @@ export interface UploadFieldProps {
   label?: string;
 }
 
+function isFileInput(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): e is ChangeEvent<HTMLInputElement> {
+  const files = (e.target as any).files;
+  console.log(files);
+  return typeof files !== 'undefined';
+}
+
 function UploadField({ accept, name, label }: UploadFieldProps) {
+  const formikContext = useContext(FormikContext);
+  const onChange: InputProps['onChange'] = (e) => {
+    if (formikContext && isFileInput(e)) {
+      console.log(e.target.files![0])
+      formikContext.setFieldValue(name, e.target.files![0]);
+    }
+  };
   return (
     <Box>
-      <input
-        name= {name}
-        accept={accept}
-        multiple
+      <Input
+        inputProps={{
+          accept,
+        }}
+        name={name}
         type="file"
+        onChange={onChange}
       />
     </Box>
   );
@@ -40,7 +60,7 @@ export default function Form(props: Props) {
         />
       </Grid>
       <Grid item sm={12}>
-        <UploadField name="file" accept="jpg/* | jpeg/* | webp/* | png/* | gif/* | bmp/* | pdf/* | zip/*" />
+        <UploadField name="file" accept="image/*,.zip" />
       </Grid>
       <Grid item>
         <Typography>
@@ -51,7 +71,7 @@ export default function Form(props: Props) {
         </Typography>
       </Grid>
       <Grid item sm={12}>
-        <UploadField name="emailFile" accept="eml/*" />
+        <UploadField name="mailFile" accept=".eml" />
       </Grid>
       <Grid item>
         <Typography>

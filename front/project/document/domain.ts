@@ -23,7 +23,8 @@ export interface DocumentVO {
   note?: string; // 비고
 }
 
-export interface DocumentShort extends DocumentVO{
+export interface DocumentShort
+  extends DocumentVO {
   type: DocumentType;
   mailFileId?: number;
   createdAt: Date; // 등록 일시
@@ -31,14 +32,14 @@ export interface DocumentShort extends DocumentVO{
 }
 
 export const initialDocumentVO: FormikPartial<DocumentVO> = {
-  id: '',
-  code: '',
+  id:        '',
+  code:      '',
   createdBy: '',
   recipient: '',
-  file: '',
-  mailFile: '',
-  note: '',
-}
+  file:      '',
+  mailFile:  '',
+  note:      '',
+};
 
 /**
  * 자료 타입
@@ -59,7 +60,19 @@ export enum DocumentType {
    * 형상비 검토 자료
    */
   BUILDING = 'BUILDING',
+}
 
+export function documentTypeName(type: DocumentType) {
+  switch (type) {
+    case DocumentType.RECEIVED:
+      return '받은 자료';
+    case DocumentType.SENT:
+      return '보낸 자료';
+    case DocumentType.BUILDING:
+      return '형상비 검토 자료';
+    default:
+      return '-';
+  }
 }
 
 export const documentTypeList: DocumentType[] = [
