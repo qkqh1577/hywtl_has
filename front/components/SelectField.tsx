@@ -192,6 +192,7 @@ export default function SelectField(props: SelectFieldProps) {
       sx:        {
         height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
+        fontFamily:           'Noto Sans KR',
         color:                ColorPalette._252627,
         border:               variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
         borderBottom:         `1px solid ${ColorPalette._e4e9f2}`,

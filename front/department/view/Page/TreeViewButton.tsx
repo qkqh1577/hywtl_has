@@ -6,7 +6,7 @@ export default function () {
 
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/department-tree');
+    navigate('/admin/department-tree');
   };
 
   return (

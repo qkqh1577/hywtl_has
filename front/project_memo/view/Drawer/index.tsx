@@ -6,6 +6,7 @@ import {
 import IconButton from 'components/IconButton';
 import { ArrowLeft as LeftIcon } from '@mui/icons-material';
 import Fade from 'components/Fade';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   form: React.ReactNode;
@@ -16,19 +17,19 @@ interface Props {
 }
 
 export default function ProjectMemoDrawer(props: Props) {
-
+  const closedWidth = 42;
   return (
     <>
       <Box sx={{
         position:        'absolute',
-        width:           '40px',
+        width:           `${closedWidth}px`,
         right:           0,
-        top:             '64px',
-        minHeight:       '50px',
+        top:             '50px',
         display:         'flex',
         justifyContent:  'center',
-        alignItems:      'flex-start',
         backgroundColor: 'transparent',
+        padding:         '15px 0',
+        alignItems:      'center',
         zIndex:          (theme) => theme.zIndex.drawer + 1,
       }}>
         <Fade
@@ -42,7 +43,8 @@ export default function ProjectMemoDrawer(props: Props) {
               display:         'flex',
               width:           '100%',
               justifyContent:  'center',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              paddingRight:    '10px',
             }}>
               <IconButton
                 children={<LeftIcon />}
@@ -54,7 +56,14 @@ export default function ProjectMemoDrawer(props: Props) {
           }
         />
       </Box>
-      <Drawer open={props.open} direction="right" openedWidth={320} closedWidth={40}>
+      <Drawer
+        open={props.open}
+        direction="right"
+        openedWidth={310}
+        closedWidth={closedWidth}
+        sx={{
+          backgroundColor: ColorPalette._f1f5fc,
+        }}>
         <Box sx={{
           display:         'flex',
           width:           '100%',
@@ -62,6 +71,13 @@ export default function ProjectMemoDrawer(props: Props) {
           backgroundColor: props.open ? 'inherit' : 'transparent',
         }}>
           {props.form}
+          <hr style={{
+            borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
+            width:        '100%',
+            margin:       '15px 10px',
+            padding:      0,
+          }}
+          />
           {props.filter}
           {props.list}
         </Box>

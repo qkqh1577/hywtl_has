@@ -22,8 +22,8 @@ export default function IconButton({ children, onClick, tooltip, disabled, size 
         fontSize:        '11px',
         width:           size ?? '22px',
         height:          size ?? '22px',
-        color:           ColorPalette.White,
-        backgroundColor: ColorPalette.Blue['2'],
+        color:           ColorPalette._fff,
+        backgroundColor: ColorPalette._4c9eeb,
         marginLeft:      '10px'
       }}
       disabled={disabled}

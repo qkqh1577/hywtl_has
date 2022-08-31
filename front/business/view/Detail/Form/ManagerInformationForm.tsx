@@ -21,6 +21,7 @@ import {
   FormikContextType
 } from 'formik';
 import useDialog from 'components/Dialog';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
   const { error } = useDialog();
@@ -58,7 +59,7 @@ export default function () {
             width:           '100%',
             backgroundColor: manager.status === BusinessManagerStatus.RESIGNATION ? '#eee' : 'inherit',
             padding:         '12px 0',
-            border:          '1px solid #0000001f',
+            border:          `1px solid ${ColorPalette._e4e9f2}`,
             margin:          '12px 0'
           }}>
 

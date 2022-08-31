@@ -64,7 +64,7 @@ export default function ({ page }: Props) {
               <TableRow hover role="checkbox" key={item.id}>
                 <TableCell>{no}</TableCell>
                 <TableCell>
-                  <Link to={`/user/${item.id}`}>
+                  <Link to={`/admin/user-management/${item.id}`}>
                     {item.username}
                   </Link>
                 </TableCell>

@@ -24,7 +24,7 @@ function OrderModalButton({
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/estimate/template/add');
+    navigate('/admin/estimate/template-management/add');
   };
   return (
     <Button

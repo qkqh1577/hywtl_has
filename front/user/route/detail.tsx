@@ -77,7 +77,7 @@ function Element() {
 }
 
 const userDetailRoute: AppRoute = {
-  path:    '/user-management/:id',
+  path:    '/admin/user-management/:id',
   element: <Element />
 };
 

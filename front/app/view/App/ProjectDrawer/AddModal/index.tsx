@@ -18,6 +18,7 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectAddParameter } from 'project/parameter';
 import { FormikProvider } from 'formik';
 import { FormikPartial } from 'type/Form';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface AddModalProps
   extends FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
@@ -106,7 +107,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
             display: 'flex',
             width:   '40%',
             height:  'calc(100% - 40px)',
-            border:  '1px solid #0000001f',
+            border:  `1px solid ${ColorPalette._e4e9f2}`,
           }}>
             <Grid container spacing={2}>
               <Grid item sm={12}>

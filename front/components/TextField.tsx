@@ -132,15 +132,16 @@ export default function TextField(props: TextFieldProps) {
 
   const inputProps: MuiTextFieldProps['inputProps'] = {
     style: {
-      padding:         '0 10px',
-      height:          mappingByShape('32px', '24px', '40px'),
+      fontFamily:      'Noto Sans KR',
+      padding:         `${props.multiline ? 10 : 0}px 10px`,
+      height:          props.multiline ? '80px' : mappingByShape('32px', '24px', '40px'),
       fontSize:        mappingByShape('13px', '11px', '13px'),
       color:           ColorPalette._252627,
       border:          variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
       borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
       borderRadius:    variant === 'outlined' ? '5px' : '0',
       backgroundColor: ColorPalette._fff,
-    }
+    },
   };
 
   useEffect(() => {
@@ -190,6 +191,14 @@ export default function TextField(props: TextFieldProps) {
     },
   };
 
+  const sx = props.multiline ? {
+    ...props.sx,
+    backgroundColor:               ColorPalette._fff,
+    '& > .MuiInputBase-multiline': {
+      padding: 0,
+    }
+  } : props.sx;
+
 
   if (!labelProps?.disableLabel) {
 
@@ -226,6 +235,7 @@ export default function TextField(props: TextFieldProps) {
           <FieldView
             {...restProps}
             {...fieldProps}
+            sx={sx}
           />
         </Box>
       </Box>
@@ -248,6 +258,7 @@ export default function TextField(props: TextFieldProps) {
         <FieldView
           {...restProps}
           {...fieldProps}
+          sx={sx}
         />
       </Box>
     </Box>

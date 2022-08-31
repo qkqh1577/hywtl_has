@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import Fade from 'components/Fade';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   openedWidth?: number;
@@ -25,8 +26,8 @@ export default function Drawer(props: Props) {
         right:       props.direction === 'right' ? 0 : 'inherit',
         whiteSpace:  'nowrap',
         border:      'none',
-        borderLeft:  props.direction === 'right' ? '1px solid #0000001f' : 'none',
-        borderRight: props.direction !== 'left' ? '1px solid #0000001f' : 'none',
+        borderLeft:  props.direction === 'right' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
+        borderRight: props.direction !== 'right' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
         width:       `${props.openedWidth ?? 260}px`,
         paddingTop:  '50px',
         transition:  theme.transitions.create('width', {

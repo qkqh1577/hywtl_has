@@ -38,6 +38,7 @@ import {
   faStar,
   faTrash,
   faXmark,
+  faPen,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -56,6 +57,7 @@ library.add(
   faStar,
   faTrash,
   faXmark,
+  faPen,
 );
 
 const render = () => {

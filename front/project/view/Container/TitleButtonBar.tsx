@@ -10,6 +10,7 @@ export default function ProjectContainerTitleButtonBar() {
       width:          '100%',
       display:        'flex',
       justifyContent: 'flex-end',
+      alignItems:     'center',
     }}>
       <FontAwesomeIcon
         icon="trash"

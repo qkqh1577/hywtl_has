@@ -11,6 +11,7 @@ import {
   InvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
+import { ColorPalette } from 'app/view/App/theme';
 
 export interface BusinessFormProps
   extends RegistrationNumberCheckButtonProps {
@@ -27,7 +28,7 @@ function SpaceBox(props: {
       display:      'flex',
       width:        '100%',
       marginBottom: '20px',
-      border:       '1px solid #0000001f'
+      border:       `1px solid ${ColorPalette._e4e9f2}`
     }}
       children={props.children}
     />
