@@ -75,17 +75,20 @@ export default function ({ list: p, openMenu: open, onRowClick, searchFormRef }:
             textAlign:       'center',
             fontSize:        '12px',
             height:          '36px',
-            padding:         '0 10px',
             backgroundColor: 'transparent',
             borderLeft:      `1px solid ${ColorPalette.Blue['7']}`,
             borderTop:       `1px solid ${ColorPalette.Blue['7']}`,
             borderBottom:    'none',
             color:           ColorPalette.DarkGray,
           },
+          '& td':                                        {
+            padding: '0 10px',
+          },
           '& th':                                        {
             fontWeight:      'bold',
             borderBottom:    `5px solid ${ColorPalette.Blue['7']}`,
             backgroundColor: ColorPalette._fff,
+            padding:         0,
           },
           '& th:first-of-type':                          {
             borderTopLeftRadius: '5px',

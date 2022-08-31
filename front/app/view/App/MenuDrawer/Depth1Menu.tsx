@@ -1,8 +1,9 @@
 import {
   Box,
+  Collapse,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { ColorPalette } from 'app/view/App/theme';
 import { Menu } from 'app/domain/menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +28,8 @@ export default function Depth1Menu(props: Props) {
       navigate(props.path);
     }
   };
+  const [open, setOpen] = useState<boolean>(true);
+  const active = props.path && !props.children && pathname.startsWith(props.path);
 
   return (
     <Box
@@ -41,12 +44,13 @@ export default function Depth1Menu(props: Props) {
         cursor:       props.path ? 'pointer' : 'default'
       }}>
       <Box sx={{
-        display:        'flex',
-        flexWrap:       'nowrap',
-        width:          '100%',
-        height:         '40px',
-        justifyContent: 'space-between',
-        alignItems:     'center',
+        display:         'flex',
+        flexWrap:        'nowrap',
+        width:           '100%',
+        height:          '40px',
+        justifyContent:  'space-between',
+        alignItems:      'center',
+        backgroundColor: active ? ColorPalette._4c9eeb : 'transparent',
       }}>
         <Box sx={{
           display:    'flex',
@@ -73,28 +77,38 @@ export default function Depth1Menu(props: Props) {
         {props.children && (
           <FontAwesomeIcon
             icon="angle-up"
+            onClick={() => {
+              setOpen(!open);
+            }}
             style={{
-              color:    ColorPalette._697183,
-              padding:  '0 10px',
-              fontSize: '13px',
+              cursor:     'pointer',
+              transition: 'transform .2s',
+              transform:  open ? 'rotate(0deg)' : 'rotate(180deg)',
+              color:      ColorPalette._697183,
+              padding:    '0 10px',
+              fontSize:   '13px',
             }}
           />
         )}
       </Box>
       {props.children && (
-        <Box
-          sx={{
-            display:         'flex',
-            width:           '100%',
-            flexWrap:        'wrap',
-            backgroundColor: ColorPalette._242e43,
-            paddingLeft:     '30px',
-            alignContent:    'flex-start',
-          }}>
-          {props.children.map(child => (
-            <Depth2Menu key={child.title} {...child} />
-          ))}
-        </Box>
+        <Collapse in={open}>
+          <Box
+            sx={{
+              display:         'flex',
+              width:           '100%',
+              flexWrap:        'wrap',
+              backgroundColor: ColorPalette._242e43,
+              paddingLeft:     '30px',
+              marginTop:       '5px',
+              alignContent:    'flex-start',
+            }}>
+            {props.children.map(child => (
+              <Depth2Menu key={child.title} {...child} />
+            ))}
+          </Box>
+        </Collapse>
+
       )}
     </Box>
   );
