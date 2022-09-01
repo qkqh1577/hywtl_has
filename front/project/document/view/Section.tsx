@@ -116,7 +116,9 @@ export default function ProjectDocumentSection(props: Props) {
                     {item.code}
                   </Button>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{
+                  display: 'flex',
+                }}>
                   {item.file.filename}
                   ({toReadableSize(item.file.size)})
                   <IconButton
