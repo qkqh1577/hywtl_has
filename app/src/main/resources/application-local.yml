@@ -1,9 +1,9 @@
 # TODO: customize this file
 spring:
     datasource:
-        url: jdbc:mariadb://localhost:3304/hywtl_has_api # TODO: fix here
-        username: hywtl_has # TODO: fix here
-        password: hywtl_has7698 # TODO: fix here
+        url: # TODO: fix here
+        username: # TODO: fix here
+        password: # TODO: fix here
     jpa:
         show-sql: true
         hibernate:
@@ -22,9 +22,9 @@ application:
         auth: true
         starttls: true
         name: 발송자
-        dev-receiver: geun@howoocast.com # TODO: fix here
+        dev-receiver: # TODO: fix here
     file:
-        root-path: C:/Users/lcg/upload-file # TODO: fix here
+        root-path: # TODO: fix here
 
 logging:
     level:
