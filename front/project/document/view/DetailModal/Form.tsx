@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Button,
   Grid,
+  Typography,
 } from '@mui/material';
 import TextField from 'components/TextField';
 import {
@@ -28,7 +29,9 @@ function DownloadButton({ type }: ButtonProps) {
         }
       }
       else {
-        window.open(`/file-items/${mailFileId}`, '_blank');
+        if (mailFileId) {
+          window.open(`/file-items/${mailFileId}`, '_blank');
+        }
       }
     }
   };
@@ -86,12 +89,32 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
         )}
       </Grid>
       <Grid item sm={12}>
-        <TextField
-          name="mailFile.filename"
-          label="메일파일"
-          endAdornment={edit ? <Button>파일선택</Button> : <DownloadButton type={ButtonType.MAIL_FILE_BUTTON} />}
-        />
+        {edit && (
+          <TextField
+            status={FieldStatus.ReadOnly}
+            name="mailFile.filename"
+            label="메일파일"
+            endAdornment={<Button>파일선택</Button>}
+          />
+        )}
+        {!edit && (
+          <TextField
+            name="mailFile.filename"
+            label="메일파일"
+            endAdornment={<DownloadButton type={ButtonType.MAIL_FILE_BUTTON} />}
+          />
+        )}
       </Grid>
+      {edit && (
+        <Grid item>
+          <Typography>
+            * 파일 크기는 각 10MB를 초과 할 수 없습니다.
+          </Typography>
+          <Typography>
+            * 등록 가능한 파일양식: eml
+          </Typography>
+        </Grid>
+      )}
       <Grid item sm={12}>
         <TextField name="note" label="비고" />
       </Grid>
