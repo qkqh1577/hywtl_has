@@ -2,7 +2,7 @@ import {
   BusinessId,
   BusinessShort,
   BusinessVO,
-  InvolvedProjectVO,
+  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from './domain';
 import apiClient from 'services/api';
@@ -26,7 +26,7 @@ class BusinessApi {
     return data;
   }
 
-  async getInvolvedProjectList(id: BusinessId): Promise<InvolvedProjectVO[]> {
+  async getInvolvedProjectList(id: BusinessId): Promise<BusinessInvolvedProjectVO[]> {
     const { data } = await apiClient.get(`/business/${id}/involved-project`);
     return data;
   }

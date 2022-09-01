@@ -45,6 +45,11 @@ public class BusinessManager extends CustomEntity {
     private String jobTitle;
 
     /**
+     * 소속
+     */
+    private String department;
+
+    /**
      * 핸드폰
      */
     private String mobilePhone;
@@ -63,7 +68,7 @@ public class BusinessManager extends CustomEntity {
      * 메타
      */
     @ElementCollection
-    private List<String> meta; //
+    private List<String> meta;
 
     /**
      * 상태

@@ -13,6 +13,7 @@ public class BusinessManagerView {
     private String name;
     private String jobTitle;
     private String mobilePhone;
+    private String department;
     private String officePhone;
     private String email;
     private List<String> meta;
@@ -26,6 +27,7 @@ public class BusinessManagerView {
         target.id = businessManager.getId();
         target.name = businessManager.getName();
         target.jobTitle = businessManager.getJobTitle();
+        target.department = businessManager.getDepartment();
         target.mobilePhone = businessManager.getMobilePhone();
         target.officePhone = businessManager.getOfficePhone();
         target.email = businessManager.getEmail();

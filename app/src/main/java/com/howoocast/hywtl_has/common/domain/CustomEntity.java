@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @MappedSuperclass
@@ -49,5 +48,6 @@ public abstract class CustomEntity {
     public void modifiedAt() {
         this.modifiedAt = LocalDateTime.now();
     }
+
 
 }

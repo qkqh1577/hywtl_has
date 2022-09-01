@@ -28,12 +28,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "user_invitation")
+@Table(name = UserInvitation.KEY)
 @Where(clause = "deleted_at is null")
 @SQLDelete(sql = "update user_invitation set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserInvitation extends CustomEntity {
+
+    public static final String KEY = "user_invitation";
 
     @NotBlank
     @Column(nullable = false, updatable = false)

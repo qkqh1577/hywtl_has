@@ -46,6 +46,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
           titleRightComponent,
           modals,
         } = props;
+
   return (
     <Paper sx={{
       width:    '100%',
@@ -134,18 +135,14 @@ function PageContent(props: PageLayoutProps) {
         <Box
           children={props.body}
           sx={{
-            display: 'flex',
-            width:   '100%',
-            flexWrap: 'wrap'
+            width: '100%',
           }}
         />
         {props.footer && (
           <Box
             children={props.footer}
             sx={{
-              display:  'flex',
-              width:    '100%',
-              flexWrap: 'wrap'
+              width: '100%',
             }}
           />
         )}

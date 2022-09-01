@@ -8,14 +8,14 @@ import { RegistrationNumberCheckButtonProps } from 'business/view/Detail/Form/Re
 import InvolvedProjectInformationList from 'business/view/Detail/Form/InvolvedProjectInformationList';
 import RivalProjectInformationList from 'business/view/Detail/Form/RivalProjectInformationList';
 import {
-  InvolvedProjectVO,
+  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import { ColorPalette } from 'app/view/App/theme';
 
 export interface BusinessFormProps
   extends RegistrationNumberCheckButtonProps {
-  involvedProjectList?: InvolvedProjectVO[];
+  involvedProjectList?: BusinessInvolvedProjectVO[];
   businessName: string;
   rivalProjectList?: RivalProjectVO[];
 }

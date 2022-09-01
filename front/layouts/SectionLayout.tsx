@@ -76,7 +76,7 @@ export default function SectionLayout(props: SectionLayoutProps) {
           display:    'flex',
           flexWrap:   'nowrap',
           height:     '100%',
-          alignItems: 'center',
+          alignItems: 'center'
         }}>
           {titleRightComponent}
           {modifiedAt && (
@@ -89,17 +89,15 @@ export default function SectionLayout(props: SectionLayoutProps) {
           )}
         </Box>
       </Box>
-      <Box sx={{
-        display:  'flex',
-        flexWrap: 'wrap',
-        width:    '100%',
+      <Collapse in={open} collapsedSize="1px" sx={{
+        width: '100%'
       }}>
-        <Collapse
-          in={open}
-          collapsedSize="1px"
-          sx={{
-            width: '100%',
-          }}>
+        <Box sx={{
+          display:  'flex',
+          flexWrap: 'nowrap',
+          width:    '100%',
+        }}>
+
           <Box
             children={props.children}
             sx={{
@@ -110,8 +108,8 @@ export default function SectionLayout(props: SectionLayoutProps) {
               borderRadius: '5px',
             }}
           />
-        </Collapse>
-      </Box>
+        </Box>
+      </Collapse>
       {modals}
     </Box>
   );

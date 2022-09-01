@@ -96,11 +96,11 @@ export const initialBusiness: BusinessVO = {
 
 /* 참여 or 경쟁 프로젝트 정보 */
 
-export interface InvolvedProjectVO {
+export interface BusinessInvolvedProjectVO {
   id?: ProjectId;
   name: string;
   code: string;
-  involvedType: InvolvedType;
+  involvedType: BusinessInvolvedType;
   manager: string;
   beginDate: Date;
   closeDate: Date;
@@ -116,7 +116,7 @@ export interface RivalProjectVO {
 }
 
 /** 관계사 유형 */
-export enum InvolvedType {
+export enum BusinessInvolvedType {
   /** 발주처 */
   ORDERER       = 'ORDERER',
   /** 시공사 */
@@ -131,28 +131,28 @@ export enum InvolvedType {
   RECOMMENDER   = 'RECOMMENDER',
 }
 
-export const involvedTypeList: InvolvedType[] = [
-  InvolvedType.ORDERER,
-  InvolvedType.BUILDER,
-  InvolvedType.ARCHITECTURAL,
-  InvolvedType.STRUCTURAL,
-  InvolvedType.ENFORCER,
-  InvolvedType.RECOMMENDER,
+export const businessInvolvedTypeList: BusinessInvolvedType[] = [
+  BusinessInvolvedType.ORDERER,
+  BusinessInvolvedType.BUILDER,
+  BusinessInvolvedType.ARCHITECTURAL,
+  BusinessInvolvedType.STRUCTURAL,
+  BusinessInvolvedType.ENFORCER,
+  BusinessInvolvedType.RECOMMENDER,
 ];
 
-export function involvedTypeName(type: InvolvedType | '') {
+export function businessInvolvedTypeName(type: BusinessInvolvedType | '') {
   switch (type) {
-    case InvolvedType.ORDERER:
+    case BusinessInvolvedType.ORDERER:
       return '발주처';
-    case InvolvedType.BUILDER:
+    case BusinessInvolvedType.BUILDER:
       return '시공사';
-    case InvolvedType.ARCHITECTURAL:
+    case BusinessInvolvedType.ARCHITECTURAL:
       return '건축설계사무소';
-    case InvolvedType.STRUCTURAL:
+    case BusinessInvolvedType.STRUCTURAL:
       return '구조설계사무소';
-    case InvolvedType.ENFORCER:
+    case BusinessInvolvedType.ENFORCER:
       return '시행사';
-    case InvolvedType.RECOMMENDER:
+    case BusinessInvolvedType.RECOMMENDER:
       return '소개자';
     default:
       return '-';

@@ -24,12 +24,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Getter
 @Entity
-@Table(name = "password_reset")
+@Table(name = PasswordReset.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update password_reset set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + PasswordReset.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PasswordReset extends CustomEntity {
+
+    public static final String KEY = "password_reset";
 
     @NotBlank
     @Column(nullable = false, updatable = false)
