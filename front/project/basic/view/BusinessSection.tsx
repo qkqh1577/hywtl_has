@@ -64,7 +64,9 @@ export default function ProjectBasicBusinessSection(props: Props) {
           <TableContainer>
             <Table sx={{
               border: 'none',
-            }}>
+            }}
+
+            >
               <TableHead>
                 <TableRow>
                   <TableCell />
@@ -82,7 +84,9 @@ export default function ProjectBasicBusinessSection(props: Props) {
                   </TableRow>
                 )}
                 {props.list && props.list.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} onClick={() => {
+                    // TODO: 상세 모달
+                  }}>
                     <TableCell>
                       <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
                     </TableCell>
