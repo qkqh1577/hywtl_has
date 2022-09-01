@@ -55,9 +55,9 @@ function Element() {
         buildingList={buildingList}
         onAddModalOpen={onAddModalOpen}
         onDetailModalOpen={onDetailModalOpen}
-        addModal={<ProjectDocumentAddModalRoute />}
-        detailModal={<ProjectDocumentDetailModalRoute />}
       />
+      <ProjectDocumentAddModalRoute />
+      <ProjectDocumentDetailModalRoute />
     </ProjectContainer>
   );
 }

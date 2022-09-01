@@ -205,32 +205,32 @@ export default function TextField(props: TextFieldProps) {
     return (
       <Box sx={{
         display:        'flex',
-        flexWrap:       'nowrap',
         width:          '100%',
-        flex:           1,
+        flexWrap:       labelProps?.position === 'top' ? 'wrap' : 'nowrap',
         justifyContent: 'space-between',
-        height:         '100%',
+        alignContent: 'center',
       }}>
         <Box sx={{
-          display:    'flex',
-          flexWrap:   'nowrap',
-          height:     '100%',
-          alignItems: 'center',
+          display:      'flex',
+          alignContent: 'center',
+          height:       labelProps?.position === 'top' ? 'auto' : '100%',
+          alignItems:   'center',
+          flexWrap:     'nowrap',
         }}>
           <Typography sx={{
             fontSize:  '13px',
             color:     ColorPalette.Grey['1'],
             wordBreak: 'keep-all',
-            width:     '110px'
+            width:     labelProps?.position === 'top' ? '100%' : '110px',
           }}>
             <RequiredMark required={edit && required} text={label} />
           </Typography>
         </Box>
         <Box sx={{
           display:  'flex',
-          height:   '100%',
+          height:   labelProps?.position === 'top' ? 'auto' : '100%',
           flexWrap: 'nowrap',
-          width:    'calc(100% - 130px)',
+          width:    labelProps?.position === 'top' ? '100%' : 'calc(100% - 130px)',
         }}>
           <FieldView
             {...restProps}

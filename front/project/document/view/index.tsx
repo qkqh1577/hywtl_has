@@ -13,8 +13,6 @@ import {
 } from 'project/document/route/document';
 
 interface Props {
-  addModal: React.ReactNode;
-  detailModal: React.ReactNode;
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
   receivedList: ProjectDocumentShort[] | undefined;
@@ -27,16 +25,12 @@ export default function ProjectDocument(props: Props) {
           receivedList,
           sentList,
           buildingList,
-          addModal,
           onAddModalOpen,
-          detailModal,
           onDetailModalOpen,
         } = props;
   return (
     <Box sx={{
-      width:    '100%',
-      display:  'flex',
-      flexWrap: 'wrap',
+      width: '100%'
     }}>
       <ProjectDocumentSection
         type={ProjectDocumentType.RECEIVED}
@@ -56,8 +50,6 @@ export default function ProjectDocument(props: Props) {
         onAddModalOpen={onAddModalOpen}
         onDetailModalOpen={onDetailModalOpen}
       />
-      {addModal}
-      {detailModal}
     </Box>
   );
 };

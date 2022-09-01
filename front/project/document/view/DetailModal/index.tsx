@@ -6,8 +6,6 @@ import Form from 'project/document/view/DetailModal/Form';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { FormikProvider } from 'formik';
 import { DetailModalFormik } from 'project/document/route/detailModal';
-import DetailFormFooter from 'layouts/DetailFormFooter';
-import { ProjectDocumentId } from 'project/document/domain';
 import ProjectDocumentUpdateModalButtonBlock from 'project/document/view/DetailModal/ButtonBlock';
 
 interface Props
@@ -27,8 +25,12 @@ export default function ProjectDocumentDetailModal(props: Props) {
   const onEdit = () => {
     formik.setFieldValue('edit', true);
   };
+  const onSubmit = () => {
+    formik.handleSubmit();
+  };
   return (
     <ModalLayout
+      width="40vw"
       title={edit ? '자료 수정' : '자료 상세'}
       open={open}
       onClose={onClose}
@@ -40,19 +42,25 @@ export default function ProjectDocumentDetailModal(props: Props) {
         }}>
           <FormikProvider value={formik}>
             <Form edit={edit} />
-            {!edit && (
-
-              <ProjectDocumentDetailModalButtonBlock
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onClose={onClose}
-              />
-            )}
-            {edit && (
-              <ProjectDocumentUpdateModalButtonBlock  onClose={onClose}/>
-            )}
           </FormikProvider>
         </Box>
+      }
+      footer={
+        <>
+          {!edit && (
+            <ProjectDocumentDetailModalButtonBlock
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onClose={onClose}
+            />
+          )}
+          {edit && (
+            <ProjectDocumentUpdateModalButtonBlock
+              onSubmit={onSubmit}
+              onClose={onClose}
+            />
+          )}
+        </>
       }
     />
   );

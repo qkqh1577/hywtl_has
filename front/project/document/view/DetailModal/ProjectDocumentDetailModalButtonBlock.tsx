@@ -1,9 +1,8 @@
 import React from 'react';
 import {
   Box,
-  Button
 } from '@mui/material';
-import { ProjectDocumentId } from 'project/document/domain';
+import Button from 'layouts/Button';
 
 interface Props {
   onDelete: () => void;
@@ -23,9 +22,25 @@ export default function ProjectDocumentDetailModalButtonBlock({
       width:          '100%',
       justifyContent: 'center',
     }}>
-      <Button onClick={onDelete}>삭제</Button>
-      <Button onClick={onEdit}>수정</Button>
-      <Button onClick={onClose}>닫기</Button>
+      <Button
+        shape="basic2"
+        onClick={onDelete}
+        sx={{
+          marginRight: '10px',
+        }}>
+        삭제
+      </Button>
+      <Button
+        shape="basic1"
+        onClick={onEdit}
+        sx={{
+          marginRight: '10px',
+        }}>
+        수정
+      </Button>
+      <Button shape="basic3" onClick={onClose}>
+        닫기
+      </Button>
     </Box>
   );
 };
