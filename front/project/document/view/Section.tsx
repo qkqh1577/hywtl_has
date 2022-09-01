@@ -45,7 +45,6 @@ function AddButton(props: Props) {
 }
 
 export default function ProjectDocumentSection(props: Props) {
-
   const modifiedAt = (!props.list || props.list.length === 0)
     ? undefined
     : props.list.map(item => dayjs(item.modifiedAt ? item.modifiedAt : item.createdAt))
@@ -108,12 +107,12 @@ export default function ProjectDocumentSection(props: Props) {
                       '&.MuiButtonBase-root:hover': {
                         bgcolor: 'transparent'
                       },
-                      margin: 0,
-                      padding: 0,
+                      margin:                       0,
+                      padding:                      0,
                     }}
                     onClick={() => {
-                    props.onDetailModalOpen(item.id);
-                  }}>
+                      props.onDetailModalOpen(item.id);
+                    }}>
                     {item.code}
                   </Button>
                 </TableCell>
@@ -129,7 +128,21 @@ export default function ProjectDocumentSection(props: Props) {
 
                 </TableCell>
                 <TableCell>{item.recipient}</TableCell>
-                <TableCell>{item.mailFileId}</TableCell>
+                <TableCell>
+                  {item.mailFileId && (<IconButton
+                    children={<Download />}
+                    onClick={() => {
+                      window.open(`/file-items/${item.mailFileId}`, '_blank');
+                    }}
+                  />)}
+                  {!item.mailFileId && (<IconButton
+                    disabled
+                    children={<Download />}
+                    onClick={() => {
+                      window.open(`/file-items/${item.mailFileId}`, '_blank');
+                    }}
+                  />)}
+                </TableCell>
                 <TableCell>{item.note}</TableCell>
                 <TableCell>
                   <DateFormat date={item.createdAt} />
