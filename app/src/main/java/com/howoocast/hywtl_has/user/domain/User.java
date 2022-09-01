@@ -107,6 +107,39 @@ public class User extends CustomEntity {
     @OneToOne(mappedBy = "user")
     private Personnel personnel;
 
+    /**
+     *  영문명
+     */
+    private String englishName;
+
+    /**
+     *  생년월일
+     */
+    private LocalDateTime birthDate;
+    /**
+     *  성별
+     */
+    private String sex;
+    /**
+     *  핸드폰
+     */
+    private String mobilePhone;
+    /**
+     *  개인 이메일
+     */
+    private String privateEmail;
+    /**
+     *  비상 연락처
+     */
+    private String emergencyPhone;
+    /**
+     *  비상연락처 사원과의 관계
+     */
+    private String relationship;
+    /**
+     *  주소
+     */
+    private String address;
     protected User(
         String username,
         String password,
