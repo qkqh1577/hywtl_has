@@ -2,20 +2,14 @@ import {
   Box,
   Button
 } from '@mui/material';
-import React, { useContext } from 'react';
-import { FormikContext } from 'formik';
+import React from 'react';
 
 interface Props {
+  onSubmit: () => void;
   onClose: () => void;
 }
 
 export default function ProjectDocumentUpdateModalButtonBlock(props: Props) {
-
-  const formikContext = useContext(FormikContext);
-
-  const onSubmit = () => {
-    formikContext?.handleSubmit();
-  };
   return (
     <Box sx={{
       display:        'flex',
@@ -23,7 +17,7 @@ export default function ProjectDocumentUpdateModalButtonBlock(props: Props) {
       width:          '100%',
       justifyContent: 'center',
     }}>
-      <Button onClick={onSubmit}>저장</Button>
+      <Button onClick={props.onSubmit}>저장</Button>
       <Button onClick={props.onClose}>취소</Button>
     </Box>
   );

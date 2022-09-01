@@ -6,15 +6,13 @@ import {
 } from 'project/document/domain';
 import {
   Box,
-  Button,
-  Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  Typography
 } from '@mui/material';
-import Title from 'components/Title';
 import DateFormat from 'components/DateFormat';
 import dayjs from 'dayjs';
 import {
@@ -23,9 +21,11 @@ import {
 } from 'project/document/route/document';
 import { toReadableSize } from 'file-item';
 import IconButton from 'components/IconButton';
-import {
-  Download
-} from '@mui/icons-material';
+import SectionLayout from 'layouts/SectionLayout';
+import { Table } from 'layouts/Table';
+import { ColorPalette } from 'app/view/App/theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from 'layouts/Button';
 
 interface Props {
   type: ProjectDocumentType;
@@ -36,7 +36,7 @@ interface Props {
 
 function AddButton(props: Props) {
   return (
-    <Button onClick={() => {
+    <Button shape="basic1" onClick={() => {
       props.onAddModalOpen(props.type);
     }}>
       + 등록
@@ -52,26 +52,14 @@ export default function ProjectDocumentSection(props: Props) {
                     b
            ) => a.isAfter(b) ? a : b);
   return (
-    <Box sx={{
-      display:  'flex',
-      width:    '100%',
-      flexWrap: 'wrap',
-    }}>
-      <Title
-        title={projectDocumentTypeName(props.type)}
-        titleRightComponent={
-          <>
-            {modifiedAt && (
-              <>
-                최종수정일시
-                <DateFormat date={modifiedAt?.toDate()} format="YYYY-MM-DD HH:mm" />
-              </>
-            )}
-            <AddButton {...props} />
-          </>
-        }
-      />
-      <TableContainer>
+    <SectionLayout
+      title={projectDocumentTypeName(props.type)}
+      titleRightComponent={<AddButton {...props} />}
+      modifiedAt={modifiedAt?.toDate()}
+    >
+      <TableContainer sx={{
+        width: '100%'
+      }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -97,53 +85,48 @@ export default function ProjectDocumentSection(props: Props) {
               <TableRow key={item.id}>
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="text"
-                    disableElevation
-                    disableRipple
-                    size="medium"
-                    sx={{
-                      ml:                           1,
-                      '&.MuiButtonBase-root:hover': {
-                        bgcolor: 'transparent'
-                      },
-                      margin:                       0,
-                      padding:                      0,
-                    }}
+                  <Typography sx={{
+                    fontSize:   '11px',
+                    lineHeight: '16px',
+                    color:      ColorPalette._386dd6,
+                    cursor:     'pointer',
+                  }}
                     onClick={() => {
                       props.onDetailModalOpen(item.id);
-                    }}>
-                    {item.code}
-                  </Button>
-                </TableCell>
-                <TableCell sx={{
-                  display: 'flex',
-                }}>
-                  {item.file.filename}
-                  ({toReadableSize(item.file.size)})
-                  <IconButton
-                    children={<Download />}
-                    onClick={() => {
-                      window.open(`/file-items/${item.file.id}`, '_blank');
                     }}
+                    children={item.code}
                   />
-
+                </TableCell>
+                <TableCell>
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    justifyContent: 'center',
+                    alignItems:     'center'
+                  }}>
+                    {item.file.filename}
+                    ({toReadableSize(item.file.size)})
+                    <IconButton
+                      shape="square"
+                      children={<FontAwesomeIcon icon="download" />}
+                      onClick={() => {
+                        window.open(`/file-items/${item.file.id}`, '_blank');
+                      }}
+                    />
+                  </Box>
                 </TableCell>
                 <TableCell>{item.recipient}</TableCell>
                 <TableCell>
-                  {item.mailFileId && (<IconButton
-                    children={<Download />}
-                    onClick={() => {
-                      window.open(`/file-items/${item.mailFileId}`, '_blank');
-                    }}
-                  />)}
-                  {!item.mailFileId && (<IconButton
-                    disabled
-                    children={<Download />}
-                    onClick={() => {
-                      window.open(`/file-items/${item.mailFileId}`, '_blank');
-                    }}
-                  />)}
+                  {item.mailFileId && (
+                    <IconButton
+                      shape="square"
+                      children={<FontAwesomeIcon icon="download" />}
+                      onClick={() => {
+                        window.open(`/file-items/${item.mailFileId}`, '_blank');
+                      }}
+                    />
+                  )}
                 </TableCell>
                 <TableCell>{item.note}</TableCell>
                 <TableCell>
@@ -155,6 +138,7 @@ export default function ProjectDocumentSection(props: Props) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+    </SectionLayout>
+
   );
 }

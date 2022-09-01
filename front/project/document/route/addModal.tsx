@@ -19,6 +19,7 @@ import {
 import { ProjectId } from 'project/domain';
 import useId from 'services/useId';
 import useDialog from 'components/Dialog';
+import { FileItemView } from 'file-item';
 
 export default function ProjectDocumentAddModalRoute() {
 
@@ -55,9 +56,12 @@ export default function ProjectDocumentAddModalRoute() {
 
       add({
         values: {
-          ...values,
           projectId: ProjectId(projectId),
           type:      addModal,
+          file:      (values.file as unknown as FileItemView).multipartFile ?? '',
+          mailFile:  (values.mailFile as unknown as FileItemView).multipartFile ?? '',
+          recipient: values.recipient,
+          note:      values.note,
         },
         ...helper
       });

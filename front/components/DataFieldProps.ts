@@ -23,6 +23,7 @@ export type DataFieldValue = string | number;
 export interface LabelProps {
   disableLabel?: boolean;
   width?: number;
+  position?: 'left' | 'top';
 }
 
 export interface Option {

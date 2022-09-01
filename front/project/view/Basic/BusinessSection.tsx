@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
-import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
   Box,
   Grid
@@ -8,12 +7,11 @@ import {
 import Button from 'layouts/Button';
 import TextField from 'components/TextField';
 
-export default function ProjectBasicBusinessSection(props: FormikLayoutProps<any>) {
+export default function ProjectBasicBusinessSection() {
 
   return (
     <SectionLayout
       title="관계사"
-      formik={props.formik}
       titleRightComponent={
         <Button
           shape="basic1"

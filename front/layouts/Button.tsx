@@ -42,8 +42,8 @@ function Basic2Button(props: MuiButtonProps) {
         fontSize:        '13px',
         fontWeight:      'normal',
         padding:         '16px 0',
-        backGroundColor: ColorPalette.Blue['7'],
-        color:           ColorPalette.Blue['1'],
+        backgroundColor: `${ColorPalette._e4e9f2} !important`,
+        color:           ColorPalette._386dd6,
         borderRadius:    '5px',
         ...(props.sx ?? {})
       }}

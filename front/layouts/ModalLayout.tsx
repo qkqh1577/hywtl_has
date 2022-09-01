@@ -48,7 +48,6 @@ export default function ModalLayout({
         transform: 'translate(-50%, -50%)',
         width,
         maxWidth:  '1850px',
-        height:    '100%',
         maxHeight: '80vh',
         overflow:  'hidden',
         bgColor:   ColorPalette.Grey['2'],
@@ -101,6 +100,7 @@ export default function ModalLayout({
                 display:        'flex',
                 alignItems:     'center',
                 flex:           1,
+                paddingTop:     '20px',
               }}
               children={footer}
             />

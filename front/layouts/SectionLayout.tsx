@@ -1,38 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
+  Collapse,
   Typography,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  Form,
-  FormikProvider,
-} from 'formik';
-import { FormikLayoutProps } from 'layouts/PageLayout';
 import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'components/IconButton';
 
-export interface SectionLayoutProps<T>
-  extends FormikLayoutProps<T> {
+export interface SectionLayoutProps {
   title?: string;
   disableFold?: boolean;
   titleRightComponent?: React.ReactNode;
   modals?: JSX.Element | JSX.Element[];
   children: React.ReactNode;
+  modifiedAt?: Date | null;
 }
 
-export default function SectionLayout<T extends object>(props: SectionLayoutProps<T>) {
+export default function SectionLayout(props: SectionLayoutProps) {
 
   const {
           title,
           disableFold,
           titleRightComponent,
-          formik,
+          modifiedAt,
           modals
         } = props;
-  const shrink: boolean | undefined = (formik.values as any).shrink ?? undefined;
-  const modifiedAt: Date | null | undefined = (formik.values as any).modifiedAt ?? undefined;
+  const [open, setOpen] = useState<boolean>(true);
 
   return (
     <Box sx={{
@@ -46,11 +41,15 @@ export default function SectionLayout<T extends object>(props: SectionLayoutProp
         width:          '100%',
         display:        'flex',
         justifyContent: 'space-between',
-        paddingBottom:  '10px'
+        paddingBottom:  '10px',
+        height:         '100%',
+        alignItems:     'center'
       }}>
         <Box sx={{
-          display:  'flex',
-          flexWrap: 'nowrap'
+          display:    'flex',
+          flexWrap:   'nowrap',
+          height:     '100%',
+          alignItems: 'center'
         }}>
           <Typography sx={{
             fontSize:   '14px',
@@ -62,45 +61,56 @@ export default function SectionLayout<T extends object>(props: SectionLayoutProp
           </Typography>
           {!disableFold && (
             <IconButton
-              children={<FontAwesomeIcon icon={shrink ? 'angle-down' : 'angle-up'} />}
+              children={<FontAwesomeIcon icon="angle-up" />}
               onClick={() => {
-                formik.setFieldValue('shrink', !shrink);
+                setOpen(!open);
+              }}
+              sx={{
+                transition: 'transform .2s',
+                transform:  open ? 'rotate(0deg)' : 'rotate(180deg)',
               }}
             />
           )}
         </Box>
         <Box sx={{
-          display:  'flex',
-          flexWrap: 'nowrap'
+          display:    'flex',
+          flexWrap:   'nowrap',
+          height:     '100%',
+          alignItems: 'center',
         }}>
           {titleRightComponent}
-          <Typography fontSize="12px" fontWeight="bold" marginLeft="20px" marginRight="5px">최종수정일시</Typography>
-          <Typography fontSize="12px">
-            <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
-          </Typography>
+          {modifiedAt && (
+            <>
+              <Typography fontSize="12px" fontWeight="bold" marginLeft="20px" marginRight="5px">최종수정일시</Typography>
+              <Typography fontSize="12px">
+                <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
+              </Typography>
+            </>
+          )}
         </Box>
       </Box>
       <Box sx={{
         display:  'flex',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',
         width:    '100%',
       }}>
-        <FormikProvider value={props.formik}>
-          <Form style={{
-            width: '100%'
+        <Collapse
+          in={open}
+          collapsedSize="1px"
+          sx={{
+            width: '100%',
           }}>
-            <Box
-              children={props.children}
-              sx={{
-                display:      'flex',
-                width:        '100%',
-                padding:      '15px 20px',
-                border:       `1px solid ${ColorPalette.Blue['7']}`,
-                borderRadius: '5px',
-              }}
-            />
-          </Form>
-        </FormikProvider>
+          <Box
+            children={props.children}
+            sx={{
+              display:      'flex',
+              width:        '100%',
+              padding:      '15px 20px',
+              border:       `1px solid ${ColorPalette.Blue['7']}`,
+              borderRadius: '5px',
+            }}
+          />
+        </Collapse>
       </Box>
       {modals}
     </Box>

@@ -20,9 +20,11 @@ export default function ProjectDocumentAddModal(props: Props) {
           onClose,
           formik
         } = props;
+  const onSubmit = () => {formik.handleSubmit();};
   return (
     <ModalLayout
       title="자료 등록"
+      width="40vw"
       open={open}
       onClose={onClose}
       children={
@@ -33,11 +35,14 @@ export default function ProjectDocumentAddModal(props: Props) {
         }}>
           <FormikProvider value={formik}>
             <Form />
-            <ProjectDocumentModalButtonBlock
-              onClose={onClose}
-            />
           </FormikProvider>
         </Box>
+      }
+      footer={
+        <ProjectDocumentModalButtonBlock
+          onSubmit={onSubmit}
+          onClose={onClose}
+        />
       }
     />
   );

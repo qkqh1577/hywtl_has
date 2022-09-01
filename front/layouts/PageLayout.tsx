@@ -136,14 +136,16 @@ function PageContent(props: PageLayoutProps) {
           sx={{
             display: 'flex',
             width:   '100%',
+            flexWrap: 'wrap'
           }}
         />
         {props.footer && (
           <Box
             children={props.footer}
             sx={{
-              display: 'flex',
-              width:   '100%',
+              display:  'flex',
+              width:    '100%',
+              flexWrap: 'wrap'
             }}
           />
         )}
