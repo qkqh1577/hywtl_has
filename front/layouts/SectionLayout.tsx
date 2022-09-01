@@ -89,7 +89,9 @@ export default function SectionLayout(props: SectionLayoutProps) {
           )}
         </Box>
       </Box>
-      <Collapse in={open} collapsedSize="1px">
+      <Collapse in={open} collapsedSize="1px" sx={{
+        width: '100%'
+      }}>
         <Box sx={{
           display:  'flex',
           flexWrap: 'nowrap',

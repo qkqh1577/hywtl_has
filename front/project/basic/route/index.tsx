@@ -1,10 +1,15 @@
 import { AppRoute } from 'services/routes';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProjectContainer from 'project/route/container';
-import ProjectBasic from 'project/view/Basic';
-import { useSelector } from 'react-redux';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/reducer';
-import { useFormik } from 'formik';
+import {
+  FormikProvider,
+  useFormik
+} from 'formik';
 import {
   FormikPartial,
   toPartial
@@ -13,10 +18,14 @@ import {
   initialProjectVO,
   ProjectVO
 } from 'project/domain';
+import ProjectBasicSection from 'project/basic/view/BasicSection';
+import ProjectBasicBusinessRoute from 'project/basic/route/business';
+import { projectBasicActionType } from 'project/basic/action';
 
 function Element() {
-
+  const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.project);
+  const { id } = useSelector((root: RootState) => root.projectBasic);
 
   const formik = useFormik<FormikPartial<ProjectVO>>({
     enableReinitialize: true,
@@ -28,19 +37,18 @@ function Element() {
     }
   });
 
-  const businessFormik = useFormik({
-    initialValues: {},
-    onSubmit:      (values) => {
-
+  useEffect(() => {
+    if (detail && detail.id !== id) {
+      dispatch(projectBasicActionType.setId(detail.id));
     }
-  });
+  }, [detail]);
 
   return (
     <ProjectContainer>
-      <ProjectBasic
-        basicFormik={formik}
-        businessFormik={businessFormik}
-      />
+      <FormikProvider value={formik}>
+        <ProjectBasicSection />
+      </FormikProvider>
+      <ProjectBasicBusinessRoute />
     </ProjectContainer>
   );
 }
