@@ -10,15 +10,25 @@ import {
 } from 'formik';
 import { DetailModalFormik } from 'project/document/route/detailModal';
 import { FieldStatus } from 'components/DataFieldProps';
+import { ButtonType } from 'project/document/domain';
 
+interface ButtonProps {
+  type: string;
+}
 
-function DownloadButton() {
+function DownloadButton({ type }: ButtonProps) {
   const formikContext: FormikContextType<DetailModalFormik> = useContext(FormikContext);
   const onClick = () => {
     if (formikContext) {
       const fileId = formikContext.values.file ? formikContext.values.file.id : undefined;
-      if (fileId) {
-        window.open(`/file-items/${fileId}`, '_blank');
+      const mailFileId = formikContext.values.mailFile ? formikContext.values.mailFile.id : undefined;
+      if (type === ButtonType.FILE_BUTTON) {
+        if (fileId) {
+          window.open(`/file-items/${fileId}`, '_blank');
+        }
+      }
+      else {
+        window.open(`/file-items/${mailFileId}`, '_blank');
       }
     }
   };
@@ -34,7 +44,7 @@ interface Props {
   edit: boolean;
 }
 
-export default function ProjectDocumentDetailModalForm({edit} :Props) {
+export default function ProjectDocumentDetailModalForm({ edit }: Props) {
   return (
     <Grid container spacing={2}>
       {!edit && (
@@ -59,17 +69,26 @@ export default function ProjectDocumentDetailModalForm({edit} :Props) {
         <TextField name="recipient" label="수신처" />
       </Grid>
       <Grid item sm={12}>
-        <TextField
-          name="file.filename"
-          label="파일"
-          endAdornment={!edit && <DownloadButton />}
-        />
+        {edit && (
+          <TextField
+            name="file.filename"
+            label="파일"
+            endAdornment={!edit && <DownloadButton type={ButtonType.FILE_BUTTON} />}
+          />
+        )}
+        {!edit && (
+          <TextField
+            name="file.filename"
+            label="파일"
+            endAdornment={!edit && <DownloadButton type={ButtonType.FILE_BUTTON} />}
+          />
+        )}
       </Grid>
       <Grid item sm={12}>
         <TextField
           name="mailFile.filename"
           label="메일파일"
-          endAdornment={edit ? <Button>파일선택</Button> : <DownloadButton />}
+          endAdornment={edit ? <Button>파일선택</Button> : <DownloadButton type={ButtonType.MAIL_FILE_BUTTON} />}
         />
       </Grid>
       <Grid item sm={12}>

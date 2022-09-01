@@ -17,14 +17,14 @@ export interface ProjectDocumentVO {
   code: string; // 자료ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
-  file: FileItemView // 파일
+  file: FileItemView; // 파일
   mailFile?: FileItemView; // 메일 파일
   note?: string; // 비고
 }
 
 export interface ProjectDocumentShort
   extends ProjectDocumentVO {
-  type:   ProjectDocumentType;
+  type: ProjectDocumentType;
   mailFileId?: number;
   createdAt: Date; // 등록 일시
   modifiedAt?: Date; // 수정 일시
@@ -74,8 +74,18 @@ export function projectDocumentTypeName(type: ProjectDocumentType) {
   }
 }
 
-export const documentTypeList: ProjectDocumentType[] = [
-  ProjectDocumentType.RECEIVED,
-  ProjectDocumentType.SENT,
-  ProjectDocumentType.BUILDING
-];
+/**
+ * 메일파일 버튼 유형과 파일 버튼 유형
+ */
+export enum ButtonType {
+  /**
+   * 파일 버튼
+   */
+  FILE_BUTTON      = 'FILE_BUTTON',
+
+  /**
+   * 메일 파일 버튼
+   */
+  MAIL_FILE_BUTTON = 'MAIL_FILE_BUTTON'
+
+}
