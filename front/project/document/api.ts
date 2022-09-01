@@ -49,7 +49,15 @@ class ProjectDocumentApi {
   }
 
   async update(params: ProjectDocumentUpdateParameter): Promise<void> {
-    const { data } = await apiClient.patch(`/project/sales/document/${params.id}`, params);
+    const formData = new FormData();
+    formData.append('recipient', params.recipient);
+    if (params.mailFile) {
+      formData.append('mailFile', params.mailFile);
+    }
+    if (params.note) {
+      formData.append('note', params.note);
+    }
+    const { data } = await apiClient.patch(`/project/sales/document/${params.id}`, formData);
     return data;
   }
 

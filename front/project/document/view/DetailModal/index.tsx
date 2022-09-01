@@ -8,6 +8,7 @@ import { FormikProvider } from 'formik';
 import { DetailModalFormik } from 'project/document/route/detailModal';
 import DetailFormFooter from 'layouts/DetailFormFooter';
 import { ProjectDocumentId } from 'project/document/domain';
+import ProjectDocumentUpdateModalButtonBlock from 'project/document/view/DetailModal/ButtonBlock';
 
 interface Props
   extends FormikLayoutProps<DetailModalFormik>,
@@ -48,7 +49,7 @@ export default function ProjectDocumentDetailModal(props: Props) {
               />
             )}
             {edit && (
-              <DetailFormFooter />
+              <ProjectDocumentUpdateModalButtonBlock  onClose={onClose}/>
             )}
           </FormikProvider>
         </Box>
