@@ -15,6 +15,7 @@ import estimateContentSaga from 'admin/estimate/content/saga';
 import businessSaga from "../business/saga";
 import projectMemoSaga from 'project_memo/saga';
 import projectBasicSaga from 'project/basic/saga';
+import projectDocumentSaga from 'project/document/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -28,6 +29,7 @@ function* saga() {
     businessSaga(),
     estimateContentSaga(),
     projectMemoSaga(),
+    projectDocumentSaga(),
     projectBasicSaga(),
   ]);
 }
