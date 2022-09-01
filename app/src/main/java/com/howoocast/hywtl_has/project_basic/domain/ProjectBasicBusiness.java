@@ -5,10 +5,14 @@ import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.ProjectInvolvedType;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +33,9 @@ public class ProjectBasicBusiness extends CustomEntity {
 
     public static final String KEY = "project_basic_business";
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ProjectInvolvedType involvedType;
 
     @ManyToOne

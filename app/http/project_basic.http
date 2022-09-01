@@ -1,0 +1,18 @@
+### project basic business add
+POST http://localhost:8080/project/sales/1/basic/business
+Content-Type: application/json
+
+{
+  "businessId": 1,
+  "businessManagerId": 1,
+  "involvedType": "ORDERER"
+}
+
+### project basic business get list
+GET http://localhost:8080/project/sales/1/basic/business
+
+### project basic business get 1
+GET http://localhost:8080/project/sales/basic/business/1
+
+### project basic business delete 1
+DELETE http://localhost:8080/project/sales/basic/business/1

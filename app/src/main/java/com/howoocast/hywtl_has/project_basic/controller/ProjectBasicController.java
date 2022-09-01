@@ -31,6 +31,15 @@ public class ProjectBasicController {
         );
     }
 
+    @GetMapping("/project/sales/basic/business/{id}")
+    public ProjectBasicBusinessView business(
+        @PathVariable Long id
+    ) {
+        return ProjectBasicMapper.toView(
+            service.getBusiness(id)
+        );
+    }
+
     @GetMapping("/project/sales/{id}/basic/design")
     public ProjectBasicDesignView design(
         @PathVariable Long id

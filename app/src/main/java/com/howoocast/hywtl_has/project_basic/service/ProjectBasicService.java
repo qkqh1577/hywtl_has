@@ -41,6 +41,11 @@ public class ProjectBasicService {
     }
 
     @Transactional(readOnly = true)
+    public ProjectBasicBusiness getBusiness(Long id) {
+        return loadBusiness(id);
+    }
+
+    @Transactional(readOnly = true)
     public ProjectBasicDesign getDesign(Long id) {
         return loadDesign(id);
     }

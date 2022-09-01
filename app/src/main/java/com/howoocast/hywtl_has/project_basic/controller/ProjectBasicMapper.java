@@ -13,6 +13,10 @@ public class ProjectBasicMapper {
         return source.stream().map(ProjectBasicBusinessView::assemble).collect(Collectors.toList());
     }
 
+    public static ProjectBasicBusinessView toView(ProjectBasicBusiness source) {
+        return ProjectBasicBusinessView.assemble(source);
+    }
+
     public static ProjectBasicDesignView toView(ProjectBasicDesign source) {
         return ProjectBasicDesignView.assemble(source);
     }
