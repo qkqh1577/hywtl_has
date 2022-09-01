@@ -7,7 +7,7 @@ import {
   BusinessId,
   BusinessShort,
   BusinessVO,
-  InvolvedProjectVO,
+  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import { BusinessParameter } from 'business/parameter';
@@ -28,7 +28,7 @@ export const businessAction = {
   setFilter:              createAction(BusinessAction.setFilter)<FormikSubmit<BusinessQuery>>(),
   setRegistrationNumber:  createAction(BusinessAction.setRegistrationNumber)<string>(),
   setPage:                createAction(BusinessAction.setPage)<Page<BusinessShort> | undefined>(),
-  setInvolvedProjectList: createAction(BusinessAction.setInvolvedProjectList)<InvolvedProjectVO[]>(),
+  setInvolvedProjectList: createAction(BusinessAction.setInvolvedProjectList)<BusinessInvolvedProjectVO[]>(),
   setRivalProjectList:    createAction(BusinessAction.setRivalProjectList)<RivalProjectVO[]>(),
   setOne:                 createAction(BusinessAction.setOne)<BusinessVO | undefined>(),
   upsert:                 createAction(BusinessAction.upsert)<FormikSubmit<BusinessParameter>>(),

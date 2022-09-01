@@ -4,7 +4,7 @@ import {
 import {
   BusinessShort,
   BusinessVO,
-  InvolvedProjectVO,
+  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import Page from 'type/Page';
@@ -16,7 +16,7 @@ export interface BusinessState {
   page?: Page<BusinessShort>;
   list?: BusinessShort[];
   detail?: BusinessVO;
-  involvedProjectList?: InvolvedProjectVO[];
+  involvedProjectList?: BusinessInvolvedProjectVO[];
   rivalProjectList?: RivalProjectVO[];
 }
 

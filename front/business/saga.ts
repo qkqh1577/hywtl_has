@@ -13,7 +13,7 @@ import Page from 'type/Page';
 import {
   BusinessShort,
   BusinessVO,
-  InvolvedProjectVO,
+  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import { businessApi } from 'business/api';
@@ -57,7 +57,7 @@ function* watchRegistrationNumber() {
 function* watchInvolvedProjectList() {
   while (true) {
     const { id } = yield take('business/id/set');
-    const list: InvolvedProjectVO[] = yield call(businessApi.getInvolvedProjectList, id);
+    const list: BusinessInvolvedProjectVO[] = yield call(businessApi.getInvolvedProjectList, id);
     yield put(businessAction.setInvolvedProjectList(list));
   }
 }

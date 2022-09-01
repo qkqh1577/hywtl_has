@@ -46,6 +46,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
           titleRightComponent,
           modals,
         } = props;
+
   return (
     <Paper sx={{
       width:    '100%',

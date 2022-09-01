@@ -1,25 +1,19 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import { Grid } from '@mui/material';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { FormikPartial } from 'type/Form';
 import {
   projectEstimateTypeList,
   projectEstimateTypeName,
-  ProjectVO
 } from 'project/domain';
 import TextField from 'components/TextField';
 import { FieldStatus } from 'components/DataFieldProps';
 import SelectField from 'components/SelectField';
 import UserSelector from 'components/UserSelector';
 
-export default function ProjectBasicSection(props: FormikLayoutProps<FormikPartial<ProjectVO>>) {
+export default function ProjectBasicSection() {
 
   return (
-    <SectionLayout
-      title="기본 정보"
-      formik={props.formik}
-    >
+    <SectionLayout title="기본 정보">
       <Grid container spacing={2}>
         <Grid item sm={3}>
           <TextField

@@ -12,13 +12,15 @@ interface Props {
   disabled?: boolean;
   children: React.ReactNode;
   size?: string;
+  sx?: ButtonProps['sx'];
 }
 
-export default function IconButton({ children, onClick, tooltip, disabled, size }: Props) {
+export default function IconButton({ children, onClick, tooltip, disabled, size, sx }: Props) {
 
   const icon = (
     <MuiIconButton
       sx={{
+        ...sx,
         fontSize:        '11px',
         width:           size ?? '22px',
         height:          size ?? '22px',

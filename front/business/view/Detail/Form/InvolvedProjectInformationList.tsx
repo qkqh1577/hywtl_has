@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  InvolvedProjectVO,
-  involvedTypeList,
-  involvedTypeName
+  BusinessInvolvedProjectVO,
+  businessInvolvedTypeList,
+  businessInvolvedTypeName,
 } from 'business/domain';
 import TableCell, { TableCellProps } from 'components/TableCell';
 import {
@@ -20,7 +20,7 @@ import Title from 'components/Title';
 import SelectField from 'components/SelectField';
 
 interface Props {
-  list: InvolvedProjectVO[];
+  list: BusinessInvolvedProjectVO[];
 }
 
 export default function ({ list }: Props) {
@@ -70,9 +70,9 @@ export default function ({ list }: Props) {
               }}
               name="involvedProjectFilter"
               label="참여 프로젝트 정보 필터"
-              options={involvedTypeList.map((type) => ({
+              options={businessInvolvedTypeList.map((type) => ({
                 key:  type as string,
-                text: involvedTypeName(type)
+                text: businessInvolvedTypeName(type)
               }))}
             />
           }
@@ -108,7 +108,7 @@ export default function ({ list }: Props) {
                     {project.name}
                   </TableCell>
                   <TableCell>
-                    {involvedTypeName(project.involvedType)}
+                    {businessInvolvedTypeName(project.involvedType)}
                   </TableCell>
                   <TableCell>
                     {project.manager}
