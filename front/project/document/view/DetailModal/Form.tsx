@@ -71,6 +71,7 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       <Grid item sm={12}>
         {edit && (
           <TextField
+            status={FieldStatus.ReadOnly}
             name="file.filename"
             label="파일"
             endAdornment={!edit && <DownloadButton type={ButtonType.FILE_BUTTON} />}
