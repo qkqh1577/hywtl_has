@@ -12,7 +12,7 @@ export function toValues<T extends object>(formikPartial: FormikPartial<T>): Par
     const value: unknown = formikPartial[key];
     // include false, zero
     // exclude undefined, empty string, NaN, null
-    if (value === false || value === 0 || !value) {
+    if (value === false || value === 0 || value) {
       values[key] = value;
     }
   }
