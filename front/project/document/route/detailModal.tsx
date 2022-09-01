@@ -33,7 +33,8 @@ export default function ProjectDocumentDetailModalRoute() {
 
   const onClose = useCallback(() => dispatch(projectDocumentAction.setOne(undefined)), [dispatch]);
 
-  const update = useCallback((formikProps: FormikSubmit<ProjectDocumentUpdateParameter>) => dispatch(projectDocumentAction.update(formikProps)), [dispatch]);
+  const update = useCallback((formikProps: FormikSubmit<ProjectDocumentUpdateParameter>) =>
+    dispatch(projectDocumentAction.update(formikProps)), [dispatch]);
   const initialValues: DetailModalFormik = useMemo(() => ({
     ...toPartial(detail, initialProjectDocumentVO),
     edit: false
@@ -46,12 +47,13 @@ export default function ProjectDocumentDetailModalRoute() {
                          helper
                         ) => {
       const values = toValues(formikValues);
+
       update({
         values: {
           id:        values.id!,
           note:      values.note,
           recipient: values.recipient!,
-          mailFile:  values.mailFile?.multipartFile,
+          mailFile:  values.mailFile!.multipartFile,
         },
         ...helper
       });

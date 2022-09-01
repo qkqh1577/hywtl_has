@@ -1,7 +1,13 @@
-import React, { useContext } from 'react';
+import React, {
+  ChangeEvent,
+  useContext
+} from 'react';
 import {
+  Box,
   Button,
   Grid,
+  Input,
+  InputProps,
   Typography,
 } from '@mui/material';
 import TextField from 'components/TextField';
@@ -12,6 +18,8 @@ import {
 import { DetailModalFormik } from 'project/document/route/detailModal';
 import { FieldStatus } from 'components/DataFieldProps';
 import { ButtonType } from 'project/document/domain';
+import { UploadFieldProps } from 'project/document/view/AddModal/Form';
+import { fileToView } from 'file-item';
 
 interface ButtonProps {
   type: string;
@@ -42,6 +50,33 @@ function DownloadButton({ type }: ButtonProps) {
     </Button>
   );
 }
+
+function isFileInput(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): e is ChangeEvent<HTMLInputElement> {
+  const files = (e.target as any).files;
+  return typeof files !== 'undefined';
+}
+
+function UploadField({ accept, name }: UploadFieldProps) {
+  const formikContext = useContext(FormikContext);
+  const onChange: InputProps['onChange'] = (e) => {
+    if (formikContext && isFileInput(e)) {
+      formikContext.setFieldValue(name, fileToView(e.target.files![0]));
+    }
+  };
+  return (
+    <Box>
+      <Input
+        inputProps={{
+          accept,
+        }}
+        name={name}
+        type="file"
+        onChange={onChange}
+      />
+    </Box>
+  );
+}
+
 
 interface Props {
   edit: boolean;
@@ -90,12 +125,13 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       </Grid>
       <Grid item sm={12}>
         {edit && (
-          <TextField
-            status={FieldStatus.ReadOnly}
-            name="mailFile.filename"
-            label="메일파일"
-            endAdornment={<Button>파일선택</Button>}
-          />
+          // <TextField
+          //   status={FieldStatus.ReadOnly}
+          //   name="mailFile.filename"
+          //   label="메일파일"
+          //   endAdornment={<Button>파일선택</Button>}
+          // />
+          <UploadField name="mailFile" accept="image/*,.zip" />
         )}
         {!edit && (
           <TextField

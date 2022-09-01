@@ -27,7 +27,8 @@ export default function ProjectDocumentAddModalRoute() {
   const dispatch = useDispatch();
   const { addModal } = useSelector((root: RootState) => root.projectDocument);
 
-  const onClose = useCallback(() => dispatch(projectDocumentAction.addModal(undefined)), [dispatch]);
+  const onClose = useCallback(() =>
+    dispatch(projectDocumentAction.addModal(undefined)), [dispatch]);
 
   const add = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
       dispatch(projectDocumentAction.add({
