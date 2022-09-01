@@ -17,9 +17,9 @@ interface Props {
   detailModal: React.ReactNode;
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
-  receivedList: ProjectDocumentShort[];
-  sentList: ProjectDocumentShort[];
-  buildingList: ProjectDocumentShort[];
+  receivedList: ProjectDocumentShort[] | undefined;
+  sentList: ProjectDocumentShort[] | undefined;
+  buildingList: ProjectDocumentShort[] | undefined;
 }
 
 export default function ProjectDocument(props: Props) {
