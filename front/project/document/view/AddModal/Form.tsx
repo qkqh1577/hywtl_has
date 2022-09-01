@@ -20,7 +20,6 @@ export interface UploadFieldProps {
 
 function isFileInput(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): e is ChangeEvent<HTMLInputElement> {
   const files = (e.target as any).files;
-  console.log(files);
   return typeof files !== 'undefined';
 }
 
@@ -28,7 +27,6 @@ function UploadField({ accept, name }: UploadFieldProps) {
   const formikContext = useContext(FormikContext);
   const onChange: InputProps['onChange'] = (e) => {
     if (formikContext && isFileInput(e)) {
-      console.log(e.target.files![0]);
       formikContext.setFieldValue(name, e.target.files![0]);
     }
   };

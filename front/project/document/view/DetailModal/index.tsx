@@ -7,6 +7,7 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import { FormikProvider } from 'formik';
 import { DetailModalFormik } from 'project/document/route/detailModal';
 import DetailFormFooter from 'layouts/DetailFormFooter';
+import { ProjectDocumentId } from 'project/document/domain';
 
 interface Props
   extends FormikLayoutProps<DetailModalFormik>,

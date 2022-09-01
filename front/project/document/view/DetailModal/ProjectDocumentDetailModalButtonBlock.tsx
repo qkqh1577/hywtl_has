@@ -3,6 +3,7 @@ import {
   Box,
   Button
 } from '@mui/material';
+import { ProjectDocumentId } from 'project/document/domain';
 
 interface Props {
   onDelete: () => void;

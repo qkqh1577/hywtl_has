@@ -1,5 +1,6 @@
 import apiClient from 'services/api';
 import {
+  ProjectDocumentId,
   ProjectDocumentShort,
   ProjectDocumentVO
 } from 'project/document/domain';
@@ -52,6 +53,9 @@ class ProjectDocumentApi {
     return data;
   }
 
+  async delete(id: ProjectDocumentId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/document/${id}`);
+  }
 }
 
 export const projectDocumentApi = new ProjectDocumentApi();

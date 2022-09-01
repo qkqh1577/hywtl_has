@@ -102,7 +102,7 @@ export default function ProjectDocumentSection(props: Props) {
                     variant="text"
                     disableElevation
                     disableRipple
-                    size="small"
+                    size="medium"
                     sx={{
                       ml:                           1,
                       '&.MuiButtonBase-root:hover': {

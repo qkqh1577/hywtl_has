@@ -19,6 +19,7 @@ import {
 } from 'type/Form';
 import {
   initialProjectDocumentVO,
+  ProjectDocumentId,
   ProjectDocumentVO
 } from 'project/document/domain';
 import { ProjectDocumentUpdateParameter } from 'project/document/parameter';
@@ -57,8 +58,12 @@ export default function ProjectDocumentDetailModalRoute() {
     }
   });
 
+  const remove = useCallback((id: ProjectDocumentId) => dispatch(projectDocumentAction.delete(id)), [dispatch]);
+
   const onDelete = () => {
-    console.log('delete me');
+    if (detail) {
+      remove(detail.id);
+    }
   };
 
   return (

@@ -17,6 +17,7 @@ import {
 } from 'project/document/api';
 import { ProjectId } from 'project/domain';
 import { dialogActions } from 'components/Dialog';
+import { businessApi } from 'business/api';
 
 function* watchAllList() {
   while (true) {
@@ -53,7 +54,6 @@ function* watchId() {
 function* watchAdd() {
   while (true) {
     const { payload: formik } = yield take(ProjectDocumentAction.add);
-    console.log(formik.values);
     try {
       yield call(projectDocumentApi.add, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
@@ -90,10 +90,27 @@ function* watchUpdate() {
   }
 }
 
+function* watchDelete() {
+  while (true) {
+    const { payload: id } = yield take(ProjectDocumentAction.delete);
+    try {
+      yield call(projectDocumentApi.delete, id);
+      yield put(dialogActions.openAlert('삭제 했습니다.'));
+    }
+    catch (e) {
+      //TODO: 삭제 정책 후 수정 필요
+      yield put(dialogActions.openAlert({
+        children: '해당 자료는 동 정보에 연결되어 삭제할 수 없습니다. 자료를 삭제하려면, 동 정보 연결을 해제해 주세요.',
+        status:   'error',
+      }));
+    }
+  }
+}
 
 export default function* documentSaga() {
   yield fork(watchAllList);
   yield fork(watchId);
   yield fork(watchAdd);
   yield fork(watchUpdate);
+  yield fork(watchDelete);
 };
