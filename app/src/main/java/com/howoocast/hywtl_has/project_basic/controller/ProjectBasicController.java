@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.project_basic.controller;
 
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessAddParameter;
+import com.howoocast.hywtl_has.project_basic.service.ProjectBasicService;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicBusinessView;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicDesignView;
 import java.util.List;
@@ -38,57 +40,12 @@ public class ProjectBasicController {
         );
     }
 
-    @GetMapping("/project/sales/{id}/basic/test")
-    public ProjectBasicTestView test(
-        @PathVariable Long id
-    ) {
-        return ProjectBasicMapper.toView(
-            service.getTest(id)
-        );
-    }
-
-    @GetMapping("/project/sales/{id}/basic/estimate")
-    public ProjectBasicEstimateView estimate(
-        @PathVariable Long id
-    ) {
-        return ProjectBasicMapper.toView(
-            service.getEstimate(id)
-        );
-    }
-
-    @GetMapping("/project/sales/{id}/basic/bid")
-    public ProjectBasicBidView bid(
-        @PathVariable Long id
-    ) {
-        return ProjectBasicMapper.toView(
-            service.getBid(id)
-        );
-    }
-
-    @GetMapping("/project/sales/{id}/basic/contract")
-    public ProjectBasicContractView contract(
-        @PathVariable Long id
-    ) {
-        return ProjectBasicMapper.toView(
-            service.getContract(id)
-        );
-    }
-
-    @GetMapping("/project/sales/{id}/basic/closed-reason")
-    public ProjectBasicClosedReasonView closedReason(
-        @PathVariable Long id
-    ) {
-        return ProjectBasicMapper.toView(
-            service.getClosedReason(id)
-        );
-    }
-
     @PostMapping("/project/sales/{id}/basic/business")
     public void addBusiness(
         @PathVariable Long id,
         @Valid @RequestBody ProjectBasicBusinessAddParameter parameter
     ) {
-        service.addBusiness(id, parameter);
+        service.pushBusiness(id, parameter);
     }
 
 
