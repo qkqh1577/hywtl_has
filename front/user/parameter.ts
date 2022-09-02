@@ -1,8 +1,37 @@
-import { UserVO } from 'user/domain';
+import {
+  UserVO
+} from 'user/domain';
+import { FormikPartial } from 'type/Form';
 
-export default interface UserChangeParameter
+export interface UserChangeParameter
   extends Omit<UserVO,
     | 'createdAt'
     | 'loginAt'
     | 'passwordChangedAt'> {
 }
+
+
+export interface LoginUserEditParameter
+  extends Omit<UserVO,
+    | 'createdAt'
+    | 'loginAt'
+    | 'passwordChangedAt'
+    | 'role'
+    | 'department'
+    | 'id'
+    > {
+}
+
+export const initialLoginUserEditParameter: FormikPartial<LoginUserEditParameter> = {
+  name:       '',
+  username:   '',
+  email:      '',
+  englishName: '',
+  sex: '',
+  mobilePhone: '',
+  privateEmail: '',
+  emergencyPhone: '',
+  relationShip: '',
+  address: '',
+  birthDate: '',
+};

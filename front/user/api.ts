@@ -5,7 +5,7 @@ import {
   UserId,
   UserVO
 } from 'user/domain';
-import UserChangeParameter from 'user/parameter';
+import { UserChangeParameter, LoginUserEditParameter } from 'user/parameter';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -27,6 +27,11 @@ class UserApi {
     const { id, ...rest } = parameter;
     const { data } = await apiClient.patch(`/users/${id}`, rest);
     return data;
+  }
+
+  async edit(parameter: LoginUserEditParameter): Promise<void> {
+    const { result } = await apiClient.post('user/login', parameter);
+    return result;
   }
 }
 

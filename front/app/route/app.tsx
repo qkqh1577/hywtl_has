@@ -6,6 +6,7 @@ import useDialog from 'components/Dialog';
 import useLogin from 'app/service/loginHook';
 import useMenu from 'app/service/menuHook';
 import React, {
+  useCallback,
   useEffect,
   useMemo,
 } from 'react';
@@ -13,6 +14,14 @@ import App from 'app/view/App';
 import ProjectMemoDrawerRoute from 'project_memo/route/drawer';
 import ProjectDrawerRoute from 'app/route/projectDrawer';
 import ProjectAppBarRoute from 'app/route/projectAppBar';
+import LoginUserEditModalRoute from 'app/route/loginUserEditModal';
+import { useDispatch } from 'react-redux';
+import {
+  userAction,
+} from 'user/action';
+import { LoginUser } from 'app/domain/login';
+
+export type OnLoginUserEditModalOpen = (user: LoginUser) => void;
 
 export default function () {
 
@@ -23,6 +32,10 @@ export default function () {
   const { alert } = useDialog();
   const { user, getLoginUser, logout } = useLogin();
   const { open: openMenu, menu, toggleMenu } = useMenu();
+  const dispatch = useDispatch();
+
+  const onLoginUserEditModalOpen: OnLoginUserEditModalOpen = useCallback((user) =>
+    dispatch(userAction.editModal(user)), [dispatch]);
 
   useEffect(() => {
     if (pathname !== '/login') {
@@ -51,6 +64,8 @@ export default function () {
       projectDrawer={<ProjectDrawerRoute />}
       projectMemoDrawer={<ProjectMemoDrawerRoute />}
       projectAppBar={<ProjectAppBarRoute />}
+      onLoginUserEditModalOpen = {onLoginUserEditModalOpen}
+      loginUserEditModal={<LoginUserEditModalRoute />}
     />
   );
 }

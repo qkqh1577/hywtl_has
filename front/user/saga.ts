@@ -54,9 +54,29 @@ function* watchChange() {
   }
 }
 
+function* watchUpdate() {
+  while (true) {
+    const { payload: formik } = yield take(UserAction.edit);
+    try {
+      yield call(userApi.edit, formik.values);
+      yield put(dialogActions.openAlert('저장하였습니다'));
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        children: '저장에 실패하였습니다.',
+        status:   'error',
+      }));
+    }
+    finally {
+      yield call(formik.setSubmitting, false);
+    }
+  }
+}
+
 export default function* userSaga() {
   yield fork(getPage);
   yield fork(watchId);
   yield fork(watchChange);
+  yield fork(watchUpdate);
 }
 

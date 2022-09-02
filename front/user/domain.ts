@@ -48,6 +48,28 @@ export interface UserVO {
   createdAt: Date;
   loginAt?: Date;
   passwordChangedAt?: Date;
+  englishName?: string;
+  sex?: string;
+  mobilePhone?: string;
+  privateEmail?: string;
+  emergencyPhone?: string;
+  relationShip?: string;
+  address?: string;
+  birthDate?: Date;
+}
+
+export interface UserShort{
+  name: string;
+  username: string;
+  email: string;
+  englishName?: string;
+  sex?: string;
+  mobilePhone?: string;
+  privateEmail?: string;
+  emergencyPhone?: string;
+  relationShip?: string;
+  address?: string;
+  birthDate?: Date;
 }
 
 export const initialUser: UserVO = {
@@ -57,4 +79,12 @@ export const initialUser: UserVO = {
   role:       UserRole.NORMAL,
   department: initialDepartment,
   createdAt:  new Date(),
+  englishName: '',
+  sex: '',
+  mobilePhone: '',
+  privateEmail: '',
+  emergencyPhone: '',
+  relationShip: '',
+  address: '',
+  birthDate: undefined,
 };
