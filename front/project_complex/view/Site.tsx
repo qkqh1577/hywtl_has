@@ -3,7 +3,6 @@ import React, {
   useState
 } from 'react';
 import {
-  ProjectComplexBuildingVO,
   ProjectComplexSiteId,
   ProjectComplexSiteVO
 } from 'project_complex/domain';
@@ -22,10 +21,12 @@ import {
 import { Table } from 'layouts/Table';
 import ProjectComplexSiteRow from 'project_complex/view/SiteRow';
 import { ProjectComplexSiteParameter } from 'project_complex/parameter';
+import { BuildingTest } from 'project_complex/route/site';
+import { testTypeName } from 'admin/estimate/content/domain';
 
 interface Props {
   list: ProjectComplexSiteVO[] | undefined;
-  buildingList: ProjectComplexBuildingVO[] | undefined;
+  buildingTestList: BuildingTest[];
   onAdd: DefaultFunction;
   onUpdate: (params: ProjectComplexSiteParameter) => void;
   onDelete: (id: ProjectComplexSiteId) => void;
@@ -40,20 +41,26 @@ function AddButton(props: Props) {
 }
 
 export default function ProjectComplexSiteSection(props: Props) {
+  const {
+          list,
+        } = props;
 
   const [modifiedAt, setModifiedAt] = useState<Date>();
   useEffect(() => {
-    if (props.list) {
+    if (list && list.length > 0) {
       setModifiedAt(
-        props.list.map(item => item.modifiedAt)
-             .map(date => dayjs(date))
-             .reduce((a,
-                      b
-             ) => a.isAfter(b) ? a : b)
-             .toDate()
+        list.map(item => item.modifiedAt)
+            .map(date => dayjs(date))
+            .reduce((a,
+                     b
+            ) => a.isAfter(b) ? a : b)
+            .toDate()
       );
     }
-  }, [props.list]);
+    else {
+      setModifiedAt(undefined);
+    }
+  }, [list]);
 
   return (
     <SectionLayout
@@ -80,12 +87,12 @@ export default function ProjectComplexSiteSection(props: Props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(!props.list || props.list.length === 0) && (
+                {(!list || list.length === 0) && (
                   <TableRow>
                     <TableCell colSpan={6}>조회 결과가 없습니다.</TableCell>
                   </TableRow>
                 )}
-                {props.list && props.list.map((item) => (
+                {list && list.map((item) => (
                   <ProjectComplexSiteRow
                     key={item.id}
                     onUpdate={props.onUpdate}
@@ -108,15 +115,24 @@ export default function ProjectComplexSiteSection(props: Props) {
                 <TableRow>
                   <TableCell>실험 종류</TableCell>
                   <TableCell>동 수</TableCell>
-                  <TableCell colSpan={props.buildingList?.length ?? 1}>실험 대상 동명</TableCell>
+                  <TableCell colSpan={props.buildingTestList.length || 1}>실험 대상 동명</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(!props.buildingList || props.buildingList.length === 0) && (
+                {props.buildingTestList.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={3}>조회 결과가 없습니다.</TableCell>
                   </TableRow>
                 )}
+                {props.buildingTestList.map((item) => (
+                  <TableRow key={item.testType}>
+                    <TableCell>{testTypeName(item.testType)}</TableCell>
+                    <TableCell>{item.buildingCount}</TableCell>
+                    {item.buildingNameList.map((name) => (
+                      <TableCell key={name}>{name}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

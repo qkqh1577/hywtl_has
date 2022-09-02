@@ -20,6 +20,7 @@ export enum ProjectComplexActionType {
   updateSite      = 'project/sales/complex/site/update',
   deleteSite      = 'project/sales/complex/site/delete',
   pushBuilding    = 'project/sales/complex/building/push',
+  requestBuilding     = 'project/sales/complex/building/request',
   updateBuilding  = 'project/sales/complex/building/update',
   deleteBuilding  = 'project/sales/complex/building/delete',
 }
@@ -33,6 +34,7 @@ export const projectComplexAction = {
   updateSite:      createAction(ProjectComplexActionType.updateSite)<ProjectComplexSiteParameter>(),
   deleteSite:      createAction(ProjectComplexActionType.deleteSite)<ProjectComplexSiteId>(),
   pushBuilding:    createAction(ProjectComplexActionType.pushBuilding)(),
+  requestBuilding: createAction(ProjectComplexActionType.requestBuilding)<string>(),
   updateBuilding:  createAction(ProjectComplexActionType.updateBuilding)<ProjectComplexBuildingParameter>(),
   deleteBuilding:  createAction(ProjectComplexActionType.deleteBuilding)<ProjectComplexBuildingId>(),
 };

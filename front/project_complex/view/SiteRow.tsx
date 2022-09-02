@@ -12,18 +12,26 @@ import CheckboxField from 'components/CheckboxField';
 import SelectField from 'components/SelectField';
 import UserSelector from 'components/UserSelector';
 import Button from 'layouts/Button';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FormikProvider,
   useFormik
 } from 'formik';
 import { ProjectComplexSiteParameter } from 'project_complex/parameter';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
+import { RootState } from 'services/reducer';
+import { projectComplexAction } from 'project_complex/action';
 
 export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
   onUpdate: (params: ProjectComplexSiteParameter) => void;
   onDelete: (id: ProjectComplexSiteId) => void;
 }) {
 
+  const dispatch = useDispatch();
+  const { requestSite } = useSelector((root: RootState) => root.projectComplex);
   const formik = useFormik<ProjectComplexSiteParameter & {
     environmentTest: string[];
   }>({
@@ -41,6 +49,13 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       props.onUpdate(values);
     }
   });
+
+  useEffect(() => {
+    if (requestSite === 'response') {
+      formik.setSubmitting(false);
+      dispatch(projectComplexAction.requestSite('idle'));
+    }
+  }, [requestSite]);
 
   return (
     <TableRow>

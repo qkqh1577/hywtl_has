@@ -10,6 +10,7 @@ import useId from 'services/useId';
 import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
 import { ProjectId } from 'project/domain';
+import ProjectComplexBuildingRoute from 'project_complex/route/building';
 
 function Element() {
 
@@ -27,6 +28,7 @@ function Element() {
   return (
     <ProjectContainerRoute>
       <ProjectComplexSiteRoute />
+      <ProjectComplexBuildingRoute />
     </ProjectContainerRoute>
   );
 }

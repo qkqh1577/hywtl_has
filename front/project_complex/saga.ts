@@ -53,10 +53,28 @@ function* pushSite() {
   }
 }
 
+function* pushBuilding() {
+  while (true) {
+    yield take(projectComplexAction.pushBuilding);
+    try {
+      const { id } = yield select((root: RootState) => root.projectComplex);
+      yield call(projectComplexApi.pushBuilding, id);
+      yield call(getBuildList, id);
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        status:   'error',
+        children: '추가에 실패했습니다.'
+      }));
+    }
+  }
+}
+
 function* updateSite() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateSite);
     try {
+      yield put(projectComplexAction.requestSite('request'));
       yield call(projectComplexApi.updateSite, params);
     }
     catch (e) {
@@ -65,6 +83,29 @@ function* updateSite() {
         status:   'error',
         children: '저장에 실패하였습니다.'
       }));
+    }
+    finally {
+      yield put(projectComplexAction.requestSite('response'));
+    }
+  }
+}
+
+function* updateBuilding() {
+  while (true) {
+    const { payload: params } = yield take(projectComplexAction.updateBuilding);
+    try {
+      yield put(projectComplexAction.requestBuilding('request'));
+      yield call(projectComplexApi.updateBuilding, params);
+    }
+    catch (e) {
+      console.error(e);
+      yield put(dialogActions.openAlert({
+        status:   'error',
+        children: '저장에 실패하였습니다.'
+      }));
+    }
+    finally {
+      yield put(projectComplexAction.requestBuilding('response'));
     }
   }
 }
@@ -87,10 +128,31 @@ function* deleteSite() {
   }
 }
 
+function* deleteBuilding() {
+  while (true) {
+    const { payload: buildingId } = yield take(projectComplexAction.deleteBuilding);
+    try {
+      yield call(projectComplexApi.deleteBuilding, buildingId);
+      const { id } = yield select((root: RootState) => root.projectComplex);
+      yield call(getBuildList, id);
+    }
+    catch (e) {
+      console.error(e);
+      yield put(dialogActions.openAlert({
+        status:   'error',
+        children: '삭제에 실패하였습니다.'
+      }));
+    }
+  }
+}
+
 
 export default function* projectComplexSaga() {
   yield fork(watchId);
   yield fork(pushSite);
+  yield fork(pushBuilding);
   yield fork(updateSite);
+  yield fork(updateBuilding);
   yield fork(deleteSite);
+  yield fork(deleteBuilding);
 }

@@ -11,10 +11,12 @@ export interface ProjectComplexState {
   siteList?: ProjectComplexSiteVO[];
   buildingList?: ProjectComplexBuildingVO[];
   requestSite: string;
+  requestBuilding: string;
 }
 
 const initial: ProjectComplexState = {
-  requestSite: 'idle',
+  requestSite:     'idle',
+  requestBuilding: 'idle',
 };
 
 export const projectComplexReducer = createReducer(initial, {
