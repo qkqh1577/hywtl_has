@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
+import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
@@ -148,6 +149,27 @@ public class UserService {
         repository.findById(id).ifPresent(instance ->
             repository.deleteById(id)
         );
+    }
+
+    /* 계정 정보 수정 api */
+    @Transactional
+    public void edit(String name, LoginUserChangeParameter parameter) {
+        User loginUser = this.findByName(name);
+        loginUser.edit(
+            parameter.getEnglishName(),
+//            parameter.getBirthDate(),
+            parameter.getSex(),
+            parameter.getMobilePhone(),
+            parameter.getPrivateEmail(),
+            parameter.getEmergencyPhone(),
+            parameter.getRelationship(),
+            parameter.getAddress()
+        );
+    }
+
+    private User findByName(String userName) {
+        return repository.findByUsername(userName)
+            .orElseThrow(() -> new NotFoundException(User.KEY, userName));
     }
 
     private User load(Long id) {

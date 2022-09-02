@@ -12,7 +12,7 @@ public class LoginUserView {
     private String email;
     private String name;
     private String englishName;
-    private LocalDateTime birthDate;
+//    private LocalDateTime birthDate;
     private String sex;
     private String mobilePhone;
     private String privateEmail;
@@ -27,7 +27,7 @@ public class LoginUserView {
         target.email = source.getEmail();
         target.name = source.getName();
         target.englishName = source.getEnglishName();
-        target.birthDate = source.getBirthDate();
+//        target.birthDate = source.getBirthDate();
         target.sex = source.getSex();
         target.mobilePhone = source.getMobilePhone();
         target.privateEmail = source.getPrivateEmail();

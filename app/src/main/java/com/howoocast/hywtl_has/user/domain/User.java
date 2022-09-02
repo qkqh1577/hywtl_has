@@ -108,38 +108,39 @@ public class User extends CustomEntity {
     private Personnel personnel;
 
     /**
-     *  영문명
+     * 영문명
      */
     private String englishName;
 
     /**
-     *  생년월일
+     * 생년월일
      */
     private LocalDateTime birthDate;
     /**
-     *  성별
+     * 성별
      */
     private String sex;
     /**
-     *  핸드폰
+     * 핸드폰
      */
     private String mobilePhone;
     /**
-     *  개인 이메일
+     * 개인 이메일
      */
     private String privateEmail;
     /**
-     *  비상 연락처
+     * 비상 연락처
      */
     private String emergencyPhone;
     /**
-     *  비상연락처 사원과의 관계
+     * 비상연락처 사원과의 관계
      */
     private String relationship;
     /**
-     *  주소
+     * 주소
      */
     private String address;
+
     protected User(
         String username,
         String password,
@@ -238,6 +239,26 @@ public class User extends CustomEntity {
 
     public void delete() {
         this.deletedAt = LocalDateTime.now();
+    }
+
+    /* 계정 정보 수정 api */
+    public void edit(
+        String englishName,
+//        String birthDate,
+        String sex,
+        String mobilePhone,
+        String privateEmail,
+        String emergencyPhone,
+        String relationship,
+        String address) {
+        this.englishName = englishName;
+//        this.birthDate = birthDate;
+        this.sex = sex;
+        this.mobilePhone = mobilePhone;
+        this.privateEmail = privateEmail;
+        this.emergencyPhone = emergencyPhone;
+        this.relationship = relationship;
+        this.address = address;
     }
 
 }
