@@ -25,26 +25,26 @@ import {
 
 export default function LoginUserEditModalRoute() {
   const dispatch = useDispatch();
-  const { editModal } = useSelector((root: RootState) => root.user);
+  const { loginUser } = useSelector((root: RootState) => root.user);
 
   const editLoginUser = useCallback((formikProps: FormikSubmit<FormikPartial<LoginUserEditParameter>>) =>
     dispatch(userAction.edit(formikProps)), [dispatch]);
 
   const initialValues: FormikPartial<UserShort> = useMemo(() => ({
     ...toPartial({
-      username:       editModal?.username,
-      name:           editModal?.name,
-      email:          editModal?.email,
-      englishName:    editModal?.englishName,
-      birthDate:      editModal?.birthDate,
-      sex:            editModal?.sex,
-      mobilePhone:    editModal?.mobilePhone,
-      privateEmail:   editModal?.privateEmail,
-      emergencyPhone: editModal?.emergencyPhone,
-      relationship:   editModal?.relationship,
-      address:        editModal?.address,
+      username:       loginUser?.username,
+      name:           loginUser?.name,
+      email:          loginUser?.email,
+      englishName:    loginUser?.englishName,
+      birthDate:      loginUser?.birthDate,
+      sex:            loginUser?.sex,
+      mobilePhone:    loginUser?.mobilePhone,
+      privateEmail:   loginUser?.privateEmail,
+      emergencyPhone: loginUser?.emergencyPhone,
+      relationship:   loginUser?.relationship,
+      address:        loginUser?.address,
     }, initialLoginUserEditParameter)
-  }), [editModal]);
+  }), [loginUser]);
 
   const editModalFormik = useFormik<FormikPartial<LoginUserEditParameter>>({
       enableReinitialize: true,
@@ -64,7 +64,7 @@ export default function LoginUserEditModalRoute() {
 
   return (
     <LoginUserEditModal
-      open={!!editModal}
+      open={!!loginUser}
       onClose={onClose}
       formik={editModalFormik}
     />

@@ -9,7 +9,7 @@ export interface UserState {
   filter?: UserQuery;
   page?: Page<UserVO>;
   detail?: UserVO;
-  editModal?: LoginUser;
+  loginUser?: LoginUser;
 }
 
 const initialState: UserState = {};
@@ -37,6 +37,6 @@ export const userReducer = createReducer(initialState, {
                            action
                           ) => ({
     ...state,
-    editModal: action.payload,
+    loginUser: action.payload,
   })
 });

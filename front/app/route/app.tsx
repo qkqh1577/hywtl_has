@@ -21,7 +21,7 @@ import {
 } from 'user/action';
 import { LoginUser } from 'app/domain/login';
 
-export type OnLoginUserEditModalOpen = (user: LoginUser) => void;
+export type OnLoginUserEditModalOpen = (loginUser: LoginUser) => void;
 
 export default function () {
 
@@ -34,8 +34,8 @@ export default function () {
   const { open: openMenu, menu, toggleMenu } = useMenu();
   const dispatch = useDispatch();
 
-  const onLoginUserEditModalOpen: OnLoginUserEditModalOpen = useCallback((user) =>
-    dispatch(userAction.editModal(user)), [dispatch]);
+  const onLoginUserEditModalOpen: OnLoginUserEditModalOpen = useCallback((loginUser) =>
+    dispatch(userAction.editModal(loginUser)), [dispatch]);
 
   useEffect(() => {
     if (pathname !== '/login') {
