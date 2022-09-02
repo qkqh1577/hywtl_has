@@ -1,6 +1,6 @@
 import { AppRoute } from 'services/routes';
 import React, { useEffect } from 'react';
-import ProjectContainer from 'project/route/container';
+import ProjectContainerRoute from 'project/route/container';
 import {
   useDispatch,
   useSelector
@@ -44,12 +44,12 @@ function Element() {
   }, [detail]);
 
   return (
-    <ProjectContainer>
+    <ProjectContainerRoute>
       <FormikProvider value={formik}>
         <ProjectBasicSection />
       </FormikProvider>
       <ProjectBasicBusinessRoute />
-    </ProjectContainer>
+    </ProjectContainerRoute>
   );
 }
 

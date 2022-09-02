@@ -1,6 +1,6 @@
 import {
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow
@@ -11,29 +11,8 @@ import {
   UserVO,
 } from 'user/domain';
 import React from 'react';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import Page from 'type/Page';
-
-
-const columnProps: TableCellProps[] = [{
-  key:      'no',
-  children: 'No.',
-}, {
-  key:      'username',
-  children: '아이디',
-}, {
-  key:      'name',
-  children: '이름',
-}, {
-  key:      'email',
-  children: '이메일'
-}, {
-  key:      'role',
-  children: '권한',
-}, {
-  key:      'department',
-  children: '소속'
-}];
+import { Table } from 'layouts/Table';
 
 interface Props {
   page: Page<UserVO> | undefined;
@@ -42,18 +21,21 @@ interface Props {
 export default function ({ page }: Props) {
   return (
     <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+      <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>아이디</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>이메일</TableCell>
+            <TableCell>권한</TableCell>
+            <TableCell>소속</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
+              <TableCell colSpan={6} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,

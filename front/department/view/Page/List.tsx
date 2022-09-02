@@ -4,56 +4,39 @@ import {
   DepartmentShort
 } from 'department/domain';
 import {
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Table } from 'layouts/Table';
 
 export interface ListProps {
   page: Page<DepartmentShort> | undefined;
 }
 
-const columnProps: TableCellProps[] = [{
-  key:      'no',
-  children: 'No.',
-}, {
-  key:      'name',
-  children: '조직명',
-}, {
-  key:      'category',
-  children: '유형'
-}, {
-  key:      'parent',
-  children: '상위 조직',
-}, {
-  key:      'userCount',
-  children: '소속 유저 수'
-}, {
-  key:      'childrenCount',
-  children: '하위 조직 수'
-}];
-
 export default function ({ page }: ListProps) {
 
   return (
     <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+      <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} key={props.key} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>조직명</TableCell>
+            <TableCell>유형</TableCell>
+            <TableCell>상위 조직</TableCell>
+            <TableCell>소속 유저 수</TableCell>
+            <TableCell>하위 조직 수</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
+              <TableCell colSpan={6} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,

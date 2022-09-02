@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -17,6 +16,7 @@ import {
   testTypeName
 } from 'estimate_template/domain';
 import IconButton from 'components/IconButton';
+import { Table } from 'layouts/Table';
 
 export interface SeqModalListProps {
   list: EstimateTemplateShort[];

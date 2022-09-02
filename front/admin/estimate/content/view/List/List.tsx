@@ -3,38 +3,19 @@ import {
   EstimateContentShort,
   testTypeName,
 } from 'admin/estimate/content/domain';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import {
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Table } from 'layouts/Table';
 
 export interface ListProps {
   list: EstimateContentShort[] | undefined;
 }
-
-const columnProps: TableCellProps[] = [
-  {
-    key:      'no',
-    children: 'No.',
-  },
-  {
-    key:      'name',
-    children: '이름'
-  },
-  {
-    key:      'testType',
-    children: '실험 타입'
-  },
-  {
-    key:      'detailCount',
-    children: '등록된 내용'
-  }
-];
 
 export default function ({ list }: ListProps) {
   return (
@@ -44,16 +25,16 @@ export default function ({ list }: ListProps) {
         aria-label={'sticky table'}>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>실험 타입</TableCell>
+            <TableCell>등록된 내용</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!list || list.length === 0) && (
             <TableRow>
-              <TableCell
-                colSpan={columnProps.length}>
+              <TableCell colSpan={4}>
                 검색된 결과가 없습니다.
               </TableCell>
             </TableRow>
@@ -71,7 +52,8 @@ export default function ({ list }: ListProps) {
                   {item.name}
                 </Link>
               </TableCell>
-              <TableCell>{item.testTypeList.map(testTypeName).join(', ')}</TableCell>
+              <TableCell>{item.testTypeList.map(testTypeName)
+                              .join(', ')}</TableCell>
               <TableCell>{item.detailCount}</TableCell>
             </TableRow>
           ))}

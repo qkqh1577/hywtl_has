@@ -1,7 +1,6 @@
 import React from 'react';
 import Page from 'type/Page';
 import { BusinessShort } from 'business/domain';
-import { TableCellProps } from 'components/TableCell';
 import {
   TableBody,
   TableCell,
@@ -10,69 +9,33 @@ import {
   TableRow
 } from '@mui/material';
 import { Table } from 'layouts/Table';
-import {
-  Link,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export interface ListProps {
   page: Page<BusinessShort> | undefined;
 }
 
-const columnProps: TableCellProps[] = [
-  {
-    key:      'no',
-    children: 'No'
-  },
-  {
-    key:      'name',
-    children: '업체명'
-  },
-  {
-    key:      'ceoName',
-    children: '대표명'
-  },
-  {
-    key:      'registrationNumber',
-    children: '사업자번호'
-  },
-  {
-    key:      'address',
-    children: '주소'
-  },
-  {
-    key:      'officePhone',
-    children: '대표전화번호'
-  },
-  {
-    key:      'managerCount',
-    children: '담당자'
-  },
-  {
-    key:      'projectCount',
-    children: '참여프로젝트 총 개수'
-  },
-  {
-    key:      'note',
-    children: '비고'
-  }
-
-];
-
 export default function ({ page }: ListProps) {
   return (
     <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+      <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} key={props.key} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>업체명</TableCell>
+            <TableCell>대표명</TableCell>
+            <TableCell>사업자번호</TableCell>
+            <TableCell>주소</TableCell>
+            <TableCell>대표전화번호</TableCell>
+            <TableCell>담당자</TableCell>
+            <TableCell>참여프로젝트 총 개수</TableCell>
+            <TableCell>비고</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
+              <TableCell colSpan={9} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,

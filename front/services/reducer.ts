@@ -50,6 +50,10 @@ import {
   projectDocumentReducer,
   ProjectDocumentState
 } from 'project/document/reducer';
+import {
+  projectComplexReducer,
+  ProjectComplexState
+} from 'project_complex/reducer';
 
 export interface RootState {
   user: UserState;
@@ -65,6 +69,7 @@ export interface RootState {
   projectMemo: ProjectMemoState;
   projectBasic: ProjectBasicState;
   projectDocument: ProjectDocumentState;
+  projectComplex: ProjectComplexState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -81,6 +86,7 @@ const reducer = combineReducers<RootState>({
   projectMemo:      projectMemoReducer,
   projectBasic:     projectBasicReducer,
   projectDocument:  projectDocumentReducer,
+  projectComplex:   projectComplexReducer,
 });
 
 const rootReducer: Reducer = (state,
