@@ -10,6 +10,7 @@ import { projectComplexAction } from 'project_complex/action';
 import {
   ProjectComplexSiteParameter
 } from 'project_complex/parameter';
+import { ProjectComplexSiteId } from 'project_complex/domain';
 
 export default function ProjectComplexSiteRoute() {
 
@@ -23,16 +24,17 @@ export default function ProjectComplexSiteRoute() {
       return;
     }
     dispatch(projectComplexAction.pushSite());
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   const update = useCallback((params: ProjectComplexSiteParameter) => dispatch(projectComplexAction.updateSite(params)), [dispatch]);
-
+  const deleteSite = useCallback((id: ProjectComplexSiteId) => dispatch(projectComplexAction.deleteSite(id)), [dispatch]);
   return (
     <ProjectComplexSiteSection
       onAdd={add}
       list={siteList}
       buildingList={buildingList}
       onUpdate={update}
+      onDelete={deleteSite}
     />
   );
 }

@@ -1,5 +1,6 @@
 import {
   difficultyList,
+  ProjectComplexSiteId,
   ProjectComplexSiteVO,
 } from 'project_complex/domain';
 import {
@@ -20,6 +21,7 @@ import { ProjectComplexSiteParameter } from 'project_complex/parameter';
 
 export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
   onUpdate: (params: ProjectComplexSiteParameter) => void;
+  onDelete: (id: ProjectComplexSiteId) => void;
 }) {
 
   const formik = useFormik<ProjectComplexSiteParameter & {
@@ -31,8 +33,9 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       environmentTest: props.withEnvironmentTest ? ['E'] : []
     },
     onSubmit:           (values) => {
+      console.log(values);
       const manager = (values as any).manager;
-      if (typeof manager === 'object') {
+      if (manager && typeof manager === 'object') {
         values.managerId = manager.id;
       }
       props.onUpdate(values);
@@ -123,7 +126,7 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
         </FormikProvider>
       </TableCell>
       <TableCell>
-        <Button shape="basic2">삭제</Button>
+        <Button shape="basic2" onClick={() => {props.onDelete(props.id);}}>삭제</Button>
       </TableCell>
     </TableRow>
   );

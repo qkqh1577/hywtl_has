@@ -57,7 +57,6 @@ function* updateSite() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateSite);
     try {
-      yield put(projectComplexAction.requestSite('request'));
       yield call(projectComplexApi.updateSite, params);
     }
     catch (e) {
@@ -67,10 +66,24 @@ function* updateSite() {
         children: '저장에 실패하였습니다.'
       }));
     }
-    finally {
-      yield put(projectComplexAction.requestSite('response'));
-    }
+  }
+}
 
+function* deleteSite() {
+  while (true) {
+    const { payload: siteId } = yield take(projectComplexAction.deleteSite);
+    try {
+      yield call(projectComplexApi.deleteSite, siteId);
+      const { id } = yield select((root: RootState) => root.projectComplex);
+      yield call(getSiteList, id);
+    }
+    catch (e) {
+      console.error(e);
+      yield put(dialogActions.openAlert({
+        status:   'error',
+        children: '삭제에 실패하였습니다.'
+      }));
+    }
   }
 }
 
@@ -79,4 +92,5 @@ export default function* projectComplexSaga() {
   yield fork(watchId);
   yield fork(pushSite);
   yield fork(updateSite);
+  yield fork(deleteSite);
 }

@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   ProjectComplexBuildingVO,
+  ProjectComplexSiteId,
   ProjectComplexSiteVO
 } from 'project_complex/domain';
 import SectionLayout from 'layouts/SectionLayout';
@@ -27,6 +28,7 @@ interface Props {
   buildingList: ProjectComplexBuildingVO[] | undefined;
   onAdd: DefaultFunction;
   onUpdate: (params: ProjectComplexSiteParameter) => void;
+  onDelete: (id: ProjectComplexSiteId) => void;
 }
 
 function AddButton(props: Props) {
@@ -84,7 +86,12 @@ export default function ProjectComplexSiteSection(props: Props) {
                   </TableRow>
                 )}
                 {props.list && props.list.map((item) => (
-                  <ProjectComplexSiteRow key={item.id} onUpdate={props.onUpdate} {...item} />
+                  <ProjectComplexSiteRow
+                    key={item.id}
+                    onUpdate={props.onUpdate}
+                    onDelete={props.onDelete}
+                    {...item}
+                  />
                 ))}
               </TableBody>
             </Table>
