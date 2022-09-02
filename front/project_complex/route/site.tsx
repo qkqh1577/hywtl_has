@@ -53,24 +53,46 @@ export default function ProjectComplexSiteRoute() {
       return false;
     })
     .map((testType) => {
-      const result: string[] = [];
+      let buildingCount = 0;
+      const buildingNameList: string[] = [];
       for (let i = 0; i < buildingList.length; i++) {
-        if (buildingList[i].testTypeList?.includes(testType)) {
-          result.push(buildingList[i].name ?? '');
+        const building = buildingList[i];
+        if (!building.testTypeList || building.testTypeList.length === 0) {
+          continue;
+        }
+        if (building.testTypeList?.includes(testType)) {
+          buildingNameList.push(building.name ?? '');
+          buildingCount++;
         }
         else {
-          result.push('');
+          buildingNameList.push('');
         }
       }
 
       return {
         testType,
-        buildingCount:    result.length,
-        buildingNameList: result,
+        buildingCount,
+        buildingNameList,
       };
     });
 
   }, [buildingList]);
+
+  const totalBuildingCount: number = useMemo(() => {
+    const buildingNameList: string[] = [];
+    buildingTestList
+    .map(item => item.buildingNameList)
+    .forEach((nameList) => {
+      for (let i = 0; i < nameList.length; i++) {
+        if (buildingNameList.includes(nameList[i])) {
+          continue;
+        }
+        buildingNameList.push(nameList[i]);
+      }
+    });
+
+    return buildingNameList.length;
+  }, [buildingTestList]);
 
   const update = useCallback((params: ProjectComplexSiteParameter) => dispatch(projectComplexAction.updateSite(params)), [dispatch]);
   const deleteSite = useCallback((id: ProjectComplexSiteId) => dispatch(projectComplexAction.deleteSite(id)), [dispatch]);
@@ -79,6 +101,7 @@ export default function ProjectComplexSiteRoute() {
       onAdd={add}
       list={siteList}
       buildingTestList={buildingTestList}
+      totalBuildingCount={totalBuildingCount}
       onUpdate={update}
       onDelete={deleteSite}
     />

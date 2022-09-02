@@ -42,7 +42,7 @@ export function Table(props: TableProps) {
         '& td:last-child':                             {
           borderRight: `1px solid ${ColorPalette._e4e9f2}`,
         },
-        '& tbody > tr:first-of-type > td ':            {
+        '& tbody > tr:last-of-type > td ':             {
           borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
         },
         '& tbody > tr:last-child > td:first-of-type ': {

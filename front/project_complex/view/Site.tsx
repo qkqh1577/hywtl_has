@@ -27,6 +27,7 @@ import { testTypeName } from 'admin/estimate/content/domain';
 interface Props {
   list: ProjectComplexSiteVO[] | undefined;
   buildingTestList: BuildingTest[];
+  totalBuildingCount: number;
   onAdd: DefaultFunction;
   onUpdate: (params: ProjectComplexSiteParameter) => void;
   onDelete: (id: ProjectComplexSiteId) => void;
@@ -115,7 +116,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                 <TableRow>
                   <TableCell>실험 종류</TableCell>
                   <TableCell>동 수</TableCell>
-                  <TableCell colSpan={props.buildingTestList.length || 1}>실험 대상 동명</TableCell>
+                  <TableCell colSpan={props.buildingTestList.length === 0 ? 1 : props.totalBuildingCount}>실험 대상 동명</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -128,8 +129,10 @@ export default function ProjectComplexSiteSection(props: Props) {
                   <TableRow key={item.testType}>
                     <TableCell>{testTypeName(item.testType)}</TableCell>
                     <TableCell>{item.buildingCount}</TableCell>
-                    {item.buildingNameList.map((name) => (
-                      <TableCell key={name}>{name}</TableCell>
+                    {item.buildingNameList.map((name,
+                                                i
+                    ) => (
+                      <TableCell key={name || `${testTypeName(item.testType)}-${i}`}>{name}</TableCell>
                     ))}
                   </TableRow>
                 ))}
