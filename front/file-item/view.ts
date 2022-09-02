@@ -7,6 +7,7 @@ export type FileItemView = {
   size: number;
   readableSize: string;
   multipartFile?: File;
+  requestDelete?: boolean;
 }
 
 export const toReadableSize = (size: number, toBinary?: boolean): string => {

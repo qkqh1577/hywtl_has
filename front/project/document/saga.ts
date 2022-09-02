@@ -52,19 +52,27 @@ function* watchId() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: formik } = yield take(ProjectDocumentAction.add);
+    const { payload: params } = yield take(ProjectDocumentAction.add);
     try {
-      yield call(projectDocumentApi.add, formik.values);
+      yield put(projectDocumentAction.addModal('request'));
+      yield call(projectDocumentApi.add, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
+      yield put(projectDocumentAction.addModal('response'));
+      if (params.type === 'RECEIVED') {
+        yield call(fetchReceivedList, params.projectId);
+      }
+      else if (params.type === 'SENT') {
+        yield call(fetchSentList, params.projectId);
+      }
+      else if (params.type === 'BUILDING') {
+        yield call(fetchBuildingList, params.projectId);
+      }
     }
     catch (e) {
       yield put(dialogActions.openAlert({
         children: '저장에 실패하였습니다.',
         status:   'error',
       }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }

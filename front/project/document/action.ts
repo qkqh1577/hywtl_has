@@ -1,7 +1,6 @@
 import { createAction } from 'typesafe-actions';
 import {
   ProjectDocumentShort,
-  ProjectDocumentType,
   ProjectDocumentVO,
 } from 'project/document/domain';
 import {
@@ -32,8 +31,8 @@ export const projectDocumentAction = {
   setAllList:      createAction(ProjectDocumentAction.setAllList)<number>(),
   setId:           createAction(ProjectDocumentAction.setId)<number>(),
   setOne:          createAction(ProjectDocumentAction.setOne)<ProjectDocumentVO | undefined>(),
-  add:             createAction(ProjectDocumentAction.add)<FormikSubmit<ProjectDocumentParameter>>(),
+  add:             createAction(ProjectDocumentAction.add)<ProjectDocumentParameter>(),
   update:          createAction(ProjectDocumentAction.update)<FormikSubmit<ProjectDocumentUpdateParameter>>(),
-  addModal:        createAction(ProjectDocumentAction.addModal)<ProjectDocumentType | undefined>(),
+  addModal:        createAction(ProjectDocumentAction.addModal)<string>(),
   delete:          createAction(ProjectDocumentAction.delete)<number>(),
 };

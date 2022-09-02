@@ -18,10 +18,11 @@ import { dialogActions } from 'components/Dialog';
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take(ProjectAction.setFilter);
-    const page: Page<ProjectShortVO> = yield call(projectApi.getPage, formik.values);
+    const { payload: query } = yield take(ProjectAction.setFilter);
+    yield put({ type: 'app/project/filter/status', filterStatus: 'open' });
+    const page: Page<ProjectShortVO> = yield call(projectApi.getPage, query);
     yield put(projectAction.setPage(page));
-    yield call(formik.setSubmitting, false);
+    yield put({ type: 'app/project/filter/status', filterStatus: 'close' });
   }
 }
 

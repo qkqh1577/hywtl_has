@@ -1,12 +1,12 @@
 package com.howoocast.hywtl_has.project.document.parameter;
 
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project.document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project.document.domain.ProjectDocumentType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,9 +19,9 @@ public class ProjectDocumentAddParameter {
     private String recipient;
 
     @NotNull(message = ProjectDocument.KEY + ".file.not_null")
-    private MultipartFile file;
+    private FileItemParameter file;
 
-    private MultipartFile mailFile;
+    private FileItemParameter mailFile;
 
     private String note;
 

@@ -3,9 +3,9 @@ POST http://localhost:8080/project/sales/1/basic/business
 Content-Type: application/json
 
 {
-  "businessId": 1,
-  "businessManagerId": 1,
-  "involvedType": "ORDERER"
+  "businessId": 3,
+  "businessManagerId": 3,
+  "involvedType": "ARCHITECTURAL"
 }
 
 ### project basic business get list

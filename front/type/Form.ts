@@ -4,7 +4,7 @@ export type FormikPartial<T extends object> = {
   [K in keyof T]-?: T[K] | '';
 }
 
-export function toValues<T extends object>(formikPartial: FormikPartial<T>): Partial<T> {
+export function toValues<T extends object>(formikPartial: FormikPartial<T>): T {
   const keys = Object.keys(formikPartial);
   const values: Partial<T> = {};
   for (let i = 0; i < keys.length; i++) {
@@ -16,7 +16,7 @@ export function toValues<T extends object>(formikPartial: FormikPartial<T>): Par
       values[key] = value;
     }
   }
-  return values;
+  return values as T;
 }
 
 type Values<P extends object> = P extends FormikPartial<(infer T)> ? Partial<T> : Partial<P>;

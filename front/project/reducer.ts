@@ -23,7 +23,7 @@ export const projectReducer = createReducer(initial, {
                                 action
                                ) => ({
     ...state,
-    filter: action.payload.values,
+    filter: action.payload,
   }),
   [ProjectAction.setPage]:     (state,
                                 action

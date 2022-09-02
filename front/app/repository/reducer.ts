@@ -139,11 +139,13 @@ export const menuReducer = createReducer(initMenuState, {
 export interface ProjectDrawerState {
   open: boolean;
   filterOpen: boolean;
+  filterStatus: 'idle' | 'open' | 'close';
 }
 
 const initialProjectDrawerState: ProjectDrawerState = {
-  open:       true,
-  filterOpen: false,
+  open:         true,
+  filterOpen:   false,
+  filterStatus: 'idle'
 };
 
 export const projectDrawerReducer = createReducer(initialProjectDrawerState, {
@@ -154,5 +156,11 @@ export const projectDrawerReducer = createReducer(initialProjectDrawerState, {
   [ProjectDrawerAction.toggleFilter]: (state) => ({
     ...state,
     filterOpen: !state.filterOpen
+  }),
+  ['app/project/filter/status']:      (state,
+                                       action
+                                      ) => ({
+    ...state,
+    filterStatus: action.filterStatus,
   })
 });

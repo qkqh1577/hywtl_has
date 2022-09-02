@@ -24,7 +24,7 @@ export enum ProjectAction {
 }
 
 export const projectAction = {
-  setFilter:    createAction(ProjectAction.setFilter)<FormikSubmit<ProjectQuery>>(),
+  setFilter:    createAction(ProjectAction.setFilter)<ProjectQuery>(),
   setPage:      createAction(ProjectAction.setPage)<Page<ProjectShortVO> | undefined>(),
   setOne:       createAction(ProjectAction.setOne)<ProjectVO | undefined>(),
   updateStatus: createAction(ProjectAction.updateStatus)<FormikSubmit<ProjectStatusParameter>>(),

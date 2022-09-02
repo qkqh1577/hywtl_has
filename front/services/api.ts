@@ -5,6 +5,37 @@ const isFormData = (parameter: FormData | any | undefined): parameter is FormDat
   return parameter && (parameter as FormData).append !== undefined;
 };
 
+type Parameter = {
+  [key: string]: any;
+}
+
+export function toFormData(parameter: Parameter,
+                           prefix?: string,
+                           formData?: FormData
+): FormData {
+  const result = formData ?? new FormData();
+  const keys = Object.keys(parameter);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const value = parameter[key];
+    if (typeof value === 'undefined' || value === null || Number.isNaN(value) || value === '') {
+      continue;
+    }
+    const name = prefix ? `${prefix}.${key}` : key;
+    if (value instanceof File || value instanceof Blob) {
+      result.append(name, value);
+      continue;
+    }
+    if (typeof value === 'object') {
+      console.log(name, value);
+      toFormData(value, name, result);
+      continue;
+    }
+    result.append(name, value);
+  }
+  return result;
+}
+
 export class HttpClient {
 
   private client;

@@ -11,11 +11,11 @@ export interface ProjectDocumentState {
   sentList?: ProjectDocumentShort[];
   buildingList?: ProjectDocumentShort[];
   detail?: ProjectDocumentVO;
-  addModal?: ProjectDocumentType;
+  addModal: 'close' | ProjectDocumentType | 'request' | 'response';
   detailModal?: ProjectDocumentVO;
 }
 
-const initialDocumentState: ProjectDocumentState = {};
+const initialDocumentState: ProjectDocumentState = { addModal: 'close' };
 
 export const projectDocumentReducer = createReducer(initialDocumentState, {
 
@@ -40,15 +40,15 @@ export const projectDocumentReducer = createReducer(initialDocumentState, {
     buildingList: action.payload
   }),
 
-  [ProjectDocumentAction.setOne]:      (state,
-                                        action
-                                       ) => ({
+  [ProjectDocumentAction.setOne]:   (state,
+                                     action
+                                    ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectDocumentAction.addModal]:    (state,
-                                        action
-                                       ) => ({
+  [ProjectDocumentAction.addModal]: (state,
+                                     action
+                                    ) => ({
     ...state,
     addModal: action.payload,
   }),

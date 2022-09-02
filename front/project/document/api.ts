@@ -1,4 +1,4 @@
-import apiClient from 'services/api';
+import apiClient, { toFormData } from 'services/api';
 import {
   ProjectDocumentId,
   ProjectDocumentShort,
@@ -33,30 +33,15 @@ class ProjectDocumentApi {
   }
 
   async add(params: ProjectDocumentParameter): Promise<void> {
-    const formData = new FormData();
-    formData.append('recipient', params.recipient);
-    formData.append('type', params.type);
-    formData.append('file', params.file);
-    if (params.mailFile) {
-      formData.append('mailFile', params.mailFile);
-    }
-    if (params.note) {
-      formData.append('note', params.note);
-    }
 
+    const formData = toFormData(params);
+    console.log(params, formData.get('file'));
     const { data } = await apiClient.post(`/project/sales/${params.projectId}/document`, formData);
     return data;
   }
 
   async update(params: ProjectDocumentUpdateParameter): Promise<void> {
-    const formData = new FormData();
-    formData.append('recipient', params.recipient);
-    if (params.mailFile) {
-      formData.append('mailFile', params.mailFile);
-    }
-    if (params.note) {
-      formData.append('note', params.note);
-    }
+    const formData = toFormData(params);
     const { data } = await apiClient.patch(`/project/sales/document/${params.id}`, formData);
     return data;
   }

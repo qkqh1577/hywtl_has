@@ -20,7 +20,6 @@ import {
   initialProjectQuery,
   ProjectQuery
 } from 'project/query';
-import { FormikSubmit } from 'type/Form';
 import { projectAction } from 'project/action';
 import { projectDrawerAction } from 'app/domain/action';
 
@@ -31,23 +30,25 @@ export default function ProjectDrawerRoute() {
   const { pathname } = useLocation();
 
   const isProjectPage = useMemo(() => pathname.startsWith('/project/sales-management'), [pathname]);
-  const { open: openProjectMenu, filterOpen } = useSelector((root: RootState) => root.projectDrawer);
+  const { open: openProjectMenu, filterOpen, filterStatus } = useSelector((root: RootState) => root.projectDrawer);
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const { page } = useSelector((root: RootState) => root.project);
-  const setFilter = useCallback((formikProps: FormikSubmit<ProjectQuery>) => dispatch(projectAction.setFilter(formikProps)), [dispatch]);
+  const setFilter = useCallback((query: ProjectQuery) => dispatch(projectAction.setFilter(query)), [dispatch]);
   const toggleFilter = useCallback(() => dispatch(projectDrawerAction.toggleFilter()), [dispatch]);
 
   const formik = useFormik({
     initialValues: initialProjectQuery,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      setFilter({
-        values,
-        ...helper
-      });
+    onSubmit:      (values) => {
+      setFilter(values);
     }
   });
+
+  useEffect(() => {
+    if (filterStatus === 'close') {
+      formik.setSubmitting(false);
+      dispatch({ type: 'app/project/filter/status', filterStatus: 'idle' });
+    }
+  }, [filterStatus]);
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
     navigate(`/project/sales-management/${item.id}/basic`);
@@ -55,14 +56,14 @@ export default function ProjectDrawerRoute() {
 
   useEffect(() => {
     if (pathname === '/project/sales-management') {
-      setFilter(formik);
+      setFilter(initialProjectQuery);
     }
   }, [pathname]);
 
   useEffect(() => {
     if (isProjectPage) {
       if (!page) {
-        setFilter(formik);
+        setFilter(initialProjectQuery);
       }
       else {
         if (page.number === 0) {

@@ -1,4 +1,7 @@
-import React, { useCallback } from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import ProjectDocumentAddModal from 'project/document/view/AddModal';
 import {
   useDispatch,
@@ -9,17 +12,15 @@ import { projectDocumentAction } from 'project/document/action';
 import { useFormik } from 'formik';
 import {
   FormikPartial,
-  FormikSubmit,
   toValues
 } from 'type/Form';
 import {
   initialProjectDocumentParameter,
   ProjectDocumentParameter
 } from 'project/document/parameter';
-import { ProjectId } from 'project/domain';
 import useId from 'services/useId';
 import useDialog from 'components/Dialog';
-import { FileItemView } from 'file-item';
+import { ProjectId } from 'project/domain';
 
 export default function ProjectDocumentAddModalRoute() {
 
@@ -28,19 +29,11 @@ export default function ProjectDocumentAddModalRoute() {
   const dispatch = useDispatch();
   const { addModal } = useSelector((root: RootState) => root.projectDocument);
 
-  const onClose = useCallback(() =>
-    dispatch(projectDocumentAction.addModal(undefined)), [dispatch]);
-
-  const add = useCallback((formikProps: FormikSubmit<FormikPartial<ProjectDocumentParameter>>) =>
-      dispatch(projectDocumentAction.add({
-        ...formikProps,
-        values: toValues(formikProps.values) as ProjectDocumentParameter,
-      })),
-    [dispatch]);
+  const onClose = useCallback(() => dispatch(projectDocumentAction.addModal('close')), [dispatch]);
 
   const formik = useFormik<FormikPartial<ProjectDocumentParameter>>({
     initialValues: initialProjectDocumentParameter,
-    onSubmit:      (values,
+    onSubmit:      (formikValues,
                     helper
                    ) => {
       if (!projectId) {
@@ -48,29 +41,23 @@ export default function ProjectDocumentAddModalRoute() {
         helper.setSubmitting(false);
         return;
       }
-      if (!addModal) {
+      if (addModal == 'close' || addModal === 'request' || addModal === 'response') {
         error('자료 형식이 선택되지 않았습니다.');
         helper.setSubmitting(false);
         return;
       }
-
-      add({
-        values: {
-          projectId: ProjectId(projectId),
-          type:      addModal,
-          file:      (values.file as unknown as FileItemView).multipartFile ?? '',
-          mailFile:  (values.mailFile as unknown as FileItemView).multipartFile ?? '',
-          recipient: values.recipient,
-          note:      values.note,
-        },
-        ...helper
-      });
+      dispatch(projectDocumentAction.add(toValues({ ...formikValues, projectId: ProjectId(projectId), type: addModal })));
     }
   });
+  useEffect(() => {
+    if (addModal === 'response') {
+      onClose();
+    }
+  }, [addModal]);
 
   return (
     <ProjectDocumentAddModal
-      open={!!addModal}
+      open={addModal !== 'close'}
       onClose={onClose}
       formik={formik}
     />
