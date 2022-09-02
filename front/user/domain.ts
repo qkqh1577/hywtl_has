@@ -53,7 +53,7 @@ export interface UserVO {
   mobilePhone?: string;
   privateEmail?: string;
   emergencyPhone?: string;
-  relationShip?: string;
+  relationship?: string;
   address?: string;
   birthDate?: Date;
 }
@@ -67,7 +67,7 @@ export interface UserShort{
   mobilePhone?: string;
   privateEmail?: string;
   emergencyPhone?: string;
-  relationShip?: string;
+  relationship?: string;
   address?: string;
   birthDate?: Date;
 }
@@ -84,7 +84,7 @@ export const initialUser: UserVO = {
   mobilePhone: '',
   privateEmail: '',
   emergencyPhone: '',
-  relationShip: '',
+  relationship: '',
   address: '',
   birthDate: undefined,
 };

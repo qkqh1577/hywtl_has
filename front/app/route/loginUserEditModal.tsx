@@ -41,7 +41,7 @@ export default function LoginUserEditModalRoute() {
       mobilePhone:    editModal?.mobilePhone,
       privateEmail:   editModal?.privateEmail,
       emergencyPhone: editModal?.emergencyPhone,
-      relationShip:   editModal?.relationShip,
+      relationship:   editModal?.relationship,
       address:        editModal?.address,
     }, initialLoginUserEditParameter)
   }), [editModal]);
@@ -52,6 +52,7 @@ export default function LoginUserEditModalRoute() {
       onSubmit:      (values,
                       helper
                      ) => {
+        console.log("values : ", values);
         editLoginUser({ values, ...helper });
       }
     }

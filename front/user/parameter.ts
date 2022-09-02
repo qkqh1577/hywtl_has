@@ -31,7 +31,7 @@ export const initialLoginUserEditParameter: FormikPartial<LoginUserEditParameter
   mobilePhone: '',
   privateEmail: '',
   emergencyPhone: '',
-  relationShip: '',
+  relationship: '',
   address: '',
   birthDate: '',
 };
