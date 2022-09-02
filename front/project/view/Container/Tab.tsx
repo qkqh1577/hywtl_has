@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Button
-} from '@mui/material';
+import { Box } from '@mui/material';
 import {
   useLocation,
   useNavigate
@@ -20,7 +17,7 @@ const propsList: ButtonProps[] = [{
   path:     'basic',
 }, {
   children: '단지 정보',
-  path:     'building',
+  path:     'complex',
 }, {
   children: '견적/계약',
   path:     'estimate_contract',

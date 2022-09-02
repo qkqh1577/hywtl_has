@@ -2,8 +2,8 @@ import {
   Box,
   Button,
   IconButton,
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableFooter,
   TableHead,
@@ -20,7 +20,6 @@ import {
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
 import TitleListField from 'estimate_template/view/Detail/TitleListField';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import {
   FormikContext,
   FormikContextType
@@ -33,45 +32,32 @@ import {
 import Tooltip from 'components/Tooltip';
 import useDialog from 'components/Dialog';
 import { FormikEditable } from 'type/Form';
+import { Table } from 'layouts/Table';
+import RequiredMark from 'components/RequiredMark';
 
 export default function () {
   const { error } = useDialog();
   const formikContext: FormikContextType<FormikEditable<EstimateTemplateVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
   const list = formikContext?.values.detailList ?? [];
-  const columnProps: TableCellProps[] = [{
-    key:      'titleList',
-    children: '세부 항목명',
-    required: edit,
-  }, {
-    key:      'unit',
-    children: '단위',
-    required: edit,
-  }, {
-    key:      'unitPrice',
-    children: '단가',
-    required: edit,
-  }, {
-    key:      'note',
-    children: '비고',
-  }, {
-    key:      'seq',
-    children: '순서',
-    hidden:   !edit,
-  }, {
-    key:      'remove',
-    children: '삭제',
-    hidden:   !edit,
-  }];
 
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} />
-            ))}
+            <TableCell>
+              <RequiredMark required={edit} text="세부 항목명" />
+            </TableCell>
+            <TableCell>
+              <RequiredMark required={edit} text="단위" />
+            </TableCell>
+            <TableCell>
+              <RequiredMark required={edit} text="단가" />
+            </TableCell>
+            <TableCell>비고</TableCell>
+            {edit && (<TableCell>순서</TableCell>)}
+            {edit && (<TableCell>삭제</TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -6,8 +6,10 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.repository.CustomRepository;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,14 @@ public class CustomFinder<D extends CustomEntity> {
         return repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(KEY, id);
         });
+    }
+
+    public @Nullable
+    D byIdIfExists(@Nullable Long id) {
+        if (Objects.isNull(id)) {
+            return null;
+        }
+        return repository.findById(id).orElse(null);
     }
 
     @SuppressWarnings("unchecked")

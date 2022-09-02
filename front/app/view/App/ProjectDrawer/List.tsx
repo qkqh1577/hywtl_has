@@ -5,12 +5,12 @@ import {
 import {
   Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import TableCell, { TableCellProps } from 'components/TableCell';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ColorPalette } from 'app/view/App/theme';
 
 export interface ListProps {
@@ -24,22 +24,6 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
 
   const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
 
-  const columnProps: TableCellProps[] = useMemo(() => [{
-    key:      'code',
-    children: open ? '프로젝트번호' : '번호',
-    sx:       {
-      width: '48px',
-    }
-  }, {
-    key:      'name',
-    children: open ? '프로젝트 이름' : '이름',
-  }, {
-    key:      'progressStatus',
-    children: '진행현황',
-    sx:       {
-      width: '58px',
-    }
-  }], [open]);
   return (
     <TableContainer sx={{
       width:                        '100%',
@@ -68,17 +52,17 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
             fontSize:        '12px',
             height:          '36px',
             backgroundColor: 'transparent',
-            borderLeft:      `1px solid ${ColorPalette.Blue['7']}`,
-            borderTop:       `1px solid ${ColorPalette.Blue['7']}`,
+            borderLeft:      `1px solid ${ColorPalette._e4e9f2}`,
+            borderTop:       `1px solid ${ColorPalette._e4e9f2}`,
             borderBottom:    'none',
-            color:           ColorPalette.DarkGray,
+            color:           ColorPalette._252627,
           },
           '& td':                                        {
             padding: '0 10px',
           },
           '& th':                                        {
             fontWeight:      'bold',
-            borderBottom:    `5px solid ${ColorPalette.Blue['7']}`,
+            borderBottom:    `5px solid ${ColorPalette._e4e9f2}`,
             backgroundColor: ColorPalette._fff,
             padding:         0,
           },
@@ -86,35 +70,36 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
             borderTopLeftRadius: '5px',
           },
           '& th:last-child':                             {
-            borderRight:          `1px solid ${ColorPalette.Blue['7']}`,
+            borderRight:          `1px solid ${ColorPalette._e4e9f2}`,
             borderTopRightRadius: '5px',
           },
           '& td:last-child':                             {
-            borderRight: `1px solid ${ColorPalette.Blue['7']}`,
+            borderRight: `1px solid ${ColorPalette._e4e9f2}`,
           },
           '& tbody > tr:first-of-type > td ':            {
-            borderBottom: `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
           },
           '& tbody > tr:last-child > td:first-of-type ': {
-            borderBottom:           `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottom:           `1px solid ${ColorPalette._e4e9f2}`,
             borderBottomLeftRadius: '5px',
           },
           '& tbody > tr:last-child > td:last-child ':    {
-            borderBottom:            `1px solid ${ColorPalette.Blue['7']}`,
+            borderBottom:            `1px solid ${ColorPalette._e4e9f2}`,
             borderBottomRightRadius: '5px',
           },
         }}>
+
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} key={props.key} />
-            ))}
+            <TableCell sx={{ width: '48px', }}>{open ? '프로젝트번호' : '번호'}</TableCell>
+            <TableCell>{open ? '프로젝트 이름' : '이름'}</TableCell>
+            <TableCell sx={{ width: '58px', }}>진행현황</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!list || list.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
+              <TableCell colSpan={3} children="결과가 없습니다." />
             </TableRow>
           )}
           {list && list.map((item) => (

@@ -6,13 +6,12 @@ import {
 } from 'formik';
 import { FormikEditable } from 'type/Form';
 import { EstimateContentVO } from 'admin/estimate/content/domain';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import {
   Box,
   Button,
   IconButton,
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -23,6 +22,8 @@ import {
   KeyboardArrowDown as DownIcon,
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
+import RequiredMark from 'components/RequiredMark';
+import { Table } from 'layouts/Table';
 
 export interface DetailListProps {
   detailListFooter: React.ReactNode;
@@ -33,36 +34,18 @@ export default function (props: DetailListProps) {
   const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
   const edit = formikContext?.values.edit ?? true;
   const list = formikContext?.values.detailList ?? [];
-  const columnProps: TableCellProps[] = [
-    {
-      key:      'no',
-      children: 'No',
-    },
-    {
-      key:      'description',
-      children: '문구',
-      required: edit,
-    },
-    {
-      key:      'seq',
-      children: '순서',
-      hidden:   !edit,
-    },
-    {
-      key:      'remove',
-      children: '삭제',
-      hidden:   !edit,
-    }
-  ];
 
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>
+              <RequiredMark required={edit} text="문구" />
+            </TableCell>
+            {edit && <TableCell>순서</TableCell>}
+            {edit && <TableCell>삭제</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -79,7 +62,9 @@ export default function (props: DetailListProps) {
                   {edit && (
                     <TextField
                       required
-                      disableLabel
+                      labelProps={{
+                        disableLabel: true,
+                      }}
                       type=" text"
                       name={`detailList.${i}`}
                       label="문구"

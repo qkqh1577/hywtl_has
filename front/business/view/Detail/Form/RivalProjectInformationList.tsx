@@ -2,12 +2,11 @@ import React from 'react';
 import {
   RivalProjectVO
 } from 'business/domain';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import {
   Button,
   Grid,
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -15,6 +14,7 @@ import {
 } from '@mui/material';
 import DateFormat from 'components/DateFormat';
 import dayjs from 'dayjs';
+import { Table } from 'layouts/Table';
 
 interface Props {
   list: RivalProjectVO[];
@@ -90,32 +90,6 @@ function RivalStatisticTable({ list, businessName }: Props) {
 
 export default function ({ list, businessName }: Props) {
 
-  const columnProps: TableCellProps[] = [
-    {
-      key:      'no',
-      children: 'No',
-    },
-    {
-      key:      ' projectCode',
-      children: '프로젝트 번호',
-    },
-    {
-      key:      'name',
-      children: '프로젝트명',
-    },
-    {
-      key:      'bidDate',
-      children: '입찰기간',
-    },
-    {
-      key:      'win',
-      children: '낙찰업체',
-    },
-    {
-      key:      'detail',
-      children: '상세',
-    }];
-
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>
@@ -132,15 +106,18 @@ export default function ({ list, businessName }: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                {columnProps.map((props) =>
-                  (<TableCell {...props} />)
-                )}
+                <TableCell>No.</TableCell>
+                <TableCell>프로젝트 번호</TableCell>
+                <TableCell>프로젝트명</TableCell>
+                <TableCell>입찰기간</TableCell>
+                <TableCell>낙찰업체</TableCell>
+                <TableCell>상세</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {list.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={columnProps.length}>
+                  <TableCell colSpan={6}>
                     참여한 프로젝트가 없습니다
                   </TableCell>
                 </TableRow>

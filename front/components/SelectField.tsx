@@ -34,7 +34,7 @@ export interface SelectFieldProps
     | 'value'
     | 'fullWidth'
     | 'disabled'> {
-  options: Option[] | DataFieldValue[] | null;
+  options: Option[] | DataFieldValue[] | null | undefined;
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
@@ -103,9 +103,11 @@ export default function SelectField(props: SelectFieldProps) {
 
   const fieldRef = useRef<HTMLDivElement>(null);
 
-  const children = useMemo((): React.ReactNode[] | null => {
+  const children = useMemo((): React.ReactNode | React.ReactNode[] => {
     if (!options) {
-      return null;
+      return (
+        <MenuItem value="">-</MenuItem>
+      );
     }
 
     return [{ key: '', text: '선택' }, ...options]

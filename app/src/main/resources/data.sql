@@ -94,4 +94,6 @@ INSERT INTO hywtl_has_api.estimate_content_detail_list (estimate_content_id, det
 INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 0);
 INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 1);
 INSERT INTO hywtl_has_api.estimate_content_test_type_list (estimate_content_id, test_type_list) VALUES (1, 2);
+INSERT INTO hywtl_has_api.project_complex_site (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, estimate_figure_difficulty, figure_difficulty, name, with_environment_test, manager_id, project_id) VALUES (1, '2022-09-02 12:45:08.539179', null, null, null, '2022-09-02 12:45:08.735179', null, '중', '중하', '1단지 대지모형', false, 2, 1);
+INSERT INTO hywtl_has_api.project_complex_building (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, base_area, estimate_evaluation_difficulty, estimate_figure_difficulty, estimate_report_difficulty, estimate_test_difficulty, floor_count, height, in_test, name, ratio, shape, building_document_id, project_id, site_id) VALUES (1, '2022-09-02 12:45:08.785182', null, null, null, '2022-09-02 12:45:08.820181', null, 18508, null, null, null, null, 29, 81, true, '101호', 0.5953951237293675, null, null, 1, 1);
 set FOREIGN_KEY_CHECKS = 1;

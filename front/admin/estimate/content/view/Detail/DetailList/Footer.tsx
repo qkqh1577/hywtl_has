@@ -1,11 +1,11 @@
 import {
   Box,
   Button,
+  TableCell,
   TableFooter,
   TableRow
 } from '@mui/material';
 import React from 'react';
-import TableCell from 'components/TableCell';
 import TextField from 'components/TextField';
 
 export interface AddDescriptionProps {
@@ -22,7 +22,9 @@ export default function AddDescription(props: AddDescriptionProps) {
         </TableCell>
         <TableCell colSpan={2}>
           <TextField
-            disableLabel
+            labelProps={{
+              disableLabel: true
+            }}
             type="text"
             name="newDescription"
             label="문구"

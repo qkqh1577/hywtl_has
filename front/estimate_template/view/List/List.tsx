@@ -4,49 +4,36 @@ import {
   testTypeName
 } from 'estimate_template/domain';
 import {
-  Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import TableCell, { TableCellProps } from 'components/TableCell';
 import { Link } from 'react-router-dom';
+import { Table } from 'layouts/Table';
 
 export interface ListProps {
   list: EstimateTemplateShort[] | undefined;
 }
 
-const columnProps: TableCellProps[] = [{
-  key:      'no',
-  children: 'No.',
-}, {
-  key:      'testType',
-  children: '실험 타입',
-}, {
-  key:      'title',
-  children: '용역 항목',
-}, {
-  key:      'detailCount',
-  children: '세부 항목 수'
-}];
-
 export default function ({ list }: ListProps) {
 
   return (
     <TableContainer>
-      <Table stickyHeader aria-label="sticky table">
+      <Table>
         <TableHead>
           <TableRow>
-            {columnProps.map((props) => (
-              <TableCell {...props} />
-            ))}
+            <TableCell>No.</TableCell>
+            <TableCell>실험 타입</TableCell>
+            <TableCell>용역 항목</TableCell>
+            <TableCell>세부 항목 수</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!list || list.length === 0) && (
             <TableRow>
-              <TableCell colSpan={columnProps.length} children="결과가 없습니다." />
+              <TableCell colSpan={4} children="결과가 없습니다." />
             </TableRow>
           )}
           {list && list.map((item,
