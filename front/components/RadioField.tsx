@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { useDataProps } from 'components/DataField';
+import { FormikContextType } from 'formik';
 
 export interface RadioFieldProps
   extends Pick<MuiTextFieldProps, | 'onChange' | 'onBlur'>,
@@ -37,6 +38,7 @@ export interface RadioFieldProps
   options: Option[] | DataFieldValue[];
   disableText?: boolean;
   helperText?: string;
+  formikContext?: FormikContextType<any>;
 }
 
 export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
@@ -91,11 +93,11 @@ export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
         value={key}
         checked={key === value}
         onChange={(e) => {
-          console.log(e);
+          console.log(value);
           onChange(e);
         }}
         onBlur={(e) => {
-          console.log(e);
+          console.log(value);
           onBlur(e);
         }}
       />
@@ -112,6 +114,11 @@ export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
         />
       );
     }
+  }
+  if (props.formikContext) {
+    return result.map(item => (
+      <RadioGroup name={`${name}-group`}>{item}</RadioGroup>
+    ));
   }
   return result;
 }
@@ -148,7 +155,7 @@ export default function RadioField(props: RadioFieldProps) {
           {label}
         </FormLabel>
       )}
-      <RadioGroup name={name}>
+      <RadioGroup name={`${name}-group`}>
         {radio}
       </RadioGroup>
       <FormHelperText error={error}>

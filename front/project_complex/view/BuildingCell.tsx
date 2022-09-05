@@ -1,5 +1,8 @@
 import { TableCell } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import {
   FormikContextType,
   FormikProvider,
@@ -19,7 +22,10 @@ import {
   testTypeList,
   testTypeName
 } from 'admin/estimate/content/domain';
-import { difficultyList } from 'project_complex/domain';
+import {
+  difficultyList,
+  ProjectComplexBuildingId
+} from 'project_complex/domain';
 import { projectComplexAction } from 'project_complex/action';
 
 interface FormType
@@ -38,6 +44,8 @@ function Children({ fieldName, formik }: {
   formik: FormikContextType<FormType>;
 }) {
 
+  const dispatch = useDispatch();
+  const buildingFileOpen = useCallback((id: ProjectComplexBuildingId) => dispatch(projectComplexAction.buildingFileModal(id)), [dispatch]);
   const { siteList } = useSelector((root: RootState) => root.projectComplex);
   const { buildingList } = useSelector((root: RootState) => root.projectDocument);
 
@@ -140,14 +148,17 @@ function Children({ fieldName, formik }: {
         <SelectField
           disableLabel
           name={fieldName}
+          status={FieldStatus.ReadOnly}
           label="형상비 검토 파일 ID"
           options={buildingList?.map((item) => ({
             key:  item.id,
             text: item.file.filename
           }))}
-          onChange={() => {
-            formik.handleSubmit();
+          onClick={() => {
+            console.log(formik.values.id);
+            buildingFileOpen(formik.values.id);
           }}
+
         />
       );
     case 'specialWindWeightConditionList':

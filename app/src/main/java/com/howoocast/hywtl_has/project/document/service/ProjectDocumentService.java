@@ -98,10 +98,7 @@ public class ProjectDocumentService {
     }
 
     private String getCode(Project project, ProjectDocumentType type) {
-        List<ProjectDocument> list = repository.findByProject_IdAndTypeOrderByCode(project.getId(), type);
-        Long maxId = list.stream()
-            .map(ProjectDocument::getId)
-            .reduce(1L, Math::max);
+        Long nextSeq = repository.findNextSeq(project.getId(), type.toString());
 
         String code = "";
         switch (type) {
@@ -116,7 +113,7 @@ public class ProjectDocumentService {
                 break;
         }
         code += project.getBasic().getCode();
-        code += String.format("%02d", maxId + 1L);
+        code += String.format("%02d", nextSeq);
         return code;
     }
 

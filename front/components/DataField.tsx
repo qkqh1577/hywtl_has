@@ -7,7 +7,10 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { FormikContext } from 'formik';
+import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
 import {
   DataFieldValue,
   equals,
@@ -39,6 +42,7 @@ interface Props<T> {
   required?: boolean;
   onChange?: (e: ChangeEvent<T>) => void;
   onBlur?: FocusEventHandler<T>;
+  formikContext?: FormikContextType<any>;
 }
 
 export function useDataProps<T>(props: Props<T>): DataProps {
@@ -53,8 +57,7 @@ export function useDataProps<T>(props: Props<T>): DataProps {
           onBlur:   propsOnBlur,
         } = props;
 
-
-  const formikContext = useContext(FormikContext);
+  const formikContext = props.formikContext ?? useContext(FormikContext);
   const values = formikContext?.values ?? {};
   const errors = formikContext?.errors ?? {};
 
@@ -75,6 +78,8 @@ export function useDataProps<T>(props: Props<T>): DataProps {
   const required = useMemo(() => edit && required, [edit, propsRequired]);
 
   const onChange = useCallback((e) => {
+
+    console.log(formikContext);
     if (!edit) {
       return;
     }
@@ -102,17 +107,19 @@ export function useDataProps<T>(props: Props<T>): DataProps {
   }, [propsOnChange, edit]);
 
   const onBlur = useCallback((e) => {
+
+    console.log(formikContext);
     if (!edit) {
       return;
     }
     if (propsOnBlur) {
       propsOnBlur(e);
     }
-    if (!formikContext) {
-      return;
-    }
+
+    console.log(typeof setFieldValue);
+
     setFieldValue(name, value);
-  }, [propsOnBlur, edit, value]);
+  }, [propsOnBlur, edit, value, setFieldValue]);
 
   useEffect(() => {
     if (!equals(value, formikValue)) {

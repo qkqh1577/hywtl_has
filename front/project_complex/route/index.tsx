@@ -11,6 +11,7 @@ import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
 import { ProjectId } from 'project/domain';
 import ProjectComplexBuildingRoute from 'project_complex/route/building';
+import ProjectComplexBuildingFileModalRoute from 'project_complex/route/buildingFileModal';
 
 function Element() {
 
@@ -29,6 +30,7 @@ function Element() {
     <ProjectContainerRoute>
       <ProjectComplexSiteRoute />
       <ProjectComplexBuildingRoute />
+      <ProjectComplexBuildingFileModalRoute />
     </ProjectContainerRoute>
   );
 }

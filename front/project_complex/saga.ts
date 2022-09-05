@@ -36,6 +36,14 @@ function* getBuildList(id: ProjectId) {
   yield put(projectComplexAction.setBuildingList(list));
 }
 
+function* watchBuildingFileModal() {
+  while (true) {
+    const { payload: id } = yield take(projectComplexAction.buildingFileModal);
+    const detail: ProjectComplexBuildingVO = yield call(projectComplexApi.getBuilding, id);
+    yield put(projectComplexAction.setBuilding(detail));
+  }
+}
+
 function* pushSite() {
   while (true) {
     yield take(projectComplexAction.pushSite);
@@ -149,6 +157,7 @@ function* deleteBuilding() {
 
 export default function* projectComplexSaga() {
   yield fork(watchId);
+  yield fork(watchBuildingFileModal);
   yield fork(pushSite);
   yield fork(pushBuilding);
   yield fork(updateSite);

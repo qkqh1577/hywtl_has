@@ -1,4 +1,5 @@
 import {
+  ProjectComplexBuildingId,
   ProjectComplexBuildingVO,
   ProjectComplexSiteId,
   ProjectComplexSiteVO
@@ -17,4 +18,9 @@ export interface ProjectComplexBuildingParameter
   extends Omit<ProjectComplexBuildingVO, | 'site' | 'buildingDocument' | 'modifiedAt'> {
   siteId?: ProjectComplexSiteId;
   buildingDocumentId?: ProjectDocumentId;
+}
+
+export interface ProjectComplexBuildingFileParameter {
+  id: ProjectComplexBuildingId;
+  fileId?: ProjectDocumentId;
 }
