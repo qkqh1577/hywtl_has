@@ -4,7 +4,10 @@ import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.file.domain.FileItem;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.user.domain.User;
+import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
@@ -45,6 +48,8 @@ public class UserService {
     private final PasswordResetRepository passwordResetRepository;
 
     private final DepartmentRepository departmentRepository;
+
+    private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
     public Page<UserShortView> page(
@@ -148,6 +153,30 @@ public class UserService {
         repository.findById(id).ifPresent(instance ->
             repository.deleteById(id)
         );
+    }
+
+    /* 계정 정보 수정 api */
+    @Transactional
+    public void edit(String username, LoginUserChangeParameter parameter) {
+
+        FileItem profile = fileItemService.build(parameter.getProfile());
+        User loginUser = this.findByUsername(username);
+        loginUser.edit(
+            parameter.getEnglishName(),
+            parameter.getBirthDate(),
+            parameter.getSex(),
+            parameter.getMobilePhone(),
+            parameter.getPrivateEmail(),
+            parameter.getEmergencyPhone(),
+            parameter.getRelationship(),
+            parameter.getAddress(),
+            profile
+        );
+    }
+
+    private User findByUsername(String username) {
+        return repository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
     }
 
     private User load(Long id) {

@@ -21,7 +21,7 @@ import {
 import {
   userAction
 } from 'user/action';
-import UserChangeParameter from 'user/parameter';
+import { UserChangeParameter } from 'user/parameter';
 import { FormikSubmit } from 'type/Form';
 
 function Element() {

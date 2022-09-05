@@ -2,6 +2,7 @@ import {
   DepartmentVO,
   initialDepartment
 } from 'department/domain';
+import { FileItemView } from 'file-item';
 
 /**
  * 유저 권한
@@ -40,14 +41,38 @@ export function UserId(id: number) {
 
 export interface UserVO {
   id?: UserId;
-  name: string;
-  username: string;
-  email: string;
   role: UserRole;
   department: DepartmentVO;
   createdAt: Date;
   loginAt?: Date;
   passwordChangedAt?: Date;
+  name: string;
+  username: string;
+  email: string;
+  englishName?: string;
+  sex?: string;
+  mobilePhone?: string;
+  privateEmail?: string;
+  emergencyPhone?: string;
+  relationship?: string;
+  address?: string;
+  birthDate?: Date;
+  profile?: FileItemView;
+}
+
+export interface UserShortVO{
+  name: string | undefined;
+  username: string | undefined;
+  email: string | undefined;
+  englishName: string | undefined ;
+  sex?: string;
+  mobilePhone?: string | undefined;
+  privateEmail?: string | undefined;
+  emergencyPhone?: string | undefined;
+  relationship?: string | undefined;
+  address?: string | undefined;
+  birthDate?: Date;
+  profile?: FileItemView;
 }
 
 export const initialUser: UserVO = {
@@ -57,4 +82,43 @@ export const initialUser: UserVO = {
   role:       UserRole.NORMAL,
   department: initialDepartment,
   createdAt:  new Date(),
+  englishName: '',
+  sex: '',
+  mobilePhone: '',
+  privateEmail: '',
+  emergencyPhone: '',
+  relationship: '',
+  address: '',
+  birthDate: undefined,
 };
+
+/**
+ * 성별
+ */
+export enum SexType {
+  /**
+   * 남자
+   */
+  MALE   = 'MALE',
+
+  /**
+   * 여자
+   */
+  FEMALE = 'FEMALE',
+}
+
+export const sexTypeList: SexType[] = [
+  SexType.MALE,
+  SexType.FEMALE
+]
+
+export function sexTypeName(sexType: SexType | '') {
+  switch (sexType) {
+    case SexType.MALE:
+      return '남자';
+    case SexType.FEMALE:
+      return '여자';
+    default:
+      return '-';
+  }
+}
