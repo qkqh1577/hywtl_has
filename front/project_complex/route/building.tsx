@@ -30,8 +30,6 @@ export default function ProjectComplexBuildingRoute() {
     dispatch(projectComplexAction.pushBuilding());
   }, [dispatch, id]);
 
-
-
   const update = useCallback((params: ProjectComplexBuildingParameter) => dispatch(projectComplexAction.updateBuilding(params)), [dispatch]);
   const deleteBuilding = useCallback((id: ProjectComplexBuildingId) => dispatch(projectComplexAction.deleteBuilding(id)), [dispatch]);
 

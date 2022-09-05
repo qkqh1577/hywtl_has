@@ -39,6 +39,9 @@ function* getBuildList(id: ProjectId) {
 function* watchBuildingFileModal() {
   while (true) {
     const { payload: id } = yield take(projectComplexAction.buildingFileModal);
+    if (!id) {
+      continue;
+    }
     const detail: ProjectComplexBuildingVO = yield call(projectComplexApi.getBuilding, id);
     yield put(projectComplexAction.setBuilding(detail));
   }

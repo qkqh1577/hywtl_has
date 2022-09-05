@@ -52,5 +52,17 @@ export const projectComplexReducer = createReducer(initial, {
                                                 ) => ({
     ...state,
     buildingFileModal: action.payload,
-  })
+  }),
+  [ProjectComplexActionType.requestSite]:       (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    requestSite: action.payload,
+  }),
+  [ProjectComplexActionType.requestBuilding]:   (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    requestBuilding: action.payload,
+  }),
 });

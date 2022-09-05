@@ -28,7 +28,7 @@ export default function ProjectComplexBuildingFileModalRoute() {
   const dispatch = useDispatch();
   const { id: projectId, buildingDetail, buildingFileModal, requestBuilding } = useSelector((root: RootState) => root.projectComplex);
   const { buildingList } = useSelector((root: RootState) => root.projectDocument);
-  const { error } = useDialog();
+  const { error, confirm } = useDialog();
   const onClose = useCallback(() => dispatch(projectComplexAction.setBuilding(undefined)), [dispatch]);
 
   const updateBuilding = useCallback((params: ProjectComplexBuildingParameter) => dispatch(projectComplexAction.updateBuilding(params)), [dispatch]);
@@ -61,19 +61,21 @@ export default function ProjectComplexBuildingFileModalRoute() {
     }
   });
 
-
   useEffect(() => {
     if (projectId) {
       dispatch(projectDocumentAction.setAllList(projectId));
     }
     onClose();
-
   }, [projectId]);
 
   useEffect(() => {
     if (requestBuilding === 'response') {
       dispatch(projectComplexAction.buildingFileModal(undefined));
       dispatch(projectComplexAction.setBuilding(undefined));
+      formik.setSubmitting(false);
+      formik.setFieldValue('edit', false);
+      formik.setFieldValue('open', false);
+      dispatch(projectComplexAction.requestBuilding('idle'));
     }
   }, [requestBuilding]);
 
@@ -87,7 +89,17 @@ export default function ProjectComplexBuildingFileModalRoute() {
         formik.setFieldValue('edit', true);
       }}
       onClose={onClose}
-      onUnlink={() => {}}
+      onUnlink={() => {
+        confirm({
+          status:       'warn',
+          children:     '연결을 해제하시겠습니까?',
+          confirmText:  '해제',
+          afterConfirm: () => {
+            formik.setFieldValue('buildingFileId', undefined);
+            formik.handleSubmit();
+          }
+        });
+      }}
     />
   );
 }

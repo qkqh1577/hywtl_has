@@ -23,6 +23,8 @@ import { toReadableSize } from 'file-item';
 import DateFormat from 'components/DateFormat';
 import React from 'react';
 import { ProjectComplexBuildingId } from 'project_complex/domain';
+import IconButton from 'components/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props
   extends FormikLayoutProps<FormikProps> {
@@ -79,7 +81,7 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>선택</TableCell>
+                  {edit && (<TableCell>선택</TableCell>)}
                   <TableCell>자료 ID</TableCell>
                   <TableCell>파일</TableCell>
                   <TableCell>비고</TableCell>
@@ -88,17 +90,52 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {fileList && fileList.map((item) => (
+                {!edit && fileId && fileList && fileList
+                .filter((item) => item.id === fileId)
+                .map((item) => (
                   <TableRow key={item.id}>
+                    <TableCell>{item.code}</TableCell>
                     <TableCell>
-                      <Radio
-                        value={item.id}
-                        onClick={() => {
-                          formik.setFieldValue('fileId', item.id);
-                        }}
-                        checked={formik.values['fileId'] === item.id}
-                      />
+                      <Box sx={{
+                        width:          '100%',
+                        display:        'flex',
+                        flexWrap:       'nowrap',
+                        justifyContent: 'center',
+                        alignItems:     'center'
+                      }}>
+                        {item.file.filename}
+                        ({toReadableSize(item.file.size)})
+                        <IconButton
+                          shape="square"
+                          children={<FontAwesomeIcon icon="download" />}
+                          onClick={() => {
+                            window.open(`/file-items/${item.file.id}`, '_blank');
+                          }}
+                        />
+                      </Box>
                     </TableCell>
+                    <TableCell>{item.note}</TableCell>
+                    <TableCell>
+                      <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
+                    </TableCell>
+                    <TableCell>
+                      {item.createdBy.name}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {edit && fileList && fileList.map((item) => (
+                  <TableRow key={item.id}>
+                    {edit && (
+                      <TableCell>
+                        <Radio
+                          value={item.id}
+                          onClick={() => {
+                            formik.setFieldValue('fileId', item.id);
+                          }}
+                          checked={formik.values['fileId'] === item.id}
+                        />
+                      </TableCell>
+                    )}
                     <TableCell>{item.code}</TableCell>
                     <TableCell>
                       {`${item.file.filename} (${toReadableSize(item.file.size)})`}

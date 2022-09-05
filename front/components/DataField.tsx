@@ -79,7 +79,6 @@ export function useDataProps<T>(props: Props<T>): DataProps {
 
   const onChange = useCallback((e) => {
 
-    console.log(formikContext);
     if (!edit) {
       return;
     }
@@ -107,17 +106,12 @@ export function useDataProps<T>(props: Props<T>): DataProps {
   }, [propsOnChange, edit]);
 
   const onBlur = useCallback((e) => {
-
-    console.log(formikContext);
     if (!edit) {
       return;
     }
     if (propsOnBlur) {
       propsOnBlur(e);
     }
-
-    console.log(typeof setFieldValue);
-
     setFieldValue(name, value);
   }, [propsOnBlur, edit, value, setFieldValue]);
 
