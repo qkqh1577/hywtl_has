@@ -3,15 +3,12 @@ import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
 import { Box } from '@mui/material';
 import { FormikProvider } from 'formik';
 import { FormikLayoutProps } from 'layouts/PageLayout';
-import {
-  FormikPartial
-} from 'type/Form';
 import { LoginUserEditParameter } from 'user/parameter';
 import Form from 'app/view/App/LoginUserEditModal/Form';
 import LoginUserEditModalButtonBlock from 'app/view/App/LoginUserEditModal/LoginUserEditModalButtonBlock';
 
 export interface LoginUserEditModalProps
-  extends FormikLayoutProps<FormikPartial<LoginUserEditParameter>> {
+  extends FormikLayoutProps<LoginUserEditParameter> {
   open: boolean;
   onClose: ModalLayoutProps['onClose'];
 }

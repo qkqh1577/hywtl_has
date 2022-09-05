@@ -59,16 +59,16 @@ export interface UserVO {
 }
 
 export interface UserShort{
-  name: string;
-  username: string;
-  email: string;
-  englishName?: string;
-  sex?: string;
-  mobilePhone?: string;
-  privateEmail?: string;
-  emergencyPhone?: string;
-  relationship?: string;
-  address?: string;
+  name: string | undefined;
+  username: string | undefined;
+  email: string | undefined;
+  englishName?: string | undefined ;
+  sex?: string | undefined;
+  mobilePhone?: string | undefined;
+  privateEmail?: string | undefined;
+  emergencyPhone?: string | undefined;
+  relationship?: string | undefined;
+  address?: string | undefined;
   birthDate?: Date;
 }
 

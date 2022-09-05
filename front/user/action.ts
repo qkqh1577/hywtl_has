@@ -7,7 +7,6 @@ import {
 } from 'user/parameter';
 import Page from 'type/Page';
 import {
-  FormikPartial,
   FormikSubmit
 } from 'type/Form';
 import { LoginUser } from 'app/domain/login';
@@ -26,6 +25,6 @@ export const userAction = {
   setPage:   createAction(UserAction.setPage)<Page<UserVO>>(),
   setOne:    createAction(UserAction.setOne)<UserVO>(),
   change:    createAction(UserAction.change)<FormikSubmit<UserChangeParameter>>(),
-  edit:      createAction(UserAction.edit)<FormikSubmit<FormikPartial<LoginUserEditParameter>>>(),
+  edit:      createAction(UserAction.edit)<FormikSubmit<LoginUserEditParameter>>(),
   editModal: createAction(UserAction.editModal)<LoginUser | undefined>(),
 };
