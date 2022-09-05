@@ -4,6 +4,8 @@ import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.file.domain.FileItem;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
@@ -19,6 +21,8 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.querydsl.core.types.Predicate;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,6 +51,8 @@ public class UserService {
     private final PasswordResetRepository passwordResetRepository;
 
     private final DepartmentRepository departmentRepository;
+
+    private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
     public Page<UserShortView> page(
@@ -155,16 +161,23 @@ public class UserService {
     /* 계정 정보 수정 api */
     @Transactional
     public User edit(String name, LoginUserChangeParameter parameter) {
+
+        FileItem profile = fileItemService.build(parameter.getProfile());
         User loginUser = this.findByName(name);
         loginUser.edit(
             parameter.getEnglishName(),
-            parameter.getBirthDate(),
+            parameter.getBirthDate() != null ?
+                LocalDate.parse(
+                    parameter.getBirthDate().substring(0, 10),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                ) : null,
             parameter.getSex(),
             parameter.getMobilePhone(),
             parameter.getPrivateEmail(),
             parameter.getEmergencyPhone(),
             parameter.getRelationship(),
-            parameter.getAddress()
+            parameter.getAddress(),
+            profile
         );
         return loginUser;
     }

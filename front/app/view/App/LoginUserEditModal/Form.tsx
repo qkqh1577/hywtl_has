@@ -1,5 +1,11 @@
-import React from 'react';
-import { Box } from '@mui/material';
+import React, {
+  useCallback,
+  useRef
+} from 'react';
+import {
+  Box,
+  Button
+} from '@mui/material';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
@@ -8,6 +14,7 @@ import {
   sexTypeList,
   sexTypeName
 } from 'user/domain';
+import UploadField from 'components/UploadField';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -29,7 +36,7 @@ export default function () {
       display:      'flex',
       flexWrap:     'wrap',
       alignContent: 'flex-start',
-      padding: '45px'
+      padding:      '45px'
     }}>
       <FieldBox>
         <TextField
@@ -51,7 +58,6 @@ export default function () {
           status={FieldStatus.ReadOnly}
         />
       </FieldBox>
-
       <FieldBox>
         <TextField
           labelProps={{
@@ -63,12 +69,11 @@ export default function () {
         />
       </FieldBox>
       <FieldBox>
-        <TextField
-          labelProps={{
-            position: 'top'
-          }}
+        <UploadField
+          status={FieldStatus.Idle}
           name="profile"
-          label="프로필사진"
+          label="프로필 사진"
+          accept="image/*"
         />
       </FieldBox>
       <FieldBox>
@@ -88,7 +93,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <SelectField options={sexTypeList.map((item) => ({
-          key: item as string,
+          key:  item as string,
           text: sexTypeName(item),
         }))} name="sex" label="성별" />
       </FieldBox>

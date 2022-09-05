@@ -1,7 +1,7 @@
 import {
-  UserShort,
   UserVO
 } from 'user/domain';
+import { FormikPartial } from 'type/Form';
 
 export interface UserChangeParameter
   extends Omit<UserVO,
@@ -12,5 +12,16 @@ export interface UserChangeParameter
 
 
 export interface LoginUserEditParameter
-  extends UserShort {
+  extends Omit<UserVO,
+    | 'id'
+    | 'role'
+    | 'department'
+    | 'createdAt'
+    | 'loginAt'
+    | 'passwordChangedAt'
+    | 'name'
+    | 'username'
+    | 'email'
+    | 'profile'> {
+  profile?: File | '';
 }

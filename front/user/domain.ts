@@ -2,6 +2,7 @@ import {
   DepartmentVO,
   initialDepartment
 } from 'department/domain';
+import { FileItemView } from 'file-item';
 
 /**
  * 유저 권한
@@ -40,14 +41,14 @@ export function UserId(id: number) {
 
 export interface UserVO {
   id?: UserId;
-  name: string;
-  username: string;
-  email: string;
   role: UserRole;
   department: DepartmentVO;
   createdAt: Date;
   loginAt?: Date;
   passwordChangedAt?: Date;
+  name: string;
+  username: string;
+  email: string;
   englishName?: string;
   sex?: string;
   mobilePhone?: string;
@@ -56,9 +57,10 @@ export interface UserVO {
   relationship?: string;
   address?: string;
   birthDate?: Date;
+  profile?: FileItemView;
 }
 
-export interface UserShort{
+export interface UserShortVO{
   name: string | undefined;
   username: string | undefined;
   email: string | undefined;
@@ -70,6 +72,7 @@ export interface UserShort{
   relationship?: string | undefined;
   address?: string | undefined;
   birthDate?: Date;
+  profile?: FileItemView | undefined;
 }
 
 export const initialUser: UserVO = {

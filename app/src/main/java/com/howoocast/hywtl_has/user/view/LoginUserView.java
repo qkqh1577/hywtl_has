@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.user.view;
 
+import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Objects;
 import lombok.Getter;
 
 @Getter
@@ -12,13 +14,15 @@ public class LoginUserView {
     private String email;
     private String name;
     private String englishName;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String sex;
     private String mobilePhone;
     private String privateEmail;
     private String emergencyPhone;
     private String relationship;
     private String address;
+
+    private FileItemView profile;
 
     public static LoginUserView assemble(User source) {
         LoginUserView target = new LoginUserView();
@@ -34,6 +38,9 @@ public class LoginUserView {
         target.emergencyPhone = source.getEmergencyPhone();
         target.relationship = source.getRelationship();
         target.address = source.getAddress();
+        if (Objects.nonNull(source.getProfile())) {
+            target.profile = FileItemView.assemble(source.getProfile());
+        }
         return target;
     }
 }

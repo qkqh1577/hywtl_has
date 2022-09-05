@@ -5,7 +5,10 @@ import {
   UserId,
   UserVO
 } from 'user/domain';
-import { UserChangeParameter, LoginUserEditParameter } from 'user/parameter';
+import {
+  UserChangeParameter,
+  LoginUserEditParameter
+} from 'user/parameter';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -29,8 +32,37 @@ class UserApi {
     return data;
   }
 
-  async edit(parameter: LoginUserEditParameter): Promise<void> {
-    const { result } = await apiClient.post('user/login', parameter);
+  async edit(params: LoginUserEditParameter): Promise<void> {
+    const formData = new FormData();
+    if (params.englishName) {
+      formData.append('englishName', params.englishName);
+    }
+    if (params.sex) {
+      formData.append('sex', params.sex);
+    }
+    if (params.mobilePhone) {
+      formData.append('mobilePhone', params.mobilePhone);
+    }
+    if (params.privateEmail) {
+      formData.append('privateEmail', params.privateEmail);
+    }
+    if (params.emergencyPhone) {
+      formData.append('emergencyPhone', params.emergencyPhone);
+    }
+    if (params.relationship) {
+      formData.append('relationship', params.relationship);
+    }
+    if (params.address) {
+      formData.append('address', params.address);
+    }
+    if (params.profile) {
+      formData.append('profile', params.profile);
+    }
+    if (params.birthDate) {
+      console.log("params.birthDate.toISOString() : ", params.birthDate.toISOString());
+      formData.append('birthDate', params.birthDate.toISOString());
+    }
+    const { result } = await apiClient.post('user/login', formData);
     return result;
   }
 }

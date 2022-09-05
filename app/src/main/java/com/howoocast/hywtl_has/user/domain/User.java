@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.user.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
@@ -10,6 +11,7 @@ import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptio
 import com.howoocast.hywtl_has.user.exception.UserLoginException;
 import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -115,7 +118,7 @@ public class User extends CustomEntity {
     /**
      * 생년월일
      */
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     /**
      * 성별
      */
@@ -140,6 +143,12 @@ public class User extends CustomEntity {
      * 주소
      */
     private String address;
+
+    /**
+     * 프로필 사진
+     */
+    @ManyToOne
+    private FileItem profile;
 
     protected User(
         String username,
@@ -244,13 +253,15 @@ public class User extends CustomEntity {
     /* 계정 정보 수정 api */
     public void edit(
         String englishName,
-        LocalDateTime birthDate,
+        LocalDate birthDate,
         String sex,
         String mobilePhone,
         String privateEmail,
         String emergencyPhone,
         String relationship,
-        String address) {
+        String address,
+        @Nullable FileItem profile
+    ) {
         this.englishName = englishName;
         this.birthDate = birthDate;
         this.sex = sex;
@@ -259,6 +270,7 @@ public class User extends CustomEntity {
         this.emergencyPhone = emergencyPhone;
         this.relationship = relationship;
         this.address = address;
+        this.profile = profile;
     }
 
 }

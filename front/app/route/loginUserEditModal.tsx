@@ -16,6 +16,7 @@ import { userAction } from 'user/action';
 import { useFormik } from 'formik';
 import LoginUserEditModal from 'app/view/App/LoginUserEditModal';
 import { RootState } from 'services/reducer';
+import { UserShortVO } from 'user/domain';
 
 export default function LoginUserEditModalRoute() {
   const dispatch = useDispatch();
@@ -24,10 +25,11 @@ export default function LoginUserEditModalRoute() {
   const editLoginUser = useCallback((formikProps: FormikSubmit<LoginUserEditParameter>) =>
     dispatch(userAction.edit(formikProps)), [dispatch]);
 
-  const initialValues: LoginUserEditParameter = useMemo(() => ({
+  const initialValues: UserShortVO = useMemo(() => ({
     username:       loginUser?.username,
     name:           loginUser?.name,
     email:          loginUser?.email,
+    profile:        loginUser?.profile,
     englishName:    loginUser?.englishName,
     birthDate:      loginUser?.birthDate,
     sex:            loginUser?.sex,
@@ -38,13 +40,26 @@ export default function LoginUserEditModalRoute() {
     address:        loginUser?.address,
   }), [loginUser]);
 
-  const editModalFormik = useFormik<LoginUserEditParameter>({
+  const editModalFormik = useFormik<UserShortVO>({
       enableReinitialize: true,
       initialValues,
       onSubmit:           (values,
                            helper
                           ) => {
-        editLoginUser({ values, ...helper });
+        console.log("loginUserEditModal.tsx in editModalFormik method's values: ", values);
+        editLoginUser({
+          values: {
+            englishName:    values.englishName,
+            birthDate:      values.birthDate,
+            sex:            values.sex,
+            mobilePhone:    values.mobilePhone,
+            privateEmail:   values.privateEmail,
+            emergencyPhone: values.emergencyPhone,
+            relationship:   values.relationship,
+            address:        values.address,
+            profile:        values.profile ? values.profile!.multipartFile : '',
+          },
+          ...helper });
       }
     }
   );
