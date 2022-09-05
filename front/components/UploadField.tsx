@@ -124,10 +124,10 @@ export default function UploadField(props: UploadFieldProps) {
 
       )}
       <TextField
+        labelPositionTop
         name={`${name}.filename`}
         label={label}
         status={FieldStatus.ReadOnly}
-        labelPosition="top"
         endAdornment={endAdornment}
       />
       <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />

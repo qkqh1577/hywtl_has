@@ -5,12 +5,12 @@ import {
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
-import SelectField from 'components/SelectField';
 import {
   sexTypeList,
   sexTypeName
 } from 'user/domain';
 import UploadField from 'components/UploadField';
+import RadioField from 'components/RadioField';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -35,7 +35,7 @@ export default function () {
     }}>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="username"
           label="아이디"
           status={FieldStatus.ReadOnly}
@@ -43,7 +43,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="name"
           label="이름"
           status={FieldStatus.ReadOnly}
@@ -51,7 +51,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="email"
           label="이메일"
           status={FieldStatus.ReadOnly}
@@ -67,7 +67,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="englishName"
           label="영문명"
         />
@@ -79,8 +79,7 @@ export default function () {
         />
       </FieldBox>
       <FieldBox>
-        <SelectField
-          labelPosition="top"
+        <RadioField
           name="sex"
           label="성별"
           options={sexTypeList.map((item) => ({
@@ -91,35 +90,35 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="mobilePhone"
           label="핸드폰"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="privateEmail"
           label="개인 이메일"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="emergencyPhone"
           label="비상 연락처"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="relationship"
           label="관계"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelPosition="top"
+          labelPositionTop
           name="address"
           label="거주지 주소"
         />

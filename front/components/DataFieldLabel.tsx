@@ -16,7 +16,7 @@ interface Props
 export default function DataFieldWithLabel(props: Props) {
 
   const {
-          labelPosition,
+          labelPositionTop,
           labelSX,
           labelWidth,
           label,
@@ -28,14 +28,14 @@ export default function DataFieldWithLabel(props: Props) {
     <Box sx={{
       display:        'flex',
       width:          '100%',
-      flexWrap:       useMemo(() => labelPosition === 'top' ? 'wrap' : 'nowrap', [labelPosition]),
+      flexWrap:       useMemo(() => labelPositionTop ? 'wrap' : 'nowrap', [labelPositionTop]),
       justifyContent: 'space-between',
       alignContent:   'center',
     }}>
       <Box sx={{
         display:      'flex',
         alignContent: 'center',
-        height:       useMemo(() => labelPosition === 'top' ? 'auto' : '100%', [labelPosition]),
+        height:       useMemo(() => labelPositionTop ? 'auto' : '100%', [labelPositionTop]),
         alignItems:   'center',
         flexWrap:     'nowrap',
       }}>
@@ -44,16 +44,16 @@ export default function DataFieldWithLabel(props: Props) {
           fontSize:  '13px',
           color:     ColorPalette.Grey['1'],
           wordBreak: 'keep-all',
-          width:     useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth ?? 110}px`, [labelPosition, labelWidth]),
+          width:     useMemo(() => labelPositionTop ? '100%' : `${labelWidth ?? 110}px`, [labelPositionTop, labelWidth]),
         }}>
           <RequiredMark required={required} text={label} />
         </Typography>
       </Box>
       <Box sx={{
         display:  'flex',
-        height:   useMemo(() => labelPosition === 'top' ? 'auto' : '100%', [labelPosition]),
+        height:   useMemo(() => labelPositionTop ? 'auto' : '100%', [labelPositionTop]),
         flexWrap: 'nowrap',
-        width:    useMemo(() => labelPosition === 'top' ? '100%' : `calc(100% - ${20 + (labelWidth ?? 110)}px)`, [labelPosition, labelWidth]),
+        width:    useMemo(() => labelPositionTop ? '100%' : `calc(100% - ${20 + (labelWidth ?? 110)}px)`, [labelPositionTop, labelWidth]),
       }}>
         {children}
       </Box>

@@ -79,7 +79,7 @@ export default function TextField(props: TextFieldProps) {
           status,
           size,
           disableLabel,
-          labelPosition,
+          labelPositionTop,
           labelWidth,
           labelSX,
           required:   propsRequired,
@@ -164,9 +164,9 @@ export default function TextField(props: TextFieldProps) {
   if (!disableLabel) {
     return (
       <DataFieldWithLabel
+        labelPositionTop={labelPositionTop}
         required={required}
         label={label!}
-        labelPosition={labelPosition}
         labelWidth={labelWidth}
         children={
           <FieldView

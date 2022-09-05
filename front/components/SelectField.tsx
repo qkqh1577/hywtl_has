@@ -81,7 +81,7 @@ export default function SelectField(props: SelectFieldProps) {
           startAdornment,
           endAdornment,
           disableLabel,
-          labelPosition,
+          labelPositionTop,
           labelWidth,
           status,
           multiple,
@@ -229,9 +229,9 @@ export default function SelectField(props: SelectFieldProps) {
   if (!disableLabel) {
     return (
       <DataFieldWithLabel
+        labelPositionTop={labelPositionTop}
         required={required}
         label={label!}
-        labelPosition={labelPosition}
         labelWidth={labelWidth}
         children={
           <FieldView
