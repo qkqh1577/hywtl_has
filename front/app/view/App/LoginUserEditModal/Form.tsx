@@ -1,10 +1,7 @@
 import React, {
-  useCallback,
-  useRef
 } from 'react';
 import {
   Box,
-  Button
 } from '@mui/material';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
@@ -106,7 +103,6 @@ export default function () {
           label="핸드폰"
         />
       </FieldBox>
-
       <FieldBox>
         <TextField
           labelProps={{

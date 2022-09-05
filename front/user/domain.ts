@@ -72,7 +72,7 @@ export interface UserShortVO{
   relationship?: string | undefined;
   address?: string | undefined;
   birthDate?: Date;
-  profile?: FileItemView | undefined;
+  profile?: FileItemView;
 }
 
 export const initialUser: UserVO = {

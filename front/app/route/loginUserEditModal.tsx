@@ -46,6 +46,7 @@ export default function LoginUserEditModalRoute() {
       onSubmit:           (values,
                            helper
                           ) => {
+        console.log(initialValues.profile);
         console.log("loginUserEditModal.tsx in editModalFormik method's values: ", values.profile);
         editLoginUser({
           values: {
