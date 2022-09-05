@@ -12,6 +12,7 @@ import { UserVO } from 'user/domain';
 import Page from 'type/Page';
 import { userApi } from 'user/api';
 import { dialogActions } from 'components/Dialog';
+import { LoginAction } from 'app/domain/action';
 
 function* getPage() {
   while (true) {
@@ -54,12 +55,15 @@ function* watchChange() {
   }
 }
 
-function* watchUpdate() {
+function* watchEdit() {
   while (true) {
     const { payload: formik } = yield take(UserAction.edit);
     try {
       yield call(userApi.edit, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다'));
+      yield put({
+        type: LoginAction.getLoginUser,
+      });
     }
     catch (e) {
       yield put(dialogActions.openAlert({
@@ -77,6 +81,6 @@ export default function* userSaga() {
   yield fork(getPage);
   yield fork(watchId);
   yield fork(watchChange);
-  yield fork(watchUpdate);
+  yield fork(watchEdit);
 }
 

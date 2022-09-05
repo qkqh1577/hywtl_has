@@ -88,3 +88,34 @@ export const initialUser: UserVO = {
   address: '',
   birthDate: undefined,
 };
+
+/**
+ * 성별
+ */
+export enum SexType {
+  /**
+   * 남자
+   */
+  MALE   = 'MALE',
+
+  /**
+   * 여자
+   */
+  FEMALE = 'FEMALE',
+}
+
+export const sexTypeList: SexType[] = [
+  SexType.MALE,
+  SexType.FEMALE
+]
+
+export function sexTypeName(sexType: SexType | '') {
+  switch (sexType) {
+    case SexType.MALE:
+      return '남자';
+    case SexType.FEMALE:
+      return '여자';
+    default:
+      return '-';
+  }
+}

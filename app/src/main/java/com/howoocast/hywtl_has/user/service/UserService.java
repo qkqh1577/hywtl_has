@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
+import com.howoocast.hywtl_has.user.view.LoginUserView;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
@@ -153,11 +154,11 @@ public class UserService {
 
     /* 계정 정보 수정 api */
     @Transactional
-    public void edit(String name, LoginUserChangeParameter parameter) {
+    public User edit(String name, LoginUserChangeParameter parameter) {
         User loginUser = this.findByName(name);
         loginUser.edit(
             parameter.getEnglishName(),
-//            parameter.getBirthDate(),
+            parameter.getBirthDate(),
             parameter.getSex(),
             parameter.getMobilePhone(),
             parameter.getPrivateEmail(),
@@ -165,6 +166,7 @@ public class UserService {
             parameter.getRelationship(),
             parameter.getAddress()
         );
+        return loginUser;
     }
 
     private User findByName(String userName) {

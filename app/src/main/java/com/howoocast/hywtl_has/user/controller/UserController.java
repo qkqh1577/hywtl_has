@@ -111,9 +111,6 @@ public class UserController {
 
     @PostMapping("/user/login")
     public LoginUserView edit(Authentication authentication, @RequestBody LoginUserChangeParameter parameter) {
-        System.out.println("authentication = " + authentication);
-        userService.edit(authentication.getName(), parameter);
-        return null;
+        return LoginUserView.assemble(userService.edit(authentication.getName(), parameter));
     }
-
 }

@@ -43,7 +43,7 @@ export default function LoginUserEditModalRoute() {
       emergencyPhone: loginUser?.emergencyPhone,
       relationship:   loginUser?.relationship,
       address:        loginUser?.address,
-    }, initialLoginUserEditParameter)
+    }, initialLoginUserEditParameter),
   }), [loginUser]);
 
   const editModalFormik = useFormik<FormikPartial<LoginUserEditParameter>>({

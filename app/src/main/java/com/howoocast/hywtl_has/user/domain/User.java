@@ -244,7 +244,7 @@ public class User extends CustomEntity {
     /* 계정 정보 수정 api */
     public void edit(
         String englishName,
-//        String birthDate,
+        LocalDateTime birthDate,
         String sex,
         String mobilePhone,
         String privateEmail,
@@ -252,7 +252,7 @@ public class User extends CustomEntity {
         String relationship,
         String address) {
         this.englishName = englishName;
-//        this.birthDate = birthDate;
+        this.birthDate = birthDate;
         this.sex = sex;
         this.mobilePhone = mobilePhone;
         this.privateEmail = privateEmail;

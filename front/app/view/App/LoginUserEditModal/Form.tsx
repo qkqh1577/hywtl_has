@@ -2,6 +2,12 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
+import DateField from 'components/DateField';
+import SelectField from 'components/SelectField';
+import {
+  sexTypeList,
+  sexTypeName
+} from 'user/domain';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -30,7 +36,6 @@ export default function () {
           labelProps={{
             position: 'top'
           }}
-          required
           name="username"
           label="아이디"
           status={FieldStatus.ReadOnly}
@@ -76,22 +81,16 @@ export default function () {
         />
       </FieldBox>
       <FieldBox>
-        <TextField
-          labelProps={{
-            position: 'top'
-          }}
+        <DateField
           name="birthDate"
           label="생년월일"
         />
       </FieldBox>
       <FieldBox>
-        <TextField
-          labelProps={{
-            position: 'top'
-          }}
-          name="sex"
-          label="성별"
-        />
+        <SelectField options={sexTypeList.map((item) => ({
+          key: item as string,
+          text: sexTypeName(item),
+        }))} name="sex" label="성별" />
       </FieldBox>
       <FieldBox>
         <TextField
