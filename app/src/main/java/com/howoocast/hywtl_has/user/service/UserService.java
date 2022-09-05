@@ -168,8 +168,7 @@ public class UserService {
             parameter.getEnglishName(),
             parameter.getBirthDate() != null ?
                 LocalDate.parse(
-                    parameter.getBirthDate().substring(0, 10),
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    parameter.getBirthDate()
                 ) : null,
             parameter.getSex(),
             parameter.getMobilePhone(),

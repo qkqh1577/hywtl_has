@@ -253,7 +253,7 @@ public class User extends CustomEntity {
     /* 계정 정보 수정 api */
     public void edit(
         String englishName,
-        LocalDate birthDate,
+        @Nullable LocalDate birthDate,
         String sex,
         String mobilePhone,
         String privateEmail,

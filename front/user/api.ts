@@ -9,6 +9,7 @@ import {
   UserChangeParameter,
   LoginUserEditParameter
 } from 'user/parameter';
+import dayjs from 'dayjs';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -59,8 +60,7 @@ class UserApi {
       formData.append('profile', params.profile);
     }
     if (params.birthDate) {
-      console.log("params.birthDate.toISOString() : ", params.birthDate.toISOString());
-      formData.append('birthDate', params.birthDate.toISOString());
+      formData.append('birthDate', dayjs(params.birthDate).format('YYYY-MM-DD'));
     }
     const { result } = await apiClient.post('user/login', formData);
     return result;
