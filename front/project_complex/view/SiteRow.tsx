@@ -62,11 +62,9 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       <TableCell>
         <FormikProvider value={formik}>
           <TextField
+            disableLabel
             name="name"
             label="대지 모형"
-            labelProps={{
-              disableLabel: true,
-            }}
             onBlur={() => {
               formik.handleSubmit();
             }}
@@ -76,10 +74,10 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       <TableCell>
         <FormikProvider value={formik}>
           <CheckboxField
-            name="environmentTest"
-            label="실험 종류 E 여부"
             disableLabel
             disableAll
+            name="environmentTest"
+            label="실험 종류 E 여부"
             options={['E']}
             onChange={() => {
               const value = formik.values.environmentTest;
@@ -98,12 +96,10 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
 
         <FormikProvider value={formik}>
           <SelectField
+            disableLabel
             name="estimateFigureDifficulty"
             label="견적 대지모형 제작 난이도"
             options={difficultyList}
-            labelProps={{
-              disableLabel: true,
-            }}
             onChange={() => {
               formik.handleSubmit();
             }}
@@ -114,12 +110,10 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       <TableCell>
         <FormikProvider value={formik}>
           <SelectField
+            disableLabel
             name="figureDifficulty"
             label="대지모형 제작 난이도"
             options={difficultyList}
-            labelProps={{
-              disableLabel: true,
-            }}
             onChange={() => {
               formik.handleSubmit();
             }}
@@ -129,11 +123,9 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
       <TableCell>
         <FormikProvider value={formik}>
           <UserSelector
+            disableLabel
             name="manager.id"
             label="담당자"
-            labelProps={{
-              disableLabel: true,
-            }}
             onChange={() => {
               formik.handleSubmit();
             }}

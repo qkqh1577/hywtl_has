@@ -1,41 +1,31 @@
 import React, {
-  useContext,
-  useEffect,
+  useCallback,
   useMemo,
-  useState,
 } from 'react';
 import {
   Box,
   TextField as MuiTextField,
-  Typography
 } from '@mui/material';
 import {
-  FormikContext,
-} from 'formik';
-import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
-import {
-  DataFieldValue,
-  equals,
   FieldStatus,
-  getValue,
   LabelProps,
   MuiTextFieldProps
 } from 'components/DataFieldProps';
 import { ColorPalette } from 'app/view/App/theme';
-import RequiredMark from 'components/RequiredMark';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import { useDataProps } from 'components/DataField';
 
 export interface TextFieldProps
-  extends Omit<MuiTextFieldProps,
-    | 'name'
-    | 'label'
-    | 'value'
-    | 'fullWidth'
-    | 'disabled'> {
+  extends LabelProps,
+          Omit<MuiTextFieldProps,
+            | 'name'
+            | 'label'
+            | 'value'
+            | 'fullWidth'
+            | 'disabled'> {
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
-  label: string;
-  labelProps?: LabelProps;
   status?: FieldStatus;
 }
 
@@ -61,7 +51,10 @@ interface ViewProps
                                | 'startAdornment'
                                | 'endAdornment'
                                | 'label'
-                               | 'labelProps'>,
+                               | 'disableLabel'
+                               | 'labelPosition'
+                               | 'labelWidth'
+                               | 'labelSX'>,
           Pick<MuiTextFieldProps, | 'value'
                                   | 'variant'> {
 }
@@ -83,36 +76,31 @@ export default function TextField(props: TextFieldProps) {
           variant = 'standard',
           startAdornment,
           endAdornment,
-          required,
-          onChange,
-          onBlur,
           status,
           size,
-          labelProps,
+          disableLabel,
+          labelPosition,
+          labelWidth,
+          labelSX,
+          required:   propsRequired,
           label:      propsLabel,
           helperText: propsHelperText,
           ...         restProps
         } = props;
-  const formikContext = useContext(FormikContext);
-  const values = formikContext?.values ?? {};
-  const errors = formikContext?.errors ?? {};
-  const handleChange = formikContext?.handleChange ?? undefined;
 
-  const formikValue = getValue<DataFieldValue>(values, name) ?? '';
-  const formikEdit = values.edit || typeof values.edit === 'undefined';
-  const formikError = !!errors[name];
+  const {
+          error,
+          value,
+          disabled,
+          readOnly,
+          required,
+          helperText,
+          onChange,
+          onBlur,
+          label
+        } = useDataProps(props);
 
-  const [value, setValue] = useState<any>('');
-  const [edit, setEdit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-
-  const label = useMemo(() => labelProps?.disableLabel ? undefined : propsLabel, [propsLabel, labelProps]);
-  const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
-
-  const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
-  const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
-
-  const mappingByShape = (
+  const mappingByShape = useCallback((
     outlined: string,
     smallOutlined: string,
     labelStandard: string,
@@ -124,11 +112,12 @@ export default function TextField(props: TextFieldProps) {
       }
       return outlined;
     }
-    if (labelProps?.disableLabel) {
+    if (disableLabel) {
       return standard;
     }
     return labelStandard;
-  };
+  }, [variant, size, disableLabel]);
+
 
   const inputProps: MuiTextFieldProps['inputProps'] = {
     style: {
@@ -137,30 +126,12 @@ export default function TextField(props: TextFieldProps) {
       height:          props.multiline ? '80px' : mappingByShape('32px', '24px', '40px'),
       fontSize:        mappingByShape('13px', '11px', '13px'),
       color:           ColorPalette._252627,
-      border:          variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
+      border:          useMemo(() => variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none', [variant]),
       borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
-      borderRadius:    variant === 'outlined' ? '5px' : '0',
+      borderRadius:    useMemo(() => variant === 'outlined' ? '5px' : '0', [variant]),
       backgroundColor: ColorPalette._fff,
     },
   };
-
-  useEffect(() => {
-    if (!equals(value, formikValue)) {
-      setValue(formikValue);
-    }
-  }, [formikValue]);
-
-  useEffect(() => {
-    if (formikEdit !== edit) {
-      setEdit(formikEdit);
-    }
-  }, [formikEdit]);
-
-  useEffect(() => {
-    if (formikError !== error) {
-      setError(formikError);
-    }
-  }, [formikError]);
 
   const fieldProps: FieldProps = {
     type,
@@ -171,18 +142,8 @@ export default function TextField(props: TextFieldProps) {
     helperText,
     disabled,
     inputProps,
-    onChange:   (e) => {
-      if (onChange) {
-        onChange(e);
-      }
-      setValue(e.target.value ?? '');
-    },
-    onBlur:     (e) => {
-      if (onBlur) {
-        onBlur(e);
-      }
-      handleChange(e);
-    },
+    onChange,
+    onBlur,
     InputProps: {
       ...InputProps,
       readOnly,
@@ -191,57 +152,32 @@ export default function TextField(props: TextFieldProps) {
     },
   };
 
-  const sx = props.multiline ? {
+  const sx = useMemo(() => props.multiline ? {
     ...props.sx,
     backgroundColor:               ColorPalette._fff,
     '& > .MuiInputBase-multiline': {
       padding: 0,
     }
-  } : props.sx;
+  } : props.sx, [props.multiline, props.sx]);
 
 
-  if (!labelProps?.disableLabel) {
-
+  if (!disableLabel) {
     return (
-      <Box sx={{
-        display:        'flex',
-        width:          '100%',
-        flexWrap:       labelProps?.position === 'top' ? 'wrap' : 'nowrap',
-        justifyContent: 'space-between',
-        alignContent: 'center',
-      }}>
-        <Box sx={{
-          display:      'flex',
-          alignContent: 'center',
-          height:       labelProps?.position === 'top' ? 'auto' : '100%',
-          alignItems:   'center',
-          flexWrap:     'nowrap',
-        }}>
-          <Typography sx={{
-            fontSize:  '13px',
-            color:     ColorPalette.Grey['1'],
-            wordBreak: 'keep-all',
-            width:     labelProps?.position === 'top' ? '100%' : '110px',
-          }}>
-            <RequiredMark required={edit && required} text={label} />
-          </Typography>
-        </Box>
-        <Box sx={{
-          display:  'flex',
-          height:   labelProps?.position === 'top' ? 'auto' : '100%',
-          flexWrap: 'nowrap',
-          width:    labelProps?.position === 'top' ? '100%' : 'calc(100% - 130px)',
-        }}>
+      <DataFieldWithLabel
+        required={required}
+        label={label!}
+        labelPosition={labelPosition}
+        labelWidth={labelWidth}
+        children={
           <FieldView
             {...restProps}
             {...fieldProps}
             sx={sx}
           />
-        </Box>
-      </Box>
+        }
+      />
     );
   }
-
   return (
     <Box sx={{
       display:        'flex',

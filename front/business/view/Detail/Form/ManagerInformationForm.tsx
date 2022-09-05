@@ -7,7 +7,6 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import SelectField from 'components/SelectField';
 import {
   BusinessManagerStatus,
   businessManagerStatusList,
@@ -22,6 +21,7 @@ import {
 } from 'formik';
 import useDialog from 'components/Dialog';
 import { ColorPalette } from 'app/view/App/theme';
+import RadioField from 'components/RadioField';
 
 export default function () {
   const { error } = useDialog();
@@ -108,7 +108,7 @@ export default function () {
                 />
               </Grid>
               <Grid item xs={4}>
-                <SelectField
+                <RadioField
                   name={`managerList.${i}.status`}
                   label="상태"
                   options={businessManagerStatusList.map((item) => ({

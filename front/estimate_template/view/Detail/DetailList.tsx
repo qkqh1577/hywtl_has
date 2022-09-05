@@ -74,9 +74,7 @@ export default function () {
                   {edit && (
                     <SelectField
                       required
-                      labelProps={{
-                        disableLabel: true,
-                      }}
+                      disableLabel
                       name={`detailList.${i}.unit`}
                       label="단위"
                       options={['단지', '동']}
@@ -86,9 +84,7 @@ export default function () {
                 <TableCell>
                   <TextField
                     required
-                    labelProps={{
-                      disableLabel: true,
-                    }}
+                    disableLabel
                     type="number"
                     name={`detailList.${i}.unitPrice`}
                     label="단가"
@@ -96,9 +92,7 @@ export default function () {
                 </TableCell>
                 <TableCell>
                   <TextField
-                    labelProps={{
-                      disableLabel: true,
-                    }}
+                    disableLabel
                     name={`detailList.${i}.note`}
                     label="비고"
                   />

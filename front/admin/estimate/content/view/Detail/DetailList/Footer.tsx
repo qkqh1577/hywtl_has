@@ -22,9 +22,7 @@ export default function AddDescription(props: AddDescriptionProps) {
         </TableCell>
         <TableCell colSpan={2}>
           <TextField
-            labelProps={{
-              disableLabel: true
-            }}
+            disableLabel
             type="text"
             name="newDescription"
             label="문구"

@@ -4,6 +4,7 @@ import {
   OutlinedTextFieldProps,
   StandardTextFieldProps
 } from '@mui/material/TextField/TextField';
+import { SxProps } from '@mui/system';
 
 export enum FieldStatus {
   /** 정상 상태, 드래그 가능, 편집 가능, 필드 제공 */
@@ -20,10 +21,14 @@ export type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | 
 
 export type DataFieldValue = string | number;
 
+type SX = SxProps | undefined;
+
 export interface LabelProps {
+  label: string;
   disableLabel?: boolean;
-  width?: number;
-  position?: 'left' | 'top';
+  labelWidth?: number;
+  labelPosition?: 'left' | 'top';
+  labelSX?: SX;
 }
 
 export interface Option {

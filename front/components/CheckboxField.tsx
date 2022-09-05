@@ -39,6 +39,7 @@ export interface CheckboxFieldProps
   /** 전체 선택, 선택 해제 사용 여부 */
   disableAll?: boolean;
   options: Option[] | DataFieldValue[];
+  disableText?: boolean;
   helperText?: string;
 }
 
@@ -52,6 +53,129 @@ function isChecked(values: DataFieldValue[] | undefined,
     return false;
   }
   return values.filter((v) => v === value).length === 1;
+}
+
+export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
+
+  const {
+          name,
+          disableAll,
+          allText,
+          status,
+          options,
+          disableText,
+        } = props;
+
+  const children = useMemo(() => {
+    return options.map((option): Option => {
+      if (isOption(option)) {
+        return option;
+      }
+      return {
+        key:  option,
+        text: option,
+      };
+    });
+  }, [options]);
+
+  const formikContext = useContext(FormikContext);
+
+  const { values, setFieldValue } = formikContext ?? {};
+  const value = values ? getValue<DataFieldValue[]>(values, name) : undefined;
+  const edit = values.edit || typeof values.edit === 'undefined';
+  const disabled = status === FieldStatus.Disabled;
+  const readOnly = formikContext ? status === FieldStatus.ReadOnly && !edit : true;
+
+  const allChecked = formikContext ? typeof value === 'undefined' || children.length === value.length : false;
+
+  const result: React.ReactNode[] = [];
+
+  if (!disableAll) {
+    const Check = (
+      <Checkbox
+        key="all"
+        disabled={disabled}
+        readOnly={readOnly}
+        checked={allChecked}
+        onChange={() => {
+          setFieldValue(name, allChecked
+            ? []
+            : undefined
+          );
+        }}
+      />
+    );
+    if (disableText) {
+      result.push(Check);
+    }
+    result.push(
+      <FormControlLabel
+        key="all"
+        label={allText ?? '전체'}
+        control={Check}
+      />
+    );
+  }
+  for (let i = 0; i < children.length; i++) {
+    const option = children[i];
+    const {
+            key,
+            text,
+            disabled: childDisabled,
+            invisible
+          } = option;
+    const checked = isChecked(value, key);
+
+    const onChange = () => {
+      if (checked) {
+        if (typeof value === 'undefined') {
+          setFieldValue(
+            name,
+            options.map(
+              (option) => option.key)
+                   .filter((v) => v !== key)
+          );
+        }
+        else {
+          setFieldValue(
+            name,
+            value.filter((v) => v !== key)
+          );
+        }
+      }
+      else {
+        setFieldValue(name, [...(value ?? []), key]);
+      }
+    };
+    if (invisible) {
+      continue;
+    }
+
+    const Check = (
+      <Checkbox
+        key={key}
+        disabled={disabled || childDisabled}
+        readOnly={readOnly}
+        name={name}
+        value={key}
+        checked={checked}
+        onChange={onChange}
+      />
+    );
+    if (disableText) {
+      result.push(Check);
+    }
+    else {
+      result.push(
+        <FormControlLabel
+          key={key}
+          label={text}
+          control={Check}
+        />
+      );
+    }
+  }
+  return result;
 }
 
 export default function CheckboxField(props: CheckboxFieldProps) {
@@ -69,174 +193,30 @@ export default function CheckboxField(props: CheckboxFieldProps) {
           ...rest
         } = props;
 
-  const children = useMemo(() => {
-    return options.map((option): Option => {
-      if (isOption(option)) {
-        return option;
-      }
-      return {
-        key:  option,
-        text: option,
-      };
-    });
-  }, [options]);
+  const checkbox = useCheckboxField(props);
   const formikContext = useContext(FormikContext);
+  const { values, errors } = formikContext ?? {};
+  const edit = values?.edit || typeof values?.edit === 'undefined';
+  const error = errors ? !!errors[name] : false;
 
-  if (formikContext) {
-    const { values, errors, setFieldValue } = formikContext;
-    const value = values ? getValue<DataFieldValue[]>(values, name) : undefined;
-    const edit = values.edit || typeof values.edit === 'undefined';
-    const disabled = status === FieldStatus.Disabled;
-    const readOnly = status === FieldStatus.ReadOnly && !edit;
-    const error = !!errors[name];
-
-    const allChecked = typeof value === 'undefined' || children.length === value.length;
-
-    return (
-      <FormControl
-        {...rest}
-        fullWidth
-        variant="standard"
-        required={edit && required}
-      >
-        {!disableLabel && (
-          <FormLabel component="legend">
-            {label}
-          </FormLabel>
-        )}
-        <FormGroup row>
-          {!disableAll && (
-            <FormControlLabel
-              label={allText ?? '전체'}
-              control={
-                <Checkbox
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  checked={allChecked}
-                  onChange={() => {
-                    setFieldValue(name, allChecked
-                      ? []
-                      : undefined
-                    );
-                  }}
-                />
-              }
-            />
-          )}
-          {children.map((option) => {
-            const {
-                    key,
-                    text,
-                    disabled: childDisabled,
-                    invisible
-                  } = option;
-            const checked = isChecked(value, key);
-
-            const onChange = () => {
-              if (checked) {
-                if (typeof value === 'undefined') {
-                  setFieldValue(
-                    name,
-                    options.map(
-                      (option) => option.key)
-                           .filter((v) => v !== key)
-                  );
-                }
-                else {
-                  setFieldValue(
-                    name,
-                    value.filter((v) => v !== key)
-                  );
-                }
-              }
-              else {
-                setFieldValue(name, [...(value ?? []), key]);
-              }
-            };
-            if (invisible) {
-              return null;
-            }
-            return (
-              <FormControlLabel
-                key={key}
-                label={text}
-                control={
-                  <Checkbox
-                    disabled={disabled || childDisabled}
-                    readOnly={readOnly}
-                    name={name}
-                    value={key}
-                    checked={checked}
-                    onChange={onChange}
-                  />
-                }
-              />
-            );
-          })}
-        </FormGroup>
-        <FormHelperText error={error}>
-          {error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
-        </FormHelperText>
-      </FormControl>
-    );
-  }
-  else {
-    const readOnly = true;
-    const allChecked = false;
-
-    return (
-      <FormControl
-        {...rest}
-        fullWidth
-        variant="standard"
-      >
-        {!disableLabel && (
-          <FormLabel component="legend">
-            {label}
-          </FormLabel>
-        )}
-        <FormGroup row>
-          {!disableAll && (
-            <FormControlLabel
-              label={allText ?? '전체'}
-              control={
-                <Checkbox
-                  readOnly={readOnly}
-                  checked={allChecked}
-                />
-              }
-            />
-          )}
-          {children.map((option) => {
-            const {
-                    key,
-                    text,
-                    disabled: childDisabled,
-                    invisible
-                  } = option;
-            const checked = false;
-            if (invisible) {
-              return null;
-            }
-
-            return (
-              <FormControlLabel
-                key={key}
-                label={text}
-                control={
-                  <Checkbox
-                    disabled={childDisabled}
-                    readOnly={readOnly}
-                    name={name}
-                    value={key}
-                    checked={checked}
-                  />
-                }
-              />
-            );
-          })}
-        </FormGroup>
-      </FormControl>
-    );
-  }
+  return (
+    <FormControl
+      {...rest}
+      fullWidth
+      variant="standard"
+      required={edit && required}
+    >
+      {!disableLabel && (
+        <FormLabel component="legend">
+          {label}
+        </FormLabel>
+      )}
+      <FormGroup row>
+        {checkbox}
+      </FormGroup>
+      <FormHelperText error={error}>
+        {error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
+      </FormHelperText>
+    </FormControl>
+  );
 }

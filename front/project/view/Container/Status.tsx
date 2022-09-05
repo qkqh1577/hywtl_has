@@ -70,10 +70,8 @@ export default function ProjectContainerStatusBar() {
           children={
             <SelectField
               required
+              disableLabel
               variant="outlined"
-              labelProps={{
-                disableLabel: true,
-              }}
               name="progressStatus"
               label="진행 현황"
               options={projectProgressStatusList.map((item) => ({
@@ -89,10 +87,8 @@ export default function ProjectContainerStatusBar() {
           backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
+              disableLabel
               variant="outlined"
-              labelProps={{
-                disableLabel: true,
-              }}
               name="estimateExpectation"
               label="견적 분류"
               options={projectEstimateExpectationList.map((item) => ({
@@ -108,10 +104,8 @@ export default function ProjectContainerStatusBar() {
           backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
+              disableLabel
               variant="outlined"
-              labelProps={{
-                disableLabel: true,
-              }}
               name="estimateStatus"
               label="견적 상태"
               options={projectEstimateStatusList.map((item) => ({
@@ -127,10 +121,8 @@ export default function ProjectContainerStatusBar() {
           backgroundColor={ColorPalette._d2e7fa}
           children={
             <SelectField
+              disableLabel
               variant="outlined"
-              labelProps={{
-                disableLabel: true,
-              }}
               name="contractStatus"
               label="계약 상태"
               options={projectContractStatusList.map((item) => ({

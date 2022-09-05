@@ -2,44 +2,34 @@ import {
   Box,
   MenuItem,
   TextField,
-  Typography
 } from '@mui/material';
 import React, {
-  useContext,
-  useEffect,
   useMemo,
-  useRef,
-  useState
 } from 'react';
 import {
   DataFieldValue,
   FieldStatus,
-  getValue,
   isOption,
   LabelProps,
   MuiTextFieldProps,
   Option
 } from 'components/DataFieldProps';
-import {
-  FormikContext,
-} from 'formik';
-import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { ColorPalette } from 'app/view/App/theme';
-import RequiredMark from 'components/RequiredMark';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import { useDataProps } from 'components/DataField';
 
 export interface SelectFieldProps
-  extends Omit<MuiTextFieldProps,
-    | 'name'
-    | 'label'
-    | 'value'
-    | 'fullWidth'
-    | 'disabled'> {
+  extends LabelProps,
+          Omit<MuiTextFieldProps,
+            | 'name'
+            | 'label'
+            | 'value'
+            | 'fullWidth'
+            | 'disabled'> {
   options: Option[] | DataFieldValue[] | null | undefined;
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
-  label: string;
-  labelProps?: LabelProps;
   status?: FieldStatus;
   multiple?: boolean;
 }
@@ -48,6 +38,7 @@ interface FieldProps
   extends Pick<MuiTextFieldProps,
     | 'variant'
     | 'onChange'
+    | 'onBlur'
     | 'InputProps'
     | 'inputProps'
     | 'SelectProps'
@@ -66,7 +57,10 @@ interface ViewProps
                                  | 'startAdornment'
                                  | 'endAdornment'
                                  | 'label'
-                                 | 'labelProps'
+                                 | 'disableLabel'
+                                 | 'labelPosition'
+                                 | 'labelWidth'
+                                 | 'labelSX'
                                  | 'options'>,
           Pick<MuiTextFieldProps, | 'value'
                                   | 'variant'> {
@@ -86,22 +80,21 @@ export default function SelectField(props: SelectFieldProps) {
           name,
           startAdornment,
           endAdornment,
-          required,
+          disableLabel,
+          labelPosition,
+          labelWidth,
           status,
           multiple,
           defaultValue,
           InputProps,
           SelectProps,
-          onChange,
           options,
           variant = 'standard',
-          labelProps,
+          required:   propsRequired,
           label:      propsLabel,
           helperText: propsHelperText,
           ...         restProps
         } = props;
-
-  const fieldRef = useRef<HTMLDivElement>(null);
 
   const children = useMemo((): React.ReactNode | React.ReactNode[] => {
     if (!options) {
@@ -136,35 +129,17 @@ export default function SelectField(props: SelectFieldProps) {
     .filter(option => option !== null);
   }, [options]);
 
-  const formikContext = useContext(FormikContext);
-  const values = formikContext?.values ?? {};
-  const errors = formikContext?.errors ?? {};
-  const handleChange = formikContext?.handleChange ?? undefined;
-
-  const formikEdit = values.edit || typeof values.edit === 'undefined';
-  const formikError = !!errors[name];
-
-  const value = useMemo(() => getValue<any>(values, name) ?? '', [values]);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-
-  const label = useMemo(() => labelProps?.disableLabel ? undefined : propsLabel, [propsLabel, labelProps]);
-  const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
-
-  const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
-  const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
-
-  useEffect(() => {
-    if (formikEdit !== edit) {
-      setEdit(formikEdit);
-    }
-  }, [formikEdit]);
-
-  useEffect(() => {
-    if (formikError !== error) {
-      setError(formikError);
-    }
-  }, [formikError]);
+  const {
+          error,
+          value,
+          disabled,
+          readOnly,
+          required,
+          helperText,
+          onChange,
+          onBlur,
+          label
+        } = useDataProps(props);
 
   const fieldProps: FieldProps = {
     variant,
@@ -173,12 +148,8 @@ export default function SelectField(props: SelectFieldProps) {
     error,
     helperText,
     disabled,
-    onChange:    (e) => {
-      if (onChange) {
-        onChange(e);
-      }
-      handleChange(e);
-    },
+    onChange,
+    onBlur,
     InputProps:  {
       ...InputProps,
       readOnly,
@@ -225,7 +196,6 @@ export default function SelectField(props: SelectFieldProps) {
             borderRadius: '5px',
             boxShadow:    `2px 2px 10px 0px ${ColorPalette._b2b4b7}`,
             maxHeight:    `${28 * 5}px`,
-            width:        fieldRef.current?.offsetWidth ? `${fieldRef.current!.offsetWidth}px` : 'auto',
 
             '& > ul':      {
               padding:      0,
@@ -256,45 +226,20 @@ export default function SelectField(props: SelectFieldProps) {
     children
   };
 
-  if (!labelProps?.disableLabel) {
+  if (!disableLabel) {
     return (
-      <Box sx={{
-        display:        'flex',
-        flexWrap:       'nowrap',
-        width:          '100%',
-        flex:           1,
-        justifyContent: 'space-between',
-        height:         '100%',
-      }}>
-        <Box sx={{
-          display:    'flex',
-          flexWrap:   'nowrap',
-          height:     '100%',
-          alignItems: 'center',
-        }}>
-          <Typography sx={{
-            fontSize:  '13px',
-            color:     ColorPalette._9b9ea4,
-            wordBreak: 'keep-all',
-            width:     '110px'
-          }}>
-            <RequiredMark required={edit && required} text={label} />
-          </Typography>
-        </Box>
-        <Box
-          ref={fieldRef}
-          sx={{
-            display:  'flex',
-            height:   '100%',
-            flexWrap: 'nowrap',
-            width:    'calc(100% - 130px)',
-          }}>
+      <DataFieldWithLabel
+        required={required}
+        label={label!}
+        labelPosition={labelPosition}
+        labelWidth={labelWidth}
+        children={
           <FieldView
             {...restProps}
             {...fieldProps}
           />
-        </Box>
-      </Box>
+        }
+      />
     );
   }
 
@@ -307,7 +252,6 @@ export default function SelectField(props: SelectFieldProps) {
       justifyContent: 'space-between',
     }}>
       <Box
-        ref={fieldRef}
         sx={{
           display:  'flex',
           flexWrap: 'nowrap',

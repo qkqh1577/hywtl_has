@@ -31,10 +31,8 @@ export default function ProjectMemoDrawerFilter(props: Props) {
         marginRight: '10px',
       }}>
         <SelectField
+          disableLabel
           variant="outlined"
-          labelProps={{
-            disableLabel: true,
-          }}
           name="category"
           label="카테고리"
           options={projectMemoCategoryList.map(item => ({
@@ -44,10 +42,8 @@ export default function ProjectMemoDrawerFilter(props: Props) {
         />
       </Box>
       <TextField
+        disableLabel
         variant="outlined"
-        labelProps={{
-          disableLabel: true,
-        }}
         name="keyword"
         label="검색어"
         placeholder="검색어 입력 후 엔터"

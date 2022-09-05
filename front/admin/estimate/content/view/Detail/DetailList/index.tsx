@@ -62,9 +62,7 @@ export default function (props: DetailListProps) {
                   {edit && (
                     <TextField
                       required
-                      labelProps={{
-                        disableLabel: true,
-                      }}
+                      disableLabel
                       type=" text"
                       name={`detailList.${i}`}
                       label="문구"

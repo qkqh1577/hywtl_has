@@ -46,13 +46,11 @@ export default function (props: SearchFormProps) {
       }}>
       <ItemBox>
         <TextField
+          disableLabel
           variant="outlined"
           name="keyword"
           label="프로젝트명 검색"
           placeholder="프로젝트명, 단지 명, ..."
-          labelProps={{
-            disableLabel: true,
-          }}
         />
         <IconButton
           onClick={props.toggleFilter}
@@ -61,18 +59,14 @@ export default function (props: SearchFormProps) {
       </ItemBox>
       <ItemBox>
         <SelectField
-          labelProps={{
-            disableLabel: true,
-          }}
+          disableLabel
           variant="outlined"
           name="test"
           label="조건문"
           options={['진행현황', '견적분류']}
         />
         <SelectField
-          labelProps={{
-            disableLabel: true,
-          }}
+          disableLabel
           variant="outlined"
           name="test2"
           label="진행현황"

@@ -18,6 +18,7 @@ import DateFormat from 'components/DateFormat';
 import Title from 'components/Title';
 import SelectField from 'components/SelectField';
 import { Table } from 'layouts/Table';
+import { FieldStatus } from 'components/DataFieldProps';
 
 interface Props {
   list: BusinessInvolvedProjectVO[];
@@ -32,9 +33,8 @@ export default function ({ list }: Props) {
           title="참여 프로젝트 정보"
           titleRightComponent={
             <SelectField
-              labelProps={{
-                disableLabel: true,
-              }}
+              disableLabel
+              status={FieldStatus.Idle}
               name="involvedProjectFilter"
               label="참여 프로젝트 정보 필터"
               options={businessInvolvedTypeList.map((type) => ({

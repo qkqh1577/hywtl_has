@@ -45,11 +45,9 @@ function Children({ fieldName, formik }: {
     case 'name':
       return (
         <TextField
+          disableLabel
           name={fieldName}
           label="동명"
-          labelProps={{
-            disableLabel: true
-          }}
           onBlur={() => {
             formik.handleSubmit();
           }}
@@ -58,15 +56,13 @@ function Children({ fieldName, formik }: {
     case 'site.id':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="대지 모형"
           options={siteList?.map((item) => ({
             key:  item.id,
             text: item.name ?? ''
           }))}
-          labelProps={{
-            disableLabel: true
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}
@@ -75,11 +71,9 @@ function Children({ fieldName, formik }: {
     case 'shape':
       return (
         <TextField
+          disableLabel
           name={fieldName}
           label="평면 형상"
-          labelProps={{
-            disableLabel: true
-          }}
           onBlur={() => {
             formik.handleSubmit();
           }}
@@ -88,12 +82,10 @@ function Children({ fieldName, formik }: {
     case 'floorCount':
       return (
         <TextField
+          disableLabel
           type="number"
           name={fieldName}
           label="층 수"
-          labelProps={{
-            disableLabel: true
-          }}
           onBlur={() => {
             if (!Number.isSafeInteger(formik.values.floorCount)) {
               formik.setFieldValue(fieldName, undefined);
@@ -105,12 +97,10 @@ function Children({ fieldName, formik }: {
     case 'height':
       return (
         <TextField
+          disableLabel
           type="number"
           name={fieldName}
           label="건축 높이"
-          labelProps={{
-            disableLabel: true
-          }}
           onBlur={() => {
             if (!formik.values.height || formik.values.height <= 0) {
               formik.setFieldValue(fieldName, undefined);
@@ -122,12 +112,10 @@ function Children({ fieldName, formik }: {
     case 'baseArea':
       return (
         <TextField
+          disableLabel
           type="number"
           name={fieldName}
           label="기준층 바닥 면적"
-          labelProps={{
-            disableLabel: true
-          }}
           onBlur={() => {
             if (!formik.values.baseArea || formik.values.baseArea <= 0) {
               formik.setFieldValue(fieldName, undefined);
@@ -139,28 +127,24 @@ function Children({ fieldName, formik }: {
     case 'ratio':
       return (
         <TextField
+          disableLabel
           type="number"
           name={fieldName}
           status={FieldStatus.ReadOnly}
           label="형상비"
-          labelProps={{
-            disableLabel: true
-          }}
         />
       );
 
     case 'buildingDocument.id':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="형상비 검토 파일 ID"
           options={buildingList?.map((item) => ({
             key:  item.id,
             text: item.file.filename
           }))}
-          labelProps={{
-            disableLabel: true
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}
@@ -218,12 +202,10 @@ function Children({ fieldName, formik }: {
     case 'estimateFigureDifficulty':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="견적 제작 난이도"
           options={difficultyList}
-          labelProps={{
-            disableLabel: true,
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}
@@ -232,12 +214,10 @@ function Children({ fieldName, formik }: {
     case 'estimateTestDifficulty':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="견적 실험 난이도"
           options={difficultyList}
-          labelProps={{
-            disableLabel: true,
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}
@@ -246,12 +226,10 @@ function Children({ fieldName, formik }: {
     case 'estimateEvaluationDifficulty':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="견적 평가 난이도"
           options={difficultyList}
-          labelProps={{
-            disableLabel: true,
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}
@@ -260,12 +238,10 @@ function Children({ fieldName, formik }: {
     case 'estimateReportDifficulty':
       return (
         <SelectField
+          disableLabel
           name={fieldName}
           label="견적 보고서 난이도"
           options={difficultyList}
-          labelProps={{
-            disableLabel: true,
-          }}
           onChange={() => {
             formik.handleSubmit();
           }}

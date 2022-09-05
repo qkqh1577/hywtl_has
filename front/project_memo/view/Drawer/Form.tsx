@@ -66,10 +66,8 @@ export default function ProjectMemoForm({
         }}>
           <TextField
             required
+            disableLabel
             variant="outlined"
-            labelProps={{
-              disableLabel: true,
-            }}
             name="description"
             label="본문"
             placeholder="메모 입력"
@@ -92,10 +90,8 @@ export default function ProjectMemoForm({
           }}>
             <SelectField
               required
+              disableLabel
               variant="outlined"
-              labelProps={{
-                disableLabel: true,
-              }}
               name="category"
               label="카테고리"
               options={projectMemoCategoryList.map(item => ({
