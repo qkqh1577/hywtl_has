@@ -20,10 +20,10 @@ export default function LoginUserEditModalButtonBlock(props: Props){
         sx={{
           marginRight: '10px',
         }}>
-        저장
+        계정정보 변경
       </Button>
       <Button shape="basic3" onClick={props.onClose}>
-        취소
+        비밀번호 변경
       </Button>
     </Box>
   )
