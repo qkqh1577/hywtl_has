@@ -35,9 +35,7 @@ export default function () {
     }}>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="username"
           label="아이디"
           status={FieldStatus.ReadOnly}
@@ -45,9 +43,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="name"
           label="이름"
           status={FieldStatus.ReadOnly}
@@ -55,9 +51,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="email"
           label="이메일"
           status={FieldStatus.ReadOnly}
@@ -73,9 +67,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="englishName"
           label="영문명"
         />
@@ -88,6 +80,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <SelectField
+          labelPosition="top"
           name="sex"
           label="성별"
           options={sexTypeList.map((item) => ({
@@ -98,45 +91,35 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="mobilePhone"
           label="핸드폰"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="privateEmail"
           label="개인 이메일"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="emergencyPhone"
           label="비상 연락처"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="relationship"
           label="관계"
         />
       </FieldBox>
       <FieldBox>
         <TextField
-          labelProps={{
-            position: 'top'
-          }}
+          labelPosition="top"
           name="address"
           label="거주지 주소"
         />

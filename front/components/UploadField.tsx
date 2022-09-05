@@ -2,8 +2,10 @@ import { FieldStatus } from 'components/DataFieldProps';
 import React, {
   ChangeEvent,
   useContext,
+  useEffect,
   useMemo,
-  useRef
+  useRef,
+  useState
 } from 'react';
 import { FormikContext } from 'formik';
 import {
@@ -74,31 +76,52 @@ export default function UploadField(props: UploadFieldProps) {
     }
   }, [isView, isDisabled, file]);
 
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  useEffect(() => {
+    if (!file) {
+      setImageUrl(undefined);
+      return;
+    }
+
+    if (file.id) {
+      setImageUrl(`url(/file-items/${file.id})`);
+      return;
+    }
+    if (file.multipartFile) {
+      setImageUrl(URL.createObjectURL(file.multipartFile));
+    }
+
+  }, [file]);
 
   return (
     <Box sx={{
       width:    '100%',
       display:  'flex',
-      flexWrap: props.preview ? 'wrap' : 'nowrap',
+      flexWrap: 'nowrap',
     }}>
-      {file && (
+      {props.preview && file && (
         <Box sx={{
-          width:   '100%',
-          display: 'flex',
+          width:        '100px',
+          maxHeight:    '100px',
+          marginRight:  '10px',
+          padding:      '0 4px',
+          display:      'flex',
+          borderRadius: '5px',
+          alignContent: 'flex-start',
+          flex:         1,
+          border:       `1px solid ${ColorPalette._e4e9f2}`
         }}>
-          <Box sx={{
-            width:                '100px',
-            height:               '100px',
-            borderRadius:         '5px',
-            backgroundImage:      `url(/file-items/${file.id})`,
-            backgroundRepeat:     'no-repeat',
-            backgroundAttachment: 'fixed',
-            backgroundSize:       'cover',
-            backgroundPosition:   'center',
-            border:               `1px solid ${ColorPalette._e4e9f2}`
-          }}
+          <img
+            width="60px"
+            src={imageUrl}
+            alt="프로필 이미지"
+            style={{
+              objectFit: 'contain'
+            }}
           />
         </Box>
+
       )}
       <TextField
         name={`${name}.filename`}
