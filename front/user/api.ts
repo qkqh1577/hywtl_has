@@ -60,10 +60,11 @@ class UserApi {
       formData.append('profile', params.profile);
     }
     if (params.birthDate) {
-      formData.append('birthDate', dayjs(params.birthDate).format('YYYY-MM-DD'));
+      formData.append('birthDate', dayjs(params.birthDate)
+      .format('YYYY-MM-DD'));
     }
-    const { result } = await apiClient.post('user/login', formData);
-    return result;
+    const { data } = await apiClient.post('/user/login', formData);
+    return data;
   }
 }
 

@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.user.parameter;
 
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -10,7 +12,8 @@ public class LoginUserChangeParameter {
 
     private MultipartFile profile;
     private String englishName;
-    private String birthDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
     private String sex;
     private String mobilePhone;
     private String privateEmail;

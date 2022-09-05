@@ -111,9 +111,9 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public LoginUserView edit(
+    public void edit(
         Authentication authentication,
         @Valid @ModelAttribute LoginUserChangeParameter parameter) {
-        return LoginUserView.assemble(userService.edit(authentication.getName(), parameter));
+        userService.edit(authentication.getName(), parameter);
     }
 }

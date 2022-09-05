@@ -47,7 +47,7 @@ export default function LoginUserEditModalRoute() {
                            helper
                           ) => {
         console.log(initialValues.profile);
-        console.log("loginUserEditModal.tsx in editModalFormik method's values: ", values.profile);
+        console.log('loginUserEditModal.tsx in editModalFormik method\'s values: ', values.profile);
         editLoginUser({
           values: {
             englishName:    values.englishName,
@@ -58,9 +58,10 @@ export default function LoginUserEditModalRoute() {
             emergencyPhone: values.emergencyPhone,
             relationship:   values.relationship,
             address:        values.address,
-            profile:        values.profile!.multipartFile,
+            profile:        values.profile?.multipartFile,
           },
-          ...helper });
+          ...helper
+        });
       }
     }
   );

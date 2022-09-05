@@ -32,9 +32,9 @@ export default function LoginUserEditModal(props: LoginUserEditModalProps) {
       width="40vw"
       children={
         <Box sx={{
-          display:  'flex',
-          width:    '100%',
-          flexWrap: 'wrap'
+          display:   'flex',
+          width:     '100%',
+          flexWrap:  'wrap',
         }}>
           <FormikProvider value={formik}>
             <Form />

@@ -1,5 +1,4 @@
-import React, {
-} from 'react';
+import React, {} from 'react';
 import {
   Box,
 } from '@mui/material';
@@ -29,11 +28,10 @@ function FieldBox(props: { children: React.ReactNode }) {
 export default function () {
   return (
     <Box sx={{
-      width:        '100%',
-      display:      'flex',
-      flexWrap:     'wrap',
-      alignContent: 'flex-start',
-      padding:      '45px'
+      width:    '100%',
+      display:  'flex',
+      flexWrap: 'wrap',
+      height:   '100%',
     }}>
       <FieldBox>
         <TextField
@@ -67,7 +65,7 @@ export default function () {
       </FieldBox>
       <FieldBox>
         <UploadField
-          status={FieldStatus.Idle}
+          preview
           name="profile"
           label="프로필 사진"
           accept="image/*"
@@ -89,10 +87,14 @@ export default function () {
         />
       </FieldBox>
       <FieldBox>
-        <SelectField options={sexTypeList.map((item) => ({
-          key:  item as string,
-          text: sexTypeName(item),
-        }))} name="sex" label="성별" />
+        <SelectField
+          name="sex"
+          label="성별"
+          options={sexTypeList.map((item) => ({
+            key:  item as string,
+            text: sexTypeName(item),
+          }))}
+        />
       </FieldBox>
       <FieldBox>
         <TextField

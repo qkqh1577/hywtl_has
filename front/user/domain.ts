@@ -64,8 +64,8 @@ export interface UserShortVO{
   name: string | undefined;
   username: string | undefined;
   email: string | undefined;
-  englishName?: string | undefined ;
-  sex?: string | undefined;
+  englishName: string | undefined ;
+  sex?: string;
   mobilePhone?: string | undefined;
   privateEmail?: string | undefined;
   emergencyPhone?: string | undefined;

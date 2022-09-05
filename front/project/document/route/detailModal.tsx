@@ -53,7 +53,7 @@ export default function ProjectDocumentDetailModalRoute() {
           id:        values.id!,
           note:      values.note,
           recipient: values.recipient!,
-          mailFile:  values.mailFile!.multipartFile,
+          mailFile:  values.mailFile?.multipartFile,
         },
         ...helper
       });

@@ -252,25 +252,44 @@ public class User extends CustomEntity {
 
     /* 계정 정보 수정 api */
     public void edit(
-        String englishName,
+        @Nullable String englishName,
         @Nullable LocalDate birthDate,
-        String sex,
-        String mobilePhone,
-        String privateEmail,
-        String emergencyPhone,
-        String relationship,
-        String address,
+        @Nullable String sex,
+        @Nullable String mobilePhone,
+        @Nullable String privateEmail,
+        @Nullable String emergencyPhone,
+        @Nullable String relationship,
+        @Nullable String address,
         @Nullable FileItem profile
     ) {
-        this.englishName = englishName;
-        this.birthDate = birthDate;
-        this.sex = sex;
-        this.mobilePhone = mobilePhone;
-        this.privateEmail = privateEmail;
-        this.emergencyPhone = emergencyPhone;
-        this.relationship = relationship;
-        this.address = address;
-        this.profile = profile;
+        if (Objects.nonNull(englishName) && !englishName.isEmpty()) {
+            this.englishName = englishName;
+        }
+        if (Objects.nonNull(birthDate)) {
+            this.birthDate = birthDate;
+        }
+        if (Objects.nonNull(sex) && !sex.isEmpty()) {
+            this.sex = sex;
+        }
+
+        if (Objects.nonNull(mobilePhone) && !mobilePhone.isEmpty()) {
+            this.mobilePhone = mobilePhone;
+        }
+        if (Objects.nonNull(privateEmail) && !privateEmail.isEmpty()) {
+            this.privateEmail = privateEmail;
+        }
+        if (Objects.nonNull(emergencyPhone) && !emergencyPhone.isEmpty()) {
+            this.emergencyPhone = emergencyPhone;
+        }
+        if (Objects.nonNull(relationship) && !relationship.isEmpty()) {
+            this.relationship = relationship;
+        }
+        if (Objects.nonNull(address) && !address.isEmpty()) {
+            this.address = address;
+        }
+        if (Objects.nonNull(profile)) {
+            this.profile = profile;
+        }
     }
 
 }

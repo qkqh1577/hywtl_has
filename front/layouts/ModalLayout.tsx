@@ -80,14 +80,15 @@ export default function ModalLayout({
           height:         'calc(100% - 50px)',
           padding:        '20px',
           justifyContent: 'center',
+          alignContent:   'flex-start',
           flexWrap:       'wrap',
-          alignItems:     'space-between',
           flex:           1,
+          overflowY:      'auto'
         }}>
           <Box sx={{
             display: 'flex',
             width:   '100%',
-            height:  `calc(100% - ${footerHeight + 40}px)`,
+            height:  `calc(100% - ${footerHeight + 60}px)`,
           }}>
             {children}
           </Box>
@@ -101,6 +102,7 @@ export default function ModalLayout({
                 alignItems:     'center',
                 flex:           1,
                 paddingTop:     '20px',
+                height:         'auto'
               }}
               children={footer}
             />

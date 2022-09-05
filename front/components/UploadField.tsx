@@ -14,12 +14,14 @@ import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import Button from 'layouts/Button';
 import useDialog from 'components/Dialog';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface UploadFieldProps {
   accept?: string;
   name: string;
   label: string;
   status?: FieldStatus;
+  preview?: boolean;
 }
 
 export default function UploadField(props: UploadFieldProps) {
@@ -75,9 +77,29 @@ export default function UploadField(props: UploadFieldProps) {
 
   return (
     <Box sx={{
-      width:   '100%',
-      display: 'flex',
+      width:    '100%',
+      display:  'flex',
+      flexWrap: props.preview ? 'wrap' : 'nowrap',
     }}>
+      {file && (
+        <Box sx={{
+          width:   '100%',
+          display: 'flex',
+        }}>
+          <Box sx={{
+            width:                '100px',
+            height:               '100px',
+            borderRadius:         '5px',
+            backgroundImage:      `url(/file-items/${file.id})`,
+            backgroundRepeat:     'no-repeat',
+            backgroundAttachment: 'fixed',
+            backgroundSize:       'cover',
+            backgroundPosition:   'center',
+            border:               `1px solid ${ColorPalette._e4e9f2}`
+          }}
+          />
+        </Box>
+      )}
       <TextField
         name={`${name}.filename`}
         label={label}

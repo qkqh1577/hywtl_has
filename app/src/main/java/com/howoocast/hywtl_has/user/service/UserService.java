@@ -9,7 +9,6 @@ import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
-import com.howoocast.hywtl_has.user.view.LoginUserView;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
@@ -21,8 +20,6 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.querydsl.core.types.Predicate;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -160,16 +157,13 @@ public class UserService {
 
     /* 계정 정보 수정 api */
     @Transactional
-    public User edit(String name, LoginUserChangeParameter parameter) {
+    public void edit(String username, LoginUserChangeParameter parameter) {
 
         FileItem profile = fileItemService.build(parameter.getProfile());
-        User loginUser = this.findByName(name);
+        User loginUser = this.findByUsername(username);
         loginUser.edit(
             parameter.getEnglishName(),
-            parameter.getBirthDate() != null ?
-                LocalDate.parse(
-                    parameter.getBirthDate()
-                ) : null,
+            parameter.getBirthDate(),
             parameter.getSex(),
             parameter.getMobilePhone(),
             parameter.getPrivateEmail(),
@@ -178,12 +172,11 @@ public class UserService {
             parameter.getAddress(),
             profile
         );
-        return loginUser;
     }
 
-    private User findByName(String userName) {
-        return repository.findByUsername(userName)
-            .orElseThrow(() -> new NotFoundException(User.KEY, userName));
+    private User findByUsername(String username) {
+        return repository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
     }
 
     private User load(Long id) {
