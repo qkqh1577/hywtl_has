@@ -4,9 +4,7 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
 import com.howoocast.hywtl_has.project.document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project.domain.Project;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -98,88 +96,107 @@ public class ProjectComplexBuilding extends CustomEntity {
         String estimateEvaluationDifficulty,
         String estimateReportDifficulty
     ) {
-        if (Objects.nonNull(name) && !name.isEmpty()) {
-            this.name = name;
+        this.name = name;
+        this.site = site;
+        this.shape = shape;
+        this.floorCount = floorCount;
+        this.height = height;
+        this.baseArea = baseArea;
+        if (this.baseArea > 0) {
+            this.ratio = this.height / Math.sqrt(this.baseArea);
+        } else {
+            this.ratio = null;
         }
-        if (Objects.nonNull(site)) {
-            this.site = site;
-        }
-        if (Objects.nonNull(shape) && !shape.isEmpty()) {
-            this.shape = shape;
-        }
-        if (Objects.nonNull(floorCount)) {
-            this.floorCount = floorCount;
-        }
-        if (Objects.nonNull(height)) {
-            this.height = height;
-        }
-        if (Objects.nonNull(baseArea)) {
-            this.baseArea = baseArea;
-        }
-        if (Objects.nonNull(this.baseArea) && Objects.nonNull(this.height)) {
-            if (this.baseArea > 0) {
-                this.ratio = this.height / Math.sqrt(this.baseArea);
-            } else {
-                this.ratio = null;
-            }
-        }
-        if (Objects.nonNull(buildingDocument)) {
-            this.buildingDocument = buildingDocument;
-        }
-        if (Objects.nonNull(specialWindWeightConditionList)) {
-            if (Objects.isNull(this.specialWindWeightConditionList)) {
-                this.specialWindWeightConditionList = specialWindWeightConditionList;
-            } else {
-                List<String> result = new ArrayList<>();
-                for (String item : specialWindWeightConditionList) {
-                    if (result.contains(item)) {
-                        continue;
-                    }
-                    result.add(item);
-                }
-                for (String item : this.specialWindWeightConditionList) {
-                    if (result.contains(item)) {
-                        continue;
-                    }
-                    result.add(item);
-                }
-                this.specialWindWeightConditionList = result;
-            }
-        }
-        if (Objects.nonNull(inTest)) {
-            this.inTest = inTest;
-        }
-        if (Objects.nonNull(testTypeList)) {
-            if (Objects.isNull(this.testTypeList)) {
-                this.testTypeList = testTypeList;
-            } else {
-                List<TestType> result = new ArrayList<>();
-                for (TestType item : testTypeList) {
-                    if (result.contains(item)) {
-                        continue;
-                    }
-                    result.add(item);
-                }
-                for (TestType item : this.testTypeList) {
-                    if (result.contains(item)) {
-                        continue;
-                    }
-                    result.add(item);
-                }
-                this.testTypeList = result;
-            }
-        }
-        if (Objects.nonNull(estimateFigureDifficulty) && !estimateFigureDifficulty.isEmpty()) {
-            this.estimateFigureDifficulty = estimateFigureDifficulty;
-        }
-        if (Objects.nonNull(estimateTestDifficulty) && !estimateTestDifficulty.isEmpty()) {
-            this.estimateTestDifficulty = estimateTestDifficulty;
-        }
-        if (Objects.nonNull(estimateEvaluationDifficulty) && !estimateEvaluationDifficulty.isEmpty()) {
-            this.estimateEvaluationDifficulty = estimateEvaluationDifficulty;
-        }
-        if (Objects.nonNull(estimateReportDifficulty) && !estimateReportDifficulty.isEmpty()) {
-            this.estimateReportDifficulty = estimateReportDifficulty;
-        }
+        this.buildingDocument = buildingDocument;
+        this.specialWindWeightConditionList = specialWindWeightConditionList;
+        this.inTest = inTest;
+        this.testTypeList = testTypeList;
+        this.estimateFigureDifficulty = estimateFigureDifficulty;
+        this.estimateTestDifficulty = estimateTestDifficulty;
+        this.estimateEvaluationDifficulty = estimateEvaluationDifficulty;
+        this.estimateReportDifficulty = estimateReportDifficulty;
+//        if (Objects.nonNull(name) && !name.isEmpty()) {
+//            this.name = name;
+//        }
+//        if (Objects.nonNull(site)) {
+//            this.site = site;
+//        }
+//        if (Objects.nonNull(shape) && !shape.isEmpty()) {
+//            this.shape = shape;
+//        }
+//        if (Objects.nonNull(floorCount)) {
+//            this.floorCount = floorCount;
+//        }
+//        if (Objects.nonNull(height)) {
+//            this.height = height;
+//        }
+//        if (Objects.nonNull(baseArea)) {
+//            this.baseArea = baseArea;
+//        }
+//        if (Objects.nonNull(this.baseArea) && Objects.nonNull(this.height)) {
+//            if (this.baseArea > 0) {
+//                this.ratio = this.height / Math.sqrt(this.baseArea);
+//            } else {
+//                this.ratio = null;
+//            }
+//        }
+//        if (Objects.nonNull(buildingDocument)) {
+//            this.buildingDocument = buildingDocument;
+//        }
+//        if (Objects.nonNull(specialWindWeightConditionList)) {
+//            if (Objects.isNull(this.specialWindWeightConditionList)) {
+//                this.specialWindWeightConditionList = specialWindWeightConditionList;
+//            } else {
+//                List<String> result = new ArrayList<>();
+//                for (String item : specialWindWeightConditionList) {
+//                    if (result.contains(item)) {
+//                        continue;
+//                    }
+//                    result.add(item);
+//                }
+//                for (String item : this.specialWindWeightConditionList) {
+//                    if (result.contains(item)) {
+//                        continue;
+//                    }
+//                    result.add(item);
+//                }
+//                this.specialWindWeightConditionList = result;
+//            }
+//        }
+//        if (Objects.nonNull(inTest)) {
+//            this.inTest = inTest;
+//        }
+//        if (Objects.nonNull(testTypeList)) {
+//            if (Objects.isNull(this.testTypeList)) {
+//                this.testTypeList = testTypeList;
+//            } else {
+//                List<TestType> result = new ArrayList<>();
+//                for (TestType item : testTypeList) {
+//                    if (result.contains(item)) {
+//                        continue;
+//                    }
+//                    result.add(item);
+//                }
+//                for (TestType item : this.testTypeList) {
+//                    if (result.contains(item)) {
+//                        continue;
+//                    }
+//                    result.add(item);
+//                }
+//                this.testTypeList = result;
+//            }
+//        }
+//        if (Objects.nonNull(estimateFigureDifficulty) && !estimateFigureDifficulty.isEmpty()) {
+//            this.estimateFigureDifficulty = estimateFigureDifficulty;
+//        }
+//        if (Objects.nonNull(estimateTestDifficulty) && !estimateTestDifficulty.isEmpty()) {
+//            this.estimateTestDifficulty = estimateTestDifficulty;
+//        }
+//        if (Objects.nonNull(estimateEvaluationDifficulty) && !estimateEvaluationDifficulty.isEmpty()) {
+//            this.estimateEvaluationDifficulty = estimateEvaluationDifficulty;
+//        }
+//        if (Objects.nonNull(estimateReportDifficulty) && !estimateReportDifficulty.isEmpty()) {
+//            this.estimateReportDifficulty = estimateReportDifficulty;
+//        }
     }
 }

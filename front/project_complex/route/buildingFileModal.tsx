@@ -55,6 +55,7 @@ export default function ProjectComplexBuildingFileModalRoute() {
         return;
       }
       updateBuilding({
+        ...buildingDetail,
         id,
         buildingDocumentId,
       });

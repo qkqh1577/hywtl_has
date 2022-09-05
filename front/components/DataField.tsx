@@ -78,7 +78,6 @@ export function useDataProps<T>(props: Props<T>): DataProps {
   const required = useMemo(() => edit && required, [edit, propsRequired]);
 
   const onChange = useCallback((e) => {
-
     if (!edit) {
       return;
     }

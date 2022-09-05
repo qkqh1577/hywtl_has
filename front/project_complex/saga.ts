@@ -104,6 +104,7 @@ function* updateSite() {
 function* updateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
+    console.log(params);
     try {
       yield put(projectComplexAction.requestBuilding('request'));
       yield call(projectComplexApi.updateBuilding, params);

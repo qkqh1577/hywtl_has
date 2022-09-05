@@ -71,7 +71,11 @@ function Children({ fieldName, formik }: {
             key:  item.id,
             text: item.name ?? ''
           }))}
-          onChange={() => {
+          onChange={(e) => {
+            formik.setFieldValue('siteId', e.target.value);
+          }}
+          onBlur={() => {
+            const siteId = (formik.values as any).site?.id;
             formik.handleSubmit();
           }}
         />
@@ -154,8 +158,7 @@ function Children({ fieldName, formik }: {
             key:  item.id,
             text: item.file.filename
           }))}
-          onClick={() => {
-            console.log(formik.values.id);
+          onBlur={() => {
             buildingFileOpen(formik.values.id);
           }}
 
@@ -169,7 +172,7 @@ function Children({ fieldName, formik }: {
           disableLabel
           disableAll
           options={['2', '3', '4', '5']}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -182,7 +185,7 @@ function Children({ fieldName, formik }: {
           disableLabel
           disableAll
           options={['1']}
-          onChange={() => {
+          onBlur={() => {
             const value = formik.values.test1;
             if (!value || value.length === 0) {
               formik.setFieldValue('inTest', true);
@@ -205,7 +208,7 @@ function Children({ fieldName, formik }: {
             key:  item as string,
             text: testTypeName(item)
           }))}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -217,7 +220,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 제작 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -229,7 +232,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 실험 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -241,7 +244,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 평가 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -253,7 +256,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 보고서 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -263,7 +266,7 @@ function Children({ fieldName, formik }: {
   }
 }
 
-export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
+export function ProjectComplexBuildingNameCell({ onSubmit, fieldName, ...props }: Props) {
 
   const dispatch = useDispatch();
   const { requestBuilding } = useSelector((root: RootState) => root.projectComplex);
@@ -274,6 +277,7 @@ export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
       test1: props.inTest ? ['1'] : []
     },
     onSubmit:           (values) => {
+      console.log(values);
       onSubmit(values);
     },
   });
@@ -292,7 +296,7 @@ export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
   return (
     <TableCell>
       <FormikProvider value={formik}>
-        <Children formik={formik} fieldName={props.fieldName} />
+        <Children formik={formik} fieldName={fieldName} />
       </FormikProvider>
     </TableCell>
   );

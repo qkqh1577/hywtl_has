@@ -19,8 +19,3 @@ export interface ProjectComplexBuildingParameter
   siteId?: ProjectComplexSiteId;
   buildingDocumentId?: ProjectDocumentId;
 }
-
-export interface ProjectComplexBuildingFileParameter {
-  id: ProjectComplexBuildingId;
-  fileId?: ProjectDocumentId;
-}

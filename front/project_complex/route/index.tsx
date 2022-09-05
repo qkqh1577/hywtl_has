@@ -20,7 +20,6 @@ function Element() {
   const { id: projectId } = useSelector((root: RootState) => root.projectComplex);
 
   useEffect(() => {
-    console.log({ id, projectId });
     if (id && projectId !== id) {
       dispatch(projectComplexAction.setId(ProjectId(id)));
     }
