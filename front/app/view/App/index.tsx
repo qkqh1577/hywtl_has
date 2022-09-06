@@ -6,6 +6,7 @@ import { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import MenuDrawer, { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 import AppBar from 'app/view/App/Bar';
 import ReactRouter from 'services/routes';
+import { OnLoginUserEditModalOpen } from 'app/route/app';
 
 interface Props {
   isLoginPage: boolean;
@@ -15,6 +16,8 @@ interface Props {
   projectDrawer: React.ReactNode;
   projectMemoDrawer: React.ReactNode;
   projectAppBar: React.ReactNode;
+  loginUserEditModal: React.ReactNode;
+  onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
 }
 
 export default function App(props: Props) {
@@ -37,6 +40,8 @@ export default function App(props: Props) {
             projectAppBar={props.projectAppBar}
             logoutButtonProps={logoutButtonProps}
             menuDrawerProps={menuDrawerProps}
+            loginUserEditModal={props.loginUserEditModal}
+            onLoginUserEditModalOpen={props.onLoginUserEditModalOpen}
           />
           <MenuDrawer {...props.menuDrawerProps} />
           {props.projectDrawer}
@@ -45,12 +50,12 @@ export default function App(props: Props) {
       <Box
         component="main"
         sx={{
-          flexGrow:        1,
-          height:          '100vh',
-          overflow:        'auto',
-          paddingLeft:     0,
-          paddingRight:    0,
-          paddingTop:      !isLoginPage ? '50px' : 0,
+          flexGrow:     1,
+          height:       '100vh',
+          overflow:     'auto',
+          paddingLeft:  0,
+          paddingRight: 0,
+          paddingTop:   !isLoginPage ? '50px' : 0,
         }}>
         <ReactRouter />
       </Box>

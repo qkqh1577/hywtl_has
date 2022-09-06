@@ -27,7 +27,7 @@ export interface LabelProps {
   label: string;
   disableLabel?: boolean;
   labelWidth?: number;
-  labelPosition?: 'left' | 'top';
+  labelPositionTop?: boolean;
   labelSX?: SX;
 }
 

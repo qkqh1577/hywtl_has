@@ -7,6 +7,7 @@ import {
   FieldStatus,
   getValue,
   isOption,
+  LabelProps,
   Option
 } from 'components/DataFieldProps';
 import {
@@ -24,15 +25,14 @@ import {
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 
 export interface CheckboxFieldProps
-  extends Omit<FormControlProps, | 'variant'
+  extends LabelProps,
+          Omit<FormControlProps, | 'variant'
                                  | 'disabled'
                                  | 'fullWidth'
                                  | 'name'
                                  | 'label'
                                  | 'value'> {
-  disableLabel?: boolean;
   name: string;
-  label: string;
   status?: FieldStatus;
   /** 전체 선택, 선택 해제의 문구, default="전체" */
   allText?: string;

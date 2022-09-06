@@ -5,6 +5,7 @@ import {
   DataFieldValue,
   FieldStatus,
   isOption,
+  LabelProps,
   MuiTextFieldProps,
   Option
 } from 'components/DataFieldProps';
@@ -19,10 +20,12 @@ import {
 } from '@mui/material';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { useDataProps } from 'components/DataField';
+import { ColorPalette } from 'app/view/App/theme';
 import { FormikContextType } from 'formik';
 
 export interface RadioFieldProps
-  extends Pick<MuiTextFieldProps, | 'onChange' | 'onBlur'>,
+  extends LabelProps,
+          Pick<MuiTextFieldProps, | 'onChange' | 'onBlur'>,
           Omit<FormControlProps, | 'variant'
                                  | 'disabled'
                                  | 'fullWidth'
@@ -31,9 +34,7 @@ export interface RadioFieldProps
                                  | 'onChange'
                                  | 'onBlur'
                                  | 'value'> {
-  disableLabel?: boolean;
   name: string;
-  label: string;
   status?: FieldStatus;
   options: Option[] | DataFieldValue[];
   disableText?: boolean;
@@ -93,11 +94,9 @@ export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
         value={key}
         checked={key === value}
         onChange={(e) => {
-          console.log(value);
           onChange(e);
         }}
         onBlur={(e) => {
-          console.log(value);
           onBlur(e);
         }}
       />
@@ -151,7 +150,11 @@ export default function RadioField(props: RadioFieldProps) {
       required={required}
     >
       {!disableLabel && (
-        <FormLabel component="legend">
+        <FormLabel component="legend" sx={{
+          fontSize:  '13px',
+          color:     ColorPalette.Grey['1'],
+          wordBreak: 'keep-all',
+        }}>
           {label}
         </FormLabel>
       )}

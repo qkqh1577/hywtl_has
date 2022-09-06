@@ -1,26 +1,18 @@
 package com.howoocast.hywtl_has.user.view;
 
-import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.howoocast.hywtl_has.file.view.FileItemView;
-import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.Getter;
 
 @Getter
-public class UserView {
+public class LoginUserView {
 
     private Long id;
     private String username;
     private String email;
     private String name;
-    private DepartmentView department;
-    private UserRole role;
-    private LocalDateTime createdAt;
-    private LocalDateTime loginAt;
-    private LocalDateTime passwordChangedAt;
     private String englishName;
     private LocalDate birthDate;
     private String sex;
@@ -29,19 +21,15 @@ public class UserView {
     private String emergencyPhone;
     private String relationship;
     private String address;
+
     private FileItemView profile;
 
-    public static UserView assemble(User source) {
-        UserView target = new UserView();
+    public static LoginUserView assemble(User source) {
+        LoginUserView target = new LoginUserView();
         target.id = source.getId();
         target.username = source.getUsername();
         target.email = source.getEmail();
         target.name = source.getName();
-        target.department = DepartmentView.assemble(source.getDepartment());
-        target.role = source.getRole();
-        target.createdAt = source.getCreatedAt();
-        target.loginAt = source.getLoginAt();
-        target.passwordChangedAt = source.getPasswordChangedAt();
         target.englishName = source.getEnglishName();
         target.birthDate = source.getBirthDate();
         target.sex = source.getSex();

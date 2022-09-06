@@ -3,11 +3,13 @@ import Page from 'type/Page';
 import { UserVO } from 'user/domain';
 import { UserQuery } from 'user/query';
 import { UserAction } from 'user/action';
+import { LoginUser } from 'app/domain/login';
 
 export interface UserState {
   filter?: UserQuery;
   page?: Page<UserVO>;
   detail?: UserVO;
+  loginUser?: LoginUser;
 }
 
 const initialState: UserState = {};
@@ -30,5 +32,11 @@ export const userReducer = createReducer(initialState, {
                           ) => ({
     ...state,
     detail: action.payload,
+  }),
+  [UserAction.editModal]: (state,
+                           action
+                          ) => ({
+    ...state,
+    loginUser: action.payload,
   })
 });

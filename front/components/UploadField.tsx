@@ -2,8 +2,10 @@ import { FieldStatus } from 'components/DataFieldProps';
 import React, {
   ChangeEvent,
   useContext,
+  useEffect,
   useMemo,
-  useRef
+  useRef,
+  useState
 } from 'react';
 import { FormikContext } from 'formik';
 import {
@@ -14,12 +16,14 @@ import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import Button from 'layouts/Button';
 import useDialog from 'components/Dialog';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface UploadFieldProps {
   accept?: string;
   name: string;
   label: string;
   status?: FieldStatus;
+  preview?: boolean;
 }
 
 export default function UploadField(props: UploadFieldProps) {
@@ -72,17 +76,58 @@ export default function UploadField(props: UploadFieldProps) {
     }
   }, [isView, isDisabled, file]);
 
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  useEffect(() => {
+    if (!file) {
+      setImageUrl(undefined);
+      return;
+    }
+
+    if (file.id) {
+      setImageUrl(`url(/file-items/${file.id})`);
+      return;
+    }
+    if (file.multipartFile) {
+      setImageUrl(URL.createObjectURL(file.multipartFile));
+    }
+
+  }, [file]);
 
   return (
     <Box sx={{
-      width:   '100%',
-      display: 'flex',
+      width:    '100%',
+      display:  'flex',
+      flexWrap: 'nowrap',
     }}>
+      {props.preview && file && (
+        <Box sx={{
+          width:        '100px',
+          maxHeight:    '100px',
+          marginRight:  '10px',
+          padding:      '0 4px',
+          display:      'flex',
+          borderRadius: '5px',
+          alignContent: 'flex-start',
+          flex:         1,
+          border:       `1px solid ${ColorPalette._e4e9f2}`
+        }}>
+          <img
+            width="60px"
+            src={imageUrl}
+            alt="프로필 이미지"
+            style={{
+              objectFit: 'contain'
+            }}
+          />
+        </Box>
+
+      )}
       <TextField
+        labelPositionTop
         name={`${name}.filename`}
         label={label}
         status={FieldStatus.ReadOnly}
-        labelPosition="top"
         endAdornment={endAdornment}
       />
       <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />

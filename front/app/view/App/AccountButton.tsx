@@ -3,8 +3,13 @@ import { AccountCircle as AccountIcon } from '@mui/icons-material';
 import Tooltip from 'components/Tooltip';
 import React from 'react';
 import useLogin from 'app/service/loginHook';
+import { OnLoginUserEditModalOpen } from 'app/route/app';
 
-export default function () {
+interface Props {
+  onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
+}
+
+export default function ({onLoginUserEditModalOpen}: Props) {
 
   const { user } = useLogin();
 
@@ -13,7 +18,9 @@ export default function () {
       <IconButton
         color="info"
         onClick={() => {
-          console.log(user);
+          if (user) {
+            onLoginUserEditModalOpen(user);
+          }
         }}>
         <AccountIcon />
       </IconButton>

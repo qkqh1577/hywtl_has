@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.user.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
@@ -10,6 +11,7 @@ import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptio
 import com.howoocast.hywtl_has.user.exception.UserLoginException;
 import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -106,6 +109,46 @@ public class User extends CustomEntity {
     @Getter(AccessLevel.NONE)
     @OneToOne(mappedBy = "user")
     private Personnel personnel;
+
+    /**
+     * 영문명
+     */
+    private String englishName;
+
+    /**
+     * 생년월일
+     */
+    private LocalDate birthDate;
+    /**
+     * 성별
+     */
+    private String sex;
+    /**
+     * 핸드폰
+     */
+    private String mobilePhone;
+    /**
+     * 개인 이메일
+     */
+    private String privateEmail;
+    /**
+     * 비상 연락처
+     */
+    private String emergencyPhone;
+    /**
+     * 비상연락처 사원과의 관계
+     */
+    private String relationship;
+    /**
+     * 주소
+     */
+    private String address;
+
+    /**
+     * 프로필 사진
+     */
+    @ManyToOne
+    private FileItem profile;
 
     protected User(
         String username,
@@ -205,6 +248,48 @@ public class User extends CustomEntity {
 
     public void delete() {
         this.deletedAt = LocalDateTime.now();
+    }
+
+    /* 계정 정보 수정 api */
+    public void edit(
+        @Nullable String englishName,
+        @Nullable LocalDate birthDate,
+        @Nullable String sex,
+        @Nullable String mobilePhone,
+        @Nullable String privateEmail,
+        @Nullable String emergencyPhone,
+        @Nullable String relationship,
+        @Nullable String address,
+        @Nullable FileItem profile
+    ) {
+        if (Objects.nonNull(englishName) && !englishName.isEmpty()) {
+            this.englishName = englishName;
+        }
+        if (Objects.nonNull(birthDate)) {
+            this.birthDate = birthDate;
+        }
+        if (Objects.nonNull(sex) && !sex.isEmpty()) {
+            this.sex = sex;
+        }
+
+        if (Objects.nonNull(mobilePhone) && !mobilePhone.isEmpty()) {
+            this.mobilePhone = mobilePhone;
+        }
+        if (Objects.nonNull(privateEmail) && !privateEmail.isEmpty()) {
+            this.privateEmail = privateEmail;
+        }
+        if (Objects.nonNull(emergencyPhone) && !emergencyPhone.isEmpty()) {
+            this.emergencyPhone = emergencyPhone;
+        }
+        if (Objects.nonNull(relationship) && !relationship.isEmpty()) {
+            this.relationship = relationship;
+        }
+        if (Objects.nonNull(address) && !address.isEmpty()) {
+            this.address = address;
+        }
+        if (Objects.nonNull(profile)) {
+            this.profile = profile;
+        }
     }
 
 }

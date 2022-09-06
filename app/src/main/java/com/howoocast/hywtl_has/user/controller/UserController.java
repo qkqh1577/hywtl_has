@@ -3,12 +3,14 @@ package com.howoocast.hywtl_has.user.controller;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.UserLoginException;
 import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
+import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
+import com.howoocast.hywtl_has.user.view.LoginUserView;
 import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
@@ -22,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,5 +110,10 @@ public class UserController {
         userService.delete(id);
     }
 
-
+    @PostMapping("/user/login")
+    public void edit(
+        Authentication authentication,
+        @Valid @ModelAttribute LoginUserChangeParameter parameter) {
+        userService.edit(authentication.getName(), parameter);
+    }
 }
