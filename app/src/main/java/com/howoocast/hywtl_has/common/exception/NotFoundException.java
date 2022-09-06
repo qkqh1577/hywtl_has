@@ -19,7 +19,7 @@ public class NotFoundException extends CustomExceptionAdaptor {
     public NotFoundException(String code, String fieldName, String message) {
         super(
             String.format("%s.not_found", code),
-            String.format("요청 항목을 찾을 수 없습니다. %s: %s ", fieldName, message)
+            String.format("요청 항목을 찾을 수 없습니다. %s: %s", fieldName, message)
         );
     }
 }

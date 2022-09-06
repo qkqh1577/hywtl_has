@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.common.repository.CustomRepository;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -41,9 +42,13 @@ public class CustomFinder<D extends CustomEntity> {
         String methodName = name.startsWith("findBy")
             ? name
             : "findBy" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        log.debug("[method] {}", methodName);
         try {
             Method find = repository.getClass().getMethod(methodName, value.getClass());
-            return (D) find.invoke(repository, value);
+            Optional<D> optional = (Optional<D>) find.invoke(repository, value);
+            return optional.orElseThrow(() -> {
+                throw new NotFoundException(KEY, name, value.toString());
+            });
         } catch (Exception e) {
             e.printStackTrace();
             throw new NotFoundException(KEY, name, value.toString());

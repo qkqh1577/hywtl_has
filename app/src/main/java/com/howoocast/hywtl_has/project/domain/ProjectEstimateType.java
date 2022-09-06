@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.domain;
 
+// TODO: ProjectBidType
 /**
  * 견적 구분
  */
