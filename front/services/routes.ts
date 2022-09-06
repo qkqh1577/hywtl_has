@@ -11,6 +11,7 @@ import estimateTemplateRoutes from 'estimate_template/route';
 import projectRoutes from 'project/route';
 import businessRoutes from "business/route";
 import estimateContentRoutes from 'admin/estimate/content/route';
+import contractBasicTemplateRoute from 'admin/contract/basic/route';
 
 export interface AppRoute
   extends RouteProps {
@@ -26,6 +27,7 @@ const Routes = () => {
     ...projectRoutes,
     ...businessRoutes,
     ...estimateContentRoutes,
+    contractBasicTemplateRoute,
   ];
 
   return useRoutes(routes as RouteObject[]);
