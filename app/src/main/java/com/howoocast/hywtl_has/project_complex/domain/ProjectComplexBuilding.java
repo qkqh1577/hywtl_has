@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.estimate_template.domain.TestType;
 import com.howoocast.hywtl_has.project.document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -102,7 +103,11 @@ public class ProjectComplexBuilding extends CustomEntity {
         this.floorCount = floorCount;
         this.height = height;
         this.baseArea = baseArea;
-        if (this.baseArea > 0) {
+        if (Objects.nonNull(this.height)
+            && Objects.nonNull(this.baseArea)
+            && this.height > 0
+            && this.baseArea > 0
+        ) {
             this.ratio = this.height / Math.sqrt(this.baseArea);
         } else {
             this.ratio = null;
