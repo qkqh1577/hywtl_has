@@ -1,5 +1,8 @@
 import { TableCell } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import {
   FormikContextType,
   FormikProvider,
@@ -19,7 +22,10 @@ import {
   testTypeList,
   testTypeName
 } from 'admin/estimate/content/domain';
-import { difficultyList } from 'project_complex/domain';
+import {
+  difficultyList,
+  ProjectComplexBuildingId
+} from 'project_complex/domain';
 import { projectComplexAction } from 'project_complex/action';
 
 interface FormType
@@ -38,6 +44,8 @@ function Children({ fieldName, formik }: {
   formik: FormikContextType<FormType>;
 }) {
 
+  const dispatch = useDispatch();
+  const buildingFileOpen = useCallback((id: ProjectComplexBuildingId) => dispatch(projectComplexAction.buildingFileModal(id)), [dispatch]);
   const { siteList } = useSelector((root: RootState) => root.projectComplex);
   const { buildingList } = useSelector((root: RootState) => root.projectDocument);
 
@@ -63,7 +71,11 @@ function Children({ fieldName, formik }: {
             key:  item.id,
             text: item.name ?? ''
           }))}
-          onChange={() => {
+          onChange={(e) => {
+            formik.setFieldValue('siteId', e.target.value);
+          }}
+          onBlur={() => {
+            const siteId = (formik.values as any).site?.id;
             formik.handleSubmit();
           }}
         />
@@ -140,14 +152,16 @@ function Children({ fieldName, formik }: {
         <SelectField
           disableLabel
           name={fieldName}
+          status={FieldStatus.ReadOnly}
           label="형상비 검토 파일 ID"
           options={buildingList?.map((item) => ({
             key:  item.id,
             text: item.file.filename
           }))}
-          onChange={() => {
-            formik.handleSubmit();
+          onBlur={() => {
+            buildingFileOpen(formik.values.id);
           }}
+
         />
       );
     case 'specialWindWeightConditionList':
@@ -158,7 +172,7 @@ function Children({ fieldName, formik }: {
           disableLabel
           disableAll
           options={['2', '3', '4', '5']}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -171,7 +185,7 @@ function Children({ fieldName, formik }: {
           disableLabel
           disableAll
           options={['1']}
-          onChange={() => {
+          onBlur={() => {
             const value = formik.values.test1;
             if (!value || value.length === 0) {
               formik.setFieldValue('inTest', true);
@@ -194,7 +208,7 @@ function Children({ fieldName, formik }: {
             key:  item as string,
             text: testTypeName(item)
           }))}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -206,7 +220,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 제작 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -218,7 +232,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 실험 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -230,7 +244,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 평가 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -242,7 +256,7 @@ function Children({ fieldName, formik }: {
           name={fieldName}
           label="견적 보고서 난이도"
           options={difficultyList}
-          onChange={() => {
+          onBlur={() => {
             formik.handleSubmit();
           }}
         />
@@ -252,7 +266,7 @@ function Children({ fieldName, formik }: {
   }
 }
 
-export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
+export function ProjectComplexBuildingNameCell({ onSubmit, fieldName, ...props }: Props) {
 
   const dispatch = useDispatch();
   const { requestBuilding } = useSelector((root: RootState) => root.projectComplex);
@@ -263,6 +277,7 @@ export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
       test1: props.inTest ? ['1'] : []
     },
     onSubmit:           (values) => {
+      console.log(values);
       onSubmit(values);
     },
   });
@@ -281,7 +296,7 @@ export function ProjectComplexBuildingNameCell({ onSubmit, ...props }: Props) {
   return (
     <TableCell>
       <FormikProvider value={formik}>
-        <Children formik={formik} fieldName={props.fieldName} />
+        <Children formik={formik} fieldName={fieldName} />
       </FormikProvider>
     </TableCell>
   );

@@ -1,25 +1,29 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Button
 } from '@mui/material';
 import { FormikContext } from 'formik';
 import useDialog from 'components/Dialog';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
-function CancelButton() {
+function CancelButton(props: { onClick?: DefaultFunction }) {
 
   const formikContext = useContext(FormikContext);
   const { rollback } = useDialog();
   const onClick = () => {
-    if (formikContext) {
-      rollback(() => {
+    rollback(() => {
+      if (props.onClick) {
+        props.onClick();
+      }
+      if (formikContext) {
         formikContext.handleReset();
-      });
-    }
+      }
+    });
   };
   return (
     <Button
-      color="secondary"
+      shape="basic2"
       children="취소"
       onClick={onClick}
       disabled={formikContext?.isSubmitting}
@@ -27,7 +31,7 @@ function CancelButton() {
   );
 }
 
-function SubmitButton() {
+function SubmitButton(props: { onClick?: DefaultFunction }) {
   const formikContext = useContext(FormikContext);
 
   const onClick = () => {
@@ -35,12 +39,20 @@ function SubmitButton() {
       const { handleSubmit } = formikContext;
       handleSubmit();
     }
+    if (props.onClick) {
+      props.onClick();
+    }
   };
   return (
     <Button
+
+      shape="basic1"
       children="저장"
       onClick={onClick}
       disabled={formikContext?.isSubmitting}
+      sx={{
+        marginRight: '10px',
+      }}
     />
   );
 }
@@ -49,6 +61,8 @@ export interface DetailFormFooterProps {
   left?: React.ReactNode;
   right?: React.ReactNode;
   children?: React.ReactNode;
+  onSubmit?: DefaultFunction;
+  onClose?: DefaultFunction;
 }
 
 export default function DetailFormFooter(props: DetailFormFooterProps) {
@@ -56,12 +70,12 @@ export default function DetailFormFooter(props: DetailFormFooterProps) {
   return (
     <Box sx={{
       display:        'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      flexWrap:       'nowrap',
       width:          '100%',
-      mt:             '40px',
     }}>
       {props.children}
-      {!props.children && (
+      {(props.left || props.right) && (
         <>
           <Box sx={{
             display: 'flex',
@@ -74,10 +88,16 @@ export default function DetailFormFooter(props: DetailFormFooterProps) {
             justifyContent: 'flex-end',
             width:          '50%',
           }}>
-            <CancelButton />
-            <SubmitButton />
+            <SubmitButton onClick={props.onSubmit} />
+            <CancelButton onClick={props.onClose} />
             {props.right}
           </Box>
+        </>
+      )}
+      {!props.children && !props.left && !props.right && (
+        <>
+          <SubmitButton onClick={props.onSubmit} />
+          <CancelButton onClick={props.onClose} />
         </>
       )}
     </Box>

@@ -11,6 +11,7 @@ import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
 import { ProjectId } from 'project/domain';
 import ProjectComplexBuildingRoute from 'project_complex/route/building';
+import ProjectComplexBuildingFileModalRoute from 'project_complex/route/buildingFileModal';
 
 function Element() {
 
@@ -19,7 +20,6 @@ function Element() {
   const { id: projectId } = useSelector((root: RootState) => root.projectComplex);
 
   useEffect(() => {
-    console.log({ id, projectId });
     if (id && projectId !== id) {
       dispatch(projectComplexAction.setId(ProjectId(id)));
     }
@@ -29,6 +29,7 @@ function Element() {
     <ProjectContainerRoute>
       <ProjectComplexSiteRoute />
       <ProjectComplexBuildingRoute />
+      <ProjectComplexBuildingFileModalRoute />
     </ProjectContainerRoute>
   );
 }

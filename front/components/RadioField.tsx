@@ -21,6 +21,7 @@ import {
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 import { useDataProps } from 'components/DataField';
 import { ColorPalette } from 'app/view/App/theme';
+import { FormikContextType } from 'formik';
 
 export interface RadioFieldProps
   extends LabelProps,
@@ -38,6 +39,7 @@ export interface RadioFieldProps
   options: Option[] | DataFieldValue[];
   disableText?: boolean;
   helperText?: string;
+  formikContext?: FormikContextType<any>;
 }
 
 export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
@@ -92,11 +94,9 @@ export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
         value={key}
         checked={key === value}
         onChange={(e) => {
-          console.log(e);
           onChange(e);
         }}
         onBlur={(e) => {
-          console.log(e);
           onBlur(e);
         }}
       />
@@ -113,6 +113,11 @@ export function useRadioField(props: RadioFieldProps): React.ReactNode[] {
         />
       );
     }
+  }
+  if (props.formikContext) {
+    return result.map(item => (
+      <RadioGroup name={`${name}-group`}>{item}</RadioGroup>
+    ));
   }
   return result;
 }
@@ -153,7 +158,7 @@ export default function RadioField(props: RadioFieldProps) {
           {label}
         </FormLabel>
       )}
-      <RadioGroup row name={name}>
+      <RadioGroup name={`${name}-group`}>
         {radio}
       </RadioGroup>
       <FormHelperText error={error}>

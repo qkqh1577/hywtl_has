@@ -32,10 +32,11 @@ export default function ProjectDocumentAddModalRoute() {
   const onClose = useCallback(() => dispatch(projectDocumentAction.addModal('close')), [dispatch]);
 
   const formik = useFormik<FormikPartial<ProjectDocumentParameter>>({
-    initialValues: initialProjectDocumentParameter,
-    onSubmit:      (formikValues,
-                    helper
-                   ) => {
+    enableReinitialize: true,
+    initialValues:      initialProjectDocumentParameter,
+    onSubmit:           (formikValues,
+                         helper
+                        ) => {
       if (!projectId) {
         error('프로젝트가 선택되지 않았습니다.');
         helper.setSubmitting(false);

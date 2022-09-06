@@ -47,6 +47,11 @@ public class ProjectComplexService {
         return buildingRepository.findByProject_Id(projectId);
     }
 
+    @Transactional(readOnly = true)
+    public ProjectComplexBuilding getBuilding(Long id) {
+        return new CustomFinder<>(buildingRepository, ProjectComplexBuilding.class).byId(id);
+    }
+
     @Transactional
     public void pushSite(Long projectId) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);

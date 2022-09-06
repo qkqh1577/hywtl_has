@@ -19,6 +19,8 @@ public class ProjectComplexBuildingView {
     private Double height;
     private Double baseArea;
     private Double ratio;
+
+    private ProjectComplexSiteView site;
     private ProjectDocumentShortView buildingDocument;
     private List<String> specialWindWeightConditionList;
     private Boolean inTest;
@@ -38,6 +40,9 @@ public class ProjectComplexBuildingView {
         target.height = source.getHeight();
         target.baseArea = source.getBaseArea();
         target.ratio = source.getRatio();
+        if (Objects.nonNull(source.getSite())) {
+            target.site = ProjectComplexSiteView.assemble(source.getSite());
+        }
         if (Objects.nonNull(source.getBuildingDocument())) {
             target.buildingDocument = ProjectDocumentShortView.assemble(source.getBuildingDocument());
         }
