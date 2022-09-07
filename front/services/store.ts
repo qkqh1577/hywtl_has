@@ -12,12 +12,13 @@ import departmentSaga from 'department/saga';
 import estimateTemplateSaga from 'estimate_template/saga';
 import projectSaga from 'project/saga';
 import estimateContentSaga from 'admin/estimate/content/saga';
-import businessSaga from "../business/saga";
+import businessSaga from '../business/saga';
 import projectMemoSaga from 'project_memo/saga';
 import projectBasicSaga from 'project/basic/saga';
 import projectDocumentSaga from 'project/document/saga';
 import projectComplexSaga from 'project_complex/saga';
 import contractBasicSage from 'admin/contract/basic/saga';
+import contractCollectionSaga from 'admin/contract/collection/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -34,7 +35,8 @@ function* saga() {
     projectDocumentSaga(),
     projectBasicSaga(),
     projectComplexSaga(),
-    contractBasicSage()
+    contractBasicSage(),
+    contractCollectionSaga()
   ]);
 }
 

@@ -9,9 +9,10 @@ import appRoutes from 'app/route';
 import departmentRoutes from 'department/route';
 import estimateTemplateRoutes from 'estimate_template/route';
 import projectRoutes from 'project/route';
-import businessRoutes from "business/route";
+import businessRoutes from 'business/route';
 import estimateContentRoutes from 'admin/estimate/content/route';
 import contractBasicTemplateRoute from 'admin/contract/basic/route';
+import contractCollectionTemplateRoute from 'admin/contract/collection/route';
 
 export interface AppRoute
   extends RouteProps {
@@ -28,6 +29,7 @@ const Routes = () => {
     ...businessRoutes,
     ...estimateContentRoutes,
     contractBasicTemplateRoute,
+    contractCollectionTemplateRoute
   ];
 
   return useRoutes(routes as RouteObject[]);
