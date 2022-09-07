@@ -1,10 +1,10 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
+import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Inheritance;
@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,7 +29,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
+@DiscriminatorFormula("case when type ='SYSTEM' then 'SYSTEM' else 'CUSTOM' end")
 public abstract class ProjectEstimate extends CustomEntity {
 
     public static final String KEY = "project_estimate";
@@ -43,7 +44,7 @@ public abstract class ProjectEstimate extends CustomEntity {
      * 견적 구분
      */
     @NotBlank
-    @Column(nullable = false, insertable = false, updatable = false)
+    @Column(nullable = false)
     private String type;
 
     /**
@@ -65,7 +66,7 @@ public abstract class ProjectEstimate extends CustomEntity {
      */
     @NotBlank
     @Column(nullable = false)
-    private String business;
+    private String recipient;
 
     /**
      * 비고
@@ -81,31 +82,36 @@ public abstract class ProjectEstimate extends CustomEntity {
     @ManyToOne
     private Project project;
 
+    @ManyToOne
+    private Business business;
+
     protected ProjectEstimate(
         String code,
         ProjectEstimateType type,
         Boolean isSent,
-        String business,
+        String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         this.project = project;
         this.code = code;
         this.type = type.name();
-        this.business = business;
+        this.recipient = recipient;
         this.note = note;
         this.writer = writer;
         this.isSent = isSent;
+        this.business = business;
         this.confirmed = false;
     }
 
     public void change(
-        String business,
+        String recipient,
         String note,
         Boolean isSent
     ) {
-        this.business = business;
+        this.recipient = recipient;
         this.note = note;
         this.isSent = isSent;
     }

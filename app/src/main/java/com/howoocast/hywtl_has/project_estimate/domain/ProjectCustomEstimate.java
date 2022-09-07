@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
+import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -27,19 +28,21 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String code,
         ProjectEstimateType type,
         Boolean isSent,
-        String business,
+        String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         super(
             code,
             type,
             isSent,
-            business,
+            recipient,
             note,
             writer,
-            project
+            project,
+            business
         );
     }
 
@@ -48,20 +51,22 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String code,
         ProjectEstimateType type,
         Boolean isSent,
-        String business,
+        String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         ProjectCustomEstimate instance =
             new ProjectCustomEstimate(
                 code,
                 type,
                 isSent,
-                business,
+                recipient,
                 note,
                 writer,
-                project
+                project,
+                business
             );
         instance.file = file;
         return instance;

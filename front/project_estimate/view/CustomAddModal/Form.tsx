@@ -4,6 +4,7 @@ import React from 'react';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import TextField from 'components/TextField';
 import BusinessSelector from 'components/BusinessSelector';
+import UploadField from 'components/UploadField';
 
 
 export default function (props: FormikLayoutProps<any>) {
@@ -58,6 +59,28 @@ export default function (props: FormikLayoutProps<any>) {
           allowMyBusiness
           name="business"
           label="견적 업체"
+          labelPosition="top"
+        />
+      </Box>
+      <Box sx={{
+        width:    '100%',
+        display:  'flex',
+        flexWrap: 'nowrap',
+      }}>
+        <TextField
+          name="note"
+          label="비고"
+          labelPosition="top"
+        />
+      </Box>
+      <Box sx={{
+        width:    '100%',
+        display:  'flex',
+        flexWrap: 'nowrap',
+      }}>
+        <UploadField
+          name="file"
+          label="파일"
           labelPosition="top"
         />
       </Box>

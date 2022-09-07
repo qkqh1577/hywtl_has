@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
+import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
@@ -32,6 +34,8 @@ public class ProjectEstimateService {
     private final ProjectRepository projectRepository;
 
     private final UserRepository userRepository;
+
+    private final BusinessRepository businessRepository;
 
     private final FileItemService fileItemService;
 
@@ -67,6 +71,7 @@ public class ProjectEstimateService {
     ) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         User writer = new CustomFinder<>(userRepository, User.class).byField(username, "username");
+        Business business = new CustomFinder<>(businessRepository, Business.class).byId(parameter.getBusinessId());
         String code = getCode(project);
         FileItem file = Objects.requireNonNull(fileItemService.build(parameter.getFile()));
 
@@ -75,10 +80,11 @@ public class ProjectEstimateService {
             code,
             parameter.getType(),
             parameter.getIsSent(),
-            parameter.getBusiness(),
+            parameter.getRecipient(),
             parameter.getNote(),
             writer,
-            project
+            project,
+            business
         );
 
         customEstimateRepository.save(instance);

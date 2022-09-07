@@ -28,6 +28,8 @@ public class BusinessParameter {
 
     private String note;
 
+    private String fax;
+
     @NotEmpty(message = Business.KEY + ".manager_list.not_empty")
     private List<BusinessManagerParameter> managerList;
 }

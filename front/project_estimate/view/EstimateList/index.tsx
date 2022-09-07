@@ -21,6 +21,7 @@ import { Table } from 'layouts/Table';
 import IconButton from 'components/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
+import TextLink from 'components/TextLink';
 
 interface Props
   extends ProjectEstimateListButtonProps {
@@ -83,17 +84,25 @@ export default function ProjectEstimateListSection(props: Props) {
               {list && list.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
-                    {item.code}
-                    <IconButton
-                      shape="square"
-                      onClick={() => {console.log(item);}}
-                      children={<FontAwesomeIcon icon="download" />}
-                    />
+                    <Box sx={{
+                      width:          '100%',
+                      display:        'flex',
+                      flexWrap:       'nowrap',
+                      justifyContent: 'center',
+                      alignItems:     'center',
+                    }}>
+                      <TextLink>{item.code}</TextLink>
+                      <IconButton
+                        shape="square"
+                        onClick={() => {console.log(item);}}
+                        children={<FontAwesomeIcon icon="download" />}
+                      />
+                    </Box>
                   </TableCell>
                   <TableCell>
                     {projectEstimateTypeName(item.type)}
                   </TableCell>
-                  <TableCell>{item.business}</TableCell>
+                  <TableCell>{item.business.name}</TableCell>
                   <TableCell>{item.confirmed ? 'Y' : 'N'}</TableCell>
                   <TableCell>
                     <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />

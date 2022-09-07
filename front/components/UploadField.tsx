@@ -1,4 +1,7 @@
-import { FieldStatus } from 'components/DataFieldProps';
+import {
+  FieldStatus,
+  LabelProps
+} from 'components/DataFieldProps';
 import React, {
   ChangeEvent,
   useContext,
@@ -18,12 +21,13 @@ import Button from 'layouts/Button';
 import useDialog from 'components/Dialog';
 import { ColorPalette } from 'app/view/App/theme';
 
-interface UploadFieldProps {
+interface UploadFieldProps
+  extends LabelProps {
   accept?: string;
   name: string;
-  label: string;
   status?: FieldStatus;
   preview?: boolean;
+  required?: boolean;
 }
 
 export default function UploadField(props: UploadFieldProps) {
@@ -121,9 +125,9 @@ export default function UploadField(props: UploadFieldProps) {
             }}
           />
         </Box>
-
       )}
       <TextField
+        required={props.required}
         labelPosition="top"
         name={`${name}.filename`}
         label={label}

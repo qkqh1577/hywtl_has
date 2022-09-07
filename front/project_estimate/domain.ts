@@ -1,4 +1,5 @@
 import { UserVO } from 'user/domain';
+import { BusinessVO } from 'business/domain';
 
 export type ProjectEstimateId = number & { readonly  _brand: unique symbol; };
 
@@ -32,7 +33,8 @@ export interface ProjectEstimateVO {
   id: ProjectEstimateId;
   code: string;
   type: ProjectEstimateType;
-  business: string;
+  recipient: string;
+  business: BusinessVO;
   confirmed: boolean;
   createdAt: Date;
   createdBy: UserVO;

@@ -113,8 +113,7 @@ export const businessSelectorReducer = createReducer(initialState, {
 function* watchFilter() {
   while (true) {
     const { payload: filter } = yield take(businessSelectorAction.setFilter);
-    const list: BusinessVO[] = yield call(businessApi.getList, filter);
-    console.log(list);
+    const list: BusinessVO[] = yield call(businessApi.getListAll, filter);
     yield put(businessSelectorAction.setList(list));
   }
 }
@@ -159,6 +158,10 @@ export function BusinessSelectorModalRoute() {
     onSubmit:           (values) => {
       console.log(values);
       if (!modal) {
+        return;
+      }
+      if (modal.allowMyBusiness && values.businessType === 'mine') {
+        requestUpdate(BusinessId(1));
         return;
       }
       if (values.selectedId === modal.id) {

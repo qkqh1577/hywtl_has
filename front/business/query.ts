@@ -7,7 +7,6 @@ export interface BusinessQuery {
   sort?: string;
   keywordType?: string;
   keyword?: string;
-  registrationNumber?: string;
 }
 
 export const keywordTypeList: Option[] = [
@@ -31,5 +30,4 @@ export const initialBusinessQuery: BusinessQuery = {
   sort:        'id,desc',
   keyword:     '',
   keywordType: keywordTypeList[0].key as string,
-  registrationNumber: '',
 };

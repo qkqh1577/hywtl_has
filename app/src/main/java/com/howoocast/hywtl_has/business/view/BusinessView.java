@@ -19,18 +19,20 @@ public class BusinessView {
     private String address;
     private String officePhone;
     private String note;
+    private String fax;
     private List<BusinessManagerView> managerList;
 
-    public static BusinessView assemble(Business business) {
+    public static BusinessView assemble(Business source) {
         BusinessView target = new BusinessView();
-        target.id = business.getId();
-        target.name = business.getName();
-        target.ceoName = business.getCeoName();
-        target.registrationNumber = business.getRegistrationNumber();
-        target.address = business.getAddress();
-        target.officePhone = business.getOfficePhone();
-        target.note = business.getNote();
-        target.managerList = Optional.ofNullable(business.getManagerList())
+        target.id = source.getId();
+        target.name = source.getName();
+        target.ceoName = source.getCeoName();
+        target.registrationNumber = source.getRegistrationNumber();
+        target.address = source.getAddress();
+        target.officePhone = source.getOfficePhone();
+        target.note = source.getNote();
+        target.fax = source.getFax();
+        target.managerList = Optional.ofNullable(source.getManagerList())
             .map(BusinessView::toView)
             .orElse(Collections.emptyList());
         return target;

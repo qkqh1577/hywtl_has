@@ -11,8 +11,13 @@ import Page from 'type/Page';
 import { BusinessParameter } from 'business/parameter';
 
 class BusinessApi {
-  async getList(query: BusinessQuery): Promise<BusinessShort[]> {
-    const { data } = await apiClient.get(query.registrationNumber ? '/business' : '/business/all', query);
+  async getList(registrationNumber: string): Promise<BusinessShort[]> {
+    const { data } = await apiClient.get('/business', { registrationNumber });
+    return data;
+  }
+
+  async getListAll(query: BusinessQuery): Promise<BusinessShort[]> {
+    const { data } = await apiClient.get('/business/all', query);
     return data;
   }
 

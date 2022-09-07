@@ -1,21 +1,22 @@
 import { FileItemParameter } from 'file-item';
 import { ProjectEstimateType } from 'project_estimate/domain';
 import { FormikPartial } from 'type/Form';
+import { BusinessId } from 'business/domain';
 
 export interface ProjectCustomEstimateAddParameter {
   isSent: boolean;
-  business: string;
+  businessId: BusinessId;
+  recipient: string;
   note?: string;
   file: FileItemParameter;
   type: ProjectEstimateType;
-  isSentSelect: 'Y' | 'N';
 }
 
 export const initialProjectCustomEstimateAddParameter: FormikPartial<ProjectCustomEstimateAddParameter> = {
-  isSent:       false,
-  isSentSelect: 'N',
-  business:     '',
-  note:         '',
-  file:         '',
-  type:         '',
+  isSent:     false,
+  businessId: '',
+  recipient:  '',
+  note:       '',
+  file:       '',
+  type:       '',
 };

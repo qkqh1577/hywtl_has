@@ -19,6 +19,7 @@ public class BusinessShortView {
     private String address;
     private String officePhone;
     private String note;
+    private String fax;
     private Integer managerCount;
     private Integer projectCount;
 
@@ -38,6 +39,7 @@ public class BusinessShortView {
         // TODO: bind project count
         target.projectCount = 0;
         target.note = source.getNote();
+        target.fax = source.getFax();
         return target;
     }
 
