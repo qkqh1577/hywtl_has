@@ -9,10 +9,10 @@ export interface ContractBasicState {
 const initialContractBasicState = {};
 
 export const contractBasicReducer = createReducer(initialContractBasicState, {
-  [ContractBasicAction.setOne]: (state, action) => (
-    {
-      ...state,
-      template: action.payload,
-    }
-  )
-})
+  [ContractBasicAction.setPage]: (state,
+                                  action
+                                 ) => ({
+    ...state,
+    template: action.payload,
+  }),
+});
