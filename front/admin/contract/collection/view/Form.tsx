@@ -125,6 +125,7 @@ export default function Form(props: FormProps) {
                 </TableCell>
                 <TableCell>
                   <TextField
+                    type="number"
                     name={`stageList.${i}.ratio`}
                     label="비율"
                     disableLabel

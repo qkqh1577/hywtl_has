@@ -27,7 +27,6 @@ import {
   expectedDateTypeList,
   expectedDateTypeName
 } from 'admin/contract/collection/domain';
-import useDialog from 'components/Dialog';
 import {
   Button,
   TableCell,
@@ -61,9 +60,19 @@ const contentsStyle = {
 };
 
 function FormFooterRoute() {
-  const { error } = useDialog();
   const formik: FormikContextType<WithNewStage> = useContext(FormikContext);
-
+  const result = formik.values.stageList
+                       .map((item) => {
+                         if (!item.ratio) {
+                           return 0;
+                         }
+                         return item.ratio;
+                       })
+                       .reduce((a,
+                                b
+                       ) => {
+                         return Number(a) + Number(b);
+                       }, 0);
   return (
     <TableFooter>
       <TableRow>
@@ -78,6 +87,7 @@ function FormFooterRoute() {
         </TableCell>
         <TableCell>
           <TextField
+            type="number"
             name="newRatio"
             label="비율"
             disableLabel
@@ -118,7 +128,6 @@ function FormFooterRoute() {
           <Button
             onClick={() => {
               const { values } = formik;
-              console.log(values);
               const {
                       stageList,
                       newName,
@@ -155,7 +164,19 @@ function FormFooterRoute() {
           </Typography>
         </TableCell>
         <TableCell>
-          100
+          {typeof result === 'number' && (result > 100) ?
+            <Typography sx={{
+              color: 'red',
+            }}>
+              {result}
+            </Typography>
+            :
+            <Typography
+              sx={{
+                color: 'black',
+              }}>
+              {result}
+            </Typography>}
         </TableCell>
         <TableCell>
           <Typography
