@@ -1,8 +1,8 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
-import Form from 'admin/contract/basic/view/Template/Form';
-import Footer from 'admin/contract/basic/view/Template/Footer';
+import Form from 'admin/contract/basic/view/Form';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
+import Footer from 'admin/contract/basic/view/Footer';
 
 interface Props
   extends FormikLayoutProps<ContractBasicVO> {}

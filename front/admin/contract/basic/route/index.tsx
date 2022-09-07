@@ -3,7 +3,7 @@ import React, {
   useEffect,
 } from 'react';
 import { AppRoute } from 'services/routes';
-import ContractBasicTemplate from 'admin/contract/basic/view/Template';
+import ContractBasicTemplate from 'admin/contract/basic/view';
 import {
   useDispatch,
   useSelector
