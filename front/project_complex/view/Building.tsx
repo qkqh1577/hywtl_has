@@ -55,15 +55,13 @@ export default function ProjectComplexBuildingSection(props: Props) {
       titleRightComponent={
         <>
           <Button
-            shape="basic1"
             onClick={props.onAdd}
             sx={{
               marginRight: '10px'
             }}>
             + 추가
           </Button>
-
-          <Button shape="basic1">
+          <Button>
             계약에 사용된 견적서 새창열기
           </Button>
         </>

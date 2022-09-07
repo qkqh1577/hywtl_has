@@ -241,7 +241,6 @@ export function BusinessSelectorModalRoute() {
               </Box>
               <Box sx={{ width: '10%', display: 'flex' }}>
                 <Button
-                  shape="basic1"
                   onClick={() => {
                     setFilter(formik);
                   }}>
@@ -289,7 +288,7 @@ export function BusinessSelectorModalRoute() {
       }
       footer={
         <Box sx={{ width: '100%', display: 'flex', flexWrap: 'nowrap' }}>
-          <Button shape="basic1" onClick={() => {formik.handleSubmit();}}>저장</Button>
+          <Button onClick={() => {formik.handleSubmit();}}>저장</Button>
           <Button shape="basic2" onClick={onClose}>취소</Button>
         </Box>
       }

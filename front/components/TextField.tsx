@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   Box,
+  InputAdornment,
   TextField as MuiTextField,
 } from '@mui/material';
 import {
@@ -149,7 +150,12 @@ export default function TextField(props: TextFieldProps) {
       ...InputProps,
       readOnly,
       startAdornment,
-      endAdornment,
+      endAdornment: (endAdornment || InputProps?.endAdornment) && (
+        <InputAdornment position="end">
+          {endAdornment}
+          {InputProps?.endAdornment}
+        </InputAdornment>
+      )
     },
   };
 

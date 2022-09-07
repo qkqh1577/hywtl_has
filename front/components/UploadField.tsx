@@ -55,7 +55,7 @@ export default function UploadField(props: UploadFieldProps) {
     if (isView) {
       if (file) {
         return (
-          <Button shape="basic1" onClick={() => {
+          <Button onClick={() => {
             if (file) {
               window.open(`/file-items/${file.id}`, '_blank');
             }
@@ -71,7 +71,7 @@ export default function UploadField(props: UploadFieldProps) {
     }
     else {
       return (
-        <Button shape="basic1" onClick={() => {
+        <Button onClick={() => {
           inputRef.current?.click();
         }}>
           파일선택

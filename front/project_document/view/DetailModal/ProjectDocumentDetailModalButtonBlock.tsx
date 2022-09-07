@@ -31,7 +31,6 @@ export default function ProjectDocumentDetailModalButtonBlock({
         삭제
       </Button>
       <Button
-        shape="basic1"
         onClick={onEdit}
         sx={{
           marginRight: '10px',

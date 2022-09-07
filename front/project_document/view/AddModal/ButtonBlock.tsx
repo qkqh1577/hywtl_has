@@ -18,7 +18,6 @@ export default function ProjectDocumentModalButtonBlock(props: Props) {
       justifyContent: 'center',
     }}>
       <Button
-        shape="basic1"
         onClick={props.onSubmit}
         sx={{
           marginRight: '10px',

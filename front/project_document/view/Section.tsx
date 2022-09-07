@@ -36,7 +36,7 @@ interface Props {
 
 function AddButton(props: Props) {
   return (
-    <Button shape="basic1" onClick={() => {
+    <Button onClick={() => {
       props.onAddModalOpen(props.type);
     }}>
       + 등록

@@ -46,7 +46,7 @@ export default function ProjectBasicBusinessSection(props: Props) {
     <SectionLayout
       title="관계사"
       titleRightComponent={
-        <Button shape="basic1">
+        <Button>
           + 등록
         </Button>
       }>
