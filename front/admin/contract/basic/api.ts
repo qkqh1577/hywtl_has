@@ -36,7 +36,6 @@ class ContractBasicApi {
   }
 
   async upsert(params: ContractBasicParameter): Promise<void> {
-    console.log('params : ', params);
     const { data } = await apiClient.put('/admin/contract/basic');
     return data;
   }

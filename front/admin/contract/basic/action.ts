@@ -5,7 +5,6 @@ import { ContractBasicParameter } from 'admin/contract/basic/parameter';
 
 export enum ContractBasicAction {
   setOne  = 'admin/contract/basic/one/set',
-  setPage = 'admin/contract/basic/page/set',
   upsert  = 'admin/contract/basic/upsert',
 }
 
