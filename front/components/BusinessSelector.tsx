@@ -134,6 +134,12 @@ export function BusinessSelectorModalRoute() {
   const dispatch = useDispatch();
   const { modal, list } = useSelector((root: RootState) => root.businessSelector);
 
+  const initialValues: ModalFormProps = {
+    businessType: modal?.id === 1 ? 'mine' : 'other',
+    selectedId:   modal?.id,
+    keywordType:  'by_name'
+  };
+
   const onClose = useCallback(() => {
     dispatch(businessSelectorAction.setModal(undefined));
   }, [dispatch]);
@@ -150,11 +156,7 @@ export function BusinessSelectorModalRoute() {
 
   const formik = useFormik<ModalFormProps>({
     enableReinitialize: true,
-    initialValues:      {
-      businessType: 'other',
-      selectedId:   modal?.id,
-      keywordType:  'by_name'
-    },
+    initialValues,
     onSubmit:           (values) => {
       console.log(values);
       if (!modal) {
@@ -175,6 +177,7 @@ export function BusinessSelectorModalRoute() {
   useEffect(() => {
     if (modal) {
       setFilter(formik);
+      formik.setValues(initialValues);
     }
   }, [modal]);
 
@@ -209,6 +212,15 @@ export function BusinessSelectorModalRoute() {
                     key:  'other',
                     text: '타업체'
                   }]}
+                  onChange={(e) => {
+                    const businessType = e.target.value;
+                    if (businessType === 'mine') {
+                      formik.setFieldValue('selectedId', 1);
+                    }
+                    else {
+                      formik.setFieldValue('selectedId', undefined);
+                    }
+                  }}
                 />
               </Box>
             )}
@@ -224,6 +236,7 @@ export function BusinessSelectorModalRoute() {
               <Box sx={{ width: '15%', display: 'flex' }}>
                 <SelectField
                   disableLabel
+                  status={formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
                   variant="outlined"
                   name="keywordType"
                   label="검색어 구분"
@@ -233,6 +246,7 @@ export function BusinessSelectorModalRoute() {
               <Box sx={{ width: '70%', display: 'flex' }}>
                 <TextField
                   disableLabel
+                  status={formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
                   variant="outlined"
                   name="keyword"
                   label="검색어"
@@ -241,6 +255,7 @@ export function BusinessSelectorModalRoute() {
               </Box>
               <Box sx={{ width: '10%', display: 'flex' }}>
                 <Button
+                  disabled={formik.values.selectedId === 1}
                   onClick={() => {
                     setFilter(formik);
                   }}>
@@ -268,6 +283,7 @@ export function BusinessSelectorModalRoute() {
                       <TableRow key={item.id}>
                         <TableCell>
                           <Radio
+                            disabled={formik.values.selectedId === 1}
                             value={item.id}
                             checked={item.id === formik.values.selectedId}
                             onClick={() => {
@@ -287,8 +303,8 @@ export function BusinessSelectorModalRoute() {
         </FormikProvider>
       }
       footer={
-        <Box sx={{ width: '100%', display: 'flex', flexWrap: 'nowrap' }}>
-          <Button onClick={() => {formik.handleSubmit();}}>저장</Button>
+        <Box sx={{ width: '100%', display: 'flex', flexWrap: 'nowrap', justifyContent: 'center' }}>
+          <Button onClick={() => {formik.handleSubmit();}} sx={{ marginRight: '10px' }}>저장</Button>
           <Button shape="basic2" onClick={onClose}>취소</Button>
         </Box>
       }
@@ -314,11 +330,11 @@ export default function BusinessSelector({ allowMyBusiness, ...props }: FieldPro
   const business: BusinessVO | '' | undefined = formik?.values[name];
   const id: BusinessId | '' | undefined = !business ? undefined : business.id;
 
-  const onClick = useCallback(() =>
+  const onClick = useCallback((id: BusinessId | undefined) =>
     dispatch(businessSelectorAction.setModal({
-      id: id || undefined,
+      id,
       allowMyBusiness,
-    })), [dispatch]);
+    })), [dispatch, allowMyBusiness]);
 
   useEffect(() => {
     if (id) {
@@ -346,7 +362,9 @@ export default function BusinessSelector({ allowMyBusiness, ...props }: FieldPro
       endAdornment={
         <FontAwesomeIcon
           icon="building"
-          onClick={onClick}
+          onClick={() => {
+            onClick(id || undefined);
+          }}
           style={{
             fontSize: '16px',
             color:    ColorPalette._386dd6,
