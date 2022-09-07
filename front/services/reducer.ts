@@ -45,11 +45,11 @@ import {
 import {
   projectBasicReducer,
   ProjectBasicState
-} from 'project/basic/reducer';
+} from 'project_basic/reducer';
 import {
   projectDocumentReducer,
   ProjectDocumentState
-} from 'project/document/reducer';
+} from 'project_document/reducer';
 import {
   projectComplexReducer,
   ProjectComplexState

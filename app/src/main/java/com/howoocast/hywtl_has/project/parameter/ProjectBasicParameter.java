@@ -21,6 +21,5 @@ public class ProjectBasicParameter {
     private Long receptionManager;
 
 
-
 }
 

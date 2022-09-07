@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project_complex.view;
 
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
-import com.howoocast.hywtl_has.project.document.view.ProjectDocumentShortView;
+import com.howoocast.hywtl_has.project_document.view.ProjectDocumentShortView;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
 import java.time.LocalDateTime;
 import java.util.List;

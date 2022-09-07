@@ -4,7 +4,7 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
   ProjectDocumentId,
   ProjectDocumentShort
-} from 'project/document/domain';
+} from 'project_document/domain';
 import {
   Box,
   Radio,

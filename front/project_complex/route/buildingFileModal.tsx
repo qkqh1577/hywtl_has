@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import { projectDocumentAction } from 'project/document/action';
+import { projectDocumentAction } from 'project_document/action';
 import {
   useDispatch,
   useSelector
@@ -12,7 +12,7 @@ import {
 import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
 import { ProjectComplexBuildingId } from 'project_complex/domain';
-import { ProjectDocumentId } from 'project/document/domain';
+import { ProjectDocumentId } from 'project_document/domain';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
 import useDialog from 'components/Dialog';
 
