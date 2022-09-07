@@ -11,7 +11,7 @@ export default function (props: Props) {
   return (
     <>
       <BasicContractForm {...props} />
-      <ContractorForm {...props}/>
+      <ContractorForm {...props} />
     </>
   );
 };

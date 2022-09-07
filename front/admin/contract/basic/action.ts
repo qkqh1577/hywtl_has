@@ -8,8 +8,8 @@ export enum ContractBasicAction {
   setPage = 'admin/contract/basic/page/set',
   upsert  = 'admin/contract/basic/upsert',
 }
+
 export const contractBasicAction = {
-  setOne: createAction(ContractBasicAction.setOne)(),
-  setPage: createAction(ContractBasicAction.setPage)<ContractBasicVO | undefined>(),
+  setOne: createAction(ContractBasicAction.setOne)<ContractBasicVO | undefined>(),
   upsert: createAction(ContractBasicAction.upsert)<FormikSubmit<ContractBasicParameter>>(),
-}
+};

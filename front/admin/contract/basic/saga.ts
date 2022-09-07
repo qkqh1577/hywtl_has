@@ -16,10 +16,10 @@ function* watchPage() {
   yield take(contractBasicAction.setOne);
   try {
     const page: ContractBasicVO = yield call(contractBasicApi.getOne);
-    yield put(contractBasicAction.setPage(page));
+    yield put(contractBasicAction.setOne(page));
   }
-  catch (e){
-    yield put(contractBasicAction.setPage(undefined));
+  catch (e) {
+    yield put(contractBasicAction.setOne(undefined));
   }
 }
 
@@ -27,7 +27,7 @@ function* watchUpsert() {
   while (true) {
     const { payload: formik } = yield take(ContractBasicAction.upsert);
     try {
-      yield call(contractBasicAction.upsert, formik.values);
+      yield call(contractBasicApi.upsert, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
       //  TODO: 저장후 갱신 로직
     }

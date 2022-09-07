@@ -41,7 +41,7 @@ function Element() {
   );
 
   useEffect(() => {
-    dispatch(contractBasicAction.setOne());
+    dispatch(contractBasicAction.setOne(template));
   }, []);
 
   return (

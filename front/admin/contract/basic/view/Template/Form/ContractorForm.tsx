@@ -23,7 +23,10 @@ export default function ContractorForm() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center" colSpan={2}>
+            <TableCell
+              align="center"
+              colSpan={2}
+            >
               <Typography
                 sx={typographyStyle}
               >
@@ -34,7 +37,9 @@ export default function ContractorForm() {
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell variant="head">
+            <TableCell
+              variant="head"
+            >
               <Typography
                 sx={typographyStyle}
               >
@@ -42,11 +47,18 @@ export default function ContractorForm() {
               </Typography>
             </TableCell>
             <TableCell>
-              <TextField name="contractor.address" label="소재" disableLabel />
+              <TextField
+                name="contractor.address"
+                label="소재"
+                disableLabel
+                variant="outlined"
+              />
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell variant="head">
+            <TableCell
+              variant="head"
+            >
               <Typography
                 sx={typographyStyle}
               >
@@ -54,7 +66,12 @@ export default function ContractorForm() {
               </Typography>
             </TableCell>
             <TableCell>
-              <TextField name="contractor.companyName" label="회사명" disableLabel />
+              <TextField
+                name="contractor.companyName"
+                label="회사명"
+                disableLabel
+                variant="outlined"
+              />
             </TableCell>
           </TableRow>
           <TableRow>
@@ -66,7 +83,12 @@ export default function ContractorForm() {
               </Typography>
             </TableCell>
             <TableCell>
-              <TextField name="contractor.ceoName" label="대표자" disableLabel />
+              <TextField
+                name="contractor.ceoName"
+                label="대표자"
+                disableLabel
+                variant="outlined"
+              />
             </TableCell>
           </TableRow>
         </TableBody>

@@ -1,5 +1,6 @@
 import { ContractBasicVO } from 'admin/contract/basic/domain';
 import apiClient from 'services/api';
+import { ContractBasicParameter } from 'admin/contract/basic/parameter';
 
 const testData: ContractBasicVO = {
   serviceDuration:     '용역 개시일(착수보고 시) ~ 용역완료일(최종보고서 인도)',
@@ -29,16 +30,16 @@ const testData: ContractBasicVO = {
 class ContractBasicApi {
 
   async getOne(): Promise<ContractBasicVO> {
-    const { data } = await apiClient.get('/admin/contract/basic');
-    return data;
-    // return testData;
+    // const { data } = await apiClient.get('/admin/contract/basic');
+    // return data;
+    return testData;
   }
 
-  async put(): Promise<void> {
+  async upsert(params: ContractBasicParameter): Promise<void> {
+    console.log('params : ', params);
     const { data } = await apiClient.put('/admin/contract/basic');
     return data;
   }
-
 }
 
 export const contractBasicApi = new ContractBasicApi();
