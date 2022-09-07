@@ -41,6 +41,7 @@ import {
   faPen,
   faDownload,
 } from '@fortawesome/free-solid-svg-icons';
+import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 
 library.add(
   faChartGantt,
@@ -83,6 +84,7 @@ const render = () => {
                   </Box>
                   <Alert />
                   <Confirm />
+                  <BusinessSelectorModalRoute />
                 </ThemeProvider>
               </LocalizationProvider>
             </Provider>

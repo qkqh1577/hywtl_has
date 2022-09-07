@@ -124,7 +124,7 @@ export default function UploadField(props: UploadFieldProps) {
 
       )}
       <TextField
-        labelPositionTop
+        labelPosition="top"
         name={`${name}.filename`}
         label={label}
         status={FieldStatus.ReadOnly}

@@ -58,6 +58,10 @@ import {
   projectEstimateReducer,
   ProjectEstimateState
 } from 'project_estimate/reducer';
+import {
+  businessSelectorReducer,
+  BusinessSelectorState
+} from 'components/BusinessSelector';
 
 export interface RootState {
   user: UserState;
@@ -75,6 +79,7 @@ export interface RootState {
   projectDocument: ProjectDocumentState;
   projectComplex: ProjectComplexState;
   projectEstimate: ProjectEstimateState;
+  businessSelector: BusinessSelectorState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -93,6 +98,7 @@ const reducer = combineReducers<RootState>({
   projectDocument:  projectDocumentReducer,
   projectComplex:   projectComplexReducer,
   projectEstimate:  projectEstimateReducer,
+  businessSelector: businessSelectorReducer,
 });
 
 const rootReducer: Reducer = (state,

@@ -56,7 +56,7 @@ export default function Form() {
       <FieldBox>
         <TextField
           required
-          labelPositionTop
+          labelPosition="top"
           name="recipient"
           label="수신처"
         />
@@ -88,7 +88,7 @@ export default function Form() {
       />
       <FieldBox>
         <TextField
-          labelPositionTop
+          labelPosition="top"
           name="note"
           label="비고"
         />

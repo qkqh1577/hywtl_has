@@ -79,7 +79,7 @@ export default function TextField(props: TextFieldProps) {
           status,
           size,
           disableLabel,
-          labelPositionTop,
+          labelPosition,
           labelWidth,
           labelSX,
           required:   propsRequired,
@@ -130,6 +130,7 @@ export default function TextField(props: TextFieldProps) {
       borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
       borderRadius:    useMemo(() => variant === 'outlined' ? '5px' : '0', [variant]),
       backgroundColor: ColorPalette._fff,
+      boxSizing:       'border-box',
     },
   };
 
@@ -164,7 +165,7 @@ export default function TextField(props: TextFieldProps) {
   if (!disableLabel) {
     return (
       <DataFieldWithLabel
-        labelPositionTop={labelPositionTop}
+        labelPosition={labelPosition}
         required={required}
         label={label!}
         labelWidth={labelWidth}

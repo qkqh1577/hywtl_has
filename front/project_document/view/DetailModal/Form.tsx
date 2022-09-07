@@ -62,13 +62,13 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       {!edit && (
         <FieldBox>
           <TextField
-            labelPositionTop
+            labelPosition="top"
             name="code"
             label="자료번호"
             status={FieldStatus.ReadOnly}
           />
           <TextField
-            labelPositionTop
+            labelPosition="top"
             name="createdBy.name"
             label="등록자"
             status={FieldStatus.ReadOnly}
@@ -77,7 +77,7 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       )}
       <FieldBox>
         <TextField
-          labelPositionTop
+          labelPosition="top"
           name="recipient"
           label="수신처"
         />
@@ -104,7 +104,7 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       />
       <FieldBox>
         <TextField
-          labelPositionTop
+          labelPosition="top"
           name="note"
           label="비고"
         />

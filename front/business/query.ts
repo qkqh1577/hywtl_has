@@ -2,11 +2,12 @@ import { Option } from 'components/DataFieldProps';
 import { pageSizeList } from 'type/Page';
 
 export interface BusinessQuery {
-  page: number;
-  size: number;
-  sort: string;
+  page?: number;
+  size?: number;
+  sort?: string;
   keywordType?: string;
   keyword?: string;
+  registrationNumber?: string;
 }
 
 export const keywordTypeList: Option[] = [
@@ -30,4 +31,5 @@ export const initialBusinessQuery: BusinessQuery = {
   sort:        'id,desc',
   keyword:     '',
   keywordType: keywordTypeList[0].key as string,
+  registrationNumber: '',
 };
