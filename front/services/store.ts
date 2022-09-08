@@ -19,6 +19,7 @@ import projectDocumentSaga from 'project/document/saga';
 import projectComplexSaga from 'project_complex/saga';
 import contractBasicSage from 'admin/contract/basic/saga';
 import contractCollectionSaga from 'admin/contract/collection/saga';
+import contractConditionSaga from 'admin/contract/condition/action';
 
 const middleware = createSagaMiddleware();
 
@@ -36,7 +37,8 @@ function* saga() {
     projectBasicSaga(),
     projectComplexSaga(),
     contractBasicSage(),
-    contractCollectionSaga()
+    contractCollectionSaga(),
+    contractConditionSaga(),
   ]);
 }
 

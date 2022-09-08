@@ -59,6 +59,7 @@ import {
   contractCollectionReducer,
   ContractCollectionState
 } from 'admin/contract/collection/reducer';
+import { ContractConditionState } from 'admin/contract/condition/reducer';
 
 export interface RootState {
   user: UserState;
@@ -77,6 +78,7 @@ export interface RootState {
   projectComplex: ProjectComplexState;
   contractBasic: ContractBasicState;
   contractCollection: ContractCollectionState;
+  contractCondition: ContractConditionState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -96,6 +98,7 @@ const reducer = combineReducers<RootState>({
   projectComplex:   projectComplexReducer,
   contractBasic:    contractBasicReducer,
   contractCollection: contractCollectionReducer,
+  contractCondition: contractCollectionReducer,
 });
 
 const rootReducer: Reducer = (state,

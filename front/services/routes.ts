@@ -13,6 +13,7 @@ import businessRoutes from 'business/route';
 import estimateContentRoutes from 'admin/estimate/content/route';
 import contractBasicTemplateRoute from 'admin/contract/basic/route';
 import contractCollectionTemplateRoute from 'admin/contract/collection/route';
+import { contractConditionTemplateRoute } from 'admin/contract/condition/route';
 
 export interface AppRoute
   extends RouteProps {
@@ -29,7 +30,8 @@ const Routes = () => {
     ...businessRoutes,
     ...estimateContentRoutes,
     contractBasicTemplateRoute,
-    contractCollectionTemplateRoute
+    contractCollectionTemplateRoute,
+    contractConditionTemplateRoute
   ];
 
   return useRoutes(routes as RouteObject[]);
