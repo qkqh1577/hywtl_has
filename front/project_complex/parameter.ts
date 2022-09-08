@@ -1,5 +1,4 @@
 import {
-  ProjectComplexBuildingId,
   ProjectComplexBuildingVO,
   ProjectComplexSiteId,
   ProjectComplexSiteVO
@@ -7,7 +6,7 @@ import {
 import {
   UserId,
 } from 'user/domain';
-import { ProjectDocumentId } from 'project/document/domain';
+import { ProjectDocumentId } from 'project_document/domain';
 
 export interface ProjectComplexSiteParameter
   extends Omit<ProjectComplexSiteVO, | 'manager' | 'modifiedAt'> {

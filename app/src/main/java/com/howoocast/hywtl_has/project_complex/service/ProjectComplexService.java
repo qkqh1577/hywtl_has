@@ -2,9 +2,9 @@ package com.howoocast.hywtl_has.project_complex.service;
 
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
-import com.howoocast.hywtl_has.project.document.domain.ProjectDocument;
-import com.howoocast.hywtl_has.project.document.domain.ProjectDocumentType;
-import com.howoocast.hywtl_has.project.document.repository.ProjectDocumentRepository;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
+import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;

@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project.parameter;
 
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.domain.ProjectEstimateType;
+import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,8 +24,8 @@ public class ProjectAddParameter {
     @NotNull(message = Project.KEY + ".progress_status.not_null")
     private ProjectProgressStatus progressStatus;
 
-    @NotNull(message = Project.KEY + ".estimate_type.not_null")
-    private ProjectEstimateType estimateType;
+    @NotNull(message = Project.KEY + ".bid_type.not_null")
+    private ProjectBasicBidType bidType;
 
 
 }

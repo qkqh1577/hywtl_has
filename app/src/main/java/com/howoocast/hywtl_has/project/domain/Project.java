@@ -40,7 +40,7 @@ public class Project extends CustomEntity {
         @Nullable String code,
         String name,
         String alias,
-        ProjectEstimateType estimateType,
+        ProjectBasicBidType bidType,
         User receptionManager,
         ProjectProgressStatus progressStatus
     ) {
@@ -49,7 +49,8 @@ public class Project extends CustomEntity {
             code,
             name,
             alias,
-            estimateType,
+
+            bidType,
             receptionManager
         );
         instance.status = ProjectStatus.of(

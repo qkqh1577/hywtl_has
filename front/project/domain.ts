@@ -57,7 +57,7 @@ export const projectProgressStatusList: ProjectProgressStatus[] = [
 /**
  * 견적 구분
  */
-export enum ProjectEstimateType {
+export enum ProjectBasicBidType {
   /** 일반 */
   DEFAULT = 'DEFAULT',
   /** 나라장터 입찰 */
@@ -66,23 +66,23 @@ export enum ProjectEstimateType {
   COMPANY = 'COMPANY'
 }
 
-export function projectEstimateTypeName(type: ProjectEstimateType | '') {
+export function projectBasicBidTypeName(type: ProjectBasicBidType | '') {
   switch (type) {
-    case ProjectEstimateType.DEFAULT:
+    case ProjectBasicBidType.DEFAULT:
       return '일반';
-    case ProjectEstimateType.G2B:
+    case ProjectBasicBidType.G2B:
       return '나라장터 입찰';
-    case ProjectEstimateType.COMPANY:
+    case ProjectBasicBidType.COMPANY:
       return '기업 입찰';
     default:
       return '-';
   }
 }
 
-export const projectEstimateTypeList: ProjectEstimateType[] = [
-  ProjectEstimateType.DEFAULT,
-  ProjectEstimateType.G2B,
-  ProjectEstimateType.COMPANY
+export const projectBasicBidTypeList: ProjectBasicBidType[] = [
+  ProjectBasicBidType.DEFAULT,
+  ProjectBasicBidType.G2B,
+  ProjectBasicBidType.COMPANY
 ];
 
 /**
@@ -236,7 +236,7 @@ export interface ProjectVO
   code?: string;
   name: string;
   alias: string;
-  estimateType: ProjectEstimateType;
+  bidType: ProjectBasicBidType;
   receptionManager: UserVO;
   salesManager?: UserVO;
   projectManager?: UserVO;
@@ -251,7 +251,7 @@ export const initialProjectVO: FormikPartial<ProjectVO> = {
   code:                '',
   name:                '',
   alias:               '',
-  estimateType:        '',
+  bidType:             '',
   receptionManager:    '',
   salesManager:        '',
   projectManager:      '',

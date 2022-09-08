@@ -39,7 +39,7 @@ function* watchFilter() {
 function* watchRegistrationNumber() {
   while (true) {
     const { payload: registrationNumber } = yield take(businessAction.setRegistrationNumber);
-    const list: BusinessShort[] = yield call(businessApi.getList, registrationNumber);
+    const list: BusinessShort[] = yield call(businessApi.getList, { registrationNumber });
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id) {

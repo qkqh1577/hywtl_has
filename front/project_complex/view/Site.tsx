@@ -35,7 +35,7 @@ interface Props {
 
 function AddButton(props: Props) {
   return (
-    <Button shape="basic1" onClick={props.onAdd}>
+    <Button onClick={props.onAdd}>
       + 추가
     </Button>
   );

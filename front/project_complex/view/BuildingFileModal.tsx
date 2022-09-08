@@ -4,7 +4,7 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
   ProjectDocumentId,
   ProjectDocumentShort
-} from 'project/document/domain';
+} from 'project_document/domain';
 import {
   Box,
   Radio,
@@ -48,7 +48,7 @@ export function DetailFooter(props: Pick<Props, | 'onClose' | 'onUnlink' | 'onCh
       <Button shape="basic2" onClick={props.onUnlink}>
         연결 해제
       </Button>
-      <Button shape="basic1" onClick={props.onChange}>
+      <Button onClick={props.onChange}>
         자료 변경
       </Button>
       <Button shape="basic3" onClick={props.onClose}>

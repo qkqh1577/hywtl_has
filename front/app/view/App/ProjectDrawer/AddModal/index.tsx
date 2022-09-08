@@ -9,8 +9,8 @@ import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
 import SelectField from 'components/SelectField';
 import {
-  projectEstimateTypeList,
-  projectEstimateTypeName,
+  projectBasicBidTypeList,
+  projectBasicBidTypeName,
   ProjectProgressStatus,
   projectProgressStatusName
 } from 'project/domain';
@@ -95,9 +95,9 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
                   required
                   name="estimateType"
                   label="견적 구분"
-                  options={projectEstimateTypeList.map((item) => ({
+                  options={projectBasicBidTypeList.map((item) => ({
                     key:  item as string,
-                    text: projectEstimateTypeName(item),
+                    text: projectBasicBidTypeName(item),
                   }))}
                 />
               </Grid>

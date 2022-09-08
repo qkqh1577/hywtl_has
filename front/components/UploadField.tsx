@@ -1,4 +1,7 @@
-import { FieldStatus } from 'components/DataFieldProps';
+import {
+  FieldStatus,
+  LabelProps
+} from 'components/DataFieldProps';
 import React, {
   ChangeEvent,
   useContext,
@@ -18,12 +21,13 @@ import Button from 'layouts/Button';
 import useDialog from 'components/Dialog';
 import { ColorPalette } from 'app/view/App/theme';
 
-interface UploadFieldProps {
+interface UploadFieldProps
+  extends LabelProps {
   accept?: string;
   name: string;
-  label: string;
   status?: FieldStatus;
   preview?: boolean;
+  required?: boolean;
 }
 
 export default function UploadField(props: UploadFieldProps) {
@@ -51,7 +55,7 @@ export default function UploadField(props: UploadFieldProps) {
     if (isView) {
       if (file) {
         return (
-          <Button shape="basic1" onClick={() => {
+          <Button onClick={() => {
             if (file) {
               window.open(`/file-items/${file.id}`, '_blank');
             }
@@ -67,7 +71,7 @@ export default function UploadField(props: UploadFieldProps) {
     }
     else {
       return (
-        <Button shape="basic1" onClick={() => {
+        <Button onClick={() => {
           inputRef.current?.click();
         }}>
           파일선택
@@ -121,10 +125,10 @@ export default function UploadField(props: UploadFieldProps) {
             }}
           />
         </Box>
-
       )}
       <TextField
-        labelPositionTop
+        required={props.required}
+        labelPosition="top"
         name={`${name}.filename`}
         label={label}
         status={FieldStatus.ReadOnly}

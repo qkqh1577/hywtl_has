@@ -2,9 +2,9 @@ import { Option } from 'components/DataFieldProps';
 import { pageSizeList } from 'type/Page';
 
 export interface BusinessQuery {
-  page: number;
-  size: number;
-  sort: string;
+  page?: number;
+  size?: number;
+  sort?: string;
   keywordType?: string;
   keyword?: string;
 }

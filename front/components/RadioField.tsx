@@ -158,7 +158,7 @@ export default function RadioField(props: RadioFieldProps) {
           {label}
         </FormLabel>
       )}
-      <RadioGroup name={`${name}-group`}>
+      <RadioGroup row name={`${name}-group`}>
         {radio}
       </RadioGroup>
       <FormHelperText error={error}>

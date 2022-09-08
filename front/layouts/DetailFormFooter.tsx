@@ -45,8 +45,6 @@ function SubmitButton(props: { onClick?: DefaultFunction }) {
   };
   return (
     <Button
-
-      shape="basic1"
       children="저장"
       onClick={onClick}
       disabled={formikContext?.isSubmitting}

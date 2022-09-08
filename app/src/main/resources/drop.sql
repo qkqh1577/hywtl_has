@@ -28,7 +28,6 @@ drop table if exists project_complex_building;
 drop table if exists project_complex_building_special_wind_weight_condition_list;
 drop table if exists project_complex_building_test_type_list;
 drop table if exists project_complex_site;
-drop table if exists project_custom_estimate;
 drop table if exists project_document;
 drop table if exists project_estimate;
 drop table if exists project_memo;

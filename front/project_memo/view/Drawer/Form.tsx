@@ -100,10 +100,7 @@ export default function ProjectMemoForm({
               }))}
             />
           </Box>
-          <Button
-            shape="basic1"
-            fullWidth
-            onClick={onSubmit}>
+          <Button fullWidth onClick={onSubmit}>
             작성 완료
           </Button>
         </Box>

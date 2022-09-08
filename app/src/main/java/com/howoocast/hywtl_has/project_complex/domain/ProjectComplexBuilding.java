@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project_complex.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
-import com.howoocast.hywtl_has.project.document.domain.ProjectDocument;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.util.List;
 import java.util.Objects;
