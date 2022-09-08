@@ -7,7 +7,6 @@ import {
 import {
   Box,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -22,7 +21,11 @@ import {
 import { toReadableSize } from 'file-item';
 import IconButton from 'components/IconButton';
 import SectionLayout from 'layouts/SectionLayout';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
@@ -63,28 +66,28 @@ export default function ProjectDocumentSection(props: Props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>No.</TableCell>
-              <TableCell>자료 ID</TableCell>
-              <TableCell>파일</TableCell>
-              <TableCell>수신처</TableCell>
-              <TableCell>메일 자료</TableCell>
-              <TableCell>비고</TableCell>
-              <TableCell>등록 일시</TableCell>
-              <TableCell>등록자</TableCell>
+              <Th>No.</Th>
+              <Th>자료 ID</Th>
+              <Th>파일</Th>
+              <Th>수신처</Th>
+              <Th>메일 자료</Th>
+              <Th>비고</Th>
+              <Th>등록 일시</Th>
+              <Th>등록자</Th>
             </TableRow>
           </TableHead>
           <TableBody>
             {(!props.list || props.list.length === 0) && (
               <TableRow>
-                <TableCell colSpan={8}>조회 결과가 없습니다.</TableCell>
+                <Td colSpan={8}>조회 결과가 없습니다.</Td>
               </TableRow>
             )}
             {props.list?.map((item,
                               i
             ) => (
               <TableRow key={item.id}>
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>
+                <Td>{i + 1}</Td>
+                <Td>
                   <Typography sx={{
                     fontSize:   '11px',
                     lineHeight: '16px',
@@ -96,8 +99,8 @@ export default function ProjectDocumentSection(props: Props) {
                     }}
                     children={item.code}
                   />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <Box sx={{
                     width:          '100%',
                     display:        'flex',
@@ -115,9 +118,9 @@ export default function ProjectDocumentSection(props: Props) {
                       }}
                     />
                   </Box>
-                </TableCell>
-                <TableCell>{item.recipient}</TableCell>
-                <TableCell>
+                </Td>
+                <Td>{item.recipient}</Td>
+                <Td>
                   {item.mailFileId && (
                     <IconButton
                       shape="square"
@@ -127,12 +130,12 @@ export default function ProjectDocumentSection(props: Props) {
                       }}
                     />
                   )}
-                </TableCell>
-                <TableCell>{item.note}</TableCell>
-                <TableCell>
+                </Td>
+                <Td>{item.note}</Td>
+                <Td>
                   <DateFormat date={item.createdAt} />
-                </TableCell>
-                <TableCell>{item.createdBy.name}</TableCell>
+                </Td>
+                <Td>{item.createdBy.name}</Td>
               </TableRow>
             ))}
           </TableBody>

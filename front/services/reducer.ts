@@ -62,6 +62,12 @@ import {
   businessSelectorReducer,
   BusinessSelectorState
 } from 'components/BusinessSelector';
+import { contractBasicReducer, ContractBasicState } from 'admin/contract/basic/reducer';
+import {
+  contractCollectionReducer,
+  ContractCollectionState
+} from 'admin/contract/collection/reducer';
+import { ContractConditionState } from 'admin/contract/condition/reducer';
 
 export interface RootState {
   user: UserState;
@@ -80,6 +86,9 @@ export interface RootState {
   projectComplex: ProjectComplexState;
   projectEstimate: ProjectEstimateState;
   businessSelector: BusinessSelectorState;
+  contractBasic: ContractBasicState;
+  contractCollection: ContractCollectionState;
+  contractCondition: ContractConditionState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -99,6 +108,9 @@ const reducer = combineReducers<RootState>({
   projectComplex:   projectComplexReducer,
   projectEstimate:  projectEstimateReducer,
   businessSelector: businessSelectorReducer,
+  contractBasic:    contractBasicReducer,
+  contractCollection: contractCollectionReducer,
+  contractCondition: contractCollectionReducer,
 });
 
 const rootReducer: Reducer = (state,

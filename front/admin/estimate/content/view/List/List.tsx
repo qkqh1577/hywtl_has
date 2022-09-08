@@ -5,13 +5,16 @@ import {
 } from 'admin/estimate/content/domain';
 import {
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 export interface ListProps {
   list: EstimateContentShort[] | undefined;
@@ -25,18 +28,18 @@ export default function ({ list }: ListProps) {
         aria-label={'sticky table'}>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>이름</TableCell>
-            <TableCell>실험 타입</TableCell>
-            <TableCell>등록된 내용</TableCell>
+            <Th>No.</Th>
+            <Th>이름</Th>
+            <Th>실험 타입</Th>
+            <Th>등록된 내용</Th>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!list || list.length === 0) && (
             <TableRow>
-              <TableCell colSpan={4}>
+              <Td colSpan={4}>
                 검색된 결과가 없습니다.
-              </TableCell>
+              </Td>
             </TableRow>
           )}
           {Array.isArray(list) && list.map((item,
@@ -46,15 +49,20 @@ export default function ({ list }: ListProps) {
               hover
               role="checkbox"
               key={item.id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>
+              <Td>{i + 1}</Td>
+              <Td>
                 <Link to={`/admin/estimate/content-management/${item.id}`}>
                   {item.name}
                 </Link>
-              </TableCell>
-              <TableCell>{item.testTypeList.map(testTypeName)
-                              .join(', ')}</TableCell>
-              <TableCell>{item.detailCount}</TableCell>
+              </Td>
+              <Td>
+                {
+                  item.testTypeList
+                      .map(testTypeName)
+                      .join(', ')
+                }
+              </Td>
+              <Td>{item.detailCount}</Td>
             </TableRow>
           ))}
         </TableBody>

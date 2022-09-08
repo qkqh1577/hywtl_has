@@ -3,10 +3,7 @@ import {
   ProjectComplexSiteId,
   ProjectComplexSiteVO,
 } from 'project_complex/domain';
-import {
-  TableCell,
-  TableRow
-} from '@mui/material';
+import { TableRow } from '@mui/material';
 import TextField from 'components/TextField';
 import CheckboxField from 'components/CheckboxField';
 import SelectField from 'components/SelectField';
@@ -24,6 +21,7 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
+import { Td } from 'layouts/Table';
 
 export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
   onUpdate: (params: ProjectComplexSiteParameter) => void;
@@ -59,7 +57,7 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
 
   return (
     <TableRow>
-      <TableCell>
+      <Td>
         <FormikProvider value={formik}>
           <TextField
             disableLabel
@@ -70,8 +68,8 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
             }}
           />
         </FormikProvider>
-      </TableCell>
-      <TableCell>
+      </Td>
+      <Td>
         <FormikProvider value={formik}>
           <CheckboxField
             disableLabel
@@ -91,9 +89,8 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
             }}
           />
         </FormikProvider>
-      </TableCell>
-      <TableCell>
-
+      </Td>
+      <Td>
         <FormikProvider value={formik}>
           <SelectField
             disableLabel
@@ -105,9 +102,8 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
             }}
           />
         </FormikProvider>
-
-      </TableCell>
-      <TableCell>
+      </Td>
+      <Td>
         <FormikProvider value={formik}>
           <SelectField
             disableLabel
@@ -119,8 +115,8 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
             }}
           />
         </FormikProvider>
-      </TableCell>
-      <TableCell>
+      </Td>
+      <Td>
         <FormikProvider value={formik}>
           <UserSelector
             disableLabel
@@ -131,10 +127,10 @@ export default function ProjectComplexSiteRow(props: ProjectComplexSiteVO & {
             }}
           />
         </FormikProvider>
-      </TableCell>
-      <TableCell>
+      </Td>
+      <Td>
         <Button shape="basic2" onClick={() => {props.onDelete(props.id);}}>삭제</Button>
-      </TableCell>
+      </Td>
     </TableRow>
   );
 }

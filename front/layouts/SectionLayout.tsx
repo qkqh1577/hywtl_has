@@ -105,22 +105,24 @@ export default function SectionLayout(props: SectionLayoutProps) {
           )}
         </Box>
       </Box>
-      <Collapse in={open} collapsedSize="1px" sx={{
-        width: '100%'
-      }}>
+      <Collapse
+        in={open}
+        collapsedSize="1px"
+        sx={{
+          width: '100%'
+        }}>
         <Box sx={{
           display:  'flex',
           flexWrap: 'nowrap',
           width:    '100%',
         }}>
-
           <Box
             children={props.children}
             sx={{
               display:      'flex',
               width:        '100%',
               padding:      '15px 20px',
-              border:       `1px solid ${ColorPalette.Blue['7']}`,
+              border:       `1px solid ${ColorPalette._e4e9f2}`,
               borderRadius: '5px',
             }}
           />

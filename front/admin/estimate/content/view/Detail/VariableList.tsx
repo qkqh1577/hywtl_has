@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Grid,
-  Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography
 } from '@mui/material';
+import { EstimateContentVariableVO, } from 'admin/estimate/content/domain';
 import {
-  EstimateContentVariableVO,
-} from 'admin/estimate/content/domain';
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 export interface VariableListProps {
   variableList: EstimateContentVariableVO[] | undefined;
@@ -21,41 +21,39 @@ export default function VariableList({ variableList }: VariableListProps) {
   return (
     <Grid container item sm={4}>
       <Grid item sm={12}>
-        <Typography>
-          *내용으로 변수명을 입력 시, 해당 변수에 해당하는 데이터가 보여집니다.
-        </Typography>
+        *내용으로 변수명을 입력 시, 해당 변수에 해당하는 데이터가 보여집니다.
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <Th>
                   변수명
-                </TableCell>
-                <TableCell>
+                </Th>
+                <Th>
                   설명
-                </TableCell>
+                </Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {variableList && variableList.map((item,
-                                                         i
+                                                 i
               ) => {
                 return (
                   <TableRow key={i}>
-                    <TableCell>
+                    <Td>
                       {item.name}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.note}
-                    </TableCell>
+                    </Td>
                   </TableRow>
                 );
               })}
               {!variableList && (
                 <TableRow>
-                  <TableCell colSpan={2}>
+                  <Td colSpan={2}>
                     데이터가 없습니다.
-                  </TableCell>
+                  </Td>
                 </TableRow>
               )}
             </TableBody>

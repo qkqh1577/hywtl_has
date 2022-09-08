@@ -11,7 +11,6 @@ import {
   Button,
   IconButton,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -23,7 +22,11 @@ import {
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
 import RequiredMark from 'components/RequiredMark';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 export interface DetailListProps {
   detailListFooter: React.ReactNode;
@@ -40,12 +43,12 @@ export default function (props: DetailListProps) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>
+            <Th>No.</Th>
+            <Th>
               <RequiredMark required={edit} text="문구" />
-            </TableCell>
-            {edit && <TableCell>순서</TableCell>}
-            {edit && <TableCell>삭제</TableCell>}
+            </Th>
+            {edit && <Th>순서</Th>}
+            {edit && <Th>삭제</Th>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,10 +57,10 @@ export default function (props: DetailListProps) {
           ) => {
             return (
               <TableRow key={i}>
-                <TableCell>
+                <Td>
                   {i + 1}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {!edit && detail}
                   {edit && (
                     <TextField
@@ -68,9 +71,9 @@ export default function (props: DetailListProps) {
                       label="문구"
                     />
                   )}
-                </TableCell>
+                </Td>
                 {edit && (
-                  <TableCell>
+                  <Td>
                     <Box sx={{
                       display:        'flex',
                       width:          '100%',
@@ -115,10 +118,10 @@ export default function (props: DetailListProps) {
                         />
                       </Tooltip>
                     </Box>
-                  </TableCell>
+                  </Td>
                 )}
                 {edit && (
-                  <TableCell>
+                  <Td>
                     <Button
                       color="warning"
                       disabled={list.length <= 1}
@@ -133,7 +136,7 @@ export default function (props: DetailListProps) {
                       }}>
                       삭제
                     </Button>
-                  </TableCell>
+                  </Td>
                 )}
               </TableRow>
             );

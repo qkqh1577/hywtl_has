@@ -1,6 +1,4 @@
-import {
-  createTheme,
-} from '@mui/material/styles';
+import { createTheme, } from '@mui/material/styles';
 import Bold from 'assets/font/noto_sans_kr/NotoSansKR-Bold.otf';
 import Black from 'assets/font/noto_sans_kr/NotoSansKR-Black.otf';
 import Light from 'assets/font/noto_sans_kr/NotoSansKR-Light.otf';
@@ -53,7 +51,9 @@ export const ColorPalette = {
   '_414d65': '#414d65',
   '_4c576d': '#4c576d',
   '_697183': '#697183',
-  '_0047d3': '#0047d3'
+  '_0047d3': '#0047d3',
+  '_eb4c4c': '#eb4c4c',
+  '_f4f4f4': '#f4f4f4',
 };
 
 const mainTheme = createTheme({
@@ -68,7 +68,7 @@ const mainTheme = createTheme({
       main: '#386dd6',
     },
     error:     {
-      main: '#ff0000',
+      main: ColorPalette._eb4c4c,
     },
     warning:   {
       main: '#ffb72b',
@@ -137,7 +137,7 @@ const mainTheme = createTheme({
          }
       `
     },
-    MuiTypography:  {
+    MuiTypography: {
       defaultProps:   {
         fontFamily: 'Noto Sans KR',
       },
@@ -147,24 +147,24 @@ const mainTheme = createTheme({
         }
       }
     },
-    MuiLink:        {
+    MuiLink:       {
       styleOverrides: {
         root: {
           cursor: 'pointer'
         }
       }
     },
-    MuiIconButton:  {
+    MuiIconButton: {
       defaultProps: {
         color: 'primary',
       }
     },
-    MuiButton:      {
+    MuiButton:     {
       defaultProps: {
         color:   'primary',
         variant: 'contained',
       },
-    }
+    },
   }
 });
 

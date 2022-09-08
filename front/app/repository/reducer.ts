@@ -104,12 +104,15 @@ export const initMenuState: MenuState = {
       icon:     'circle',
       children: [{
         title: '기본정보 관리',
+        path: '/admin/contract/basic-management',
         icon:  'minus',
       }, {
         title: '기성단계 관리',
+        path: '/admin/contract/collection-management',
         icon:  'minus',
       }, {
         title: '계약조건 관리',
+        path: '/admin/contract/condition-management',
         icon:  'minus',
       }]
     }, {

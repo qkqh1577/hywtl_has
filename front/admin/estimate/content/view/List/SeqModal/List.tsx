@@ -5,18 +5,21 @@ import {
 } from 'admin/estimate/content/domain';
 import {
   Box,
-  Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import IconButton from 'components/IconButton';
 import {
-  ArrowUpward as UpIcon,
   ArrowDownward as DownIcon,
+  ArrowUpward as UpIcon,
 } from '@mui/icons-material';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 export interface SeqModalListProps {
   list: EstimateContentShort[];
@@ -32,11 +35,11 @@ export default function EstimateContentSeqModalList({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>이름</TableCell>
-            <TableCell>실험 타입</TableCell>
-            <TableCell>등록된 내용</TableCell>
-            <TableCell>순서</TableCell>
+            <Th>No.</Th>
+            <Th>이름</Th>
+            <Th>실험 타입</Th>
+            <Th>등록된 내용</Th>
+            <Th>순서</Th>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,14 +47,15 @@ export default function EstimateContentSeqModalList({
                      i
           ) => (
             <TableRow key={item.id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.testTypeList.map(testTypeName).join(', ')}</TableCell>
-              <TableCell>{item.detailCount}</TableCell>
-              <TableCell>
+              <Td>{i + 1}</Td>
+              <Td>{item.name}</Td>
+              <Td>{item.testTypeList.map(testTypeName)
+                       .join(', ')}</Td>
+              <Td>{item.detailCount}</Td>
+              <Td>
                 <Box sx={{
-                  display: 'flex',
-                  width: '100%',
+                  display:        'flex',
+                  width:          '100%',
                   justifyContent: 'space-around',
                 }}>
                   <IconButton
@@ -89,7 +93,7 @@ export default function EstimateContentSeqModalList({
                     children={<DownIcon />}
                   />
                 </Box>
-              </TableCell>
+              </Td>
             </TableRow>
           ))}
         </TableBody>

@@ -13,12 +13,15 @@ import dayjs from 'dayjs';
 import {
   Box,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import ProjectComplexSiteRow from 'project_complex/view/SiteRow';
 import { ProjectComplexSiteParameter } from 'project_complex/parameter';
 import { BuildingTest } from 'project_complex/route/site';
@@ -79,18 +82,18 @@ export default function ProjectComplexSiteSection(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>대지 모형</TableCell>
-                  <TableCell>실험 종류 E 여부</TableCell>
-                  <TableCell>견적 대지 모형 제작 난이도</TableCell>
-                  <TableCell>대지 모형 제작 난이도</TableCell>
-                  <TableCell>담당자</TableCell>
-                  <TableCell>삭제</TableCell>
+                  <Th>대지 모형</Th>
+                  <Th>실험 종류 E 여부</Th>
+                  <Th>견적 대지 모형 제작 난이도</Th>
+                  <Th>대지 모형 제작 난이도</Th>
+                  <Th>담당자</Th>
+                  <Th>삭제</Th>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {(!list || list.length === 0) && (
                   <TableRow>
-                    <TableCell colSpan={6}>조회 결과가 없습니다.</TableCell>
+                    <Td colSpan={6}>조회 결과가 없습니다.</Td>
                   </TableRow>
                 )}
                 {list && list.map((item) => (
@@ -114,25 +117,25 @@ export default function ProjectComplexSiteSection(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>실험 종류</TableCell>
-                  <TableCell>동 수</TableCell>
-                  <TableCell colSpan={props.buildingTestList.length === 0 ? 1 : props.totalBuildingCount}>실험 대상 동명</TableCell>
+                  <Th>실험 종류</Th>
+                  <Th>동 수</Th>
+                  <Th colSpan={props.buildingTestList.length === 0 ? 1 : props.totalBuildingCount}>실험 대상 동명</Th>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {props.buildingTestList.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={3}>조회 결과가 없습니다.</TableCell>
+                    <Td colSpan={3}>조회 결과가 없습니다.</Td>
                   </TableRow>
                 )}
                 {props.buildingTestList.map((item) => (
                   <TableRow key={item.testType}>
-                    <TableCell>{testTypeName(item.testType)}</TableCell>
-                    <TableCell>{item.buildingCount}</TableCell>
+                    <Td>{testTypeName(item.testType)}</Td>
+                    <Td>{item.buildingCount}</Td>
                     {item.buildingNameList.map((name,
                                                 i
                     ) => (
-                      <TableCell key={name || `${testTypeName(item.testType)}-${i}`}>{name}</TableCell>
+                      <Td key={name || `${testTypeName(item.testType)}-${i}`}>{name}</Td>
                     ))}
                   </TableRow>
                 ))}

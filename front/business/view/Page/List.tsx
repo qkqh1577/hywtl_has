@@ -3,13 +3,16 @@ import Page from 'type/Page';
 import { BusinessShort } from 'business/domain';
 import {
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import { Table } from 'layouts/Table';
-import { Link } from 'react-router-dom';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
+import TextLink from 'components/TextLink';
 
 export interface ListProps {
   page: Page<BusinessShort> | undefined;
@@ -21,21 +24,21 @@ export default function ({ page }: ListProps) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>업체명</TableCell>
-            <TableCell>대표명</TableCell>
-            <TableCell>사업자번호</TableCell>
-            <TableCell>주소</TableCell>
-            <TableCell>대표전화번호</TableCell>
-            <TableCell>담당자</TableCell>
-            <TableCell>참여프로젝트 총 개수</TableCell>
-            <TableCell>비고</TableCell>
+            <Th>No.</Th>
+            <Th>업체명</Th>
+            <Th>대표명</Th>
+            <Th>사업자번호</Th>
+            <Th>주소</Th>
+            <Th>대표전화번호</Th>
+            <Th>담당자</Th>
+            <Th>참여프로젝트 총 개수</Th>
+            <Th>비고</Th>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={9} children="결과가 없습니다." />
+              <Td colSpan={9} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,
@@ -44,33 +47,33 @@ export default function ({ page }: ListProps) {
             const no = i + 1 + page.size * page.number;
             return (
               <TableRow hover role="checkbox" key={item.id}>
-                <TableCell>{no}</TableCell>
-                <TableCell>
-                  <Link to={`/business-management/${item.id}`}>
+                <Td>{no}</Td>
+                <Td>
+                  <TextLink onClick={`/business-management/${item.id}`}>
                     {item.name}
-                  </Link>
-                </TableCell>
-                <TableCell>
+                  </TextLink>
+                </Td>
+                <Td>
                   {item.ceoName}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.registrationNumber}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.address}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.officePhone}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.managerCount}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.projectCount}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.note}
-                </TableCell>
+                </Td>
               </TableRow>
             );
           })}

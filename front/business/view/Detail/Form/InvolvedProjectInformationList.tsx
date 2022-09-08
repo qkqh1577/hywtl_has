@@ -8,7 +8,6 @@ import {
   Button,
   Grid,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -17,7 +16,11 @@ import {
 import DateFormat from 'components/DateFormat';
 import Title from 'components/Title';
 import SelectField from 'components/SelectField';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import { FieldStatus } from 'components/DataFieldProps';
 
 interface Props {
@@ -50,52 +53,52 @@ export default function ({ list }: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>No.</TableCell>
-                <TableCell>프로젝트 번호</TableCell>
-                <TableCell>프로젝트명</TableCell>
-                <TableCell>역할</TableCell>
-                <TableCell>대표담당자</TableCell>
-                <TableCell>착수일</TableCell>
-                <TableCell>마감일</TableCell>
-                <TableCell>상세</TableCell>
+                <Th>No.</Th>
+                <Th>프로젝트 번호</Th>
+                <Th>프로젝트명</Th>
+                <Th>역할</Th>
+                <Th>대표담당자</Th>
+                <Th>착수일</Th>
+                <Th>마감일</Th>
+                <Th>상세</Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {(!list || list.length === 0) && (
                 <TableRow>
-                  <TableCell colSpan={8}>
+                  <Td colSpan={8}>
                     <Typography>참여한 프로젝트가 없습니다.</Typography>
-                  </TableCell>
+                  </Td>
                 </TableRow>
               )}
               {list.map((project,
                          no
               ) => (
                 <TableRow key={project.id}>
-                  <TableCell>
+                  <Td>
                     {no}
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     {project.code}
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     {project.name}
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     {businessInvolvedTypeName(project.involvedType)}
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     {project.manager}
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     <DateFormat date={project.beginDate} />
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     <DateFormat date={project.closeDate} />
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     <Button>새 창으로 상세 보기</Button>
-                  </TableCell>
+                  </Td>
                 </TableRow>
               ))}
             </TableBody>
