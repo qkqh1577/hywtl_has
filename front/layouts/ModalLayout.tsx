@@ -71,8 +71,11 @@ export default function ModalLayout({
           />
           <FontAwesomeIcon
             icon="xmark"
-            fontSize="18px"
             onClick={onClose}
+            style={{
+              cursor:   'pointer',
+              fontSize: '18px',
+            }}
           />
         </Box>
         <Box sx={{

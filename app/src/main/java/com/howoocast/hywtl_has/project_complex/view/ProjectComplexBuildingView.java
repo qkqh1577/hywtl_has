@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.project_complex.view;
 
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
-import com.howoocast.hywtl_has.project.document.view.ProjectDocumentShortView;
+import com.howoocast.hywtl_has.project_document.view.ProjectDocumentShortView;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +19,8 @@ public class ProjectComplexBuildingView {
     private Double height;
     private Double baseArea;
     private Double ratio;
+
+    private ProjectComplexSiteView site;
     private ProjectDocumentShortView buildingDocument;
     private List<String> specialWindWeightConditionList;
     private Boolean inTest;
@@ -38,6 +40,9 @@ public class ProjectComplexBuildingView {
         target.height = source.getHeight();
         target.baseArea = source.getBaseArea();
         target.ratio = source.getRatio();
+        if (Objects.nonNull(source.getSite())) {
+            target.site = ProjectComplexSiteView.assemble(source.getSite());
+        }
         if (Objects.nonNull(source.getBuildingDocument())) {
             target.buildingDocument = ProjectDocumentShortView.assemble(source.getBuildingDocument());
         }

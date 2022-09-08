@@ -64,6 +64,10 @@ public class Business extends CustomEntity {
      * 비고
      */
     private String note;
+    /**
+     * 팩스 번호
+     */
+    private String fax;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<BusinessManager> managerList;
@@ -75,6 +79,7 @@ public class Business extends CustomEntity {
         String address,
         String officePhone,
         String note,
+        String fax,
         List<BusinessManager> managerList
     ) {
         Business instance = new Business();
@@ -85,6 +90,7 @@ public class Business extends CustomEntity {
             address,
             officePhone,
             note,
+            fax,
             managerList
         );
         return instance;
@@ -97,6 +103,7 @@ public class Business extends CustomEntity {
         String address,
         String officePhone,
         String note,
+        String fax,
         List<BusinessManager> managerList
     ) {
         this.name = name;
@@ -105,6 +112,7 @@ public class Business extends CustomEntity {
         this.address = address;
         this.officePhone = officePhone;
         this.note = note;
+        this.fax = fax;
         this.managerList = managerList;
     }
 

@@ -44,7 +44,7 @@ public class ProjectBasic {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProjectEstimateType estimateType;
+    private ProjectBasicBidType bidType;
 
     /**
      * 문의 접수자
@@ -83,14 +83,14 @@ public class ProjectBasic {
         @Nullable String code,
         String name,
         String alias,
-        ProjectEstimateType estimateType,
+        ProjectBasicBidType bidType,
         User receptionManager
     ) {
         ProjectBasic instance = new ProjectBasic();
         instance.name = name;
         instance.code = code;
         instance.alias = alias;
-        instance.estimateType = estimateType;
+        instance.bidType = bidType;
         instance.receptionManager = receptionManager;
         return instance;
     }
@@ -103,12 +103,14 @@ public class ProjectBasic {
         String name,
         String code,
         String alias,
+        ProjectBasicBidType bidType,
         User salesManager,
         User projectManager
     ) {
         this.name = name;
         this.code = code;
         this.alias = alias;
+        this.bidType = bidType;
         this.salesManager = salesManager;
         this.projectManager = projectManager;
     }

@@ -53,6 +53,7 @@ public class BusinessPredicateBuilder {
 
     @Nullable
     public Predicate build() {
+        this.criteria.and(business.id.ne(1L));
         return criteria.getValue();
     }
 

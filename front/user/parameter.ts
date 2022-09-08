@@ -1,7 +1,6 @@
 import {
   UserVO
 } from 'user/domain';
-import { FormikPartial } from 'type/Form';
 
 export interface UserChangeParameter
   extends Omit<UserVO,

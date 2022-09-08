@@ -4,7 +4,7 @@ import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.domain.ProjectEstimateType;
+import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
@@ -62,7 +62,7 @@ public class ProjectService {
             code,
             parameter.getName(),
             parameter.getAlias(),
-            parameter.getEstimateType(),
+            parameter.getBidType(),
             receptionManager,
             parameter.getProgressStatus()
         );
@@ -95,7 +95,7 @@ public class ProjectService {
         }
 
         if (Objects.nonNull(parameter.getEstimateStatus())) {
-            if (instance.getBasic().getEstimateType() == ProjectEstimateType.DEFAULT) {
+            if (instance.getBasic().getBidType() == ProjectBasicBidType.DEFAULT) {
                 // 견적 구분이 일반일 때만 업데이트 가능
                 instance.getStatus().setEstimateStatus(parameter.getEstimateStatus());
             }

@@ -7,8 +7,21 @@ import React from 'react';
 
 interface ButtonProps
   extends Omit<MuiButtonProps, | 'variant' | 'size'> {
-  shape: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small';
+  shape?: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small';
 }
+
+const basicStyle = {
+  fontFamily:   'Noto Sans KR',
+  height:       '32px',
+  fontSize:     '13px',
+  fontWeight:   'normal',
+  padding:      '0 16px',
+  borderRadius: '5px',
+  boxShadow:    'none',
+  '&:hover':    {
+    boxShadow: 'none',
+  }
+};
 
 function Basic1Button(props: MuiButtonProps) {
 
@@ -17,14 +30,9 @@ function Basic1Button(props: MuiButtonProps) {
       {...props}
       variant="contained"
       sx={{
-        fontFamily:      'Noto Sans KR',
-        height:          '32px',
-        fontSize:        '13px',
-        fontWeight:      'normal',
-        padding:         '16px 0',
+        ...basicStyle,
         backGroundColor: ColorPalette.Blue['1'],
         color:           ColorPalette.White,
-        borderRadius:    '5px',
         ...(props.sx ?? {})
       }}
     />
@@ -37,14 +45,9 @@ function Basic2Button(props: MuiButtonProps) {
       {...props}
       variant="contained"
       sx={{
-        fontFamily:      'Noto Sans KR',
-        height:          '32px',
-        fontSize:        '13px',
-        fontWeight:      'normal',
-        padding:         '16px 0',
+        ...basicStyle,
         backgroundColor: `${ColorPalette._e4e9f2} !important`,
         color:           ColorPalette._386dd6,
-        borderRadius:    '5px',
         ...(props.sx ?? {})
       }}
     />
@@ -57,15 +60,10 @@ function Basic3Button(props: MuiButtonProps) {
       {...props}
       variant="outlined"
       sx={{
-        fontFamily:      'Noto Sans KR',
-        height:          '32px',
-        fontSize:        '13px',
-        fontWeight:      'normal',
-        padding:         '16px 0',
+        ...basicStyle,
         backGroundColor: ColorPalette.White,
         color:           ColorPalette.Blue['1'],
         borderColor:     ColorPalette.Blue['3'],
-        borderRadius:    '5px',
         ...(props.sx ?? {})
       }}
     />
@@ -78,15 +76,10 @@ function Basic4Button(props: MuiButtonProps) {
       {...props}
       variant="outlined"
       sx={{
-        fontFamily:      'Noto Sans KR',
-        height:          '32px',
-        fontSize:        '13px',
-        fontWeight:      'normal',
-        padding:         '16px 0',
+        ...basicStyle,
         backGroundColor: ColorPalette.Blue['7'],
         color:           ColorPalette.Blue['1'],
         borderColor:     ColorPalette.Blue['3'],
-        borderRadius:    '5px',
         ...(props.sx ?? {})
       }}
     />
@@ -99,14 +92,12 @@ function SmallButton(props: MuiButtonProps) {
       {...props}
       variant="contained"
       sx={{
+        ...basicStyle,
         width:           '100%',
-        fontFamily:      'Noto Sans KR',
         height:          '28px',
         fontSize:        '12px',
-        fontWeight:      'normal',
         backGroundColor: ColorPalette.Blue['1'],
         color:           ColorPalette.White,
-        borderRadius:    '5px',
         ...(props.sx ?? {})
       }}
     />

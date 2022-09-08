@@ -81,6 +81,7 @@ public class BusinessService {
             parameter.getAddress(),
             parameter.getOfficePhone(),
             parameter.getNote(),
+            parameter.getFax(),
             managerList
         );
 
@@ -132,11 +133,10 @@ public class BusinessService {
             parameter.getAddress(),
             parameter.getOfficePhone(),
             parameter.getNote(),
+            parameter.getFax(),
             managerList
         );
-
     }
-
 
     @Transactional
     public void delete(Long id) {

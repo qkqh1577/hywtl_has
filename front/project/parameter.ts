@@ -1,5 +1,5 @@
 import {
-  ProjectEstimateType,
+  ProjectBasicBidType,
   ProjectProgressStatus,
   ProjectStatus
 } from 'project/domain';
@@ -11,7 +11,7 @@ export interface ProjectAddParameter {
   alias: string;
   receptionManager: UserId;
   progressStatus: ProjectProgressStatus;
-  estimateType: ProjectEstimateType;
+  bidType: ProjectBasicBidType;
 }
 
 export const initialProjectAddParameter: FormikPartial<ProjectAddParameter> = {
@@ -19,7 +19,7 @@ export const initialProjectAddParameter: FormikPartial<ProjectAddParameter> = {
   alias:            '',
   receptionManager: '',
   progressStatus:   '',
-  estimateType:     '',
+  bidType:          '',
 };
 
 export interface ProjectStatusParameter

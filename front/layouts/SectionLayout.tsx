@@ -46,39 +46,55 @@ export default function SectionLayout(props: SectionLayoutProps) {
         alignItems:     'center'
       }}>
         <Box sx={{
-          display:    'flex',
-          flexWrap:   'nowrap',
-          height:     '100%',
-          alignItems: 'center'
+          display:        'flex',
+          flexWrap:       'nowrap',
+          height:         '100%',
+          alignItems:     'center',
+          justifyContent: 'space-between',
+          width:          'calc(100% - 200px)',
         }}>
-          <Typography sx={{
-            fontSize:   '14px',
-            fontWeight: 'bold',
-            lineHeight: '22px',
-            color:      ColorPalette._252627
+          <Box sx={{
+            display:        'flex',
+            flexWrap:       'nowrap',
+            justifyContent: 'flex-start',
           }}>
-            {title}
-          </Typography>
-          {!disableFold && (
-            <IconButton
-              children={<FontAwesomeIcon icon="angle-up" />}
-              onClick={() => {
-                setOpen(!open);
-              }}
-              sx={{
-                transition: 'transform .2s',
-                transform:  open ? 'rotate(0deg)' : 'rotate(180deg)',
-              }}
-            />
-          )}
+            <Typography sx={{
+              fontSize:   '14px',
+              fontWeight: 'bold',
+              lineHeight: '22px',
+              color:      ColorPalette._252627
+            }}>
+              {title}
+            </Typography>
+            {!disableFold && (
+              <IconButton
+                children={<FontAwesomeIcon icon="angle-up" />}
+                onClick={() => {
+                  setOpen(!open);
+                }}
+                sx={{
+                  transition: 'transform .2s',
+                  transform:  open ? 'rotate(0deg)' : 'rotate(180deg)',
+                }}
+              />
+            )}
+          </Box>
+          <Box sx={{
+            display:        'flex',
+            flexWrap:       'nowrap',
+            justifyContent: 'flex-end',
+          }}>
+            {titleRightComponent}
+          </Box>
         </Box>
+
         <Box sx={{
           display:    'flex',
           flexWrap:   'nowrap',
           height:     '100%',
-          alignItems: 'center'
+          alignItems: 'center',
+          width:      '200px',
         }}>
-          {titleRightComponent}
           {modifiedAt && (
             <>
               <Typography fontSize="12px" fontWeight="bold" marginLeft="20px" marginRight="5px">최종수정일시</Typography>

@@ -42,6 +42,15 @@ public class ProjectComplexController {
         );
     }
 
+    @GetMapping("/project/sales/complex/building/{id}")
+    public ProjectComplexBuildingView building(
+        @PathVariable Long id
+    ) {
+        return ProjectComplexMapper.toView(
+            service.getBuilding(id)
+        );
+    }
+
     @PutMapping("/project/sales/{projectId}/complex/site")
     public void pushSite(
         @PathVariable Long projectId

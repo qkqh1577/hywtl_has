@@ -16,9 +16,15 @@ public class ProjectComplexMapper {
         return source.stream().map(ProjectComplexSiteView::assemble).collect(Collectors.toList());
     }
 
-    public static List<ProjectComplexBuildingView> toBuilding (
+    public static List<ProjectComplexBuildingView> toBuilding(
         List<ProjectComplexBuilding> source
     ) {
         return source.stream().map(ProjectComplexBuildingView::assemble).collect(Collectors.toList());
+    }
+
+    public static ProjectComplexBuildingView toView(
+        ProjectComplexBuilding source
+    ) {
+        return ProjectComplexBuildingView.assemble(source);
     }
 }

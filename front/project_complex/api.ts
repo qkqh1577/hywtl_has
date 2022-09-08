@@ -22,6 +22,11 @@ class ProjectComplexApi {
     return data;
   }
 
+  async getBuilding(id: ProjectComplexBuildingId): Promise<ProjectComplexBuildingVO> {
+    const { data } = await apiClient.get(`/project/sales/complex/building/${id}`);
+    return data;
+  }
+
   async pushSite(id: ProjectId): Promise<void> {
     const { data } = await apiClient.put(`/project/sales/${id}/complex/site`);
     return data;
