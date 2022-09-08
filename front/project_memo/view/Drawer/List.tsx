@@ -36,7 +36,7 @@ export default function ProjectMemoList({ list }: ProjectMemoListProps) {
             border:          `1px solid ${ColorPalette._e4e9f2}`,
             borderRadius:    '5px',
             marginTop:       '10px',
-            backgroundColor: ColorPalette._fff,
+            backgroundColor: ColorPalette._ffffff,
             padding:         '15px',
           }}>
           <Box sx={{

@@ -51,7 +51,7 @@ export default function ProjectContainerTab() {
       padding:                    '0 20px',
       width:                      '100%',
       justifyContent:             'space-between',
-      borderBottom:               `2px solid ${ColorPalette.Blue['7']}`,
+      borderBottom:               `2px solid ${ColorPalette._e4e9f2}`,
       height:                     '38px',
       '& > div:not(:last-child)': {
         marginRight: '5px',
@@ -69,14 +69,14 @@ export default function ProjectContainerTab() {
               justifyContent:  'center',
               alignItems:      'center',
               borderRadius:    '5px 5px 0 0',
-              border:          `2px solid ${ColorPalette.Blue['7']}`,
+              border:          `2px solid ${ColorPalette._e4e9f2}`,
               borderBottom:    'none',
               height:          '38px',
-              backgroundColor: selected ? ColorPalette.White : ColorPalette.Blue['7'],
+              backgroundColor: selected ? ColorPalette._ffffff : ColorPalette._e4e9f2,
               cursor:          selected ? 'default' : 'pointer',
               fontSize:        '14px',
               fontWeight:      selected ? 'bold' : 'inherit',
-              color:           ColorPalette.DarkGray,
+              color:           ColorPalette._252627,
             }}
             onClick={() => {
               navigate(`/project/sales-management/${id}/${props.path}`);

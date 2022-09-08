@@ -1,6 +1,4 @@
-import React, {
-  useMemo
-} from 'react';
+import React, { useMemo } from 'react';
 import {
   DataFieldValue,
   FieldStatus,
@@ -152,7 +150,7 @@ export default function RadioField(props: RadioFieldProps) {
       {!disableLabel && (
         <FormLabel component="legend" sx={{
           fontSize:  '13px',
-          color:     ColorPalette.Grey['1'],
+          color:     ColorPalette._9b9ea4,
           wordBreak: 'keep-all',
         }}>
           {label}

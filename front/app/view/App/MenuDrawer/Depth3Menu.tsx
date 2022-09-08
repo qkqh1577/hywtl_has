@@ -37,7 +37,7 @@ export default function Depth3Menu(props: Menu) {
         onClick={onClick}
         sx={{
           fontSize: '13px',
-          color:    active ? ColorPalette._fff : ColorPalette._94a6ca,
+          color:    active ? ColorPalette._ffffff : ColorPalette._94a6ca,
           cursor:   clickable ? 'pointer' : 'default'
         }}
       />

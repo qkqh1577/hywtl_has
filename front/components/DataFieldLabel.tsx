@@ -42,7 +42,7 @@ export default function DataFieldWithLabel(props: Props) {
         <Typography sx={{
           ...labelSX,
           fontSize:  '13px',
-          color:     ColorPalette.Grey['1'],
+          color:     ColorPalette._9b9ea4,
           wordBreak: 'keep-all',
           width:     useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth ?? 110}px`, [labelPosition, labelWidth]),
         }}>

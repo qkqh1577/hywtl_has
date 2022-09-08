@@ -33,7 +33,7 @@ function Label(props: { children: string }) {
     }}>
       <Typography sx={{
         fontSize:  '13px',
-        color:     ColorPalette.Grey['1'],
+        color:     ColorPalette._9b9ea4,
         wordBreak: 'keep-all',
         width:     '110px'
       }}>

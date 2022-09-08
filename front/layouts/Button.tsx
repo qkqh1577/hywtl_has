@@ -4,13 +4,14 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
+import { SxProps } from '@mui/system';
 
 interface ButtonProps
   extends Omit<MuiButtonProps, | 'variant' | 'size'> {
   shape?: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small';
 }
 
-const basicStyle = {
+const basicStyle: SxProps = {
   fontFamily:   'Noto Sans KR',
   height:       '32px',
   fontSize:     '13px',
@@ -18,6 +19,8 @@ const basicStyle = {
   padding:      '0 16px',
   borderRadius: '5px',
   boxShadow:    'none',
+  wordBreak:    'keep-all',
+  whiteSpace:   'nowrap',
   '&:hover':    {
     boxShadow: 'none',
   }
@@ -31,8 +34,8 @@ function Basic1Button(props: MuiButtonProps) {
       variant="contained"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette.Blue['1'],
-        color:           ColorPalette.White,
+        backGroundColor: ColorPalette._386dd6,
+        color:           ColorPalette._ffffff,
         ...(props.sx ?? {})
       }}
     />
@@ -61,9 +64,9 @@ function Basic3Button(props: MuiButtonProps) {
       variant="outlined"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette.White,
-        color:           ColorPalette.Blue['1'],
-        borderColor:     ColorPalette.Blue['3'],
+        backGroundColor: ColorPalette._ffffff,
+        color:           ColorPalette._386dd6,
+        borderColor:     ColorPalette._9bb6ea,
         ...(props.sx ?? {})
       }}
     />
@@ -77,9 +80,9 @@ function Basic4Button(props: MuiButtonProps) {
       variant="outlined"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette.Blue['7'],
-        color:           ColorPalette.Blue['1'],
-        borderColor:     ColorPalette.Blue['3'],
+        backGroundColor: ColorPalette._e4e9f2,
+        color:           ColorPalette._386dd6,
+        borderColor:     ColorPalette._9bb6ea,
         ...(props.sx ?? {})
       }}
     />
@@ -96,8 +99,8 @@ function SmallButton(props: MuiButtonProps) {
         width:           '100%',
         height:          '28px',
         fontSize:        '12px',
-        backGroundColor: ColorPalette.Blue['1'],
-        color:           ColorPalette.White,
+        backGroundColor: ColorPalette._386dd6,
+        color:           ColorPalette._ffffff,
         ...(props.sx ?? {})
       }}
     />

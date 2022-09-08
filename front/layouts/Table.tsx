@@ -69,7 +69,7 @@ export function Table(props: TableProps) {
       aria-label="sticky table"
       sx={{
         ...(props.sx ?? {}),
-        backgroundColor: ColorPalette.White,
+        backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
         '& > thead':     {
           '& > tr:first-of-type': {

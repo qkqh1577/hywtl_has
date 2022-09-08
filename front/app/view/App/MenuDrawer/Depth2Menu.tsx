@@ -33,7 +33,7 @@ export default function Depth2Menu(props: Menu) {
       sx={{
         display:        'flex',
         width:          '100%',
-        color:          ColorPalette.White,
+        color:          ColorPalette._ffffff,
         flexWrap:       'wrap',
         justifyContent: 'space-between',
         cursor:         clickable ? 'pointer' : 'default'
@@ -66,7 +66,7 @@ export default function Depth2Menu(props: Menu) {
             children={props.title}
             sx={{
               fontSize: '13px',
-              color:    childActive || active ? ColorPalette._fff : ColorPalette._94a6ca,
+              color:    childActive || active ? ColorPalette._ffffff : ColorPalette._94a6ca,
             }}
           />
         </Box>

@@ -50,8 +50,8 @@ export default function ModalLayout({
         maxWidth:  '1850px',
         maxHeight: '80vh',
         overflow:  'hidden',
-        bgColor:   ColorPalette.Grey['2'],
-        boxShadow: `4px 4px 20px 0px ${ColorPalette.DarkGray}`
+        bgColor:   ColorPalette._b2b4b7,
+        boxShadow: `4px 4px 20px 0px ${ColorPalette._252627}`
       }}>
         <Box sx={{
           display:         'flex',
@@ -60,8 +60,8 @@ export default function ModalLayout({
           height:          '50px',
           padding:         '0 20px',
           alignItems:      'center',
-          backgroundColor: ColorPalette.DarkBlue['1'],
-          color:           ColorPalette.White,
+          backgroundColor: ColorPalette._2d3a54,
+          color:           ColorPalette._ffffff,
         }}>
           <Typography sx={{
             fontSize:   '18px',

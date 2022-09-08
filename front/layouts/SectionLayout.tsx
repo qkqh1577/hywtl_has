@@ -51,7 +51,8 @@ export default function SectionLayout(props: SectionLayoutProps) {
           height:         '100%',
           alignItems:     'center',
           justifyContent: 'space-between',
-          width:          'calc(100% - 200px)',
+          width:          'calc(100% - 197px)',
+          marginRight:    '20px',
         }}>
           <Box sx={{
             display:        'flex',
@@ -87,17 +88,15 @@ export default function SectionLayout(props: SectionLayoutProps) {
             {titleRightComponent}
           </Box>
         </Box>
-
         <Box sx={{
           display:    'flex',
           flexWrap:   'nowrap',
           height:     '100%',
           alignItems: 'center',
-          width:      '200px',
         }}>
           {modifiedAt && (
             <>
-              <Typography fontSize="12px" fontWeight="bold" marginLeft="20px" marginRight="5px">최종수정일시</Typography>
+              <Typography fontSize="12px" fontWeight="bold" marginRight="2px">최종수정일시</Typography>
               <Typography fontSize="12px">
                 <DateFormat date={modifiedAt} format="YYYY-MM-DD HH:mm" />
               </Typography>

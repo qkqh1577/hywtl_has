@@ -17,7 +17,7 @@ export default function ProjectContainerTitleButtonBar() {
         style={{
           width:       '18px',
           height:      '18px',
-          color:       ColorPalette.Blue['3'],
+          color:       ColorPalette._9bb6ea,
           marginRight: '20px'
         }}
       />
@@ -26,7 +26,7 @@ export default function ProjectContainerTitleButtonBar() {
         style={{
           width:  '18px',
           height: '18px',
-          color:  ColorPalette.Blue['1'],
+          color:  ColorPalette._386dd6,
         }}
       />
     </Box>

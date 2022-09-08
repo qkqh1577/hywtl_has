@@ -37,7 +37,7 @@ export default function Depth1Menu(props: Props) {
       sx={{
         width:        '100%',
         marginBottom: '5px',
-        color:        ColorPalette.White,
+        color:        ColorPalette._ffffff,
         display:      'flex',
         flexWrap:     'wrap',
         alignItems:   'center',
@@ -70,7 +70,7 @@ export default function Depth1Menu(props: Props) {
             children={props.title}
             sx={{
               fontSize: '13px',
-              color:    childActive ? ColorPalette._fff : ColorPalette._94a6ca,
+              color:    childActive ? ColorPalette._ffffff : ColorPalette._94a6ca,
             }}
           />
         </Box>

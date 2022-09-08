@@ -36,7 +36,7 @@ export default function AppBar(props: Props) {
         display:         'flex',
         padding:         0,
         flexWrap:        'nowrap',
-        backgroundColor: ColorPalette.DarkBlue[2]
+        backgroundColor: ColorPalette._242e43
       })}>
         <Box sx={{
           display:        'flex',

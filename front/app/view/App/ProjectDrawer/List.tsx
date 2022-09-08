@@ -44,10 +44,10 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
         stickyHeader
         aria-label="sticky table"
         sx={{
-          maxWidth:                                      '280px',
-          backgroundColor:                               ColorPalette.White,
-          borderRadius:                                  '5px',
-          '& th, & td':                                  {
+          maxWidth:        '280px',
+          backgroundColor: ColorPalette._ffffff,
+          borderRadius:    '5px',
+          '& th, & td':    {
             textAlign:       'center',
             fontSize:        '12px',
             height:          '36px',
@@ -57,13 +57,13 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
             borderBottom:    'none',
             color:           ColorPalette._252627,
           },
-          '& td':                                        {
+          '& td':          {
             padding: '0 10px',
           },
-          '& th':                                        {
+          '& th':          {
             fontWeight:      'bold',
             borderBottom:    `5px solid ${ColorPalette._e4e9f2}`,
-            backgroundColor: ColorPalette._fff,
+            backgroundColor: ColorPalette._ffffff,
             padding:         0,
           },
           '& th:first-of-type':                          {

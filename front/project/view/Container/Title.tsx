@@ -24,7 +24,7 @@ export default function ProjectContainerTitle({ name, code }: Props) {
       <Typography sx={{
         fontSize:   '18px',
         lineHeight: '26px',
-        color:      ColorPalette.DarkGray,
+        color:      ColorPalette._252627,
         fontWeight: 'bold'
       }}>
         {name && '['}
@@ -34,7 +34,7 @@ export default function ProjectContainerTitle({ name, code }: Props) {
       <Typography sx={{
         fontSize:   '18px',
         lineHeight: '26px',
-        color:      ColorPalette.DarkGray,
+        color:      ColorPalette._252627,
         fontWeight: 'bold'
       }}>
         {name}

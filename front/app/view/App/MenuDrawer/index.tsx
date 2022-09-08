@@ -1,6 +1,4 @@
-import {
-  Box,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import React, { useRef } from 'react';
 import { Menu } from 'app/domain/menu';
 import Drawer from 'layouts/Drawer';
@@ -25,7 +23,7 @@ export default function (props: MenuDrawerProps) {
   const ganttBoxHeight = ganttBoxRef.current?.offsetHeight;
   return (
     <Drawer open={openMenu} padding="10px" openedWidth={230} sx={{
-      backgroundColor: ColorPalette.DarkBlue['1'],
+      backgroundColor: ColorPalette._2d3a54,
     }}>
       <Box sx={{
         display:       'flex',

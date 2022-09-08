@@ -7,32 +7,7 @@ import Thin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.otf';
 import Regular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.otf';
 
 export const ColorPalette = {
-  DarkBlue:  {
-    '1': '#2d3a54',
-    '2': '#242e43',
-    '3': '#414d65',
-    '4': '#4c576d',
-    '5': '#697183',
-  },
-  Blue:      {
-    '1': '#386dd6',
-    '2': '#4c9eeb',
-    '3': '#9bb6ea',
-    '4': '#d7e2f7',
-    '5': '#d2e7fa',
-    '6': '#cddaf5',
-    '7': '#e4e9f2',
-    '8': '#f1f5fc',
-  },
-  Yellow:    '#ffb72b',
-  DarkGray:  '#252627',
-  Grey:      {
-    '1': '#9b9ea4',
-    '2': '#b2b4b7',
-    '3': '#94a6ca'
-  },
-  White:     '#fff',
-  '_fff':    '#fff',
+  '_ffffff': '#ffffff',
   '_9b9ea4': '#9b9ea4',
   '_b2b4b7': '#b2b4b7',
   '_94a6ca': '#94a6ca',

@@ -64,7 +64,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
           <Typography sx={{
             fontSize:   '18px',
             lineHeight: '26px',
-            color:      ColorPalette.DarkGray,
+            color:      ColorPalette._252627,
             fontWeight: 'bold'
           }}>
             {title}
@@ -126,10 +126,10 @@ function PageContent(props: PageLayoutProps) {
         height:                       `calc(100% - ${filterHeight + 66}px)`, // TODO: 실제 계산 높이 필요
         '&::-webkit-scrollbar':       {
           width:           '10px',
-          backgroundColor: ColorPalette.Blue['7']
+          backgroundColor: ColorPalette._e4e9f2
         },
         '&::-webkit-scrollbar-thumb': {
-          backgroundColor: ColorPalette.DarkBlue['5']
+          backgroundColor: ColorPalette._697183
         }
       }}>
         <Box
