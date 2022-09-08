@@ -12,7 +12,7 @@ interface ThProps
   backgroundColor?: string;
 }
 
-export function Th(props: ThProps) {
+export function Th({ backgroundColor, ...props }: ThProps) {
 
   return (
     <MuiTableCell
@@ -20,7 +20,7 @@ export function Th(props: ThProps) {
       variant="head"
       sx={{
         ...props.sx,
-        backgroundColor: props.backgroundColor ?? 'transparent',
+        backgroundColor: backgroundColor ?? 'transparent',
         borderBottom:    'none',
         borderLeft:      `1px solid ${ColorPalette._e4e9f2}`,
         borderTop:       `1px solid ${ColorPalette._e4e9f2}`,
