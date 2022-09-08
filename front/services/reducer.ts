@@ -62,12 +62,18 @@ import {
   businessSelectorReducer,
   BusinessSelectorState
 } from 'components/BusinessSelector';
-import { contractBasicReducer, ContractBasicState } from 'admin/contract/basic/reducer';
+import {
+  contractBasicReducer,
+  ContractBasicState
+} from 'admin/contract/basic/reducer';
 import {
   contractCollectionReducer,
   ContractCollectionState
 } from 'admin/contract/collection/reducer';
-import { ContractConditionState } from 'admin/contract/condition/reducer';
+import {
+  contractConditionReducer,
+  ContractConditionState
+} from 'admin/contract/condition/reducer';
 
 export interface RootState {
   user: UserState;
@@ -92,25 +98,25 @@ export interface RootState {
 }
 
 const reducer = combineReducers<RootState>({
-  user:             userReducer,
-  login:            loginReducer,
-  department:       departmentReducer,
-  menu:             menuReducer,
-  dialog:           dialogReducer,
-  estimateTemplate: estimateTemplateReducer,
-  project:          projectReducer,
-  projectDrawer:    projectDrawerReducer,
-  business:         businessReducer,
-  estimateContent:  estimateContentReducer,
-  projectMemo:      projectMemoReducer,
-  projectBasic:     projectBasicReducer,
-  projectDocument:  projectDocumentReducer,
-  projectComplex:   projectComplexReducer,
-  projectEstimate:  projectEstimateReducer,
-  businessSelector: businessSelectorReducer,
-  contractBasic:    contractBasicReducer,
+  user:               userReducer,
+  login:              loginReducer,
+  department:         departmentReducer,
+  menu:               menuReducer,
+  dialog:             dialogReducer,
+  estimateTemplate:   estimateTemplateReducer,
+  project:            projectReducer,
+  projectDrawer:      projectDrawerReducer,
+  business:           businessReducer,
+  estimateContent:    estimateContentReducer,
+  projectMemo:        projectMemoReducer,
+  projectBasic:       projectBasicReducer,
+  projectDocument:    projectDocumentReducer,
+  projectComplex:     projectComplexReducer,
+  projectEstimate:    projectEstimateReducer,
+  businessSelector:   businessSelectorReducer,
+  contractBasic:      contractBasicReducer,
   contractCollection: contractCollectionReducer,
-  contractCondition: contractCollectionReducer,
+  contractCondition:  contractConditionReducer,
 });
 
 const rootReducer: Reducer = (state,

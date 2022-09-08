@@ -1,9 +1,8 @@
 import { ContractConditionVO } from 'admin/contract/condition/domain';
 import {
-  action,
   createReducer
 } from 'typesafe-actions';
-import { ContractConditionAction } from 'admin/contract/condition/saga';
+import { ContractConditionAction } from 'admin/contract/condition/action';
 
 export interface ContractConditionState {
   template?: ContractConditionVO;
