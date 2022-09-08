@@ -4,9 +4,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import React, {
-  useMemo,
-} from 'react';
+import React, { useMemo, } from 'react';
 import {
   DataFieldValue,
   FieldStatus,
@@ -141,6 +139,7 @@ export default function SelectField(props: SelectFieldProps) {
           onBlur,
           label
         } = useDataProps(props);
+  const isEmptyValue = !value || (Array.isArray(value) && value.length === 0);
 
   const fieldProps: FieldProps = {
     variant,
@@ -165,11 +164,12 @@ export default function SelectField(props: SelectFieldProps) {
     SelectProps: {
       ...SelectProps,
       multiple,
-      sx:        {
+      displayEmpty: !required,
+      sx:           {
         height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
         fontFamily:           'Noto Sans KR',
-        color:                ColorPalette._252627,
+        color:                isEmptyValue ? ColorPalette._b2b4b7 : ColorPalette._252627,
         border:               variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
         borderBottom:         `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius:         variant === 'outlined' ? '5px' : '0',
@@ -190,7 +190,7 @@ export default function SelectField(props: SelectFieldProps) {
           borderWidth: '1px !important',
         },
       },
-      MenuProps: {
+      MenuProps:    {
         sx: {
           '& > .MuiMenu-paper': {
             marginTop:    variant === 'outlined' ? '-8px' : '8px',

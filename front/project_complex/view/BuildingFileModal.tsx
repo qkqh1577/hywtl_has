@@ -9,7 +9,6 @@ import {
   Box,
   Radio,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
@@ -18,7 +17,11 @@ import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
 import DetailFormFooter from 'layouts/DetailFormFooter';
 import { FormikProps } from 'project_complex/route/buildingFileModal';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import { toReadableSize } from 'file-item';
 import DateFormat from 'components/DateFormat';
 import React from 'react';
@@ -81,12 +84,12 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  {edit && (<TableCell>선택</TableCell>)}
-                  <TableCell>자료 ID</TableCell>
-                  <TableCell>파일</TableCell>
-                  <TableCell>비고</TableCell>
-                  <TableCell>등록일시</TableCell>
-                  <TableCell>등록자</TableCell>
+                  {edit && (<Th>선택</Th>)}
+                  <Th>자료 ID</Th>
+                  <Th>파일</Th>
+                  <Th>비고</Th>
+                  <Th>등록일시</Th>
+                  <Th>등록자</Th>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -94,8 +97,8 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                 .filter((item) => item.id === fileId)
                 .map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell>{item.code}</TableCell>
-                    <TableCell>
+                    <Td>{item.code}</Td>
+                    <Td>
                       <Box sx={{
                         width:          '100%',
                         display:        'flex',
@@ -113,20 +116,20 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                           }}
                         />
                       </Box>
-                    </TableCell>
-                    <TableCell>{item.note}</TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>{item.note}</Td>
+                    <Td>
                       <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.createdBy.name}
-                    </TableCell>
+                    </Td>
                   </TableRow>
                 ))}
                 {edit && fileList && fileList.map((item) => (
                   <TableRow key={item.id}>
                     {edit && (
-                      <TableCell>
+                      <Td>
                         <Radio
                           value={item.id}
                           onClick={() => {
@@ -134,19 +137,19 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                           }}
                           checked={formik.values['fileId'] === item.id}
                         />
-                      </TableCell>
+                      </Td>
                     )}
-                    <TableCell>{item.code}</TableCell>
-                    <TableCell>
+                    <Td>{item.code}</Td>
+                    <Td>
                       {`${item.file.filename} (${toReadableSize(item.file.size)})`}
-                    </TableCell>
-                    <TableCell>{item.note}</TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>{item.note}</Td>
+                    <Td>
                       <DateFormat date={item.modifiedAt} />
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.createdBy.name}
-                    </TableCell>
+                    </Td>
                   </TableRow>
                 ))}
               </TableBody>

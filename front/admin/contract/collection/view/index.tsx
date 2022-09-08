@@ -1,13 +1,12 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
-import Form, { FormProps } from 'admin/contract/collection/view/Form';
+import Form from 'admin/contract/collection/view/Form';
 import Footer from 'admin/contract/collection/view/Footer';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
 
 interface Props
-  extends FormProps,
-          FormikLayoutProps<ContractCollectionVO> {
-
+  extends FormikLayoutProps<ContractCollectionVO> {
+  totalRatioCell: React.ReactNode;
 }
 
 export default function ContractCollectionTemplate(props: Props) {

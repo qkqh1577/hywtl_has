@@ -45,13 +45,13 @@ export function expectedDateTypeName(type: ExpectedDateType | '') {
 }
 
 export interface ContractCollectionVO {
-  stageList: Stage[];
+  stageList: ContractCollectionStage[];
   totalAmountNote?: string;
 }
 
-export interface Stage {
+export interface ContractCollectionStage {
   name?: string;
-  ratio?: number | '';
+  ratio?: number;
   note?: string;
-  expectedDate?: ExpectedDateType | string;
+  expectedDate?: ExpectedDateType;
 }

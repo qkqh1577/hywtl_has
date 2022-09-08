@@ -3,16 +3,13 @@ import {
   Button,
   IconButton,
   TableBody,
-  TableCell,
   TableContainer,
   TableFooter,
   TableHead,
   TableRow,
   Typography
 } from '@mui/material';
-import React, {
-  useContext,
-} from 'react';
+import React, { useContext, } from 'react';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import {
@@ -32,7 +29,11 @@ import {
 import Tooltip from 'components/Tooltip';
 import useDialog from 'components/Dialog';
 import { FormikEditable } from 'type/Form';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import RequiredMark from 'components/RequiredMark';
 
 export default function () {
@@ -46,18 +47,18 @@ export default function () {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>
+            <Th>
               <RequiredMark required={edit} text="세부 항목명" />
-            </TableCell>
-            <TableCell>
+            </Th>
+            <Th>
               <RequiredMark required={edit} text="단위" />
-            </TableCell>
-            <TableCell>
+            </Th>
+            <Th>
               <RequiredMark required={edit} text="단가" />
-            </TableCell>
-            <TableCell>비고</TableCell>
-            {edit && (<TableCell>순서</TableCell>)}
-            {edit && (<TableCell>삭제</TableCell>)}
+            </Th>
+            <Th>비고</Th>
+            {edit && (<Th>순서</Th>)}
+            {edit && (<Th>삭제</Th>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -66,10 +67,10 @@ export default function () {
           ) => {
             return (
               <TableRow key={detail.id || `added-${i}`}>
-                <TableCell>
+                <Td>
                   <TitleListField index={i} edit={edit} titleList={detail.titleList} />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {!edit && (<Typography>{detail.unit} </Typography>)}
                   {edit && (
                     <SelectField
@@ -80,8 +81,8 @@ export default function () {
                       options={['단지', '동']}
                     />
                   )}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <TextField
                     required
                     disableLabel
@@ -89,16 +90,16 @@ export default function () {
                     name={`detailList.${i}.unitPrice`}
                     label="단가"
                   />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <TextField
                     disableLabel
                     name={`detailList.${i}.note`}
                     label="비고"
                   />
-                </TableCell>
+                </Td>
                 {edit && (
-                  <TableCell>
+                  <Td>
                     <Box sx={{
                       display:        'flex',
                       width:          '100%',
@@ -143,10 +144,10 @@ export default function () {
                         </IconButton>
                       </Tooltip>
                     </Box>
-                  </TableCell>
+                  </Td>
                 )}
                 {edit && (
-                  <TableCell>
+                  <Td>
                     <Button
                       color="warning"
                       disabled={list.length <= 1}
@@ -161,7 +162,7 @@ export default function () {
                       }}>
                       삭제
                     </Button>
-                  </TableCell>
+                  </Td>
                 )}
               </TableRow>
             );
@@ -170,7 +171,7 @@ export default function () {
         {edit && (
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={6}>
+              <Td colSpan={6}>
                 <Box sx={{
                   display:        'flex',
                   flexWrap:       'nowrap',
@@ -183,7 +184,7 @@ export default function () {
                     추가
                   </Button>
                 </Box>
-              </TableCell>
+              </Td>
             </TableRow>
           </TableFooter>
         )}

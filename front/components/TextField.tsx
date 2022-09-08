@@ -91,7 +91,7 @@ export default function TextField(props: TextFieldProps) {
 
   const {
           error,
-          value,
+          value: dataValue,
           disabled,
           readOnly,
           required,
@@ -100,6 +100,7 @@ export default function TextField(props: TextFieldProps) {
           onBlur,
           label
         } = useDataProps(props);
+  const value = type === 'number' && !Number.isNaN(+dataValue) ? +dataValue : dataValue;
 
   const mappingByShape = useCallback((
     outlined: string,

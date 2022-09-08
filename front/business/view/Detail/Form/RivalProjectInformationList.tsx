@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-  RivalProjectVO
-} from 'business/domain';
+import { RivalProjectVO } from 'business/domain';
 import {
   Button,
   Grid,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -14,7 +11,11 @@ import {
 } from '@mui/material';
 import DateFormat from 'components/DateFormat';
 import dayjs from 'dayjs';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 interface Props {
   list: RivalProjectVO[];
@@ -64,23 +65,23 @@ function RivalStatisticTable({ list, businessName }: Props) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>경쟁 현황</TableCell>
-            <TableCell>전적</TableCell>
-            <TableCell>승률</TableCell>
+            <Th>경쟁 현황</Th>
+            <Th>전적</Th>
+            <Th>승률</Th>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>
+            <Td>
               {`${count}회`}
               {count > 0 ? `(최초: ${minYear}, 최근: ${maxYear})` : ''}
-            </TableCell>
-            <TableCell>
+            </Td>
+            <Td>
               {`${winCount}승 ${drawCount}무 ${loseCount}패`}
-            </TableCell>
-            <TableCell>
+            </Td>
+            <Td>
               {`${winRate}%`}
-            </TableCell>
+            </Td>
           </TableRow>
         </TableBody>
       </Table>
@@ -106,20 +107,20 @@ export default function ({ list, businessName }: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>No.</TableCell>
-                <TableCell>프로젝트 번호</TableCell>
-                <TableCell>프로젝트명</TableCell>
-                <TableCell>입찰기간</TableCell>
-                <TableCell>낙찰업체</TableCell>
-                <TableCell>상세</TableCell>
+                <Th>No.</Th>
+                <Th>프로젝트 번호</Th>
+                <Th>프로젝트명</Th>
+                <Th>입찰기간</Th>
+                <Th>낙찰업체</Th>
+                <Th>상세</Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {list.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6}>
+                  <Td colSpan={6}>
                     참여한 프로젝트가 없습니다
-                  </TableCell>
+                  </Td>
                 </TableRow>
               )}
               {list.map((project,
@@ -127,26 +128,26 @@ export default function ({ list, businessName }: Props) {
               ) =>
                 (
                   <TableRow key={project.id}>
-                    <TableCell>
+                    <Td>
                       {no}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {project.code}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {project.name}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       <DateFormat date={project.bidBeginDate} />
                       ~
                       <DateFormat date={project.bidCloseDate} />
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {project.win}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       <Button>새 창으로 상세 보기</Button>
-                    </TableCell>
+                    </Td>
                   </TableRow>
                 ))}
             </TableBody>

@@ -10,15 +10,18 @@ import React, {
 import dayjs from 'dayjs';
 import Button from 'layouts/Button';
 import {
-  Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableRow
 } from '@mui/material';
 import { ProjectComplexBuildingNameCell } from 'project_complex/view/BuildingCell';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
 import { DefaultFunction } from 'type/Function';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 interface Props {
   list: ProjectComplexBuildingVO[] | undefined;
@@ -72,7 +75,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
         <Table>
           <TableBody>
             <TableRow>
-              <TableCell variant="head">동명</TableCell>
+              <Th>동명</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -83,7 +86,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">대지 모형</TableCell>
+              <Th>대지 모형</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -94,7 +97,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">평면 형상</TableCell>
+              <Th>평면 형상</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -105,7 +108,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">층 수</TableCell>
+              <Th>층 수</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -116,7 +119,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">건축 높이</TableCell>
+              <Th>건축 높이</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -127,7 +130,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">기준층 바닥 면적</TableCell>
+              <Th>기준층 바닥 면적</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -138,7 +141,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">형상비</TableCell>
+              <Th>형상비</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -149,7 +152,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">형상비 검토 파일 ID</TableCell>
+              <Th>형상비 검토 파일 ID</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -160,7 +163,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">특별 풍하중 조건</TableCell>
+              <Th>특별 풍하중 조건</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -171,7 +174,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">실험 대상 여부</TableCell>
+              <Th>실험 대상 여부</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -182,7 +185,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">실험 종류</TableCell>
+              <Th>실험 종류</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -193,7 +196,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">견적 제작 난이도</TableCell>
+              <Th>견적 제작 난이도</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -204,7 +207,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">견적 실험 난이도</TableCell>
+              <Th>견적 실험 난이도</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -215,7 +218,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">견적 평가 난이도</TableCell>
+              <Th>견적 평가 난이도</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -226,7 +229,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">견적 보고서 난이도</TableCell>
+              <Th>견적 보고서 난이도</Th>
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
@@ -237,9 +240,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell variant="head">삭제</TableCell>
+              <Th>삭제</Th>
               {list?.map(item => (
-                <TableCell key={item.id}>
+                <Td key={item.id}>
                   <Button
                     shape="basic2"
                     onClick={() => {
@@ -247,7 +250,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                     }}>
                     삭제
                   </Button>
-                </TableCell>
+                </Td>
               ))}
             </TableRow>
           </TableBody>

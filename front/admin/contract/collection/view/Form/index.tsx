@@ -1,24 +1,24 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Button,
   IconButton,
   TableBody,
-  TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
-  Typography
 } from '@mui/material';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
 import {
+  ContractCollectionStage,
   ContractCollectionVO,
   expectedDateTypeList,
-  expectedDateTypeName,
-  Stage
+  expectedDateTypeName
 } from 'admin/contract/collection/domain';
 import {
   FormikContext,
@@ -30,26 +30,14 @@ import {
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
 import useDialog from 'components/Dialog';
-import { ColorPalette } from 'app/view/App/theme';
+import Button from 'layouts/Button';
+import AddRow from 'admin/contract/collection/view/Form/AddRow';
 
-const typographyStyle = {
-  fontWeight: 'bold',
-  fontSize:   '14px',
-  lineHeight: '22px',
-  color:      `${ColorPalette._252627}`,
-};
-const contentsStyle = {
-  width:       '100%',
-  textAlign:   'right',
-  paddingLeft: '10px',
-  color:       '#b2b4b7'
-};
-
-export interface FormProps {
-  formFooter: React.ReactNode;
+interface Props {
+  totalRatioCell: React.ReactNode;
 }
 
-export default function Form(props: FormProps) {
+export default function Form(props: Props) {
   const { error } = useDialog();
   const formikContext: FormikContextType<ContractCollectionVO> = useContext(FormikContext);
   const list = formikContext?.values.stageList ?? [];
@@ -58,55 +46,27 @@ export default function Form(props: FormProps) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                단계
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                비율
-                (%)</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                금액
-                (원)</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                시기
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                예정일
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                순서
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography
-                sx={typographyStyle}
-              >
-                삭제
-              </Typography>
-            </TableCell>
+            <Th width="10%">
+              단계
+            </Th>
+            <Th width="5%">
+              비율(%)
+            </Th>
+            <Th width="10%">
+              금액(원)
+            </Th>
+            <Th>
+              시기
+            </Th>
+            <Th width="10%">
+              예정일
+            </Th>
+            <Th width="5%">
+              순서
+            </Th>
+            <Th width="5%">
+              삭제
+            </Th>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -115,15 +75,15 @@ export default function Form(props: FormProps) {
           ) => {
             return (
               <TableRow key={i}>
-                <TableCell>
+                <Td>
                   <TextField
                     name={`stageList.${i}.name`}
                     label="단계"
                     disableLabel
                     variant="outlined"
                   />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <TextField
                     type="number"
                     name={`stageList.${i}.ratio`}
@@ -131,21 +91,19 @@ export default function Form(props: FormProps) {
                     disableLabel
                     variant="outlined"
                   />
-                </TableCell>
-                <TableCell>
-                  <Typography sx={contentsStyle}>
-                    용역금액x비율
-                  </Typography>
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td align="right">
+                  용역금액 × 비율
+                </Td>
+                <Td>
                   <TextField
                     name={`stageList.${i}.note`}
                     label="시기"
                     disableLabel
                     variant="outlined"
                   />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <SelectField
                     disableLabel
                     options={expectedDateTypeList.map(
@@ -157,8 +115,8 @@ export default function Form(props: FormProps) {
                     name={`stageList.${i}.expectedDate`}
                     label="예정일"
                   />
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <Box sx={{
                     display:        'flex',
                     width:          '100%',
@@ -172,7 +130,7 @@ export default function Form(props: FormProps) {
                           const prevList = list.filter((t,
                                                         k
                           ) => k !== i);
-                          const stageList: Stage[] = [];
+                          const stageList: ContractCollectionStage[] = [];
                           for (let k = 0; k < prevList.length; k++) {
                             if (stageList.length === i - 1) {
                               stageList.push(item);
@@ -191,7 +149,7 @@ export default function Form(props: FormProps) {
                           const prevList = list.filter((t,
                                                         k
                           ) => k !== i);
-                          const stageList: Stage[] = [];
+                          const stageList: ContractCollectionStage[] = [];
                           for (let k = 0; k < prevList.length; k++) {
                             stageList.push(prevList[k]);
                             if (stageList.length === i + 1) {
@@ -203,9 +161,10 @@ export default function Form(props: FormProps) {
                       />
                     </Tooltip>
                   </Box>
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   <Button
+                    shape="basic2"
                     color="warning"
                     disabled={list.length <= 1}
                     onClick={() => {
@@ -214,17 +173,37 @@ export default function Form(props: FormProps) {
                         return;
                       }
                       formikContext!.setFieldValue('stageList', list.filter((detail,
-                                                                              k
+                                                                             k
                       ) => k !== i));
                     }}>
                     삭제
                   </Button>
-                </TableCell>
+                </Td>
               </TableRow>
             );
           })}
+          <AddRow />
+          <TableRow>
+            <Td>
+              합계
+            </Td>
+            <Td>
+              {props.totalRatioCell}
+            </Td>
+            <Td align="right">
+              금액 합계
+            </Td>
+            <Td colSpan={4}>
+              <TextField
+                name="totalAmountNote"
+                label="금액합계에 대한 설명"
+                disableLabel
+                variant="outlined"
+                placeholder="입력"
+              />
+            </Td>
+          </TableRow>
         </TableBody>
-        {props.formFooter}
       </Table>
     </TableContainer>
   );

@@ -42,7 +42,6 @@ import {
   Box,
   Radio,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
@@ -50,7 +49,11 @@ import {
 import RadioField from 'components/RadioField';
 import SelectField from 'components/SelectField';
 import Button from 'layouts/Button';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 enum BusinessSelectorActionType {
   setModal      = 'system/business-selector/modal/set',
@@ -268,20 +271,20 @@ export function BusinessSelectorModalRoute() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>선택</TableCell>
-                      <TableCell>업체명</TableCell>
-                      <TableCell>대표명</TableCell>
+                      <Th>선택</Th>
+                      <Th>업체명</Th>
+                      <Th>대표명</Th>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {list.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={3}>조회 결과가 없습니다.</TableCell>
+                        <Td colSpan={3}>조회 결과가 없습니다.</Td>
                       </TableRow>
                     )}
                     {list.map((item) => (
                       <TableRow key={item.id}>
-                        <TableCell>
+                        <Td>
                           <Radio
                             disabled={formik.values.selectedId === 1}
                             value={item.id}
@@ -290,9 +293,9 @@ export function BusinessSelectorModalRoute() {
                               formik.setFieldValue('selectedId', item.id);
                             }}
                           />
-                        </TableCell>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.ceoName}</TableCell>
+                        </Td>
+                        <Td>{item.name}</Td>
+                        <Td>{item.ceoName}</Td>
                       </TableRow>
                     ))}
                   </TableBody>

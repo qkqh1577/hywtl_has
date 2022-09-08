@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
   TableRow
 } from '@mui/material';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import TextField from 'components/TextField';
 
 export default function Form() {
@@ -15,18 +17,17 @@ export default function Form() {
       <Table>
         <TableBody>
           <TableRow>
-            <TableCell variant="head">
+            <Th>
               제목
-            </TableCell>
-            <TableCell>
+            </Th>
+            <Td>
               <TextField
                 label="제목"
                 name="title"
                 disableLabel
                 variant="outlined"
               />
-
-            </TableCell>
+            </Td>
           </TableRow>
         </TableBody>
       </Table>

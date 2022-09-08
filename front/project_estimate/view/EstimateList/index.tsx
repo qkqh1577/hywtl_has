@@ -12,12 +12,15 @@ import dayjs from 'dayjs';
 import {
   Box,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import IconButton from 'components/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
@@ -64,26 +67,26 @@ export default function ProjectEstimateListSection(props: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>견적 번호</TableCell>
-                <TableCell>견적 구분</TableCell>
-                <TableCell>견적 업체</TableCell>
-                <TableCell>최종 여부</TableCell>
-                <TableCell>등록 일시</TableCell>
-                <TableCell>등록자</TableCell>
-                <TableCell>송부 여부</TableCell>
+                <Th>견적 번호</Th>
+                <Th>견적 구분</Th>
+                <Th>견적 업체</Th>
+                <Th>최종 여부</Th>
+                <Th>등록 일시</Th>
+                <Th>등록자</Th>
+                <Th>송부 여부</Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {(!list || list.length === 0) && (
                 <TableRow>
-                  <TableCell colSpan={7}>
+                  <Td colSpan={7}>
                     조회 결과가 없습니다.
-                  </TableCell>
+                  </Td>
                 </TableRow>
               )}
               {list && list.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>
+                  <Td>
                     <Box sx={{
                       width:          '100%',
                       display:        'flex',
@@ -98,17 +101,17 @@ export default function ProjectEstimateListSection(props: Props) {
                         children={<FontAwesomeIcon icon="download" />}
                       />
                     </Box>
-                  </TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>
                     {projectEstimateTypeName(item.type)}
-                  </TableCell>
-                  <TableCell>{item.business.name}</TableCell>
-                  <TableCell>{item.confirmed ? 'Y' : 'N'}</TableCell>
-                  <TableCell>
+                  </Td>
+                  <Td>{item.business.name}</Td>
+                  <Td>{item.confirmed ? 'Y' : 'N'}</Td>
+                  <Td>
                     <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
-                  </TableCell>
-                  <TableCell>{item.createdBy.name}</TableCell>
-                  <TableCell>{item.isSent ? 'Y' : 'N'}</TableCell>
+                  </Td>
+                  <Td>{item.createdBy.name}</Td>
+                  <Td>{item.isSent ? 'Y' : 'N'}</Td>
                 </TableRow>
               ))}
             </TableBody>

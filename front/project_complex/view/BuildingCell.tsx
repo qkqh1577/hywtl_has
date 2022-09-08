@@ -1,4 +1,3 @@
-import { TableCell } from '@mui/material';
 import React, {
   useCallback,
   useEffect
@@ -27,6 +26,7 @@ import {
   ProjectComplexBuildingId
 } from 'project_complex/domain';
 import { projectComplexAction } from 'project_complex/action';
+import { Td } from 'layouts/Table';
 
 interface FormType
   extends ProjectComplexBuildingParameter {
@@ -294,10 +294,10 @@ export function ProjectComplexBuildingNameCell({ onSubmit, fieldName, ...props }
   }, [requestBuilding]);
 
   return (
-    <TableCell>
+    <Td>
       <FormikProvider value={formik}>
         <Children formik={formik} fieldName={fieldName} />
       </FormikProvider>
-    </TableCell>
+    </Td>
   );
 }

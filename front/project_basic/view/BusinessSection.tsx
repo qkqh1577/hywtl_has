@@ -2,9 +2,7 @@ import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import {
   Box,
-  Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -14,6 +12,11 @@ import Button from 'layouts/Button';
 import { ProjectBasicBusiness } from 'project_basic/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import { businessInvolvedTypeName } from 'business/domain';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 interface Props {
   list?: ProjectBasicBusiness[];
@@ -62,49 +65,45 @@ export default function ProjectBasicBusinessSection(props: Props) {
           flexWrap: 'nowrap',
         }}>
           <TableContainer>
-            <Table sx={{
-              border: 'none',
-            }}
-
-            >
+            <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell />
-                  <TableCell><Label>업체명</Label></TableCell>
-                  <TableCell><Label>소속</Label></TableCell>
-                  <TableCell><Label>이름</Label></TableCell>
-                  <TableCell><Label>직위</Label></TableCell>
-                  <TableCell><Label>핸드폰번호</Label></TableCell>
+                  <Th />
+                  <Th><Label>업체명</Label></Th>
+                  <Th><Label>소속</Label></Th>
+                  <Th><Label>이름</Label></Th>
+                  <Th><Label>직위</Label></Th>
+                  <Th><Label>핸드폰번호</Label></Th>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {(!props.list || props.list.length === 0) && (
                   <TableRow>
-                    <TableCell colSpan={6}>등록된 관계사가 없습니다.</TableCell>
+                    <Td colSpan={6}>등록된 관계사가 없습니다.</Td>
                   </TableRow>
                 )}
                 {props.list && props.list.map((item) => (
                   <TableRow key={item.id} onClick={() => {
                     // TODO: 상세 모달
                   }}>
-                    <TableCell>
+                    <Td>
                       <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.business.name}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.businessManager.department}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.businessManager.name}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.businessManager.jobTitle}
-                    </TableCell>
-                    <TableCell>
+                    </Td>
+                    <Td>
                       {item.businessManager.mobilePhone}
-                    </TableCell>
+                    </Td>
                   </TableRow>
                 ))}
               </TableBody>

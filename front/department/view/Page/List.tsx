@@ -5,14 +5,17 @@ import {
 } from 'department/domain';
 import {
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
+import TextLink from 'components/TextLink';
 
 export interface ListProps {
   page: Page<DepartmentShort> | undefined;
@@ -25,18 +28,18 @@ export default function ({ page }: ListProps) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>조직명</TableCell>
-            <TableCell>유형</TableCell>
-            <TableCell>상위 조직</TableCell>
-            <TableCell>소속 유저 수</TableCell>
-            <TableCell>하위 조직 수</TableCell>
+            <Th>No.</Th>
+            <Th>조직명</Th>
+            <Th>유형</Th>
+            <Th>상위 조직</Th>
+            <Th>소속 유저 수</Th>
+            <Th>하위 조직 수</Th>
           </TableRow>
         </TableHead>
         <TableBody>
           {(!page || page.content.length === 0) && (
             <TableRow>
-              <TableCell colSpan={6} children="결과가 없습니다." />
+              <Td colSpan={6} children="결과가 없습니다." />
             </TableRow>
           )}
           {page && page.content.map((item,
@@ -45,24 +48,24 @@ export default function ({ page }: ListProps) {
             const no = i + 1 + page.size * page.number;
             return (
               <TableRow hover role="checkbox" key={item.id}>
-                <TableCell>{no}</TableCell>
-                <TableCell>
-                  <Link to={`/admin/department-management/${item.id}`}>
+                <Td>{no}</Td>
+                <Td>
+                  <TextLink onClick={`/admin/department-management/${item.id}`}>
                     {item.name}
-                  </Link>
-                </TableCell>
-                <TableCell>
+                  </TextLink>
+                </Td>
+                <Td>
                   {departmentCategoryName(item.category)}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.parent ? item.parent.name : '-'}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.userCount || 0}
-                </TableCell>
-                <TableCell>
+                </Td>
+                <Td>
                   {item.childrenCount || 0}
-                </TableCell>
+                </Td>
               </TableRow>
             );
           })}

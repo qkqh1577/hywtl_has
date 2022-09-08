@@ -2,21 +2,24 @@ import React from 'react';
 import {
   Box,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import {
-  ArrowUpward as UpIcon,
   ArrowDownward as DownIcon,
+  ArrowUpward as UpIcon,
 } from '@mui/icons-material';
 import {
   EstimateTemplateShort,
   testTypeName
 } from 'estimate_template/domain';
 import IconButton from 'components/IconButton';
-import { Table } from 'layouts/Table';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 
 export interface SeqModalListProps {
   list: EstimateTemplateShort[];
@@ -30,10 +33,10 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>실험타입</TableCell>
-            <TableCell>용역 항목</TableCell>
-            <TableCell>순서</TableCell>
+            <Th>No.</Th>
+            <Th>실험타입</Th>
+            <Th>용역 항목</Th>
+            <Th>순서</Th>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,10 +44,10 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
                      i
           ) => (
             <TableRow key={item.id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{testTypeName(item.testType)}</TableCell>
-              <TableCell>{item.title}</TableCell>
-              <TableCell>
+              <Td>{i + 1}</Td>
+              <Td>{testTypeName(item.testType)}</Td>
+              <Td>{item.title}</Td>
+              <Td>
                 <Box sx={{
                   display:        'flex',
                   width:          '100%',
@@ -85,7 +88,7 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
                     children={<DownIcon />}
                   />
                 </Box>
-              </TableCell>
+              </Td>
             </TableRow>
           ))}
         </TableBody>
