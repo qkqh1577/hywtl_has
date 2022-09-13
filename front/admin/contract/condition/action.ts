@@ -1,7 +1,7 @@
 import { createAction } from 'typesafe-actions';
 import {
+  ContractConditionListVO,
   ContractConditionVariableVO,
-  ContractConditionVO
 } from 'admin/contract/condition/domain';
 import { ContractConditionParameter } from 'admin/contract/condition/parameter';
 import { FormikSubmit } from 'type/Form';
@@ -13,7 +13,7 @@ export enum ContractConditionAction {
 }
 
 export const contractConditionAction = {
-  setOne:          createAction(ContractConditionAction.setOne)<ContractConditionVO | undefined>(),
+  setOne:          createAction(ContractConditionAction.setOne)<ContractConditionListVO | undefined>(),
   upsert:          createAction(ContractConditionAction.upsert)<FormikSubmit<ContractConditionParameter>>(),
   setVariableList: createAction(ContractConditionAction.setVariableList)<ContractConditionVariableVO[]>(),
 };

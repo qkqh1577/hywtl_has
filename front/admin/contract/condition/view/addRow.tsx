@@ -10,19 +10,30 @@ import {
   FormikContext,
   FormikContextType
 } from 'formik';
-import { ContractConditionVO } from 'admin/contract/condition/domain';
+import {
+  ContractConditionId,
+  ContractConditionListVO
+} from 'admin/contract/condition/domain';
 
 interface Props {
   index?: number;
   descriptionCount?: number;
+  contractConditionList?: [{
+    id?: ContractConditionId;
+    title?: string
+    descriptionList?: string[]
+    newDescription?: string;
+  }];
 }
 
 export default function (props: Props) {
-  const formik: FormikContextType<ContractConditionVO> = useContext(FormikContext);
+  const formik: FormikContextType<ContractConditionListVO> = useContext(FormikContext);
   const onAdd = () => {
     if (props.index === 0 || props.index) {
+      const values = formik.values as Props;
       formik.setFieldValue(`contractConditionList.${props.index}.descriptionList`, [
-        ...formik.values.contractConditionList[props.index].descriptionList, formik.values.contractConditionList[props.index].newDescription
+        ...formik.values.contractConditionList[props.index].descriptionList,
+        values.contractConditionList && values.contractConditionList[props.index].newDescription
       ]);
       formik.setFieldValue(`contractConditionList.${props.index}.newDescription`, '');
     }

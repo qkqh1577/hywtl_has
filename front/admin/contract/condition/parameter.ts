@@ -1,5 +1,5 @@
-import { ContractConditionVO } from 'admin/contract/condition/domain';
+import { ContractConditionListVO } from 'admin/contract/condition/domain';
 
 export interface ContractConditionParameter
-  extends ContractConditionVO {}
+  extends ContractConditionListVO {}
 

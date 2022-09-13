@@ -10,13 +10,11 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { FormikSubmit } from 'type/Form';
-import {
-  ContractConditionParameter,
-} from 'admin/contract/condition/parameter';
+import { ContractConditionParameter, } from 'admin/contract/condition/parameter';
 import { useFormik } from 'formik';
 import {
-  ContractConditionVO,
-  initialContractConditionVO
+  ContractConditionListVO,
+  initialContractConditionListVO
 } from 'admin/contract/condition/domain';
 import {
   ContractConditionAction,
@@ -29,9 +27,9 @@ function Element() {
   const upsert = useCallback((formikProps: FormikSubmit<ContractConditionParameter>) =>
     dispatch(contractConditionAction.upsert(formikProps)), [dispatch]);
 
-  const formik = useFormik<ContractConditionVO>({
+  const formik = useFormik<ContractConditionListVO>({
     enableReinitialize: true,
-    initialValues:      template ? template : initialContractConditionVO,
+    initialValues:      template ? template : initialContractConditionListVO,
     onSubmit:           (values,
                          helper
                         ) => {

@@ -6,8 +6,8 @@ import {
 } from 'redux-saga/effects';
 
 import {
-  ContractConditionVariableVO,
-  ContractConditionVO
+  ContractConditionListVO,
+  ContractConditionVariableVO
 } from 'admin/contract/condition/domain';
 import { contractConditionApi } from 'admin/contract/condition/api';
 import { dialogActions } from 'components/Dialog';
@@ -19,7 +19,7 @@ import {
 function* watchPage() {
   yield take(contractConditionAction.setOne);
   try {
-    const page: ContractConditionVO = yield call(contractConditionApi.getOne);
+    const page: ContractConditionListVO = yield call(contractConditionApi.getOne);
     yield put(contractConditionAction.setOne(page));
   }
   catch (e) {

@@ -4,22 +4,21 @@ export function ContractConditionId(id: number) {
   return id as ContractConditionId;
 }
 
-export interface ContractConditionVOFromServer {
+export interface ContractConditionVO {
   id: ContractConditionId | '';
   title: string;
   descriptionList: string[];
-  newDescription?: string;
 }
 
-export interface ContractConditionVO {
-  contractConditionList: ContractConditionVOFromServer[];
+export interface ContractConditionListVO {
+  contractConditionList: ContractConditionVO[];
 }
 
-export const initialContractConditionVO: ContractConditionVO = {
+export const initialContractConditionListVO: ContractConditionListVO = {
   contractConditionList: [],
 };
 
-export const initialContractConditionVOFromServer: ContractConditionVOFromServer = {
+export const initialContractConditionVO: ContractConditionVO = {
   id:              '',
   title:           '',
   descriptionList: []
