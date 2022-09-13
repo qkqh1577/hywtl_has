@@ -35,11 +35,9 @@ export default function VariableList({ variableList }: VariableListProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {variableList && variableList.map((item,
-                                                 i
-              ) => {
+              {variableList && variableList.map((item) => {
                 return (
-                  <TableRow key={i}>
+                  <TableRow key={item.name}>
                     <Td>
                       {item.name}
                     </Td>
@@ -49,7 +47,7 @@ export default function VariableList({ variableList }: VariableListProps) {
                   </TableRow>
                 );
               })}
-              {!variableList && (
+              {(!variableList || variableList.length === 0) && (
                 <TableRow>
                   <Td colSpan={2}>
                     데이터가 없습니다.

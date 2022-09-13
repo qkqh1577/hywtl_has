@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.estimate_content.domain;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
