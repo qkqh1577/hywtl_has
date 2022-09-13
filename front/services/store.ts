@@ -22,6 +22,7 @@ import { businessSelectorSaga } from 'components/BusinessSelector';
 import contractBasicSage from 'admin/contract/basic/saga';
 import contractCollectionSaga from 'admin/contract/collection/saga';
 import contractConditionSaga from 'admin/contract/condition/saga';
+import projectLogSaga from 'project_log/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -43,6 +44,7 @@ function* saga() {
     contractBasicSage(),
     contractCollectionSaga(),
     contractConditionSaga(),
+    projectLogSaga(),
   ]);
 }
 
