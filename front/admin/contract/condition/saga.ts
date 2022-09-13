@@ -5,7 +5,10 @@ import {
   take
 } from 'redux-saga/effects';
 
-import { ContractConditionVO } from 'admin/contract/condition/domain';
+import {
+  ContractConditionVariableVO,
+  ContractConditionVO
+} from 'admin/contract/condition/domain';
 import { contractConditionApi } from 'admin/contract/condition/api';
 import { dialogActions } from 'components/Dialog';
 import {
@@ -43,7 +46,17 @@ function* watchUpsert() {
     }
   }
 }
+
+function* watchVariableList() {
+  while (true) {
+    yield take(ContractConditionAction.setVariableList);
+    const list: ContractConditionVariableVO[] = yield call(contractConditionApi.getVariableList);
+    yield put(contractConditionAction.setVariableList(list));
+  }
+}
+
 export default function* contractConditionSaga() {
   yield fork(watchPage);
   yield fork(watchUpsert);
+  yield fork(watchVariableList);
 };

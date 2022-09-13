@@ -18,11 +18,14 @@ import {
   ContractConditionVO,
   initialContractConditionVO
 } from 'admin/contract/condition/domain';
-import { contractConditionAction } from 'admin/contract/condition/action';
+import {
+  ContractConditionAction,
+  contractConditionAction
+} from 'admin/contract/condition/action';
 
 function Element() {
   const dispatch = useDispatch();
-  const { template } = useSelector((root: RootState) => root.contractCondition);
+  const { template, variableList } = useSelector((root: RootState) => root.contractCondition);
   const upsert = useCallback((formikProps: FormikSubmit<ContractConditionParameter>) =>
     dispatch(contractConditionAction.upsert(formikProps)), [dispatch]);
 
@@ -36,16 +39,20 @@ function Element() {
         values,
         ...helper
       });
-      console.log('submit');
     }
   });
 
   useEffect(() => {
     dispatch(contractConditionAction.setOne(template));
+    dispatch({
+      type: ContractConditionAction.setVariableList,
+    });
   }, []);
   return (
     <ContractConditionTemplate
-     formik={formik}/>
+      formik={formik}
+      variableList={variableList}
+    />
   );
 }
 

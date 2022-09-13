@@ -1,4 +1,7 @@
-import { ContractConditionVO } from 'admin/contract/condition/domain';
+import {
+  ContractConditionVariableVO,
+  ContractConditionVO
+} from 'admin/contract/condition/domain';
 import {
   createReducer
 } from 'typesafe-actions';
@@ -6,6 +9,7 @@ import { ContractConditionAction } from 'admin/contract/condition/action';
 
 export interface ContractConditionState {
   template?: ContractConditionVO;
+  variableList?: ContractConditionVariableVO[];
 }
 
 const initialContractConditionState = {};
@@ -16,5 +20,11 @@ export const contractConditionReducer = createReducer(initialContractConditionSt
                                     ) => ({
     ...state,
     template: action.payload,
+  }),
+  [ContractConditionAction.setVariableList]: (state,
+                                              action
+                                    ) => ({
+    ...state,
+    variableList: action.payload,
   })
 });
