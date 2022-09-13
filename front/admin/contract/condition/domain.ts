@@ -9,3 +9,22 @@ export interface ContractConditionVO {
   title: string;
   descriptionList: string[];
 }
+
+export interface ContractConditionListVO {
+  contractConditionList: ContractConditionVO[];
+}
+
+export const initialContractConditionListVO: ContractConditionListVO = {
+  contractConditionList: [],
+};
+
+export const initialContractConditionVO: ContractConditionVO = {
+  id:              '',
+  title:           '',
+  descriptionList: []
+};
+
+export interface ContractConditionVariableVO {
+  name: string;
+  note: string;
+}

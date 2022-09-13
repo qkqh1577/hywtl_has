@@ -1,10 +1,5 @@
-import { ContractConditionVO } from 'admin/contract/condition/domain';
+import { ContractConditionListVO } from 'admin/contract/condition/domain';
 
 export interface ContractConditionParameter
-  extends ContractConditionVO {}
+  extends ContractConditionListVO {}
 
-export const initialContractConditionParameter: ContractConditionParameter = {
-  id:              '',
-  title:           '',
-  descriptionList: [],
-};

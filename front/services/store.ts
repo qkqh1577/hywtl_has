@@ -21,7 +21,7 @@ import projectEstimateSaga from 'project_estimate/saga';
 import { businessSelectorSaga } from 'components/BusinessSelector';
 import contractBasicSage from 'admin/contract/basic/saga';
 import contractCollectionSaga from 'admin/contract/collection/saga';
-import contractConditionSaga from 'admin/contract/condition/action';
+import contractConditionSaga from 'admin/contract/condition/saga';
 
 const middleware = createSagaMiddleware();
 

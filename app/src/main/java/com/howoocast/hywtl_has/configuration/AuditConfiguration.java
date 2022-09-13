@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.configuration;
 
+import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class AuditConfiguration {
                 return Optional.empty();
             }
             entityManager.setFlushMode(FlushModeType.COMMIT);
-            Optional<Long> result = userRepository.findByUsername(authentication.getName())
+            Optional<Long> result = userRepository.findByUsername(UsernameExtractor.get(authentication))
                 .map(User::getId);
             entityManager.setFlushMode(FlushModeType.AUTO);
             return result;

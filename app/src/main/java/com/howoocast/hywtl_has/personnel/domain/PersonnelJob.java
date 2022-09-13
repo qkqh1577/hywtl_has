@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = PersonnelJob.KEY)
 @Where(clause = "deleted_at is null")
 @SQLDelete(sql = "update " + PersonnelJob.KEY
-    + " set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+    + " set deleted_at = now() where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonnelJob extends CustomEntity {

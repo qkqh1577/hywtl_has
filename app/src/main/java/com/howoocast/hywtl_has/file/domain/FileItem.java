@@ -44,7 +44,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Table(name = FileItem.KEY)
 @Where(clause = "deleted_at is null")
 @SQLDelete(sql = "update " + FileItem.KEY
-    + " set deleted_at = now(), deleted_by = (select u.id from User u where u.username = #{#principal.username}) where id=?")
+    + " set deleted_at = now() where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileItem extends CustomEntity {
