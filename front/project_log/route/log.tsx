@@ -20,6 +20,7 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
+import dayjs from 'dayjs';
 
 function Element() {
   const dispatch = useDispatch();
@@ -38,13 +39,20 @@ function Element() {
 
   const formik = useFormik<ProjectLogQuery>({
     initialValues: filter ?? initialProjectLogQuery,
-    onSubmit: (values, helper) => {
+    onSubmit:      (values,
+                    helper
+                   ) => {
       setFilter({
-        values: {...values, page: 0},
+        values: {
+          ...values,
+          createdAt: values.createdAt ? dayjs(values.createdAt)
+          .format('YYYY-MM-DD') : undefined,
+          page:      0
+        },
         ...helper
-      })
+      });
     }
-  })
+  });
 
   const onPageChange = (event,
                         page
@@ -57,8 +65,8 @@ function Element() {
     setFilter({ ...formik, values: { size, page: 0 } });
   };
   useEffect(() => {
-    if(detail && detail.id !== id){
-      dispatch(projectLogAction.setId(detail.id))
+    if (detail && detail.id !== id) {
+      dispatch(projectLogAction.setId(detail.id));
       setFilter(formik);
     }
   }, [detail]);
@@ -77,6 +85,6 @@ function Element() {
 }
 
 export const projectLogRoute: AppRoute = {
-  path: `/project/sales-management/:id/log`,
+  path:    `/project/sales-management/:id/log`,
   element: <Element />
-}
+};

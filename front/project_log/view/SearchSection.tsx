@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
-import { tabNameList } from 'project_log/query';
 import SelectField from 'components/SelectField';
 
 interface Props {
@@ -34,10 +33,18 @@ export default function ({ totalCount }: Props) {
         }}>
           <SelectField
             disableLabel
-            options={tabNameList}
             name="tabName"
             label="탭명 검색"
             variant="outlined"
+            options={[
+              '기본 정보',
+              '단지 정보',
+              '견적/계약',
+              '진행 정보',
+              '자료',
+              '일정',
+              '이력'
+            ]}
           />
         </Box>
         <Box sx={{

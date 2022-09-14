@@ -11,19 +11,25 @@ interface Props
 
 export default function ProjectLog(props: Props) {
   return (
-      <>
-        <Box sx={{
-          display:      'flex',
-          width:        '100%',
-          padding:      '15px 20px',
-          border:       `1px solid ${ColorPalette._e4e9f2}`,
-          borderRadius: '5px',
-          marginBottom: '20px',
-        }}>
-          <SearchSection totalCount={props.page?.content.length}/>
-        </Box>
-        <LogTable {...props} />
-        <Footer {...props} />
-      </>
+    <Box sx={{
+      display:      'flex',
+      width:        '100%',
+      flexWrap:     'wrap',
+      alignContent: 'flex-start',
+      flex:         1,
+    }}>
+      <Box sx={{
+        display:      'flex',
+        width:        '100%',
+        flexWrap:     'nowrap',
+        border:       `1px solid ${ColorPalette._e4e9f2}`,
+        borderRadius: '5px',
+        marginBottom: '15px',
+      }}>
+        <SearchSection totalCount={props.page?.content.length} />
+      </Box>
+      <LogTable {...props} />
+      <Footer {...props} />
+    </Box>
   );
 };

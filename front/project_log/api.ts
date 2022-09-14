@@ -3,16 +3,12 @@ import { ProjectLogVO } from 'project_log/domain';
 import { ProjectLogQuery } from 'project_log/query';
 import { ProjectId } from 'project/domain';
 import apiClient from 'services/api';
-import dayjs from 'dayjs';
 
 class ProjectLogApi {
-  async getPage(projectId: ProjectId, query: ProjectLogQuery
+  async getPage(projectId: ProjectId,
+                query: ProjectLogQuery
   ): Promise<Page<ProjectLogVO>> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/log`, {
-      ...query,
-      createdAt: query.createdAt ? dayjs(query.createdAt)
-                  .format('YYYY-MM-DD') : undefined,
-    });
+    const { data } = await apiClient.get(`/project/sales/${projectId}/log`, query);
     return data;
   }
 }

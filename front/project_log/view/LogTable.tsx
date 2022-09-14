@@ -59,7 +59,8 @@ export default function LogTable({ page }: ListProps) {
             return (
               <TableRow hover role="checkbox" key={i}>
                 <Td>
-                  {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm')}
+                  {dayjs(item.createdAt)
+                  .format('YYYY-MM-DD hh:mm')}
                 </Td>
                 <Td>
                   {item.tabName}
@@ -77,7 +78,7 @@ export default function LogTable({ page }: ListProps) {
                   {item.after}
                 </Td>
                 <Td>
-                  {item.username}({item.name})
+                  {item.user.username}({item.user.name})
                 </Td>
               </TableRow>
             );

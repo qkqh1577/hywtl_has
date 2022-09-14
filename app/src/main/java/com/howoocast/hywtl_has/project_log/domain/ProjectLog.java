@@ -2,16 +2,19 @@ package com.howoocast.hywtl_has.project_log.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
@@ -72,7 +75,7 @@ public class ProjectLog extends CustomEntity {
      * 변경 전
      */
     @Column(
-        name="before_state",
+        name = "before_state",
         updatable = false
     )
     private String before;
@@ -81,7 +84,7 @@ public class ProjectLog extends CustomEntity {
      * 변경 후
      */
     @Column(
-        name="after_state",
+        name = "after_state",
         updatable = false
     )
     private String after;
@@ -96,4 +99,7 @@ public class ProjectLog extends CustomEntity {
     )
     private Long userId;
 
+    @Transient
+    @Setter
+    private User user;
 }

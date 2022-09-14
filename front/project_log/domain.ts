@@ -1,3 +1,5 @@
+import { UserShortVO } from 'user/domain';
+
 export interface ProjectLogVO {
   createdAt?: Date;
   tabName: string;
@@ -5,6 +7,5 @@ export interface ProjectLogVO {
   itemName: string;
   before?: string;
   after?: string;
-  username: string;
-  name: string;
+  user: UserShortVO;
 }
