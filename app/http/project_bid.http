@@ -1,0 +1,36 @@
+### get
+GET http://localhost:8080/project/sales/1/bid
+
+### update
+PUT http://localhost:8080/project/sales/1/bid
+Content-Type: application/json
+
+{
+  "beginDate": "2022-07-01",
+  "closeDate": "2022-10-30",
+  "bidDate": "2022-09-14",
+  "testAmount": 16500,
+  "reviewAmount": 2500,
+  "totalAmount": 19000,
+  "expectedDuration": "7주/9주"
+}
+
+### get rival list
+GET http://localhost:8080/project/sales/1/rival-bid
+
+### push rival bid
+POST http://localhost:8080/project/sales/1/rival-bid
+
+### update rival bid 1
+PATCH http://localhost:8080/project/sales/rival-bid/1
+Content-Type: application/json
+
+{
+  "businessId": 2,
+  "testAmount": 15000,
+  "reviewAmount": 1500,
+  "totalAmount": 16500
+}
+
+### delete rival bid 2
+DELETE http://localhost:8080/project/sales/rival-bid/2

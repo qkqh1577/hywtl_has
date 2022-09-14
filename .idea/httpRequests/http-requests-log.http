@@ -1,0 +1,91 @@
+GET http://localhost:8080/project/sales/1/bid
+
+<> 2022-09-14T160048.200.json
+
+###
+
+PUT http://localhost:8080/project/sales/1/bid
+Content-Type: application/json
+
+{
+  "beginDate": "2022-07-01",
+  "closeDate": "2022-10-30",
+  "bidDate": "2022-09-14",
+  "testAmount": 16500,
+  "reviewAmount": 2500,
+  "totalAmount": 19000,
+  "expectedDuration": "7주/9주"
+}
+
+###
+
+GET http://localhost:8080/project/sales/1/bid
+
+<> 2022-09-14T160041.200.json
+
+###
+
+GET http://localhost:8080/project/sales/1/rival-bid
+
+<> 2022-09-14T155749.200.json
+
+###
+
+PATCH http://localhost:8080/project/sales/rival-bid/1
+Content-Type: application/json
+
+{
+  "businessId": 2,
+  "testAmount": 15000,
+  "reviewAmount": 1500,
+  "totalAmount": 16500
+}
+
+###
+
+POST http://localhost:8080/project/sales/1/rival-bid
+
+###
+
+GET http://localhost:8080/project/sales/1/rival-estimate
+
+<> 2022-09-14T120440.200.json
+
+###
+
+DELETE http://localhost:8080/project/sales/rival-estimate/2
+
+###
+
+GET http://localhost:8080/project/sales/1/rival-estimate
+
+<> 2022-09-14T120413.200.json
+
+###
+
+PATCH http://localhost:8080/project/sales/rival-estimate/1
+Content-Type: application/json
+
+{
+  "businessId": 1,
+  "testAmount": 15000,
+  "reviewAmount": 1500,
+  "totalAmount": 16500
+}
+
+###
+
+POST http://localhost:8080/project/sales/1/rival-estimate
+
+###
+
+POST http://localhost:8080/project/sales/1/rival-estimate
+
+###
+
+GET http://localhost:8080/project/sales/1/rival-estimate
+
+<> 2022-09-14T120403.200.json
+
+###
+
