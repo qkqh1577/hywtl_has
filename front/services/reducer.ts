@@ -8,11 +8,11 @@ import {
 } from 'user/reducer';
 import {
   loginReducer,
-  menuReducer,
   LoginState,
+  menuReducer,
   MenuState,
-  ProjectDrawerState,
   projectDrawerReducer,
+  ProjectDrawerState,
 } from 'app/repository/reducer';
 import {
   dialogReducer,
@@ -56,7 +56,7 @@ import {
 } from 'project_complex/reducer';
 import {
   projectEstimateReducer,
-  ProjectEstimateState
+  ProjectEstimateState,
 } from 'project_estimate/reducer';
 import {
   businessSelectorReducer,
@@ -74,6 +74,10 @@ import {
   contractConditionReducer,
   ContractConditionState
 } from 'admin/contract/condition/reducer';
+import {
+  rivalEstimateReducer,
+  RivalEstimateState
+} from 'rival_estimate/reducer';
 
 export interface RootState {
   user: UserState;
@@ -95,6 +99,7 @@ export interface RootState {
   contractBasic: ContractBasicState;
   contractCollection: ContractCollectionState;
   contractCondition: ContractConditionState;
+  rivalEstimate: RivalEstimateState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -117,6 +122,7 @@ const reducer = combineReducers<RootState>({
   contractBasic:      contractBasicReducer,
   contractCollection: contractCollectionReducer,
   contractCondition:  contractConditionReducer,
+  rivalEstimate:      rivalEstimateReducer,
 });
 
 const rootReducer: Reducer = (state,

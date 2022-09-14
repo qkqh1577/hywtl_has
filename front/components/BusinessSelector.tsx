@@ -54,6 +54,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
+import { DefaultFunction } from 'type/Function';
 
 enum BusinessSelectorActionType {
   setModal      = 'system/business-selector/modal/set',
@@ -239,7 +240,7 @@ export function BusinessSelectorModalRoute() {
               <Box sx={{ width: '15%', display: 'flex' }}>
                 <SelectField
                   disableLabel
-                  status={formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+                  status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
                   variant="outlined"
                   name="keywordType"
                   label="검색어 구분"
@@ -249,7 +250,7 @@ export function BusinessSelectorModalRoute() {
               <Box sx={{ width: '70%', display: 'flex' }}>
                 <TextField
                   disableLabel
-                  status={formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+                  status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
                   variant="outlined"
                   name="keyword"
                   label="검색어"
@@ -258,7 +259,7 @@ export function BusinessSelectorModalRoute() {
               </Box>
               <Box sx={{ width: '10%', display: 'flex' }}>
                 <Button
-                  disabled={formik.values.selectedId === 1}
+                  disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
                   onClick={() => {
                     setFilter(formik);
                   }}>
@@ -286,7 +287,7 @@ export function BusinessSelectorModalRoute() {
                       <TableRow key={item.id}>
                         <Td>
                           <Radio
-                            disabled={formik.values.selectedId === 1}
+                            disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
                             value={item.id}
                             checked={item.id === formik.values.selectedId}
                             onClick={() => {
@@ -322,10 +323,15 @@ interface FieldProps
     | 'endAdornment'
     | 'startAdornment'> {
   allowMyBusiness?: boolean;
+  afterChange?: DefaultFunction;
 }
 
-export default function BusinessSelector({ allowMyBusiness, ...props }: FieldProps) {
-
+export default function BusinessSelector(props: FieldProps) {
+  const {
+          allowMyBusiness,
+          afterChange,
+          ...restProps
+        } = props;
   const dispatch = useDispatch();
   const { updateId } = useSelector((root: RootState) => root.businessSelector);
   const formik = useContext(FormikContext);
@@ -352,6 +358,9 @@ export default function BusinessSelector({ allowMyBusiness, ...props }: FieldPro
   useEffect(() => {
     if (updateId) {
       formik.setFieldValue(name, { id: updateId });
+      if (props.afterChange) {
+        props.afterChange();
+      }
       dispatch(businessSelectorAction.requestUpdate(undefined));
       dispatch(businessSelectorAction.setModal(undefined));
     }
@@ -359,7 +368,7 @@ export default function BusinessSelector({ allowMyBusiness, ...props }: FieldPro
 
   return (
     <TextField
-      {...props}
+      {...restProps}
       name={`${name}.name`}
       status={FieldStatus.ReadOnly}
       endAdornment={
