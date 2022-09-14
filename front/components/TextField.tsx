@@ -23,11 +23,13 @@ export interface TextFieldProps
             | 'label'
             | 'value'
             | 'fullWidth'
+            | 'type'
             | 'disabled'> {
   endAdornment?: React.ReactNode;
   startAdornment?: React.ReactNode;
   name: string;
   status?: FieldStatus;
+  type?: MuiTextFieldProps['type'] | 'amount';
 }
 
 interface FieldProps
@@ -100,7 +102,8 @@ export default function TextField(props: TextFieldProps) {
           onBlur,
           label
         } = useDataProps(props);
-  const value = type === 'number' && !Number.isNaN(+dataValue) ? +dataValue : dataValue;
+
+  const value = (type === 'number' || type === 'amount') && !Number.isNaN(+dataValue) ? +dataValue : dataValue;
 
   const mappingByShape = useCallback((
     outlined: string,
@@ -120,7 +123,6 @@ export default function TextField(props: TextFieldProps) {
     return labelStandard;
   }, [variant, size, disableLabel]);
 
-
   const inputProps: MuiTextFieldProps['inputProps'] = {
     style: {
       fontFamily:      'Noto Sans KR',
@@ -133,11 +135,12 @@ export default function TextField(props: TextFieldProps) {
       borderRadius:    useMemo(() => variant === 'outlined' ? '5px' : '0', [variant]),
       backgroundColor: ColorPalette._ffffff,
       boxSizing:       'border-box',
+      textAlign:       type === 'amount' ? 'right' : 'left',
     },
   };
 
   const fieldProps: FieldProps = {
-    type,
+    type:       type === 'amount' ? 'number' : type,
     name,
     value,
     variant,
@@ -167,7 +170,6 @@ export default function TextField(props: TextFieldProps) {
       padding: 0,
     }
   } : props.sx, [props.multiline, props.sx]);
-
 
   if (!disableLabel) {
     return (

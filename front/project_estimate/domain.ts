@@ -41,7 +41,3 @@ export interface ProjectEstimateVO {
   isSent: boolean;
   modifiedAt?: Date;
 }
-
-export interface ProjectCustomEstimateVO {
-
-}

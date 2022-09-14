@@ -1,7 +1,7 @@
 import { ProjectId } from 'project/domain';
 import {
   ProjectEstimateType,
-  ProjectEstimateVO
+  ProjectEstimateVO,
 } from 'project_estimate/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectEstimateActionType } from 'project_estimate/action';

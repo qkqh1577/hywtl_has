@@ -60,8 +60,7 @@ export default function ProjectEstimateListSection(props: Props) {
       modifiedAt={modifiedAt}
       titleRightComponent={
         <ButtonSection openAddModal={props.openAddModal} />
-      }
-    >
+      }>
       <Box sx={{ width: '100%' }}>
         <TableContainer>
           <Table>

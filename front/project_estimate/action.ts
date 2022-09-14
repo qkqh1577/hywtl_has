@@ -2,12 +2,12 @@ import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import {
   ProjectEstimateType,
-  ProjectEstimateVO
+  ProjectEstimateVO,
 } from 'project_estimate/domain';
 import { ProjectCustomEstimateAddParameter } from 'project_estimate/parameter';
 
 export enum ProjectEstimateActionType {
-  setProjectId      = 'project/sales/estimate/projectId/set',
+  setProjectId      = 'project/sales/estimate/project-id/set',
   setList           = 'project/sales/estimate-list/set',
   setDetail         = 'project/sales/estimate/set',
   setCustomAddModal = 'project/sales/custom-estimate/add-modal/set',
