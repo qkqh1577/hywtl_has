@@ -22,7 +22,6 @@ public class ProjectLogView {
         target.itemName = source.getItemName();
         target.before = source.getBefore();
         target.after = source.getAfter();
-
         return target;
     }
 }

@@ -12,6 +12,7 @@ import {
 } from 'layouts/Table';
 import Page from 'type/Page';
 import { ProjectLogVO } from 'project_log/domain';
+import dayjs from 'dayjs';
 
 export interface ListProps {
   page: Page<ProjectLogVO> | undefined;
@@ -58,7 +59,7 @@ export default function LogTable({ page }: ListProps) {
             return (
               <TableRow hover role="checkbox" key={i}>
                 <Td>
-                  {item.createdAt}
+                  {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm')}
                 </Td>
                 <Td>
                   {item.tabName}

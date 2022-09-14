@@ -1,22 +1,29 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import LogTable, { ListProps } from 'project_log/view/LogTable';
-import SearchForm from 'project_log/view/SearchForm';
-import { ProjectLogQuery } from 'project_log/query';
+import SearchSection from 'project_log/view/SearchSection';
 import Footer, { FooterProps } from 'project_log/view/Footer';
+import { Box } from '@mui/material';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props
-  extends FormikLayoutProps<ProjectLogQuery>,
-          ListProps,
+  extends ListProps,
           FooterProps {}
 
 export default function ProjectLog(props: Props) {
   return (
-    <PageLayout
-      filter={<SearchForm />}
-      body={<LogTable {...props} />}
-      footer={<Footer {...props} />}
-      formik={props.formik}
-    />
+      <>
+        <Box sx={{
+          display:      'flex',
+          width:        '100%',
+          padding:      '15px 20px',
+          border:       `1px solid ${ColorPalette._e4e9f2}`,
+          borderRadius: '5px',
+          marginBottom: '20px',
+        }}>
+          <SearchSection totalCount={props.page?.content.length}/>
+        </Box>
+        <LogTable {...props} />
+        <Footer {...props} />
+      </>
   );
 };

@@ -31,10 +31,16 @@ public class ProjectLog extends CustomEntity {
 
     public static final String KEY = "project_log";
 
+    /**
+     * 프로젝트
+     */
     @NotNull
     @ManyToOne
     private Project project;
 
+    /**
+     * 탭명
+     */
     @NotBlank
     @Column(
         nullable = false,
@@ -42,6 +48,9 @@ public class ProjectLog extends CustomEntity {
     )
     private String tabName;
 
+    /**
+     * 섹션명
+     */
     @NotBlank
     @Column(
         nullable = false,
@@ -49,6 +58,9 @@ public class ProjectLog extends CustomEntity {
     )
     private String sectionName;
 
+    /**
+     * 항목명
+     */
     @NotBlank
     @Column(
         nullable = false,
@@ -56,18 +68,27 @@ public class ProjectLog extends CustomEntity {
     )
     private String itemName;
 
+    /**
+     * 변경 전
+     */
     @Column(
         name="before_state",
         updatable = false
     )
     private String before;
 
+    /**
+     * 변경 후
+     */
     @Column(
         name="after_state",
         updatable = false
     )
     private String after;
 
+    /**
+     * 유저 id
+     */
     @NotNull
     @Column(
         nullable = false,

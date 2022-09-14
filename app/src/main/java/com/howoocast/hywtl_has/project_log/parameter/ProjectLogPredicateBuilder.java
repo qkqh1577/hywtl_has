@@ -24,9 +24,9 @@ public class ProjectLogPredicateBuilder {
     }
 
 
-    public ProjectLogPredicateBuilder keyword(@Nullable String keyword) {
-        if (Objects.nonNull(keyword) && !keyword.isEmpty()) {
-            criteria.and(user.username.containsIgnoreCase(keyword));
+    public ProjectLogPredicateBuilder keyword(@Nullable Long id) {
+        if (Objects.nonNull(id)) {
+            criteria.and(user.id.eq(id));
         }
         return this;
     }

@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 class ProjectLogApi {
   async getPage(projectId: ProjectId, query: ProjectLogQuery
   ): Promise<Page<ProjectLogVO>> {
-    console.log("projectId inside of API : ", projectId);
     const { data } = await apiClient.get(`/project/sales/${projectId}/log`, {
       ...query,
       createdAt: query.createdAt ? dayjs(query.createdAt)

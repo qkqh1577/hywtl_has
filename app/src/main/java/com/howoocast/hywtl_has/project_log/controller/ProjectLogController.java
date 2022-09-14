@@ -3,6 +3,8 @@ package com.howoocast.hywtl_has.project_log.controller;
 import com.howoocast.hywtl_has.project_log.parameter.ProjectLogPredicateBuilder;
 import com.howoocast.hywtl_has.project_log.service.ProjectLogService;
 import com.howoocast.hywtl_has.project_log.view.ProjectLogView;
+import com.howoocast.hywtl_has.user.service.UserService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectLogController {
 
-    private final ProjectLogService service;
+    private final ProjectLogService projectLogService;
+    private final UserService userService;
 
     @GetMapping("/project/sales/{projectId}/log")
     public Page<ProjectLogView> page(
@@ -29,10 +32,12 @@ public class ProjectLogController {
         @RequestParam(required = false) String keyword,
         Pageable pageable
     ) {
-        return service.page(
+        return projectLogService.page(
             new ProjectLogPredicateBuilder()
                 .searchProject(projectId)
-                .keyword(keyword)
+                .keyword(
+                    Objects.nonNull(keyword) && !keyword.isBlank()
+                        ? userService.get(keyword).getId() : null)
                 .searchTabName(tabName)
                 .searchCreatedAt(createdAt)
                 .build(),

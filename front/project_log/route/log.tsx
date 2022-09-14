@@ -16,7 +16,10 @@ import {
 } from 'project_log/query';
 import { projectLogAction } from 'project_log/action';
 import { FormikSubmit } from 'type/Form';
-import { useFormik } from 'formik';
+import {
+  FormikProvider,
+  useFormik
+} from 'formik';
 
 function Element() {
   const dispatch = useDispatch();
@@ -61,12 +64,14 @@ function Element() {
   }, [detail]);
   return (
     <ProjectContainer>
-      <ProjectLog
-        page={page}
-        formik={formik}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-      />
+      <FormikProvider value={formik}>
+        <ProjectLog
+          page={page}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+        />
+      </FormikProvider>
+
     </ProjectContainer>
   );
 }
