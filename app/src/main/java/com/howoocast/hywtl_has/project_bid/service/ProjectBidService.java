@@ -37,7 +37,7 @@ public class ProjectBidService {
         ProjectBidParameter parameter
     ) {
         ProjectBid instance = this.load(projectId);
-        Business win = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(parameter.getBusinessId());
+        Business win = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(parameter.getWinId());
         instance.update(
             parameter.getBeginDate(),
             parameter.getCloseDate(),

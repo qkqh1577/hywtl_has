@@ -23,6 +23,7 @@ import contractBasicSage from 'admin/contract/basic/saga';
 import contractCollectionSaga from 'admin/contract/collection/saga';
 import contractConditionSaga from 'admin/contract/condition/saga';
 import rivalEstimateSaga from 'rival_estimate/saga';
+import projectBidSaga from 'project_bid/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -45,6 +46,7 @@ function* saga() {
     contractCollectionSaga(),
     contractConditionSaga(),
     rivalEstimateSaga(),
+    projectBidSaga(),
   ]);
 }
 

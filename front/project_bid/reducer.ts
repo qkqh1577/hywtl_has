@@ -1,0 +1,35 @@
+import { ProjectBidVO } from 'project_bid/domain';
+import { ProjectId } from 'project/domain';
+import { createReducer } from 'typesafe-actions';
+import { ProjectBidActionType } from 'project_bid/action';
+
+export interface ProjectBidState {
+  projectId?: ProjectId;
+  detail?: ProjectBidVO;
+  requestUpdate: string;
+}
+
+const initial: ProjectBidState = {
+  requestUpdate: 'idle'
+};
+
+export const projectBidReducer = createReducer(initial, {
+  [ProjectBidActionType.setProjectId]:  (state,
+                                         action
+                                        ) => ({
+    ...state,
+    projectId: action.payload,
+  }),
+  [ProjectBidActionType.setDetail]:     (state,
+                                         action
+                                        ) => ({
+    ...state,
+    detail: action.payload
+  }),
+  [ProjectBidActionType.requestUpdate]: (state,
+                                         action
+                                        ) => ({
+    ...state,
+    requestUpdate: action.payload,
+  })
+});

@@ -2,7 +2,7 @@
 GET http://localhost:8080/project/sales/1/bid
 
 ### update
-PUT http://localhost:8080/project/sales/1/bid
+PATCH http://localhost:8080/project/sales/1/bid
 Content-Type: application/json
 
 {

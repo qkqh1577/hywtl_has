@@ -16,7 +16,7 @@ public class ProjectBidParameter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate closeDate;
 
-    private Long BusinessId;
+    private Long winId;
 
     private String bidOrganization;
 
