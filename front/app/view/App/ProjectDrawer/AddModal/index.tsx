@@ -93,7 +93,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <SelectField
                   required
-                  name="estimateType"
+                  name="bidType"
                   label="견적 구분"
                   options={projectBasicBidTypeList.map((item) => ({
                     key:  item as string,
