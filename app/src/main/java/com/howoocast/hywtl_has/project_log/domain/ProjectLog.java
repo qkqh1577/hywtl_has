@@ -1,10 +1,14 @@
 package com.howoocast.hywtl_has.project_log.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import java.time.LocalDateTime;
+import com.howoocast.hywtl_has.project.domain.Project;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,22 +28,51 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectLog extends CustomEntity {
+
     public static final String KEY = "project_log";
 
-    private LocalDateTime date;
+    @NotNull
+    @ManyToOne
+    private Project project;
 
+    @NotBlank
+    @Column(
+        nullable = false,
+        updatable = false
+    )
     private String tabName;
 
+    @NotBlank
+    @Column(
+        nullable = false,
+        updatable = false
+    )
     private String sectionName;
 
+    @NotBlank
+    @Column(
+        nullable = false,
+        updatable = false
+    )
     private String itemName;
 
+    @Column(
+        name="before_state",
+        updatable = false
+    )
     private String before;
 
+    @Column(
+        name="after_state",
+        updatable = false
+    )
     private String after;
 
-    private String username;
-
-    private String name;
+    @NotNull
+    @Column(
+        nullable = false,
+        updatable = false
+    )
+    private Long userId;
 
 }

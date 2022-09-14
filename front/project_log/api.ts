@@ -2,119 +2,19 @@ import Page from 'type/Page';
 import { ProjectLogVO } from 'project_log/domain';
 import { ProjectLogQuery } from 'project_log/query';
 import { ProjectId } from 'project/domain';
-
-const testData: Page<ProjectLogVO> = {
-  totalPages:    0,
-  totalElements: 0,
-  size:          10,
-  number:        0,
-  content:       [
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    }, {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    }, {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-    {
-      tabName:     '기본정보',
-      sectionName: '견적서',
-      itemName:    '시스템 견적서 수정',
-      before:      '-',
-      after:       '-',
-      username:    'admin',
-      name:        '홍길동',
-    },
-  ]
-};
+import apiClient from 'services/api';
+import dayjs from 'dayjs';
 
 class ProjectLogApi {
-  async getPage(id: ProjectId, query: ProjectLogQuery
+  async getPage(projectId: ProjectId, query: ProjectLogQuery
   ): Promise<Page<ProjectLogVO>> {
-    // const { data } = await apiClient.get(`/project/sales/${id}/log`, query);
-    // return data;
-    return testData;
+    console.log("projectId inside of API : ", projectId);
+    const { data } = await apiClient.get(`/project/sales/${projectId}/log`, {
+      ...query,
+      createdAt: query.createdAt ? dayjs(query.createdAt)
+                  .format('YYYY-MM-DD') : undefined,
+    });
+    return data;
   }
 }
 

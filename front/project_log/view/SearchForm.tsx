@@ -19,7 +19,7 @@ export default function () {
           />
         </Grid>
         <Grid item sm={4}>
-          <DateField name="date" label="날짜" disableLabel />
+          <DateField name="createdAt" label="날짜" disableLabel />
         </Grid>
         <Grid item sm={4}>
           <TextField

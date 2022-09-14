@@ -53,7 +53,6 @@ function Element() {
     const size = +(event.target.value) || 10;
     setFilter({ ...formik, values: { size, page: 0 } });
   };
-  console.log('id : ', id);
   useEffect(() => {
     if(detail && detail.id !== id){
       dispatch(projectLogAction.setId(detail.id))

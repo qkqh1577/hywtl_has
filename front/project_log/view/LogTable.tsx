@@ -58,7 +58,7 @@ export default function LogTable({ page }: ListProps) {
             return (
               <TableRow hover role="checkbox" key={i}>
                 <Td>
-                  {item.date}
+                  {item.createdAt}
                 </Td>
                 <Td>
                   {item.tabName}

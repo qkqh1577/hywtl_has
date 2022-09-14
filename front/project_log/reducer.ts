@@ -14,16 +14,23 @@ export interface ProjectLogState {
 const initialState: ProjectLogState = {};
 
 export const projectLogReducer = createReducer(initialState, {
+  [ProjectLogAction.setId]:     (state,
+                                 action
+                                ) => ({
+    ...state,
+    id: action.payload
+  }),
   [ProjectLogAction.setFilter]: (state,
                                  action
                                 ) => ({
     ...state,
     filter: action.payload.values,
   }),
-  [ProjectLogAction.setPage]:                (state,
-                                            action
-                                           ) => ({
+
+  [ProjectLogAction.setPage]:   (state,
+                                 action
+                                ) => ({
     ...state,
     page: action.payload
   }),
-})
+});

@@ -1,5 +1,5 @@
 export interface ProjectLogVO {
-  date?: Date;
+  createdAt?: Date;
   tabName: string;
   sectionName: string;
   itemName: string;

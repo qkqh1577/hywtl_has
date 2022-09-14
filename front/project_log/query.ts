@@ -6,6 +6,7 @@ export interface ProjectLogQuery {
   size?: number;
   keyword?: string;
   tabName?: string;
+  createdAt? : Date;
 }
 
 export const initialProjectLogQuery: ProjectLogQuery = {
@@ -13,35 +14,36 @@ export const initialProjectLogQuery: ProjectLogQuery = {
   size: pageSizeList[0],
   keyword: '',
   tabName: '',
+  createdAt: undefined,
 }
 
 export const tabNameList: Option[] = [
   {
-    key: 'basic',
+    key: 'BASIC',
     text: '기본정보'
   },
   {
-    key: 'complex',
+    key: 'COMPLEX',
     text: '단지정보'
   },
   {
-    key: 'estimate-contract',
+    key: 'ESTIMATE_CONTRACT',
     text: '견적/계약'
   },
   {
-    key: 'progress-information',
+    key: 'PROGRESS_INFORMATION',
     text: '진행정보'
   },
   {
-    key: 'document',
+    key: 'DOCUMENT',
     text: '자료'
   },
   {
-    key: 'schedule',
+    key: 'SCHEDULE',
     text: '일정'
   },
   {
-    key: 'log',
+    key: 'LOG',
     text: '이력'
   },
 ];

@@ -1,29 +1,21 @@
-import {
-  ProjectLogAction,
-  projectLogAction
-} from 'project_log/action';
+import { projectLogAction } from 'project_log/action';
 import {
   call,
   fork,
   put,
+  select,
   take
 } from 'redux-saga/effects';
 import Page from 'type/Page';
 import { ProjectLogVO } from 'project_log/domain';
 import { projectLogApi } from 'project_log/api';
-import { ProjectId } from 'project/domain';
+import { RootState } from 'services/reducer';
 
-function* watchId() {
-  while (true) {
-    const { payload: id } = yield take(ProjectLogAction.setId);
-    yield call(watchFilter, id)
-  }
-}
-
-function* watchFilter(id: ProjectId) {
+function* watchFilter() {
   while (true) {
     const { payload: formik } = yield take(projectLogAction.setFilter);
     try {
+      const { id } = yield select((root: RootState) => root.projectLog);
       const page: Page<ProjectLogVO> = yield call(projectLogApi.getPage, id, formik.values);
       yield put(projectLogAction.setPage(page));
     }
@@ -37,5 +29,5 @@ function* watchFilter(id: ProjectId) {
 }
 
 export default function* projectLogSaga() {
-  yield fork(watchId);
+  yield fork(watchFilter);
 };
