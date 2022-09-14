@@ -1,17 +1,14 @@
 import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
-import { TextField } from '@mui/material';
 import {
-  FieldStatus,
-  getValue
-} from 'components/DataFieldProps';
-import {
-  FormikValues,
-  useFormikContext
-} from 'formik';
-import { Dayjs } from 'dayjs';
-import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
+  TextField,
+  TextFieldProps
+} from '@mui/material';
+import { FieldStatus, } from 'components/DataFieldProps';
+import { FormikContextType, } from 'formik';
+import dayjs, { Dayjs } from 'dayjs';
+import { useDataProps } from 'components/DataField';
 
 export interface DateFieldProps
   extends Omit<DatePickerProps<Dayjs>,
@@ -24,13 +21,17 @@ export interface DateFieldProps
     | 'inputFormat'
     | 'allowSameDateSelection'
     | 'onChange'
-    | 'onError'> {
-  required?: boolean;
+    | 'onError'>,
+          Pick<TextFieldProps,
+            | 'required'
+            | 'onChange'
+            | 'helperText'
+            | 'onBlur'> {
   name: string;
   label: string;
   disableLabel?: boolean;
-  helperText?: string;
   status?: FieldStatus;
+  formikContext?: FormikContextType<any>;
 }
 
 export default function DateField(props: DateFieldProps) {
@@ -41,69 +42,73 @@ export default function DateField(props: DateFieldProps) {
           openTo     = 'day',
           okText     = '적용',
           name,
-          label,
           disableLabel,
-          helperText,
           status,
-          required,
-          ...rest
+          required:   propsRequired,
+          label:      propsLabel,
+          helperText: propsHelperText,
+          ...         rest
         } = props;
-  const { values, errors, setErrors, setFieldValue } = useFormikContext<FormikValues>();
-  const value = getValue<Dayjs | null>(values, name) ?? null;
-  const edit = values.edit || typeof values.edit === 'undefined';
-  const disabled = status === FieldStatus.Disabled;
-  const readOnly = status === FieldStatus.ReadOnly && !edit;
-  const error = !!errors[name];
+  const {
+          error,
+          value,
+          disabled,
+          readOnly,
+          required,
+          helperText,
+          label,
+          edit,
+          formik,
+        } = useDataProps(props);
 
   const onError: DatePickerProps<Dayjs>['onError'] = (reason) => {
     switch (reason) {
       case 'invalidDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '잘못된 형식의 날짜입니다.',
         });
         break;
       case 'shouldDisableDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: 'shouldDisableDate.',
         });
         break;
       case 'disableFuture':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '오늘 이후 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'disablePast' :
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '오늘 이전 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'minDate' :
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '기준 이전 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'maxDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '기준 이후 날짜를 선택할 수 없습니다.',
         });
         break;
       default:
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: undefined,
         });
     }
   };
 
-
   const onChange: DatePickerProps<Dayjs>['onChange'] = (date) => {
-    setFieldValue(name, date);
+    formik.setFieldValue(name, date);
   };
 
   const renderInput: DatePickerProps<Dayjs>['renderInput'] = (parameter) => {
@@ -117,10 +122,19 @@ export default function DateField(props: DateFieldProps) {
         required={edit && required}
         label={disableLabel ? undefined : label}
         error={error}
-        helperText={error ? errors[name] ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
+        helperText={helperText}
         InputProps={{
           ...parameter.InputProps,
           readOnly,
+        }}
+        onBlur={() => {
+          if (props.onChange) {
+            props.onChange(typeof value === 'string'
+              ? dayjs(value)
+              .toDate()
+              : value?.toDate()
+            );
+          }
         }}
       />
     );

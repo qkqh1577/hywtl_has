@@ -4,6 +4,7 @@ import React from 'react';
 import ProjectCustomEstimateAddModalRoute from 'project_estimate/route/customAddModal';
 import ProjectEstimateListRoute from 'project_estimate/route/list';
 import RivalEstimateListRoute from 'rival_estimate/route/section';
+import ProjectBidRoute from 'project_bid/route';
 
 function Element() {
 
@@ -11,6 +12,7 @@ function Element() {
     <ProjectContainerRoute>
       <ProjectEstimateListRoute />
       <RivalEstimateListRoute />
+      <ProjectBidRoute />
       <ProjectCustomEstimateAddModalRoute />
     </ProjectContainerRoute>
   );

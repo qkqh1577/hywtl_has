@@ -10,5 +10,5 @@ export interface ProjectBidVO {
   reviewAmount?: number;
   totalAmount?: number;
   expectedDuration?: string;
-  modifiedAt: Date;
+  modifiedAt?: Date;
 }

@@ -31,6 +31,7 @@ interface DataProps {
   helperText?: React.ReactNode;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>) => void;
   onBlur: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>;
+  formik: FormikContextType<any>;
 }
 
 interface Props<T> {
@@ -145,6 +146,7 @@ export function useDataProps<T>(props: Props<T>): DataProps {
     required,
     readOnly,
     onChange,
-    onBlur
+    onBlur,
+    formik: formikContext,
   };
 }
