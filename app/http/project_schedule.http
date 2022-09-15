@@ -1,0 +1,76 @@
+### add
+PUT http://localhost:8080/project/sales/1/schedule
+Content-Type: application/json
+
+{
+  "title": "신규 일정1",
+  "startTime": "2022-06-21 00:00",
+  "endTime": "2022-06-29 00:00",
+  "allDay": true,
+  "managerId": 1
+}
+
+### add
+PUT http://localhost:8080/project/sales/1/schedule
+Content-Type: application/json
+
+{
+  "title": "신규 일정2",
+  "startTime": "2022-07-04 00:00",
+  "endTime": "2022-07-04 00:00",
+  "allDay": true,
+  "managerId": 1
+}
+
+### add
+PUT http://localhost:8080/project/sales/1/schedule
+Content-Type: application/json
+
+{
+  "title": "신규 일정3",
+  "startTime": "2022-07-21 09:00",
+  "endTime": "2022-07-22 10:00",
+  "allDay": false,
+  "managerId": 1
+}
+
+
+### add
+PUT http://localhost:8080/project/sales/1/schedule
+Content-Type: application/json
+
+{
+  "title": "신규 일정3-d",
+  "startTime": "2022-07-21 09:00",
+  "endTime": "2022-07-22 10:00",
+  "allDay": false,
+  "managerId": 1
+}
+
+
+### update
+PUT http://localhost:8080/project/sales/schedule/1
+Content-Type: application/json
+
+{
+  "title": "구 일정1-2",
+  "startTime": "2022-06-21 00:00",
+  "endTime": "2022-06-29 00:00",
+  "allDay": true,
+  "managerId": 2,
+  "attendanceIdList": [
+    1,
+    3
+  ]
+}
+
+### delete
+DELETE http://localhost:8080/project/sales/schedule/4
+
+
+### get 2022-07
+GET http://localhost:8080/project/sales/1/schedule?startDate=2022-06-27&endDate=2022-07-31
+
+
+### get keyword 1
+GET http://localhost:8080/project/sales/1/schedule?keyword=1

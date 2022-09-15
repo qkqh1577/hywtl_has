@@ -11,6 +11,7 @@ public interface CustomRepository<E extends CustomEntity> extends Repository<E, 
 
     List<E> findAll();
 
+
     Page<E> findAll(Pageable pageable);
 
     Optional<E> findById(Long id);
