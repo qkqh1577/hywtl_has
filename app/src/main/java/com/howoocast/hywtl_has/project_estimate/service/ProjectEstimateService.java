@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
@@ -88,7 +89,31 @@ public class ProjectEstimateService {
         );
 
         customEstimateRepository.save(instance);
+    }
 
+    @Transactional
+    public void confirm(
+        Long projectId,
+        Long estimateId
+    ) {
+        List<ProjectEstimate> estimateList = estimateRepository.findByProject_Id(projectId);
+        ProjectEstimate instance = estimateRepository.findById(estimateId).orElseThrow(() -> {
+            throw new NotFoundException(ProjectEstimate.KEY, estimateId);
+        });
+
+        if (estimateList.isEmpty()) {
+            throw new IllegalRequestException(ProjectEstimate.KEY + ".is_empty", "선택할 수 있는 견적서가 없습니다.");
+        }
+        if (instance.getConfirmed()) {
+            throw new IllegalRequestException(ProjectEstimate.KEY + ".already_confirmed", "이미 확정된 견적서입니다.");
+        }
+        // 이전 삭제
+        estimateList.stream()
+            .filter(ProjectEstimate::getConfirmed)
+            .findFirst()
+            .ifPresent(item -> item.changeConfirmed(Boolean.FALSE));
+        // 현재 등록
+        instance.changeConfirmed(Boolean.TRUE);
     }
 
     private String getCode(Project project) {

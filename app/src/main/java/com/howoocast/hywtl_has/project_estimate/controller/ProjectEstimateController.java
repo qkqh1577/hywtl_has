@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateAddParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateConfirmParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -54,10 +56,15 @@ public class ProjectEstimateController {
         service.addCustom(projectId, username, parameter);
     }
 
-    @PostMapping("/project/sales/estimate/{id}/confirmed")
+    @PostMapping("/project/sales/{projectId}/estimate/confirmed")
     public void setConfirmed(
-        @PathVariable Long id
+        @PathVariable Long projectId,
+        @Valid @RequestBody ProjectEstimateConfirmParameter parameter
     ) {
-
+        service.confirm(
+            projectId,
+            parameter.getEstimateId()
+        );
     }
+
 }
