@@ -38,7 +38,6 @@ public class EstimateTemplatePredicateBuilder {
     }
 
     public Predicate build() {
-        this.criteria.and(estimateTemplate.deletedAt.isNull());
         return this.criteria;
     }
 }

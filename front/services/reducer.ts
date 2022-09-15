@@ -75,6 +75,10 @@ import {
   ContractConditionState
 } from 'admin/contract/condition/reducer';
 import {
+  projectLogReducer,
+  ProjectLogState
+} from 'project_log/reducer';
+import {
   rivalEstimateReducer,
   RivalEstimateState
 } from 'rival_estimate/reducer';
@@ -99,6 +103,7 @@ export interface RootState {
   contractBasic: ContractBasicState;
   contractCollection: ContractCollectionState;
   contractCondition: ContractConditionState;
+  projectLog: ProjectLogState;
   rivalEstimate: RivalEstimateState;
 }
 
@@ -122,6 +127,7 @@ const reducer = combineReducers<RootState>({
   contractBasic:      contractBasicReducer,
   contractCollection: contractCollectionReducer,
   contractCondition:  contractConditionReducer,
+  projectLog:         projectLogReducer,
   rivalEstimate:      rivalEstimateReducer,
 });
 
