@@ -50,6 +50,13 @@ public class ProjectScheduleController {
             .collect(Collectors.toList());
     }
 
+    @GetMapping("/project/sales/schedule/{id}")
+    public ProjectScheduleView getOne(
+        @PathVariable Long id
+    ) {
+        return ProjectScheduleView.assemble(service.getOne(id));
+    }
+
     @PutMapping("/project/sales/{projectId}/schedule")
     public void add(
         @PathVariable Long projectId,
