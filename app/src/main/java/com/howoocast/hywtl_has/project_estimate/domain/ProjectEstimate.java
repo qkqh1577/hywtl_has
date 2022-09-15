@@ -107,13 +107,15 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     public void change(
+        Boolean isSent,
         String recipient,
         String note,
-        Boolean isSent
+        Business business
     ) {
+        this.isSent = isSent;
         this.recipient = recipient;
         this.note = note;
-        this.isSent = isSent;
+        this.business = business;
     }
 
     public void changeConfirmed(
