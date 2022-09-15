@@ -1,35 +1,68 @@
-import React from 'react';
-import SearchForm from 'layouts/SearchForm';
+import React, { useContext } from 'react';
 import {
   Box,
+  Button,
   Typography,
 } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import SelectField from 'components/SelectField';
+import { FormikContext } from 'formik';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   totalCount: number | undefined;
 }
 
+function SubmitButton() {
+
+  const formikContext = useContext(FormikContext);
+  const onClick = () => {
+    if (formikContext) {
+      const { handleSubmit } = formikContext;
+      handleSubmit();
+    }
+  };
+
+  return (
+    <Button
+      children="검색"
+      disabled={formikContext?.isSubmitting}
+      onClick={onClick}
+    />
+  );
+}
+
 export default function ({ totalCount }: Props) {
 
   return (
-    <SearchForm>
-      <Box sx={{
-        width:          '100%',
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: 'flex-end'
 
+    <Box sx={{
+      width:          '100%',
+      display:        'flex',
+      justifyContent: 'flex-end',
+    }}>
+      <Box sx={{
+        width:      '70%',
+        display:    'flex',
+        alignItems: 'center',
       }}>
         <Box sx={{
-          width: '100%',
+          width:       '6%',
+          marginRight: '5px'
         }}>
-          <Typography>{`총 ${totalCount ? totalCount : 0}건`}</Typography>
+          <Typography sx={{
+            fontWeight: 'bold',
+            fontSize:   '12px',
+            color:      ColorPalette._252627,
+
+
+          }}>{`총 ${totalCount ? totalCount : 0}건`}</Typography>
         </Box>
         <Box sx={{
-          width: '100%',
+          width:       '25%',
+          marginRight: '10px'
+
         }}>
           <SelectField
             disableLabel
@@ -48,7 +81,8 @@ export default function ({ totalCount }: Props) {
           />
         </Box>
         <Box sx={{
-          width: '100%',
+          width:       '25%',
+          marginRight: '10px'
         }}>
           <DateField
             disableLabel
@@ -57,7 +91,8 @@ export default function ({ totalCount }: Props) {
           />
         </Box>
         <Box sx={{
-          width: '100%',
+          width:       '40%',
+          marginRight: '10px'
         }}>
           <TextField
             disableLabel
@@ -67,7 +102,10 @@ export default function ({ totalCount }: Props) {
             variant="outlined"
           />
         </Box>
+        <Box>
+          <SubmitButton />
+        </Box>
       </Box>
-    </SearchForm>
+    </Box>
   );
 }

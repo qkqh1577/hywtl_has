@@ -25,6 +25,7 @@ export default function ProjectLog(props: Props) {
         border:       `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius: '5px',
         marginBottom: '15px',
+        padding: '15px 15px'
       }}>
         <SearchSection totalCount={props.page?.content.length} />
       </Box>
