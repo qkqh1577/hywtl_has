@@ -7,10 +7,11 @@ import {
 import React, { useMemo, } from 'react';
 import {
   DataFieldValue,
-  FieldStatus,
+  FieldProps,
+  FieldViewProps,
   isOption,
-  LabelProps,
   MuiTextFieldProps,
+  MuiViewProps,
   Option
 } from 'components/DataFieldProps';
 import { ColorPalette } from 'app/view/App/theme';
@@ -18,7 +19,7 @@ import DataFieldWithLabel from 'components/DataFieldLabel';
 import { useDataProps } from 'components/DataField';
 
 export interface SelectFieldProps
-  extends LabelProps,
+  extends FieldProps,
           Omit<MuiTextFieldProps,
             | 'name'
             | 'label'
@@ -26,43 +27,16 @@ export interface SelectFieldProps
             | 'fullWidth'
             | 'disabled'> {
   options: Option[] | DataFieldValue[] | null | undefined;
-  endAdornment?: React.ReactNode;
-  startAdornment?: React.ReactNode;
-  name: string;
-  status?: FieldStatus;
   multiple?: boolean;
 }
 
-interface FieldProps
-  extends Pick<MuiTextFieldProps,
-    | 'variant'
-    | 'onChange'
-    | 'onBlur'
-    | 'InputProps'
-    | 'inputProps'
-    | 'SelectProps'
-    | 'label'
-    | 'error'
-    | 'helperText'
-    | 'value'
-    | 'disabled'
-    | 'required'
-    | 'children'> {
-  name: string;
-}
-
 interface ViewProps
-  extends Omit<SelectFieldProps, | 'status'
-                                 | 'startAdornment'
-                                 | 'endAdornment'
-                                 | 'label'
-                                 | 'disableLabel'
-                                 | 'labelPosition'
-                                 | 'labelWidth'
-                                 | 'labelSX'
+  extends Omit<SelectFieldProps, | FieldViewProps
                                  | 'options'>,
-          Pick<MuiTextFieldProps, | 'value'
-                                  | 'variant'> {
+          Pick<MuiTextFieldProps,
+            | MuiViewProps
+            | 'SelectProps'
+            | 'children'> {
 }
 
 function FieldView(props: ViewProps) {
@@ -130,26 +104,25 @@ export default function SelectField(props: SelectFieldProps) {
 
   const {
           error,
-          value,
+          value: dataValue,
           disabled,
           readOnly,
           required,
           helperText,
           onChange,
-          onBlur,
           label
         } = useDataProps(props);
+  const value = useMemo(() => children === null || !options || options.length === 0 || typeof dataValue === 'undefined' ? '' : dataValue, [dataValue, children, options]);
   const isEmptyValue = !value || (Array.isArray(value) && value.length === 0);
 
-  const fieldProps: FieldProps = {
+  const fieldProps: ViewProps = {
     variant,
     name,
-    value:       children === null || !options || options.length === 0 ? '' : value,
+    value,
     error,
     helperText,
     disabled,
     onChange,
-    onBlur,
     InputProps:  {
       ...InputProps,
       readOnly,
@@ -165,7 +138,7 @@ export default function SelectField(props: SelectFieldProps) {
       ...SelectProps,
       multiple,
       displayEmpty: !required,
-      sx: {
+      sx:           {
         height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
         fontFamily:           'Noto Sans KR',

@@ -41,19 +41,18 @@ export default function ProjectBidSection(props: Props) {
             alignItems:     'center',
             justifyContent: 'space-between'
           }}>
-            <Text variant="body4">입찰 공고 기간</Text>
-            <Box sx={{ width: '160px' }}>
+            <Box sx={{ width: 'calc(100% - 160px)' }}>
               <DateField
-                disableLabel
+                autoSubmit
                 name="beginDate"
                 label="입찰 공고 기간"
-                onChange={props.onChange}
               />
             </Box>
             <Text variant="body4">~</Text>
             <Box sx={{ width: '160px' }}>
               <DateField
                 disableLabel
+                autoSubmit
                 name="closeDate"
                 label="입찰 공고 기간"
               />
@@ -65,10 +64,10 @@ export default function ProjectBidSection(props: Props) {
             flexWrap: 'unwrap',
           }}>
             <BusinessSelector
+              autoSubmit
               labelWidth={40}
               name="business"
               label="낙찰 업체"
-              afterChange={props.onChange}
             />
           </Box>
           <Box sx={{
@@ -77,10 +76,10 @@ export default function ProjectBidSection(props: Props) {
             flexWrap: 'unwrap',
           }}>
             <TextField
+              autoSubmit
               labelWidth={40}
               name="bidOrganization"
               label="입찰 기관"
-              onBlur={props.onChange}
             />
           </Box>
         </Box>
@@ -102,6 +101,7 @@ export default function ProjectBidSection(props: Props) {
             <Box sx={{ width: '200px' }}>
               <DateField
                 disableLabel
+                autoSubmit
                 name="bidDate"
                 label="입찰 일자"
               />
@@ -114,10 +114,10 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <TextField
               labelWidth={60}
+              autoSubmit
               type="amount"
               name="testAmount"
               label="풍동 금액"
-              onBlur={props.onChange}
             />
           </Box>
           <Box sx={{
@@ -126,11 +126,11 @@ export default function ProjectBidSection(props: Props) {
             flexWrap: 'unwrap',
           }}>
             <TextField
+              autoSubmit
               labelWidth={25}
               type="amount"
               name="reviewAmount"
               label="구검"
-              onBlur={props.onChange}
             />
           </Box>
           <Box sx={{
@@ -139,11 +139,11 @@ export default function ProjectBidSection(props: Props) {
             flexWrap: 'unwrap',
           }}>
             <TextField
+              autoSubmit
               labelWidth={25}
               type="amount"
               name="totalAmount"
               label="총액"
-              onBlur={props.onChange}
             />
           </Box>
           <Box sx={{
@@ -152,10 +152,10 @@ export default function ProjectBidSection(props: Props) {
             flexWrap: 'unwrap',
           }}>
             <TextField
+              autoSubmit
               labelWidth={25}
               name="expectedDuration"
               label="일정"
-              onBlur={props.onChange}
             />
           </Box>
           <Box sx={{

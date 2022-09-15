@@ -1,7 +1,5 @@
 import React, {
   ChangeEvent,
-  FocusEventHandler,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -9,44 +7,37 @@ import React, {
 } from 'react';
 import {
   FormikContext,
-  FormikContextType
+  FormikContextType,
 } from 'formik';
 import {
   DataFieldValue,
   equals,
+  FieldProps,
   FieldStatus,
   getValue,
 } from 'components/DataFieldProps';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 
 
-interface DataProps {
+interface DataProps<T> {
   edit: boolean;
   error: boolean;
-  value: any;
+  value: T | undefined;
   disabled: boolean;
   readOnly: boolean;
   label: string | undefined;
   required?: boolean;
   helperText?: React.ReactNode;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>) => void;
-  onBlur: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>;
   formik: FormikContextType<any>;
 }
 
-interface Props<T> {
-  name: string;
-  label: string;
-  disableLabel?: boolean;
-  status?: FieldStatus;
-  helperText?: React.ReactNode;
-  required?: boolean;
-  onChange?: (e: ChangeEvent<T>) => void;
-  onBlur?: FocusEventHandler<T>;
-  formikContext?: FormikContextType<any>;
+interface EventProps<E>
+  extends FieldProps {
+  onChange?: (e: ChangeEvent<E>) => void;
 }
 
-export function useDataProps<T>(props: Props<T>): DataProps {
+export function useDataProps<T = DataFieldValue, E = HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>(props: EventProps<E>): DataProps<T> {
   const {
           name,
           disableLabel,
@@ -55,21 +46,22 @@ export function useDataProps<T>(props: Props<T>): DataProps {
           required:   propsRequired,
           status,
           onChange: propsOnChange,
-          onBlur:   propsOnBlur,
+          autoSubmit,
         } = props;
 
-  const formikContext = props.formikContext ?? useContext(FormikContext);
-  const values = formikContext?.values ?? {};
-  const errors = formikContext?.errors ?? {};
+  const formik = props.formik ?? useContext(FormikContext);
+  const values = formik?.values ?? {};
+  const errors = formik?.errors ?? {};
 
-  const formikValue = getValue<DataFieldValue>(values, name) ?? '';
+  const formikValue = getValue<T>(values, name) ?? undefined;
   const formikEdit = values.edit || typeof values.edit === 'undefined';
   const formikError = !!errors[name];
-  const setFieldValue = formikContext?.setFieldValue ?? undefined;
+  const setFieldValue = formik?.setFieldValue ?? undefined;
 
-  const [value, setValue] = useState<any>('');
+  const [value, setValue] = useState<T>();
   const [edit, setEdit] = useState<boolean>(status === FieldStatus.Idle || false);
   const [error, setError] = useState<boolean>(false);
+  const [waiting, setWaiting] = useState<NodeJS.Timeout>();
 
   const label = useMemo(() => disableLabel ? undefined : propsLabel, [propsLabel, disableLabel]);
   const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
@@ -78,7 +70,7 @@ export function useDataProps<T>(props: Props<T>): DataProps {
   const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
   const required = useMemo(() => edit && required, [edit, propsRequired]);
 
-  const onChange = useCallback((e) => {
+  const onChange = (e) => {
     if (!edit) {
       return;
     }
@@ -98,28 +90,32 @@ export function useDataProps<T>(props: Props<T>): DataProps {
       if (result.length === value.length) {
         result.push(targetValue);
       }
-      setValue(result);
+      setValue(result as unknown as T);
     }
     else {
       setValue(targetValue);
     }
-  }, [propsOnChange, edit]);
-
-  const onBlur = useCallback((e) => {
-    if (!edit) {
-      return;
-    }
-    if (propsOnBlur) {
-      propsOnBlur(e);
-    }
-    setFieldValue(name, value);
-  }, [propsOnBlur, edit, value, setFieldValue]);
+  };
+  const onSubmit = formik?.handleSubmit;
 
   useEffect(() => {
     if (!equals(value, formikValue)) {
-      setValue(formikValue);
+      if (typeof value === 'undefined' && typeof formikValue !== 'undefined') {
+        setValue(formikValue);
+      }
+      else {
+        setFieldValue(name, value);
+        if (autoSubmit && onSubmit) {
+          if (waiting) {
+            clearTimeout(waiting);
+          }
+          setWaiting(setTimeout(() => {
+            onSubmit();
+          }, 2100));
+        }
+      }
     }
-  }, [formikValue]);
+  }, [value, formikValue, waiting, onSubmit]);
 
   useEffect(() => {
     if (status === FieldStatus.Idle) {
@@ -136,6 +132,7 @@ export function useDataProps<T>(props: Props<T>): DataProps {
     }
   }, [formikError]);
 
+
   return {
     edit,
     error,
@@ -146,7 +143,6 @@ export function useDataProps<T>(props: Props<T>): DataProps {
     required,
     readOnly,
     onChange,
-    onBlur,
-    formik: formikContext,
+    formik,
   };
 }

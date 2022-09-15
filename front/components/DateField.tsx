@@ -1,37 +1,25 @@
 import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
-import {
-  TextField,
-  TextFieldProps
-} from '@mui/material';
-import { FieldStatus, } from 'components/DataFieldProps';
-import { FormikContextType, } from 'formik';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useDataProps } from 'components/DataField';
+import TextField, { TextFieldProps } from 'components/TextField';
 
 export interface DateFieldProps
-  extends Omit<DatePickerProps<Dayjs>,
-    | 'value'
-    | 'readOnly'
-    | 'renderInput'
-    | 'disabled'
-    | 'label'
-    | 'mask'
-    | 'inputFormat'
-    | 'allowSameDateSelection'
-    | 'onChange'
-    | 'onError'>,
-          Pick<TextFieldProps,
-            | 'required'
+  extends TextFieldProps,
+          Omit<DatePickerProps<Dayjs>,
+            | 'value'
+            | 'readOnly'
+            | 'renderInput'
+            | 'disabled'
+            | 'label'
+            | 'mask'
+            | 'inputFormat'
+            | 'allowSameDateSelection'
             | 'onChange'
-            | 'helperText'
-            | 'onBlur'> {
-  name: string;
-  label: string;
-  disableLabel?: boolean;
-  status?: FieldStatus;
-  formikContext?: FormikContextType<any>;
+            | 'onError'
+            | 'inputRef'> {
+  month?: boolean;
 }
 
 export default function DateField(props: DateFieldProps) {
@@ -39,27 +27,29 @@ export default function DateField(props: DateFieldProps) {
   const {
           cancelText = '취소',
           clearText  = '초기화',
-          openTo     = 'day',
+          openTo,
           okText     = '적용',
+          month,
           name,
-          disableLabel,
+          label,
           status,
-          required:   propsRequired,
-          label:      propsLabel,
-          helperText: propsHelperText,
-          ...         rest
+          helperText,
+          required,
+          endAdornment,
+          startAdornment,
+          disableLabel,
+          labelWidth,
+          labelPosition,
+          labelSX,
+          ...rest
         } = props;
   const {
-          error,
           value,
           disabled,
           readOnly,
-          required,
-          helperText,
-          label,
-          edit,
           formik,
         } = useDataProps(props);
+  const mask = month ? '____-__' : '____-__-__';
 
   const onError: DatePickerProps<Dayjs>['onError'] = (reason) => {
     switch (reason) {
@@ -115,27 +105,18 @@ export default function DateField(props: DateFieldProps) {
 
     return (
       <TextField
-        {...parameter}
-        fullWidth
-        variant="standard"
-        name={name}
-        required={edit && required}
-        label={disableLabel ? undefined : label}
-        error={error}
+        status={status}
         helperText={helperText}
-        InputProps={{
-          ...parameter.InputProps,
-          readOnly,
-        }}
-        onBlur={() => {
-          if (props.onChange) {
-            props.onChange(typeof value === 'string'
-              ? dayjs(value)
-              .toDate()
-              : value?.toDate()
-            );
-          }
-        }}
+        required={required}
+        endAdornment={endAdornment}
+        startAdornment={startAdornment}
+        disableLabel={disableLabel}
+        labelWidth={labelWidth}
+        labelPosition={labelPosition}
+        labelSX={labelSX}
+        {...parameter}
+        name={name}
+        label={label}
       />
     );
   };
@@ -144,8 +125,8 @@ export default function DateField(props: DateFieldProps) {
     <DatePicker
       {...rest}
       allowSameDateSelection
-      mask="____-__-__"
-      inputFormat="YYYY-MM-DD"
+      mask={mask}
+      inputFormat={month ? 'YYYY-MM' : 'YYYY-MM-DD'}
       value={value ?? null}
       onChange={onChange}
       onError={onError}
@@ -154,7 +135,7 @@ export default function DateField(props: DateFieldProps) {
       readOnly={readOnly}
       cancelText={cancelText}
       clearText={clearText}
-      openTo={openTo}
+      openTo={month ? 'month' : (openTo ?? 'day')}
       okText={okText}
     />
   );

@@ -4,10 +4,10 @@ import React, {
 } from 'react';
 import {
   DataFieldValue,
+  FieldProps,
   FieldStatus,
   getValue,
   isOption,
-  LabelProps,
   Option
 } from 'components/DataFieldProps';
 import {
@@ -19,28 +19,23 @@ import {
   FormHelperText,
   FormLabel
 } from '@mui/material';
-import {
-  FormikContext,
-} from 'formik';
+import { FormikContext, } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
 
 export interface CheckboxFieldProps
-  extends LabelProps,
+  extends FieldProps,
           Omit<FormControlProps, | 'variant'
                                  | 'disabled'
                                  | 'fullWidth'
                                  | 'name'
                                  | 'label'
                                  | 'value'> {
-  name: string;
-  status?: FieldStatus;
   /** 전체 선택, 선택 해제의 문구, default="전체" */
   allText?: string;
   /** 전체 선택, 선택 해제 사용 여부 */
   disableAll?: boolean;
   options: Option[] | DataFieldValue[];
   disableText?: boolean;
-  helperText?: string;
 }
 
 function isChecked(values: DataFieldValue[] | undefined,

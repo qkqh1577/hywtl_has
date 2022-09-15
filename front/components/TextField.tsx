@@ -8,16 +8,17 @@ import {
   TextField as MuiTextField,
 } from '@mui/material';
 import {
-  FieldStatus,
-  LabelProps,
-  MuiTextFieldProps
+  FieldProps,
+  FieldViewProps,
+  MuiTextFieldProps,
+  MuiViewProps
 } from 'components/DataFieldProps';
 import { ColorPalette } from 'app/view/App/theme';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import { useDataProps } from 'components/DataField';
 
 export interface TextFieldProps
-  extends LabelProps,
+  extends FieldProps,
           Omit<MuiTextFieldProps,
             | 'name'
             | 'label'
@@ -25,41 +26,15 @@ export interface TextFieldProps
             | 'fullWidth'
             | 'type'
             | 'disabled'> {
-  endAdornment?: React.ReactNode;
-  startAdornment?: React.ReactNode;
-  name: string;
-  status?: FieldStatus;
   type?: MuiTextFieldProps['type'] | 'amount';
 }
 
-interface FieldProps
-  extends Pick<MuiTextFieldProps,
-    | 'type'
-    | 'onChange'
-    | 'onBlur'
-    | 'InputProps'
-    | 'inputProps'
-    | 'label'
-    | 'error'
-    | 'helperText'
-    | 'value'
-    | 'variant'
-    | 'disabled'
-    | 'required'> {
-  name: string;
-}
-
 interface ViewProps
-  extends Omit<TextFieldProps, | 'status'
-                               | 'startAdornment'
-                               | 'endAdornment'
-                               | 'label'
-                               | 'disableLabel'
-                               | 'labelPosition'
-                               | 'labelWidth'
-                               | 'labelSX'>,
-          Pick<MuiTextFieldProps, | 'value'
-                                  | 'variant'> {
+  extends Omit<TextFieldProps, | FieldViewProps
+                               | 'type'>,
+          Pick<MuiTextFieldProps,
+            | MuiViewProps
+            | 'type'> {
 }
 
 function FieldView(props: ViewProps) {
@@ -88,7 +63,8 @@ export default function TextField(props: TextFieldProps) {
           required:   propsRequired,
           label:      propsLabel,
           helperText: propsHelperText,
-          ...         restProps
+          autoSubmit,
+          ...restProps
         } = props;
 
   const {
@@ -99,11 +75,18 @@ export default function TextField(props: TextFieldProps) {
           required,
           helperText,
           onChange,
-          onBlur,
           label
         } = useDataProps(props);
 
-  const value = (type === 'number' || type === 'amount') && !Number.isNaN(+dataValue) ? +dataValue : dataValue;
+  const value = useMemo(() => {
+    if (typeof dataValue === 'undefined') {
+      return '';
+    }
+    if ((type === 'number' || type === 'amount') && !Number.isNaN(+dataValue)) {
+      return +dataValue;
+    }
+    return dataValue;
+  }, [dataValue]);
 
   const mappingByShape = useCallback((
     outlined: string,
@@ -139,7 +122,7 @@ export default function TextField(props: TextFieldProps) {
     },
   };
 
-  const fieldProps: FieldProps = {
+  const fieldProps: ViewProps = {
     type:       type === 'amount' ? 'number' : type,
     name,
     value,
@@ -149,7 +132,6 @@ export default function TextField(props: TextFieldProps) {
     disabled,
     inputProps,
     onChange,
-    onBlur,
     InputProps: {
       ...InputProps,
       readOnly,

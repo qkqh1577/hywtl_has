@@ -32,8 +32,9 @@ export default function ProjectBidRoute() {
   }, [id]);
 
   const formik = useFormik<ProjectBidVO>({
-    initialValues: detail ?? {},
-    onSubmit:      (values) => {
+    enableReinitialize: true,
+    initialValues:      detail ?? {},
+    onSubmit:           (values) => {
       update({
         ...values,
         winId: values.win?.id || undefined,
