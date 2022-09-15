@@ -39,6 +39,11 @@ public class ProjectScheduleService {
         return repository.findAll(predicate);
     }
 
+    @Transactional(readOnly = true)
+    public ProjectSchedule getOne(Long id) {
+        return this.load(id);
+    }
+
     @Transactional
     public void add(
         Long projectId,
@@ -76,9 +81,7 @@ public class ProjectScheduleService {
 
     @Transactional
     public void change(Long id, ProjectScheduleParameter parameter) {
-        ProjectSchedule instance = repository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(ProjectSchedule.KEY, id);
-        });
+        ProjectSchedule instance = this.load(id);
         User manager = new CustomFinder<>(userRepository, User.class).byId(parameter.getManagerId());
         List<User> attendanceList = Collections.emptyList();
         if (Objects.nonNull(parameter.getAttendanceIdList())) {
@@ -103,4 +106,10 @@ public class ProjectScheduleService {
         repository.deleteById(id);
     }
 
+
+    private ProjectSchedule load(Long id) {
+        return repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ProjectSchedule.KEY, id);
+        });
+    }
 }
