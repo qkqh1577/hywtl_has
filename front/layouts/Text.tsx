@@ -92,6 +92,8 @@ function makeStyle(variant: TextVariant): SxProps<Theme> {
         fontSize:   '13px',
         lineHeight: '20px',
         color:      ColorPalette._9b9ea4,
+        wordBreak:  'keep-all',
+        whiteSpace: 'nowrap',
       };
     case 'body5':
       return {
@@ -169,6 +171,8 @@ function makeStyle(variant: TextVariant): SxProps<Theme> {
         fontSize:   '13px',
         lineHeight: '20px',
         color:      ColorPalette._94a6ca,
+        wordBreak:  'keep-all',
+        whiteSpace: 'nowrap',
       };
     default:
       return {};

@@ -293,6 +293,10 @@ export function ProjectComplexBuildingNameCell({ onSubmit, fieldName, ...props }
     }
   }, [requestBuilding]);
 
+  useEffect(() => {
+
+  }, [formik.values]);
+
   return (
     <Td>
       <FormikProvider value={formik}>

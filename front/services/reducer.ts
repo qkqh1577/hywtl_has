@@ -82,6 +82,10 @@ import {
   rivalEstimateReducer,
   RivalEstimateState
 } from 'rival_estimate/reducer';
+import {
+  projectBidReducer,
+  ProjectBidState
+} from 'project_bid/reducer';
 
 export interface RootState {
   user: UserState;
@@ -105,6 +109,7 @@ export interface RootState {
   contractCondition: ContractConditionState;
   projectLog: ProjectLogState;
   rivalEstimate: RivalEstimateState;
+  projectBid: ProjectBidState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -129,6 +134,7 @@ const reducer = combineReducers<RootState>({
   contractCondition:  contractConditionReducer,
   projectLog:         projectLogReducer,
   rivalEstimate:      rivalEstimateReducer,
+  projectBid:         projectBidReducer,
 });
 
 const rootReducer: Reducer = (state,

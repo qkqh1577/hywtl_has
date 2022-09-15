@@ -41,10 +41,11 @@ export default function DataFieldWithLabel(props: Props) {
       }}>
         <Typography sx={{
           ...labelSX,
-          fontSize:  '13px',
-          color:     ColorPalette._9b9ea4,
-          wordBreak: 'keep-all',
-          width:     useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth ?? 110}px`, [labelPosition, labelWidth]),
+          fontSize:   '13px',
+          color:      ColorPalette._9b9ea4,
+          wordBreak:  'keep-all',
+          whiteSpace: 'nowrap',
+          width:      useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth ?? 110}px`, [labelPosition, labelWidth]),
         }}>
           <RequiredMark required={required} text={label} />
         </Typography>

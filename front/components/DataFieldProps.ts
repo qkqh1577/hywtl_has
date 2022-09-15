@@ -1,10 +1,15 @@
-import { FormikValues } from 'formik';
 import {
   FilledTextFieldProps,
   OutlinedTextFieldProps,
   StandardTextFieldProps
 } from '@mui/material/TextField/TextField';
 import { SxProps } from '@mui/system';
+import React from 'react';
+import { FormikContextType } from 'formik';
+
+export type Values = {
+  [key: string]: any;
+}
 
 export enum FieldStatus {
   /** 정상 상태, 드래그 가능, 편집 가능, 필드 제공 */
@@ -31,6 +36,41 @@ export interface LabelProps {
   labelSX?: SX;
 }
 
+export interface FieldProps
+  extends LabelProps {
+  name: string;
+  status?: FieldStatus;
+  helperText?: React.ReactNode;
+  required?: boolean;
+  endAdornment?: React.ReactNode;
+  startAdornment?: React.ReactNode;
+  formik?: FormikContextType<any>;
+  autoSubmit?: boolean;
+}
+
+export type FieldViewProps = | 'status'
+                             | 'startAdornment'
+                             | 'endAdornment'
+                             | 'label'
+                             | 'disableLabel'
+                             | 'labelPosition'
+                             | 'labelWidth'
+                             | 'labelSX'
+                             | 'formik'
+
+export type MuiViewProps = | 'onChange'
+                           | 'onBlur'
+                           | 'InputProps'
+                           | 'inputProps'
+                           | 'label'
+                           | 'error'
+                           | 'helperText'
+                           | 'value'
+                           | 'variant'
+                           | 'disabled'
+                           | 'required'
+
+
 export interface Option {
   key: DataFieldValue;
   text: DataFieldValue;
@@ -47,7 +87,7 @@ export function isOption(value: any): value is Option {
 }
 
 
-export function getValue<T = unknown>(values: FormikValues,
+export function getValue<T = unknown>(values: Values,
                                       name: string
 ): T | undefined {
   if (!values) {
@@ -85,12 +125,8 @@ export function isEmpty(value: unknown): boolean {
   return typeof value === 'number' && !value && value !== 0;
 }
 
-export type Value = {
-  [key: string]: any;
-}
-
-export function compress(values: Value): Value {
-  const result: Value = {};
+export function compress(values: Values): Values {
+  const result: Values = {};
   const keys = Object.keys(values);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];

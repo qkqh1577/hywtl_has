@@ -9,7 +9,7 @@ PATCH http://localhost:8080/project/sales/rival-estimate/1
 Content-Type: application/json
 
 {
-  "businessId": 1,
+  "businessId": 2,
   "testAmount": 15000,
   "reviewAmount": 1500,
   "totalAmount": 16500

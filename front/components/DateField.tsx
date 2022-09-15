@@ -1,36 +1,25 @@
 import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
-import { TextField } from '@mui/material';
-import {
-  FieldStatus,
-  getValue
-} from 'components/DataFieldProps';
-import {
-  FormikValues,
-  useFormikContext
-} from 'formik';
 import { Dayjs } from 'dayjs';
-import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
+import { useDataProps } from 'components/DataField';
+import TextField, { TextFieldProps } from 'components/TextField';
 
 export interface DateFieldProps
-  extends Omit<DatePickerProps<Dayjs>,
-    | 'value'
-    | 'readOnly'
-    | 'renderInput'
-    | 'disabled'
-    | 'label'
-    | 'mask'
-    | 'inputFormat'
-    | 'allowSameDateSelection'
-    | 'onChange'
-    | 'onError'> {
-  required?: boolean;
-  name: string;
-  label: string;
-  disableLabel?: boolean;
-  helperText?: string;
-  status?: FieldStatus;
+  extends TextFieldProps,
+          Omit<DatePickerProps<Dayjs>,
+            | 'value'
+            | 'readOnly'
+            | 'renderInput'
+            | 'disabled'
+            | 'label'
+            | 'mask'
+            | 'inputFormat'
+            | 'allowSameDateSelection'
+            | 'onChange'
+            | 'onError'
+            | 'inputRef'> {
+  month?: boolean;
 }
 
 export default function DateField(props: DateFieldProps) {
@@ -38,90 +27,96 @@ export default function DateField(props: DateFieldProps) {
   const {
           cancelText = '취소',
           clearText  = '초기화',
-          openTo     = 'day',
+          openTo,
           okText     = '적용',
+          month,
           name,
           label,
-          disableLabel,
-          helperText,
           status,
+          helperText,
           required,
+          endAdornment,
+          startAdornment,
+          disableLabel,
+          labelWidth,
+          labelPosition,
+          labelSX,
           ...rest
         } = props;
-  const { values, errors, setErrors, setFieldValue } = useFormikContext<FormikValues>();
-  const value = getValue<Dayjs | null>(values, name) ?? null;
-  const edit = values.edit || typeof values.edit === 'undefined';
-  const disabled = status === FieldStatus.Disabled;
-  const readOnly = status === FieldStatus.ReadOnly && !edit;
-  const error = !!errors[name];
+  const {
+          value,
+          disabled,
+          readOnly,
+          formik,
+        } = useDataProps(props);
+  const mask = month ? '____-__' : '____-__-__';
 
   const onError: DatePickerProps<Dayjs>['onError'] = (reason) => {
     switch (reason) {
       case 'invalidDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '잘못된 형식의 날짜입니다.',
         });
         break;
       case 'shouldDisableDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: 'shouldDisableDate.',
         });
         break;
       case 'disableFuture':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '오늘 이후 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'disablePast' :
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '오늘 이전 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'minDate' :
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '기준 이전 날짜를 선택할 수 없습니다.',
         });
         break;
       case 'maxDate':
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: '기준 이후 날짜를 선택할 수 없습니다.',
         });
         break;
       default:
-        setErrors({
-          ...errors,
+        formik.setErrors({
+          ...formik.errors,
           [name]: undefined,
         });
     }
   };
 
-
   const onChange: DatePickerProps<Dayjs>['onChange'] = (date) => {
-    setFieldValue(name, date);
+    formik.setFieldValue(name, date);
   };
 
   const renderInput: DatePickerProps<Dayjs>['renderInput'] = (parameter) => {
 
     return (
       <TextField
+        status={status}
+        helperText={helperText}
+        required={required}
+        endAdornment={endAdornment}
+        startAdornment={startAdornment}
+        disableLabel={disableLabel}
+        labelWidth={labelWidth}
+        labelPosition={labelPosition}
+        labelSX={labelSX}
         {...parameter}
-        fullWidth
-        variant="standard"
         name={name}
-        required={edit && required}
-        label={disableLabel ? undefined : label}
-        error={error}
-        helperText={error ? errors[name] ?? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
-        InputProps={{
-          ...parameter.InputProps,
-          readOnly,
-        }}
+        label={label}
       />
     );
   };
@@ -130,8 +125,8 @@ export default function DateField(props: DateFieldProps) {
     <DatePicker
       {...rest}
       allowSameDateSelection
-      mask="____-__-__"
-      inputFormat="YYYY-MM-DD"
+      mask={mask}
+      inputFormat={month ? 'YYYY-MM' : 'YYYY-MM-DD'}
       value={value ?? null}
       onChange={onChange}
       onError={onError}
@@ -140,7 +135,7 @@ export default function DateField(props: DateFieldProps) {
       readOnly={readOnly}
       cancelText={cancelText}
       clearText={clearText}
-      openTo={openTo}
+      openTo={month ? 'month' : (openTo ?? 'day')}
       okText={okText}
     />
   );
