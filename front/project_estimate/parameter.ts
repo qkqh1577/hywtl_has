@@ -1,6 +1,5 @@
 import { FileItemParameter } from 'file-item';
 import { ProjectEstimateType } from 'project_estimate/domain';
-import { FormikPartial } from 'type/Form';
 import { BusinessId } from 'business/domain';
 
 export interface ProjectCustomEstimateAddParameter {
@@ -11,12 +10,3 @@ export interface ProjectCustomEstimateAddParameter {
   file: FileItemParameter;
   type: ProjectEstimateType;
 }
-
-export const initialProjectCustomEstimateAddParameter: FormikPartial<ProjectCustomEstimateAddParameter> = {
-  isSent:     false,
-  businessId: '',
-  recipient:  '',
-  note:       '',
-  file:       '',
-  type:       '',
-};

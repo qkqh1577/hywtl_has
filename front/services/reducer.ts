@@ -56,7 +56,7 @@ import {
 } from 'project_complex/reducer';
 import {
   projectEstimateReducer,
-  ProjectEstimateState
+  ProjectEstimateState,
 } from 'project_estimate/reducer';
 import {
   businessSelectorReducer,
@@ -78,6 +78,10 @@ import {
   projectLogReducer,
   ProjectLogState
 } from 'project_log/reducer';
+import {
+  rivalEstimateReducer,
+  RivalEstimateState
+} from 'rival_estimate/reducer';
 
 export interface RootState {
   user: UserState;
@@ -100,6 +104,7 @@ export interface RootState {
   contractCollection: ContractCollectionState;
   contractCondition: ContractConditionState;
   projectLog: ProjectLogState;
+  rivalEstimate: RivalEstimateState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -123,6 +128,7 @@ const reducer = combineReducers<RootState>({
   contractCollection: contractCollectionReducer,
   contractCondition:  contractConditionReducer,
   projectLog:         projectLogReducer,
+  rivalEstimate:      rivalEstimateReducer,
 });
 
 const rootReducer: Reducer = (state,
