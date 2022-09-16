@@ -25,6 +25,7 @@ import contractConditionSaga from 'admin/contract/condition/saga';
 import projectLogSaga from 'project_log/saga';
 import rivalEstimateSaga from 'rival_estimate/saga';
 import projectBidSaga from 'project_bid/saga';
+import projectScheduleSaga from 'project_schedule/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -49,6 +50,7 @@ function* saga() {
     projectLogSaga(),
     rivalEstimateSaga(),
     projectBidSaga(),
+    projectScheduleSaga()
   ]);
 }
 
