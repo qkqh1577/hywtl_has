@@ -1,6 +1,7 @@
 import SectionLayout from 'layouts/SectionLayout';
 import ButtonSection, { ProjectEstimateListButtonProps } from 'project_estimate/view/EstimateList/ButtonSection';
 import {
+  ProjectEstimateId,
   projectEstimateTypeName,
   ProjectEstimateVO
 } from 'project_estimate/domain';
@@ -29,12 +30,14 @@ import TextLink from 'components/TextLink';
 interface Props
   extends ProjectEstimateListButtonProps {
   list?: ProjectEstimateVO[];
+  openDetailModal: (id: ProjectEstimateId) => void;
 }
 
 export default function ProjectEstimateListSection(props: Props) {
 
   const {
-          list
+          list,
+          openDetailModal
         } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
@@ -93,7 +96,10 @@ export default function ProjectEstimateListSection(props: Props) {
                       justifyContent: 'center',
                       alignItems:     'center',
                     }}>
-                      <TextLink>{item.code}</TextLink>
+                      <TextLink
+                        onClick={() => {
+                          openDetailModal(item.id);
+                        }}>{item.code}</TextLink>
                       <IconButton
                         shape="square"
                         onClick={() => {console.log(item);}}

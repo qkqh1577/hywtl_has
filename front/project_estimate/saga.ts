@@ -47,7 +47,21 @@ function* watchAddCustom() {
   }
 }
 
+function* watchCustomDetailModal() {
+  while (true) {
+    const { payload: id } = yield take(projectEstimateAction.setCustomDetailModal);
+    if (typeof id === 'undefined') {
+      yield put(projectEstimateAction.setDetail(undefined));
+    }
+    else {
+      const detail: ProjectEstimateVO = yield call(projectEstimateApi.getCustomDetail, id);
+      yield put(projectEstimateAction.setDetail(detail));
+    }
+  }
+}
+
 export default function* projectEstimateSaga() {
   yield fork(watchProjectId);
   yield fork(watchAddCustom);
+  yield fork(watchCustomDetailModal);
 }

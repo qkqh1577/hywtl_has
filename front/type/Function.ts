@@ -1,1 +1,1 @@
-export type DefaultFunction = () => void;
+export type DefaultFunction<P = any> = (p?: P) => void;

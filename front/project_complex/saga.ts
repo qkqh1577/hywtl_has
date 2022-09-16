@@ -5,9 +5,7 @@ import {
   select,
   take,
 } from 'redux-saga/effects';
-import {
-  projectComplexAction,
-} from 'project_complex/action';
+import { projectComplexAction, } from 'project_complex/action';
 import {
   ProjectComplexBuildingVO,
   ProjectComplexSiteVO
@@ -104,7 +102,6 @@ function* updateSite() {
 function* updateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
-    console.log(params);
     try {
       yield put(projectComplexAction.requestBuilding('request'));
       yield call(projectComplexApi.updateBuilding, params);

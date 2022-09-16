@@ -1,5 +1,6 @@
 import { ProjectId } from 'project/domain';
 import {
+  ProjectEstimateId,
   ProjectEstimateType,
   ProjectEstimateVO,
 } from 'project_estimate/domain';
@@ -12,6 +13,7 @@ export interface ProjectEstimateState {
   detail?: ProjectEstimateVO;
   customAddModal?: ProjectEstimateType;
   requestAdd: string;
+  customDetailModal?: ProjectEstimateId;
 }
 
 const initial: ProjectEstimateState = {
@@ -19,34 +21,40 @@ const initial: ProjectEstimateState = {
 };
 
 export const projectEstimateReducer = createReducer(initial, {
-  [ProjectEstimateActionType.setProjectId]:      (state,
-                                                  action
-                                                 ) => ({
+  [ProjectEstimateActionType.setProjectId]:         (state,
+                                                     action
+                                                    ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectEstimateActionType.setList]:           (state,
-                                                  action
-                                                 ) => ({
+  [ProjectEstimateActionType.setList]:              (state,
+                                                     action
+                                                    ) => ({
     ...state,
     list: action.payload,
   }),
-  [ProjectEstimateActionType.setDetail]:         (state,
-                                                  action
-                                                 ) => ({
+  [ProjectEstimateActionType.setDetail]:            (state,
+                                                     action
+                                                    ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectEstimateActionType.setCustomAddModal]: (state,
-                                                  action
-                                                 ) => ({
+  [ProjectEstimateActionType.setCustomAddModal]:    (state,
+                                                     action
+                                                    ) => ({
     ...state,
     customAddModal: action.payload,
   }),
-  [ProjectEstimateActionType.requestAdd]:        (state,
-                                                  action
-                                                 ) => ({
+  [ProjectEstimateActionType.requestAdd]:           (state,
+                                                     action
+                                                    ) => ({
     ...state,
     requestAdd: action.payload
+  }),
+  [ProjectEstimateActionType.setCustomDetailModal]: (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    customDetailModal: action.payload
   })
 });
