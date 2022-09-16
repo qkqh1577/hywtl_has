@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateAddParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateChangeParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateExtensionParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectCustomEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
@@ -44,6 +45,14 @@ public class ProjectCustomEstimateController {
     ) {
         String username = UsernameExtractor.get(authentication);
         service.add(projectId, username, parameter);
+    }
+
+    @PutMapping("/project/sales/custom-estimate/{id}")
+    public void change(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectCustomEstimateChangeParameter parameter
+    ) {
+        service.change(id, parameter);
     }
 
     @PutMapping("/project/sales/custom-estimate/{id}/extension")

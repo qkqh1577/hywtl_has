@@ -25,7 +25,7 @@ public class ProjectComplexBuildingParameter {
 
     private Long buildingDocumentId;
 
-    private List<String> specialWindWeightConditionList;
+    private List<String> conditionList;
 
     private Boolean inTest;
 

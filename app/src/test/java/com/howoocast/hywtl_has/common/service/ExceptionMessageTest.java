@@ -133,10 +133,10 @@ public class ExceptionMessageTest {
         codeSet.add("project.estimate.sheet.detail.seq.positive");
         codeSet.add("project.estimate.sheet.detail.sub_title_list.not_empty");
         codeSet.add("project.estimate.sheet.detail.title.not_blank");
-        codeSet.add("project.estimate.sheet.detail.total_price.not_null");
-        codeSet.add("project.estimate.sheet.detail.total_price.positive");
-        codeSet.add("project.estimate.sheet.detail.unit_price.not_null");
-        codeSet.add("project.estimate.sheet.detail.unit_price.positive");
+        codeSet.add("project.estimate.sheet.detail.total_amount.not_null");
+        codeSet.add("project.estimate.sheet.detail.total_amount.positive");
+        codeSet.add("project.estimate.sheet.detail.unit_amount.not_null");
+        codeSet.add("project.estimate.sheet.detail.unit_amount.positive");
         codeSet.add("project.estimate.sheet.detail.unit.not_blank");
         codeSet.add("project.estimate.sheet.estimate_date.not_null");
         codeSet.add("project.estimate.sheet.expected_start_month.for_test");

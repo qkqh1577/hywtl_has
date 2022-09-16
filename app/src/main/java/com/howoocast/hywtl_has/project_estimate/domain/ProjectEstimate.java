@@ -1,15 +1,18 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
-import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +23,7 @@ import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Entity
@@ -82,8 +86,14 @@ public abstract class ProjectEstimate extends CustomEntity {
     @ManyToOne
     private Project project;
 
-    @ManyToOne
-    private Business business;
+    @Embedded
+    private ProjectEstimatePlan plan;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ProjectEstimateComplexSite> siteList;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ProjectEstimateComplexBuilding> buildingList;
 
     protected ProjectEstimate(
         String code,
@@ -92,8 +102,7 @@ public abstract class ProjectEstimate extends CustomEntity {
         String recipient,
         String note,
         User writer,
-        Project project,
-        Business business
+        Project project
     ) {
         this.project = project;
         this.code = code;
@@ -102,25 +111,55 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.note = note;
         this.writer = writer;
         this.isSent = isSent;
-        this.business = business;
         this.confirmed = false;
+    }
+
+    private ProjectEstimate(
+        String code,
+        User writer,
+        Project project
+    ) {
+        this.project = project;
+        this.code = code;
+        this.writer = writer;
+    }
+
+    public static ProjectEstimate of(
+        String code,
+        User writer,
+        Project project
+    ) {
+        return new ProjectEstimate(
+            code,
+            writer,
+            project
+        ) {
+        };
     }
 
     public void change(
         Boolean isSent,
         String recipient,
-        String note,
-        Business business
+        String note
     ) {
         this.isSent = isSent;
         this.recipient = recipient;
         this.note = note;
-        this.business = business;
     }
 
-    public void changeConfirmed(
-        Boolean confirmed
-    ) {
+    public void changePlan(@Nullable ProjectEstimatePlan plan) {
+        this.plan = plan;
+    }
+
+    public void changeSiteList(List<ProjectEstimateComplexSite> siteList) {
+        this.siteList = siteList;
+    }
+
+    public void changeBuildingList(List<ProjectEstimateComplexBuilding> buildingList) {
+        this.buildingList = buildingList;
+    }
+
+    public void changeConfirmed(Boolean confirmed) {
         this.confirmed = confirmed;
     }
 }

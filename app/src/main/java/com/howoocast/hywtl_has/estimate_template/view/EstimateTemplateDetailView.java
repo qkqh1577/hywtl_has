@@ -13,7 +13,7 @@ public class EstimateTemplateDetailView {
 
     private String unit;
 
-    private Long unitPrice;
+    private Long unitAmount;
 
     private String note;
 
@@ -23,7 +23,7 @@ public class EstimateTemplateDetailView {
         target.id = source.getId();
         target.titleList = source.getTitleList();
         target.unit = source.getUnit();
-        target.unitPrice = source.getUnitPrice();
+        target.unitAmount = source.getUnitAmount();
         target.note = source.getNote();
         return target;
     }

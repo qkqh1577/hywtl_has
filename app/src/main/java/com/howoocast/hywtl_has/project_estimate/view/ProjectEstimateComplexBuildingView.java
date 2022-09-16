@@ -2,17 +2,17 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
 import com.howoocast.hywtl_has.project_document.view.ProjectDocumentShortView;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimateComplexBuilding;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 
 @Getter
-public class ProjectCustomEstimateComplexBuildingView {
+public class ProjectEstimateComplexBuildingView {
 
     private Long id;
     private String name;
-    private ProjectCustomEstimateComplexSiteView site;
+    private ProjectEstimateComplexSiteView site;
     private String shape;
     private Integer floorCount;
     private Double height;
@@ -27,12 +27,12 @@ public class ProjectCustomEstimateComplexBuildingView {
     private String estimateEvaluationDifficulty;
     private String estimateReportDifficulty;
 
-    public static ProjectCustomEstimateComplexBuildingView assemble(ProjectCustomEstimateComplexBuilding source) {
-        ProjectCustomEstimateComplexBuildingView target = new ProjectCustomEstimateComplexBuildingView();
+    public static ProjectEstimateComplexBuildingView assemble(ProjectEstimateComplexBuilding source) {
+        ProjectEstimateComplexBuildingView target = new ProjectEstimateComplexBuildingView();
         target.id = source.getId();
         target.name = source.getName();
         if (Objects.nonNull(source.getSite())) {
-            target.site = ProjectCustomEstimateComplexSiteView.assemble(source.getSite());
+            target.site = ProjectEstimateComplexSiteView.assemble(source.getSite());
         }
         target.shape = source.getShape();
         target.floorCount = source.getFloorCount();

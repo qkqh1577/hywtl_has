@@ -2,9 +2,6 @@ package com.howoocast.hywtl_has.project_complex.service;
 
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
-import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
-import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
-import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
@@ -13,6 +10,9 @@ import com.howoocast.hywtl_has.project_complex.parameter.ProjectComplexBuildingP
 import com.howoocast.hywtl_has.project_complex.parameter.ProjectComplexSiteParameter;
 import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexBuildingRepository;
 import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexSiteRepository;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
+import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
@@ -112,7 +112,7 @@ public class ProjectComplexService {
             parameter.getHeight(),
             parameter.getBaseArea(),
             buildingDocument,
-            parameter.getSpecialWindWeightConditionList(),
+            parameter.getConditionList(),
             parameter.getInTest(),
             parameter.getTestTypeList(),
             parameter.getEstimateFigureDifficulty(),

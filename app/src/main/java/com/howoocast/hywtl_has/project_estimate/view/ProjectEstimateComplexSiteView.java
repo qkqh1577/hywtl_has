@@ -1,12 +1,12 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimateComplexSite;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSite;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.util.Objects;
 import lombok.Getter;
 
 @Getter
-public class ProjectCustomEstimateComplexSiteView {
+public class ProjectEstimateComplexSiteView {
 
     private Long id;
     private String name;
@@ -15,8 +15,8 @@ public class ProjectCustomEstimateComplexSiteView {
     private String figureDifficulty;
     private UserShortView manager;
 
-    public static ProjectCustomEstimateComplexSiteView assemble(ProjectCustomEstimateComplexSite source) {
-        ProjectCustomEstimateComplexSiteView target = new ProjectCustomEstimateComplexSiteView();
+    public static ProjectEstimateComplexSiteView assemble(ProjectEstimateComplexSite source) {
+        ProjectEstimateComplexSiteView target = new ProjectEstimateComplexSiteView();
         target.id = source.getId();
         target.name = source.getName();
         target.withEnvironmentTest = source.getWithEnvironmentTest();

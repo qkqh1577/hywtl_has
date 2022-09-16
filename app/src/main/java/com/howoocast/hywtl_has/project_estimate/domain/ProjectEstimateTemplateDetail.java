@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.estimate_template.domain;
+package com.howoocast.hywtl_has.project_estimate.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import java.util.List;
@@ -21,14 +21,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Slf4j
 @Getter
 @Entity
-@Table(name = EstimateTemplateDetail.KEY)
+@Table(name = ProjectEstimateTemplateDetail.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + EstimateTemplateDetail.KEY + " set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + ProjectEstimateTemplateDetail.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EstimateTemplateDetail extends CustomEntity {
+public class ProjectEstimateTemplateDetail extends CustomEntity {
 
-    public static final String KEY = "estimate_template_detail";
+    public static final String KEY = "project_estimate_template_detail";
 
     /**
      * 세부 항목 문구 목록
@@ -45,6 +45,14 @@ public class EstimateTemplateDetail extends CustomEntity {
     private String unit;
 
     /**
+     * 수량
+     */
+    @NotNull
+    @Column(nullable = false)
+    private Long testCount;
+
+
+    /**
      * 단가
      */
     @NotNull
@@ -52,45 +60,41 @@ public class EstimateTemplateDetail extends CustomEntity {
     private Long unitAmount;
 
     /**
+     * 총액
+     */
+    @NotNull
+    @Column(nullable = false)
+    private Long totalAmount;
+
+    /**
+     * 금액 사용 여부
+     */
+    @NotNull
+    @Column(nullable = false)
+    private Boolean inUse;
+
+    /**
      * 비고
      */
     private String note;
 
-    /**
-     * 정렬 순서
-     */
-    @NotNull
-    @Column(nullable = false)
-    private Integer seq;
-
-
-    public static EstimateTemplateDetail of(
+    public static ProjectEstimateTemplateDetail of(
         List<String> titleList,
         String unit,
+        Long testCount,
         Long unitAmount,
-        String note,
-        Integer seq
+        Long totalAmount,
+        Boolean inUse,
+        String note
     ) {
-        EstimateTemplateDetail instance = new EstimateTemplateDetail();
+        ProjectEstimateTemplateDetail instance = new ProjectEstimateTemplateDetail();
         instance.titleList = titleList;
         instance.unit = unit;
+        instance.testCount = testCount;
         instance.unitAmount = unitAmount;
+        instance.totalAmount = totalAmount;
+        instance.inUse = inUse;
         instance.note = note;
-        instance.seq = seq;
         return instance;
-    }
-
-    public void change(
-        List<String> titleList,
-        String unit,
-        Long unitAmount,
-        String note,
-        Integer seq
-    ) {
-        this.titleList = titleList;
-        this.unit = unit;
-        this.unitAmount = unitAmount;
-        this.note = note;
-        this.seq = seq;
     }
 }

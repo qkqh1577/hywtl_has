@@ -87,7 +87,7 @@ export default function () {
                     required
                     disableLabel
                     type="number"
-                    name={`detailList.${i}.unitPrice`}
+                    name={`detailList.${i}.unitAmount`}
                     label="단가"
                   />
                 </Td>

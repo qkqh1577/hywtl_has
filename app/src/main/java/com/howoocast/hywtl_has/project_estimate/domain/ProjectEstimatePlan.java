@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 커스텀 견적서 실험 정보
+ * 작업 목표 및 담당자 정보
  */
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectCustomEstimateExtensionInput {
+public class ProjectEstimatePlan {
 
     /**
      * 견적 일자
@@ -54,7 +54,7 @@ public class ProjectCustomEstimateExtensionInput {
      */
     private Long totalAmount;
 
-    public static ProjectCustomEstimateExtensionInput of(
+    public static ProjectEstimatePlan of(
         LocalDate estimateDate,
         LocalDate expectedServiceDate,
         Integer expectedTestDeadline,
@@ -64,7 +64,7 @@ public class ProjectCustomEstimateExtensionInput {
         Long discountAmount,
         Long totalAmount
     ) {
-        ProjectCustomEstimateExtensionInput instance = new ProjectCustomEstimateExtensionInput();
+        ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
         instance.expectedServiceDate = expectedServiceDate;
         instance.expectedTestDeadline = expectedTestDeadline;
@@ -74,7 +74,6 @@ public class ProjectCustomEstimateExtensionInput {
         instance.discountAmount = discountAmount;
         instance.totalAmount = totalAmount;
         return instance;
+
     }
-
-
 }
