@@ -118,6 +118,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("personnel.job", "소속 정보");
         this.put("place", "장소");
         this.put("price", "가격");
+        this.put("amount", "금액");
         this.put("project", "프로젝트");
         this.put("project_basic", "프로젝트 기본 정보");
         this.put("project_basic.name", "프로젝트명");
@@ -144,12 +145,12 @@ public class Dictionary extends HashMap<String, String> {
         this.put("sub_title", "부제");
         this.put("test_list", "실험 종류");
         this.put("title", "제목");
-        this.put("total_price", "총액");
+        this.put("total_amount", "총액");
         this.put("training_period", "연수 기간");
         this.put("tree", "구조");
         this.put("type", "구분");
         this.put("unit", "단위");
-        this.put("unit_price", "단가");
+        this.put("unit_amount", "단가");
         this.put("user", "유저");
         this.put("username", "아이디");
         this.put("verification", "인증");

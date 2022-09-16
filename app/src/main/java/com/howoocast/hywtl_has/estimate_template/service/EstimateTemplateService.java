@@ -66,7 +66,7 @@ public class EstimateTemplateService {
             detailList.add(EstimateTemplateDetail.of(
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
-                detailParams.getUnitPrice(),
+                detailParams.getUnitAmount(),
                 detailParams.getNote(),
                 i + 1
             ));
@@ -90,7 +90,7 @@ public class EstimateTemplateService {
                 detailList.add(EstimateTemplateDetail.of(
                     detailParams.getTitleList(),
                     detailParams.getUnit(),
-                    detailParams.getUnitPrice(),
+                    detailParams.getUnitAmount(),
                     detailParams.getNote(),
                     i + 1
                 ));
@@ -104,7 +104,7 @@ public class EstimateTemplateService {
             detailInstance.change(
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
-                detailParams.getUnitPrice(),
+                detailParams.getUnitAmount(),
                 detailParams.getNote(),
                 i + 1
             );

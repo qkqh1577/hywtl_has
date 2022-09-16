@@ -164,7 +164,7 @@ function Children({ fieldName, formik }: {
 
         />
       );
-    case 'specialWindWeightConditionList':
+    case 'conditionList':
       return (
         <CheckboxField
           name={fieldName}

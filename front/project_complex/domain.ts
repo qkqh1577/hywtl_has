@@ -1,7 +1,5 @@
 import { UserVO } from 'user/domain';
-import {
-  ProjectDocumentShort,
-} from 'project_document/domain';
+import { ProjectDocumentShort, } from 'project_document/domain';
 import { TestType } from 'admin/estimate/content/domain';
 
 export type Difficulty = '상' | '중상' | '중' | '중하' | '하';
@@ -39,7 +37,7 @@ export interface ProjectComplexBuildingVO {
   baseArea?: number;
   ratio?: number;
   buildingDocument?: ProjectDocumentShort;
-  specialWindWeightConditionList?: string[];
+  conditionList?: string[];
   inTest?: boolean;
   testTypeList?: TestType[];
   estimateFigureDifficulty?: Difficulty; // 견적 제작 난이도

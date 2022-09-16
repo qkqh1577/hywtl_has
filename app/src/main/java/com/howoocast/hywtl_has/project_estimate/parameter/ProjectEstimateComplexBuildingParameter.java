@@ -7,11 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectCustomEstimateComplexBuildingParameter {
+public class ProjectEstimateComplexBuildingParameter {
 
-    private Long id;
     private String name;
-    private Long siteId;
+    private Integer siteSeq;
     private String shape;
     private Integer floorCount;
     private Double height;

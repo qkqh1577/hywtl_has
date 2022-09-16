@@ -2,11 +2,28 @@ package com.howoocast.hywtl_has.project_estimate.service;
 
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
+import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSite;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexBuildingParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexSiteParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimatePlanParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
+import com.howoocast.hywtl_has.user.domain.User;
+import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,24 +32,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectEstimateService {
 
-    private final ProjectEstimateRepository estimateRepository;
-
+    private final ProjectEstimateRepository repository;
+    private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectDocumentRepository documentRepository;
 
 
     @Transactional(readOnly = true)
     public List<ProjectEstimate> getList(
         Long projectId
     ) {
-        return estimateRepository.findByProject_Id(projectId);
-    }
-
-
-    @Transactional
-    public void addSystem(
-        Long projectId,
-        String username
-    ) {
-
+        return repository.findByProject_Id(projectId);
     }
 
     @Transactional
@@ -40,8 +50,8 @@ public class ProjectEstimateService {
         Long projectId,
         Long estimateId
     ) {
-        List<ProjectEstimate> estimateList = estimateRepository.findByProject_Id(projectId);
-        ProjectEstimate instance = estimateRepository.findById(estimateId).orElseThrow(() -> {
+        List<ProjectEstimate> estimateList = repository.findByProject_Id(projectId);
+        ProjectEstimate instance = repository.findById(estimateId).orElseThrow(() -> {
             throw new NotFoundException(ProjectEstimate.KEY, estimateId);
         });
 
@@ -60,4 +70,94 @@ public class ProjectEstimateService {
         instance.changeConfirmed(Boolean.TRUE);
     }
 
+    protected ProjectEstimate of(
+        Long projectId,
+        String username
+    ) {
+        Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
+        User writer = new CustomFinder<>(userRepository, User.class).byField(username, "username");
+        String code = getCode(project);
+
+        return ProjectEstimate.of(
+            code,
+            writer,
+            project
+        );
+    }
+
+    protected void changePlan(
+        ProjectEstimate instance,
+        @Nullable ProjectEstimatePlanParameter parameter
+    ) {
+        instance.changePlan(
+            Optional.ofNullable(parameter)
+                .map(plan -> ProjectEstimatePlan.of(
+                    plan.getEstimateDate(),
+                    plan.getExpectedServiceDate(),
+                    plan.getExpectedTestDeadline(),
+                    plan.getExpectedFinalReviewDeadline(),
+                    plan.getTestAmount(),
+                    plan.getReviewAmount(),
+                    plan.getDiscountAmount(),
+                    plan.getTotalAmount()))
+                .orElse(null));
+        repository.save(instance);
+    }
+
+    protected void changeSiteList(
+        ProjectEstimate instance,
+        @Nullable List<ProjectEstimateComplexSiteParameter> siteList
+    ) {
+        instance.changeSiteList(Optional.ofNullable(siteList)
+            .map(list -> list.stream()
+                .map(item -> ProjectEstimateComplexSite.of(
+                    item.getName(),
+                    item.getWithEnvironmentTest(),
+                    item.getEstimateFigureDifficulty(),
+                    item.getFigureDifficulty(),
+                    new CustomFinder<>(userRepository, User.class)
+                        .byIdIfExists(item.getManagerId())))
+                .collect(Collectors.toList()))
+            .orElse(Collections.emptyList()));
+        repository.save(instance);
+    }
+
+    protected void changeBuildingList(
+        ProjectEstimate instance,
+        @Nullable List<ProjectEstimateComplexBuildingParameter> buildingList
+    ) {
+        instance.changeBuildingList(
+            Optional.ofNullable(buildingList)
+                .map(list -> list.stream()
+                    .map(item -> ProjectEstimateComplexBuilding.of(
+                        item.getName(),
+                        instance.getSiteList().get(item.getSiteSeq()),
+                        item.getShape(),
+                        item.getFloorCount(),
+                        item.getHeight(),
+                        item.getBaseArea(),
+                        new CustomFinder<>(documentRepository, ProjectDocument.class).byIdIfExists(
+                            item.getBuildingDocumentId()),
+                        item.getConditionList(),
+                        item.getInTest(),
+                        item.getTestTypeList(),
+                        item.getEstimateFigureDifficulty(),
+                        item.getEstimateTestDifficulty(),
+                        item.getEstimateEvaluationDifficulty(),
+                        item.getEstimateReportDifficulty()))
+                    .collect(Collectors.toList()))
+                .orElse(Collections.emptyList()));
+        repository.save(instance);
+    }
+
+    private String getCode(Project project) {
+        Long nextSeq = repository.findNextSeq(project.getId());
+
+        String code = "";
+        code += "Q";
+        code += project.getBasic().getCode();
+        code += String.format("%02d", nextSeq);
+
+        return code;
+    }
 }

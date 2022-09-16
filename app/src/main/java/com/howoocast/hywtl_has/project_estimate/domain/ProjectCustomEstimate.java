@@ -4,12 +4,10 @@ import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
-import java.util.List;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,14 +25,12 @@ public class ProjectCustomEstimate extends ProjectEstimate {
     @JoinColumn(name = "file_id")
     private FileItem file;
 
-    @OneToMany(mappedBy = "estimate")
-    private List<ProjectCustomEstimateComplexSite> siteList;
+    /**
+     * 견적 업체
+     */
+    @ManyToOne
+    private Business business;
 
-    @OneToMany(mappedBy = "estimate")
-    private List<ProjectCustomEstimateComplexBuilding> buildingList;
-
-    @Embedded
-    private ProjectCustomEstimateExtensionInput extensionInput;
 
     protected ProjectCustomEstimate(
         String code,
@@ -43,8 +39,7 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String recipient,
         String note,
         User writer,
-        Project project,
-        Business business
+        Project project
     ) {
         super(
             code,
@@ -53,41 +48,46 @@ public class ProjectCustomEstimate extends ProjectEstimate {
             recipient,
             note,
             writer,
-            project,
-            business
+            project
         );
     }
 
     public static ProjectCustomEstimate of(
+        ProjectEstimate dto,
         FileItem file,
-        String code,
         ProjectEstimateType type,
         Boolean isSent,
         String recipient,
         String note,
-        User writer,
-        Project project,
         Business business
     ) {
         ProjectCustomEstimate instance =
             new ProjectCustomEstimate(
-                code,
+                dto.getCode(),
                 type,
                 isSent,
                 recipient,
                 note,
-                writer,
-                project,
-                business
+                dto.getWriter(),
+                dto.getProject()
             );
         instance.file = file;
+        instance.business = business;
         return instance;
     }
 
-    public void changeExtension(
-        ProjectCustomEstimateExtensionInput extensionInput
+    public void change(
+        Boolean isSent,
+        String recipient,
+        String note,
+        Business business
     ) {
-        this.extensionInput = extensionInput;
+        super.change(
+            isSent,
+            recipient,
+            note
+        );
+        this.business = business;
     }
 
 }

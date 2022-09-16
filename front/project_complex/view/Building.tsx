@@ -167,7 +167,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <ProjectComplexBuildingNameCell
                   key={item.id}
-                  fieldName="specialWindWeightConditionList"
+                  fieldName="conditionList"
                   onSubmit={props.onSubmit}
                   {...item}
                 />

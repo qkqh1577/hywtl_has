@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,21 +23,19 @@ import org.springframework.lang.Nullable;
 @Slf4j
 @Getter
 @Entity
-@Table(name = ProjectCustomEstimateComplexBuilding.KEY)
+@Table(name = ProjectEstimateComplexBuilding.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + ProjectCustomEstimateComplexBuilding.KEY + " set deleted_at = now() where id = ?")
+@SQLDelete(sql = "update " + ProjectEstimateComplexBuilding.KEY + " set deleted_at = now() where id = ?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectCustomEstimateComplexBuilding extends CustomEntity {
+public class ProjectEstimateComplexBuilding extends CustomEntity {
 
-    public static final String KEY = "project_custom_estimate_complex_building";
-
+    public static final String KEY = "project_estimate_complex_building";
 
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "site_id")
-    private ProjectCustomEstimateComplexSite site;
+    @ManyToOne
+    private ProjectEstimateComplexSite site;
 
     private String shape;
 
@@ -50,7 +47,7 @@ public class ProjectCustomEstimateComplexBuilding extends CustomEntity {
 
     private Double ratio;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "building_document_id")
     private ProjectDocument buildingDocument;
 
@@ -70,20 +67,9 @@ public class ProjectCustomEstimateComplexBuilding extends CustomEntity {
 
     private String estimateReportDifficulty;
 
-    @ManyToOne
-    private ProjectCustomEstimate estimate;
-
-    public static ProjectCustomEstimateComplexBuilding of(
-        ProjectCustomEstimate estimate
-    ) {
-        ProjectCustomEstimateComplexBuilding instance = new ProjectCustomEstimateComplexBuilding();
-        instance.estimate = estimate;
-        return instance;
-    }
-
-    public void change(
+    public static ProjectEstimateComplexBuilding of(
         @Nullable String name,
-        @Nullable ProjectCustomEstimateComplexSite site,
+        @Nullable ProjectEstimateComplexSite site,
         @Nullable String shape,
         @Nullable Integer floorCount,
         @Nullable Double height,
@@ -97,28 +83,31 @@ public class ProjectCustomEstimateComplexBuilding extends CustomEntity {
         @Nullable String estimateEvaluationDifficulty,
         @Nullable String estimateReportDifficulty
     ) {
-        this.name = name;
-        this.site = site;
-        this.shape = shape;
-        this.floorCount = floorCount;
-        this.height = height;
-        this.baseArea = baseArea;
-        if (Objects.nonNull(this.height)
-            && Objects.nonNull(this.baseArea)
-            && this.height > 0
-            && this.baseArea > 0
+        ProjectEstimateComplexBuilding instance = new ProjectEstimateComplexBuilding();
+        instance.name = name;
+        instance.site = site;
+        instance.shape = shape;
+        instance.floorCount = floorCount;
+        instance.height = height;
+        instance.baseArea = baseArea;
+        if (Objects.nonNull(instance.height)
+            && Objects.nonNull(instance.baseArea)
+            && instance.height > 0
+            && instance.baseArea > 0
         ) {
-            this.ratio = this.height / Math.sqrt(this.baseArea);
+            instance.ratio = instance.height / Math.sqrt(instance.baseArea);
         } else {
-            this.ratio = null;
+            instance.ratio = null;
         }
-        this.buildingDocument = buildingDocument;
-        this.conditionList = conditionList;
-        this.inTest = inTest;
-        this.testTypeList = testTypeList;
-        this.estimateFigureDifficulty = estimateFigureDifficulty;
-        this.estimateTestDifficulty = estimateTestDifficulty;
-        this.estimateEvaluationDifficulty = estimateEvaluationDifficulty;
-        this.estimateReportDifficulty = estimateReportDifficulty;
+        instance.buildingDocument = buildingDocument;
+        instance.conditionList = conditionList;
+        instance.inTest = inTest;
+        instance.testTypeList = testTypeList;
+        instance.estimateFigureDifficulty = estimateFigureDifficulty;
+        instance.estimateTestDifficulty = estimateTestDifficulty;
+        instance.estimateEvaluationDifficulty = estimateEvaluationDifficulty;
+        instance.estimateReportDifficulty = estimateReportDifficulty;
+        return instance;
     }
+
 }

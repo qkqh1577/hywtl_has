@@ -91,16 +91,16 @@ export interface EstimateTemplateDetailVO {
   id: EstimateTemplateDetailId | '';
   titleList: string[];
   unit: TestUnit | '';
-  unitPrice: number | '';
+  unitAmount: number | '';
   note?: string;
 }
 
 export const initialEstimateTemplateDetailVO: EstimateTemplateDetailVO = {
-  id:        '',
-  titleList: [],
-  unit:      '',
-  unitPrice: '',
-  note:      ''
+  id:         '',
+  titleList:  [],
+  unit:       '',
+  unitAmount: '',
+  note:       ''
 };
 
 export interface EstimateTemplateVO {

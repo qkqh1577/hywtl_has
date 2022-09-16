@@ -21,9 +21,9 @@ public class EstimateTemplateDetailParameter {
     @NotBlank(message = EstimateTemplateDetail.KEY + ".unit.not_blank")
     private String unit;
 
-    @NotNull(message = EstimateTemplateDetail.KEY + ".unit_price.not_null")
-    @Min(value = 0, message = EstimateTemplateDetail.KEY + ".unit_price.positive")
-    private Long unitPrice;
+    @NotNull(message = EstimateTemplateDetail.KEY + ".unit_amount.not_null")
+    @Min(value = 0, message = EstimateTemplateDetail.KEY + ".unit_amount.positive")
+    private Long unitAmount;
 
     private String note;
 }

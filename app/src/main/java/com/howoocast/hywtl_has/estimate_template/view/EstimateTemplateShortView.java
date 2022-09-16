@@ -18,7 +18,7 @@ public class EstimateTemplateShortView {
 
     private Integer detailCount;
 
-    private Long totalPrice;
+    private Long totalAmount;
 
 
     public static EstimateTemplateShortView assemble(EstimateTemplate source) {
@@ -30,8 +30,8 @@ public class EstimateTemplateShortView {
             .map(EstimateTemplateDetail::getTitleList)
             .map(List::size)
             .reduce(0, Integer::sum);
-        target.totalPrice = source.getDetailList().stream()
-            .map(EstimateTemplateDetail::getUnitPrice)
+        target.totalAmount = source.getDetailList().stream()
+            .map(EstimateTemplateDetail::getUnitAmount)
             .reduce(0L, Long::sum);
         return target;
     }

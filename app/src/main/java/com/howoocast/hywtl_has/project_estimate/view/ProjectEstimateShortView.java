@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
-import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
@@ -15,7 +14,6 @@ public class ProjectEstimateShortView {
     private Boolean isSent;
     private Boolean confirmed;
     private String recipient;
-    private BusinessShortView business;
     private UserShortView createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -28,7 +26,6 @@ public class ProjectEstimateShortView {
         target.isSent = source.getIsSent();
         target.confirmed = source.getConfirmed();
         target.recipient = source.getRecipient();
-        target.business = BusinessShortView.assemble(source.getBusiness());
         target.createdBy = UserShortView.assemble(source.getWriter());
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();

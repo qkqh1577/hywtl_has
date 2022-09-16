@@ -2,8 +2,8 @@ package com.howoocast.hywtl_has.project_complex.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
-import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.ElementCollection;
@@ -54,7 +54,7 @@ public class ProjectComplexBuilding extends CustomEntity {
     private ProjectDocument buildingDocument;
 
     @ElementCollection
-    private List<String> specialWindWeightConditionList;
+    private List<String> conditionList;
 
     private Boolean inTest;
 
@@ -89,7 +89,7 @@ public class ProjectComplexBuilding extends CustomEntity {
         Double height,
         Double baseArea,
         ProjectDocument buildingDocument,
-        List<String> specialWindWeightConditionList,
+        List<String> conditionList,
         Boolean inTest,
         List<TestType> testTypeList,
         String estimateFigureDifficulty,
@@ -113,7 +113,7 @@ public class ProjectComplexBuilding extends CustomEntity {
             this.ratio = null;
         }
         this.buildingDocument = buildingDocument;
-        this.specialWindWeightConditionList = specialWindWeightConditionList;
+        this.conditionList = conditionList;
         this.inTest = inTest;
         this.testTypeList = testTypeList;
         this.estimateFigureDifficulty = estimateFigureDifficulty;

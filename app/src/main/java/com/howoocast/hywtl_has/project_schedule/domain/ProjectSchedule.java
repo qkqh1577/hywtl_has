@@ -63,7 +63,7 @@ public class ProjectSchedule extends CustomEntity {
     @ManyToOne
     private User manager;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<User> attendanceList;
 
     public static ProjectSchedule of(
