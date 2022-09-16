@@ -1,0 +1,274 @@
+      ### add custom
+POST http://localhost:8080/project/sales/1/custom-estimate
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file.multipartFile"; filename="3f43d3eb-92ca-4dc7-8b28-f39cbdcc6cbf.png"
+
+# < {중괄호 지우고 절대경로}
+< C:/Users/young/personal/3f43d3eb-92ca-4dc7-8b28-f39cbdcc6cbf.png
+--WebAppBoundary
+Content-Disposition: form-data; name="isSent"
+
+true
+--WebAppBoundary
+Content-Disposition: form-data; name="recipient"
+
+me3
+--WebAppBoundary
+Content-Disposition: form-data; name="type"
+
+CUSTOM
+--WebAppBoundary
+Content-Disposition: form-data; name="businessId"
+
+2
+--WebAppBoundary--
+
+### add system
+PUT http://localhost:8080/project/sales/1/system-estimate
+Content-Type: application/json
+
+{
+  "isSent": true,
+  "recipient": "se5",
+  "note": "system test",
+  "plan": {
+    "estimateDate": "2022-07-01",
+    "expectedTestDeadline": 7,
+    "expectedFinalReviewDeadline": 10
+  },
+  "siteList": [
+    {
+      "name": "1단지",
+      "withEnvironmentTest": true,
+      "managerId": 2
+    },
+    {
+      "name": "2단지",
+      "withEnvironmentTest": true,
+      "managerId": 2
+    }
+  ],
+  "buildingList": [
+    {
+      "name": "101동",
+      "siteSeq": 0,
+      "shape": "사각형",
+      "floorCount": 21
+    },
+    {
+      "name": "102동",
+      "siteSeq": 0,
+      "shape": "사각형",
+      "floorCount": 21
+    },
+    {
+      "name": "201동",
+      "siteSeq": 0,
+      "shape": "T자형",
+      "floorCount": 18
+    },
+    {
+      "name": "202동",
+      "siteSeq": 0,
+      "shape": "사각형",
+      "floorCount": 20
+    }
+  ],
+  "templateList": [
+    {
+      "title": "자연기류 형성",
+      "testType": "F",
+      "detailList": [
+        {
+          "titleList": [
+            "재현기간 별 기본 풍속 평가",
+            "대상 부지 지표면조도 구분 판정"
+          ],
+          "unit": "단지",
+          "testCount": 2,
+          "unitAmount": 1000000,
+          "totalAmount": 2000000,
+          "inUse": true
+        }
+      ]
+    },
+    {
+      "title": "주골조설계용 풍하중",
+      "testType": "P",
+      "detailList": [
+        {
+          "titleList": [
+            "재현기간 별 기본 풍속 평가",
+            "대상 부지 지표면조도 구분 판정"
+          ],
+          "unit": "동",
+          "testCount": 4,
+          "unitAmount": 1200000,
+          "totalAmount": 4800000,
+          "inUse": true
+        }
+      ]
+    }
+  ],
+  "discountAmount": 1000000,
+  "contentList": [
+    "test1",
+    "test2"
+  ]
+}
+
+### change custom
+PUT http://localhost:8080/project/sales/custom-estimate/1
+Content-Type: application/json
+
+{
+  "isSent": true,
+  "recipient": "me3->4",
+  "businessId": 1,
+  "note": "system test"
+}
+
+### extend custom
+PUT http://localhost:8080/project/sales/custom-estimate/1/extension
+Content-Type: application/json
+
+{
+  "plan": {
+    "estimateDate": "2022-09-01",
+    "expectedTestDeadline": 7,
+    "expectedFinalReviewDeadline": 9
+  },
+  "siteList": [
+    {
+      "name": "1단지",
+      "withEnvironmentTest": false,
+      "managerId": 1
+    }
+  ],
+  "buildingList": [
+    {
+      "name": "101동",
+      "siteSeq": 0,
+      "shape": "L자형",
+      "floorCount": 15
+    },
+    {
+      "name": "102동",
+      "siteSeq": 0,
+      "shape": "L자형",
+      "floorCount": 15
+    },
+    {
+      "name": "103동",
+      "siteSeq": 0,
+      "shape": "L자형",
+      "floorCount": 15
+    }
+  ]
+}
+
+### change system
+PUT http://localhost:8080/project/sales/system-estimate/2
+Content-Type: application/json
+
+{
+  "isSent": true,
+  "recipient": "se5->6",
+  "note": "system test",
+  "plan": {
+    "estimateDate": "2022-09-01",
+    "expectedTestDeadline": 7,
+    "expectedFinalReviewDeadline": 10
+  },
+  "siteList": [
+    {
+      "name": "1단지",
+      "withEnvironmentTest": true,
+      "managerId": 2
+    },
+    {
+      "name": "2단지",
+      "withEnvironmentTest": false,
+      "managerId": 2
+    }
+  ],
+  "buildingList": [
+    {
+      "name": "101동",
+      "siteSeq": 0,
+      "shape": "사각형",
+      "floorCount": 21
+    },
+    {
+      "name": "102동",
+      "siteSeq": 0,
+      "shape": "사각형",
+      "floorCount": 21
+    },
+    {
+      "name": "201동",
+      "siteSeq": 0,
+      "shape": "T자형",
+      "floorCount": 20
+    },
+    {
+      "name": "202동",
+      "siteSeq": 0,
+      "shape": "T자형",
+      "floorCount": 20
+    }
+  ],
+  "templateList": [
+    {
+      "title": "자연기류 형성",
+      "testType": "F",
+      "detailList": [
+        {
+          "titleList": [
+            "재현기간 별 기본 풍속 평가",
+            "대상 부지 지표면조도 구분 판정"
+          ],
+          "unit": "단지",
+          "testCount": 2,
+          "unitAmount": 1000000,
+          "totalAmount": 2000000,
+          "inUse": true
+        }
+      ]
+    },
+    {
+      "title": "주골조설계용 풍하중",
+      "testType": "P",
+      "detailList": [
+        {
+          "titleList": [
+            "재현기간 별 기본 풍속 평가",
+            "대상 부지 지표면조도 구분 판정"
+          ],
+          "unit": "동",
+          "testCount": 4,
+          "unitAmount": 1200000,
+          "totalAmount": 4800000,
+          "inUse": true
+        }
+      ]
+    }
+  ],
+  "discountAmount": 1000000,
+  "contentList": [
+    "test1",
+    "test2",
+    "test3"
+  ]
+}
+
+### get list
+GET http://localhost:8080/project/sales/1/estimate
+
+### get custom
+GET http://localhost:8080/project/sales/custom-estimate/1
+
+### get system
+GET http://localhost:8080/project/sales/system-estimate/2
