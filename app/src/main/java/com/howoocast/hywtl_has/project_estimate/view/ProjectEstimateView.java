@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,6 +52,14 @@ public class ProjectEstimateView {
             this.buildingList = source.getBuildingList().stream().map(ProjectEstimateComplexBuildingView::assemble)
                 .collect(
                     Collectors.toList());
+        }
+    }
+
+    public static ProjectEstimateView assemble(ProjectEstimate source) {
+        if (source.getType().equals("SYSTEM")) {
+            return ProjectSystemEstimateView.assemble((ProjectSystemEstimate) source);
+        } else {
+            return ProjectCustomEstimateView.assemble((ProjectCustomEstimate) source);
         }
     }
 }
