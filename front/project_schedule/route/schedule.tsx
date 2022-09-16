@@ -1,6 +1,7 @@
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import { AppRoute } from 'services/routes';
 import ProjectSchedule from 'project_schedule/view';
@@ -21,14 +22,16 @@ import {
 } from 'formik';
 import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
+import ProjectScheduleAddModalRoute from 'project_schedule/route/addModal';
+
+export type OnAddModalOpen = (open: boolean) => void
 
 function Element() {
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.project);
   const { filter, list, projectId } = useSelector((root: RootState) => root.projectSchedule);
-  console.log('route index filter : ', filter);
-  console.log('route index list : ', list);
-  console.log('route index projectId : ', projectId);
+  const [isSearched, setIsSearched] = useState<boolean>(false);
+
   const setFilter = useCallback((formikProps: FormikSubmit<ProjectScheduleQuery>) => {
     const result: ProjectScheduleQuery = {
       ...(filter ?? initialProjectScheduleQuery),
@@ -65,11 +68,20 @@ function Element() {
     }
   }, []);
 
+  const onAddModalOpen: OnAddModalOpen = useCallback(() =>
+    dispatch(projectScheduleAction.addModal(true)), [dispatch]);
+
   return (
     <ProjectContainer>
       <FormikProvider value={formik}>
-        <ProjectSchedule list={list} />
+        <ProjectSchedule
+          list={list}
+          isSearched={isSearched}
+          setIsSearched={setIsSearched}
+          onAddModalOpen={onAddModalOpen}
+        />
       </FormikProvider>
+      <ProjectScheduleAddModalRoute />
     </ProjectContainer>
   );
 }

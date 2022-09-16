@@ -12,6 +12,7 @@ export interface ProjectScheduleState {
   detail?: ProjectScheduleVO;
   filter?: ProjectScheduleQuery;
   list?: ProjectScheduleShort[];
+  addModal: boolean;
 }
 
 const initialState = {};
@@ -34,4 +35,11 @@ export const projectScheduleReducer = createReducer(initialState, {
     ...state,
     list: action.payload
   }),
+
+  [ProjectScheduleAction.addModal]: (state,
+                                     action
+                                    ) => ({
+    ...state,
+    addModal: action.payload,
+  })
 })

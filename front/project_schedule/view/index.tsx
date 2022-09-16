@@ -1,16 +1,22 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Typography
+} from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
-import SearchSection from 'project_schedule/view/SearchSection';
+import SearchSection, { ButtonProps } from 'project_schedule/view/SearchSection';
 import List, { ListProps } from 'project_schedule/view/List';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
+import { OnAddModalOpen } from 'project_schedule/route/schedule';
 
 interface Props
-  extends ListProps {
-
+  extends ListProps,
+          ButtonProps {
+  isSearched: boolean;
+  onAddModalOpen: OnAddModalOpen;
 }
 
 export const StyleWrapper = styled.div`
@@ -20,7 +26,15 @@ export const StyleWrapper = styled.div`
 `;
 
 export default function ProjectSchedule(props: Props) {
-  const eventList = props.list?.map((item) => {
+
+  const {
+          isSearched,
+          setIsSearched,
+          list,
+          onAddModalOpen
+        } = props;
+
+  const eventList = list?.map((item) => {
     return {
       title:  `${item.type} ${item.title}`,
       start:  dayjs(item.startTime)
@@ -34,8 +48,6 @@ export default function ProjectSchedule(props: Props) {
   const handleDateClick = (arg) => {
     alert(arg.alert());
   };
-
-  console.log(eventList);
   return (
     <Box sx={{
       display:      'flex',
@@ -53,41 +65,59 @@ export default function ProjectSchedule(props: Props) {
         marginBottom: '15px',
         padding:      '15px 15px'
       }}>
-        <SearchSection />
+        <SearchSection setIsSearched={setIsSearched} />
       </Box>
-      <List {...props} />
+      {isSearched && <List list={list} />}
+      {isSearched && Array.isArray(list) && list.length === 0 && (
+        <Box
+          sx={{
+            display:        'flex',
+            justifyContent: 'center',
+            width:          '100%',
+            height:         '100%',
+            flexWrap:       'nowrap',
+            border:         `1px solid ${ColorPalette._e4e9f2}`,
+            borderRadius:   '5px',
+            marginBottom:   '15px',
+            padding:        '15px 15px'
+          }}>
+          <Typography>검색된 결과가 없습니다.</Typography>
+        </Box>
+      )}
       <Box sx={{
         width: '100%',
       }}>
-        <StyleWrapper>
-          <FullCalendar
-            locale="ko"
-            plugins={[dayGridPlugin]}
-            events={eventList}
-            headerToolbar={
-              {
-                left:  'title prev next today',
-                right: 'addButton'
+        {!isSearched && (
+          <StyleWrapper>
+            <FullCalendar
+              locale="ko"
+              plugins={[dayGridPlugin]}
+              events={eventList}
+              headerToolbar={
+                {
+                  left:  'title prev next today',
+                  right: 'addButton'
+                }
               }
-            }
 
-            buttonText={
-              {
-                today: '오늘'
+              buttonText={
+                {
+                  today: '오늘'
+                }
               }
-            }
-            customButtons={
-              {
-                addButton: {
-                  text:  '등록',
-                  click: () => {
-                    console.log('click');
+              customButtons={
+                {
+                  addButton: {
+                    text:  '등록',
+                    click: () => {
+                      onAddModalOpen(true);
+                    }
                   }
                 }
               }
-            }
-          />
-        </StyleWrapper>
+            />
+          </StyleWrapper>
+        )}
       </Box>
     </Box>
   );
