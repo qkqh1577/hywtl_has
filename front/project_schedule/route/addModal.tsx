@@ -11,13 +11,13 @@ import {
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
 import { useFormik } from 'formik';
-import { ProjectScheduleParameter } from 'project_schedule/parameter';
+import {
+  initialProjectScheduleParameter,
+  ProjectScheduleParameter
+} from 'project_schedule/parameter';
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import { FormikSubmit } from 'type/Form';
-import {
-  initialProjectScheduleVO,
-  ProjectScheduleVOForAdd
-} from 'project_schedule/domain';
+import dayjs from 'dayjs';
 
 export default function ProjectScheduleAddModalRoute() {
   const projectId = useId();
@@ -30,9 +30,9 @@ export default function ProjectScheduleAddModalRoute() {
 
   const onClose = useCallback(() => dispatch(projectScheduleAction.addModal(false)), [dispatch]);
 
-  const formik = useFormik<ProjectScheduleVOForAdd>({
+  const formik = useFormik<ProjectScheduleParameter>({
     enableReinitialize: true,
-    initialValues:      initialProjectScheduleVO,
+    initialValues:      initialProjectScheduleParameter,
     onSubmit:           (values,
                          helper
                         ) => {
@@ -43,7 +43,11 @@ export default function ProjectScheduleAddModalRoute() {
       }
       console.log('values : ', values);
       add({
-        values,
+        values: {
+          ...values,
+          startTime: dayjs(values.startTime).format('YYYY-MM-DD hh:mm'),
+          endTime: dayjs(values.endTime).format('YYYY-MM-DD hh:mm'),
+        },
         ...helper
       });
     }

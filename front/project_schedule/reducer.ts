@@ -22,6 +22,10 @@ export const projectScheduleReducer = createReducer(initialState, {
     ...state,
     projectId: action.payload,
   }),
+  [ProjectScheduleAction.setOne]:(state, action) => ({
+    ...state,
+    detail: action.payload,
+  }),
   [ProjectScheduleAction.setFilter]: (state,
                                  action
                                 ) => ({

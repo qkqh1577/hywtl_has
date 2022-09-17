@@ -25,9 +25,7 @@ class ProjectScheduleApi {
   async add(projectId: ProjectId,
             params: ProjectScheduleParameter
   ): Promise<void> {
-
     console.log("add params : ", params);
-
     const { data } = await apiClient.put(`/project/sales/${projectId}/schedule`, params);
     return data;
   }

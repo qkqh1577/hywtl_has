@@ -1,14 +1,21 @@
-import { ProjectScheduleVO } from 'project_schedule/domain';
-import { initialUser } from 'user/domain';
+import { UserId } from 'user/domain';
 
-export interface ProjectScheduleParameter
-  extends Omit<ProjectScheduleVO, 'type' | 'id'> {
+export interface ProjectScheduleParameter {
+  startTime: string;
+  endTime: string;
+  allDay: boolean;
+  title: string;
+  alertBefore?: number;
+  managerId?: UserId;
+  attendanceIdList?: UserId[];
 }
 
 export const initialProjectScheduleParameter: ProjectScheduleParameter = {
-  startTime: undefined,
-  endTime:   undefined,
-  allDay:    false,
-  manager:   initialUser,
-  title:     '',
+  title: '',
+  startTime: '',
+  endTime: '',
+  alertBefore: 0,
+  allDay: false,
+  managerId: undefined,
+  attendanceIdList: [],
 };

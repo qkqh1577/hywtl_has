@@ -10,37 +10,28 @@ export function ProjectScheduleId(id: number) {
 }
 
 export interface ProjectScheduleVO {
-  id: ProjectScheduleId;
+  id?: ProjectScheduleId;
+  title: string;
   startTime: Date | undefined;
   endTime: Date | undefined;
   allDay: boolean;
-  title: string;
   type: string;
   alertBefore?: number;
   manager: UserVO;
   attendanceList?: UserVO[];
 }
 
-export interface ProjectScheduleVOForAdd {
-  startTime: Date | undefined;
-  endTime: Date | undefined;
-  allDay: boolean;
-  title: string;
-  type?: string;
-  alertBefore?: number;
-  manager: UserVO;
-  attendanceList?: UserVO[];
-}
 
-export const initialProjectScheduleVO: ProjectScheduleVOForAdd = {
-  alertBefore:    0,
-  allDay:         false,
+export const initialProjectScheduleVO: ProjectScheduleVO = {
+  id: undefined,
+  title: '',
+  startTime: undefined,
+  endTime: undefined,
+  allDay: false,
+  type: '',
+  alertBefore: 0,
+  manager: initialUser,
   attendanceList: [],
-  endTime:        undefined,
-  manager:        initialUser,
-  startTime:      undefined,
-  title:          '',
-  type:           ''
 };
 
 export interface ProjectScheduleShort

@@ -73,7 +73,7 @@ export default function () {
         </Grid>
         <Grid item sm={3}>
           <UserSelector
-            name="manager.name"
+            name="managerId"
             label="담당자"
             labelPosition="top"
           />
@@ -81,7 +81,7 @@ export default function () {
       </Grid>
       <Grid item sm={12}>
         <UserSelector
-          name="attendanceList"
+          name="attendanceIdList"
           label="일정 공유 대상"
           labelPosition="top"
         />

@@ -10,9 +10,17 @@ import {
   projectScheduleAction
 } from 'project_schedule/action';
 import { RootState } from 'services/reducer';
-import { ProjectScheduleShort } from 'project_schedule/domain';
+import { ProjectScheduleShort, ProjectScheduleVO } from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
 import { dialogActions } from 'components/Dialog';
+
+function* watchId() {
+  while (true) {
+    const { payload: id } = yield take(projectScheduleAction.setOne);
+    const detail: ProjectScheduleVO = yield call(projectScheduleApi.getOne, id);
+    yield put(projectScheduleAction.setOne(detail));
+  }
+}
 
 function* watchFilter() {
   while (true) {
@@ -33,11 +41,11 @@ function* watchFilter() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: params } = yield take(ProjectScheduleAction.add);
+    const { payload: formik } = yield take(ProjectScheduleAction.add);
     try {
       const { projectId } = yield select((root: RootState) => root.projectSchedule);
       yield put(projectScheduleAction.addModal(false));
-      yield call(projectScheduleApi.add, projectId, params);
+      yield call(projectScheduleApi.add, projectId, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {
