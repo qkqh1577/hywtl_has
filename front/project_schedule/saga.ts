@@ -16,7 +16,7 @@ import { dialogActions } from 'components/Dialog';
 
 function* watchId() {
   while (true) {
-    const { payload: id } = yield take(projectScheduleAction.setOne);
+    const { payload: id } = yield take(projectScheduleAction.setId);
     const detail: ProjectScheduleVO = yield call(projectScheduleApi.getOne, id);
     yield put(projectScheduleAction.setOne(detail));
   }
@@ -98,4 +98,5 @@ export default function* projectScheduleSaga() {
   yield fork(watchAdd);
   yield fork(watchUpdate);
   yield fork(watchDelete);
+  yield fork(watchId);
 };

@@ -2,11 +2,18 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
-import { FormikSubmit } from 'type/Form';
+import { FormikEditable, FormikSubmit } from 'type/Form';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
 import { useFormik } from 'formik';
-import { initialProjectScheduleVO, ProjectScheduleVO } from 'project_schedule/domain';
+import {
+  initialProjectScheduleVO,
+  ProjectScheduleId,
+  ProjectScheduleVO
+} from 'project_schedule/domain';
 import dayjs from 'dayjs';
+import ProjectScheduleDetailModal from 'project_schedule/view/DetailModal';
+
+export type DetailModalFormik = FormikEditable<ProjectScheduleVO>
 
 export default function ProjectScheduleDetailModalRoute() {
   const dispatch = useDispatch();
@@ -20,18 +27,18 @@ export default function ProjectScheduleDetailModalRoute() {
   const update = useCallback((formikProps: FormikSubmit<ProjectScheduleParameter>) =>
     dispatch(projectScheduleAction.update(formikProps)), [dispatch]);
 
-  const formik = useFormik<ProjectScheduleVO>({
+  const formik = useFormik<DetailModalFormik>({
     enableReinitialize: true,
-    initialValues: initialProjectScheduleVO,
+    initialValues: { ...initialProjectScheduleVO, edit: true },
     onSubmit: (values, helper) => {
 
       update({
         values: {
-          title : values.title,
-          alertBefore : values.alertBefore,
-          allDay : values.allDay,
-          managerId : values.manager.id,
-          attendanceIdList :values.attendanceList?.map((item) => item.id),
+          title: values.title,
+          alertBefore: values.alertBefore,
+          allDay: values.allDay,
+          managerId: values.manager.id,
+          // attendanceIdList :values.attendanceList?.map((item) => item.id) || [],
           startTime: dayjs(values.startTime).format('YYYY-MM-DD hh:mm'),
           endTime: dayjs(values.endTime).format('YYYY-MM-DD hh:mm'),
         },
@@ -40,7 +47,21 @@ export default function ProjectScheduleDetailModalRoute() {
     }
   });
 
+  const remove = useCallback((id: ProjectScheduleId) =>
+    dispatch(projectScheduleAction.delete(id)), [dispatch]);
+
+  const onDelete = () => {
+    if (detail && detail.id) {
+      remove(detail.id);
+    }
+  };
+
   return (
-    <div>hi</div>
+    <ProjectScheduleDetailModal
+      open={typeof detail !== 'undefined'}
+      onClose={onClose}
+      formik={formik}
+      onDelete={onDelete}
+    />
   );
 };

@@ -23,8 +23,11 @@ import {
 import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
 import ProjectScheduleAddModalRoute from 'project_schedule/route/addModal';
+import ProjectScheduleDetailModalRoute from 'project_schedule/route/detailModal';
+import { ProjectScheduleId } from 'project_schedule/domain';
 
 export type OnAddModalOpen = (open: boolean) => void
+export type OnDetailModalOpen = (id: ProjectScheduleId) => void;
 
 function Element() {
   const dispatch = useDispatch();
@@ -45,15 +48,15 @@ function Element() {
 
   const formik = useFormik<ProjectScheduleQuery>({
     initialValues: filter ?? initialProjectScheduleQuery,
-    onSubmit:      (values,
-                    helper
-                   ) => {
+    onSubmit: (values,
+      helper
+    ) => {
       setFilter({
         values: {
           ...values,
           startDate: values.startDate ? dayjs(values.startDate)
           .format('YYYY-MM-DD') : undefined,
-          endDate:   values.endDate ? dayjs(values.endDate)
+          endDate: values.endDate ? dayjs(values.endDate)
           .format('YYYY-MM-DD') : undefined,
         },
         ...helper
@@ -71,6 +74,9 @@ function Element() {
   const onAddModalOpen: OnAddModalOpen = useCallback(() =>
     dispatch(projectScheduleAction.addModal(true)), [dispatch]);
 
+  const onDetailModalOpen: OnDetailModalOpen = useCallback((id) =>
+    dispatch(projectScheduleAction.setId(id)), [dispatch]);
+
   return (
     <ProjectContainer>
       <FormikProvider value={formik}>
@@ -79,14 +85,16 @@ function Element() {
           isSearched={isSearched}
           setIsSearched={setIsSearched}
           onAddModalOpen={onAddModalOpen}
+          onDetailModalOpen={onDetailModalOpen}
         />
       </FormikProvider>
       <ProjectScheduleAddModalRoute />
+      <ProjectScheduleDetailModalRoute />
     </ProjectContainer>
   );
 }
 
 export const projectScheduleRoute: AppRoute = {
-  path:    '/project/sales-management/:id/schedule',
+  path: '/project/sales-management/:id/schedule',
   element: <Element />
 };

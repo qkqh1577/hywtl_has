@@ -31,14 +31,16 @@ export const initialProjectScheduleVO: ProjectScheduleVO = {
   type: '',
   alertBefore: 0,
   manager: initialUser,
-  attendanceList: [],
+  attendanceList: undefined,
 };
 
-export interface ProjectScheduleShort
-  extends Omit<ProjectScheduleVO,
-    'alertBefore' |
-    'manager' |
-    'attendanceList'> {
+export interface ProjectScheduleShort {
+  id: ProjectScheduleId;
+  title: string;
+  startTime: Date | undefined;
+  endTime: Date | undefined;
+  allDay: boolean;
+  type: string;
 }
 
 

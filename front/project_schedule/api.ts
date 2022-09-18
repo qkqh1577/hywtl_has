@@ -21,7 +21,6 @@ class ProjectScheduleApi {
     return data;
   }
 
-
   async add(projectId: ProjectId,
             params: ProjectScheduleParameter
   ): Promise<void> {

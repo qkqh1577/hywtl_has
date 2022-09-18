@@ -10,13 +10,14 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
-import { OnAddModalOpen } from 'project_schedule/route/schedule';
+import { OnAddModalOpen, OnDetailModalOpen } from 'project_schedule/route/schedule';
 
 interface Props
   extends ListProps,
-          ButtonProps {
+    ButtonProps {
   isSearched: boolean;
   onAddModalOpen: OnAddModalOpen;
+  onDetailModalOpen: OnDetailModalOpen;
 }
 
 export const StyleWrapper = styled.div`
@@ -28,42 +29,44 @@ export const StyleWrapper = styled.div`
 export default function ProjectSchedule(props: Props) {
 
   const {
-          isSearched,
-          setIsSearched,
-          list,
-          onAddModalOpen
-        } = props;
+    isSearched,
+    setIsSearched,
+    list,
+    onAddModalOpen,
+    onDetailModalOpen
+  } = props;
 
   const eventList = list?.map((item) => {
     return {
-      title:  `${item.type} ${item.title}`,
-      start:  dayjs(item.startTime)
-              .format('YYYY-MM-DD'),
-      end:    dayjs(item.endTime)
-              .format('YYYY-MM-DD'),
+      id: item.id,
+      title: `${item.type} ${item.title}`,
+      start: dayjs(item.startTime)
+      .format('YYYY-MM-DD'),
+      end: dayjs(item.endTime)
+      .format('YYYY-MM-DD'),
       allDay: item.allDay,
     };
   });
 
   const handleDateClick = (arg) => {
-    alert(arg.alert());
+    onDetailModalOpen(arg.event.id)
   };
   return (
     <Box sx={{
-      display:      'flex',
-      width:        '100%',
-      flexWrap:     'wrap',
+      display: 'flex',
+      width: '100%',
+      flexWrap: 'wrap',
       alignContent: 'flex-start',
-      flex:         1,
+      flex: 1,
     }}>
       <Box sx={{
-        display:      'flex',
-        width:        '100%',
-        flexWrap:     'nowrap',
-        border:       `1px solid ${ColorPalette._e4e9f2}`,
+        display: 'flex',
+        width: '100%',
+        flexWrap: 'nowrap',
+        border: `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius: '5px',
         marginBottom: '15px',
-        padding:      '15px 15px'
+        padding: '15px 15px'
       }}>
         <SearchSection setIsSearched={setIsSearched} />
       </Box>
@@ -71,15 +74,15 @@ export default function ProjectSchedule(props: Props) {
       {isSearched && Array.isArray(list) && list.length === 0 && (
         <Box
           sx={{
-            display:        'flex',
+            display: 'flex',
             justifyContent: 'center',
-            width:          '100%',
-            height:         '100%',
-            flexWrap:       'nowrap',
-            border:         `1px solid ${ColorPalette._e4e9f2}`,
-            borderRadius:   '5px',
-            marginBottom:   '15px',
-            padding:        '15px 15px'
+            width: '100%',
+            height: '100%',
+            flexWrap: 'nowrap',
+            border: `1px solid ${ColorPalette._e4e9f2}`,
+            borderRadius: '5px',
+            marginBottom: '15px',
+            padding: '15px 15px'
           }}>
           <Typography>검색된 결과가 없습니다.</Typography>
         </Box>
@@ -93,9 +96,10 @@ export default function ProjectSchedule(props: Props) {
               locale="ko"
               plugins={[dayGridPlugin]}
               events={eventList}
+              eventClick={handleDateClick}
               headerToolbar={
                 {
-                  left:  'title prev next today',
+                  left: 'title prev next today',
                   right: 'addButton'
                 }
               }
@@ -108,7 +112,7 @@ export default function ProjectSchedule(props: Props) {
               customButtons={
                 {
                   addButton: {
-                    text:  '등록',
+                    text: '등록',
                     click: () => {
                       onAddModalOpen(true);
                     }
