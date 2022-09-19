@@ -17,7 +17,7 @@ export const initialProjectScheduleParameter: ProjectScheduleParameter = {
   title:            '',
   startTime:        '',
   endTime:          '',
-  alertBefore:      0,
+  alertBefore:      undefined,
   allDay:           false,
   managerId:        undefined,
   attendanceIdList: [],

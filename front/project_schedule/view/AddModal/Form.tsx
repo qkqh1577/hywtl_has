@@ -1,4 +1,8 @@
-import React, { useContext } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext
+} from 'react';
 import {
   Checkbox,
   FormControl,
@@ -11,7 +15,16 @@ import DateField from 'components/DateField';
 import UserSelector from 'components/UserSelector';
 import { FormikContext } from 'formik';
 
-export default function () {
+interface Props {
+  useAlertBeforeChecked: boolean;
+  setUseAlertBeforeChecked: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function (props: Props) {
+  const {
+          useAlertBeforeChecked,
+          setUseAlertBeforeChecked
+        } = props;
   const formik = useContext(FormikContext);
   return (
     <Grid container spacing={2}>
@@ -82,7 +95,16 @@ export default function () {
             labelPosition="top"
             placeholder="입력"
             endAdornment={<>일 전</>}
-            startAdornment={<>V </>}
+            startAdornment={
+              <Checkbox
+                name="alertBefore_checked"
+                value="Y"
+                checked={useAlertBeforeChecked}
+                onChange={(e) => {
+                  setUseAlertBeforeChecked(!useAlertBeforeChecked)
+                }}
+              />
+            }
           />
         </Grid>
         <Grid item sm={3}>

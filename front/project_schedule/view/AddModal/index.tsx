@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  Dispatch,
+  SetStateAction
+} from 'react';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
 import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
@@ -11,13 +14,17 @@ interface Props
   extends FormikLayoutProps<ProjectScheduleParameter> {
   open: boolean;
   onClose: ModalLayoutProps['onClose'];
+  useAlertBeforeChecked: boolean;
+  setUseAlertBeforeChecked: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ProjectScheduleAddModal(props: Props) {
   const {
           open,
           onClose,
-          formik
+          formik,
+          useAlertBeforeChecked,
+          setUseAlertBeforeChecked
         } = props;
 
   const onSubmit = () => {formik.handleSubmit();};
@@ -34,7 +41,10 @@ export default function ProjectScheduleAddModal(props: Props) {
           width:    '100%',
         }}>
           <FormikProvider value={formik}>
-            <Form />
+            <Form
+              useAlertBeforeChecked={useAlertBeforeChecked}
+              setUseAlertBeforeChecked={setUseAlertBeforeChecked}
+            />
           </FormikProvider>
         </Box>
       }
