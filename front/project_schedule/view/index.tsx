@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useEffect,
   useState
 } from 'react';
@@ -11,16 +10,13 @@ import { ColorPalette } from 'app/view/App/theme';
 import SearchSection, { ButtonProps } from 'project_schedule/view/SearchSection';
 import List, { ListProps } from 'project_schedule/view/List';
 import FullCalendar, { EventInput } from '@fullcalendar/react';
+import momentPlugin from '@fullcalendar/moment';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
-import styled from '@emotion/styled';
 import {
   OnAddModalOpen,
   OnDetailModalOpen
 } from 'project_schedule/route/schedule';
-import { useDispatch } from 'react-redux';
-import { ProjectScheduleQuery } from 'project_schedule/query';
-import { projectScheduleAction } from 'project_schedule/action';
 
 interface Props
   extends ListProps,
@@ -28,36 +24,10 @@ interface Props
   isSearched: boolean;
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
+  setDate: (startDate: string,
+            endDate: string
+  ) => void;
 }
-
-export const StyleWrapper = styled.div`
-  .fc-toolbar-chunk{
-    display: flex;
-  }
-
-  .fc-daygrid-day-frame{
-    padding: 0px 5px
-  }
-  
-  .fc-daygrid-day-number{
-    padding: 12px 7px 0px 0px
-  }
-  
-  .fc-event-time{
-    color: #ffffff
-  }
-  
-  .fc-event-title{
-    color: #ffffff
-  }
-  
-  .date-box{
-    padding: 10px;
-    border: 1px #e4e9f2;
-    background-color: #4c9eeb;
-    font-size: 13px bold #386dd6 
-  }
-`;
 
 export default function ProjectSchedule(props: Props) {
 
@@ -70,8 +40,6 @@ export default function ProjectSchedule(props: Props) {
         } = props;
 
   const [events, setEvents] = useState<EventInput[]>();
-  const dispatch = useDispatch();
-  const getList = useCallback((query: ProjectScheduleQuery) => dispatch(projectScheduleAction.getList(query)), [dispatch]);
 
   useEffect(() => {
     if (list) {
@@ -97,6 +65,7 @@ export default function ProjectSchedule(props: Props) {
   const handleDateClick = (arg) => {
     onDetailModalOpen(arg.event.id);
   };
+
   return (
     <Box sx={{
       display:      'flex',
@@ -109,10 +78,8 @@ export default function ProjectSchedule(props: Props) {
         display:      'flex',
         width:        '100%',
         flexWrap:     'nowrap',
-        border:       `1px solid ${ColorPalette._e4e9f2}`,
-        borderRadius: '5px',
         marginBottom: '15px',
-        padding:      '15px 15px'
+        marginTop:    '20px',
       }}>
         <SearchSection
           isSearched={isSearched}
@@ -140,43 +107,106 @@ export default function ProjectSchedule(props: Props) {
         width: '100%',
       }}>
         {!isSearched && (
-          <StyleWrapper>
+          <Box sx={{
+            fontFamily:            'Noto Sans KR',
+            width:                 '100%',
+            '& .fc-toolbar-chunk': {
+              display:                  'flex',
+              flexWrap:                 'nowrap',
+              alignItems:               'center',
+              '& .fc-toolbar-title':    {
+                fontSize:    '18px',
+                lineHeight:  '24px',
+                marginRight: '20px'
+              },
+              '& .fc-button-group':     {
+                marginLeft: 0,
+              },
+              '& button':               {
+                fontFamily:     'Noto Sans KR',
+                margin:         0,
+                padding:        0,
+                borderRadius:   '5px !important',
+                display:        'flex',
+                justifyContent: 'center',
+                alignItems:     'center',
+                height:         '24px',
+                fontSize:       '11px',
+                boxShadow:      'none',
+                '& > span':     {
+                  fontSize: '11px',
+                },
+                '&:hover':      {
+                  boxShadow: 'none',
+                }
+              },
+              '& .fc-prev-button':      {
+                width:           '24px',
+                backgroundColor: ColorPalette._386dd6,
+                border:          'none',
+                marginRight:     '5px',
+              },
+              '& .fc-next-button':      {
+                width:           '24px',
+                backgroundColor: ColorPalette._386dd6,
+                border:          'none',
+                marginRight:     '10px',
+              },
+              '& .fc-today-button':     {
+                padding:         '0 10px',
+                border:          `1px solid ${ColorPalette._9bb6ea}`,
+                backgroundColor: ColorPalette._e4e9f2,
+                color:           ColorPalette._386dd6,
+                fontSize:        '11px',
+                fontWeight:      'bolder',
+              },
+              '& .fc-addButton-button': {
+                padding:         '0 10px',
+                backgroundColor: `${ColorPalette._386dd6} !important`,
+                border:          'none',
+                color:           ColorPalette._ffffff,
+                fontSize:        '11px',
+                fontWeight:      'bolder',
+              }
+            }
+
+          }}>
             <FullCalendar
               locale="ko"
-              plugins={[dayGridPlugin]}
-              events={({ start, end }) => {
-                getList({
-                  startDate: dayjs(start)
-                             .format('YYYY-MM-DD'),
-                  endDate:   dayjs(end)
-                             .format('YYYY-MM-DD'),
-                });
-                return events;
-              }}
+              plugins={[dayGridPlugin, momentPlugin]}
+              events={events}
               eventTimeFormat={{
                 hour:   '2-digit',
                 minute: '2-digit',
                 hour12: false
               }}
-
               eventClick={handleDateClick}
               headerToolbar={{
-                left:  'title prev next today',
+                left:  'title prev,next,today',
                 right: 'addButton'
               }}
+              datesSet={({ start, end }) => {
+                props.setDate(dayjs(start)
+                  .format('YYYY-MM-DD'),
+                  dayjs(end)
+                  .format('YYYY-MM-DD')
+                );
+              }}
+              titleFormat="MM월 YYYY년"
               buttonText={{
                 today: '오늘'
               }}
               customButtons={{
                 addButton: {
-                  text:  '등록',
+                  text: '등록',
+
                   click: () => {
                     onAddModalOpen(true);
                   }
                 }
               }}
             />
-          </StyleWrapper>
+          </Box>
         )}
       </Box>
     </Box>

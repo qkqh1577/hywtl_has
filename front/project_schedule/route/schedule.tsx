@@ -25,13 +25,15 @@ import dayjs from 'dayjs';
 import ProjectScheduleAddModalRoute from 'project_schedule/route/addModal';
 import ProjectScheduleDetailModalRoute from 'project_schedule/route/detailModal';
 import { ProjectScheduleId } from 'project_schedule/domain';
+import useId from 'services/useId';
+import { ProjectId } from 'project/domain';
 
 export type OnAddModalOpen = (open: boolean) => void
 export type OnDetailModalOpen = (id: ProjectScheduleId) => void;
 
 function Element() {
+  const id = useId();
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.project);
   const { filter, list, projectId } = useSelector((root: RootState) => root.projectSchedule);
   const [isSearched, setIsSearched] = useState<boolean>(false);
 
@@ -64,12 +66,22 @@ function Element() {
     }
   });
 
+  const setDate = (startDate: string,
+                   endDate: string
+  ) => {
+    setFilter({
+      ...formik,
+      values: {
+        projectId: ProjectId(id!),
+        startDate,
+        endDate,
+      }
+    });
+  };
+
   useEffect(() => {
-    if (detail && detail.id !== projectId) {
-      dispatch(projectScheduleAction.setProjectId(detail.id));
-      setFilter(formik);
-    }
-  }, [detail]);
+    dispatch(projectScheduleAction.setProjectId(id && id !== projectId ? ProjectId(id) : undefined));
+  }, [id]);
 
   const onAddModalOpen: OnAddModalOpen = useCallback(() =>
     dispatch(projectScheduleAction.addModal(true)), [dispatch]);
@@ -86,6 +98,7 @@ function Element() {
           setIsSearched={setIsSearched}
           onAddModalOpen={onAddModalOpen}
           onDetailModalOpen={onDetailModalOpen}
+          setDate={setDate}
         />
       </FormikProvider>
       <ProjectScheduleAddModalRoute />

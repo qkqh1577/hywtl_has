@@ -29,7 +29,8 @@ function* watchFilter() {
   while (true) {
     const { payload: formik } = yield take(projectScheduleAction.setFilter);
     try {
-      yield put(projectScheduleAction.getList(formik.values));
+      const list: ProjectScheduleShort[] = yield call(projectScheduleApi.getList, formik.values.projectId, formik.values);
+      yield put(projectScheduleAction.setList(list));
     }
     catch (e) {
       yield put(projectScheduleAction.setList(undefined));
@@ -37,15 +38,6 @@ function* watchFilter() {
     finally {
       yield call(formik.setSubmitting, false);
     }
-  }
-}
-
-function* getList() {
-  while (true) {
-    const { payload: query } = yield take(ProjectScheduleAction.getList);
-    const { projectId, filter } = yield select((root: RootState) => root.projectSchedule);
-    const list: ProjectScheduleShort[] = yield call(projectScheduleApi.getList, projectId, query ?? filter);
-    yield put(projectScheduleAction.setList(list));
   }
 }
 
@@ -107,7 +99,6 @@ export default function* projectScheduleSaga() {
   yield fork(watchFilter);
   yield fork(watchAdd);
   yield fork(watchUpdate);
-  yield fork(getList);
   yield fork(watchDelete);
   yield fork(watchId);
 };

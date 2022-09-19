@@ -14,6 +14,7 @@ import {
   equals,
   FieldProps,
   FieldStatus,
+  FILED_CLEAR,
   getValue,
 } from 'components/DataFieldProps';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
@@ -100,7 +101,10 @@ export function useDataProps<T = DataFieldValue, E = HTMLInputElement | HTMLText
 
   useEffect(() => {
     if (!equals(value, formikValue)) {
-      if (typeof value === 'undefined' && typeof formikValue !== 'undefined') {
+      if (typeof formikValue !== 'undefined' && `${formikValue}` === FILED_CLEAR) {
+        setValue(undefined);
+      }
+      else if (typeof value === 'undefined' && typeof formikValue !== 'undefined') {
         setValue(formikValue);
       }
       else {

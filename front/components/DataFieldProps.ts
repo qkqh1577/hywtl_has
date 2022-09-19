@@ -22,6 +22,8 @@ export enum FieldStatus {
   View,
 }
 
+export const FILED_CLEAR = 'formik_field_clear';
+
 export type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | OutlinedTextFieldProps;
 
 export type DataFieldValue = string | number;

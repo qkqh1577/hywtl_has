@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useEffect,
-  useState
 } from 'react';
 import useId from 'services/useId';
 import useDialog from 'components/Dialog';
@@ -27,7 +26,6 @@ export default function ProjectScheduleAddModalRoute() {
   const { error } = useDialog();
   const dispatch = useDispatch();
   const { addModal } = useSelector((root: RootState) => root.projectSchedule);
-  const [useAlertBeforeChecked, setUseAlertBeforeChecked] = useState<boolean>(false);
   const add = useCallback((formikProps: FormikSubmit<ProjectScheduleParameter>) =>
     dispatch(projectScheduleAction.add(formikProps)), [dispatch]);
 
@@ -69,8 +67,6 @@ export default function ProjectScheduleAddModalRoute() {
       open={!!addModal}
       onClose={onClose}
       formik={formik}
-      useAlertBeforeChecked={useAlertBeforeChecked}
-      setUseAlertBeforeChecked={setUseAlertBeforeChecked}
     />
   );
 }
