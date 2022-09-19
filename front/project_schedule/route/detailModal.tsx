@@ -1,10 +1,16 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
-import { FormikEditable, FormikSubmit } from 'type/Form';
+import {
+  FormikEditable,
+  FormikSubmit
+} from 'type/Form';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
-import { useFormik } from 'formik';
+import { useFormik, } from 'formik';
 import {
   initialProjectScheduleVO,
   ProjectScheduleId,
@@ -29,18 +35,23 @@ export default function ProjectScheduleDetailModalRoute() {
 
   const formik = useFormik<DetailModalFormik>({
     enableReinitialize: true,
-    initialValues: { ...initialProjectScheduleVO, edit: true },
-    onSubmit: (values, helper) => {
+    initialValues:      detail ? { ...detail, edit: false } : { ...initialProjectScheduleVO, edit: true },
+    onSubmit:           (values,
+                         helper
+                        ) => {
 
       update({
         values: {
+          id: values.id,
           title: values.title,
           alertBefore: values.alertBefore,
           allDay: values.allDay,
           managerId: values.manager.id,
           // attendanceIdList :values.attendanceList?.map((item) => item.id) || [],
-          startTime: dayjs(values.startTime).format('YYYY-MM-DD hh:mm'),
-          endTime: dayjs(values.endTime).format('YYYY-MM-DD hh:mm'),
+          startTime: dayjs(values.startTime)
+                     .format('YYYY-MM-DD hh:mm'),
+          endTime:   dayjs(values.endTime)
+                     .format('YYYY-MM-DD hh:mm'),
         },
         ...helper
       });

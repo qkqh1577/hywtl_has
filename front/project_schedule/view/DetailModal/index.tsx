@@ -6,7 +6,8 @@ import Form from 'project_schedule/view/DetailModal/Form';
 import ButtonBlock from 'project_schedule/view/DetailModal/ButtonBlock';
 import { DetailModalFormik } from 'project_schedule/route/detailModal';
 
-interface Props extends FormikLayoutProps<DetailModalFormik> {
+interface Props
+  extends FormikLayoutProps<DetailModalFormik> {
   open: boolean;
   onClose: ModalLayoutProps['onClose'];
   onDelete: () => void;
@@ -14,11 +15,11 @@ interface Props extends FormikLayoutProps<DetailModalFormik> {
 
 export default function ProjectScheduleDetailModal(props: Props) {
   const {
-    open,
-    onClose,
-    onDelete,
-    formik
-  } = props;
+          open,
+          onClose,
+          onDelete,
+          formik
+        } = props;
 
   const edit = formik.values.edit;
   const onEdit = () => {
@@ -30,13 +31,13 @@ export default function ProjectScheduleDetailModal(props: Props) {
   };
   return (
     <ModalLayout
-      title="일정 상세"
+      title={edit ? '일정 수정' : '일정 상세'}
       width="40vw"
       open={open}
       onClose={onClose}
       children={
         <FormikProvider value={formik}>
-          <Form />
+          <Form edit={edit} />
         </FormikProvider>
       }
       footer={
@@ -44,6 +45,8 @@ export default function ProjectScheduleDetailModal(props: Props) {
           onEdit={onEdit}
           onDelete={onDelete}
           onClose={onClose}
+          onSubmit={onSubmit}
+          edit={edit}
         />
       }
     />

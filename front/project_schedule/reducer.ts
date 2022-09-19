@@ -12,10 +12,10 @@ export interface ProjectScheduleState {
   detail?: ProjectScheduleVO;
   filter?: ProjectScheduleQuery;
   list?: ProjectScheduleShort[];
-  addModal: boolean;
+  addModal?: boolean;
 }
 
-const initialState = {};
+const initialState: ProjectScheduleState = {};
 
 export const projectScheduleReducer = createReducer(initialState, {
   [ProjectScheduleAction.setProjectId] : (state, action) => ({

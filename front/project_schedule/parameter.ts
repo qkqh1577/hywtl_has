@@ -1,6 +1,8 @@
 import { UserId } from 'user/domain';
+import { ProjectScheduleId } from 'project_schedule/domain';
 
 export interface ProjectScheduleParameter {
+  id?: ProjectScheduleId;
   startTime: string;
   endTime: string;
   allDay: boolean;

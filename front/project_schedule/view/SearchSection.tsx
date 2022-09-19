@@ -54,10 +54,14 @@ function SubmitButton(props: ButtonProps) {
 
 interface Props {
   setIsSearched: Dispatch<SetStateAction<boolean>>;
+  isSearched: boolean;
 }
 
 export default function SearchSection(props: Props) {
-  const { setIsSearched } = props;
+  const {
+          setIsSearched,
+          isSearched
+        } = props;
   return (
     <Box sx={{
       width:          '100%',
@@ -86,7 +90,7 @@ export default function SearchSection(props: Props) {
         </Box>
       </Box>
       <Box>
-        <BackToCalendarButton setIsSearched={setIsSearched} />
+        {isSearched && (<BackToCalendarButton setIsSearched={setIsSearched} />)}
       </Box>
     </Box>
   );

@@ -4,8 +4,14 @@ import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import CheckboxField from 'components/CheckboxField';
 import UserSelector from 'components/UserSelector';
+import { FieldStatus } from 'components/DataFieldProps';
 
-export default function () {
+interface Props {
+  edit: boolean;
+}
+
+
+export default function ({ edit }: Props) {
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>
@@ -13,6 +19,7 @@ export default function () {
           name="title"
           label="일정명"
           labelPosition="top"
+          status={edit ? FieldStatus.View : FieldStatus.Disabled}
         />
       </Grid>
       <Grid container item sm={8} spacing={2}>
@@ -21,14 +28,16 @@ export default function () {
             name="startTime"
             label="시작일"
             labelPosition="top"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
           />
         </Grid>
         <Grid item sm={4}>
           <TextField
+            type="time"
             name="start"
             label="시작시간"
             labelPosition="top"
-            type="time"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
             // inputProps={{
             //   step: 3600,
             // }}
@@ -40,6 +49,7 @@ export default function () {
             name="allday"
             label="종일사용"
             options={['종일사용']}
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
           />
         </Grid>
       </Grid>
@@ -49,14 +59,16 @@ export default function () {
             name="endTime"
             label="종료일"
             labelPosition="top"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
           />
         </Grid>
         <Grid item sm={4}>
           <TextField
+            type="time"
             name="end"
             label="종료시간"
             labelPosition="top"
-            type="time"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
             // inputProps={{
             //   step: 3600,
             // }}
@@ -69,21 +81,24 @@ export default function () {
             name="alertBefore"
             label="미리 알림 사용"
             labelPosition="top"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
           />
         </Grid>
         <Grid item sm={3}>
           <UserSelector
-            name="managerId"
+            name="manager.id"
             label="담당자"
             labelPosition="top"
+            status={edit ? FieldStatus.View : FieldStatus.Disabled}
           />
         </Grid>
       </Grid>
       <Grid item sm={12}>
         <UserSelector
-          name="attendanceIdList"
+          name="attendanceList.Id"
           label="일정 공유 대상"
           labelPosition="top"
+          status={edit ? FieldStatus.View : FieldStatus.Disabled}
         />
       </Grid>
     </Grid>

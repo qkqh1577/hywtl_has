@@ -10,7 +10,10 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
-import { OnAddModalOpen, OnDetailModalOpen } from 'project_schedule/route/schedule';
+import {
+  OnAddModalOpen,
+  OnDetailModalOpen
+} from 'project_schedule/route/schedule';
 
 interface Props
   extends ListProps,
@@ -68,9 +71,12 @@ export default function ProjectSchedule(props: Props) {
         marginBottom: '15px',
         padding: '15px 15px'
       }}>
-        <SearchSection setIsSearched={setIsSearched} />
+        <SearchSection
+          isSearched={isSearched}
+          setIsSearched={setIsSearched}
+        />
       </Box>
-      {isSearched && <List list={list} />}
+      {isSearched && <List list={list} onDetailModalOpen={onDetailModalOpen} />}
       {isSearched && Array.isArray(list) && list.length === 0 && (
         <Box
           sx={{

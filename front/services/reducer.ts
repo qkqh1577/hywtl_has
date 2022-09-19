@@ -141,7 +141,6 @@ const reducer = combineReducers<RootState>({
   rivalEstimate:      rivalEstimateReducer,
   projectBid:         projectBidReducer,
   projectSchedule:    projectScheduleReducer,
-
 });
 
 const rootReducer: Reducer = (state,
