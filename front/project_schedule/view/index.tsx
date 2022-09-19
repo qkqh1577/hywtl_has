@@ -27,6 +27,17 @@ export const StyleWrapper = styled.div`
   .fc-toolbar-chunk{
     display: flex;
   }
+  
+  .fc-daygrid-day-frame{
+    padding: 12px
+  }
+  
+  .date-box{
+    padding: 10px;
+    border: 1px #e4e9f2;
+    background-color: #4c9eeb;
+    font-size: 13px bold #386dd6 
+  }
 `;
 
 export default function ProjectSchedule(props: Props) {
@@ -46,11 +57,13 @@ export default function ProjectSchedule(props: Props) {
       start:  dayjs(item.startTime)
               .format('YYYY-MM-DD'),
       end:    dayjs(item.endTime)
+              .add(1, 'd')
               .format('YYYY-MM-DD'),
       allDay: item.allDay,
+      className: 'date-box',
     };
   });
-
+  console.log(eventList);
   const handleDateClick = (arg) => {
     onDetailModalOpen(arg.event.id);
   };
