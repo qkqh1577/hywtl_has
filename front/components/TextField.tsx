@@ -107,6 +107,7 @@ export default function TextField(props: TextFieldProps) {
   }, [variant, size, disableLabel]);
 
   const inputProps: MuiTextFieldProps['inputProps'] = {
+    ...props.inputProps,
     style: {
       fontFamily:      'Noto Sans KR',
       padding:         `${props.multiline ? 10 : 0}px 10px`,

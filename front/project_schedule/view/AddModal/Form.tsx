@@ -1,11 +1,18 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useContext } from 'react';
+import {
+  Checkbox,
+  FormControl,
+  FormGroup,
+  FormLabel,
+  Grid
+} from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
-import CheckboxField from 'components/CheckboxField';
 import UserSelector from 'components/UserSelector';
+import { FormikContext } from 'formik';
 
 export default function () {
+  const formik = useContext(FormikContext);
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>
@@ -30,18 +37,24 @@ export default function () {
             label="시작시간"
             labelPosition="top"
             type="time"
-            // inputProps={{
-            //   step: 3600,
-            // }}
           />
         </Grid>
         <Grid item sm={4}>
-          <CheckboxField
-            disableAll
-            name="allday"
-            label="종일사용"
-            options={['종일사용']}
-          />
+          <FormControl fullWidth variant="standard">
+            <FormLabel component="legend">
+              종일 여부
+            </FormLabel>
+          </FormControl>
+          <FormGroup row>
+            <Checkbox
+              name="allDay_checked"
+              value="Y"
+              checked={formik.values.allDay === true}
+              onChange={() => {
+                formik.setFieldValue('allDay', !formik.values.allDay);
+              }}
+            />
+          </FormGroup>
         </Grid>
       </Grid>
       <Grid container item sm={8} spacing={2}>
@@ -54,13 +67,10 @@ export default function () {
         </Grid>
         <Grid item sm={4}>
           <TextField
+            type="time"
             name="end"
             label="종료시간"
             labelPosition="top"
-            type="time"
-            // inputProps={{
-            //   step: 3600,
-            // }}
           />
         </Grid>
       </Grid>
@@ -71,6 +81,8 @@ export default function () {
             label="미리 알림 사용"
             labelPosition="top"
             placeholder="입력"
+            endAdornment={<>일 전</>}
+            startAdornment={<>V </>}
           />
         </Grid>
         <Grid item sm={3}>

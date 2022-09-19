@@ -1,4 +1,8 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState
+} from 'react';
 import {
   Box,
   Typography
@@ -6,7 +10,7 @@ import {
 import { ColorPalette } from 'app/view/App/theme';
 import SearchSection, { ButtonProps } from 'project_schedule/view/SearchSection';
 import List, { ListProps } from 'project_schedule/view/List';
-import FullCalendar from '@fullcalendar/react';
+import FullCalendar, { EventInput } from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import dayjs from 'dayjs';
 import styled from '@emotion/styled';
@@ -14,6 +18,9 @@ import {
   OnAddModalOpen,
   OnDetailModalOpen
 } from 'project_schedule/route/schedule';
+import { useDispatch } from 'react-redux';
+import { ProjectScheduleQuery } from 'project_schedule/query';
+import { projectScheduleAction } from 'project_schedule/action';
 
 interface Props
   extends ListProps,
@@ -62,19 +69,31 @@ export default function ProjectSchedule(props: Props) {
           onDetailModalOpen
         } = props;
 
-  const eventList = list?.map((item) => {
-    return {
-      id:        item.id,
-      title:     `${item.type} ${item.title}`,
-      start:     dayjs(item.startTime)
-                 .format('YYYY-MM-DD'),
-      end:       dayjs(item.endTime)
-                 .add(1, 'd')
-                 .format('YYYY-MM-DD'),
-      allDay:    item.allDay,
-      className: 'date-box',
-    };
-  });
+  const [events, setEvents] = useState<EventInput[]>();
+  const dispatch = useDispatch();
+  const getList = useCallback((query: ProjectScheduleQuery) => dispatch(projectScheduleAction.getList(query)), [dispatch]);
+
+  useEffect(() => {
+    if (list) {
+      setEvents(list.map((item) => {
+        return {
+          id:        `${item.id}`,
+          title:     `${item.type} ${item.title}`,
+          start:     dayjs(item.startTime)
+                     .format('YYYY-MM-DD'),
+          end:       dayjs(item.endTime)
+                     .add(1, 'd')
+                     .format('YYYY-MM-DD'),
+          allDay:    item.allDay,
+          className: 'date-box',
+        };
+      }));
+    }
+    else {
+      setEvents(undefined);
+    }
+  }, [list]);
+
   const handleDateClick = (arg) => {
     onDetailModalOpen(arg.event.id);
   };
@@ -125,37 +144,37 @@ export default function ProjectSchedule(props: Props) {
             <FullCalendar
               locale="ko"
               plugins={[dayGridPlugin]}
-              events={eventList}
-              eventTimeFormat={
-                {
-                  hour:   '2-digit',
-                  minute: '2-digit',
-                  hour12: false
-                }
-              }
-              eventClick={handleDateClick}
-              headerToolbar={
-                {
-                  left:  'title prev next today',
-                  right: 'addButton'
-                }
-              }
+              events={({ start, end }) => {
+                getList({
+                  startDate: dayjs(start)
+                             .format('YYYY-MM-DD'),
+                  endDate:   dayjs(end)
+                             .format('YYYY-MM-DD'),
+                });
+                return events;
+              }}
+              eventTimeFormat={{
+                hour:   '2-digit',
+                minute: '2-digit',
+                hour12: false
+              }}
 
-              buttonText={
-                {
-                  today: '오늘'
-                }
-              }
-              customButtons={
-                {
-                  addButton: {
-                    text:  '등록',
-                    click: () => {
-                      onAddModalOpen(true);
-                    }
+              eventClick={handleDateClick}
+              headerToolbar={{
+                left:  'title prev next today',
+                right: 'addButton'
+              }}
+              buttonText={{
+                today: '오늘'
+              }}
+              customButtons={{
+                addButton: {
+                  text:  '등록',
+                  click: () => {
+                    onAddModalOpen(true);
                   }
                 }
-              }
+              }}
             />
           </StyleWrapper>
         )}

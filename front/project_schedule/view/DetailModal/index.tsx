@@ -7,7 +7,7 @@ import ButtonBlock from 'project_schedule/view/DetailModal/ButtonBlock';
 import { DetailModalFormik } from 'project_schedule/route/detailModal';
 
 interface Props
-  extends FormikLayoutProps<DetailModalFormik> {
+  extends FormikLayoutProps<DetailModalFormik | object> {
   open: boolean;
   onClose: ModalLayoutProps['onClose'];
   onDelete: () => void;
@@ -21,7 +21,7 @@ export default function ProjectScheduleDetailModal(props: Props) {
           formik
         } = props;
 
-  const edit = formik.values.edit;
+  const edit = (formik.values as any).edit ?? false;
   const onEdit = () => {
     formik.setFieldValue('edit', true);
   };

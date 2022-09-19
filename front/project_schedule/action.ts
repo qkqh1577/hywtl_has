@@ -18,6 +18,7 @@ export enum ProjectScheduleAction {
   add          = 'project/sales/schedule/add',
   update       = 'project/sales/schedule/update',
   delete       = 'project/sales/schedule/delete',
+  getList      = 'project/sales/schedule/list/get',
 }
 
 export const projectScheduleAction = {
@@ -30,6 +31,5 @@ export const projectScheduleAction = {
   add:          createAction(ProjectScheduleAction.add)<FormikSubmit<ProjectScheduleParameter>>(),
   update:       createAction(ProjectScheduleAction.update)<FormikSubmit<ProjectScheduleParameter>>(),
   delete:       createAction(ProjectScheduleAction.delete)<number>(),
-
-
+  getList:      createAction(ProjectScheduleAction.getList)<ProjectScheduleQuery | undefined>(),
 };

@@ -5,21 +5,43 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
-import {
-  FormikEditable,
-  FormikSubmit
-} from 'type/Form';
+import { FormikSubmit } from 'type/Form';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
 import { useFormik, } from 'formik';
 import {
-  initialProjectScheduleVO,
   ProjectScheduleId,
-  ProjectScheduleVO
+  ProjectScheduleVO,
 } from 'project_schedule/domain';
 import dayjs from 'dayjs';
 import ProjectScheduleDetailModal from 'project_schedule/view/DetailModal';
 
-export type DetailModalFormik = FormikEditable<ProjectScheduleVO>
+export interface DetailModalFormik
+  extends Omit<ProjectScheduleVO, 'id' | 'startTime' | 'endTime'> {
+  id: ProjectScheduleId;
+  startTime: Date;
+  endTime: Date;
+  start?: string;
+  end?: string;
+  edit: boolean;
+}
+
+function toFormik(detail: ProjectScheduleVO): DetailModalFormik {
+  return {
+    ...detail,
+    id:        detail.id!,
+    startTime: detail.startTime!,
+    endTime:   detail.endTime!,
+    edit:      false,
+    start:     detail.allDay ? dayjs(detail.startTime!)
+    .format('HH:mm') : undefined,
+    end:       detail.allDay ? dayjs(detail.endTime!)
+    .format('HH:mm') : undefined,
+  };
+}
+
+function isFormikType(values: any): values is DetailModalFormik {
+  return Object.keys(values).length !== 0;
+}
 
 export default function ProjectScheduleDetailModalRoute() {
   const dispatch = useDispatch();
@@ -33,28 +55,33 @@ export default function ProjectScheduleDetailModalRoute() {
   const update = useCallback((formikProps: FormikSubmit<ProjectScheduleParameter>) =>
     dispatch(projectScheduleAction.update(formikProps)), [dispatch]);
 
-  const formik = useFormik<DetailModalFormik>({
+  const formik = useFormik<DetailModalFormik | object>({
     enableReinitialize: true,
-    initialValues:      detail ? { ...detail, edit: false } : { ...initialProjectScheduleVO, edit: true },
+    initialValues:      detail ? toFormik(detail) : {},
     onSubmit:           (values,
                          helper
                         ) => {
-
-      update({
-        values: {
-          id:          values.id,
-          title:       values.title,
-          alertBefore: values.alertBefore,
-          allDay:      values.allDay,
-          managerId:   values.manager.id,
-          // attendanceIdList :values.attendanceList?.map((item) => item.id) || [],
-          startTime: dayjs(values.startTime)
-                     .format('YYYY-MM-DD hh:mm'),
-          endTime:   dayjs(values.endTime)
-                     .format('YYYY-MM-DD hh:mm'),
-        },
-        ...helper
-      });
+      if (Object.keys(values).length === 0) {
+        helper.setSubmitting(false);
+        return;
+      }
+      if (isFormikType(values)) {
+        update({
+          values: {
+            id:               values.id,
+            title:            values.title,
+            alertBefore:      values.alertBefore,
+            allDay:           values.allDay,
+            managerId:        values.manager.id,
+            attendanceIdList: values.attendanceList?.map((item) => item.id!),
+            startTime:        dayjs(values.startTime)
+                              .format('YYYY-MM-DD hh:mm'),
+            endTime:          dayjs(values.endTime)
+                              .format('YYYY-MM-DD hh:mm'),
+          },
+          ...helper
+        });
+      }
     }
   });
 
