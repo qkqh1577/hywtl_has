@@ -48,15 +48,15 @@ function Element() {
 
   const formik = useFormik<ProjectScheduleQuery>({
     initialValues: filter ?? initialProjectScheduleQuery,
-    onSubmit: (values,
-      helper
-    ) => {
+    onSubmit:      (values,
+                    helper
+                   ) => {
       setFilter({
         values: {
           ...values,
           startDate: values.startDate ? dayjs(values.startDate)
           .format('YYYY-MM-DD') : undefined,
-          endDate: values.endDate ? dayjs(values.endDate)
+          endDate:   values.endDate ? dayjs(values.endDate)
           .format('YYYY-MM-DD') : undefined,
         },
         ...helper
@@ -69,7 +69,7 @@ function Element() {
       dispatch(projectScheduleAction.setProjectId(detail.id));
       setFilter(formik);
     }
-  }, []);
+  }, [detail]);
 
   const onAddModalOpen: OnAddModalOpen = useCallback(() =>
     dispatch(projectScheduleAction.addModal(true)), [dispatch]);
@@ -95,6 +95,6 @@ function Element() {
 }
 
 export const projectScheduleRoute: AppRoute = {
-  path: '/project/sales-management/:id/schedule',
+  path:    '/project/sales-management/:id/schedule',
   element: <Element />
 };

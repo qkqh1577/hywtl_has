@@ -45,8 +45,10 @@ export default function ProjectScheduleAddModalRoute() {
       add({
         values: {
           ...values,
-          startTime: dayjs(values.startTime).format('YYYY-MM-DD hh:mm'),
-          endTime: dayjs(values.endTime).format('YYYY-MM-DD hh:mm'),
+          startTime: dayjs(values.startTime)
+                     .format('YYYY-MM-DD hh:mm'),
+          endTime:   dayjs(values.endTime)
+                     .format('YYYY-MM-DD hh:mm'),
         },
         ...helper
       });

@@ -13,11 +13,11 @@ export interface ProjectScheduleParameter {
 }
 
 export const initialProjectScheduleParameter: ProjectScheduleParameter = {
-  title: '',
-  startTime: '',
-  endTime: '',
-  alertBefore: 0,
-  allDay: false,
-  managerId: undefined,
+  title:            '',
+  startTime:        '',
+  endTime:          '',
+  alertBefore:      0,
+  allDay:           false,
+  managerId:        undefined,
   attendanceIdList: [],
 };

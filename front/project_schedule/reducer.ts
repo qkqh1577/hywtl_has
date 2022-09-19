@@ -18,24 +18,28 @@ export interface ProjectScheduleState {
 const initialState: ProjectScheduleState = {};
 
 export const projectScheduleReducer = createReducer(initialState, {
-  [ProjectScheduleAction.setProjectId] : (state, action) => ({
+  [ProjectScheduleAction.setProjectId]: (state,
+                                         action
+                                        ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectScheduleAction.setOne]:(state, action) => ({
+  [ProjectScheduleAction.setOne]:       (state,
+                                         action
+                                        ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectScheduleAction.setFilter]: (state,
-                                 action
-                                ) => ({
+  [ProjectScheduleAction.setFilter]:    (state,
+                                         action
+                                        ) => ({
     ...state,
     filter: action.payload,
   }),
 
-  [ProjectScheduleAction.setList]:   (state,
-                                 action
-                                ) => ({
+  [ProjectScheduleAction.setList]: (state,
+                                    action
+                                   ) => ({
     ...state,
     list: action.payload
   }),
@@ -46,4 +50,4 @@ export const projectScheduleReducer = createReducer(initialState, {
     ...state,
     addModal: action.payload,
   })
-})
+});

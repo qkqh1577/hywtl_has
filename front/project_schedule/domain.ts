@@ -23,14 +23,14 @@ export interface ProjectScheduleVO {
 
 
 export const initialProjectScheduleVO: ProjectScheduleVO = {
-  id: undefined,
-  title: '',
-  startTime: undefined,
-  endTime: undefined,
-  allDay: false,
-  type: '',
-  alertBefore: 0,
-  manager: initialUser,
+  id:             undefined,
+  title:          '',
+  startTime:      undefined,
+  endTime:        undefined,
+  allDay:         false,
+  type:           '',
+  alertBefore:    0,
+  manager:        initialUser,
   attendanceList: undefined,
 };
 

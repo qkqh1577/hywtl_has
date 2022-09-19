@@ -42,11 +42,11 @@ export default function ProjectScheduleDetailModalRoute() {
 
       update({
         values: {
-          id: values.id,
-          title: values.title,
+          id:          values.id,
+          title:       values.title,
           alertBefore: values.alertBefore,
-          allDay: values.allDay,
-          managerId: values.manager.id,
+          allDay:      values.allDay,
+          managerId:   values.manager.id,
           // attendanceIdList :values.attendanceList?.map((item) => item.id) || [],
           startTime: dayjs(values.startTime)
                      .format('YYYY-MM-DD hh:mm'),

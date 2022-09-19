@@ -10,7 +10,10 @@ import {
   projectScheduleAction
 } from 'project_schedule/action';
 import { RootState } from 'services/reducer';
-import { ProjectScheduleShort, ProjectScheduleVO } from 'project_schedule/domain';
+import {
+  ProjectScheduleShort,
+  ProjectScheduleVO
+} from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
 import { dialogActions } from 'components/Dialog';
 

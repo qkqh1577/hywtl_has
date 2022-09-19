@@ -17,7 +17,7 @@ import {
 
 interface Props
   extends ListProps,
-    ButtonProps {
+          ButtonProps {
   isSearched: boolean;
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
@@ -32,44 +32,44 @@ export const StyleWrapper = styled.div`
 export default function ProjectSchedule(props: Props) {
 
   const {
-    isSearched,
-    setIsSearched,
-    list,
-    onAddModalOpen,
-    onDetailModalOpen
-  } = props;
+          isSearched,
+          setIsSearched,
+          list,
+          onAddModalOpen,
+          onDetailModalOpen
+        } = props;
 
   const eventList = list?.map((item) => {
     return {
-      id: item.id,
-      title: `${item.type} ${item.title}`,
-      start: dayjs(item.startTime)
-      .format('YYYY-MM-DD'),
-      end: dayjs(item.endTime)
-      .format('YYYY-MM-DD'),
+      id:     item.id,
+      title:  `${item.type} ${item.title}`,
+      start:  dayjs(item.startTime)
+              .format('YYYY-MM-DD'),
+      end:    dayjs(item.endTime)
+              .format('YYYY-MM-DD'),
       allDay: item.allDay,
     };
   });
 
   const handleDateClick = (arg) => {
-    onDetailModalOpen(arg.event.id)
+    onDetailModalOpen(arg.event.id);
   };
   return (
     <Box sx={{
-      display: 'flex',
-      width: '100%',
-      flexWrap: 'wrap',
+      display:      'flex',
+      width:        '100%',
+      flexWrap:     'wrap',
       alignContent: 'flex-start',
-      flex: 1,
+      flex:         1,
     }}>
       <Box sx={{
-        display: 'flex',
-        width: '100%',
-        flexWrap: 'nowrap',
-        border: `1px solid ${ColorPalette._e4e9f2}`,
+        display:      'flex',
+        width:        '100%',
+        flexWrap:     'nowrap',
+        border:       `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius: '5px',
         marginBottom: '15px',
-        padding: '15px 15px'
+        padding:      '15px 15px'
       }}>
         <SearchSection
           isSearched={isSearched}
@@ -80,15 +80,15 @@ export default function ProjectSchedule(props: Props) {
       {isSearched && Array.isArray(list) && list.length === 0 && (
         <Box
           sx={{
-            display: 'flex',
+            display:        'flex',
             justifyContent: 'center',
-            width: '100%',
-            height: '100%',
-            flexWrap: 'nowrap',
-            border: `1px solid ${ColorPalette._e4e9f2}`,
-            borderRadius: '5px',
-            marginBottom: '15px',
-            padding: '15px 15px'
+            width:          '100%',
+            height:         '100%',
+            flexWrap:       'nowrap',
+            border:         `1px solid ${ColorPalette._e4e9f2}`,
+            borderRadius:   '5px',
+            marginBottom:   '15px',
+            padding:        '15px 15px'
           }}>
           <Typography>검색된 결과가 없습니다.</Typography>
         </Box>
@@ -105,7 +105,7 @@ export default function ProjectSchedule(props: Props) {
               eventClick={handleDateClick}
               headerToolbar={
                 {
-                  left: 'title prev next today',
+                  left:  'title prev next today',
                   right: 'addButton'
                 }
               }
@@ -118,7 +118,7 @@ export default function ProjectSchedule(props: Props) {
               customButtons={
                 {
                   addButton: {
-                    text: '등록',
+                    text:  '등록',
                     click: () => {
                       onAddModalOpen(true);
                     }

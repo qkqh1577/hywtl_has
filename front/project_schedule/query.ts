@@ -6,8 +6,8 @@ export interface ProjectScheduleQuery {
 }
 
 export const initialProjectScheduleQuery: ProjectScheduleQuery = {
-  keyword: '',
+  keyword:   '',
   startDate: undefined,
-  endDate: undefined,
-  type: '',
-}
+  endDate:   undefined,
+  type:      '',
+};
