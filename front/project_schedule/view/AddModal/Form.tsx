@@ -13,6 +13,7 @@ export default function () {
           name="title"
           label="일정명"
           labelPosition="top"
+          placeholder="입력"
         />
       </Grid>
       <Grid container item sm={8} spacing={2}>
@@ -69,6 +70,7 @@ export default function () {
             name="alertBefore"
             label="미리 알림 사용"
             labelPosition="top"
+            placeholder="입력"
           />
         </Grid>
         <Grid item sm={3}>

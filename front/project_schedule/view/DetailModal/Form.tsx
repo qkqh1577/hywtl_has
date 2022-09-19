@@ -19,7 +19,7 @@ export default function ({ edit }: Props) {
           name="title"
           label="일정명"
           labelPosition="top"
-          status={edit ? FieldStatus.View : FieldStatus.Disabled}
+          status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
         />
       </Grid>
       <Grid container item sm={8} spacing={2}>
@@ -28,7 +28,7 @@ export default function ({ edit }: Props) {
             name="startTime"
             label="시작일"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
           />
         </Grid>
         <Grid item sm={4}>
@@ -37,7 +37,7 @@ export default function ({ edit }: Props) {
             name="start"
             label="시작시간"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
             // inputProps={{
             //   step: 3600,
             // }}
@@ -49,7 +49,7 @@ export default function ({ edit }: Props) {
             name="allday"
             label="종일사용"
             options={['종일사용']}
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
           />
         </Grid>
       </Grid>
@@ -59,7 +59,7 @@ export default function ({ edit }: Props) {
             name="endTime"
             label="종료일"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
           />
         </Grid>
         <Grid item sm={4}>
@@ -68,7 +68,7 @@ export default function ({ edit }: Props) {
             name="end"
             label="종료시간"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
             // inputProps={{
             //   step: 3600,
             // }}
@@ -81,7 +81,7 @@ export default function ({ edit }: Props) {
             name="alertBefore"
             label="미리 알림 사용"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
           />
         </Grid>
         <Grid item sm={3}>
@@ -89,7 +89,7 @@ export default function ({ edit }: Props) {
             name="manager.id"
             label="담당자"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.Disabled}
+            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
           />
         </Grid>
       </Grid>
@@ -98,7 +98,7 @@ export default function ({ edit }: Props) {
           name="attendanceList.Id"
           label="일정 공유 대상"
           labelPosition="top"
-          status={edit ? FieldStatus.View : FieldStatus.Disabled}
+          status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
         />
       </Grid>
     </Grid>
