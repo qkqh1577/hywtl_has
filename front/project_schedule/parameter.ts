@@ -13,6 +13,7 @@ export interface ProjectScheduleParameter {
 }
 
 export const initialProjectScheduleParameter: ProjectScheduleParameter = {
+  id: undefined,
   title:            '',
   startTime:        '',
   endTime:          '',

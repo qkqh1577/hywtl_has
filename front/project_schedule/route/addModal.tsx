@@ -18,8 +18,10 @@ import {
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
+import useLogin from 'app/service/loginHook';
 
 export default function ProjectScheduleAddModalRoute() {
+  const { user } = useLogin();
   const projectId = useId();
   const { error } = useDialog();
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ export default function ProjectScheduleAddModalRoute() {
 
   const formik = useFormik<ProjectScheduleParameter>({
     enableReinitialize: true,
-    initialValues:      initialProjectScheduleParameter,
+    initialValues:      { ...initialProjectScheduleParameter, id: user?.id },
     onSubmit:           (values,
                          helper
                         ) => {
@@ -41,7 +43,6 @@ export default function ProjectScheduleAddModalRoute() {
         helper.setSubmitting(false);
         return;
       }
-      console.log('values : ', values);
       add({
         values: {
           ...values,

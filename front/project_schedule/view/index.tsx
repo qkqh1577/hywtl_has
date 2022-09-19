@@ -27,9 +27,21 @@ export const StyleWrapper = styled.div`
   .fc-toolbar-chunk{
     display: flex;
   }
-  
+
   .fc-daygrid-day-frame{
-    padding: 12px
+    padding: 0px 5px
+  }
+  
+  .fc-daygrid-day-number{
+    padding: 12px 7px 0px 0px
+  }
+  
+  .fc-event-time{
+    color: #ffffff
+  }
+  
+  .fc-event-title{
+    color: #ffffff
   }
   
   .date-box{
@@ -52,18 +64,17 @@ export default function ProjectSchedule(props: Props) {
 
   const eventList = list?.map((item) => {
     return {
-      id:     item.id,
-      title:  `${item.type} ${item.title}`,
-      start:  dayjs(item.startTime)
-              .format('YYYY-MM-DD'),
-      end:    dayjs(item.endTime)
-              .add(1, 'd')
-              .format('YYYY-MM-DD'),
-      allDay: item.allDay,
+      id:        item.id,
+      title:     `${item.type} ${item.title}`,
+      start:     dayjs(item.startTime)
+                 .format('YYYY-MM-DD'),
+      end:       dayjs(item.endTime)
+                 .add(1, 'd')
+                 .format('YYYY-MM-DD'),
+      allDay:    item.allDay,
       className: 'date-box',
     };
   });
-  console.log(eventList);
   const handleDateClick = (arg) => {
     onDetailModalOpen(arg.event.id);
   };
@@ -115,6 +126,13 @@ export default function ProjectSchedule(props: Props) {
               locale="ko"
               plugins={[dayGridPlugin]}
               events={eventList}
+              eventTimeFormat={
+                {
+                  hour:   '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                }
+              }
               eventClick={handleDateClick}
               headerToolbar={
                 {
