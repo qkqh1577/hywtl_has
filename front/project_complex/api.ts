@@ -3,7 +3,8 @@ import {
   ProjectComplexBuildingId,
   ProjectComplexBuildingVO,
   ProjectComplexSiteId,
-  ProjectComplexSiteVO
+  ProjectComplexSiteVO,
+  ProjectComplexTestVO
 } from 'project_complex/domain';
 import apiClient from 'services/api';
 import {
@@ -12,6 +13,11 @@ import {
 } from 'project_complex/parameter';
 
 class ProjectComplexApi {
+  async getTestDetail(id: ProjectId): Promise<ProjectComplexTestVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/test`);
+    return data;
+  }
+
   async getSiteList(id: ProjectId): Promise<ProjectComplexSiteVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/complex/site`);
     return data;

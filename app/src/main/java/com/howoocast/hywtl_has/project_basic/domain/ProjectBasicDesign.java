@@ -14,6 +14,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * 프로젝트 - 기본 정보 - 설계 개요
+ */
 @Slf4j
 @Getter
 @Entity
@@ -67,7 +70,6 @@ public class ProjectBasicDesign extends CustomEntity {
     ) {
         ProjectBasicDesign instance = new ProjectBasicDesign();
         instance.project = project;
-        instance.id = project.getId();
         instance.change(
             city,
             address,
@@ -109,5 +111,4 @@ public class ProjectBasicDesign extends CustomEntity {
         this.maximumFloor = maximumFloor;
         this.maximumHeight = maximumHeight;
     }
-
 }

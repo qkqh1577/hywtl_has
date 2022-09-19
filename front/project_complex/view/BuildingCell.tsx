@@ -17,10 +17,7 @@ import {
 import { RootState } from 'services/reducer';
 import { FieldStatus } from 'components/DataFieldProps';
 import CheckboxField from 'components/CheckboxField';
-import {
-  testTypeList,
-  testTypeName
-} from 'admin/estimate/content/domain';
+import { testTypeList, } from 'admin/estimate/content/domain';
 import {
   difficultyList,
   ProjectComplexBuildingId
@@ -204,10 +201,7 @@ function Children({ fieldName, formik }: {
           label="실험 종류"
           disableLabel
           disableAll
-          options={testTypeList.map(item => ({
-            key:  item as string,
-            text: testTypeName(item)
-          }))}
+          options={['F', 'P', 'A']}
           onBlur={() => {
             formik.handleSubmit();
           }}

@@ -16,3 +16,6 @@ GET http://localhost:8080/project/sales/basic/business/1
 
 ### project basic business delete 1
 DELETE http://localhost:8080/project/sales/basic/business/1
+
+### project basic test
+GET http://localhost:8080/project/sales/1/basic/test

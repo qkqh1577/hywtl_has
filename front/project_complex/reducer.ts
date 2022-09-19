@@ -2,7 +2,8 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectComplexBuildingId,
   ProjectComplexBuildingVO,
-  ProjectComplexSiteVO
+  ProjectComplexSiteVO,
+  ProjectComplexTestVO
 } from 'project_complex/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectComplexActionType } from 'project_complex/action';
@@ -15,6 +16,7 @@ export interface ProjectComplexState {
   requestSite: string;
   requestBuilding: string;
   buildingFileModal?: ProjectComplexBuildingId | undefined;
+  testDetail?: ProjectComplexTestVO;
 }
 
 const initial: ProjectComplexState = {
@@ -65,4 +67,10 @@ export const projectComplexReducer = createReducer(initial, {
     ...state,
     requestBuilding: action.payload,
   }),
+  [ProjectComplexActionType.setTestDetail]:     (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    testDetail: action.payload,
+  })
 });

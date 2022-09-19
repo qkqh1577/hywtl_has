@@ -20,6 +20,7 @@ import {
 } from 'project/domain';
 import ProjectBasicSection from 'project_basic/view/BasicSection';
 import ProjectBasicBusinessRoute from 'project_basic/route/business';
+import ProjectBasicTestRoute from 'project_basic/route/test';
 import { projectBasicActionType } from 'project_basic/action';
 
 function Element() {
@@ -48,6 +49,7 @@ function Element() {
         <ProjectBasicSection />
       </FormikProvider>
       <ProjectBasicBusinessRoute />
+      <ProjectBasicTestRoute />
     </ProjectContainerRoute>
   );
 }

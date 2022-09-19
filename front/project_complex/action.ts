@@ -4,7 +4,8 @@ import {
   ProjectComplexBuildingId,
   ProjectComplexBuildingVO,
   ProjectComplexSiteId,
-  ProjectComplexSiteVO
+  ProjectComplexSiteVO,
+  ProjectComplexTestVO
 } from 'project_complex/domain';
 import {
   ProjectComplexBuildingParameter,
@@ -25,6 +26,7 @@ export enum ProjectComplexActionType {
   updateBuilding    = 'project/sales/complex/building/update',
   deleteBuilding    = 'project/sales/complex/building/delete',
   buildingFileModal = 'project/sales/complex/building/file/modal',
+  setTestDetail     = 'project/sales/complex/test/set',
 }
 
 export const projectComplexAction = {
@@ -41,4 +43,5 @@ export const projectComplexAction = {
   updateBuilding:    createAction(ProjectComplexActionType.updateBuilding)<ProjectComplexBuildingParameter>(),
   deleteBuilding:    createAction(ProjectComplexActionType.deleteBuilding)<ProjectComplexBuildingId>(),
   buildingFileModal: createAction(ProjectComplexActionType.buildingFileModal)<ProjectComplexBuildingId | undefined>(),
+  setTestDetail:     createAction(ProjectComplexActionType.setTestDetail)<ProjectComplexTestVO | undefined>(),
 };

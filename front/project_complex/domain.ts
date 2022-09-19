@@ -46,3 +46,13 @@ export interface ProjectComplexBuildingVO {
   estimateReportDifficulty?: Difficulty; // 견적 보고서 난이도
   modifiedAt: Date;
 }
+
+export interface ProjectComplexTestVO {
+  siteCount: number;
+  targetTest: string;
+  testList: {
+    testType: TestType;
+    buildingCount: number;
+    buildingNameList: string[];
+  }[];
+}
