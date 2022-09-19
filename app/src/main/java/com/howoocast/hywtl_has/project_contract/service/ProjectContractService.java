@@ -144,11 +144,13 @@ public class ProjectContractService {
             parameter.getStageList().stream().map(item -> ProjectContractCollectionStage.of(
                     item.getName(),
                     item.getRatio(),
+                    item.getAmount(),
                     item.getNote(),
                     item.getExpectedDate()
                 ))
                 .collect(Collectors.toList()),
-            parameter.getTotalAmountNote()
+            parameter.getTotalAmountNote(),
+            parameter.getTotalAmount()
         );
     }
 

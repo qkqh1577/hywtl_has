@@ -1,6 +1,9 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
+import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplateDetail;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
@@ -23,6 +26,8 @@ public class ProjectSystemEstimateService {
 
     private final ProjectEstimateService estimateService;
 
+    private final BusinessRepository businessRepository;
+
     @Transactional(readOnly = true)
     public ProjectSystemEstimate get(Long id) {
         return this.load(id);
@@ -40,7 +45,8 @@ public class ProjectSystemEstimateService {
             parameter.getRecipient(),
             parameter.getNote(),
             toTemplateList(parameter.getTemplateList()),
-            parameter.getContentList());
+            parameter.getContentList(),
+            new CustomFinder<>(businessRepository, Business.class).byId(1L));
         estimateService.changePlan(instance, parameter.getPlan());
         estimateService.changeSiteList(instance, parameter.getSiteList());
         estimateService.changeBuildingList(instance, parameter.getBuildingList());

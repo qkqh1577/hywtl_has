@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
+import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
@@ -28,6 +29,7 @@ public class ProjectEstimateView {
     private ProjectEstimatePlanView plan;
     private List<ProjectEstimateComplexSiteView> siteList;
     private List<ProjectEstimateComplexBuildingView> buildingList;
+    private final BusinessShortView business;
 
     protected ProjectEstimateView(
         ProjectEstimate source
@@ -53,6 +55,7 @@ public class ProjectEstimateView {
                 .collect(
                     Collectors.toList());
         }
+        this.business = BusinessShortView.assemble(source.getBusiness());
     }
 
     public static ProjectEstimateView assemble(ProjectEstimate source) {

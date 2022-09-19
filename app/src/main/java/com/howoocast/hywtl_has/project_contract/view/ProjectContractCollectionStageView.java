@@ -9,6 +9,7 @@ public class ProjectContractCollectionStageView {
 
     private String name;
     private Double ratio;
+    private Long amount;
     private String note;
     private LocalDate expectedDate;
 
@@ -16,6 +17,7 @@ public class ProjectContractCollectionStageView {
         ProjectContractCollectionStageView target = new ProjectContractCollectionStageView();
         target.name = source.getName();
         target.ratio = source.getRatio();
+        target.amount = source.getAmount();
         target.note = source.getNote();
         target.expectedDate = source.getExpectedDate();
         return target;

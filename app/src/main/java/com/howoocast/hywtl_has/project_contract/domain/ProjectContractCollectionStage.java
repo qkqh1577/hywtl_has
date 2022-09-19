@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Embeddable
 @Getter
@@ -24,6 +25,11 @@ public class ProjectContractCollectionStage {
     private Double ratio;
 
     /**
+     * 금액
+     */
+    private Long amount;
+
+    /**
      * 시기
      */
     private String note;
@@ -35,12 +41,14 @@ public class ProjectContractCollectionStage {
     public static ProjectContractCollectionStage of(
         String name,
         Double ratio,
+        @Nullable Long amount,
         String note,
-        LocalDate expectedDate
+        @Nullable LocalDate expectedDate
     ) {
         ProjectContractCollectionStage instance = new ProjectContractCollectionStage();
         instance.name = name;
         instance.ratio = ratio;
+        instance.amount = amount;
         instance.note = note;
         instance.expectedDate = expectedDate;
         return instance;

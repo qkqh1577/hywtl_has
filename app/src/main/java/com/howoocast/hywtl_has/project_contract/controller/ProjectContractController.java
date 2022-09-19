@@ -47,6 +47,7 @@ public class ProjectContractController {
         );
     }
 
+
     @PostMapping("/project/sales/{projectId}/contract/confirmed")
     public void confirmed(
         @PathVariable Long projectId,

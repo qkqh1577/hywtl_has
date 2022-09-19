@@ -15,7 +15,7 @@ public enum ContractCollectionStageExpectedDateType {
     /**
      * 최종보고서납품일
      */
-    DAY_TO_DELiVER_FOE_FINAL_REPORT,
+    DAY_TO_DELIVER_FOE_FINAL_REPORT,
     /**
      * 직접입력
      */

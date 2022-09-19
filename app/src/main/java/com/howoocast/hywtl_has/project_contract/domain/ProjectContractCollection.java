@@ -45,15 +45,22 @@ public class ProjectContractCollection extends CustomEntity {
      */
     private String totalAmountNote;
 
+    /**
+     * 총액
+     */
+    private Long totalAmount;
+
     public static ProjectContractCollection of(
         String stageNote,
         List<ProjectContractCollectionStage> stageList,
-        String totalAmountNote
+        String totalAmountNote,
+        Long totalAmount
     ) {
         ProjectContractCollection instance = new ProjectContractCollection();
         instance.stageNote = stageNote;
         instance.stageList = stageList;
         instance.totalAmountNote = totalAmountNote;
+        instance.totalAmount = totalAmount;
         return instance;
     }
 }
