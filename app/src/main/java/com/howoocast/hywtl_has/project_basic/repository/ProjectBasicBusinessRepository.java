@@ -8,4 +8,8 @@ public interface ProjectBasicBusinessRepository extends CustomRepository<Project
 
 
     List<ProjectBasicBusiness> findByProject_Id(Long projectId);
+
+    List<ProjectBasicBusiness> findByBusiness_Id(Long businessId);
+
+    List<ProjectBasicBusiness> findByBusinessManager_Id(Long managerId);
 }

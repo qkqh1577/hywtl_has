@@ -5,7 +5,7 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateA
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateChangeParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectCustomEstimateExtensionParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectCustomEstimateService;
-import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
+import com.howoocast.hywtl_has.project_estimate.view.ProjectCustomEstimateView;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +29,10 @@ public class ProjectCustomEstimateController {
     private final ProjectCustomEstimateService service;
 
     @GetMapping("/project/sales/custom-estimate/{id}")
-    public ProjectEstimateView get(
+    public ProjectCustomEstimateView get(
         @PathVariable Long id
     ) {
-        return ProjectEstimateMapper.toView(
-            service.get(id)
-        );
+        return ProjectCustomEstimateView.assemble(service.get(id));
     }
 
     @PostMapping("/project/sales/{projectId}/custom-estimate")

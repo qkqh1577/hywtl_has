@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.view;
 
-import com.howoocast.hywtl_has.business.view.BusinessView;
+import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import lombok.Getter;
 public class RivalEstimateView {
 
     private Long id;
-    private BusinessView business;
+    private BusinessShortView business;
     private Long testAmount;
     private Long reviewAmount;
     private Long totalAmount;
@@ -22,7 +22,7 @@ public class RivalEstimateView {
         RivalEstimateView target = new RivalEstimateView();
         target.id = source.getId();
         if (Objects.nonNull(source.getBusiness())) {
-            target.business = BusinessView.assemble(source.getBusiness());
+            target.business = BusinessShortView.assemble(source.getBusiness());
         }
         target.testAmount = source.getTestAmount();
         target.reviewAmount = source.getReviewAmount();

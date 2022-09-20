@@ -6,9 +6,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,8 +29,7 @@ public class RivalEstimate extends CustomEntity {
 
     public static final String KEY = "project_rival_estimate";
 
-    @OneToOne
-    @JoinColumn(name = Business.KEY + "_id")
+    @ManyToOne
     private Business business;
 
     @ManyToOne
