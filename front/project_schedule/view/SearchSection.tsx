@@ -20,6 +20,8 @@ function BackToCalendarButton(props: ButtonProps) {
     if (formikContext) {
       const { handleSubmit } = formikContext;
       handleSubmit();
+      //TODO: clear 로직 수정
+      // formikContext.setFieldValue('keyword', FILED_CLEAR);
     }
   };
   return (
