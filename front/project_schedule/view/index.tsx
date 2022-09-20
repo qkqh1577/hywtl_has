@@ -108,9 +108,9 @@ export default function ProjectSchedule(props: Props) {
       }}>
         {!isSearched && (
           <Box sx={{
-            fontFamily:            'Noto Sans KR',
-            width:                 '100%',
-            '& .fc-toolbar-chunk': {
+            fontFamily:                 'Noto Sans KR',
+            width:                      '100%',
+            '& .fc-toolbar-chunk':      {
               display:                  'flex',
               flexWrap:                 'nowrap',
               alignItems:               'center',
@@ -161,14 +161,63 @@ export default function ProjectSchedule(props: Props) {
                 fontWeight:      'bolder',
               },
               '& .fc-addButton-button': {
-                padding:         '0 10px',
+                padding:         '0 16px',
+                width:           '64px',
                 backgroundColor: `${ColorPalette._386dd6} !important`,
                 border:          'none',
                 color:           ColorPalette._ffffff,
-                fontSize:        '11px',
-                fontWeight:      'bolder',
+                height:          '32px',
+                fontSize:        '13px',
+                fontWeight:      'normal',
+                boxShadow:       'none',
+                wordBreak:       'keep-all',
+                whiteSpace:      'nowrap',
+                '&:hover':       {
+                  boxShadow: 'none',
+                }
               }
-            }
+            },
+            '& .fc-day-sat':            {
+              color: ColorPalette._0047d3,
+            },
+            '& .fc-day-sun':            {
+              color: ColorPalette._eb4c4c,
+            },
+            '& .fc-daygrid-day-events': {
+              padding:                       '10xp',
+              border:                        'none',
+              '& .fc-daygrid-event':         {
+                alignItems:      'flex-start',
+                backgroundColor: ColorPalette._4c9eeb,
+                padding:         '8px',
+                borderRadius:    '5px',
+                marginBottom:    '4px',
+                boxShadow:       `2px 2px 10px 0px ${ColorPalette._b2b4b7}`,
+              },
+              '& .fc-event-main':            {
+                backgroundColor: ColorPalette._4c9eeb,
+              },
+              '& .fc-daygrid-event-harness': {
+                fontSize:                  '13px',
+                color:                     ColorPalette._ffffff,
+                fontWeight:                'bolder',
+                whiteSpace:                'normal',
+                '& .fc-h-event':           {
+                  border: 'none',
+                },
+                '& .fc-daygrid-event-dot': {
+                  display: 'none',
+                },
+                '& .fc-event-title':       {
+                  wordBreak:       'break-word',
+                  whiteSpace:      'normal',
+                  display:         '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  textOverflow:    'ellipsis',
+                },
+              },
+            },
 
           }}>
             <FullCalendar
