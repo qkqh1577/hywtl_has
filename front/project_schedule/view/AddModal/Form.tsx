@@ -99,7 +99,6 @@ export default function () {
                   onChange={() => {
                     const alertBefore = +formik.values.alertBefore;
                     if (!Number.isNaN(alertBefore) && alertBefore > 0) {
-                      console.log(alertBefore);
                       formik.setFieldValue('alertBefore', FILED_CLEAR);
                     }
                   }}
