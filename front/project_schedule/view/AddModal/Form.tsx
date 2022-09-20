@@ -45,7 +45,6 @@ export default function () {
             label="시작시간"
             labelPosition="top"
             status={formik.values.allDay ? FieldStatus.ReadOnly : FieldStatus.View}
-
           />
         </Grid>
         <Grid item sm={4}>

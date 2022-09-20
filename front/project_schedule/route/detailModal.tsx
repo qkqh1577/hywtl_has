@@ -6,7 +6,7 @@ import {
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
 import { FormikSubmit } from 'type/Form';
-import { ProjectScheduleParameter } from 'project_schedule/parameter';
+import { ProjectScheduleParameter, } from 'project_schedule/parameter';
 import { useFormik, } from 'formik';
 import {
   ProjectScheduleId,
@@ -39,6 +39,29 @@ function toFormik(detail: ProjectScheduleVO): DetailModalFormik {
   };
 }
 
+function toParameter(values: DetailModalFormik): ProjectScheduleParameter {
+  return {
+    id:               values.id,
+    title:            values.title,
+    alertBefore:      values.alertBefore,
+    allDay:           values.allDay,
+    managerId:        values.manager.id,
+    attendanceIdList: values.attendanceList?.map((item) => item.id!),
+    startTime:        values.allDay ?
+                        dayjs(values.startTime)
+                        .format('YYYY-MM-DD hh:mm')
+                        :
+                        dayjs(values.startTime)
+                        .format('YYYY-MM-DD') + ` ${values.start ? values.start : '00:00'}`,
+    endTime:          values.allDay ?
+                        dayjs(values.endTime)
+                        .format('YYYY-MM-DD hh:mm')
+                        :
+                        dayjs(values.endTime)
+                        .format('YYYY-MM-DD') + ` ${values.end ? values.end : '00:00'}`,
+  };
+}
+
 function isFormikType(values: any): values is DetailModalFormik {
   return Object.keys(values).length !== 0;
 }
@@ -68,16 +91,7 @@ export default function ProjectScheduleDetailModalRoute() {
       if (isFormikType(values)) {
         update({
           values: {
-            id:               values.id,
-            title:            values.title,
-            alertBefore:      values.alertBefore,
-            allDay:           values.allDay,
-            managerId:        values.manager.id,
-            attendanceIdList: values.attendanceList?.map((item) => item.id!),
-            startTime:        dayjs(values.startTime)
-                              .format('YYYY-MM-DD hh:mm'),
-            endTime:          dayjs(values.endTime)
-                              .format('YYYY-MM-DD hh:mm'),
+            ...toParameter(values),
           },
           ...helper
         });

@@ -13,14 +13,15 @@ import { projectScheduleAction } from 'project_schedule/action';
 import { useFormik } from 'formik';
 import {
   initialProjectScheduleParameter,
-  ProjectScheduleParameter
+  ProjectScheduleParameter,
+  ProjectScheduleTempParameter
 } from 'project_schedule/parameter';
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
 import useLogin from 'app/service/loginHook';
 
-function convertType(values: ProjectScheduleTempParameter): ProjectScheduleParameter {
+function toParameter(values: ProjectScheduleTempParameter): ProjectScheduleParameter {
   return {
     ...values,
     startTime: values.allDay ?
@@ -36,12 +37,6 @@ function convertType(values: ProjectScheduleTempParameter): ProjectScheduleParam
                  dayjs(values.endTime)
                  .format('YYYY-MM-DD') + ` ${values.end ? values.end : '00:00'}`,
   };
-}
-
-interface ProjectScheduleTempParameter
-  extends ProjectScheduleParameter {
-  start?: string;
-  end?: string;
 }
 
 export default function ProjectScheduleAddModalRoute() {
@@ -66,10 +61,9 @@ export default function ProjectScheduleAddModalRoute() {
         helper.setSubmitting(false);
         return;
       }
-      console.log(convertType(values));
       add({
         values: {
-          ...convertType(values)
+          ...toParameter(values)
         },
         ...helper
       });
