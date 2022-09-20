@@ -24,6 +24,7 @@ import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,12 @@ public class ProjectContractService {
     @Transactional(readOnly = true)
     public ProjectContract get(Long id) {
         return this.load(id);
+    }
+
+    @Transactional(readOnly = true)
+    public @Nullable
+    ProjectContract getFinal(Long projectId) {
+        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE).orElse(null);
     }
 
     @Transactional

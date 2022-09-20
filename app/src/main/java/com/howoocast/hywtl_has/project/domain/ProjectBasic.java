@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -99,20 +100,43 @@ public class ProjectBasic {
         this.code = code;
     }
 
-    public void change(
-        String name,
-        String code,
-        String alias,
-        ProjectBasicBidType bidType,
-        User salesManager,
-        User projectManager
+    public void update(
+        @Nullable String name,
+        @Nullable String alias,
+        @Nullable ProjectBasicBidType bidType,
+        @Nullable User receptionManager,
+        @Nullable User salesManager,
+        @Nullable User projectManager,
+        @Nullable LocalDate expectedMonth,
+        @Nullable LocalDate requestedMonth,
+        @Nullable Boolean isLh
     ) {
-        this.name = name;
-        this.code = code;
-        this.alias = alias;
-        this.bidType = bidType;
-        this.salesManager = salesManager;
-        this.projectManager = projectManager;
+        if (Objects.nonNull(name)) {
+            this.name = name;
+        }
+        if (Objects.nonNull(alias)) {
+            this.alias = alias;
+        }
+        if (Objects.nonNull(bidType)) {
+            this.bidType = bidType;
+        }
+        if (Objects.nonNull(receptionManager)) {
+            this.receptionManager = receptionManager;
+        }
+        if (Objects.nonNull(salesManager)) {
+            this.salesManager = salesManager;
+        }
+        if (Objects.nonNull(projectManager)) {
+            this.projectManager = projectManager;
+        }
+        if (Objects.nonNull(expectedMonth)) {
+            this.expectedMonth = expectedMonth;
+        }
+        if (Objects.nonNull(requestedMonth)) {
+            this.requestedMonth = requestedMonth;
+        }
+        if (Objects.nonNull(isLh)) {
+            this.isLh = isLh;
+        }
     }
-
 }

@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.project_bid.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
-import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -29,7 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SQLDelete(sql = "update " + ProjectBid.KEY + " set deleted_at = now() where id=?")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProjectBid extends CustomEntity {
+public class ProjectBid extends BidDTO {
 
     public static final String KEY = "project_bid";
 
@@ -58,26 +57,6 @@ public class ProjectBid extends CustomEntity {
      */
     private LocalDate bidDate;
 
-    /**
-     * 풍동 금액
-     */
-    private Long testAmount;
-
-    /**
-     * 구검 금액
-     */
-    private Long reviewAmount;
-
-    /**
-     * 총액
-     */
-    private Long totalAmount;
-
-    /**
-     * 일정
-     */
-    private String expectedDuration;
-
     @OneToOne
     @JoinColumn(name = Project.KEY + "_id")
     private Project project;
@@ -101,6 +80,12 @@ public class ProjectBid extends CustomEntity {
         Long totalAmount,
         String expectedDuration
     ) {
+        super.update(
+            testAmount,
+            reviewAmount,
+            totalAmount,
+            expectedDuration
+        );
         if (Objects.nonNull(beginDate)) {
             this.beginDate = beginDate;
         }
@@ -115,18 +100,6 @@ public class ProjectBid extends CustomEntity {
         }
         if (Objects.nonNull(bidDate)) {
             this.bidDate = bidDate;
-        }
-        if (Objects.nonNull(testAmount)) {
-            this.testAmount = testAmount;
-        }
-        if (Objects.nonNull(reviewAmount)) {
-            this.reviewAmount = reviewAmount;
-        }
-        if (Objects.nonNull(totalAmount)) {
-            this.totalAmount = totalAmount;
-        }
-        if (Objects.nonNull(expectedDuration)) {
-            this.expectedDuration = expectedDuration;
         }
     }
 }

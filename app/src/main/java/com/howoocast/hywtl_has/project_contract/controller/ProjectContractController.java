@@ -7,7 +7,9 @@ import com.howoocast.hywtl_has.project_contract.service.ProjectContractService;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractShortView;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractView;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,16 @@ public class ProjectContractController {
         return ProjectContractView.assemble(
             service.get(id)
         );
+    }
+
+    @GetMapping("/project/sales/{projectId}/basic/contract")
+    public @Nullable
+    ProjectContractView getFinal(
+        @PathVariable Long projectId
+    ) {
+        return Optional.ofNullable(service.getFinal(projectId))
+            .map(ProjectContractView::assemble)
+            .orElse(null);
     }
 
 

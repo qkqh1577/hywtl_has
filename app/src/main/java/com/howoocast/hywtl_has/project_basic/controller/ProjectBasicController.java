@@ -1,15 +1,19 @@
 package com.howoocast.hywtl_has.project_basic.controller;
 
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessAddParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicDesignParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonParameter;
 import com.howoocast.hywtl_has.project_basic.service.ProjectBasicService;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicBusinessView;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicDesignView;
+import com.howoocast.hywtl_has.project_basic.view.ProjectBasicFailReasonView;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,12 +53,43 @@ public class ProjectBasicController {
         );
     }
 
+    @GetMapping("/project/sales/{id}/basic/fail-reason")
+    public ProjectBasicFailReasonView getFailReason(
+        @PathVariable Long id
+    ) {
+        return ProjectBasicFailReasonView.assemble(service.getFailReason(id));
+    }
+
     @PostMapping("/project/sales/{id}/basic/business")
     public void addBusiness(
         @PathVariable Long id,
         @Valid @RequestBody ProjectBasicBusinessAddParameter parameter
     ) {
         service.pushBusiness(id, parameter);
+    }
+
+    @PostMapping("/project/sales/{id}/basic/fail-reason")
+    public void addFailReason(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectBasicFailReasonParameter parameter
+    ) {
+        service.upsertFailReason(id, parameter);
+    }
+
+    @PatchMapping("/project/sales/{id}/basic/design")
+    public void updateDesign(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectBasicDesignParameter parameter
+    ) {
+        service.updateDesign(id, parameter);
+    }
+
+    @PatchMapping("/project/sales/{id}/basic/fail-reason")
+    public void updateFailReason(
+        @PathVariable Long id,
+        @RequestBody ProjectBasicFailReasonParameter parameter
+    ) {
+        service.upsertFailReason(id, parameter);
     }
 
 
@@ -64,6 +99,5 @@ public class ProjectBasicController {
     ) {
         service.deleteBusiness(projectBasicBusinessId);
     }
-
 
 }

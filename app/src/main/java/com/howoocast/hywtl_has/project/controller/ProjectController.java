@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project.controller;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
+import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.service.ProjectService;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectController {
 
-    private final ProjectService projectService;
+    private final ProjectService service;
 
     @GetMapping("/project/sales")
     public Page<ProjectShortView> page(
@@ -34,23 +35,32 @@ public class ProjectController {
         Pageable pageable
     ) {
         return ProjectMapper.toShortView(
-            projectService.page(
+            service.page(
                 new ProjectPredicateBuilder()
                     .keyword(keyword)
                     .build(),
                 pageable
-            )
-        );
+            ));
     }
+
 
     @GetMapping("/project/sales/{id}")
     public ProjectView getOne(@PathVariable Long id) {
-        return ProjectMapper.toView(projectService.getOne(id));
+        return ProjectMapper.toView(service.getOne(id));
     }
 
     @PostMapping("/project/sales")
     public void add(@Valid @RequestBody ProjectAddParameter parameter) {
-        projectService.add(parameter);
+        service.add(parameter);
+    }
+
+
+    @PatchMapping("/project/sales/{id}/basic")
+    public void update(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectUpdateParameter parameter
+    ) {
+        service.update(id, parameter);
     }
 
     @PatchMapping("/project/sales/{id}/status")
@@ -58,7 +68,7 @@ public class ProjectController {
         @PathVariable Long id,
         @Valid @RequestBody ProjectStatusUpdateParameter parameter
     ) {
-        projectService.updateProjectStatus(id, parameter);
+        service.updateProjectStatus(id, parameter);
     }
 
 }
