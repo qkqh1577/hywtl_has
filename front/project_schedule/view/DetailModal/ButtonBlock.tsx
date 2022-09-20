@@ -26,7 +26,13 @@ export default function ButtonBlock({
           width:          '100%',
           justifyContent: 'center',
         }}>
-          <Button onClick={onSubmit}>저장</Button>
+          <Button
+            onClick={onSubmit}
+            sx={{
+              marginRight: '10px',
+            }}>
+            저장
+          </Button>
           <Button onClick={onClose}>취소</Button>
         </Box>
       )}
