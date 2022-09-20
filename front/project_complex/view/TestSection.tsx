@@ -20,11 +20,10 @@ interface Props
 
 export default function ProjectComplexTestSection({ testList }: Props) {
 
-  const colSpan = testList?.map((test) => test.buildingNameList)
-                          .map(list => list.length)
+  const colSpan = testList?.map((test) => test.buildingCount)
                           .reduce((a,
                                    b
-                          ) => Math.max(a, b)) || 1;
+                          ) => Math.max(a, b), 1) || 1;
 
   return (
     <TableContainer>
