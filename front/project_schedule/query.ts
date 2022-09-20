@@ -13,4 +13,5 @@ export const initialProjectScheduleQuery: ProjectScheduleQuery = {
   startDate: undefined,
   endDate:   undefined,
   type:      '',
+  projectId: undefined
 };

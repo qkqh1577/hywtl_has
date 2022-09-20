@@ -49,7 +49,9 @@ function Element() {
   }, [dispatch]);
 
   const formik = useFormik<ProjectScheduleQuery>({
-    initialValues: filter ?? initialProjectScheduleQuery,
+    initialValues: isSearched ?
+                     {...initialProjectScheduleQuery, projectId: ProjectId(id!)} :
+                     filter ?? {...initialProjectScheduleQuery, projectId: ProjectId(id!)},
     onSubmit:      (values,
                     helper
                    ) => {
