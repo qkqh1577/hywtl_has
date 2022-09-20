@@ -21,7 +21,10 @@ import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
 import useLogin from 'app/service/loginHook';
 
-function toParameter(values: ProjectScheduleTempParameter): ProjectScheduleParameter {
+function toParameter(values: ProjectScheduleTempParameter): ProjectScheduleParameter | undefined {
+  if (!values.allDay && (!values.start || !values.end)) {
+    return;
+  }
   return {
     ...values,
     startTime: values.allDay ?
@@ -29,13 +32,13 @@ function toParameter(values: ProjectScheduleTempParameter): ProjectScheduleParam
                  .format('YYYY-MM-DD hh:mm')
                  :
                  dayjs(values.startTime)
-                 .format('YYYY-MM-DD') + ` ${values.start ? values.start : '00:00'}`,
+                 .format('YYYY-MM-DD') + ` ${values.start}`,
     endTime:   values.allDay ?
                  dayjs(values.endTime)
                  .format('YYYY-MM-DD hh:mm')
                  :
                  dayjs(values.endTime)
-                 .format('YYYY-MM-DD') + ` ${values.end ? values.end : '00:00'}`,
+                 .format('YYYY-MM-DD') + ` ${values.end}`,
   };
 }
 
@@ -61,9 +64,16 @@ export default function ProjectScheduleAddModalRoute() {
         helper.setSubmitting(false);
         return;
       }
+      const parameter = toParameter(values);
+      console.log(parameter);
+      if (!parameter) {
+        error('시작 시간 또는 종료 시간이 선택되지 않았습니다.');
+        helper.setSubmitting(false);
+        return;
+      }
       add({
         values: {
-          ...toParameter(values)
+          ...parameter
         },
         ...helper
       });

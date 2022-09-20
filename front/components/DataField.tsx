@@ -100,8 +100,6 @@ export function useDataProps<T = DataFieldValue, E = HTMLInputElement | HTMLText
   const onSubmit = formik?.handleSubmit;
 
   useEffect(() => {
-    console.log({ value, formikValue });
-    console.log(typeof value, typeof formikValue);
     if (!equals(value, formikValue)) {
       if (typeof formikValue !== 'undefined' && `${formikValue}` === FILED_CLEAR) {
         setValue(undefined);

@@ -24,18 +24,23 @@ export default function ProjectScheduleCalendar(props: ProjectScheduleProps) {
     if (list) {
       setEvents(list.map((item) => {
         return {
-          id:        `${item.id}`,
-          title:     `[${item.type}] ${item.title}`,
-          start:     dayjs(item.startTime)
-                     .format('YYYY-MM-DD hh:mm'),
-          end:       dayjs(item.endTime)
-                     .format('YYYY-MM-DD hh:mm')
-                     .endsWith('12:00') ? dayjs(item.endTime)
-          .format('YYYY-MM-DD hh:mm') : dayjs(item.endTime)
-          .add(1, 'd')
-          .format('YYYY-MM-DD hh:mm'),
-          className: 'date-box',
-        };
+          id:     `${item.id}`,
+          title:  `[${item.type}] ${item.title}`,
+          start:  dayjs(item.startTime)
+                  .format('YYYY-MM-DD hh:mm'),
+          end:    dayjs(item.startTime)
+                  .format('YYYY-MM-DD')
+                  ===
+                  dayjs(item.endTime)
+                  .format('YYYY-MM-DD') ? dayjs(item.endTime)
+          .format('YYYY-MM-DD hh:mm') : (item.allDay ? dayjs(item.endTime)
+            .add(1, 'd')
+            .format('YYYY-MM-DD hh:mm')
+            : dayjs(item.endTime)
+            .format('YYYY-MM-DD hh:mm')),
+          allDay: item.allDay,
+        }
+          ;
       }));
     }
     else {
