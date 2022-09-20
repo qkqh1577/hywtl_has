@@ -24,7 +24,7 @@ export const projectScheduleAction = {
   setProjectId: createAction(ProjectScheduleAction.setProjectId)<ProjectId | undefined>(),
   setOne:       createAction(ProjectScheduleAction.setOne)<ProjectScheduleVO | undefined>(),
   setId:        createAction(ProjectScheduleAction.setId)<number>(),
-  setFilter:    createAction(ProjectScheduleAction.setFilter)<FormikSubmit<ProjectScheduleQuery>>(),
+  setFilter:    createAction(ProjectScheduleAction.setFilter)<ProjectScheduleQuery>(),
   setList:      createAction(ProjectScheduleAction.setList)<ProjectScheduleShort[] | undefined>(),
   addModal:     createAction(ProjectScheduleAction.addModal)<boolean>(),
   add:          createAction(ProjectScheduleAction.add)<FormikSubmit<ProjectScheduleParameter>>(),

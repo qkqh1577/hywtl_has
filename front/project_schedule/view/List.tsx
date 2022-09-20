@@ -1,27 +1,41 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { ProjectScheduleShort } from 'project_schedule/domain';
+import {
+  Box,
+  Typography
+} from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import dayjs from 'dayjs';
 import TextLink from 'components/TextLink';
-import { OnDetailModalOpen } from 'project_schedule/route/schedule';
+import { ProjectScheduleProps } from 'project_schedule/view/index';
 
-export interface ListProps {
-  list?: ProjectScheduleShort[];
-  onDetailModalOpen: OnDetailModalOpen;
-}
-
-export default function List(props: ListProps) {
+export default function List(props: Pick<ProjectScheduleProps, | 'list' | 'onDetailModalOpen'>) {
   const {
           list,
           onDetailModalOpen
         } = props;
+
+  if (!list || list.length === 0) {
+    return (
+      <Box
+        sx={{
+          display:        'flex',
+          justifyContent: 'center',
+          width:          '100%',
+          height:         '100%',
+          flexWrap:       'nowrap',
+          border:         `1px solid ${ColorPalette._e4e9f2}`,
+          borderRadius:   '5px',
+          marginBottom:   '15px',
+          padding:        '15px 15px'
+        }}>
+        <Typography>검색된 결과가 없습니다.</Typography>
+      </Box>
+    );
+  }
   return (
     <>
       {
-        list && list?.map((item,
-                           i
-        ) => {
+        list.map((item) => {
           return (
             <Box
               key={item.id}

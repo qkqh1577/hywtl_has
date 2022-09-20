@@ -73,6 +73,7 @@ export default function ProjectScheduleAddModalRoute() {
   useEffect(() => {
     if (!addModal) {
       onClose();
+      formik.setValues({ ...initialProjectScheduleParameter, managerId: user?.id });
     }
   }, [addModal]);
 

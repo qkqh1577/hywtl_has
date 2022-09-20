@@ -27,16 +27,13 @@ function* watchId() {
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take(projectScheduleAction.setFilter);
+    const { payload: filter } = yield take(projectScheduleAction.setFilter);
     try {
-      const list: ProjectScheduleShort[] = yield call(projectScheduleApi.getList, formik.values.projectId, formik.values);
+      const list: ProjectScheduleShort[] = yield call(projectScheduleApi.getList, filter.projectId, filter);
       yield put(projectScheduleAction.setList(list));
     }
     catch (e) {
       yield put(projectScheduleAction.setList(undefined));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }

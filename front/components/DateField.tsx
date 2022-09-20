@@ -47,7 +47,7 @@ export default function DateField(props: DateFieldProps) {
           value,
           disabled,
           readOnly,
-          formik,
+          formik
         } = useDataProps(props);
   const mask = month ? '____-__' : '____-__-__';
 
@@ -98,6 +98,14 @@ export default function DateField(props: DateFieldProps) {
   };
 
   const onChange: DatePickerProps<Dayjs>['onChange'] = (date) => {
+    if (!value && !date) {
+      return;
+    }
+    if (dayjs(value)
+    .format('YYYY-MM-DD') === dayjs(date)
+    .format('YYYY-MM-DD')) {
+      return;
+    }
     formik.setFieldValue(name, dayjs(date)
     .format('YYYY-MM-DD'));
   };

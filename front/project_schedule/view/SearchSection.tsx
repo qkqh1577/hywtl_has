@@ -1,29 +1,19 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext
-} from 'react';
+import React, { useContext } from 'react';
 import { Box, } from '@mui/material';
 import TextField from 'components/TextField';
 import { FormikContext } from 'formik';
 import Button from 'layouts/Button';
+import { ProjectScheduleProps } from 'project_schedule/view/index';
+import { FILED_CLEAR } from 'components/DataFieldProps';
 
-export interface ButtonProps {
-  setIsSearched: Dispatch<SetStateAction<boolean>>;
-}
+function BackToCalendarButton(props: Pick<ProjectScheduleProps, | 'setKeyword'>) {
 
-function BackToCalendarButton(props: ButtonProps) {
-  const formikContext = useContext(FormikContext);
-
+  const formik = useContext(FormikContext);
   const onClick = () => {
-    props.setIsSearched(false);
-    if (formikContext) {
-      const { handleSubmit } = formikContext;
-      handleSubmit();
-      //TODO: clear 로직 수정
-      // formikContext.setFieldValue('keyword', FILED_CLEAR);
-    }
+    props.setKeyword('');
+    formik.setFieldValue('keyword', FILED_CLEAR);
   };
+
   return (
     <Button
       shape="basic2"
@@ -34,15 +24,10 @@ function BackToCalendarButton(props: ButtonProps) {
   );
 }
 
-function SubmitButton(props: ButtonProps) {
-
+function SubmitButton() {
   const formikContext = useContext(FormikContext);
   const onClick = () => {
-    props.setIsSearched(true);
-    if (formikContext) {
-      const { handleSubmit } = formikContext;
-      handleSubmit();
-    }
+    formikContext?.handleSubmit();
   };
 
   return (
@@ -54,16 +39,7 @@ function SubmitButton(props: ButtonProps) {
   );
 }
 
-interface Props {
-  setIsSearched: Dispatch<SetStateAction<boolean>>;
-  isSearched: boolean;
-}
-
-export default function SearchSection(props: Props) {
-  const {
-          setIsSearched,
-          isSearched
-        } = props;
+export default function SearchSection(props: Pick<ProjectScheduleProps, | 'isSearchForm' | 'setKeyword'>) {
   return (
     <Box sx={{
       width:          '100%',
@@ -88,11 +64,11 @@ export default function SearchSection(props: Props) {
           />
         </Box>
         <Box>
-          <SubmitButton setIsSearched={setIsSearched} />
+          <SubmitButton />
         </Box>
       </Box>
       <Box>
-        {isSearched && (<BackToCalendarButton setIsSearched={setIsSearched} />)}
+        {props.isSearchForm && (<BackToCalendarButton setKeyword={props.setKeyword} />)}
       </Box>
     </Box>
   );
