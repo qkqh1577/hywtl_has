@@ -5,7 +5,8 @@ import {
   FormGroup,
   FormLabel,
   Grid,
-  InputAdornment
+  InputAdornment,
+  Typography
 } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
@@ -15,6 +16,7 @@ import {
   FieldStatus,
   FILED_CLEAR
 } from 'components/DataFieldProps';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -49,7 +51,13 @@ export default function () {
         <Grid item sm={4}>
           <FormControl fullWidth variant="standard">
             <FormLabel component="legend">
-              종일 여부
+              <Typography sx={{
+                color:      ColorPalette._9b9ea4,
+                fontSize:   '13px',
+                fontFamily: 'Noto Sans KR'
+              }}>
+                종일 여부
+              </Typography>
             </FormLabel>
           </FormControl>
           <FormGroup row>
@@ -81,11 +89,6 @@ export default function () {
             label="종료시간"
             labelPosition="top"
             status={formik.values.allDay ? FieldStatus.ReadOnly : FieldStatus.View}
-            inputProps={{
-              min:  '00:00',
-              max:  '23:30',
-              step: 60 * 30
-            }}
           />
         </Grid>
       </Grid>

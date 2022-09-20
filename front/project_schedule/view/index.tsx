@@ -46,13 +46,15 @@ export default function ProjectSchedule(props: Props) {
       setEvents(list.map((item) => {
         return {
           id:        `${item.id}`,
-          title:     `${item.type} ${item.title}`,
+          title:     `[${item.type}] ${item.title}`,
           start:     dayjs(item.startTime)
                      .format('YYYY-MM-DD hh:mm'),
           end:       dayjs(item.endTime)
-                     .add(1, 'd')
-                     .format('YYYY-MM-DD hh:mm'),
-          allDay:    item.allDay,
+                     .format('YYYY-MM-DD hh:mm')
+                     .endsWith('12:00') ? dayjs(item.endTime)
+          .format('YYYY-MM-DD hh:mm') : dayjs(item.endTime)
+          .add(1, 'd')
+          .format('YYYY-MM-DD hh:mm'),
           className: 'date-box',
         };
       }));

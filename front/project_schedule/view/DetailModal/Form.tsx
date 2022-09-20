@@ -5,7 +5,8 @@ import {
   FormGroup,
   FormLabel,
   Grid,
-  InputAdornment
+  InputAdornment,
+  Typography
 } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
@@ -15,6 +16,7 @@ import {
   FILED_CLEAR
 } from 'components/DataFieldProps';
 import { FormikContext } from 'formik';
+import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   edit: boolean;
@@ -49,15 +51,19 @@ export default function ({ edit }: Props) {
             label="시작시간"
             labelPosition="top"
             status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
-            // inputProps={{
-            //   step: 3600,
-            // }}
           />
         </Grid>
         <Grid item sm={4}>
           <FormControl fullWidth variant="standard">
             <FormLabel component="legend">
-              종일 여부
+              <Typography sx={{
+                color:      ColorPalette._9b9ea4,
+                fontSize:   '13px',
+                fontFamily: 'Noto Sans KR',
+                letterSpacing: '0.00938em'
+              }}>
+                종일 여부
+              </Typography>
             </FormLabel>
           </FormControl>
           <FormGroup row>
@@ -68,6 +74,7 @@ export default function ({ edit }: Props) {
               onChange={() => {
                 formik.setFieldValue('allDay', !formik.values.allDay);
               }}
+              disabled={!edit}
             />
           </FormGroup>
         </Grid>
@@ -88,9 +95,6 @@ export default function ({ edit }: Props) {
             label="종료시간"
             labelPosition="top"
             status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
-            // inputProps={{
-            //   step: 3600,
-            // }}
           />
         </Grid>
       </Grid>
