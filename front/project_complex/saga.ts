@@ -8,7 +8,8 @@ import {
 import { projectComplexAction, } from 'project_complex/action';
 import {
   ProjectComplexBuildingVO,
-  ProjectComplexSiteVO
+  ProjectComplexSiteVO,
+  ProjectComplexTestVO
 } from 'project_complex/domain';
 import { projectComplexApi } from 'project_complex/api';
 import { RootState } from 'services/reducer';
@@ -20,7 +21,13 @@ function* watchId() {
     const { payload: id } = yield take(projectComplexAction.setId);
     yield call(getSiteList, id);
     yield call(getBuildList, id);
+    yield call(getTestDetail, id);
   }
+}
+
+function* getTestDetail(id: ProjectId) {
+  const detail: ProjectComplexTestVO = yield call(projectComplexApi.getTestDetail, id);
+  yield put(projectComplexAction.setTestDetail(detail));
 }
 
 function* getSiteList(id: ProjectId) {

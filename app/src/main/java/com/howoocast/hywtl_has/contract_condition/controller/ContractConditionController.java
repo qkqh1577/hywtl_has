@@ -3,8 +3,10 @@ package com.howoocast.hywtl_has.contract_condition.controller;
 import com.howoocast.hywtl_has.contract_condition.domain.ContractConditionVariable;
 import com.howoocast.hywtl_has.contract_condition.parameter.ContractConditionParameter;
 import com.howoocast.hywtl_has.contract_condition.service.ContractConditionService;
+import com.howoocast.hywtl_has.contract_condition.view.ContractConditionVariableView;
 import com.howoocast.hywtl_has.contract_condition.view.ContractConditionView;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +30,11 @@ public class ContractConditionController {
         return ContractConditionView.assemble(service.getList());
     }
 
-    // TODO: view?
     @GetMapping("/admin/contract/condition/variable")
-    public List<ContractConditionVariable> getVariableList() {
-        return ContractConditionVariable.list();
+    public List<ContractConditionVariableView> getVariableList() {
+
+        return ContractConditionVariable.list().stream().map(ContractConditionVariableView::assemble)
+            .collect(Collectors.toList());
     }
 
     @PutMapping("/admin/contract/condition")

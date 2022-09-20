@@ -2,12 +2,11 @@ package com.howoocast.hywtl_has.business.parameter;
 
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.BusinessManagerStatus;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +18,8 @@ public class BusinessManagerParameter {
     private String name;
 
     private String jobTitle;
+
+    private String department;
 
     private String mobilePhone;
 

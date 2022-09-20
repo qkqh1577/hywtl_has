@@ -4,7 +4,8 @@ import React, {
 } from 'react';
 import {
   ProjectComplexSiteId,
-  ProjectComplexSiteVO
+  ProjectComplexSiteVO,
+  ProjectComplexTestVO
 } from 'project_complex/domain';
 import SectionLayout from 'layouts/SectionLayout';
 import { DefaultFunction } from 'type/Function';
@@ -24,16 +25,14 @@ import {
 } from 'layouts/Table';
 import ProjectComplexSiteRow from 'project_complex/view/SiteRow';
 import { ProjectComplexSiteParameter } from 'project_complex/parameter';
-import { BuildingTest } from 'project_complex/route/site';
-import { testTypeName } from 'admin/estimate/content/domain';
+import ProjectComplexTestSection from 'project_complex/view/TestSection';
 
 interface Props {
   list: ProjectComplexSiteVO[] | undefined;
-  buildingTestList: BuildingTest[];
-  totalBuildingCount: number;
   onAdd: DefaultFunction;
   onUpdate: (params: ProjectComplexSiteParameter) => void;
   onDelete: (id: ProjectComplexSiteId) => void;
+  testDetail: ProjectComplexTestVO | undefined;
 }
 
 function AddButton(props: Props) {
@@ -113,35 +112,7 @@ export default function ProjectComplexSiteSection(props: Props) {
           display:      'flex',
           marginBottom: '15px',
         }}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <Th>실험 종류</Th>
-                  <Th>동 수</Th>
-                  <Th colSpan={props.buildingTestList.length === 0 ? 1 : props.totalBuildingCount}>실험 대상 동명</Th>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {props.buildingTestList.length === 0 && (
-                  <TableRow>
-                    <Td colSpan={3}>조회 결과가 없습니다.</Td>
-                  </TableRow>
-                )}
-                {props.buildingTestList.map((item) => (
-                  <TableRow key={item.testType}>
-                    <Td>{testTypeName(item.testType)}</Td>
-                    <Td>{item.buildingCount}</Td>
-                    {item.buildingNameList.map((name,
-                                                i
-                    ) => (
-                      <Td key={name || `${testTypeName(item.testType)}-${i}`}>{name}</Td>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <ProjectComplexTestSection testList={props.testDetail?.testList} />
         </Box>
       </Box>
     </SectionLayout>

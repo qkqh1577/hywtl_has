@@ -28,12 +28,24 @@ public class ContractBasic extends CustomEntity {
 
     public static final String KEY = "contract_basic";
 
+    /**
+     * 용역 기간
+     */
     private String serviceDuration;
 
+    /**
+     * 기성 단계 비고
+     */
     private String collectionStageNote;
 
+    /**
+     * 성과품
+     */
     private String outcome;
 
+    /**
+     * 추가 사항
+     */
     private String description;
 
     @Embedded

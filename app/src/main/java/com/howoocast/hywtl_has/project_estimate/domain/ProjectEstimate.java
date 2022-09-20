@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
+import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -89,6 +90,9 @@ public abstract class ProjectEstimate extends CustomEntity {
     @Embedded
     private ProjectEstimatePlan plan;
 
+    @ManyToOne
+    private Business business;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<ProjectEstimateComplexSite> siteList;
 
@@ -102,7 +106,8 @@ public abstract class ProjectEstimate extends CustomEntity {
         String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         this.project = project;
         this.code = code;
@@ -112,6 +117,7 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.writer = writer;
         this.isSent = isSent;
         this.confirmed = false;
+        this.business = business;
     }
 
     private ProjectEstimate(
@@ -140,11 +146,13 @@ public abstract class ProjectEstimate extends CustomEntity {
     public void change(
         Boolean isSent,
         String recipient,
-        String note
+        String note,
+        Business business
     ) {
         this.isSent = isSent;
         this.recipient = recipient;
         this.note = note;
+        this.business = business;
     }
 
     public void changePlan(@Nullable ProjectEstimatePlan plan) {

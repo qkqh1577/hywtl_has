@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project_complex.controller;
 import com.howoocast.hywtl_has.project_complex.parameter.ProjectComplexBuildingParameter;
 import com.howoocast.hywtl_has.project_complex.parameter.ProjectComplexSiteParameter;
 import com.howoocast.hywtl_has.project_complex.service.ProjectComplexService;
+import com.howoocast.hywtl_has.project_complex.view.ProjectBasicTestView;
 import com.howoocast.hywtl_has.project_complex.view.ProjectComplexBuildingView;
 import com.howoocast.hywtl_has.project_complex.view.ProjectComplexSiteView;
 import java.util.List;
@@ -23,6 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectComplexController {
 
     private final ProjectComplexService service;
+
+    @GetMapping("/project/sales/{id}/basic/test")
+    public ProjectBasicTestView test(
+        @PathVariable Long id
+    ) {
+        return ProjectBasicTestView.assemble(
+            service.getSiteList(id),
+            service.getBuildingList(id)
+        );
+    }
 
     @GetMapping("/project/sales/{id}/complex/site")
     public List<ProjectComplexSiteView> siteList(

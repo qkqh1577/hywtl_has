@@ -28,7 +28,6 @@ drop table if exists personnel_license_list;
 drop table if exists project;
 drop table if exists project_basic_business;
 drop table if exists project_basic_design;
-drop table if exists project_basic_test;
 drop table if exists project_complex_building;
 drop table if exists project_complex_building_special_wind_weight_condition_list;
 drop table if exists project_complex_building_test_type_list;

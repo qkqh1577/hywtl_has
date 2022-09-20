@@ -1,0 +1,69 @@
+### get list
+GET http://localhost:8080/project/sales/1/contract
+
+### get detail
+GET http://localhost:8080/project/sales/contract/1
+
+### add
+PUT http://localhost:8080/project/sales/1/contract
+Content-Type: application/json
+
+{
+  "estimateId": 1,
+  "isSent": false,
+  "recipient": "me3",
+  "note": "note test",
+  "basic": {
+    "serviceName": "용역명 테스트",
+    "serviceDuration": "용역 개시일(착수 보고 시) ~ 용역 완료일(최종 보고서 인도)",
+    "outcome": "최종 보고서 4부(인쇄본)와 1개 전자본(pdf 파일)",
+    "contractDate": "2022-09-01",
+    "ordererAddress": "서울 영등포구 선유로 49길 23, 614호",
+    "ordererCompanyName": "주식회사 호우캐스트",
+    "ordererCeoName": "김갑수",
+    "contractorAddress": "경기도 안산시 상록구 한양대학로 55, 한양대학교 풍환경실험관 2층",
+    "contractorCompanyName": "(주)한양풍동실험연구소",
+    "contractorCeoName": "이갑수"
+  },
+  "collection": {
+    "stageNote": "다음의 기성단계 별 해당 금액을 현금으로 지급",
+    "stageList": [
+      {
+        "name": "계약금",
+        "ratio": 30,
+        "expectedDate": "2022-10-10"
+      },
+      {
+        "name": "중도금",
+        "ratio": 50,
+        "expectedDate": "2022-12-15"
+      },
+      {
+        "name": "잔금",
+        "ratio": 20,
+        "expectedDate": "2022-12-31"
+      }
+    ],
+    "totalAmountNote": "부가세 포함"
+  },
+  "conditionList": [
+    {
+      "title": "제 1조",
+      "descriptionList": [
+        "목적",
+        "본 계약의 목적은 발주자 주식회사 호우캐스트(이하 갑)과 수급자 (주)한양풍동실험연구소(이하 을)의 상호 신뢰를 바탕으로 원활한..."
+      ]
+    },
+    {
+      "title": "제 2조",
+      "descriptionList": [
+        "용어",
+        "본 계약의 용어집",
+        "갑",
+        "을",
+        "계약서",
+        "최종 완료 보고서"
+      ]
+    }
+  ]
+}

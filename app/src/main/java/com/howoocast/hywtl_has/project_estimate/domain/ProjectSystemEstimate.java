@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
+import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
@@ -32,7 +33,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         super(
             code,
@@ -41,7 +43,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             recipient,
             note,
             writer,
-            project
+            project,
+            business
         );
     }
 
@@ -51,7 +54,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String recipient,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<String> contentList
+        List<String> contentList,
+        Business business
     ) {
         ProjectSystemEstimate instance = new ProjectSystemEstimate(
             dto.getCode(),
@@ -59,7 +63,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             recipient,
             note,
             dto.getWriter(),
-            dto.getProject()
+            dto.getProject(),
+            business
         );
         instance.templateList = templateList;
         instance.contentList = contentList;
@@ -76,7 +81,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         super.change(
             isSent,
             recipient,
-            note
+            note,
+            this.getBusiness()
         );
         this.templateList = templateList;
         this.contentList = contentList;

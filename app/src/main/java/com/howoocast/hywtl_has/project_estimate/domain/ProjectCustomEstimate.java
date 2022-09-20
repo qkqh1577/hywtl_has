@@ -7,7 +7,6 @@ import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,12 +24,6 @@ public class ProjectCustomEstimate extends ProjectEstimate {
     @JoinColumn(name = "file_id")
     private FileItem file;
 
-    /**
-     * 견적 업체
-     */
-    @ManyToOne
-    private Business business;
-
 
     protected ProjectCustomEstimate(
         String code,
@@ -39,7 +32,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String recipient,
         String note,
         User writer,
-        Project project
+        Project project,
+        Business business
     ) {
         super(
             code,
@@ -48,7 +42,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
             recipient,
             note,
             writer,
-            project
+            project,
+            business
         );
     }
 
@@ -69,10 +64,10 @@ public class ProjectCustomEstimate extends ProjectEstimate {
                 recipient,
                 note,
                 dto.getWriter(),
-                dto.getProject()
+                dto.getProject(),
+                business
             );
         instance.file = file;
-        instance.business = business;
         return instance;
     }
 
@@ -85,9 +80,9 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         super.change(
             isSent,
             recipient,
-            note
+            note,
+            business
         );
-        this.business = business;
     }
 
 }
