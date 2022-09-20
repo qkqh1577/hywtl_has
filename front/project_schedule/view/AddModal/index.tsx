@@ -19,7 +19,6 @@ export default function ProjectScheduleAddModal(props: Props) {
           onClose,
           formik,
         } = props;
-
   const onSubmit = () => {formik.handleSubmit();};
   return (
     <ModalLayout

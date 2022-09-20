@@ -32,9 +32,9 @@ function toFormik(detail: ProjectScheduleVO): DetailModalFormik {
     startTime: detail.startTime!,
     endTime:   detail.endTime!,
     edit:      false,
-    start:     detail.allDay ? dayjs(detail.startTime!)
+    start:     !detail.allDay ? dayjs(detail.startTime!)
     .format('HH:mm') : undefined,
-    end:       detail.allDay ? dayjs(detail.endTime!)
+    end:       !detail.allDay ? dayjs(detail.endTime!)
     .format('HH:mm') : undefined,
   };
 }

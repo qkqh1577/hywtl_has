@@ -1,10 +1,20 @@
-import React from 'react';
-import { Grid } from '@mui/material';
+import React, { useContext } from 'react';
+import {
+  Checkbox,
+  FormControl,
+  FormGroup,
+  FormLabel,
+  Grid,
+  InputAdornment
+} from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
-import CheckboxField from 'components/CheckboxField';
 import UserSelector from 'components/UserSelector';
-import { FieldStatus } from 'components/DataFieldProps';
+import {
+  FieldStatus,
+  FILED_CLEAR
+} from 'components/DataFieldProps';
+import { FormikContext } from 'formik';
 
 interface Props {
   edit: boolean;
@@ -12,6 +22,7 @@ interface Props {
 
 
 export default function ({ edit }: Props) {
+  const formik = useContext(FormikContext);
   return (
     <Grid container spacing={2}>
       <Grid item sm={12}>
@@ -44,13 +55,21 @@ export default function ({ edit }: Props) {
           />
         </Grid>
         <Grid item sm={4}>
-          <CheckboxField
-            disableAll
-            name="allday"
-            label="종일사용"
-            options={['종일사용']}
-            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
-          />
+          <FormControl fullWidth variant="standard">
+            <FormLabel component="legend">
+              종일 여부
+            </FormLabel>
+          </FormControl>
+          <FormGroup row>
+            <Checkbox
+              name="allDay_checked"
+              value="Y"
+              checked={formik.values.allDay === true}
+              onChange={() => {
+                formik.setFieldValue('allDay', !formik.values.allDay);
+              }}
+            />
+          </FormGroup>
         </Grid>
       </Grid>
       <Grid container item sm={8} spacing={2}>
@@ -78,10 +97,26 @@ export default function ({ edit }: Props) {
       <Grid container item sm={12} spacing={2}>
         <Grid item sm={3}>
           <TextField
+            type="number"
             name="alertBefore"
             label="미리 알림 사용"
             labelPosition="top"
-            status={edit ? FieldStatus.View : FieldStatus.ReadOnly}
+            placeholder="입력"
+            endAdornment={<>일 전</>}
+            startAdornment={
+              <InputAdornment position="start">
+                <Checkbox
+                  name="alertBefore_checked"
+                  value="Y"
+                  checked={typeof +formik.values.alertBefore === 'number' && +formik.values.alertBefore > 0}
+                  onChange={() => {
+                    const alertBefore = +formik.values.alertBefore;
+                    if (!Number.isNaN(alertBefore) && alertBefore > 0) {
+                      formik.setFieldValue('alertBefore', FILED_CLEAR);
+                    }
+                  }}
+                />
+              </InputAdornment>}
           />
         </Grid>
         <Grid item sm={3}>

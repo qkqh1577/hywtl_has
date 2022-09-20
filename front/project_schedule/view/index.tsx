@@ -48,10 +48,10 @@ export default function ProjectSchedule(props: Props) {
           id:        `${item.id}`,
           title:     `${item.type} ${item.title}`,
           start:     dayjs(item.startTime)
-                     .format('YYYY-MM-DD'),
+                     .format('YYYY-MM-DD hh:mm'),
           end:       dayjs(item.endTime)
                      .add(1, 'd')
-                     .format('YYYY-MM-DD'),
+                     .format('YYYY-MM-DD hh:mm'),
           allDay:    item.allDay,
           className: 'date-box',
         };

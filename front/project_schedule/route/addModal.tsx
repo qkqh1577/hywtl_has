@@ -20,6 +20,30 @@ import { FormikSubmit } from 'type/Form';
 import dayjs from 'dayjs';
 import useLogin from 'app/service/loginHook';
 
+function convertType(values: ProjectScheduleTempParameter): ProjectScheduleParameter {
+  return {
+    ...values,
+    startTime: values.allDay ?
+                 dayjs(values.startTime)
+                 .format('YYYY-MM-DD hh:mm')
+                 :
+                 dayjs(values.startTime)
+                 .format('YYYY-MM-DD') + ` ${values.start ? values.start : '00:00'}`,
+    endTime:   values.allDay ?
+                 dayjs(values.endTime)
+                 .format('YYYY-MM-DD hh:mm')
+                 :
+                 dayjs(values.endTime)
+                 .format('YYYY-MM-DD') + ` ${values.end ? values.end : '00:00'}`,
+  };
+}
+
+interface ProjectScheduleTempParameter
+  extends ProjectScheduleParameter {
+  start?: string;
+  end?: string;
+}
+
 export default function ProjectScheduleAddModalRoute() {
   const { user } = useLogin();
   const projectId = useId();
@@ -33,7 +57,7 @@ export default function ProjectScheduleAddModalRoute() {
 
   const formik = useFormik<ProjectScheduleParameter>({
     enableReinitialize: true,
-    initialValues:      { ...initialProjectScheduleParameter, id: user?.id },
+    initialValues:      { ...initialProjectScheduleParameter, managerId: user?.id },
     onSubmit:           (values,
                          helper
                         ) => {
@@ -42,13 +66,10 @@ export default function ProjectScheduleAddModalRoute() {
         helper.setSubmitting(false);
         return;
       }
+      console.log(convertType(values));
       add({
         values: {
-          ...values,
-          startTime: dayjs(values.startTime)
-                     .format('YYYY-MM-DD hh:mm'),
-          endTime:   dayjs(values.endTime)
-                     .format('YYYY-MM-DD hh:mm'),
+          ...convertType(values)
         },
         ...helper
       });

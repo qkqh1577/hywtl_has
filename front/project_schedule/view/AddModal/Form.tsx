@@ -11,7 +11,10 @@ import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import UserSelector from 'components/UserSelector';
 import { FormikContext } from 'formik';
-import { FILED_CLEAR } from 'components/DataFieldProps';
+import {
+  FieldStatus,
+  FILED_CLEAR
+} from 'components/DataFieldProps';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -35,10 +38,12 @@ export default function () {
         </Grid>
         <Grid item sm={4}>
           <TextField
+            type="time"
             name="start"
             label="시작시간"
             labelPosition="top"
-            type="time"
+            status={formik.values.allDay ? FieldStatus.ReadOnly : FieldStatus.View}
+
           />
         </Grid>
         <Grid item sm={4}>
@@ -54,6 +59,8 @@ export default function () {
               checked={formik.values.allDay === true}
               onChange={() => {
                 formik.setFieldValue('allDay', !formik.values.allDay);
+                formik.setFieldValue('start', FILED_CLEAR);
+                formik.setFieldValue('end', FILED_CLEAR);
               }}
             />
           </FormGroup>
@@ -73,6 +80,7 @@ export default function () {
             name="end"
             label="종료시간"
             labelPosition="top"
+            status={formik.values.allDay ? FieldStatus.ReadOnly : FieldStatus.View}
             inputProps={{
               min:  '00:00',
               max:  '23:30',
