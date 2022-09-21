@@ -31,7 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectBasicFailReason extends BidDTO {
 
-    public static final String KEY = "project.fail_reason";
+    public static final String KEY = "project_fail_reason";
 
     @OneToOne
     @JoinColumn(name = "project_id")
