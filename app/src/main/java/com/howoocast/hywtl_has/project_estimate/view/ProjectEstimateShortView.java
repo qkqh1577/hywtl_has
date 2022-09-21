@@ -17,6 +17,8 @@ public class ProjectEstimateShortView {
     private Boolean confirmed;
     private String recipient;
     private UserShortView createdBy;
+
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     private BusinessShortView business;
@@ -30,6 +32,7 @@ public class ProjectEstimateShortView {
         target.confirmed = source.getConfirmed();
         target.recipient = source.getRecipient();
         target.createdBy = UserShortView.assemble(source.getWriter());
+        target.createdAt = source.getCreatedAt();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         target.business = BusinessShortView.assemble(source.getBusiness());
         return target;

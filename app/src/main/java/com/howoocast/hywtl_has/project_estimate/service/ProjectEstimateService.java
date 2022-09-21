@@ -45,6 +45,15 @@ public class ProjectEstimateService {
         return repository.findByProject_Id(projectId);
     }
 
+    @Transactional(readOnly = true)
+    public @Nullable
+    ProjectEstimate getFinal(
+        Long projectId
+    ) {
+        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE)
+            .orElse(null);
+    }
+
     @Transactional
     public void confirm(
         Long projectId,

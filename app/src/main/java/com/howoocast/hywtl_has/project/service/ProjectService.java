@@ -3,11 +3,13 @@ package com.howoocast.hywtl_has.project.service;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
+import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
@@ -44,6 +46,7 @@ public class ProjectService {
         return this.load(id);
     }
 
+
     @Transactional
     public void add(ProjectAddParameter parameter) {
 
@@ -71,6 +74,27 @@ public class ProjectService {
     }
 
     @Transactional
+    public void update(Long id, ProjectUpdateParameter parameter) {
+        Project instance = this.load(id);
+        User receptionManager = new CustomFinder<>(userRepository, User.class).byIdIfExists(
+            parameter.getReceptionManagerId());
+        User projectManager = new CustomFinder<>(userRepository, User.class).byIdIfExists(
+            parameter.getProjectManagerId());
+        User salesManager = new CustomFinder<>(userRepository, User.class).byIdIfExists(parameter.getSalesManagerId());
+        instance.getBasic().update(
+            parameter.getName(),
+            parameter.getAlias(),
+            parameter.getBidType(),
+            receptionManager,
+            salesManager,
+            projectManager,
+            parameter.getExpectedMonth(),
+            parameter.getRequestedMonth(),
+            parameter.getIsLh()
+        );
+    }
+
+    @Transactional
     public void updateProjectStatus(Long id, ProjectStatusUpdateParameter parameter) {
         Project instance = this.load(id);
         if (Objects.nonNull(parameter.getProgressStatus())) {
@@ -90,7 +114,6 @@ public class ProjectService {
             instance.getStatus().setProgressStatus(parameter.getProgressStatus());
         }
         if (Objects.nonNull(parameter.getEstimateExpectation())) {
-            // TODO: 수주실패?
             instance.getStatus().setEstimateExpectation(parameter.getEstimateExpectation());
         }
 
@@ -104,8 +127,8 @@ public class ProjectService {
         if (Objects.nonNull(parameter.getContractStatus())) {
             instance.getStatus().setContractStatus(parameter.getContractStatus());
         }
-
     }
+
 
     private void checkName(String name) {
         List<Project> list = repository.findByBasic_Name(name);

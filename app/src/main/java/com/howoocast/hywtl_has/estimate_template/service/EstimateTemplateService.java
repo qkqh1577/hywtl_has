@@ -71,10 +71,12 @@ public class EstimateTemplateService {
                 i + 1
             ));
         }
+
+        int maxSeq = repository.findAll().stream().map(EstimateTemplate::getSeq).reduce(0, Math::max);
         EstimateTemplate instance = EstimateTemplate.of(
             parameter.getTitle(),
             parameter.getTestType(),
-            repository.findNextSeq() + 1,
+            maxSeq + 1,
             detailList
         );
         return EstimateTemplateView.assemble(repository.save(instance));

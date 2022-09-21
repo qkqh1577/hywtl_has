@@ -25,6 +25,7 @@ public class ProjectEstimateView {
     private final Boolean confirmed;
     private final String recipient;
     private final UserShortView createdBy;
+    private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
     private ProjectEstimatePlanView plan;
     private List<ProjectEstimateComplexSiteView> siteList;
@@ -41,6 +42,7 @@ public class ProjectEstimateView {
         this.confirmed = source.getConfirmed();
         this.recipient = source.getRecipient();
         this.createdBy = UserShortView.assemble(source.getWriter());
+        this.createdAt = source.getCreatedAt();
         this.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         if (Objects.nonNull(source.getPlan())) {
             this.plan = ProjectEstimatePlanView.assemble(source.getPlan());
