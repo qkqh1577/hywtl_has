@@ -1,0 +1,37 @@
+### add project
+POST http://localhost:8080/project/sales
+Content-Type: application/json
+
+{
+  "name": "남양주 21년 신축 아파트 풍동 프로젝트",
+  "alias": "남양신21",
+  "receptionManagerId": 1,
+  "progressStatus": "TEMPORARY",
+  "bidType": "DEFAULT"
+}
+
+### update project
+PATCH http://localhost:8080/project/sales/2/basic
+Content-Type: application/json
+
+{
+  "projectManagerId": 1,
+  "salesManagerId": 2,
+  "bidType": "G2B",
+  "isLh": true
+}
+
+### update project status
+PATCH http://localhost:8080/project/sales/2/status
+Content-Type: application/json
+
+{
+  "progressStatus": "UNDER_CONTRACT",
+  "estimateExpectation": "HIGH"
+}
+
+### get
+GET http://localhost:8080/project/sales
+
+### get
+GET http://localhost:8080/project/sales/2

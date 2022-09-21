@@ -1,5 +1,5 @@
 ### project basic business add
-POST http://localhost:8080/project/sales/1/basic/business
+POST http://localhost:8080/project/sales/2/basic/business
 Content-Type: application/json
 
 {
@@ -8,8 +8,34 @@ Content-Type: application/json
   "involvedType": "ARCHITECTURAL"
 }
 
+### project basic fail reason
+POST http://localhost:8080/project/sales/2/basic/fail-reason
+Content-Type: application/json
+
+{
+  "winId": 2,
+  "testAmount": 16500,
+  "reviewAmount": 1500,
+  "totalAmount": 18000,
+  "expectedDuration": "4주/6주",
+  "reason": "기간이 무척 짧아 경쟁에서 밀림"
+}
+
+### update design
+PATCH http://localhost:8080/project/sales/2/basic/design
+Content-Type: application/json
+
+{
+  "city": "경기도/남양주시",
+  "address": "경기도 남양주 ...",
+  "complexCount": 4,
+  "purpose1": "주거",
+  "lotArea": 123,
+  "totalArea": 152
+}
+
 ### project basic business get list
-GET http://localhost:8080/project/sales/1/basic/business
+GET http://localhost:8080/project/sales/2/basic/business
 
 ### project basic business get 1
 GET http://localhost:8080/project/sales/basic/business/1
@@ -19,3 +45,6 @@ DELETE http://localhost:8080/project/sales/basic/business/1
 
 ### project basic test
 GET http://localhost:8080/project/sales/1/basic/test
+
+### project basic fail reason
+GET http://localhost:8080/project/sales/2/basic/fail-reason
