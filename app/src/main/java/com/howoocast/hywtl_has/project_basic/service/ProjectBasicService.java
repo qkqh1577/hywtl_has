@@ -19,6 +19,7 @@ import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepo
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicDesignRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicFailReasonRepository;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class ProjectBasicService {
     private final BusinessRepository businessRepository;
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
     private final ProjectBasicDesignRepository projectBasicDesignRepository;
-    private final ProjectBasicFailReasonRepository failReasonRepository;
+    private final ProjectBasicFailReasonRepository projectBasicFailReasonRepository;
     private final ProjectRepository projectRepository;
 
 
@@ -58,7 +59,7 @@ public class ProjectBasicService {
     @Transactional(readOnly = true)
     public @Nullable
     ProjectBasicFailReason getFailReason(Long projectId) {
-        return failReasonRepository.findByProject_Id(projectId).orElse(null);
+        return projectBasicFailReasonRepository.findByProject_Id(projectId).orElse(null);
     }
 
     @Transactional
@@ -106,8 +107,8 @@ public class ProjectBasicService {
         ProjectBasicFailReasonParameter parameter
     ) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
-        ProjectBasicFailReason instance = failReasonRepository.findByProject_Id(projectId)
-            .orElseGet(() -> failReasonRepository.save(ProjectBasicFailReason.of(project)));
+        ProjectBasicFailReason instance = projectBasicFailReasonRepository.findByProject_Id(projectId)
+            .orElseGet(() -> ProjectBasicFailReason.of(project));
         Business win = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(parameter.getWinId());
 
         instance.update(
@@ -118,6 +119,9 @@ public class ProjectBasicService {
             parameter.getExpectedDuration(),
             parameter.getReason()
         );
+        if (Objects.isNull(instance.getId())) {
+            projectBasicFailReasonRepository.save(instance);
+        }
         project.getStatus().setEstimateExpectation(ProjectEstimateExpectation.LOSE);
     }
 
