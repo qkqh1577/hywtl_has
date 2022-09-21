@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.personnel.view.PersonnelBasicView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelCareerView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelCompanyView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelJobView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelLanguageView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelLicenseView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
@@ -104,8 +105,8 @@ public class PersonnelController {
     }
 
     @GetMapping("/personnels/{id}/language-list")
-    public List<PersonnelLicenseView> languageList(@PathVariable Long id) {
-        return personnelService.get(id).getLicenseList();
+    public List<PersonnelLanguageView> languageList(@PathVariable Long id) {
+        return personnelService.get(id).getLanguageList();
     }
 
     @PutMapping("/personnels/{id}")
