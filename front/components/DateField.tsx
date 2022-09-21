@@ -98,10 +98,11 @@ export default function DateField(props: DateFieldProps) {
   };
 
   const onChange: DatePickerProps<Dayjs>['onChange'] = (date) => {
+    console.log(date);
     if (!value && !date) {
       return;
     }
-    if (dayjs(value)
+    if (value && dayjs(value)
     .format('YYYY-MM-DD') === dayjs(date)
     .format('YYYY-MM-DD')) {
       return;
