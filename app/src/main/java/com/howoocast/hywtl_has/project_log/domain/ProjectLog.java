@@ -38,61 +38,63 @@ public class ProjectLog extends CustomEntity {
      * 탭명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String tabName;
 
     /**
      * 섹션명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String sectionName;
 
     /**
      * 항목명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String itemName;
 
     /**
      * 변경 전
      */
-    @Column(
-        name = "before_state",
-        updatable = false
-    )
+    @Column(name = "before_state", updatable = false)
     private String before;
 
     /**
      * 변경 후
      */
-    @Column(
-        name = "after_state",
-        updatable = false
-    )
+    @Column(name = "after_state", updatable = false)
     private String after;
 
     /**
      * 유저 id
      */
     @NotNull
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private Long userId;
 
     @Transient
     @Setter
     private User user;
+
+    public static ProjectLog of(
+        Project project,
+        String tabName,
+        String sectionName,
+        String itemName,
+        String before,
+        String after,
+        Long userId
+    ) {
+        ProjectLog instance = new ProjectLog();
+        instance.project = project;
+        instance.tabName = tabName;
+        instance.sectionName = sectionName;
+        instance.itemName = itemName;
+        instance.before = before;
+        instance.after = after;
+        instance.userId = userId;
+        return instance;
+    }
 }
