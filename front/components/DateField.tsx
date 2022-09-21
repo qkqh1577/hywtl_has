@@ -1,7 +1,7 @@
 import { DatePicker } from '@mui/x-date-pickers';
 import React from 'react';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker/DatePicker';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useDataProps } from 'components/DataField';
 import TextField, { TextFieldProps } from 'components/TextField';
 
@@ -47,7 +47,7 @@ export default function DateField(props: DateFieldProps) {
           value,
           disabled,
           readOnly,
-          formik,
+          formik
         } = useDataProps(props);
   const mask = month ? '____-__' : '____-__-__';
 
@@ -98,7 +98,17 @@ export default function DateField(props: DateFieldProps) {
   };
 
   const onChange: DatePickerProps<Dayjs>['onChange'] = (date) => {
-    formik.setFieldValue(name, date);
+    console.log(date);
+    if (!value && !date) {
+      return;
+    }
+    if (value && dayjs(value)
+    .format('YYYY-MM-DD') === dayjs(date)
+    .format('YYYY-MM-DD')) {
+      return;
+    }
+    formik.setFieldValue(name, dayjs(date)
+    .format('YYYY-MM-DD'));
   };
 
   const renderInput: DatePickerProps<Dayjs>['renderInput'] = (parameter) => {

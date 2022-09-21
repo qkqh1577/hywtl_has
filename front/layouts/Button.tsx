@@ -34,7 +34,7 @@ function Basic1Button(props: MuiButtonProps) {
       variant="contained"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette._386dd6,
+        backgroundColor: ColorPalette._386dd6,
         color:           ColorPalette._ffffff,
         ...(props.sx ?? {})
       }}
@@ -64,7 +64,7 @@ function Basic3Button(props: MuiButtonProps) {
       variant="outlined"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette._ffffff,
+        backgroundColor: ColorPalette._ffffff,
         color:           ColorPalette._386dd6,
         borderColor:     ColorPalette._9bb6ea,
         ...(props.sx ?? {})
@@ -80,7 +80,7 @@ function Basic4Button(props: MuiButtonProps) {
       variant="outlined"
       sx={{
         ...basicStyle,
-        backGroundColor: ColorPalette._e4e9f2,
+        backgroundColor: ColorPalette._e4e9f2,
         color:           ColorPalette._386dd6,
         borderColor:     ColorPalette._9bb6ea,
         ...(props.sx ?? {})
@@ -99,7 +99,7 @@ function SmallButton(props: MuiButtonProps) {
         width:           '100%',
         height:          '28px',
         fontSize:        '12px',
-        backGroundColor: ColorPalette._386dd6,
+        backgroundColor: ColorPalette._386dd6,
         color:           ColorPalette._ffffff,
         ...(props.sx ?? {})
       }}
