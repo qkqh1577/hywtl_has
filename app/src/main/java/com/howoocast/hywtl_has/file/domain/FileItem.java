@@ -23,7 +23,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.Table;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
@@ -32,9 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -43,9 +40,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Entity
 @Table(name = FileItem.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + FileItem.KEY
-    + " set deleted_at = now() where id=?")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileItem extends CustomEntity {
 

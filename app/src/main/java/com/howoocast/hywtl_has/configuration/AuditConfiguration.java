@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.configuration;
 
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -15,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+@Slf4j
 @Configuration
 @EnableJpaAuditing
 @RequiredArgsConstructor
@@ -31,10 +34,13 @@ public class AuditConfiguration {
                 return Optional.empty();
             }
             entityManager.setFlushMode(FlushModeType.COMMIT);
-            Optional<Long> result = userRepository.findByUsername(UsernameExtractor.get(authentication))
-                .map(User::getId);
+            String username = UsernameExtractor.get(authentication);
+            log.debug("[Audit] username: {}", username);
+            User user = userRepository.findByUsername(username).orElseThrow(() -> {
+                throw new NotFoundException(User.KEY, "username", username);
+            });
             entityManager.setFlushMode(FlushModeType.AUTO);
-            return result;
+            return Optional.ofNullable(user).map(User::getId);
         };
     }
 }

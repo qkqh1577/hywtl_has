@@ -2,19 +2,20 @@ package com.howoocast.hywtl_has.business.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * 업체
@@ -24,8 +25,6 @@ import java.util.List;
 @Entity
 @Table(name = Business.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + Business.KEY + " set deleted_at = now() where id = ?")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Business extends CustomEntity {
 

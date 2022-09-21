@@ -4,13 +4,13 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.service.FileItemService;
+import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
 import com.howoocast.hywtl_has.project_document.parameter.ProjectDocumentAddParameter;
 import com.howoocast.hywtl_has.project_document.parameter.ProjectDocumentChangeParameter;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
-import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
@@ -90,10 +90,8 @@ public class ProjectDocumentService {
     }
 
     @Transactional
-    public void delete(
-        Long id
-    ) {
-        repository.deleteById(id);
+    public void delete(Long id) {
+        this.load(id).delete();
     }
 
     private String getCode(Project project, ProjectDocumentType type) {

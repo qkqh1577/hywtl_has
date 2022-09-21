@@ -18,5 +18,4 @@ public interface CustomRepository<E extends CustomEntity> extends Repository<E, 
 
     E save(E instance);
 
-    void deleteById(Long id);
 }

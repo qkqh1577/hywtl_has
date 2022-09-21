@@ -8,17 +8,17 @@ import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
+import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
+import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
+import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
+import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user.view.UserShortView;
+import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
-import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
-import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
-import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
-import com.howoocast.hywtl_has.user.view.UserView;
-import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
 import java.util.Objects;
@@ -103,7 +103,7 @@ public class UserService {
         );
         this.checkEmailUsed(instance);
         this.checkUsernameUsed(instance);
-        userInvitationRepository.deleteById(userInvitation.getId());
+        userInvitation.delete();
         return UserView.assemble(repository.save(instance));
     }
 
@@ -145,14 +145,12 @@ public class UserService {
                 )
             );
         instance.validatePassword(parameter.getPassword());
-        passwordResetRepository.deleteById(passwordReset.getId());
+       passwordReset.delete();
     }
 
     @Transactional
     public void delete(Long id) {
-        repository.findById(id).ifPresent(instance ->
-            repository.deleteById(id)
-        );
+        this.load(id).delete();
     }
 
     /* 계정 정보 수정 api */

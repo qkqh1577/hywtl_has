@@ -1,5 +1,5 @@
 ### project basic business add
-POST http://localhost:8080/project/sales/2/basic/business
+POST http://localhost:8080/project/sales/1/basic/business
 Content-Type: application/json
 
 {
@@ -7,6 +7,9 @@ Content-Type: application/json
   "businessManagerId": 3,
   "involvedType": "ARCHITECTURAL"
 }
+
+### project basic business delete 1
+DELETE http://localhost:8080/project/sales/basic/business/1
 
 ### project basic fail reason
 POST http://localhost:8080/project/sales/2/basic/fail-reason
@@ -35,13 +38,10 @@ Content-Type: application/json
 }
 
 ### project basic business get list
-GET http://localhost:8080/project/sales/2/basic/business
+GET http://localhost:8080/project/sales/1/basic/business
 
 ### project basic business get 1
 GET http://localhost:8080/project/sales/basic/business/1
-
-### project basic business delete 1
-DELETE http://localhost:8080/project/sales/basic/business/1
 
 ### project basic test
 GET http://localhost:8080/project/sales/1/basic/test

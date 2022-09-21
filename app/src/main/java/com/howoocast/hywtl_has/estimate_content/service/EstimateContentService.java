@@ -82,7 +82,7 @@ public class EstimateContentService {
 
     @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        this.load(id).delete();
     }
 
     private Long getNextSequence() {

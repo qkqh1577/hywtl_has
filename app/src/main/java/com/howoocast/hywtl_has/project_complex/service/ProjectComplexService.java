@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_complex.service;
 
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -49,7 +50,7 @@ public class ProjectComplexService {
 
     @Transactional(readOnly = true)
     public ProjectComplexBuilding getBuilding(Long id) {
-        return new CustomFinder<>(buildingRepository, ProjectComplexBuilding.class).byId(id);
+        return this.loadBuilding(id);
     }
 
     @Transactional
@@ -64,7 +65,7 @@ public class ProjectComplexService {
         Long id,
         ProjectComplexSiteParameter parameter
     ) {
-        ProjectComplexSite instance = new CustomFinder<>(siteRepository, ProjectComplexSite.class).byId(id);
+        ProjectComplexSite instance = this.loadSite(id);
         User manager = new CustomFinder<>(userRepository, User.class).byIdIfExists(parameter.getManagerId());
         instance.update(
             parameter.getName(),
@@ -87,7 +88,7 @@ public class ProjectComplexService {
         Long id,
         ProjectComplexBuildingParameter parameter
     ) {
-        ProjectComplexBuilding instance = new CustomFinder<>(buildingRepository, ProjectComplexBuilding.class).byId(id);
+        ProjectComplexBuilding instance = this.loadBuilding(id);
         ProjectComplexSite site = new CustomFinder<>(siteRepository, ProjectComplexSite.class).byIdIfExists(
             parameter.getSiteId());
         ProjectDocument buildingDocument = new CustomFinder<>(documentRepository, ProjectDocument.class).byIdIfExists(
@@ -124,12 +125,23 @@ public class ProjectComplexService {
 
     @Transactional
     public void deleteSite(Long id) {
-        siteRepository.deleteById(id);
+        this.loadSite(id).delete();
     }
 
     @Transactional
     public void deleteBuilding(Long id) {
-        buildingRepository.deleteById(id);
+        this.loadBuilding(id).delete();
     }
 
+    private ProjectComplexSite loadSite(Long id) {
+        return siteRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ProjectComplexSite.KEY, id);
+        });
+    }
+
+    private ProjectComplexBuilding loadBuilding(Long id) {
+        return buildingRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ProjectComplexBuilding.KEY, id);
+        });
+    }
 }

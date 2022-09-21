@@ -75,10 +75,8 @@ public class ProjectMemoService {
     }
 
     @Transactional
-    public void delete(
-        Long id
-    ) {
-        repository.deleteById(id);
+    public void delete(Long id) {
+        this.load(id).delete();
     }
 
     private ProjectMemo load(Long id) {

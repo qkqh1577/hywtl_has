@@ -127,7 +127,7 @@ public class ProjectBasicService {
 
     @Transactional
     public void deleteBusiness(Long projectBasicBusinessId) {
-        projectBasicBusinessRepository.deleteById(projectBasicBusinessId);
+        this.loadBusiness(projectBasicBusinessId).delete();
     }
 
     private ProjectBasicBusiness loadBusiness(Long id) {
