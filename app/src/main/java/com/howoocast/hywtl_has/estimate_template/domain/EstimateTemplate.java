@@ -12,7 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -59,7 +58,6 @@ public class EstimateTemplate extends CustomEntity {
     /**
      * 세부 항목 목록
      */
-    @NotEmpty
     @OneToMany(cascade = CascadeType.ALL)
     @OrderBy("seq asc")
     private List<EstimateTemplateDetail> detailList;
