@@ -14,7 +14,7 @@ import {
 } from 'formik';
 import { ProjectComplexTestVO } from 'project_complex/domain';
 
-export default function () {
+export default function ProjectBasicTestRoute() {
 
   const id = useId();
   const dispatch = useDispatch();
