@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_bid.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
@@ -9,9 +10,11 @@ import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_bid.domain.RivalBid;
 import com.howoocast.hywtl_has.project_bid.parameter.RivalBidParameter;
 import com.howoocast.hywtl_has.project_bid.repository.RivalBidRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,8 @@ public class RivalBidService {
 
     private final BusinessRepository businessRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Transactional(readOnly = true)
     public List<RivalBid> getList(Long projectId) {
@@ -37,6 +42,10 @@ public class RivalBidService {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         RivalBid instance = RivalBid.of(project);
         repository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "경쟁 업체 입찰 정보 행 추가"
+        ));
     }
 
     @Transactional
@@ -44,18 +53,27 @@ public class RivalBidService {
         RivalBid instance = this.load(id);
         Business business = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(
             parameter.getBusinessId());
-        instance.update(
+        List<EventEntity> eventList = instance.update(
             business,
             parameter.getTestAmount(),
             parameter.getReviewAmount(),
             parameter.getTotalAmount(),
             parameter.getExpectedDuration()
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
     public void delete(Long id) {
-        this.load(id).delete();
+        RivalBid instance = this.load(id);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "경쟁 업체 입찰 정보 행 삭제",
+            String.format("%s", instance.getBusiness().getName()),
+            null
+        ));
+        instance.delete();
     }
 
     private RivalBid load(Long id) {

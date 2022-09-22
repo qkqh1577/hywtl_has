@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -89,7 +90,7 @@ public class ProjectService {
         User projectManager = new CustomFinder<>(userRepository, User.class).byIdIfExists(
             parameter.getProjectManagerId());
         User salesManager = new CustomFinder<>(userRepository, User.class).byIdIfExists(parameter.getSalesManagerId());
-        instance.getBasic().update(
+        List<EventEntity> eventList = instance.getBasic().update(
             parameter.getName(),
             parameter.getAlias(),
             parameter.getBidType(),
@@ -100,6 +101,8 @@ public class ProjectService {
             parameter.getRequestedMonth(),
             parameter.getIsLh()
         );
+
+        eventList.stream().map(event -> ProjectLogEvent.of(instance, event)).forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
@@ -118,21 +121,43 @@ public class ProjectService {
                 && Objects.isNull(instance.getBasic().getCode())) {
                 // 프로젝트가 가등록을 벗어나는 경우, 프로젝트 번호 발급
                 instance.getBasic().changeCode(this.getNextCode());
+                eventPublisher.publishEvent(ProjectLogEvent.of(
+                    instance,
+                    "프로젝트 코드 발급",
+                    null,
+                    instance.getBasic().getCode()
+                ));
             }
+            eventPublisher.publishEvent(ProjectLogEvent.of(
+                instance,
+                "프로젝트 진행 현황 변경",
+                instance.getStatus().getProgressStatus().getName(),
+                parameter.getProgressStatus().getName()
+            ));
             instance.getStatus().setProgressStatus(parameter.getProgressStatus());
-        }
-        if (Objects.nonNull(parameter.getEstimateExpectation())) {
-            instance.getStatus().setEstimateExpectation(parameter.getEstimateExpectation());
+
         }
 
         if (Objects.nonNull(parameter.getEstimateStatus())) {
             if (instance.getBasic().getBidType() == ProjectBasicBidType.DEFAULT) {
                 // 견적 구분이 일반일 때만 업데이트 가능
+                eventPublisher.publishEvent(ProjectLogEvent.of(
+                    instance,
+                    "프로젝트 견적 상태 변경",
+                    instance.getStatus().getEstimateStatus().getName(),
+                    parameter.getEstimateStatus().getName()
+                ));
                 instance.getStatus().setEstimateStatus(parameter.getEstimateStatus());
             }
         }
 
         if (Objects.nonNull(parameter.getContractStatus())) {
+            eventPublisher.publishEvent(ProjectLogEvent.of(
+                instance,
+                "프로젝트 계약 상태 변경",
+                instance.getStatus().getContractStatus().getName(),
+                parameter.getContractStatus().getName()
+            ));
             instance.getStatus().setContractStatus(parameter.getContractStatus());
         }
     }

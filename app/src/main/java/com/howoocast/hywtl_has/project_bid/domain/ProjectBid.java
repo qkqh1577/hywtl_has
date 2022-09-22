@@ -1,8 +1,10 @@
 package com.howoocast.hywtl_has.project_bid.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
@@ -63,7 +65,7 @@ public class ProjectBid extends BidDTO {
         return instance;
     }
 
-    public void update(
+    public List<EventEntity> update(
         @Nullable LocalDate beginDate,
         @Nullable LocalDate closeDate,
         @Nullable Business win,
@@ -74,26 +76,52 @@ public class ProjectBid extends BidDTO {
         @Nullable Long totalAmount,
         @Nullable String expectedDuration
     ) {
-        super.update(
+        List<EventEntity> eventList = super.update(
             testAmount,
             reviewAmount,
             totalAmount,
             expectedDuration
         );
         if (Objects.nonNull(beginDate)) {
+            eventList.add(EventEntity.of(
+                "입찰 공고 기간 개시일 변경",
+                this.beginDate,
+                beginDate
+            ));
             this.beginDate = beginDate;
         }
         if (Objects.nonNull(closeDate)) {
+            eventList.add(EventEntity.of(
+                "입찰 공고 기간 마감일 변경",
+                this.closeDate,
+                closeDate
+            ));
             this.closeDate = closeDate;
         }
         if (Objects.nonNull(win)) {
+            eventList.add(EventEntity.of(
+                "낙찰 업체 변경",
+                this.win,
+                win
+            ));
             this.win = win;
         }
         if (Objects.nonNull(bidOrganization)) {
+            eventList.add(EventEntity.of(
+                "입찰 기관 변경",
+                this.bidOrganization,
+                bidOrganization
+            ));
             this.bidOrganization = bidOrganization;
         }
         if (Objects.nonNull(bidDate)) {
+            eventList.add(EventEntity.of(
+                "입찰 일자 변경",
+                this.bidDate,
+                bidDate
+            ));
             this.bidDate = bidDate;
         }
+        return eventList;
     }
 }

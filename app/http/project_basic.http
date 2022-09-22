@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ### update design
-PATCH http://localhost:8080/project/sales/2/basic/design
+PATCH http://localhost:8080/project/sales/1/basic/design
 Content-Type: application/json
 
 {
