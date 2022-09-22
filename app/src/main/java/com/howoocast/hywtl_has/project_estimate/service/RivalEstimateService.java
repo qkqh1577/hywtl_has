@@ -54,7 +54,7 @@ public class RivalEstimateService {
 
     @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        this.load(id).delete();
     }
 
     private RivalEstimate load(Long id) {

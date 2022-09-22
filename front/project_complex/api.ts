@@ -39,7 +39,7 @@ class ProjectComplexApi {
   }
 
   async updateSite(params: ProjectComplexSiteParameter): Promise<void> {
-    const { data } = await apiClient.put(`/project/sales/complex/site/${params.id}`, params);
+    const { data } = await apiClient.patch(`/project/sales/complex/site/${params.id}`, params);
     return data;
   }
 
@@ -54,7 +54,7 @@ class ProjectComplexApi {
   }
 
   async updateBuilding(params: ProjectComplexBuildingParameter): Promise<void> {
-    const { data } = await apiClient.put(`/project/sales/complex/building/${params.id}`, params);
+    const { data } = await apiClient.patch(`/project/sales/complex/building/${params.id}`, params);
     return data;
   }
 

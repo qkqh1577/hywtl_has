@@ -41,9 +41,7 @@ public class RivalBidService {
 
     @Transactional
     public void update(Long id, RivalBidParameter parameter) {
-        RivalBid instance = repository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(RivalBid.KEY, id);
-        });
+        RivalBid instance = this.load(id);
         Business business = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(
             parameter.getBusinessId());
         instance.update(
@@ -57,6 +55,12 @@ public class RivalBidService {
 
     @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        this.load(id).delete();
+    }
+
+    private RivalBid load(Long id) {
+        return repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(RivalBid.KEY, id);
+        });
     }
 }

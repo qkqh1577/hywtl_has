@@ -62,7 +62,7 @@ public class ContractConditionService {
 
         prevList.stream()
             .filter(prev -> list.stream().noneMatch(item -> item.getId().equals(prev.getId())))
-            .forEach(prev -> repository.deleteById(prev.getId()));
+            .forEach(ContractCondition::delete);
 
     }
 }

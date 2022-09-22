@@ -67,7 +67,7 @@ public class DepartmentController {
     }
 
     @PutMapping({"/departments", "/departments/{id}"})
-    public DepartmentView put(
+    public DepartmentView upsert(
         @PathVariable(required = false) Long id,
         @Valid @RequestBody DepartmentParameter parameter
     ) {

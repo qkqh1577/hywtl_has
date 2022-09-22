@@ -41,12 +41,12 @@ export function testTypeName(testType: TestType | '') {
 
 export const testTypeList: TestType[] = [
   TestType.COMMON,
+  TestType.REVIEW,
   TestType.F,
   TestType.P,
   TestType.A,
   TestType.E,
-  TestType.B,
-  TestType.REVIEW
+  TestType.B
 ];
 
 export type EstimateContentId = number & { readonly _brand: unique symbol; }
@@ -67,7 +67,7 @@ export interface EstimateContentShort
   detailCount: number;
 }
 
-export interface EstimateContentVariableVO{
+export interface EstimateContentVariableVO {
   name: string;
   note: string;
 }

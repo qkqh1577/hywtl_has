@@ -4,9 +4,7 @@ import {
   ProjectDocumentId,
   ProjectDocumentType
 } from 'project_document/domain';
-import {
-  FileItemParameter,
-} from 'file-item';
+import { FileItemParameter, } from 'file-item';
 
 export interface ProjectDocumentParameter {
   projectId: ProjectId;
@@ -26,7 +24,7 @@ export const initialProjectDocumentParameter: FormikPartial<ProjectDocumentParam
   type:      ''
 };
 
-export interface ProjectDocumentUpdateParameter {
+export interface ProjectDocumentChangeParameter {
   id: ProjectDocumentId;
   recipient: string;
   mailFile?: FileItemParameter;

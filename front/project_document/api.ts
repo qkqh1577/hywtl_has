@@ -6,8 +6,8 @@ import {
 } from 'project_document/domain';
 import { ProjectId } from 'project/domain';
 import {
-  ProjectDocumentParameter,
-  ProjectDocumentUpdateParameter
+  ProjectDocumentChangeParameter,
+  ProjectDocumentParameter
 } from 'project_document/parameter';
 
 class ProjectDocumentApi {
@@ -40,9 +40,9 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async update(params: ProjectDocumentUpdateParameter): Promise<void> {
+  async change(params: ProjectDocumentChangeParameter): Promise<void> {
     const formData = toFormData(params);
-    const { data } = await apiClient.patch(`/project/sales/document/${params.id}`, formData);
+    const { data } = await apiClient.put(`/project/sales/document/${params.id}`, formData);
     return data;
   }
 

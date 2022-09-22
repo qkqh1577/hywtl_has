@@ -51,7 +51,7 @@ function Element() {
 }
 
 const contractCollectionTemplateRoute: AppRoute = {
-  path:    '/admin/contract/collection-management',
+  path:    '/admin/contract-collection-management',
   element: <Element />
 };
 

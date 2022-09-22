@@ -71,7 +71,7 @@ public class DepartmentService {
             .map(this::load)
             .orElse(Department.of());
 
-        instance.update(
+        instance.change(
             parameter.getName(),
             parameter.getCategory(),
             parent,

@@ -54,7 +54,7 @@ public class PasswordResetService {
     private void resetByEmail(String email) {
         // 기존 코드 무효화
         repository.findByEmail(email)
-            .ifPresent(instance -> repository.deleteById(instance.getId()));
+            .ifPresent(PasswordReset::delete);
 
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(User.KEY, "email", email));

@@ -3,7 +3,6 @@ package com.howoocast.hywtl_has.project_estimate.domain;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,9 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.Nullable;
 
 @Slf4j
@@ -21,8 +18,6 @@ import org.springframework.lang.Nullable;
 @Entity
 @Table(name = ProjectEstimateComplexSite.KEY)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + ProjectEstimateComplexSite.KEY + " set deleted_at = now() where id = ?")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEstimateComplexSite extends CustomEntity {
 

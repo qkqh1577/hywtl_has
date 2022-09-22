@@ -103,7 +103,7 @@ public class ProjectScheduleService {
 
     @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        this.load(id).delete();
     }
 
 

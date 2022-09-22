@@ -3,7 +3,7 @@ PUT http://localhost:8080/project/sales/1/complex/site
 
 
 ### project complex site update 1
-PUT http://localhost:8080/project/sales/complex/site/1
+PATCH http://localhost:8080/project/sales/complex/site/1
 Content-Type: application/json
 
 {
@@ -18,7 +18,7 @@ Content-Type: application/json
 PUT http://localhost:8080/project/sales/1/complex/building
 
 ### project complex building update 1
-PUT http://localhost:8080/project/sales/complex/building/1
+PATCH http://localhost:8080/project/sales/complex/building/1
 Content-Type: application/json
 
 {

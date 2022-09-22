@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.user.domain.QUser;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Repository;
 public class ProjectLogRepository {
 
     private final JPAQueryFactory queryFactory;
+
+    private final EntityManager entityManager;
 
     private static final QProjectLog projectLog = QProjectLog.projectLog;
     private static final QUser user = QUser.user;
@@ -35,5 +38,9 @@ public class ProjectLogRepository {
         int start = (int) pageable.getOffset();
         int end = Math.min(list.size(), start + pageable.getPageSize());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
+    }
+
+    public void save(ProjectLog instance) {
+        entityManager.persist(instance);
     }
 }

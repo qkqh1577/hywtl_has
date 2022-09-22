@@ -1,8 +1,8 @@
 package com.howoocast.hywtl_has.file.service;
 
-import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
+import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import java.util.List;
@@ -79,9 +79,7 @@ public class FileItemService {
                     () -> new FileSystemException(FileSystemExceptionType.NOT_FOUND));
             }
             // 기존 파일 삭제 요청 시
-            fileItemRepository.findById(parameter.getId()).ifPresent(fileItem ->
-                fileItemRepository.deleteById(fileItem.getId())
-            );
+            fileItemRepository.findById(parameter.getId()).ifPresent(FileItem::delete);
         }
 
         if (Objects.isNull(parameter.getMultipartFile())) {
@@ -95,9 +93,5 @@ public class FileItemService {
             extensionList,
             maxSizeLimit
         ));
-    }
-
-    public void delete(FileItem instance) {
-        fileItemRepository.deleteById(instance.getId());
     }
 }

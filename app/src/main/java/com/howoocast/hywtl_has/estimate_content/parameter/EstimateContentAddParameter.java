@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EstimateContentParameter {
+public class EstimateContentAddParameter {
 
     @NotBlank(message = EstimateContent.KEY + ".name.not_blank")
     private String name;

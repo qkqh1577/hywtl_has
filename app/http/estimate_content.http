@@ -1,17 +1,17 @@
 ### estimate content list
-GET http://localhost:8080/admin/estimate/content
+GET http://localhost:8080/admin/estimate-content?testType[]=A&testType[]=P
 
 
 ### estimate content variable list
-GET http://localhost:8080/admin/estimate/content/variable
+GET http://localhost:8080/admin/estimate-content/variable
 
 
 ### estimate content 1
-GET http://localhost:8080/admin/estimate/content/1
+GET http://localhost:8080/admin/estimate-content/1
 
 
 ### estimate content add
-PUT http://localhost:8080/admin/estimate/content
+PUT http://localhost:8080/admin/estimate-content
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### estimate content update 1
-PUT http://localhost:8080/admin/estimate/content/1
+PUT http://localhost:8080/admin/estimate-content/1
 Content-Type: application/json
 
 {
@@ -45,7 +45,7 @@ Content-Type: application/json
 }
 
 ### estimate content change sequence
-POST http://localhost:8080/admin/estimate/content/sequence
+POST http://localhost:8080/admin/estimate-content/sequence
 Content-Type: application/json
 
 {
@@ -59,4 +59,4 @@ Content-Type: application/json
 
 
 ### estimate content delete 1
-DELETE http://localhost:8080/admin/estimate/content/1
+DELETE http://localhost:8080/admin/estimate-content/1

@@ -92,11 +92,11 @@ export const initMenuState: MenuState = {
       icon:     'circle',
       children: [{
         title: '용역항목 관리',
-        path:  '/admin/estimate/template-management',
+        path:  '/admin/estimate-template-management',
         icon:  'minus',
       }, {
         title: '견적서 내용 관리',
-        path:  '/admin/estimate/content-management',
+        path:  '/admin/estimate-content-management',
         icon:  'minus',
       }]
     }, {
@@ -104,15 +104,15 @@ export const initMenuState: MenuState = {
       icon:     'circle',
       children: [{
         title: '기본정보 관리',
-        path: '/admin/contract/basic-management',
+        path:  '/admin/contract-basic-management',
         icon:  'minus',
       }, {
         title: '기성단계 관리',
-        path: '/admin/contract/collection-management',
+        path:  '/admin/contract-collection-management',
         icon:  'minus',
       }, {
         title: '계약조건 관리',
-        path: '/admin/contract/condition-management',
+        path:  '/admin/contract-condition-management',
         icon:  'minus',
       }]
     }, {

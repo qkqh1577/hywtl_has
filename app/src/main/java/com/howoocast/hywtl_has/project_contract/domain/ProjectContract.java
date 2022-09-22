@@ -8,7 +8,6 @@ import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,20 +17,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
 @Entity
 @Table(name = ProjectContract.KEY)
-@DynamicUpdate
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + ProjectContract.KEY + " set deleted_at = now() where id=?")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectContract extends CustomEntity {
 

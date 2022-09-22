@@ -21,12 +21,12 @@ public class ContractBasicController {
 
     private final ContractBasicService service;
 
-    @GetMapping("/admin/contract/basic")
+    @GetMapping("/admin/contract-basic")
     public ContractBasicView get() {
         return ContractBasicView.assemble(service.get());
     }
 
-    @PutMapping("/admin/contract/basic")
+    @PutMapping("/admin/contract-basic")
     public void upsert(
         @Valid @RequestBody ContractBasicParameter parameter
     ) {

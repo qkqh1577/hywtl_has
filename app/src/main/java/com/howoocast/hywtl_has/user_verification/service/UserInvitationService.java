@@ -5,12 +5,12 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.user.domain.User;
+import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
 import com.howoocast.hywtl_has.user_verification.event.UserInvitationAddEvent;
+import com.howoocast.hywtl_has.user_verification.parameter.UserInviteParameter;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import com.howoocast.hywtl_has.user_verification.view.UserInvitationView;
-import com.howoocast.hywtl_has.user_verification.parameter.UserInviteParameter;
-import com.howoocast.hywtl_has.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +53,7 @@ public class UserInvitationService {
 
         // 기존 코드 무효화
         repository.findByEmail(email)
-            .ifPresent(instance -> repository.deleteById(instance.getId()));
+            .ifPresent(UserInvitation::delete);
 
         UserInvitation userInvitation = UserInvitation.of(
             email,

@@ -5,7 +5,6 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -16,19 +15,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Slf4j
 @Getter
 @Entity
 @Table(name = ProjectLog.KEY)
-@DynamicUpdate
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "update " + ProjectLog.KEY + " set deleted_at = now() where id=?")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectLog extends CustomEntity {
 
@@ -45,61 +38,63 @@ public class ProjectLog extends CustomEntity {
      * 탭명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String tabName;
 
     /**
      * 섹션명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String sectionName;
 
     /**
      * 항목명
      */
     @NotBlank
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private String itemName;
 
     /**
      * 변경 전
      */
-    @Column(
-        name = "before_state",
-        updatable = false
-    )
+    @Column(name = "before_state", updatable = false)
     private String before;
 
     /**
      * 변경 후
      */
-    @Column(
-        name = "after_state",
-        updatable = false
-    )
+    @Column(name = "after_state", updatable = false)
     private String after;
 
     /**
      * 유저 id
      */
     @NotNull
-    @Column(
-        nullable = false,
-        updatable = false
-    )
+    @Column(nullable = false, updatable = false)
     private Long userId;
 
     @Transient
     @Setter
     private User user;
+
+    public static ProjectLog of(
+        Project project,
+        String tabName,
+        String sectionName,
+        String itemName,
+        String before,
+        String after,
+        Long userId
+    ) {
+        ProjectLog instance = new ProjectLog();
+        instance.project = project;
+        instance.tabName = tabName;
+        instance.sectionName = sectionName;
+        instance.itemName = itemName;
+        instance.before = before;
+        instance.after = after;
+        instance.userId = userId;
+        return instance;
+    }
 }
