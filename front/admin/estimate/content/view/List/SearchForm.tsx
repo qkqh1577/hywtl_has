@@ -4,6 +4,12 @@ import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import React from 'react';
 import { keywordTypeList } from 'admin/estimate/content/query';
+import CheckboxField from 'components/CheckboxField';
+import {
+  TestType,
+  testTypeList,
+  testTypeName
+} from 'admin/estimate/content/domain';
 
 export default function () {
   return (
@@ -20,6 +26,17 @@ export default function () {
           <TextField
             name="keyword"
             label="검색어"
+          />
+        </Grid>
+        <Grid item sm={12}>
+          <CheckboxField
+            name="testType"
+            label="실험 종류"
+            options={testTypeList.map(item => ({
+              key:      item as string,
+              text:     testTypeName(item),
+              disabled: item === TestType.COMMON || item === TestType.REVIEW
+            }))}
           />
         </Grid>
       </Grid>
