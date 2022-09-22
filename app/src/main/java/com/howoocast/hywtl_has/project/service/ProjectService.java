@@ -77,9 +77,7 @@ public class ProjectService {
         repository.save(instance);
         eventPublisher.publishEvent(ProjectLogEvent.of(
             instance,
-            "프로젝트 등록",
-            null,
-            null
+            "프로젝트 등록"
         ));
     }
 

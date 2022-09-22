@@ -5,25 +5,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
-export interface FooterProps {
-  onSeqModalOpen: () => void;
-}
-
-function OrderModalButton({
-                            onSeqModalOpen: onClick
-                          }: FooterProps) {
-  return (
-    <Button
-      children="순서 설정"
-      onClick={onClick}
-    />
-  );
-}
-
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/admin/estimate/content-management/add');
+    navigate('/admin/estimate-content-management/add');
   };
   return (
     <Button
@@ -33,7 +18,7 @@ function AddButton() {
   );
 }
 
-export default function (props: FooterProps) {
+export default function () {
   return (
     <Box sx={{
       display:        'flex',
@@ -41,7 +26,6 @@ export default function (props: FooterProps) {
       justifyContent: 'flex-end',
       mt:             '40px',
     }}>
-      <OrderModalButton onSeqModalOpen={props.onSeqModalOpen} />
       <AddButton />
     </Box>
   );

@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -48,22 +49,22 @@ public class ProjectComplexSite extends CustomEntity {
     }
 
     public void update(
-        String name,
-        Boolean withEnvironmentTest,
-        String estimateFigureDifficulty,
-        String figureDifficulty,
-        User manager
+        @Nullable String name,
+        @Nullable Boolean withEnvironmentTest,
+        @Nullable String estimateFigureDifficulty,
+        @Nullable String figureDifficulty,
+        @Nullable User manager
     ) {
-        if (Objects.nonNull(name) && !name.isEmpty()) {
+        if (Objects.nonNull(name)) {
             this.name = name;
         }
         if (Objects.nonNull(withEnvironmentTest)) {
             this.withEnvironmentTest = withEnvironmentTest;
         }
-        if (Objects.nonNull(estimateFigureDifficulty) && !estimateFigureDifficulty.isEmpty()) {
+        if (Objects.nonNull(estimateFigureDifficulty)) {
             this.estimateFigureDifficulty = estimateFigureDifficulty;
         }
-        if (Objects.nonNull(figureDifficulty) && !figureDifficulty.isEmpty()) {
+        if (Objects.nonNull(figureDifficulty)) {
             this.figureDifficulty = figureDifficulty;
         }
         if (Objects.nonNull(manager)) {

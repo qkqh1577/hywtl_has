@@ -28,6 +28,45 @@ public class ProjectLogEvent {
         );
     }
 
+    public static ProjectLogEvent of(
+        Project project,
+        String itemName
+    ) {
+        return new ProjectLogEvent(
+            project,
+            itemName,
+            null,
+            null
+        );
+    }
+//
+//    @Nullable
+//    public static <T extends CustomEntity, V>  ProjectLogEvent of(
+//        T instance,
+//        Class<T> type,
+//        String fieldName,
+//        @Nullable V value
+//    ) {
+//        if (Objects.isNull(value)) {
+//            return null;
+//        }
+//        try {
+//            String key = (String) type.getField("KEY").get(null);
+//            Field field = type.getField(fieldName);
+//            field.set(instance, value);
+//        } catch (Exception e) {
+//
+//        }
+//    }
+//
+//    public static <T extends CustomEntity> String getKey(Class<T> type) {
+//        try {
+//
+//        } catch (Exception e) {
+//            return "unknown_domain";
+//        }
+//    }
+
     public ProjectLog build(
         Long userId,
         String tabName,

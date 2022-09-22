@@ -25,19 +25,19 @@ public class ContractConditionController {
 
     private final ContractConditionService service;
 
-    @GetMapping("/admin/contract/condition")
+    @GetMapping("/admin/contract-condition")
     public ContractConditionView get() {
         return ContractConditionView.assemble(service.getList());
     }
 
-    @GetMapping("/admin/contract/condition/variable")
+    @GetMapping("/admin/contract-condition/variable")
     public List<ContractConditionVariableView> getVariableList() {
 
         return ContractConditionVariable.list().stream().map(ContractConditionVariableView::assemble)
             .collect(Collectors.toList());
     }
 
-    @PutMapping("/admin/contract/condition")
+    @PutMapping("/admin/contract-condition")
     public void upsert(
         @Valid @RequestBody ContractConditionParameter parameter
     ) {

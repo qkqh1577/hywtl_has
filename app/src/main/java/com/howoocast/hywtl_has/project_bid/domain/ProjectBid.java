@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -63,15 +64,15 @@ public class ProjectBid extends BidDTO {
     }
 
     public void update(
-        LocalDate beginDate,
-        LocalDate closeDate,
-        Business win,
-        String bidOrganization,
-        LocalDate bidDate,
-        Long testAmount,
-        Long reviewAmount,
-        Long totalAmount,
-        String expectedDuration
+        @Nullable LocalDate beginDate,
+        @Nullable LocalDate closeDate,
+        @Nullable Business win,
+        @Nullable String bidOrganization,
+        @Nullable LocalDate bidDate,
+        @Nullable Long testAmount,
+        @Nullable Long reviewAmount,
+        @Nullable Long totalAmount,
+        @Nullable String expectedDuration
     ) {
         super.update(
             testAmount,

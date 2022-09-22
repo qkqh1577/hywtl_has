@@ -7,17 +7,17 @@ import { ContractConditionParameter } from 'admin/contract/condition/parameter';
 
 class ContractConditionApi {
   async getOne(): Promise<ContractConditionListVO> {
-    const { data } = await apiClient.get('/admin/contract/condition');
+    const { data } = await apiClient.get('/admin/contract-condition');
     return data;
   }
 
   async upsert(params: ContractConditionParameter): Promise<void> {
-    const { data } = await apiClient.put('/admin/contract/condition', params);
+    const { data } = await apiClient.put('/admin/contract-condition', params);
     return data;
   }
 
   async getVariableList(): Promise<ContractConditionVariableVO[]> {
-    const { data } = await apiClient.get('/admin/contract/condition/variable');
+    const { data } = await apiClient.get('/admin/contract-condition/variable');
     return data;
   }
 }

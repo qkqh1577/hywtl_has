@@ -87,7 +87,7 @@ public class Department extends CustomEntity {
         return new Department();
     }
 
-    public void update(
+    public void change(
         String name,
         DepartmentCategory category,
         @Nullable Department parent,

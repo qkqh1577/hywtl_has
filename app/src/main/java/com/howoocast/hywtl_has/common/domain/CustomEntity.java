@@ -5,9 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 import lombok.AccessLevel;
@@ -26,11 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class CustomEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+public abstract class CustomEntity extends IdEntity {
 
     @CreatedDate
     protected LocalDateTime createdAt; // 생성일시
@@ -64,4 +57,5 @@ public abstract class CustomEntity {
     public void delete() {
         this.deletedAt = LocalDateTime.now();
     }
+
 }

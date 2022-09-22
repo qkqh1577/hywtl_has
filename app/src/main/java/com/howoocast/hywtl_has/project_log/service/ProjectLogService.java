@@ -56,6 +56,11 @@ public class ProjectLogService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         HttpServletRequest request = Objects.requireNonNull(
             (ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String requestUrl = request.getRequestURI();
+        if (!requestUrl.startsWith(rootUrl)) {
+            // 영업 정보 프로젝트가 아닌 경우 이력 발행하지 않음
+            return;
+        }
         if (request.getMethod().equalsIgnoreCase("get")) {
             // 변경이 없는 조회인 경우 이력 발행하지 않음
             return;
@@ -64,7 +69,6 @@ public class ProjectLogService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> {
             throw new NotFoundException(User.KEY, "username", username);
         });
-        String requestUrl = request.getRequestURI();
 
         repository.save(event.build(
             user.getId(),

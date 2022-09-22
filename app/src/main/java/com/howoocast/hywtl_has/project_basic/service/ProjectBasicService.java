@@ -81,10 +81,10 @@ public class ProjectBasicService {
     @Transactional
     public void updateDesign(Long projectId, ProjectBasicDesignParameter parameter) {
         ProjectBasicDesign instance = projectBasicDesignRepository.findByProject_Id(projectId)
-            .orElseGet(() -> projectBasicDesignRepository.save(
+            .orElseGet(() ->
                 ProjectBasicDesign.of(
                     new CustomFinder<>(projectRepository, Project.class).byId(projectId)
-                )));
+                ));
 
         instance.update(
             parameter.getCity(),
@@ -99,6 +99,9 @@ public class ProjectBasicService {
             parameter.getMaximumFloor(),
             parameter.getMaximumHeight()
         );
+        if (Objects.isNull(instance.getId())) {
+            projectBasicDesignRepository.save(instance);
+        }
     }
 
     @Transactional

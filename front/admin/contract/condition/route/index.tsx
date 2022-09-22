@@ -55,6 +55,6 @@ function Element() {
 }
 
 export const contractConditionTemplateRoute: AppRoute = {
-  path:    '/admin/contract/condition-management',
+  path:    '/admin/contract-condition-management',
   element: <Element />
 };

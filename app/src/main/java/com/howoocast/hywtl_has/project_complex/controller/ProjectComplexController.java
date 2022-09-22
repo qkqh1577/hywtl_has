@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,7 +70,7 @@ public class ProjectComplexController {
         service.pushSite(projectId);
     }
 
-    @PutMapping("/project/sales/complex/site/{id}")
+    @PatchMapping("/project/sales/complex/site/{id}")
     public void updateSite(
         @PathVariable Long id,
         @RequestBody ProjectComplexSiteParameter parameter
@@ -84,7 +85,7 @@ public class ProjectComplexController {
         service.pushBuilding(projectId);
     }
 
-    @PutMapping("/project/sales/complex/building/{id}")
+    @PatchMapping("/project/sales/complex/building/{id}")
     public void updateBuilding(
         @PathVariable Long id,
         @RequestBody ProjectComplexBuildingParameter parameter

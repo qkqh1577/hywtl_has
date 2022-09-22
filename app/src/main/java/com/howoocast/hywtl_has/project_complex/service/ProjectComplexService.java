@@ -95,7 +95,7 @@ public class ProjectComplexService {
             parameter.getBuildingDocumentId());
 
         if (Objects.nonNull(buildingDocument)) {
-            if (!buildingDocument.getProject().getId().equals(instance.getProject().getId())) {
+            if (!Objects.equals(buildingDocument.getProject().getId(), instance.getProject().getId())) {
                 throw new IllegalRequestException("project.complex.building.project.not_same",
                     "동일 프로젝트의 형상비 검토 파일만 사용할 수 있습니다.");
             }

@@ -12,9 +12,7 @@ import {
   ProjectDocumentShort,
   ProjectDocumentVO
 } from 'project_document/domain';
-import {
-  projectDocumentApi
-} from 'project_document/api';
+import { projectDocumentApi } from 'project_document/api';
 import { ProjectId } from 'project/domain';
 import { dialogActions } from 'components/Dialog';
 
@@ -77,11 +75,11 @@ function* watchAdd() {
   }
 }
 
-function* watchUpdate() {
+function* watchChange() {
   while (true) {
     const { payload: formik } = yield take(ProjectDocumentAction.update);
     try {
-      yield call(projectDocumentApi.update, formik.values);
+      yield call(projectDocumentApi.change, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));
       yield put(projectDocumentAction.setId(formik.values.id));
     }
@@ -118,6 +116,6 @@ export default function* documentSaga() {
   yield fork(watchAllList);
   yield fork(watchId);
   yield fork(watchAdd);
-  yield fork(watchUpdate);
+  yield fork(watchChange);
   yield fork(watchDelete);
 };

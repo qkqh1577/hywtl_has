@@ -3,12 +3,10 @@ import {
   ProjectDocumentShort,
   ProjectDocumentVO,
 } from 'project_document/domain';
+import { FormikSubmit } from 'type/Form';
 import {
-  FormikSubmit
-} from 'type/Form';
-import {
-  ProjectDocumentParameter,
-  ProjectDocumentUpdateParameter
+  ProjectDocumentChangeParameter,
+  ProjectDocumentParameter
 } from 'project_document/parameter';
 
 export enum ProjectDocumentAction {
@@ -19,7 +17,7 @@ export enum ProjectDocumentAction {
   setId           = 'project/sales/projectId/document/id/set',
   setOne          = 'project/sales/projectId/document/one/set',
   add             = 'project/sales/projectId/document/add',
-  update          = 'project/sales/document/update',
+  change          = 'project/sales/document/change',
   delete          = 'project/sales/document/delete',
   addModal        = 'project/sales/projectId/document/addModal',
 }
@@ -32,7 +30,7 @@ export const projectDocumentAction = {
   setId:           createAction(ProjectDocumentAction.setId)<number>(),
   setOne:          createAction(ProjectDocumentAction.setOne)<ProjectDocumentVO | undefined>(),
   add:             createAction(ProjectDocumentAction.add)<ProjectDocumentParameter>(),
-  update:          createAction(ProjectDocumentAction.update)<FormikSubmit<ProjectDocumentUpdateParameter>>(),
+  change:          createAction(ProjectDocumentAction.change)<FormikSubmit<ProjectDocumentChangeParameter>>(),
   addModal:        createAction(ProjectDocumentAction.addModal)<string>(),
   delete:          createAction(ProjectDocumentAction.delete)<number>(),
 };

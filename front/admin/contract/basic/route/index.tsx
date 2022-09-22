@@ -9,9 +9,7 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import {
-  contractBasicAction,
-} from 'admin/contract/basic/action';
+import { contractBasicAction, } from 'admin/contract/basic/action';
 import { useFormik } from 'formik';
 import {
   ContractBasicParameter,
@@ -52,7 +50,7 @@ function Element() {
 }
 
 const contractBasicTemplateRoute: AppRoute = {
-  path:    '/admin/contract/basic-management',
+  path:    '/admin/contract-basic-management',
   element: <Element />
 };
 export default contractBasicTemplateRoute;

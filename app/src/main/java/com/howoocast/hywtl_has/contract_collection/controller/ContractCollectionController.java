@@ -21,12 +21,12 @@ public class ContractCollectionController {
 
     private final ContractCollectionService service;
 
-    @GetMapping("/admin/contract/collection")
+    @GetMapping("/admin/contract-collection")
     public ContractCollectionView get() {
         return ContractCollectionView.assemble(service.get());
     }
 
-    @PutMapping("/admin/contract/collection")
+    @PutMapping("/admin/contract-collection")
     public void upsert(
         @Valid @RequestBody ContractCollectionParameter parameter
     ) {

@@ -128,7 +128,7 @@ function Element() {
 }
 
 const estimateContentDetailRoute: AppRoute = {
-  path:    '/admin/estimate/content-management/:id',
+  path:    '/admin/estimate-content-management/:id',
   element: <Element />
 };
 

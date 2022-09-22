@@ -22,7 +22,7 @@ import {
   ProjectDocumentId,
   ProjectDocumentVO
 } from 'project_document/domain';
-import { ProjectDocumentUpdateParameter } from 'project_document/parameter';
+import { ProjectDocumentChangeParameter } from 'project_document/parameter';
 
 export type DetailModalFormik = FormikEditable<FormikPartial<ProjectDocumentVO>>;
 
@@ -33,8 +33,8 @@ export default function ProjectDocumentDetailModalRoute() {
 
   const onClose = useCallback(() => dispatch(projectDocumentAction.setOne(undefined)), [dispatch]);
 
-  const update = useCallback((formikProps: FormikSubmit<ProjectDocumentUpdateParameter>) =>
-    dispatch(projectDocumentAction.update(formikProps)), [dispatch]);
+  const change = useCallback((formikProps: FormikSubmit<ProjectDocumentChangeParameter>) =>
+    dispatch(projectDocumentAction.change(formikProps)), [dispatch]);
   const initialValues: DetailModalFormik = useMemo(() => ({
     ...toPartial(detail, initialProjectDocumentVO),
     edit: false
@@ -48,7 +48,7 @@ export default function ProjectDocumentDetailModalRoute() {
                         ) => {
       const values = toValues(formikValues);
 
-      update({
+      change({
         values: {
           id:        values.id!,
           note:      values.note,

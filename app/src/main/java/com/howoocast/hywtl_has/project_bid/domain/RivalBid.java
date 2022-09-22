@@ -58,7 +58,6 @@ public class RivalBid extends BidDTO {
         if (Objects.nonNull(business)) {
             this.business = business;
         }
-
     }
 
 }

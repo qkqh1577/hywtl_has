@@ -7,14 +7,11 @@ import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateChang
 import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateDetailParameter;
 import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateParameter;
 import com.howoocast.hywtl_has.estimate_template.repository.EstimateTemplateRepository;
-import com.howoocast.hywtl_has.estimate_template.view.EstimateTemplateShortView;
-import com.howoocast.hywtl_has.estimate_template.view.EstimateTemplateView;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -27,38 +24,24 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EstimateTemplateService {
 
-
     private final EstimateTemplateRepository repository;
 
-
     @Transactional(readOnly = true)
-    public List<EstimateTemplateShortView> getList(Predicate predicate) {
-        return
-            StreamSupport.stream(
-                    repository.findAll(predicate, Sort.by(Direction.ASC, "seq")).spliterator(),
-                    false
-                )
-                .map(EstimateTemplateShortView::assemble)
-                .collect(Collectors.toList());
+    public List<EstimateTemplate> getList(@Nullable Predicate predicate) {
+        Sort sort = Sort.by(Direction.ASC, "seq");
+        if (Objects.isNull(predicate)) {
+            return repository.findAll(sort);
+        }
+        return repository.findAll(predicate, sort);
     }
 
     @Transactional(readOnly = true)
-    public List<EstimateTemplateView> getFullList(Predicate predicate) {
-        return StreamSupport.stream(
-                repository.findAll(predicate, Sort.by(Direction.ASC, "seq")).spliterator(),
-                false
-            )
-            .map(EstimateTemplateView::assemble)
-            .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public EstimateTemplateView getOne(Long id) {
-        return EstimateTemplateView.assemble(this.load(id));
+    public EstimateTemplate getOne(Long id) {
+        return this.load(id);
     }
 
     @Transactional
-    public EstimateTemplateView add(EstimateTemplateParameter parameter) {
+    public void add(EstimateTemplateParameter parameter) {
 
         List<EstimateTemplateDetail> detailList = new ArrayList<>();
         for (int i = 0; i < parameter.getDetailList().size(); i++) {
@@ -79,7 +62,7 @@ public class EstimateTemplateService {
             maxSeq + 1,
             detailList
         );
-        return EstimateTemplateView.assemble(repository.save(instance));
+        repository.save(instance);
     }
 
     @Transactional
@@ -100,7 +83,7 @@ public class EstimateTemplateService {
             }
 
             EstimateTemplateDetail detailInstance = instance.getDetailList().stream()
-                .filter(item -> item.getId().equals(detailParams.getId()))
+                .filter(item -> Objects.equals(item.getId(), detailParams.getId()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(EstimateTemplateDetail.KEY, detailParams.getId()));
             detailInstance.change(
@@ -126,6 +109,11 @@ public class EstimateTemplateService {
         for (int i = 0; i < idList.size(); i++) {
             this.load(idList.get(i)).changeSeq(i + 1);
         }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        this.load(id).delete();
     }
 
     private EstimateTemplate load(Long id) {
