@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Divider
@@ -13,12 +13,19 @@ import CareerForm from 'personnel/view/Detail/Form/CareerForm';
 import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import { PersonnelVO } from 'personnel/domain';
+import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
+import { FormikEditable } from 'type/Form';
 
 export interface FormListProps {
   personnelVO: PersonnelVO | undefined;
 }
 
 export default function FormList({ personnelVO }: FormListProps) {
+  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
+  const { edit } = formikContext.values;
   return (
     <Box sx={{
       display:       'flex',
@@ -31,19 +38,19 @@ export default function FormList({ personnelVO }: FormListProps) {
     }}>
       <AccountForm />
       <Divider />
-      <BasicForm basic={personnelVO?.basic} />
+      <BasicForm basic={personnelVO?.basic} edit={edit} />
       <Divider />
-      <CompanyForm company={personnelVO?.company} />
+      <CompanyForm company={personnelVO?.company} edit={edit}/>
       <Divider />
-      <JobForm jobList={personnelVO?.jobList} />
+      <JobForm jobList={personnelVO?.jobList} edit={edit}/>
       <Divider />
-      <AcademicForm academicList={personnelVO?.academicList} />
+      <AcademicForm academicList={personnelVO?.academicList} edit={edit}/>
       <Divider />
-      <CareerForm careerList={personnelVO?.careerList} />
+      <CareerForm careerList={personnelVO?.careerList} edit={edit}/>
       <Divider />
-      <LicenseForm licenseList={personnelVO?.licenseList} />
+      <LicenseForm licenseList={personnelVO?.licenseList} edit={edit}/>
       <Divider />
-      <LanguageForm languageList={personnelVO?.languageList} />
+      <LanguageForm languageList={personnelVO?.languageList} edit={edit}/>
     </Box>
   );
 }

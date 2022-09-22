@@ -1,4 +1,8 @@
 import { FileItemView } from 'file-item';
+import {
+  initialUser,
+  UserVO
+} from 'user/domain';
 
 export type PersonnelId = number & { readonly _brand: symbol }
 
@@ -107,8 +111,9 @@ export interface PersonnelLanguageVO {
 
 export interface PersonnelVO {
   id?: PersonnelId,
-  basic?: PersonnelBasicVO,
-  company?: PersonnelCompanyVO,
+  account: UserVO | undefined;
+  basic: PersonnelBasicVO | undefined,
+  company: PersonnelCompanyVO | undefined,
   jobList: PersonnelJobVO[],
   academicList: PersonnelAcademicVO[],
   careerList: PersonnelCareerVO[],
@@ -118,6 +123,7 @@ export interface PersonnelVO {
 
 export const initialPersonnelVO: PersonnelVO = {
   id:           undefined,
+  account:      initialUser,
   basic:        initialPersonnelBasic,
   company:      initialPersonnelCompany,
   jobList:      [],

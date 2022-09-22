@@ -9,7 +9,10 @@ import {
 } from 'react-redux';
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
-import { FormikSubmit } from 'type/Form';
+import {
+  FormikEditable,
+  FormikSubmit
+} from 'type/Form';
 import { PersonnelParameter } from 'personnel/parameter';
 import {
   PersonnelAction,
@@ -29,13 +32,14 @@ import {
   toPersonnelJob,
   toPersonnelLanguage,
   toPersonnelLicense
-} from 'personnel/converter/convertVoToParameter';
+} from 'personnel/util/convertVoToParameter';
 import PersonnelDetail from 'personnel/view/Detail';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const {
+          account,
           basic,
           company,
           jobList,
@@ -44,21 +48,22 @@ function Element() {
           licenseList,
           languageList
         } = useSelector((root: RootState) => root.personnel);
-  const personnelVO: PersonnelVO = {
+  const personnelVO: FormikEditable<PersonnelVO> = {
+    account,
     basic,
     company,
     jobList:      jobList || [],
     academicList: academicList || [],
     careerList:   careerList || [],
     licenseList:  licenseList || [],
-    languageList: languageList || []
+    languageList: languageList || [],
+    edit: false,
   };
   const update = useCallback((formikProps: FormikSubmit<PersonnelParameter>) =>
     dispatch(personnelAction.update(formikProps)), [dispatch]);
-
-  const formik = useFormik<PersonnelVO>({
+  const formik = useFormik<FormikEditable<PersonnelVO>>({
     enableReinitialize: true,
-    initialValues:      initialPersonnelVO,
+    initialValues:      personnelVO || initialPersonnelVO,
     onSubmit:           (values,
                          helpers
                         ) => {
@@ -85,7 +90,7 @@ function Element() {
       });
     }
   }, [id]);
-  console.log('formik : ', formik);
+
   return (
     <PersonnelDetail
       formik={formik}

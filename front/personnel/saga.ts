@@ -19,6 +19,11 @@ import {
   PersonnelShortVO,
 } from 'personnel/domain';
 import { personnelApi } from 'personnel/api';
+import {
+  UserId,
+  UserVO
+} from 'user/domain';
+import { userApi } from 'user/api';
 
 function* watchFilter() {
   while (true) {
@@ -33,6 +38,15 @@ function* watchFilter() {
     finally {
       yield call(formik.setSubmitting, false);
     }
+  }
+}
+
+function* watchAccount() {
+  while (true) {
+    const { id } = yield take(PersonnelAction.setId);
+
+    const account: UserVO = yield call(userApi.getOne, UserId(id as number));
+    yield put(personnelAction.setAccount(account))
   }
 }
 
@@ -96,6 +110,7 @@ function* watchLanguageList() {
 
 export default function* personnelSaga() {
   yield fork(watchFilter);
+  yield fork(watchAccount);
   yield fork(watchBasic);
   yield fork(watchCompany);
   yield fork(watchJobList);
