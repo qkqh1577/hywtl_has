@@ -77,7 +77,7 @@ function* watchAdd() {
 
 function* watchChange() {
   while (true) {
-    const { payload: formik } = yield take(ProjectDocumentAction.update);
+    const { payload: formik } = yield take(ProjectDocumentAction.change);
     try {
       yield call(projectDocumentApi.change, formik.values);
       yield put(dialogActions.openAlert('저장하였습니다.'));

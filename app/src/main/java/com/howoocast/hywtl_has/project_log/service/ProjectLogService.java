@@ -71,7 +71,7 @@ public class ProjectLogService {
         });
 
         repository.save(event.build(
-            user.getId(),
+            Objects.requireNonNull(user.getId()),
             this.getTabName(requestUrl, event.getProjectId()),
             this.getSectionName(requestUrl, event.getProjectId())
         ));
