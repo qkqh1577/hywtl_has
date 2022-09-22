@@ -6,22 +6,30 @@ export function PersonnelId(id: number) {
   return id as PersonnelId;
 }
 
-export interface PersonnelVO {
-  id: PersonnelId,
-  basic: PersonnelBasicVO,
-  company: PersonnelCompanyVO,
-  job: PersonnelJobVO[],
-  academy: PersonnelAcademicVO[],
-  career: PersonnelCareerVO[],
-  license: PersonnelLicenseVO[],
-  language: PersonnelLanguageVO[],
+export interface PersonnelShortVO {
+  id?: PersonnelId,
+  name: string,
+  email: string,
+  basic?: PersonnelBasicVO,
+  company?: PersonnelCompanyVO,
+  job?: PersonnelJobVO,
 }
+
+export const initialPersonnelShortVO: PersonnelShortVO = {
+  id:      undefined,
+  name:    '',
+  email:   '',
+  basic:   undefined,
+  company: undefined,
+  job:     undefined,
+
+};
 
 export interface PersonnelBasicVO {
   engName: string; // 영문이름
-  birthDate: Date; // 생년월일(yyyy-mm-dd)
+  birthDate: Date | undefined; // 생년월일(yyyy-mm-dd)
   sex: string; // 성별
-  image: FileItemView; //
+  image: FileItemView | undefined; //
   address: string; // 주소
   phone: string; // 핸드폰
   emergencyPhone: string; // 비상연락처
@@ -29,11 +37,29 @@ export interface PersonnelBasicVO {
   personalEmail: string; // 개인이메일
 }
 
+export const initialPersonnelBasic: PersonnelBasicVO = {
+  engName:        '',
+  birthDate:      undefined,
+  sex:            '',
+  image:          undefined,
+  address:        '',
+  phone:          '',
+  emergencyPhone: '',
+  relationship:   '',
+  personalEmail:  '',
+};
+
 export interface PersonnelCompanyVO {
-  hiredDate: Date; // 입사일
+  hiredDate: Date | undefined; // 입사일
   hiredType: string; // 입사구분
   recommender: string; // 추천자
 }
+
+export const initialPersonnelCompany: PersonnelCompanyVO = {
+  hiredDate:   undefined,
+  hiredType:   '',
+  recommender: '',
+};
 
 export interface PersonnelJobVO {
   departmentId?: number; // 부서
@@ -76,9 +102,30 @@ export interface PersonnelLanguageVO {
   grade?: string; // 급수, 종류
   organizationName?: string; // 발급기관명
   certifiedDate?: Date; // 취득일
-  expiryPeriod?: string; // 유효기관(종료일)
-  trainingPeriod?: string; // 연수기간?? 서버에는 있는 내용이어서 넣음.
+  expiryPeriod?: Date; // 유효기관(종료일)
 }
+
+export interface PersonnelVO {
+  id?: PersonnelId,
+  basic?: PersonnelBasicVO,
+  company?: PersonnelCompanyVO,
+  jobList: PersonnelJobVO[],
+  academicList: PersonnelAcademicVO[],
+  careerList: PersonnelCareerVO[],
+  licenseList: PersonnelLicenseVO[],
+  languageList: PersonnelLanguageVO[],
+}
+
+export const initialPersonnelVO: PersonnelVO = {
+  id:           undefined,
+  basic:        initialPersonnelBasic,
+  company:      initialPersonnelCompany,
+  jobList:      [],
+  academicList: [],
+  careerList:   [],
+  licenseList:  [],
+  languageList: [],
+};
 
 export enum SexCategory {
   MALE   = 'MALE',

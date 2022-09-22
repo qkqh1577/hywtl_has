@@ -8,14 +8,14 @@ import {
   PersonnelJobVO,
   PersonnelLanguageVO,
   PersonnelLicenseVO,
-  PersonnelVO
+  PersonnelShortVO,
 } from 'personnel/domain';
 import { createReducer } from 'typesafe-actions';
 import { PersonnelAction } from 'personnel/action';
 
 export interface PersonnelState {
   filter?: PersonnelQuery;
-  page?: Page<PersonnelVO>;
+  page?: Page<PersonnelShortVO>;
   basic?: PersonnelBasicVO;
   company?: PersonnelCompanyVO;
   jobList?: PersonnelJobVO[];

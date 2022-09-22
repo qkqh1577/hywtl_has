@@ -7,7 +7,7 @@ import {
   PersonnelJobVO,
   PersonnelLanguageVO,
   PersonnelLicenseVO,
-  PersonnelVO
+  PersonnelShortVO,
 } from 'personnel/domain';
 import apiClient from 'services/api';
 import { PersonnelQuery } from 'personnel/query';
@@ -15,7 +15,7 @@ import Page from 'type/Page';
 import { PersonnelParameter } from 'personnel/parameter';
 
 class PersonnelApi {
-  async getPage(query: PersonnelQuery): Promise<Page<PersonnelVO>> {
+  async getPage(query: PersonnelQuery): Promise<Page<PersonnelShortVO>> {
     const { data } = await apiClient.get('/personnels', query);
     return data;
   }

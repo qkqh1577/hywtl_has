@@ -10,11 +10,12 @@ import {
   PersonnelJobVO,
   PersonnelLanguageVO,
   PersonnelLicenseVO,
-  PersonnelVO
+  PersonnelShortVO,
 } from 'personnel/domain';
 import { PersonnelParameter } from 'personnel/parameter';
 
 export enum PersonnelAction {
+  setId           = 'personnel/id/set',
   setFilter       = 'personnel/filter/set',
   setPage         = 'personnel/page/set',
   setBasic        = 'personnel/basic/set',
@@ -28,8 +29,9 @@ export enum PersonnelAction {
 }
 
 export const personnelAction = {
+  setId:           createAction(PersonnelAction.setId)<number>(),
   setFilter:       createAction(PersonnelAction.setFilter)<FormikSubmit<PersonnelQuery>>(),
-  setPage:         createAction(PersonnelAction.setPage)<Page<PersonnelVO> | undefined>(),
+  setPage:         createAction(PersonnelAction.setPage)<Page<PersonnelShortVO> | undefined>(),
   setBasic:        createAction(PersonnelAction.setBasic)<PersonnelBasicVO | undefined>(),
   setCompany:      createAction(PersonnelAction.setCompany)<PersonnelCompanyVO | undefined>(),
   setJobList:      createAction(PersonnelAction.setJobList)<PersonnelJobVO[] | undefined>(),

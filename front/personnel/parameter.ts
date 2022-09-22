@@ -12,25 +12,25 @@ export interface PersonnelParameter {
   languageList?: PersonnelLanguageParameter[]; // 어학정보
 }
 
-interface PersonnelBasicParameter {
-  engName: string;
-  birthDate: string;
-  sex: string;
-  image: FileItemParameter;
-  address: string;
-  phone: string;
-  emergencyPhone: string;
-  relationship: string;
-  personalEmail: string;
+export interface PersonnelBasicParameter {
+  engName?: string;
+  birthDate?: string;
+  sex?: string;
+  image?: FileItemParameter;
+  address?: string;
+  phone?: string;
+  emergencyPhone?: string;
+  relationship?: string;
+  personalEmail?: string;
 }
 
-interface PersonnelCompanyParameter {
-  hiredDate: string;
-  hiredType: string;
-  recommender: string;
+export interface PersonnelCompanyParameter {
+  hiredDate?: string;
+  hiredType?: string;
+  recommender?: string;
 }
 
-interface PersonnelJobParameter {
+export interface PersonnelJobParameter {
   departmentId?: number;
   jobTitle?: string;
   jobType?: string;
@@ -39,7 +39,7 @@ interface PersonnelJobParameter {
   jobDuty?: string;
 }
 
-interface PersonnelAcademicParameter {
+export interface PersonnelAcademicParameter {
   academyName?: string;
   major?: string;
   degree?: string;
@@ -49,14 +49,14 @@ interface PersonnelAcademicParameter {
   endDate?: string;
 }
 
-interface PersonnelCareerParameter {
+export interface PersonnelCareerParameter {
   companyName?: string;
   majorJob?: string;
   startDate?: string;
   endDate?: string;
 }
 
-interface PersonnelLicenseParameter {
+export interface PersonnelLicenseParameter {
   name?: string;
   type?: string;
   organizationName?: string;
@@ -65,7 +65,7 @@ interface PersonnelLicenseParameter {
   note?: string;
 }
 
-interface PersonnelLanguageParameter {
+export interface PersonnelLanguageParameter {
   name?: string;
   type?: string;
   grade?: string;

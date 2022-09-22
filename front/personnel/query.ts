@@ -1,4 +1,5 @@
 import { Option } from 'components/DataFieldProps';
+import { pageSizeList } from 'type/Page';
 
 export interface PersonnelQuery {
   keyword?: string; //검색어
@@ -11,7 +12,7 @@ export interface PersonnelQuery {
   accountStateList: string[]; // 계정상태(초대 | 사용 | 중지)
   departmentList: string[]; // 소속 (한양풍동실험연구소, 기술본부, 기술팀, 영업팀, 모형팀, 기술부, 실험부, 편집부)
   sort: string;
-  page: number; // 페이지 번호
+  page: number;
   size: number;
 }
 
@@ -23,10 +24,10 @@ export const initialPersonnelQuery: PersonnelQuery = {
   hiredTypeList:    [],
   keyword:          '',
   keywordType:      '',
-  page:             0,
   sexList:          [],
-  size:             0,
-  sort:             '',
+  page:             0,
+  size:             pageSizeList[0],
+  sort:             'id,desc',
   startDate:        ''
 };
 
