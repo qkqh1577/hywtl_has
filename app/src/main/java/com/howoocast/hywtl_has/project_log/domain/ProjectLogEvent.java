@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_log.domain;
 
 import com.howoocast.hywtl_has.project.domain.Project;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -84,6 +85,6 @@ public class ProjectLogEvent {
     }
 
     public Long getProjectId() {
-        return this.project.getId();
+        return Objects.requireNonNull(this.project.getId());
     }
 }
