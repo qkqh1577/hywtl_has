@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_log.domain;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.util.Objects;
 import javax.annotation.Nullable;
@@ -26,6 +27,18 @@ public class ProjectLogEvent {
             itemName,
             before,
             after
+        );
+    }
+
+    public static ProjectLogEvent of(
+        Project project,
+        EventEntity event
+    ) {
+        return new ProjectLogEvent(
+            project,
+            event.getItemName(),
+            event.getBefore(),
+            event.getAfter()
         );
     }
 

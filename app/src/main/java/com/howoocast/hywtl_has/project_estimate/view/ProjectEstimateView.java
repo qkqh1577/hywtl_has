@@ -13,24 +13,25 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.NONE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProjectEstimateView {
 
-    private final Long id;
-    private final String code;
-    private final String type;
-    private final Boolean isSent;
-    private final Boolean confirmed;
-    private final String recipient;
-    private final UserShortView createdBy;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime modifiedAt;
+    private Long id;
+    private String code;
+    private String type;
+    private Boolean isSent;
+    private Boolean confirmed;
+    private String recipient;
+    private UserShortView createdBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private ProjectEstimatePlanView plan;
     private List<ProjectEstimateComplexSiteView> siteList;
     private List<ProjectEstimateComplexBuildingView> buildingList;
-    private final BusinessShortView business;
+    private BusinessShortView business;
 
     protected ProjectEstimateView(
         ProjectEstimate source
@@ -59,7 +60,10 @@ public class ProjectEstimateView {
         this.business = BusinessShortView.assemble(source.getBusiness());
     }
 
-    public static ProjectEstimateView assemble(ProjectEstimate source) {
+    public static ProjectEstimateView assemble(@Nullable ProjectEstimate source) {
+        if (Objects.isNull(source)) {
+            return new ProjectEstimateView();
+        }
         if (source.getType().equals("SYSTEM")) {
             return ProjectSystemEstimateView.assemble((ProjectSystemEstimate) source);
         } else {

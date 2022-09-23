@@ -1,9 +1,11 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
@@ -71,20 +73,41 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         return instance;
     }
 
-    public void change(
+    public List<EventEntity> change(
         Boolean isSent,
         String recipient,
         String note,
         List<ProjectEstimateTemplate> templateList,
         List<String> contentList
     ) {
-        super.change(
+        List<EventEntity> eventList = super.change(
             isSent,
             recipient,
             note,
             this.getBusiness()
         );
+
+        eventList.add(EventEntity.of(
+            "용역 항목 변경",
+            Objects.isNull(this.templateList) || this.templateList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함",
+            templateList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함"
+        ));
         this.templateList = templateList;
+        eventList.add(EventEntity.of(
+            "용역 내용 변경",
+            Objects.isNull(this.contentList) || this.contentList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함",
+            contentList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함"
+        ));
         this.contentList = contentList;
+
+        return eventList;
     }
 }

@@ -5,8 +5,6 @@ import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import java.util.List;
-import java.util.Optional;
-import javax.annotation.Nullable;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,15 +34,11 @@ public class ProjectEstimateController {
     }
 
     @GetMapping("/project/sales/{projectId}/basic/estimate")
-    public @Nullable
-    ProjectEstimateView getFinal(
+    public ProjectEstimateView getFinal(
         @PathVariable Long projectId
     ) {
-        return Optional.ofNullable(service.getFinal(projectId))
-            .map(ProjectEstimateView::assemble)
-            .orElse(null);
+        return ProjectEstimateView.assemble(service.getFinal(projectId));
     }
-
 
     @PostMapping("/project/sales/{projectId}/estimate/confirmed")
     public void setConfirmed(

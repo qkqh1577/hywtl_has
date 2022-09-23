@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
@@ -15,14 +16,17 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplex
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexSiteParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimatePlanParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +41,8 @@ public class ProjectEstimateService {
     private final ProjectRepository projectRepository;
     private final ProjectDocumentRepository documentRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Transactional(readOnly = true)
     public List<ProjectEstimate> getList(
@@ -46,8 +52,8 @@ public class ProjectEstimateService {
     }
 
     @Transactional(readOnly = true)
-    public @Nullable
-    ProjectEstimate getFinal(
+    @Nullable
+    public ProjectEstimate getFinal(
         Long projectId
     ) {
         return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE)
@@ -55,10 +61,7 @@ public class ProjectEstimateService {
     }
 
     @Transactional
-    public void confirm(
-        Long projectId,
-        Long estimateId
-    ) {
+    public void confirm(Long projectId, Long estimateId) {
         List<ProjectEstimate> estimateList = repository.findByProject_Id(projectId);
         ProjectEstimate instance = repository.findById(estimateId).orElseThrow(() -> {
             throw new NotFoundException(ProjectEstimate.KEY, estimateId);
@@ -71,12 +74,21 @@ public class ProjectEstimateService {
             throw new IllegalRequestException(ProjectEstimate.KEY + ".already_confirmed", "이미 확정된 견적서입니다.");
         }
         // 이전 삭제
-        estimateList.stream()
+        ProjectEstimate prev = estimateList.stream()
             .filter(ProjectEstimate::getConfirmed)
-            .findFirst()
-            .ifPresent(item -> item.changeConfirmed(Boolean.FALSE));
+            .findFirst().orElse(null);
+        if (Objects.nonNull(prev)) {
+            prev.changeConfirmed(Boolean.FALSE);
+        }
+
         // 현재 등록
         instance.changeConfirmed(Boolean.TRUE);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "확정 여부 변경",
+            Optional.ofNullable(prev).map(ProjectEstimate::getCode).orElse(null),
+            instance.getCode()
+        ));
     }
 
     protected ProjectEstimate of(
@@ -98,7 +110,7 @@ public class ProjectEstimateService {
         ProjectEstimate instance,
         @Nullable ProjectEstimatePlanParameter parameter
     ) {
-        instance.changePlan(
+        List<EventEntity> eventList = instance.changePlan(
             Optional.ofNullable(parameter)
                 .map(plan -> ProjectEstimatePlan.of(
                     plan.getEstimateDate(),
@@ -111,13 +123,15 @@ public class ProjectEstimateService {
                     plan.getTotalAmount()))
                 .orElse(null));
         repository.save(instance);
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     protected void changeSiteList(
         ProjectEstimate instance,
         @Nullable List<ProjectEstimateComplexSiteParameter> siteList
     ) {
-        instance.changeSiteList(Optional.ofNullable(siteList)
+        List<EventEntity> eventList = instance.changeSiteList(Optional.ofNullable(siteList)
             .map(list -> list.stream()
                 .map(item -> ProjectEstimateComplexSite.of(
                     item.getName(),
@@ -129,13 +143,15 @@ public class ProjectEstimateService {
                 .collect(Collectors.toList()))
             .orElse(Collections.emptyList()));
         repository.save(instance);
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     protected void changeBuildingList(
         ProjectEstimate instance,
         @Nullable List<ProjectEstimateComplexBuildingParameter> buildingList
     ) {
-        instance.changeBuildingList(
+        List<EventEntity> eventList = instance.changeBuildingList(
             Optional.ofNullable(buildingList)
                 .map(list -> list.stream()
                     .map(item -> ProjectEstimateComplexBuilding.of(
@@ -157,6 +173,8 @@ public class ProjectEstimateService {
                     .collect(Collectors.toList()))
                 .orElse(Collections.emptyList()));
         repository.save(instance);
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     private String getCode(Project project) {

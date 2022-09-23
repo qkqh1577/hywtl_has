@@ -1,9 +1,11 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -71,13 +73,13 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         return instance;
     }
 
-    public void change(
+    public List<EventEntity> change(
         Boolean isSent,
         String recipient,
         String note,
         Business business
     ) {
-        super.change(
+        return super.change(
             isSent,
             recipient,
             note,

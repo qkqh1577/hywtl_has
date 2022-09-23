@@ -1,9 +1,12 @@
 package com.howoocast.hywtl_has.project_document.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -102,14 +105,31 @@ public class ProjectDocument extends CustomEntity {
         return instance;
     }
 
-    public void change(
+    public List<EventEntity> change(
         String recipient,
         @Nullable FileItem mailFile,
         String note
     ) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "수신처 변경",
+            this.recipient,
+            recipient
+        ));
         this.recipient = recipient;
+        eventList.add(EventEntity.of(
+            "메일 자료 변경",
+            this.mailFile,
+            mailFile
+        ));
         this.mailFile = mailFile;
+        eventList.add(EventEntity.of(
+            "비고 변경",
+            this.note,
+            note
+        ));
         this.note = note;
+        return eventList;
     }
 
 }

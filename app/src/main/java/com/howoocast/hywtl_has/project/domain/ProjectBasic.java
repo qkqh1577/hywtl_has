@@ -1,8 +1,12 @@
 package com.howoocast.hywtl_has.project.domain;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
@@ -100,7 +104,7 @@ public class ProjectBasic {
         this.code = code;
     }
 
-    public void update(
+    public List<EventEntity> update(
         @Nullable String name,
         @Nullable String alias,
         @Nullable ProjectBasicBidType bidType,
@@ -111,32 +115,82 @@ public class ProjectBasic {
         @Nullable LocalDate requestedMonth,
         @Nullable Boolean isLh
     ) {
+        List<EventEntity> eventList = new ArrayList<>();
         if (Objects.nonNull(name)) {
+            eventList.add(EventEntity.of(
+                "프로젝트명 변경",
+                this.name,
+                name
+            ));
             this.name = name;
         }
         if (Objects.nonNull(alias)) {
+            eventList.add(EventEntity.of(
+                "닉네임 변경",
+                this.alias,
+                alias
+            ));
             this.alias = alias;
         }
         if (Objects.nonNull(bidType)) {
+            eventList.add(EventEntity.of(
+                "견적 구분 변경",
+                Optional.ofNullable(this.bidType).map(ProjectBasicBidType::getName).orElse(null),
+                bidType.getName()
+            ));
             this.bidType = bidType;
         }
         if (Objects.nonNull(receptionManager)) {
+            eventList.add(EventEntity.of(
+                "문의 접수자 변경",
+                this.receptionManager,
+                receptionManager
+            ));
             this.receptionManager = receptionManager;
         }
         if (Objects.nonNull(salesManager)) {
+            eventList.add(EventEntity.of(
+                "영업 담당자 변경",
+                this.salesManager,
+                salesManager
+            ));
             this.salesManager = salesManager;
         }
         if (Objects.nonNull(projectManager)) {
+            eventList.add(EventEntity.of(
+                "담당 PM 변경",
+                this.projectManager,
+                projectManager
+            ));
             this.projectManager = projectManager;
         }
         if (Objects.nonNull(expectedMonth)) {
+            eventList.add(EventEntity.of(
+                "예상 착수 시기 변경",
+                this.expectedMonth,
+                expectedMonth,
+                "yyyy-MM"
+            ));
             this.expectedMonth = expectedMonth;
         }
         if (Objects.nonNull(requestedMonth)) {
+            eventList.add(EventEntity.of(
+                "요청 일정 변경",
+                this.requestedMonth,
+                requestedMonth,
+                "yyyy-MM"
+            ));
             this.requestedMonth = requestedMonth;
         }
         if (Objects.nonNull(isLh)) {
+            eventList.add(EventEntity.of(
+                "LH 여부 변경",
+                this.isLh,
+                isLh
+            ));
             this.isLh = isLh;
         }
+
+        return eventList;
     }
 }

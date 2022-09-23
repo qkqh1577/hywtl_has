@@ -20,7 +20,6 @@ public class CustomFinder<D extends CustomEntity> {
 
     private final Class<D> classType;
 
-
     public D byId(Long id) {
         String KEY = getKey();
         return repository.findById(id).orElseThrow(() -> {
@@ -28,8 +27,8 @@ public class CustomFinder<D extends CustomEntity> {
         });
     }
 
-    public @Nullable
-    D byIdIfExists(@Nullable Long id) {
+    @Nullable
+    public D byIdIfExists(@Nullable Long id) {
         if (Objects.isNull(id)) {
             return null;
         }

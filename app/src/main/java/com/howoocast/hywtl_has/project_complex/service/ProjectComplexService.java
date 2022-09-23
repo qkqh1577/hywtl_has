@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_complex.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
@@ -14,12 +15,14 @@ import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexSiteRepo
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +40,8 @@ public class ProjectComplexService {
     private final ProjectDocumentRepository documentRepository;
 
     private final UserRepository userRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<ProjectComplexSite> getSiteList(Long projectId) {
@@ -58,6 +63,10 @@ public class ProjectComplexService {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         ProjectComplexSite instance = ProjectComplexSite.of(project);
         siteRepository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "대지 모형 행 추가"
+        ));
     }
 
     @Transactional
@@ -67,13 +76,15 @@ public class ProjectComplexService {
     ) {
         ProjectComplexSite instance = this.loadSite(id);
         User manager = new CustomFinder<>(userRepository, User.class).byIdIfExists(parameter.getManagerId());
-        instance.update(
+        List<EventEntity> eventList = instance.update(
             parameter.getName(),
             parameter.getWithEnvironmentTest(),
             parameter.getEstimateFigureDifficulty(),
             parameter.getFigureDifficulty(),
             manager
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
@@ -81,6 +92,10 @@ public class ProjectComplexService {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         ProjectComplexBuilding instance = ProjectComplexBuilding.of(project);
         buildingRepository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "동 행 추가"
+        ));
     }
 
     @Transactional
@@ -105,7 +120,7 @@ public class ProjectComplexService {
             }
         }
 
-        instance.update(
+        List<EventEntity> eventList = instance.update(
             parameter.getName(),
             site,
             parameter.getShape(),
@@ -121,16 +136,32 @@ public class ProjectComplexService {
             parameter.getEstimateEvaluationDifficulty(),
             parameter.getEstimateReportDifficulty()
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
     public void deleteSite(Long id) {
-        this.loadSite(id).delete();
+        ProjectComplexSite instance = this.loadSite(id);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "대지 모형 삭제",
+            instance.getName(),
+            null
+        ));
+        instance.delete();
     }
 
     @Transactional
     public void deleteBuilding(Long id) {
-        this.loadBuilding(id).delete();
+        ProjectComplexBuilding instance = this.loadBuilding(id);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "동 삭제",
+            instance.getName(),
+            null
+        ));
+        instance.delete();
     }
 
     private ProjectComplexSite loadSite(Long id) {

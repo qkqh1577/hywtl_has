@@ -7,25 +7,35 @@ public enum ProjectInvolvedType {
     /**
      * 발주처
      */
-    ORDERER,
+    ORDERER("발주처"),
     /**
      * 시공사
      */
-    BUILDER,
+    BUILDER("시공사"),
     /**
      * 건축설계사무소
      */
-    ARCHITECTURAL,
+    ARCHITECTURAL("건축설계사무소"),
     /**
      * 구조설계사무소
      */
-    STRUCTURAL,
+    STRUCTURAL("구조설계사무소"),
     /**
      * 시행사
      */
-    ENFORCER,
+    ENFORCER("시행사"),
     /**
      * 소개자
      */
-    RECOMMENDER
+    RECOMMENDER("소개자");
+
+    private final String name;
+
+    ProjectInvolvedType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

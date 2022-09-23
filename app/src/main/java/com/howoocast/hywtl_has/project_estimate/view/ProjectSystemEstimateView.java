@@ -12,9 +12,7 @@ public class ProjectSystemEstimateView extends ProjectEstimateView {
     private List<ProjectEstimateTemplateView> templateList;
     private List<String> contentList;
 
-    public ProjectSystemEstimateView(
-        ProjectEstimate source
-    ) {
+    public ProjectSystemEstimateView(ProjectEstimate source) {
         super(source);
     }
 
@@ -26,5 +24,4 @@ public class ProjectSystemEstimateView extends ProjectEstimateView {
         target.contentList = source.getContentList();
         return target;
     }
-
 }

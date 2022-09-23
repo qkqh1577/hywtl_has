@@ -1,7 +1,10 @@
 package com.howoocast.hywtl_has.project_basic.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -61,7 +64,7 @@ public class ProjectBasicDesign extends CustomEntity {
         return instance;
     }
 
-    public void update(
+    public List<EventEntity> update(
         @Nullable String city,
         @Nullable String address,
         @Nullable Integer complexCount,
@@ -74,38 +77,95 @@ public class ProjectBasicDesign extends CustomEntity {
         @Nullable Integer maximumFloor,
         @Nullable Double maximumHeight
     ) {
+        List<EventEntity> eventList = new ArrayList<>();
         if (Objects.nonNull(city)) {
+            eventList.add(EventEntity.of(
+                "시/도 변경",
+                this.city,
+                city
+            ));
             this.city = city;
         }
         if (Objects.nonNull(address)) {
+            eventList.add(EventEntity.of(
+                "주소 변경",
+                this.address,
+                address
+            ));
             this.address = address;
         }
         if (Objects.nonNull(complexCount)) {
+            eventList.add(EventEntity.of(
+                "단지 수 변경",
+                this.complexCount,
+                complexCount
+            ));
             this.complexCount = complexCount;
         }
         if (Objects.nonNull(purpose1)) {
+            eventList.add(EventEntity.of(
+                "건물 용도1 변경",
+                this.purpose1,
+                purpose1
+            ));
             this.purpose1 = purpose1;
         }
         if (Objects.nonNull(purpose2)) {
+            eventList.add(EventEntity.of(
+                "건물 용도2 변경",
+                this.purpose2,
+                purpose2
+            ));
             this.purpose2 = purpose2;
         }
         if (Objects.nonNull(lotArea)) {
+            eventList.add(EventEntity.of(
+                "대지 면적 변경",
+                this.lotArea,
+                lotArea
+            ));
             this.lotArea = lotArea;
         }
         if (Objects.nonNull(totalArea)) {
+            eventList.add(EventEntity.of(
+                "연면적 변경",
+                this.totalArea,
+                totalArea
+            ));
             this.totalArea = totalArea;
         }
         if (Objects.nonNull(totalBuildingCount)) {
+            eventList.add(EventEntity.of(
+                "총 동 수 변경",
+                this.totalBuildingCount,
+                totalBuildingCount
+            ));
             this.totalBuildingCount = totalBuildingCount;
         }
         if (Objects.nonNull(householdCount)) {
+            eventList.add(EventEntity.of(
+                "세대 수 변경",
+                this.householdCount,
+                householdCount
+            ));
             this.householdCount = householdCount;
         }
         if (Objects.nonNull(maximumFloor)) {
+            eventList.add(EventEntity.of(
+                "최고 층 수 변경",
+                this.maximumFloor,
+                maximumFloor
+            ));
             this.maximumFloor = maximumFloor;
         }
         if (Objects.nonNull(maximumHeight)) {
+            eventList.add(EventEntity.of(
+                "최고 높이 변경",
+                this.maximumHeight,
+                maximumHeight
+            ));
             this.maximumHeight = maximumHeight;
         }
+        return eventList;
     }
 }

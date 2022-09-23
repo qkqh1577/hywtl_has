@@ -8,13 +8,23 @@ public enum ProjectDocumentType {
     /**
      * 받은 자료
      */
-    RECEIVED,
+    RECEIVED("받은 자료"),
     /**
      * 보낸 자료
      */
-    SENT,
+    SENT("보낸 자료"),
     /**
      * 형상비 검토 자료
      */
-    BUILDING
+    BUILDING("형상비 검토 자료");
+
+    private final String name;
+
+    ProjectDocumentType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

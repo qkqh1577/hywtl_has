@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
@@ -20,13 +21,17 @@ import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractParamet
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +48,8 @@ public class ProjectContractService {
 
     private final FileItemService fileItemService;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Transactional(readOnly = true)
     public List<ProjectContract> getList(Long projectId) {
         return repository.findByProject_Id(projectId);
@@ -54,8 +61,8 @@ public class ProjectContractService {
     }
 
     @Transactional(readOnly = true)
-    public @Nullable
-    ProjectContract getFinal(Long projectId) {
+    @Nullable
+    public ProjectContract getFinal(Long projectId) {
         return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE).orElse(null);
     }
 
@@ -82,6 +89,12 @@ public class ProjectContractService {
             writer
         );
         repository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "계약서 추가",
+            null,
+            instance.getCode()
+        ));
     }
 
     @Transactional
@@ -94,7 +107,7 @@ public class ProjectContractService {
             parameter.getEstimateId());
         FileItem pdfFile = fileItemService.build(parameter.getPdfFile());
 
-        instance.change(
+        List<EventEntity> eventList = instance.change(
             estimate,
             parameter.getIsSent(),
             parameter.getRecipient(),
@@ -104,6 +117,8 @@ public class ProjectContractService {
             toConditionList(parameter.getConditionList()),
             pdfFile
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
@@ -116,11 +131,19 @@ public class ProjectContractService {
         if (instance.getConfirmed()) {
             throw new IllegalRequestException(ProjectContract.KEY + ".already_confirmed", "이미 확정된 계약서입니다.");
         }
-        list.stream()
+        ProjectContract prev = list.stream()
             .filter(ProjectContract::getConfirmed)
-            .findFirst()
-            .ifPresent(item -> item.changeConfirmed(Boolean.FALSE));
+            .findFirst().orElse(null);
+        if (Objects.nonNull(prev)) {
+            prev.changeConfirmed(Boolean.FALSE);
+        }
         instance.changeConfirmed(Boolean.TRUE);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "확정 여부 변경",
+            Optional.ofNullable(prev).map(ProjectContract::getCode).orElse(null),
+            instance.getCode()
+        ));
     }
 
     private ProjectContract load(Long id) {
@@ -180,5 +203,4 @@ public class ProjectContractService {
 
         return code;
     }
-
 }

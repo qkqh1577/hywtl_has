@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_document.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
@@ -11,12 +12,14 @@ import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
 import com.howoocast.hywtl_has.project_document.parameter.ProjectDocumentAddParameter;
 import com.howoocast.hywtl_has.project_document.parameter.ProjectDocumentChangeParameter;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,8 @@ public class ProjectDocumentService {
     private final UserRepository userRepository;
 
     private final FileItemService fileItemService;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<ProjectDocument> list(
@@ -73,6 +78,12 @@ public class ProjectDocumentService {
         );
 
         repository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            String.format("%s 추가", instance.getType().getName()),
+            null,
+            instance.getCode()
+        ));
     }
 
     @Transactional
@@ -82,16 +93,26 @@ public class ProjectDocumentService {
     ) {
         ProjectDocument instance = this.load(id);
         FileItem mailFile = fileItemService.build(parameter.getMailFile());
-        instance.change(
+        List<EventEntity> eventList = instance.change(
             parameter.getRecipient(),
             mailFile,
             parameter.getNote()
         );
+
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
     public void delete(Long id) {
-        this.load(id).delete();
+        ProjectDocument instance = this.load(id);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "자료 삭제",
+            instance.getCode(),
+            null
+        ));
+        instance.delete();
     }
 
     private String getCode(Project project, ProjectDocumentType type) {

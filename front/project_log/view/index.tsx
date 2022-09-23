@@ -27,7 +27,7 @@ export default function ProjectLog(props: Props) {
         marginBottom: '15px',
         padding: '15px 15px'
       }}>
-        <SearchSection totalCount={props.page?.content.length} />
+        <SearchSection totalElements={props.page?.totalElements ?? 0} />
       </Box>
       <LogTable {...props} />
       <Footer {...props} />

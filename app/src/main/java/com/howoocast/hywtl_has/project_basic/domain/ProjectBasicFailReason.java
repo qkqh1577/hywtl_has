@@ -1,8 +1,10 @@
 package com.howoocast.hywtl_has.project_basic.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_bid.domain.BidDTO;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -47,7 +49,7 @@ public class ProjectBasicFailReason extends BidDTO {
         return instance;
     }
 
-    public void update(
+    public List<EventEntity> update(
         @Nullable Business win,
         @Nullable Long testAmount,
         @Nullable Long reviewAmount,
@@ -55,18 +57,28 @@ public class ProjectBasicFailReason extends BidDTO {
         @Nullable String expectedDuration,
         @Nullable String reason
     ) {
-        super.update(
+        List<EventEntity> eventList = super.update(
             testAmount,
             reviewAmount,
             totalAmount,
             expectedDuration
         );
         if (Objects.nonNull(win)) {
+            eventList.add(EventEntity.of(
+                "수주 업체 변경",
+                this.win,
+                win
+            ));
             this.win = win;
         }
         if (Objects.nonNull(reason)) {
+            eventList.add(EventEntity.of(
+                "원인 변경",
+                this.reason,
+                reason
+            ));
             this.reason = reason;
         }
+        return eventList;
     }
-
 }

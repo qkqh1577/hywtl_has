@@ -4,7 +4,9 @@ import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.Getter;
 
 @Getter
@@ -22,8 +24,11 @@ public class ProjectContractView {
     private ProjectContractCollectionView collection;
     private List<ProjectContractConditionView> conditionList;
 
-    public static ProjectContractView assemble(ProjectContract source) {
+    public static ProjectContractView assemble(@Nullable ProjectContract source) {
         ProjectContractView target = new ProjectContractView();
+        if (Objects.isNull(source)) {
+            return target;
+        }
         target.id = source.getId();
         target.code = source.getCode();
         target.confirmed = source.getConfirmed();

@@ -1,9 +1,11 @@
 package com.howoocast.hywtl_has.project_schedule.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,7 +89,7 @@ public class ProjectSchedule extends CustomEntity {
         return instance;
     }
 
-    public void change(
+    public List<EventEntity> change(
         LocalDateTime startTime,
         LocalDateTime endTime,
         Boolean allDay,
@@ -96,12 +98,51 @@ public class ProjectSchedule extends CustomEntity {
         User manager,
         List<User> attendanceList
     ) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "일정 시작 변경",
+            this.startTime,
+            startTime,
+            this.allDay || allDay ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"
+        ));
         this.startTime = startTime;
+        eventList.add(EventEntity.of(
+            "일정 종료 변경",
+            this.endTime,
+            endTime,
+            this.allDay || allDay ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"
+        ));
         this.endTime = endTime;
+        eventList.add(EventEntity.of(
+            "종일 여부 변경",
+            this.allDay,
+            allDay
+        ));
         this.allDay = allDay;
+        eventList.add(EventEntity.of(
+            "제목 변경",
+            this.title,
+            title
+        ));
         this.title = title;
+        eventList.add(EventEntity.of(
+            "알림 일정 변경",
+            this.alertBefore,
+            alertBefore
+        ));
         this.alertBefore = alertBefore;
+        eventList.add(EventEntity.of(
+            "담당자 변경",
+            this.manager,
+            manager
+        ));
         this.manager = manager;
+        eventList.add(EventEntity.of(
+            "일정 공유 대상 변경",
+            "복합 내용은 일시 정보만 기록함",
+            "복합 내용은 일시 정보만 기록함"
+        ));
         this.attendanceList = attendanceList;
+        return eventList;
     }
 }
