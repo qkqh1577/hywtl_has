@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.controller;
 
+import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -50,8 +52,11 @@ public class ProjectController {
     }
 
     @PostMapping("/project/sales")
-    public void add(@Valid @RequestBody ProjectAddParameter parameter) {
-        service.add(parameter);
+    public void add(
+        Authentication authentication,
+        @Valid @RequestBody ProjectAddParameter parameter
+    ) {
+        service.add(parameter, UsernameExtractor.get(authentication));
     }
 
 

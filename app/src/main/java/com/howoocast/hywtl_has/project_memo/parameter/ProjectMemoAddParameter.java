@@ -18,5 +18,5 @@ public class ProjectMemoAddParameter {
     @NotNull(message = ProjectMemo.KEY + ".category.not_null")
     private ProjectMemoCategory category;
 
-    private List<Long> attendanceIdList;
+    private List<Long> attendanceList;
 }

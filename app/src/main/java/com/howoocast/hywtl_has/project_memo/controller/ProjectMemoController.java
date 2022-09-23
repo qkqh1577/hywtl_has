@@ -2,7 +2,8 @@ package com.howoocast.hywtl_has.project_memo.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
-import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoParameter;
+import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoAddParameter;
+import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoChangeParameter;
 import com.howoocast.hywtl_has.project_memo.parameter.ProjectMemoPredicateBuilder;
 import com.howoocast.hywtl_has.project_memo.service.ProjectMemoService;
 import com.howoocast.hywtl_has.project_memo.view.ProjectMemoView;
@@ -65,7 +66,7 @@ public class ProjectMemoController {
     public void add(
         Authentication authentication,
         @PathVariable Long projectId,
-        @Valid @RequestBody ProjectMemoParameter parameter
+        @Valid @RequestBody ProjectMemoAddParameter parameter
     ) {
 
         service.add(
@@ -78,7 +79,7 @@ public class ProjectMemoController {
     @PatchMapping("/project/sales/memo/{id}")
     public void change(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectMemoParameter parameter
+        @Valid @RequestBody ProjectMemoChangeParameter parameter
     ) {
         service.change(id, parameter);
     }

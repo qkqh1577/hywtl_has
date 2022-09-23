@@ -27,5 +27,6 @@ public class ProjectAddParameter {
     @NotNull(message = Project.KEY + ".bid_type.not_null")
     private ProjectBasicBidType bidType;
 
+    private String memo;
 
 }

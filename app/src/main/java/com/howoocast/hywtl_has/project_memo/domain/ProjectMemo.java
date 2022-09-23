@@ -3,7 +3,9 @@ package com.howoocast.hywtl_has.project_memo.domain;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -42,18 +45,23 @@ public class ProjectMemo extends CustomEntity {
     @Enumerated(EnumType.STRING)
     private ProjectMemoCategory category;
 
+    @ElementCollection
+    private List<Long> attendanceList;
+
 
     public static ProjectMemo of(
         Project project,
         ProjectMemoCategory category,
         User writer,
-        String description
+        String description,
+        @Nullable List<Long> attendanceList
     ) {
         ProjectMemo instance = new ProjectMemo();
         instance.project = project;
         instance.category = category;
         instance.writer = writer;
         instance.description = description;
+        instance.attendanceList = attendanceList;
         return instance;
     }
 

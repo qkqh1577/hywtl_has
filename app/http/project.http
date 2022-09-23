@@ -7,7 +7,8 @@ Content-Type: application/json
   "alias": "남양신21",
   "receptionManagerId": 1,
   "progressStatus": "TEMPORARY",
-  "bidType": "DEFAULT"
+  "bidType": "DEFAULT",
+  "memo": "견적 의뢰처: 미정\n 소개자: 직접 전화\n총 동수: 4\n단지 수: 1\n기타: 빠르게 시작할 수 있으면 함"
 }
 
 ### update project
