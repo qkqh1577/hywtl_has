@@ -11,11 +11,13 @@ export interface ProjectState {
   filter?: ProjectQuery;
   page?: Page<ProjectShortVO>;
   detail?: ProjectVO;
+  requestAdd: string;
   addModal: boolean;
 }
 
 const initial: ProjectState = {
-  addModal: false
+  requestAdd: 'idle',
+  addModal:   false
 };
 
 export const projectReducer = createReducer(initial, {
@@ -36,6 +38,12 @@ export const projectReducer = createReducer(initial, {
                                ) => ({
     ...state,
     detail: action.payload,
+  }),
+  [ProjectAction.requestAdd]:  (state,
+                                action
+                               ) => ({
+    ...state,
+    requestAdd: action.payload,
   }),
   [ProjectAction.setAddModal]: (state,
                                 action

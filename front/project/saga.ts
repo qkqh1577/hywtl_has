@@ -36,9 +36,10 @@ function* watchId() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: formik } = yield take(ProjectAction.add);
+    const { payload: params } = yield take(ProjectAction.add);
     try {
-      yield call(projectApi.add, formik.values);
+      yield put(projectAction.requestAdd('request'));
+      yield call(projectApi.add, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {
@@ -49,7 +50,7 @@ function* watchAdd() {
       }));
     }
     finally {
-      yield call(formik.setSubmitting, false);
+      yield put(projectAction.requestAdd('response'));
     }
   }
 }
