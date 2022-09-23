@@ -11,25 +11,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelAcademicParameter extends CustomParameter<PersonnelAcademic> {
 
-    @NotBlank(message = "personnel.academic.academy_name.not_blank")
+    @NotBlank(message = PersonnelAcademic.KEY + ".academy_name.not_blank")
     private String academyName;
 
-    @NotBlank(message = "personnel.academic.major.not_blank")
+    @NotBlank(message = PersonnelAcademic.KEY + ".major.not_blank")
     private String major;
 
     private String degree;
 
     private String grade;
 
-    @NotNull(message = "personnel.academic.start_date.not_null")
+    @NotNull(message = PersonnelAcademic.KEY + ".start_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @NotNull(message = "personnel.academic.end_date.not_null")
+    @NotNull(message = PersonnelAcademic.KEY + ".end_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @NotBlank(message = "personnel.academic.state.not_blank")
+    @NotBlank(message = PersonnelAcademic.KEY + ".state.not_blank")
     private String state;
 
     public PersonnelAcademic build() {

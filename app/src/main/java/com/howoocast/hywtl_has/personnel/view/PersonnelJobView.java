@@ -2,11 +2,12 @@ package com.howoocast.hywtl_has.personnel.view;
 
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 public class PersonnelJobView {
 
     private DepartmentView department;
@@ -16,6 +17,8 @@ public class PersonnelJobView {
     private String jobClass;
     private String jobDuty;
 
+    private Boolean isRepresentative;
+
     public static PersonnelJobView assemble(PersonnelJob source) {
         PersonnelJobView target = new PersonnelJobView();
         target.department = DepartmentView.assemble(source.getDepartment());
@@ -24,6 +27,7 @@ public class PersonnelJobView {
         target.jobPosition = source.getJobPosition();
         target.jobClass = source.getJobClass();
         target.jobDuty = source.getJobDuty();
+        target.isRepresentative = source.getIsRepresentative();
         return target;
     }
 }

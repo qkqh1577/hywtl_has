@@ -2,12 +2,12 @@ package com.howoocast.hywtl_has.personnel.repository;
 
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.personnel.domain.QPersonnel;
-import com.howoocast.hywtl_has.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,9 +20,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PersonnelRepository {
 
+    private final EntityManager entityManager;
+
     private final JPAQueryFactory queryFactory;
     private static final QPersonnel personnel = QPersonnel.personnel;
-    private static final QUser user = QUser.user;
 
     public Optional<Personnel> findById(Long id) {
         BooleanBuilder criteria = new BooleanBuilder();
@@ -42,10 +43,14 @@ public class PersonnelRepository {
 
     public List<Personnel> findAll(Predicate predicate) {
         return queryFactory
-            .select(user.personnel)
-            .from(user)
+            .selectFrom(personnel)
             .where(predicate)
             .fetch();
+    }
+
+    public Personnel save(Personnel source) {
+        entityManager.persist(source);
+        return source;
     }
 
 }

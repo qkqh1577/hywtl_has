@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -50,6 +51,8 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
 
     private final FileItemService fileItemService;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public Page<UserShortView> page(
@@ -104,7 +107,9 @@ public class UserService {
         this.checkEmailUsed(instance);
         this.checkUsernameUsed(instance);
         userInvitation.delete();
-        return UserView.assemble(repository.save(instance));
+        instance = repository.save(instance);
+        eventPublisher.publishEvent(instance);
+        return UserView.assemble(instance);
     }
 
     @Transactional
@@ -145,7 +150,7 @@ public class UserService {
                 )
             );
         instance.validatePassword(parameter.getPassword());
-       passwordReset.delete();
+        passwordReset.delete();
     }
 
     @Transactional

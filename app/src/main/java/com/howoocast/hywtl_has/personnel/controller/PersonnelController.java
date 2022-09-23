@@ -101,6 +101,6 @@ public class PersonnelController {
         @PathVariable Long id,
         @Valid @ModelAttribute PersonnelParameter parameter
     ) {
-        personnelService.update(id, parameter);
+        personnelService.change(id, parameter);
     }
 }

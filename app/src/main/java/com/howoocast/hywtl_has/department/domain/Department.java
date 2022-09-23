@@ -1,7 +1,5 @@
 package com.howoocast.hywtl_has.department.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -51,7 +49,6 @@ public class Department extends CustomEntity {
     /**
      * 상위 조직
      */
-    @JsonBackReference
     @ManyToOne
     private Department parent;
 
@@ -70,7 +67,6 @@ public class Department extends CustomEntity {
     /**
      * 하위 조직 리스트
      */
-    @JsonManagedReference
     @OneToMany(mappedBy = "parent")
     @OrderBy("seq")
     private List<Department> childrenList;
@@ -78,7 +74,6 @@ public class Department extends CustomEntity {
     /**
      * 소속 유저 리스트
      */
-    @JsonManagedReference
     @OneToMany(mappedBy = "department")
     @OrderBy("id")
     private List<User> userList;

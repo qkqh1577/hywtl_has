@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
+import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -10,16 +11,13 @@ import lombok.Setter;
 @Setter
 public class PersonnelParameter {
 
-    @NotNull(message = "personnel.id.not_null")
-    private Long id;
-
-    @NotNull(message = "personnel.basic.not_null")
+    @NotNull(message = Personnel.KEY + ".basic.not_null")
     private PersonnelBasicParameter basic;
 
-    @NotNull(message = "personnel.company.not_null")
+    @NotNull(message = Personnel.KEY + ".company.not_null")
     private PersonnelCompanyParameter company;
 
-    @NotEmpty(message = "personnel.job.list.not_empty")
+    @NotEmpty(message = Personnel.KEY + ".job_list.not_empty")
     private List<PersonnelJobParameter> jobList;
 
     private List<PersonnelAcademicParameter> academicList;

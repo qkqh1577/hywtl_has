@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonnelAcademic {
 
+    public static final String KEY = "personnel_academic";
+
     @NotBlank
     @Column(nullable = false)
     protected String academyName; // 교육기관명

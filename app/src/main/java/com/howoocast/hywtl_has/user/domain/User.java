@@ -1,10 +1,8 @@
 package com.howoocast.hywtl_has.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.file.domain.FileItem;
-import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
 import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
@@ -19,7 +17,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -100,11 +97,6 @@ public class User extends CustomEntity {
     @Column(nullable = false)
     private LocalDateTime passwordChangedAt;
 
-    @JsonManagedReference
-    @Getter(AccessLevel.NONE)
-    @OneToOne(mappedBy = "user")
-    private Personnel personnel;
-
     /**
      * 영문명
      */
@@ -114,26 +106,32 @@ public class User extends CustomEntity {
      * 생년월일
      */
     private LocalDate birthDate;
+
     /**
      * 성별
      */
     private String sex;
+
     /**
      * 핸드폰
      */
     private String mobilePhone;
+
     /**
      * 개인 이메일
      */
     private String privateEmail;
+
     /**
      * 비상 연락처
      */
     private String emergencyPhone;
+
     /**
      * 비상연락처 사원과의 관계
      */
     private String relationship;
+
     /**
      * 주소
      */

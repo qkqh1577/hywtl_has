@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonnelLicense {
 
+    public static final String KEY = "personnel_license";
     @NotBlank
     @Column(nullable = false)
     protected String name; // 면허 이름
