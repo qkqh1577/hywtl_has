@@ -1,0 +1,75 @@
+### update
+PUT http://localhost:8080/personnels/2
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="basic.engName"
+
+usssser
+
+
+--WebAppBoundary
+Content-Disposition: form-data; name="basic.birthDate"
+
+1990-01-01
+
+--WebAppBoundary
+Content-Disposition: form-data; name="basic.sex"
+
+F
+
+--WebAppBoundary
+Content-Disposition: form-data; name="basic.image.multipartFile"; filename="3f43d3eb-92ca-4dc7-8b28-f39cbdcc6cbf.png"
+
+< C:/Users/young/personal/3f43d3eb-92ca-4dc7-8b28-f39cbdcc6cbf.png
+
+--WebAppBoundary
+Content-Disposition: form-data; name="company.hiredDate"
+
+2018-12-01
+
+--WebAppBoundary
+Content-Disposition: form-data; name="company.hiredType"
+
+신입
+
+--WebAppBoundary
+Content-Disposition: form-data; name="jobList[0].departmentId"
+
+3
+
+--WebAppBoundary
+Content-Disposition: form-data; name="jobList[0].jobTitle"
+
+개발 대리
+
+--WebAppBoundary
+Content-Disposition: form-data; name="jobList[0].jobType"
+
+일반
+
+
+--WebAppBoundary
+Content-Disposition: form-data; name="jobList[0].jobPosition"
+
+대리
+
+--WebAppBoundary
+Content-Disposition: form-data; name="jobList[0].isRepresentative"
+
+true
+
+
+--WebAppBoundary--
+
+### get page
+GET http://localhost:8080/personnels
+
+### get basic
+GET http://localhost:8080/personnels/1/basic
+
+### get company
+GET http://localhost:8080/personnels/1/company
+
+### get job list
+GET http://localhost:8080/personnels/1/job-list

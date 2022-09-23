@@ -143,6 +143,8 @@ public class User extends CustomEntity {
     @ManyToOne
     private FileItem profile;
 
+    private String status; // 사용, 사용 중지
+
     protected User(
         String username,
         String password,
@@ -157,6 +159,7 @@ public class User extends CustomEntity {
         this.department = department;
         this.role = role;
         this.setPassword(password);
+        this.status = "사용";
     }
 
     private void setPassword(String password) {
@@ -237,6 +240,10 @@ public class User extends CustomEntity {
             throw new PasswordException(PasswordExceptionType.SAME);
         }
         this.setPassword(password);
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void delete() {

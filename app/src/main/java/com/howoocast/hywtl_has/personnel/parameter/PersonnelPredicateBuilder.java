@@ -3,12 +3,8 @@ package com.howoocast.hywtl_has.personnel.parameter;
 import com.howoocast.hywtl_has.personnel.domain.QPersonnel;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DatePath;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import org.springframework.lang.Nullable;
 
@@ -33,42 +29,58 @@ public class PersonnelPredicateBuilder {
     }
 
     public PersonnelPredicateBuilder keyword(
-        @Nullable List<String> keywordTypeList,
+        @Nullable String keywordType,
         @Nullable String keyword
     ) {
         if (Objects.isNull(keyword) || keyword.isEmpty()) {
             return this;
         }
-        Map<String, BooleanExpression> map = new HashMap<>();
-        map.put("이름", personnel.user.name.containsIgnoreCase(keyword));
-        map.put("이메일", personnel.user.email.containsIgnoreCase(keyword));
-        map.put("영문명", personnel.basic.engName.containsIgnoreCase(keyword));
-        map.put("주소", personnel.basic.address.containsIgnoreCase(keyword));
-        map.put("연락처", personnel.basic.phone.containsIgnoreCase(keyword));
+        if (Objects.isNull(keywordType) || keywordType.equals("이름")) {
+            this.criteria.and(personnel.user.name.containsIgnoreCase(keyword));
+        } else if (keywordType.equals("이메일")) {
+            this.criteria.and(personnel.user.email.containsIgnoreCase(keyword));
+        } else if (keywordType.equals("영문명")) {
+            BooleanBuilder criteria = new BooleanBuilder();
+            criteria.or(personnel.basic.isNotNull().and(personnel.basic.engName.containsIgnoreCase(keyword)));
+            criteria.or(personnel.basic.isNull().and(personnel.user.englishName.containsIgnoreCase(keyword)));
+            this.criteria.and(criteria);
+        } else if (keywordType.equals("주소")) {
+            BooleanBuilder criteria = new BooleanBuilder();
+            criteria.or(personnel.basic.isNotNull().and(personnel.basic.address.containsIgnoreCase(keyword)));
+            criteria.or(personnel.basic.isNull().and(personnel.user.address.containsIgnoreCase(keyword)));
+            this.criteria.and(criteria);
 
-        BooleanBuilder keywordCriteria = new BooleanBuilder();
-
-        if (Objects.isNull(keywordTypeList) || keywordTypeList.isEmpty()) {
-            for (String key : map.keySet()) {
-                BooleanExpression expression = map.get(key);
-                if (Objects.nonNull(expression)) {
-                    keywordCriteria.or(expression);
-                }
-            }
-        } else {
-            for (String key : keywordTypeList) {
-                BooleanExpression expression = map.get(key);
-                if (Objects.nonNull(expression)) {
-                    keywordCriteria.or(expression);
-                }
-            }
+        } else if (keywordType.equals("연락처")) {
+            BooleanBuilder criteria = new BooleanBuilder();
+            criteria.or(personnel.basic.isNotNull().and(personnel.basic.phone.containsIgnoreCase(keyword)));
+            criteria.or(personnel.basic.isNull().and(personnel.user.mobilePhone.containsIgnoreCase(keyword)));
+            this.criteria.and(criteria);
         }
-        criteria.and(keywordCriteria);
+
+        return this;
+    }
+
+    public PersonnelPredicateBuilder status(@Nullable List<String> statusList) {
+        if (Objects.isNull(statusList) || statusList.isEmpty()) {
+            return this;
+        }
+        criteria.and(personnel.user.status.in(statusList));
+        return this;
+    }
+
+    public PersonnelPredicateBuilder department(@Nullable List<Long> departmentIdList) {
+        if (Objects.isNull(departmentIdList) || departmentIdList.isEmpty()) {
+            return this;
+        }
+        BooleanBuilder criteria = new BooleanBuilder();
+        criteria.or(personnel.jobList.isEmpty().and(personnel.user.department.id.in(departmentIdList)));
+        criteria.or(personnel.jobList.isNotEmpty().and(personnel.jobList.any().department.id.in(departmentIdList)));
+        this.criteria.and(criteria);
         return this;
     }
 
     public PersonnelPredicateBuilder date(
-        @Nullable List<String> dateTypeList,
+        @Nullable String dateType,
         @Nullable LocalDate startDate,
         @Nullable LocalDate endDate
     ) {
@@ -76,48 +88,42 @@ public class PersonnelPredicateBuilder {
             return this;
         }
 
-        Map<String, BooleanExpression> map = new HashMap<>();
-        map.put("생년월일", between(personnel.basic.birthDate, startDate, endDate));
-        map.put("입사일", between(personnel.company.hiredDate, startDate, endDate));
-        map.put("학력 시작일", between(personnel.academicList.any().startDate, startDate, endDate));
-
-        BooleanBuilder dateCriteria = new BooleanBuilder();
-
-        if (Objects.isNull(dateTypeList) || dateTypeList.isEmpty()) {
-            for (String key : map.keySet()) {
-                BooleanExpression expression = map.get(key);
-                if (Objects.nonNull(expression)) {
-                    dateCriteria.or(expression);
-                }
+        if (Objects.isNull(dateType) || dateType.equals("생년월일")) {
+            if (Objects.nonNull(startDate)) {
+                BooleanBuilder criteria = new BooleanBuilder();
+                criteria.or(personnel.basic.isNotNull().and(personnel.basic.birthDate.goe(startDate)));
+                criteria.or(personnel.basic.isNull().and(personnel.user.birthDate.goe(startDate)));
+                this.criteria.and(criteria);
             }
-        } else {
-            for (String key : dateTypeList) {
-                BooleanExpression expression = map.get(key);
-                if (Objects.nonNull(expression)) {
-                    dateCriteria.or(expression);
-                }
+            if (Objects.nonNull(endDate)) {
+                BooleanBuilder criteria = new BooleanBuilder();
+                criteria.or(personnel.basic.isNotNull().and(personnel.basic.birthDate.loe(endDate)));
+                criteria.or(personnel.basic.isNull().and(personnel.user.birthDate.loe(endDate)));
+                this.criteria.and(criteria);
+            }
+        } else if (dateType.equals("입사일")) {
+            if (Objects.nonNull(startDate)) {
+                this.criteria.and(personnel.company.hiredDate.goe(startDate));
+            }
+            if (Objects.nonNull(endDate)) {
+                this.criteria.and(personnel.company.hiredDate.loe(endDate));
+            }
+        } else if (dateType.equals("학력 시작일")) {
+
+            this.criteria.and(personnel.academicList.isNotEmpty());
+            if (Objects.nonNull(startDate)) {
+                this.criteria.and(personnel.academicList.any().startDate.goe(startDate));
+            }
+            if (Objects.nonNull(endDate)) {
+                this.criteria.and(personnel.academicList.any().startDate.loe(endDate));
             }
         }
-        criteria.and(dateCriteria);
+
         return this;
     }
 
     public Predicate build() {
         return criteria.getValue();
-    }
-
-    private BooleanExpression between(
-        DatePath<LocalDate> query,
-        @Nullable LocalDate startDate,
-        @Nullable LocalDate endDate
-    ) {
-        if (Objects.isNull(startDate)) {
-            return query.loe(endDate);
-        }
-        if (Objects.isNull(endDate)) {
-            return query.goe(startDate);
-        }
-        return query.between(startDate, endDate);
     }
 
     private boolean listNotEmpty(@Nullable List<?> list) {

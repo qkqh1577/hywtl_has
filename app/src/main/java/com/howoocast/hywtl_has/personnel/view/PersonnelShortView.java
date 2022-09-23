@@ -29,8 +29,7 @@ public class PersonnelShortView {
         target.name = source.getUser().getName();
         target.userId = source.getUser().getId();
         target.email = source.getUser().getEmail();
-        // TODO: 사용자 계정 상태
-        target.userStatus = "사용";
+        target.userStatus = source.getUser().getStatus();
         target.company = PersonnelCompanyView.assemble(source.getCompany());
         target.academicCount = getSize(source.getAcademicList());
         target.careerCount = getSize(source.getCareerList());

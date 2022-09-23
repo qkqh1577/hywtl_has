@@ -30,8 +30,7 @@ public class PersonnelView {
         target.name = source.getUser().getName();
         target.userId = source.getUser().getId();
         target.email = source.getUser().getEmail();
-        // TODO: 사용자 계정 상태
-        target.userStatus = "사용";
+        target.userStatus = source.getUser().getStatus();
         target.company = PersonnelCompanyView.assemble(source.getCompany());
         target.academicList = ListConvertor.make(source.getAcademicList(), PersonnelAcademicView::assemble);
         target.careerList = ListConvertor.make(source.getCareerList(), PersonnelCareerView::assemble);
