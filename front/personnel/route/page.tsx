@@ -16,10 +16,13 @@ import {
 import { personnelAction } from 'personnel/action';
 import { useFormik } from 'formik';
 import PersonnelPage from 'personnel/view/Page';
+import { toOption } from 'personnel/util/convertToOption';
 
 function Element() {
   const dispatch = useDispatch();
   const { filter, page } = useSelector((root: RootState) => root.personnel);
+  const { list } = useSelector((root: RootState) => root.department);
+
   const setFilter = useCallback((formikProps: FormikSubmit<PersonnelQuery>) => {
     const result: PersonnelQuery = {
       ...(filter ?? initialPersonnelQuery),
@@ -55,6 +58,9 @@ function Element() {
   };
 
   useEffect(() => {
+    dispatch({
+      type: 'department/list/request'
+    });
     setFilter(formik);
   }, []);
 
@@ -64,6 +70,7 @@ function Element() {
       formik={formik}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
+      list={toOption(list || [])}
     />
   );
 }

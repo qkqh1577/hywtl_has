@@ -66,7 +66,7 @@ export const initialPersonnelCompany: PersonnelCompanyVO = {
 };
 
 export interface PersonnelJobVO {
-  departmentId?: number; // 부서
+  department?: number; // 부서
   jobTitle?: string; // 직함
   jobType?: string; // 직종
   jobPosition?: string; // 직위
@@ -75,7 +75,7 @@ export interface PersonnelJobVO {
 }
 
 export const initialPersonnelJobVO: PersonnelJobVO = {
-  departmentId: undefined,
+  department: undefined,
   jobTitle:     '',
   jobType:      '',
   jobPosition:  '',

@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Grid,
 } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
+import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
+import { FormikEditable } from 'type/Form';
+import {
+  hiredTypeList,
+  PersonnelVO
+} from 'personnel/domain';
+import RadioField from 'components/RadioField';
 
-export default function CompanyForm({ company, edit }) {
+export default function CompanyForm() {
+  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
+  const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
       margin:  '10px 0px',
@@ -28,10 +40,19 @@ export default function CompanyForm({ company, edit }) {
             </Grid>
             <Grid item sm={6}>
               <Grid item sm={12}>
-                <TextField
-                  name="company.hiredType"
-                  label="입사 구분"
-                />
+                {edit && (
+                  <RadioField
+                    label="입사 구분"
+                    name="company.hiredType"
+                    options={hiredTypeList}
+                  />
+                )}
+                {!edit && (
+                  <TextField
+                    name="company.hiredType"
+                    label="입사 구분"
+                  />
+                )}
               </Grid>
             </Grid>
           </Grid>

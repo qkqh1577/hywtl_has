@@ -9,7 +9,7 @@ import {
   PersonnelLicenseVO,
   PersonnelShortVO,
 } from 'personnel/domain';
-import apiClient from 'services/api';
+import apiClient, { toFormData } from 'services/api';
 import { PersonnelQuery } from 'personnel/query';
 import Page from 'type/Page';
 import { PersonnelParameter } from 'personnel/parameter';
@@ -56,7 +56,9 @@ class PersonnelApi {
   }
 
   async update(params: PersonnelParameter): Promise<void> {
-    const { data } = await apiClient.put(`/personnels/${params.id}`);
+    console.log(params.jobList.length);
+    const formData = toFormData(params)
+    const { data } = await apiClient.put(`/personnels/${params.id}`, formData);
     return data;
   }
 }

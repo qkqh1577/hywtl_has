@@ -24,6 +24,7 @@ import {
   UserVO
 } from 'user/domain';
 import { userApi } from 'user/api';
+import { dialogActions } from 'components/Dialog';
 
 function* watchFilter() {
   while (true) {
@@ -46,7 +47,7 @@ function* watchAccount() {
     const { id } = yield take(PersonnelAction.setId);
 
     const account: UserVO = yield call(userApi.getOne, UserId(id as number));
-    yield put(personnelAction.setAccount(account))
+    yield put(personnelAction.setAccount(account));
   }
 }
 
@@ -107,6 +108,28 @@ function* watchLanguageList() {
   }
 }
 
+function* watchUpdate() {
+  while (true) {
+    const { payload: formik } = yield take(PersonnelAction.update);
+    try {
+      yield call(personnelApi.update, formik.values);
+      yield put(dialogActions.openAlert('저장하였습니다.'));
+      yield put({
+        type: PersonnelAction.setId,
+        id:   formik.values.id
+      });
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        children: '저장에 실패하였습니다.',
+        status:   'error',
+      }));
+    }
+    finally {
+      yield call(formik.setSubmitting, false);
+    }
+  }
+}
 
 export default function* personnelSaga() {
   yield fork(watchFilter);
@@ -118,4 +141,5 @@ export default function* personnelSaga() {
   yield fork(watchCareerList);
   yield fork(watchLicenseList);
   yield fork(watchLanguageList);
+  yield fork(watchUpdate);
 };

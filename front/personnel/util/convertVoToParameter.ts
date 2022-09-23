@@ -22,7 +22,7 @@ export function toPersonnelBasic(basic: PersonnelBasicVO): PersonnelBasicParamet
   return {
     engName:        basic.engName,
     birthDate:      dayjs(basic.birthDate)
-                    .format('yyyy-mm-dd'),
+                    .format('YYYY-MM-DD'),
     sex:            basic.sex,
     image:          undefined,
     address:        basic.address,
@@ -36,15 +36,16 @@ export function toPersonnelBasic(basic: PersonnelBasicVO): PersonnelBasicParamet
 export function toPersonnelCompany(company: PersonnelCompanyVO): PersonnelCompanyParameter {
   return {
     hiredDate:   dayjs(company.hiredDate)
-                 .format('yyyy-mm-dd'),
+                 .format('YYYY-MM-DD'),
     hiredType:   company.hiredType,
     recommender: company.recommender,
   };
 }
 
 export function toPersonnelJob(job: PersonnelJobVO): PersonnelJobParameter {
+  console.log("job : ", job);
   return {
-    departmentId: job.departmentId,
+    departmentId: job.department,
     jobTitle:     job.jobTitle,
     jobType:      job.jobType,
     jobPosition:  job.jobPosition,
@@ -61,9 +62,9 @@ export function toPersonnelAcademy(academy: PersonnelAcademicVO): PersonnelAcade
     state:       academy.state,
     grade:       academy.grade,
     startDate:   dayjs(academy.startDate)
-                 .format('yyyy-mm-dd'),
+                 .format('YYYY-MM-DD'),
     endDate:     dayjs(academy.endDate)
-                 .format('yyyy-mm-dd'),
+                 .format('YYYY-MM-DD'),
   };
 }
 
@@ -72,9 +73,9 @@ export function toPersonnelCareer(career: PersonnelCareerVO): PersonnelCareerPar
     companyName: career.companyName,
     majorJob:    career.majorJob,
     startDate:   dayjs(career.startDate)
-                 .format('yyyy-mm-dd'),
+                 .format('YYYY-MM-DD'),
     endDate:     dayjs(career.endDate)
-                 .format('yyyy-mm-dd'),
+                 .format('YYYY-MM-DD'),
   };
 }
 
@@ -85,7 +86,7 @@ export function toPersonnelLicense(license: PersonnelLicenseVO): PersonnelLicens
     organizationName: license.organizationName,
     qualifiedNumber:  license.qualifiedNumber,
     qualifiedDate:    dayjs(license.qualifiedDate)
-                      .format('yyyy-mm-dd'),
+                      .format('YYYY-MM-DD'),
     note:             license.note,
   };
 }
@@ -97,8 +98,8 @@ export function toPersonnelLanguage(language: PersonnelLanguageVO): PersonnelLan
     grade:            language.grade,
     organizationName: language.organizationName,
     certifiedDate:    dayjs(language.certifiedDate)
-                      .format('yyyy-mm-dd'),
+                      .format('YYYY-MM-DD'),
     expiryPeriod:     dayjs(language.expiryPeriod)
-                      .format('yyyy-mm-dd')
+                      .format('YYYY-MM-DD')
   };
 }

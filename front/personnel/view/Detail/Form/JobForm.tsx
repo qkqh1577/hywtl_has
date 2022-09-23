@@ -18,8 +18,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'components/IconButton';
+import SelectField from 'components/SelectField';
 
-export default function JobForm() {
+export default function JobForm(props) {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
   const jobList = formikContext.values.jobList;
   const edit = formikContext?.values.edit ?? true;
@@ -67,45 +68,55 @@ export default function JobForm() {
             <Grid item sm={9}>
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
-                  <TextField
-                    name={`jobList.${index}.department`}
-                    label="소속부서"
-                    labelPosition="top"
-                  />
+                  {edit && (
+                    <SelectField
+                      label="소속부서"
+                      labelPosition="top"
+                      name={`jobList.${index}.department`}
+                      options={props.departmentList}
+                    />
+                  )}
+                  {!edit && (
+                    <TextField
+                      label="소속부서"
+                      labelPosition="top"
+                      name={`jobList.${index}.department`}
+                    />
+                  )}
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
-                    name={`jobList.${index}.jobTitle`}
                     label="직함"
                     labelPosition="top"
+                    name={`jobList.${index}.jobTitle`}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
-                    name={`jobList.${index}.jobType`}
                     label="직종"
                     labelPosition="top"
+                    name={`jobList.${index}.jobType`}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
-                    name={`jobList.${index}.jobPosition`}
                     label="직위"
                     labelPosition="top"
+                    name={`jobList.${index}.jobPosition`}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
-                    name={`jobList.${index}.jobClass`}
                     label="직급"
                     labelPosition="top"
+                    name={`jobList.${index}.jobClass`}
                   />
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
-                    name={`jobList.${index}.jobDuty`}
                     label="직책"
                     labelPosition="top"
+                    name={`jobList.${index}.jobDuty`}
                   />
                 </Grid>
               </Grid>

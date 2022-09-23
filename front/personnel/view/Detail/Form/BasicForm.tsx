@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Grid
@@ -6,8 +6,20 @@ import {
 import TextField from 'components/TextField';
 import UploadField from 'components/UploadField';
 import DateField from 'components/DateField';
+import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
+import { FormikEditable } from 'type/Form';
+import {
+  PersonnelVO,
+  sexCategoryList
+} from 'personnel/domain';
+import RadioField from 'components/RadioField';
 
-export default function BasicForm({ basic, edit }) {
+export default function BasicForm() {
+  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
+  const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
       margin:  '10px 0px',
@@ -39,10 +51,19 @@ export default function BasicForm({ basic, edit }) {
             </Grid>
             <Grid container item sm={12} spacing={2}>
               <Grid item sm={6}>
-                <TextField
-                  name="basic.sex"
-                  label="성별"
-                />
+                {edit && (
+                  <RadioField
+                    label="성별"
+                    name="basic.sex"
+                    options={sexCategoryList}
+                  />
+                )}
+                {!edit && (
+                  <TextField
+                    name="basic.sex"
+                    label="성별"
+                  />
+                )}
               </Grid>
             </Grid>
             <Grid container item sm={12} spacing={2}>

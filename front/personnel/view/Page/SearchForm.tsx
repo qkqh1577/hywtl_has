@@ -7,14 +7,18 @@ import {
   accountStateTypeList,
   dateTypeList,
   hiredTypeList,
-  jobTypeList,
   keywordTypeList,
   sexTypeList
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
 import DateField from 'components/DateField';
+import { Option } from 'components/DataFieldProps';
 
-export default function SearchBox(props) {
+export interface SearchPersonnelFormProps {
+  list: Option[];
+}
+
+export default function SearchBox({ list }: SearchPersonnelFormProps) {
   return (
     <SearchForm>
       <Grid container spacing={2}>
@@ -86,7 +90,7 @@ export default function SearchBox(props) {
             <CheckboxField
               name="jobType"
               label="소속"
-              options={jobTypeList}
+              options={list}
             />
           </Grid>
         </Grid>

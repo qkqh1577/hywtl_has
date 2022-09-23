@@ -34,6 +34,7 @@ import {
   toPersonnelLicense
 } from 'personnel/util/convertVoToParameter';
 import PersonnelDetail from 'personnel/view/Detail';
+import { toOption } from 'personnel/util/convertToOption';
 
 function Element() {
   const id = useId();
@@ -57,10 +58,13 @@ function Element() {
     careerList:   careerList || [],
     licenseList:  licenseList || [],
     languageList: languageList || [],
-    edit: false,
+    edit:         false,
   };
-  const update = useCallback((formikProps: FormikSubmit<PersonnelParameter>) =>
-    dispatch(personnelAction.update(formikProps)), [dispatch]);
+  const { list } = useSelector((root: RootState) => root.department);
+
+  const update = useCallback((formikProps: FormikSubmit<PersonnelParameter>) => {
+    return dispatch(personnelAction.update(formikProps));
+  }, [dispatch]);
   const formik = useFormik<FormikEditable<PersonnelVO>>({
     enableReinitialize: true,
     initialValues:      personnelVO || initialPersonnelVO,
@@ -81,9 +85,12 @@ function Element() {
       });
     }
   });
-
+  const edit = formik.values.edit;
   useEffect(() => {
     if (id) {
+      dispatch({
+        type: 'department/list/request'
+      });
       dispatch({
         type: PersonnelAction.setId,
         id
@@ -94,7 +101,8 @@ function Element() {
   return (
     <PersonnelDetail
       formik={formik}
-      personnelVO={personnelVO}
+      edit={edit}
+      list={toOption(list || [])}
     />
   );
 }

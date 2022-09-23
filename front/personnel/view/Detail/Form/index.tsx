@@ -18,12 +18,13 @@ import {
   FormikContextType
 } from 'formik';
 import { FormikEditable } from 'type/Form';
+import { Option } from 'components/DataFieldProps';
 
-export interface FormListProps {
-  personnelVO: PersonnelVO | undefined;
+export interface FormProps {
+  list: Option[]
 }
 
-export default function FormList({ personnelVO }: FormListProps) {
+export default function FormList(props: FormProps) {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
   const { edit } = formikContext.values;
   return (
@@ -38,19 +39,19 @@ export default function FormList({ personnelVO }: FormListProps) {
     }}>
       <AccountForm />
       <Divider />
-      <BasicForm basic={personnelVO?.basic} edit={edit} />
+      <BasicForm />
       <Divider />
-      <CompanyForm company={personnelVO?.company} edit={edit}/>
+      <CompanyForm />
       <Divider />
-      <JobForm jobList={personnelVO?.jobList} edit={edit}/>
+      <JobForm departmentList={props.list}/>
       <Divider />
-      <AcademicForm academicList={personnelVO?.academicList} edit={edit}/>
+      <AcademicForm/>
       <Divider />
-      <CareerForm careerList={personnelVO?.careerList} edit={edit}/>
+      <CareerForm/>
       <Divider />
-      <LicenseForm licenseList={personnelVO?.licenseList} edit={edit}/>
+      <LicenseForm/>
       <Divider />
-      <LanguageForm languageList={personnelVO?.languageList} edit={edit}/>
+      <LanguageForm/>
     </Box>
   );
 }
