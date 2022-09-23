@@ -115,6 +115,7 @@ export default function DateField(props: DateFieldProps) {
 
     return (
       <TextField
+        variant={rest.variant}
         status={status}
         helperText={helperText}
         required={required}
