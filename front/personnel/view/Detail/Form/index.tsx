@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Box,
   Divider
@@ -12,12 +12,6 @@ import AcademicForm from 'personnel/view/Detail/Form/AcademicForm';
 import CareerForm from 'personnel/view/Detail/Form/CareerForm';
 import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
-import { PersonnelVO } from 'personnel/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
 import { Option } from 'components/DataFieldProps';
 
 export interface FormProps {
@@ -25,8 +19,6 @@ export interface FormProps {
 }
 
 export default function FormList(props: FormProps) {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const { edit } = formikContext.values;
   return (
     <Box sx={{
       display:       'flex',

@@ -55,7 +55,9 @@ export default function List(props: ListProps) {
                   </TextLink>
                 </Td>
                 <Td>
-                  {item.email}
+                  <TextLink onClick={`/user/hr-card-management/${item.id}`}>
+                    {item.email}
+                  </TextLink>
                 </Td>
                 <Td>
                   {item.basic?.sex}

@@ -28,7 +28,6 @@ export enum PersonnelAction {
   setLicenseList    = 'personnel/license-list/set',
   setLanguageList   = 'personnel/language-list/set',
   update            = 'personnel/update',
-  setDepartmentList = 'personnel/department-list/set'
 }
 
 export const personnelAction = {

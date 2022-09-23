@@ -45,7 +45,6 @@ function* watchFilter() {
 function* watchAccount() {
   while (true) {
     const { id } = yield take(PersonnelAction.setId);
-
     const account: UserVO = yield call(userApi.getOne, UserId(id as number));
     yield put(personnelAction.setAccount(account));
   }

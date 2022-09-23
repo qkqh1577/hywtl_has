@@ -1,6 +1,7 @@
 import { FileItemView } from 'file-item';
 import {
   initialUser,
+  UserId,
   UserVO
 } from 'user/domain';
 import { DepartmentVO } from 'department/domain';
@@ -13,6 +14,7 @@ export function PersonnelId(id: number) {
 
 export interface PersonnelShortVO {
   id?: PersonnelId,
+  userId?: UserId,
   name: string,
   email: string,
   basic?: PersonnelBasicVO,
@@ -23,6 +25,7 @@ export interface PersonnelShortVO {
 
 export const initialPersonnelShortVO: PersonnelShortVO = {
   id:      undefined,
+  userId: undefined,
   name:    '',
   email:   '',
   basic:   undefined,

@@ -73,11 +73,11 @@ export const dateTypeList: Option[] = [
 
 export const sexTypeList: Option[] = [
   {
-    key:  '남',
+    key:  '남성',
     text: '남',
   },
   {
-    key:  '여',
+    key:  '여성',
     text: '여',
   }
 ];

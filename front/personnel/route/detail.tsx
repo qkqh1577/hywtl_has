@@ -49,6 +49,8 @@ function Element() {
           licenseList,
           languageList
         } = useSelector((root: RootState) => root.personnel);
+
+  const { detail } = useSelector((root: RootState) => root.user);
   const personnelVO: FormikEditable<PersonnelVO> = {
     account,
     basic,
@@ -97,7 +99,6 @@ function Element() {
       });
     }
   }, [id]);
-
   return (
     <PersonnelDetail
       formik={formik}
