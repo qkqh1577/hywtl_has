@@ -74,6 +74,15 @@ export interface PersonnelJobVO {
   jobDuty?: string; // 직책
 }
 
+export const initialPersonnelJobVO: PersonnelJobVO = {
+  departmentId: undefined,
+  jobTitle:     '',
+  jobType:      '',
+  jobPosition:  '',
+  jobClass:     '',
+  jobDuty:      '',
+};
+
 export interface PersonnelAcademicVO {
   academyName?: string; // 교육기관명
   major?: string; // 전공
@@ -84,12 +93,29 @@ export interface PersonnelAcademicVO {
   endDate?: Date; // 졸업일
 }
 
+export const initialPersonnelAcademicVO: PersonnelAcademicVO = {
+  academyName: '',
+  major:       '',
+  degree:      '',
+  state:       '',
+  grade:       '',
+  startDate:   undefined,
+  endDate:     undefined,
+};
+
 export interface PersonnelCareerVO {
   companyName?: string; // 근무처명
   majorJob?: string; // 직급 및 담당업무
   startDate?: Date; // 입사일
   endDate?: Date; // 퇴사일
 }
+
+export const initialPersonnelCareerVO: PersonnelCareerVO = {
+  companyName: '',
+  majorJob:    '',
+  startDate:   undefined,
+  endDate:     undefined,
+};
 
 export interface PersonnelLicenseVO {
   name?: string; // 면허 이름(정보)
@@ -100,6 +126,15 @@ export interface PersonnelLicenseVO {
   note?: string; // 비고
 }
 
+export const initialPersonnelLicenseVO: PersonnelLicenseVO = {
+  name:             '',
+  type:             '',
+  organizationName: '',
+  qualifiedNumber:  '',
+  qualifiedDate:    undefined,
+  note:             '',
+};
+
 export interface PersonnelLanguageVO {
   name?: string; // 자격증명
   type?: string; // 대상 언어
@@ -108,6 +143,15 @@ export interface PersonnelLanguageVO {
   certifiedDate?: Date; // 취득일
   expiryPeriod?: Date; // 유효기관(종료일)
 }
+
+export const initialPersonnelLanguageVO: PersonnelLanguageVO = {
+  name:             '',
+  type:             '',
+  grade:            '',
+  organizationName: '',
+  certifiedDate:    undefined,
+  expiryPeriod:     undefined
+};
 
 export interface PersonnelVO {
   id?: PersonnelId,
