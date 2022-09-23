@@ -16,6 +16,7 @@ import contractCollectionTemplateRoute from 'admin/contract/collection/route';
 import { contractConditionTemplateRoute } from 'admin/contract/condition/route';
 import { projectLogRoute } from 'project_log/route/log';
 import { projectScheduleRoute } from 'project_schedule/route/schedule';
+import personnelRoutes from 'personnel/route';
 
 export interface AppRoute
   extends RouteProps {
@@ -36,6 +37,7 @@ const Routes = () => {
     contractConditionTemplateRoute,
     projectLogRoute,
     projectScheduleRoute,
+    ...personnelRoutes,
   ];
 
   return useRoutes(routes as RouteObject[]);
