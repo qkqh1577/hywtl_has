@@ -19,20 +19,10 @@ export interface PersonnelShortVO {
   email: string,
   basic?: PersonnelBasicVO,
   company?: PersonnelCompanyVO,
+  department?: DepartmentVO,
   job?: PersonnelJobVO,
   userStatus: string
 }
-
-export const initialPersonnelShortVO: PersonnelShortVO = {
-  id:      undefined,
-  userId: undefined,
-  name:    '',
-  email:   '',
-  basic:   undefined,
-  company: undefined,
-  job:     undefined,
-  userStatus: '',
-};
 
 export interface PersonnelBasicVO {
   engName: string; // 영문이름

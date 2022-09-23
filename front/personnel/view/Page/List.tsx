@@ -66,7 +66,7 @@ export default function List(props: ListProps) {
                   {item.basic?.birthDate}
                 </Td>
                 <Td>
-                  {item.job?.department?.name}
+                  {item.department?.name}
                 </Td>
                 <Td>
                   {item.company?.hiredType}
