@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonnelLanguage {
 
+    public static final String KEY = "personnel_language";
     @NotBlank
     @Column(nullable = false)
     protected String name; // 자격증명
@@ -36,16 +37,13 @@ public class PersonnelLanguage {
 
     protected String expiryPeriod; // 유효 기간
 
-    protected String trainingPeriod; // 연수 기간
-
     public static PersonnelLanguage of(
         String name,
         String type,
         String grade,
         String organizationName,
         LocalDate certifiedDate,
-        String expiryPeriod,
-        String trainingPeriod
+        String expiryPeriod
     ) {
         return new PersonnelLanguage(
             name,
@@ -53,8 +51,7 @@ public class PersonnelLanguage {
             grade,
             organizationName,
             certifiedDate,
-            expiryPeriod,
-            trainingPeriod
+            expiryPeriod
         );
     }
 }

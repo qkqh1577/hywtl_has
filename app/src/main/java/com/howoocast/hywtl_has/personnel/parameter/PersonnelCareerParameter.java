@@ -11,18 +11,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 public class PersonnelCareerParameter extends CustomParameter<PersonnelCareer> {
 
-    @NotBlank(message = "personnel.career.company_name.not_blank")
+    @NotBlank(message = PersonnelCareer.KEY + ".company_name.not_blank")
     private String companyName;
 
-    @NotNull(message = "personnel.career.start_date.not_null")
+    @NotNull(message = PersonnelCareer.KEY + ".start_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @NotNull(message = "personnel.career.end_date.not_null")
+    @NotNull(message = PersonnelCareer.KEY + ".end_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @NotBlank(message = "personnel.career.major_job.not_blank")
+    @NotBlank(message = PersonnelCareer.KEY + ".major_job.not_blank")
     private String majorJob;
 
     public PersonnelCareer build() {

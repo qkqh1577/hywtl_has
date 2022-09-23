@@ -15,7 +15,6 @@ public class PersonnelLanguageView {
     private String organizationName;
     private LocalDate certifiedDate;
     private String expiryPeriod;
-    private String trainingPeriod;
 
     public static PersonnelLanguageView assemble(PersonnelLanguage source) {
         PersonnelLanguageView target = new PersonnelLanguageView();
@@ -25,7 +24,6 @@ public class PersonnelLanguageView {
         target.organizationName = source.getOrganizationName();
         target.certifiedDate = source.getCertifiedDate();
         target.expiryPeriod = source.getExpiryPeriod();
-        target.trainingPeriod = source.getTrainingPeriod();
         return target;
     }
 }

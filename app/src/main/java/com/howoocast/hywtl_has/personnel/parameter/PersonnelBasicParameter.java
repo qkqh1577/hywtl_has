@@ -1,7 +1,5 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
-import com.howoocast.hywtl_has.file.domain.FileItem;
-import com.howoocast.hywtl_has.common.parameter.CustomParameter;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import java.time.LocalDate;
@@ -11,20 +9,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Getter
 @Setter
-public class PersonnelBasicParameter extends CustomParameter<PersonnelBasic> {
+public class PersonnelBasicParameter {
 
-    @NotBlank(message = "personnel.basic.eng_name.not_blank")
+    @NotBlank(message = PersonnelBasic.KEY + ".eng_name.not_blank")
     private String engName;
 
-    @NotNull(message = "personnel.basic.birth_date.not_null")
+    @NotNull(message = PersonnelBasic.KEY + ".birth_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-    @NotBlank(message = "personnel.basic.sex.not_blank")
+    @NotBlank(message = PersonnelBasic.KEY + ".sex.not_blank")
     private String sex;
 
-    @Getter
     private FileItemParameter image;
 
     private String address;
@@ -37,24 +35,4 @@ public class PersonnelBasicParameter extends CustomParameter<PersonnelBasic> {
 
     private String personalEmail;
 
-    private FileItem imageItem;
-
-    public PersonnelBasicParameter imageItem(FileItem imageItem) {
-        this.imageItem = imageItem;
-        return this;
-    }
-
-    public PersonnelBasic build() {
-        return PersonnelBasic.of(
-            engName,
-            birthDate,
-            sex,
-            imageItem,
-            address,
-            phone,
-            emergencyPhone,
-            relationship,
-            personalEmail
-        );
-    }
 }

@@ -1,19 +1,15 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,22 +26,17 @@ public class Personnel extends CustomEntity {
 
     public static final String KEY = "personnel";
 
-    @JsonBackReference
     @OneToOne
-    @NotNull
     @JoinColumn
     private User user;
 
-    @NotNull
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     private PersonnelBasic basic;
 
-    @NotNull
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     private PersonnelCompany company;
 
-    @JsonManagedReference
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.ALL)
     private List<PersonnelJob> jobList; // 직함 목록
 
     @ElementCollection
@@ -60,23 +51,14 @@ public class Personnel extends CustomEntity {
     @ElementCollection
     private List<PersonnelLanguage> languageList; // 어학 자격 목록
 
-    //////////////////////////////////
-    //// constructor
-    //////////////////////////////////
     private Personnel(User user) {
         this.user = user;
     }
 
-    //////////////////////////////////
-    //// builder
-    //////////////////////////////////
     public static Personnel of(User user) {
         return new Personnel(user);
     }
 
-    //////////////////////////////////
-    //// modifier
-    //////////////////////////////////
     public void change(
         PersonnelBasic basic,
         PersonnelCompany company,

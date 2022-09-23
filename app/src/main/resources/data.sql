@@ -114,5 +114,7 @@ INSERT INTO hywtl_has_api.user (id, created_at, created_by, deleted_at, deleted_
 INSERT INTO hywtl_has_api.user_invitation (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, email, name, role, department_id) VALUES (1, '2022-04-13 10:42:47.046140', 0, '2022-04-13 10:43:09.705662', null, null, null, 'admin@test.com', 'admin', 0, 1);
 INSERT INTO hywtl_has_api.user_invitation (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, email, name, role, department_id) VALUES (2, '2022-04-13 10:42:47.046140', 0, '2022-04-13 10:43:09.705662', null, null, null, 'user@test.com', 'user', 0, 2);
 INSERT INTO hywtl_has_api.user_invitation (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, email, name, role, department_id) VALUES (3, '2022-05-12 12:10:42.064628', 1, '2022-05-12 12:11:03.000000', null, '2022-05-12 12:10:42.064628', 1, 'test@test.com', 'test', 1, 2);
-
+INSERT INTO hywtl_has_api.personnel (id, created_at, created_by, user_id) VALUES (1, '2022-04-13 10:42:47.046140', 1, 1);
+INSERT INTO hywtl_has_api.personnel (id, created_at, created_by, user_id) VALUES (2, '2022-04-13 10:42:47.046140', 1, 2);
+INSERT INTO hywtl_has_api.personnel (id, created_at, created_by, user_id) VALUES (3, '2022-04-13 10:42:47.046140', 1, 3);
 set FOREIGN_KEY_CHECKS = 1;

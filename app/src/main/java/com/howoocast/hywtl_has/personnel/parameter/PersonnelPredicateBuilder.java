@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
 import com.howoocast.hywtl_has.personnel.domain.QPersonnel;
-import com.howoocast.hywtl_has.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -15,8 +14,7 @@ import org.springframework.lang.Nullable;
 
 public class PersonnelPredicateBuilder {
 
-    private static final QUser user = QUser.user;
-    private static final QPersonnel personnel = user.personnel;
+    private static final QPersonnel personnel = QPersonnel.personnel;
 
     private final BooleanBuilder criteria = new BooleanBuilder();
 

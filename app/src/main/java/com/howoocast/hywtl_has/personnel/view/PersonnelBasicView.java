@@ -4,12 +4,13 @@ import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
 import java.time.LocalDate;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 public class PersonnelBasicView {
 
     private String engName;

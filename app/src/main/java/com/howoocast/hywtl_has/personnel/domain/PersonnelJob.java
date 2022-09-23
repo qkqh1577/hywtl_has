@@ -24,7 +24,6 @@ public class PersonnelJob extends CustomEntity {
 
     public static final String KEY = "personnel_job";
 
-    @NotNull
     @ManyToOne
     private Department department; // 조직
 
@@ -44,23 +43,12 @@ public class PersonnelJob extends CustomEntity {
 
     private String jobDuty; // 직책, 조직 내 책임. ex) 팀장, 본부장, 실장...
 
-    public static PersonnelJob of(
-        Department department,
-        String jobTitle,
-        String jobType,
-        String jobPosition,
-        String jobClass,
-        String jobDuty
-    ) {
-        return new PersonnelJob(
-            department,
-            jobTitle,
-            jobType,
-            jobPosition,
-            jobClass,
-            jobDuty
-        );
-    }
+    /**
+     * 대표 노출 여부
+     */
+    @NotNull
+    @Column(nullable = false)
+    private Boolean isRepresentative;
 
     private PersonnelJob(
         Department department,
@@ -68,7 +56,8 @@ public class PersonnelJob extends CustomEntity {
         String jobType,
         String jobPosition,
         String jobClass,
-        String jobDuty
+        String jobDuty,
+        Boolean isRepresentative
     ) {
         this.department = department;
         this.jobTitle = jobTitle;
@@ -76,5 +65,26 @@ public class PersonnelJob extends CustomEntity {
         this.jobPosition = jobPosition;
         this.jobClass = jobClass;
         this.jobDuty = jobDuty;
+        this.isRepresentative = isRepresentative;
+    }
+
+    public static PersonnelJob of(
+        Department department,
+        String jobTitle,
+        String jobType,
+        String jobPosition,
+        String jobClass,
+        String jobDuty,
+        Boolean isRepresentative
+    ) {
+        return new PersonnelJob(
+            department,
+            jobTitle,
+            jobType,
+            jobPosition,
+            jobClass,
+            jobDuty,
+            isRepresentative
+        );
     }
 }

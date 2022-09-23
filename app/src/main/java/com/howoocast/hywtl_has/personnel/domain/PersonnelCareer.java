@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonnelCareer {
 
+    public static final String KEY = "personnel_career";
+
     @NotBlank
     @Column(nullable = false)
     protected String companyName; // 근무처명
