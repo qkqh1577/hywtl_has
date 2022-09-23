@@ -31,6 +31,7 @@ export interface PersonnelCompanyParameter {
 }
 
 export interface PersonnelJobParameter {
+  isRepresentative?: boolean;
   departmentId?: number;
   jobTitle?: string;
   jobType?: string;

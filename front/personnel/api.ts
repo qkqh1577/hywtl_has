@@ -56,7 +56,6 @@ class PersonnelApi {
   }
 
   async update(params: PersonnelParameter): Promise<void> {
-    console.log(params.jobList.length);
     const formData = toFormData(params)
     const { data } = await apiClient.put(`/personnels/${params.id}`, formData);
     return data;

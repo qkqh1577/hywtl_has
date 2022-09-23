@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'components/IconButton';
 import SelectField from 'components/SelectField';
+import RadioField from 'components/RadioField';
 
 export default function JobForm(props) {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -60,19 +61,36 @@ export default function JobForm(props) {
           )}
         </Grid>
       )}
+      {!edit && (
+        <Grid container>
+          <Grid item sm={12}>
+            <Typography>
+              소속 정보
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
       {jobList.map((job,
                     index
       ) => {
         return (
-          <Grid container key={index} justifyContent="flex-end">
-            <Grid item sm={9}>
+          <Grid container key={index}>
+            <Grid item sm={3}>
+              <RadioField
+                label="대표 정보"
+                name="isRepresentative"
+                options={['대표정보']}
+              />
+
+            </Grid>
+            <Grid item sm={edit ? 8.6 : 9}>
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   {edit && (
                     <SelectField
                       label="소속부서"
                       labelPosition="top"
-                      name={`jobList.${index}.department`}
+                      name={`jobList.${index}.department.id`}
                       options={props.departmentList}
                     />
                   )}
@@ -80,7 +98,7 @@ export default function JobForm(props) {
                     <TextField
                       label="소속부서"
                       labelPosition="top"
-                      name={`jobList.${index}.department`}
+                      name={`jobList.${index}.department.name`}
                     />
                   )}
                 </Grid>
@@ -121,26 +139,28 @@ export default function JobForm(props) {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-              <IconButton
-                shape="square"
-                onClick={() => {
-                  formikContext!.setFieldValue('jobList', jobList.filter((manager,
-                                                                          j
-                  ) => index !== j));
-                }}
-                sx={{
-                  backgroundColor: ColorPalette._e4e9f2,
-                }}
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      color: ColorPalette._9bb6ea,
-                    }}
-                    icon="trash"
-                  />}
-              />
-            </Grid>
+            {edit && (
+              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+                <IconButton
+                  shape="square"
+                  onClick={() => {
+                    formikContext!.setFieldValue('jobList', jobList.filter((manager,
+                                                                            j
+                    ) => index !== j));
+                  }}
+                  sx={{
+                    backgroundColor: ColorPalette._e4e9f2,
+                  }}
+                  children={
+                    <FontAwesomeIcon
+                      style={{
+                        color: ColorPalette._9bb6ea,
+                      }}
+                      icon="trash"
+                    />}
+                />
+              </Grid>
+            )}
           </Grid>
         );
       })}

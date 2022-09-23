@@ -64,7 +64,7 @@ export default function List(props: ListProps) {
                   {item.basic?.birthDate}
                 </Td>
                 <Td>
-                  {item.job?.departmentId}
+                  {item.job?.department?.name}
                 </Td>
                 <Td>
                   {item.company?.hiredType}
@@ -73,7 +73,7 @@ export default function List(props: ListProps) {
                   {item.company?.hiredDate}
                 </Td>
                 <Td>
-                  '상태 state 추가 필요'
+                  {item.userStatus}
                 </Td>
               </TableRow>
             );

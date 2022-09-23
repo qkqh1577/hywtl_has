@@ -45,7 +45,8 @@ export function toPersonnelCompany(company: PersonnelCompanyVO): PersonnelCompan
 export function toPersonnelJob(job: PersonnelJobVO): PersonnelJobParameter {
   console.log("job : ", job);
   return {
-    departmentId: job.department,
+    isRepresentative: true,
+    departmentId: job.department?.id,
     jobTitle:     job.jobTitle,
     jobType:      job.jobType,
     jobPosition:  job.jobPosition,

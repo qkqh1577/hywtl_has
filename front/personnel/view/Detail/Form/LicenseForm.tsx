@@ -60,12 +60,21 @@ export default function LicenseForm() {
           )}
         </Grid>
       )}
-      {licenseList && licenseList.map((license,
-                                       index
+      {!edit && (
+        <Grid container>
+          <Grid item sm={12}>
+            <Typography>
+              면허 정보
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+      {licenseList.map((license,
+                        index
       ) => {
         return (
           <Grid container key={index}>
-            <Grid item sm={11.6}>
+            <Grid item sm={edit ? 11.6 : 12}>
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
@@ -111,26 +120,28 @@ export default function LicenseForm() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-              <IconButton
-                shape="square"
-                onClick={() => {
-                  formikContext!.setFieldValue('licenseList', licenseList.filter((manager,
-                                                                                j
-                  ) => index !== j));
-                }}
-                sx={{
-                  backgroundColor: ColorPalette._e4e9f2,
-                }}
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      color: ColorPalette._9bb6ea,
-                    }}
-                    icon="trash"
-                  />}
-              />
-            </Grid>
+            {edit && (
+              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+                <IconButton
+                  shape="square"
+                  onClick={() => {
+                    formikContext!.setFieldValue('licenseList', licenseList.filter((manager,
+                                                                                    j
+                    ) => index !== j));
+                  }}
+                  sx={{
+                    backgroundColor: ColorPalette._e4e9f2,
+                  }}
+                  children={
+                    <FontAwesomeIcon
+                      style={{
+                        color: ColorPalette._9bb6ea,
+                      }}
+                      icon="trash"
+                    />}
+                />
+              </Grid>
+            )}
           </Grid>
         );
       })}

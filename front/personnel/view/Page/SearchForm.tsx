@@ -27,7 +27,10 @@ export default function SearchBox({ list }: SearchPersonnelFormProps) {
             <CheckboxField
               name="sex"
               label="성별"
-              options={sexTypeList}
+              options={sexTypeList.map(item => ({
+                key:  item.key,
+                text: item.text
+              }))}
             />
           </Grid>
           <Grid item sm={4}>
@@ -39,7 +42,7 @@ export default function SearchBox({ list }: SearchPersonnelFormProps) {
           </Grid>
           <Grid item sm={4}>
             <CheckboxField
-              name="accountState"
+              name="status"
               label="계정상태"
               options={accountStateTypeList}
             />
@@ -88,7 +91,7 @@ export default function SearchBox({ list }: SearchPersonnelFormProps) {
           </Grid>
           <Grid container item sm={12}>
             <CheckboxField
-              name="jobType"
+              name="departmentId"
               label="소속"
               options={list}
             />

@@ -3,6 +3,7 @@ import {
   initialUser,
   UserVO
 } from 'user/domain';
+import { DepartmentVO } from 'department/domain';
 
 export type PersonnelId = number & { readonly _brand: symbol }
 
@@ -17,6 +18,7 @@ export interface PersonnelShortVO {
   basic?: PersonnelBasicVO,
   company?: PersonnelCompanyVO,
   job?: PersonnelJobVO,
+  userStatus: string
 }
 
 export const initialPersonnelShortVO: PersonnelShortVO = {
@@ -26,7 +28,7 @@ export const initialPersonnelShortVO: PersonnelShortVO = {
   basic:   undefined,
   company: undefined,
   job:     undefined,
-
+  userStatus: '',
 };
 
 export interface PersonnelBasicVO {
@@ -66,7 +68,8 @@ export const initialPersonnelCompany: PersonnelCompanyVO = {
 };
 
 export interface PersonnelJobVO {
-  department?: number; // 부서
+  isRepresentative?: boolean; // 대표소속정보
+  department?: DepartmentVO; // 부서
   jobTitle?: string; // 직함
   jobType?: string; // 직종
   jobPosition?: string; // 직위
@@ -75,12 +78,13 @@ export interface PersonnelJobVO {
 }
 
 export const initialPersonnelJobVO: PersonnelJobVO = {
-  department: undefined,
-  jobTitle:     '',
-  jobType:      '',
-  jobPosition:  '',
-  jobClass:     '',
-  jobDuty:      '',
+  isRepresentative: false,
+  department:       undefined,
+  jobTitle:         '',
+  jobType:          '',
+  jobPosition:      '',
+  jobClass:         '',
+  jobDuty:          '',
 };
 
 export interface PersonnelAcademicVO {
@@ -178,8 +182,8 @@ export const initialPersonnelVO: PersonnelVO = {
 };
 
 export enum SexCategory {
-  MALE   = 'MALE',
-  FEMALE = 'FEMALE',
+  MALE   = '남성',
+  FEMALE = '여성',
 }
 
 export const sexCategoryList: SexCategory[] = [
@@ -199,8 +203,8 @@ export function sexCategoryName(sexName: SexCategory | '') {
 }
 
 export enum HiredTypeCategory {
-  NEWCOMER   = 'NEWCOMER',
-  EXPERIENCE = 'EXPERIENCE',
+  NEWCOMER   = '신입',
+  EXPERIENCE = '경력',
 }
 
 export const hiredTypeList: HiredTypeCategory[] = [

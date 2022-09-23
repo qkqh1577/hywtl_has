@@ -60,16 +60,25 @@ export default function CareerForm() {
           )}
         </Grid>
       )}
-      {careerList && careerList.map((career,
+      {!edit && (
+        <Grid container>
+          <Grid item sm={12}>
+            <Typography>
+              경력 정보
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+      {careerList.map((career,
                                      index
       ) => {
         return (
           <Grid container key={index}>
-            <Grid item sm={11.6}>
+            <Grid item sm={edit ? 11.6 : 12}>
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
-                    name={`careerList.${index}.academyName`}
+                    name={`careerList.${index}.companyName`}
                     label="근무처명"
                     labelPosition="top"
                   />
@@ -97,26 +106,28 @@ export default function CareerForm() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-              <IconButton
-                shape="square"
-                onClick={() => {
-                  formikContext!.setFieldValue('careerList', careerList.filter((manager,
-                                                                                    j
-                  ) => index !== j));
-                }}
-                sx={{
-                  backgroundColor: ColorPalette._e4e9f2,
-                }}
-                children={
-                  <FontAwesomeIcon
-                    style={{
-                      color: ColorPalette._9bb6ea,
-                    }}
-                    icon="trash"
-                  />}
-              />
-            </Grid>
+            {edit && (
+              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+                <IconButton
+                  shape="square"
+                  onClick={() => {
+                    formikContext!.setFieldValue('careerList', careerList.filter((manager,
+                                                                                  j
+                    ) => index !== j));
+                  }}
+                  sx={{
+                    backgroundColor: ColorPalette._e4e9f2,
+                  }}
+                  children={
+                    <FontAwesomeIcon
+                      style={{
+                        color: ColorPalette._9bb6ea,
+                      }}
+                      icon="trash"
+                    />}
+                />
+              </Grid>
+            )}
           </Grid>
         );
       })}
