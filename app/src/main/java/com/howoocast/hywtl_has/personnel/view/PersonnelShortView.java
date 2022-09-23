@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.personnel.view;
 
+import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,11 +19,13 @@ public class PersonnelShortView {
     private String name;
     private PersonnelBasicView basic;
     private PersonnelCompanyView company;
-    private Integer jobCount;
     private Integer academicCount;
     private Integer careerCount;
     private Integer licenseCount;
     private Integer languageCount;
+
+    private DepartmentShortView department;
+
 
     public static PersonnelShortView assemble(Personnel source) {
         PersonnelShortView target = new PersonnelShortView();
@@ -49,9 +53,15 @@ public class PersonnelShortView {
             target.basic = PersonnelBasicView.assemble(source.getBasic());
         }
         if (Objects.isNull(source.getJobList()) || source.getJobList().isEmpty()) {
-            target.jobCount = 1;
+            target.department = DepartmentShortView.assemble(source.getUser().getDepartment());
         } else {
-            target.jobCount = getSize(source.getJobList());
+            target.department = DepartmentShortView.assemble(
+                source.getJobList().stream()
+                    .filter(PersonnelJob::getIsRepresentative)
+                    .map(PersonnelJob::getDepartment)
+                    .findFirst()
+                    .orElse(source.getUser().getDepartment())
+            );
         }
         return target;
     }

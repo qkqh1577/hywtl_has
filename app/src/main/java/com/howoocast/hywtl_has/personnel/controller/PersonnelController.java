@@ -10,6 +10,7 @@ import com.howoocast.hywtl_has.personnel.view.PersonnelCompanyView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelJobView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelLicenseView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
@@ -58,6 +59,13 @@ public class PersonnelController {
                 .build(),
             pageable
         );
+    }
+
+    @GetMapping("/personnels/{id}")
+    public PersonnelView get(
+        @PathVariable Long id
+    ) {
+        return personnelService.get(id);
     }
 
     @GetMapping("/personnels/{id}/basic")
