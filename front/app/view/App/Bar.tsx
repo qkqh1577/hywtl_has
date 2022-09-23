@@ -3,7 +3,6 @@ import {
   Box
 } from '@mui/material';
 import SearchBar from 'app/view/App/SearchBar';
-import NotificationButton from 'app/view/App/NotificationButton';
 import AccountButton from 'app/view/App/AccountButton';
 import LogoutButton, { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import React from 'react';
@@ -18,6 +17,7 @@ interface Props {
   menuDrawerProps: MenuDrawerProps;
   loginUserEditModal: React.ReactNode;
   onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
+  notificationButton: React.ReactNode;
 }
 
 export default function AppBar(props: Props) {
@@ -56,8 +56,8 @@ export default function AppBar(props: Props) {
             height:  '100%',
           }}>
             <SearchBar />
-            <NotificationButton />
-            <AccountButton onLoginUserEditModalOpen={onLoginUserEditModalOpen}/>
+            {props.notificationButton}
+            <AccountButton onLoginUserEditModalOpen={onLoginUserEditModalOpen} />
             <LogoutButton {...logoutButtonProps} />
           </Box>
         </Box>
