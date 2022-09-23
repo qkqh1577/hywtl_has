@@ -6,7 +6,7 @@ const isFormData = (parameter: FormData | any | undefined): parameter is FormDat
 };
 
 type Parameter = {
-  [key: string]: any;
+  [key: string | number]: any;
 }
 
 export function toFormData(parameter: Parameter,
@@ -22,12 +22,17 @@ export function toFormData(parameter: Parameter,
       continue;
     }
     const name = prefix ? `${prefix}.${key}` : key;
+    if (Array.isArray(value)) {
+      value.forEach((item,
+                     i
+      ) => toFormData(item, `${name}[${i}]`, result));
+      continue;
+    }
     if (value instanceof File || value instanceof Blob) {
       result.append(name, value);
       continue;
     }
     if (typeof value === 'object') {
-      console.log(name, value);
       toFormData(value, name, result);
       continue;
     }
