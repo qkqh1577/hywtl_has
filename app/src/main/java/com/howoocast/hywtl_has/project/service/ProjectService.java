@@ -13,6 +13,9 @@ import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
+import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
+import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
+import com.howoocast.hywtl_has.project_memo.repository.ProjectMemoRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
@@ -36,6 +39,8 @@ public class ProjectService {
     private final ProjectRepository repository;
     private final UserRepository userRepository;
 
+    private final ProjectMemoRepository projectMemoRepository;
+
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -53,7 +58,7 @@ public class ProjectService {
 
 
     @Transactional
-    public void add(ProjectAddParameter parameter) {
+    public void add(ProjectAddParameter parameter, String username) {
 
         this.checkName(parameter.getName());
 
@@ -75,11 +80,21 @@ public class ProjectService {
             parameter.getProgressStatus()
         );
 
-        repository.save(instance);
+        instance = repository.save(instance);
         eventPublisher.publishEvent(ProjectLogEvent.of(
             instance,
             "프로젝트 등록"
         ));
+        if (Objects.nonNull(parameter.getMemo()) && !parameter.getMemo().isEmpty()) {
+            User writer = new CustomFinder<>(userRepository, User.class).byField(username, "username");
+            projectMemoRepository.save(ProjectMemo.of(
+                instance,
+                ProjectMemoCategory.BASIC,
+                writer,
+                parameter.getMemo(),
+                null
+            ));
+        }
     }
 
     @Transactional

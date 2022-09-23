@@ -65,4 +65,5 @@ drop table if exists project_schedule_attendance_list;
 drop table if exists project_system_estimate_content_list;
 drop table if exists user;
 drop table if exists user_invitation;
+drop table if exists user_notification;
 set FOREIGN_KEY_CHECKS = 1;

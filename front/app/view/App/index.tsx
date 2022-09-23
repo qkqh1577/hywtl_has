@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Box,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import MenuDrawer, { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 import AppBar from 'app/view/App/Bar';
@@ -18,6 +16,7 @@ interface Props {
   projectAppBar: React.ReactNode;
   loginUserEditModal: React.ReactNode;
   onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
+  notificationButton: React.ReactNode;
 }
 
 export default function App(props: Props) {
@@ -42,6 +41,7 @@ export default function App(props: Props) {
             menuDrawerProps={menuDrawerProps}
             loginUserEditModal={props.loginUserEditModal}
             onLoginUserEditModalOpen={props.onLoginUserEditModalOpen}
+            notificationButton={props.notificationButton}
           />
           <MenuDrawer {...props.menuDrawerProps} />
           {props.projectDrawer}

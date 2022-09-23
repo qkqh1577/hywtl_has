@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectMemoParameter {
+public class ProjectMemoChangeParameter {
 
     @NotBlank(message = ProjectMemo.KEY + ".description.not_blank")
     private String description;

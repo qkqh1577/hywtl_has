@@ -1,10 +1,15 @@
 ### project memo add
-POST http://localhost:8080/project/sales/1/memo
+POST http://localhost:8080/project/sales/2/memo
 Content-Type: application/json
 
 {
   "description": "메모 테스트",
-  "category": "BASIC"
+  "category": "BASIC",
+  "attendanceList": [
+    1,
+    2,
+    3
+  ]
 }
 
 ### project memo get
