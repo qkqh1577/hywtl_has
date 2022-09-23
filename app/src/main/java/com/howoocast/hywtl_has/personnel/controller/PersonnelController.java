@@ -39,18 +39,22 @@ public class PersonnelController {
         @RequestParam(required = false, name = "sex[]") List<String> sexList,
         @RequestParam(required = false, name = "hiredType[]") List<String> hiredTypeList,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false, name = "keywordType[]") List<String> keywordTypeList,
+        @RequestParam(required = false) String keywordType,
+        @RequestParam(required = false, name = "status[]") List<String> statusList,
+        @RequestParam(required = false, name = "departmentId[]") List<Long> departmentIdList,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-        @RequestParam(required = false, name = "dateType[]") List<String> dateTypeList,
+        @RequestParam(required = false) String dateType,
         Pageable pageable
     ) {
         return personnelService.page(
             new PersonnelPredicateBuilder()
                 .sex(sexList)
                 .hiredType(hiredTypeList)
-                .keyword(keywordTypeList, keyword)
-                .date(dateTypeList, startDate, endDate)
+                .keyword(keywordType, keyword)
+                .status(statusList)
+                .department(departmentIdList)
+                .date(dateType, startDate, endDate)
                 .build(),
             pageable
         );
