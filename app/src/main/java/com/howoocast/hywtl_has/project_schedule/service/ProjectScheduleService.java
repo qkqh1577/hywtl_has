@@ -1,10 +1,12 @@
 package com.howoocast.hywtl_has.project_schedule.service;
 
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.project_schedule.domain.ProjectSchedule;
 import com.howoocast.hywtl_has.project_schedule.parameter.ProjectScheduleParameter;
 import com.howoocast.hywtl_has.project_schedule.repository.ProjectScheduleRepository;
@@ -17,6 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,8 @@ public class ProjectScheduleService {
     private final ProjectRepository projectRepository;
 
     private final UserRepository userRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<ProjectSchedule> getList(
@@ -77,6 +82,11 @@ public class ProjectScheduleService {
         );
 
         repository.save(instance);
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "일정 등록"
+        ));
+
     }
 
     @Transactional
@@ -90,7 +100,7 @@ public class ProjectScheduleService {
                 .map(userId -> new CustomFinder<>(userRepository, User.class).byId(userId))
                 .collect(Collectors.toList());
         }
-        instance.change(
+        List<EventEntity> eventList = instance.change(
             parameter.getStartTime(),
             parameter.getEndTime(),
             parameter.getAllDay(),
@@ -99,11 +109,18 @@ public class ProjectScheduleService {
             manager,
             attendanceList
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional
     public void delete(Long id) {
-        this.load(id).delete();
+        ProjectSchedule instance = this.load(id);
+        instance.delete();
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "일정 삭제"
+        ));
     }
 
 

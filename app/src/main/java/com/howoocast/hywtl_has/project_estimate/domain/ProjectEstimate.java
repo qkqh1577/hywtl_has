@@ -2,9 +2,13 @@ package com.howoocast.hywtl_has.project_estimate.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -138,28 +142,123 @@ public abstract class ProjectEstimate extends CustomEntity {
         };
     }
 
-    public void change(
+    public List<EventEntity> change(
         Boolean isSent,
         String recipient,
         String note,
         Business business
     ) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "송부 여부 변경",
+            this.isSent,
+            isSent
+        ));
         this.isSent = isSent;
+        eventList.add(EventEntity.of(
+            "송신처 변경",
+            this.recipient,
+            recipient
+        ));
         this.recipient = recipient;
+        eventList.add(EventEntity.of(
+            "비고 변경",
+            this.note,
+            note
+        ));
         this.note = note;
+        eventList.add(EventEntity.of(
+            "견적 업체 변경",
+            this.business,
+            business
+        ));
         this.business = business;
+        return eventList;
     }
 
-    public void changePlan(@Nullable ProjectEstimatePlan plan) {
+    public List<EventEntity> changePlan(@Nullable ProjectEstimatePlan plan) {
+        List<EventEntity> eventList = new ArrayList<>();
+
+        eventList.add(EventEntity.of(
+            "견적 일자 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getEstimateDate).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getEstimateDate).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "착수 가능일 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getExpectedServiceDate).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getExpectedServiceDate).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "설풍 납품 가능 주 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getExpectedTestDeadline).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getExpectedTestDeadline).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "최종 보고서 납품 가능 주 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getExpectedFinalReviewDeadline).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getExpectedFinalReviewDeadline).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "풍동 금액 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getTestAmount).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getTestAmount).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "구검 금액 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getReviewAmount).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getReviewAmount).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "특별 할인 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getDiscountAmount).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getDiscountAmount).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "합계 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getTotalAmount).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getTotalAmount).orElse(null)
+        ));
+
         this.plan = plan;
+        return eventList;
     }
 
-    public void changeSiteList(List<ProjectEstimateComplexSite> siteList) {
+    public List<EventEntity> changeSiteList(List<ProjectEstimateComplexSite> siteList) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "대지 모형 목록 변경",
+            Objects.isNull(this.siteList) || this.siteList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함",
+            siteList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함"
+        ));
         this.siteList = siteList;
+        return eventList;
     }
 
-    public void changeBuildingList(List<ProjectEstimateComplexBuilding> buildingList) {
+    public List<EventEntity> changeBuildingList(List<ProjectEstimateComplexBuilding> buildingList) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "동 목록 변경",
+            Objects.isNull(this.buildingList) || this.buildingList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함",
+            buildingList.isEmpty()
+                ? null
+                : "복합 내용은 일시 정보만 기록함"
+        ));
         this.buildingList = buildingList;
+        return eventList;
     }
 
     public void changeConfirmed(Boolean confirmed) {

@@ -74,6 +74,5 @@ public class ProjectEstimatePlan {
         instance.discountAmount = discountAmount;
         instance.totalAmount = totalAmount;
         return instance;
-
     }
 }

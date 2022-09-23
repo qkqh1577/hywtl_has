@@ -26,6 +26,16 @@ public class EventEntity {
     private final String after;
 
     public static EventEntity of(
+        String itemName
+    ) {
+        return new EventEntity(
+            itemName,
+            null,
+            null
+        );
+    }
+
+    public static EventEntity of(
         String itemName,
         @Nullable String before,
         @Nullable String after
