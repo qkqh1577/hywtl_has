@@ -1,5 +1,8 @@
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import React, {
   useCallback,
   useEffect
@@ -15,31 +18,24 @@ import {
 } from 'formik';
 import ProjectMemoForm from 'project_memo/view/Drawer/Form';
 import {
-  FormikPartial,
-  FormikSubmit
-} from 'type/Form';
-import {
-  initialProjectMemoParameter,
-  ProjectMemoParameter
+  initialProjectMemoQuery,
+  ProjectMemoAddParameter,
 } from 'project_memo/parameter';
+import { RootState } from 'services/reducer';
 
 export default function ProjectMemoDrawerFormRoute() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { requestAdd } = useSelector((root: RootState) => root.projectMemo);
   const setOpen = useCallback((open: boolean) => dispatch(projectMemoAction.setDrawer(open)), [dispatch]);
-  const add = useCallback((formikProps: FormikSubmit<ProjectMemoParameter>) => dispatch(projectMemoAction.add(formikProps)), [dispatch]);
+  const add = useCallback((formikProps: ProjectMemoAddParameter) => dispatch(projectMemoAction.add(formikProps)), [dispatch]);
   const getDefaultValue = useCallback((): ProjectMemoCategory | undefined =>
       projectMemoCategoryList.find(item => pathname.endsWith(item.toLowerCase())),
     [pathname]);
-  const formik = useFormik<FormikPartial<ProjectMemoParameter>>({
-    initialValues: initialProjectMemoParameter,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      add({
-        values: values as ProjectMemoParameter,
-        ...helper,
-      });
+  const formik = useFormik<ProjectMemoAddParameter>({
+    initialValues: {} as ProjectMemoAddParameter,
+    onSubmit:      (values) => {
+      add(values);
     }
   });
 
@@ -48,6 +44,15 @@ export default function ProjectMemoDrawerFormRoute() {
   useEffect(() => {
     formik.setFieldValue('category', defaultCategory);
   }, [defaultCategory]);
+
+  useEffect(() => {
+    if (requestAdd === 'response') {
+      formik.setFieldValue('description', '');
+      formik.setFieldValue('category', defaultCategory);
+      dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
+      dispatch(projectMemoAction.requestAdd('idle'));
+    }
+  }, [requestAdd]);
 
   return (
     <FormikProvider value={formik}>

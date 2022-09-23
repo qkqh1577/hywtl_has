@@ -18,9 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +33,7 @@ public class ProjectMemoController {
 
     private final ProjectMemoService service;
 
-    @GetMapping("/project/sales/{projectId}/memo")
+    @GetMapping("/project/{projectId}/memo")
     public Page<ProjectMemoView> page(
         @PathVariable Long projectId,
         @RequestParam(required = false) String keyword,
@@ -53,7 +53,7 @@ public class ProjectMemoController {
         );
     }
 
-    @GetMapping("/project/sales/memo/{id}")
+    @GetMapping("/project/memo/{id}")
     public ProjectMemoView get(
         @PathVariable Long id
     ) {
@@ -62,7 +62,7 @@ public class ProjectMemoController {
         );
     }
 
-    @PostMapping("/project/sales/{projectId}/memo")
+    @PostMapping("/project/{projectId}/memo")
     public void add(
         Authentication authentication,
         @PathVariable Long projectId,
@@ -76,7 +76,7 @@ public class ProjectMemoController {
         );
     }
 
-    @PatchMapping("/project/sales/memo/{id}")
+    @PutMapping("/project/memo/{id}")
     public void change(
         @PathVariable Long id,
         @Valid @RequestBody ProjectMemoChangeParameter parameter
@@ -84,7 +84,7 @@ public class ProjectMemoController {
         service.change(id, parameter);
     }
 
-    @DeleteMapping("/project/sales/memo/{id}")
+    @DeleteMapping("/project/memo/{id}")
     public void delete(
         @PathVariable Long id
     ) {

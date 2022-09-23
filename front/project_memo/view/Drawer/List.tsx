@@ -1,5 +1,6 @@
 import {
   projectMemoCategoryName,
+  ProjectMemoId,
   ProjectMemoVO
 } from 'project_memo/domain';
 import {
@@ -10,12 +11,14 @@ import React from 'react';
 import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DefaultFunction } from 'type/Function';
 
 export interface ProjectMemoListProps {
   list: ProjectMemoVO[];
+  onDelete: DefaultFunction<ProjectMemoId>;
 }
 
-export default function ProjectMemoList({ list }: ProjectMemoListProps) {
+export default function ProjectMemoList({ list, onDelete }: ProjectMemoListProps) {
 
   return (
     <Box sx={{
@@ -26,7 +29,7 @@ export default function ProjectMemoList({ list }: ProjectMemoListProps) {
       alignItems: 'flex-start',
       padding:    '0 10px 15px 10px',
     }}>
-      {list.map((item) => (
+      {list && list.map((item) => (
         <Box
           key={item.id}
           sx={{
@@ -80,8 +83,12 @@ export default function ProjectMemoList({ list }: ProjectMemoListProps) {
                 <FontAwesomeIcon
                   icon="trash"
                   style={{
+                    cursor:   'pointer',
                     fontSize: '11px',
                     color:    ColorPalette._9bb6ea,
+                  }}
+                  onClick={() => {
+                    onDelete(item.id);
                   }}
                 />
               </Box>
