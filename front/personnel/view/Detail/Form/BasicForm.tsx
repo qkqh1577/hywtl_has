@@ -15,8 +15,8 @@ import {
   PersonnelVO,
   sexCategoryList
 } from 'personnel/domain';
-import RadioField from 'components/RadioField';
 import SelectField from 'components/SelectField';
+import { FieldStatus } from 'components/DataFieldProps';
 
 export default function BasicForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -116,6 +116,7 @@ export default function BasicForm() {
                 name="basic.image"
                 label="프로필 사진"
                 accept="image/*"
+                status={edit ? FieldStatus.Idle : FieldStatus.ReadOnly}
               />
             </Grid>
           </Grid>
