@@ -28,7 +28,7 @@ export interface PersonnelBasicVO {
   engName: string; // 영문이름
   birthDate: Date | undefined; // 생년월일(yyyy-mm-dd)
   sex: string; // 성별
-  image: FileItemView | undefined; //
+  image?: FileItemView; //
   address: string; // 주소
   phone: string; // 핸드폰
   emergencyPhone: string; // 비상연락처

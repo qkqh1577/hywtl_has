@@ -78,7 +78,7 @@ export default function JobForm(props) {
             <Grid item sm={3}>
               <RadioField
                 label="대표 정보"
-                name="isRepresentative"
+                name={`jobList.${index}.isRepresentative`}
                 options={['대표정보']}
               />
 

@@ -15,6 +15,7 @@ import {
   PersonnelVO
 } from 'personnel/domain';
 import RadioField from 'components/RadioField';
+import SelectField from 'components/SelectField';
 
 export default function CompanyForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -41,7 +42,7 @@ export default function CompanyForm() {
             <Grid item sm={6}>
               <Grid item sm={12}>
                 {edit && (
-                  <RadioField
+                  <SelectField
                     label="입사 구분"
                     name="company.hiredType"
                     options={hiredTypeList}

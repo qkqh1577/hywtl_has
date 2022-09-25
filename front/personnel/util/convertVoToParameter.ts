@@ -19,12 +19,13 @@ import {
 import dayjs from 'dayjs';
 
 export function toPersonnelBasic(basic: PersonnelBasicVO): PersonnelBasicParameter {
+  console.log("basic : ", basic);
   return {
     engName:        basic.engName,
     birthDate:      dayjs(basic.birthDate)
                     .format('YYYY-MM-DD'),
     sex:            basic.sex,
-    image:          undefined,
+    image:          basic.image,
     address:        basic.address,
     phone:          basic.phone,
     emergencyPhone: basic.emergencyPhone,
