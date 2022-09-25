@@ -1,5 +1,6 @@
 import { Option } from 'components/DataFieldProps';
 import { pageSizeList } from 'type/Page';
+import { UserRole } from 'user/domain';
 
 export interface PersonnelQuery {
   sex?: string[]; // 성별 (남 | 여)
@@ -15,22 +16,6 @@ export interface PersonnelQuery {
   page: number;
   size: number;
 }
-
-export const initialPersonnelQuery: PersonnelQuery = {
-  sex:          [],
-  hiredType:    [],
-  status:       [],
-  keyword:      '',
-  keywordType:  '',
-  dateType:     '',
-  startDate:    '',
-  endDate:      '',
-  departmentId: [],
-  sort:         'id,desc',
-  page:         0,
-  size:         pageSizeList[0],
-};
-
 
 export const keywordTypeList: Option[] = [
   {
@@ -107,3 +92,18 @@ export const accountStateTypeList: Option[] = [
     text: '사용중지'
   },
 ];
+
+export const initialPersonnelQuery: PersonnelQuery = {
+  sex:          [],
+  hiredType:    [],
+  status:       [],
+  keyword:      '',
+  keywordType:  keywordTypeList[0].key as string,
+  dateType:     dateTypeList[0].key as string,
+  startDate:    '',
+  endDate:      '',
+  departmentId: [],
+  sort:         'id,desc',
+  page:         0,
+  size:         pageSizeList[0],
+};

@@ -8,11 +8,11 @@ import {
   dateTypeList,
   hiredTypeList,
   keywordTypeList,
-  sexTypeList
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
 import DateField from 'components/DateField';
 import { Option } from 'components/DataFieldProps';
+import { sexCategoryList, sexCategoryName } from 'personnel/domain';
 
 export interface SearchPersonnelFormProps {
   list: Option[];
@@ -32,9 +32,9 @@ export default function SearchBox({ list }: SearchPersonnelFormProps) {
 
                 name="sex"
                 label="성별"
-                options={sexTypeList.map(item => ({
-                  key: item.key,
-                  text: item.text
+                options={sexCategoryList.map(item => ({
+                  key: item as string,
+                  text: sexCategoryName(item)
                 }))}
               />
             </Grid>
