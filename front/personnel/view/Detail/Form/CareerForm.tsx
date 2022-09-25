@@ -16,7 +16,6 @@ import {
   FormikContextType
 } from 'formik';
 import { FormikEditable } from 'type/Form';
-import IconButton from 'components/IconButton';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -108,23 +107,17 @@ export default function CareerForm() {
             </Grid>
             {edit && (
               <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-                <IconButton
-                  shape="square"
+                <FontAwesomeIcon
+                  style={{
+                    color: ColorPalette._9bb6ea,
+                    cursor: 'pointer'
+                  }}
+                  icon="trash"
                   onClick={() => {
                     formikContext!.setFieldValue('careerList', careerList.filter((manager,
-                                                                                  j
+                                                                                      j
                     ) => index !== j));
                   }}
-                  sx={{
-                    backgroundColor: ColorPalette._e4e9f2,
-                  }}
-                  children={
-                    <FontAwesomeIcon
-                      style={{
-                        color: ColorPalette._9bb6ea,
-                      }}
-                      icon="trash"
-                    />}
                 />
               </Grid>
             )}

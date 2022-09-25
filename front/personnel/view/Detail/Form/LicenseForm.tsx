@@ -16,7 +16,6 @@ import {
   initialPersonnelLicenseVO,
   PersonnelVO
 } from 'personnel/domain';
-import IconButton from 'components/IconButton';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -122,23 +121,17 @@ export default function LicenseForm() {
             </Grid>
             {edit && (
               <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-                <IconButton
-                  shape="square"
+                <FontAwesomeIcon
+                  style={{
+                    color: ColorPalette._9bb6ea,
+                    cursor: 'pointer'
+                  }}
+                  icon="trash"
                   onClick={() => {
                     formikContext!.setFieldValue('licenseList', licenseList.filter((manager,
-                                                                                    j
+                                                                                      j
                     ) => index !== j));
                   }}
-                  sx={{
-                    backgroundColor: ColorPalette._e4e9f2,
-                  }}
-                  children={
-                    <FontAwesomeIcon
-                      style={{
-                        color: ColorPalette._9bb6ea,
-                      }}
-                      icon="trash"
-                    />}
                 />
               </Grid>
             )}

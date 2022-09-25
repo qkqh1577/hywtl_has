@@ -17,7 +17,6 @@ import {
 } from 'personnel/domain';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
-import IconButton from 'components/IconButton';
 import SelectField from 'components/SelectField';
 import RadioField from 'components/RadioField';
 
@@ -141,23 +140,17 @@ export default function JobForm(props) {
             </Grid>
             {edit && (
               <Grid container item sm={0.4} justifyContent="center" alignItems="center">
-                <IconButton
-                  shape="square"
+                <FontAwesomeIcon
+                  style={{
+                    color: ColorPalette._9bb6ea,
+                    cursor: 'pointer'
+                  }}
+                  icon="trash"
                   onClick={() => {
                     formikContext!.setFieldValue('jobList', jobList.filter((manager,
-                                                                            j
+                                                                                      j
                     ) => index !== j));
                   }}
-                  sx={{
-                    backgroundColor: ColorPalette._e4e9f2,
-                  }}
-                  children={
-                    <FontAwesomeIcon
-                      style={{
-                        color: ColorPalette._9bb6ea,
-                      }}
-                      icon="trash"
-                    />}
                 />
               </Grid>
             )}
