@@ -14,7 +14,6 @@ import {
   hiredTypeList,
   PersonnelVO
 } from 'personnel/domain';
-import RadioField from 'components/RadioField';
 import SelectField from 'components/SelectField';
 
 export default function CompanyForm() {

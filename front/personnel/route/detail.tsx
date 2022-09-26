@@ -45,14 +45,6 @@ function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const {
-          account,
-          basic,
-          company,
-          jobList,
-          academicList,
-          careerList,
-          licenseList,
-          languageList,
           detail
         } = useSelector((root: RootState) => root.personnel);
 

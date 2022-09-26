@@ -1,32 +1,16 @@
 import { PersonnelQuery } from 'personnel/query';
 import Page from 'type/Page';
 import {
-  PersonnelAcademicVO,
-  PersonnelBasicVO,
-  PersonnelCareerVO,
-  PersonnelCompanyVO,
-  PersonnelJobVO,
-  PersonnelLanguageVO,
-  PersonnelLicenseVO,
   PersonnelShortVO,
   PersonnelVO,
 } from 'personnel/domain';
 import { createReducer } from 'typesafe-actions';
 import { PersonnelAction } from 'personnel/action';
-import { UserVO } from 'user/domain';
 
 export interface PersonnelState {
   detail?: PersonnelVO;
   filter?: PersonnelQuery;
   page?: Page<PersonnelShortVO>;
-  account?: UserVO;
-  basic?: PersonnelBasicVO;
-  company?: PersonnelCompanyVO;
-  jobList?: PersonnelJobVO[];
-  academicList?: PersonnelAcademicVO[];
-  careerList?: PersonnelCareerVO[];
-  licenseList?: PersonnelLicenseVO[];
-  languageList?: PersonnelLanguageVO[];
 }
 
 const initialState: PersonnelState = {};
@@ -50,53 +34,5 @@ export const personnelReducer = createReducer(initialState, {
                                      ) => ({
     ...state,
     page: action.payload,
-  }),
-  [PersonnelAction.setAccount]:      (state,
-                                      action
-                                     ) => ({
-    ...state,
-    account: action.payload,
-  }),
-  [PersonnelAction.setBasic]:        (state,
-                                      action
-                                     ) => ({
-    ...state,
-    basic: action.payload,
-  }),
-  [PersonnelAction.setCompany]:      (state,
-                                      action
-                                     ) => ({
-    ...state,
-    company: action.payload,
-  }),
-  [PersonnelAction.setJobList]:      (state,
-                                      action
-                                     ) => ({
-    ...state,
-    jobList: action.payload,
-  }),
-  [PersonnelAction.setAcademicList]: (state,
-                                      action
-                                     ) => ({
-    ...state,
-    academicList: action.payload,
-  }),
-  [PersonnelAction.setCareerList]:   (state,
-                                      action
-                                     ) => ({
-    ...state,
-    careerList: action.payload,
-  }),
-  [PersonnelAction.setLicenseList]:  (state,
-                                      action
-                                     ) => ({
-    ...state,
-    licenseList: action.payload,
-  }),
-  [PersonnelAction.setLanguageList]: (state,
-                                      action
-                                     ) => ({
-    ...state,
-    languageList: action.payload,
-  }),
+  })
 });
