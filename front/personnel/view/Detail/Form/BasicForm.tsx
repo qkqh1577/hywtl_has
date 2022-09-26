@@ -119,7 +119,7 @@ export default function BasicForm() {
                 name="basic.image"
                 label="프로필 사진"
                 accept="image/*"
-                status={edit ? FieldStatus.Idle : FieldStatus.ReadOnly}
+                status={edit ? FieldStatus.Idle : FieldStatus.Disabled}
               />
             </Grid>
           </Grid>

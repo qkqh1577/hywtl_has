@@ -130,6 +130,7 @@ export default function TextField(props: TextFieldProps) {
     variant,
     error,
     helperText,
+    required,
     disabled,
     inputProps,
     onChange,

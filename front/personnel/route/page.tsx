@@ -49,7 +49,7 @@ function Element() {
   const onPageChange = (event,
                         page
   ) => {
-    setFilter({ ...formik, values: { page } });
+    setFilter({ ...formik, values: { page, size: formik.values.size } });
   };
 
   const onRowsPerPageChange = (event) => {

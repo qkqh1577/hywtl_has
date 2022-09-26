@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import { TitleProps } from 'components/Title';
 import {
-  Form,
   FormikContextType,
   FormikProvider,
 } from 'formik';
@@ -52,6 +51,8 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       width:    '100%',
       height:   '100%',
       overflow: 'hidden',
+      display:  'flex',
+      flexWrap: 'wrap',
     }}>
       <Box sx={{
         display:        'flex',
@@ -84,9 +85,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       </Box>
       {isFormikForm(props) && (
         <FormikProvider value={props.formik}>
-          <Form>
-            <PageContent {...props} />
-          </Form>
+          <PageContent {...props} />
         </FormikProvider>
       )}
       {!isFormikForm(props) && (
