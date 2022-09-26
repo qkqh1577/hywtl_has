@@ -92,6 +92,7 @@ export default function JobForm(props) {
               <FormGroup row>
                 <Radio
                   required
+                  disabled={!edit}
                   name={`representativeJob`}
                   value={job.department?.id}
                   checked={(formikContext.values as any).representativeJob === job.department?.id}
