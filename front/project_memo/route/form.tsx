@@ -29,8 +29,8 @@ export default function ProjectMemoDrawerFormRoute() {
   const { requestAdd } = useSelector((root: RootState) => root.projectMemo);
   const setOpen = useCallback((open: boolean) => dispatch(projectMemoAction.setDrawer(open)), [dispatch]);
   const add = useCallback((formikProps: ProjectMemoAddParameter) => dispatch(projectMemoAction.add(formikProps)), [dispatch]);
-  const getDefaultValue = useCallback((): ProjectMemoCategory | undefined =>
-      projectMemoCategoryList.find(item => pathname.endsWith(item.toLowerCase())),
+  const getDefaultValue = useCallback((): ProjectMemoCategory =>
+      projectMemoCategoryList.find(item => pathname.endsWith(item.toLowerCase())) || ProjectMemoCategory.BASIC,
     [pathname]);
   const formik = useFormik<ProjectMemoAddParameter>({
     initialValues: {} as ProjectMemoAddParameter,
@@ -47,8 +47,10 @@ export default function ProjectMemoDrawerFormRoute() {
 
   useEffect(() => {
     if (requestAdd === 'response') {
-      formik.setFieldValue('description', '');
-      formik.setFieldValue('category', defaultCategory);
+      formik.setValues({
+        description: '',
+        category:    defaultCategory,
+      });
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
       dispatch(projectMemoAction.requestAdd('idle'));
     }
@@ -60,6 +62,9 @@ export default function ProjectMemoDrawerFormRoute() {
         setOpen={setOpen}
         onSubmit={() => {
           formik.handleSubmit();
+        }}
+        addUserModal={() => {
+          console.log('add modal');
         }}
       />
     </FormikProvider>

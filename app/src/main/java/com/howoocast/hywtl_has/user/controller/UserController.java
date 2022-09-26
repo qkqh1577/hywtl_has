@@ -10,9 +10,8 @@ import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserPredicateBuilder;
 import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.service.UserService;
-import com.howoocast.hywtl_has.user.view.LoginUserView;
-import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user.view.UserShortView;
+import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import java.util.List;
 import javax.validation.Valid;
@@ -41,7 +40,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordResetService passwordResetService;
 
-    @GetMapping("/users")
+    @GetMapping({"/admin/users", "/users"})
     public Page<UserShortView> page(
         @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
@@ -57,7 +56,7 @@ public class UserController {
         );
     }
 
-    @GetMapping("/users/all")
+    @GetMapping("/users")
     public List<UserShortView> getAll() {
         return userService.getAll();
     }

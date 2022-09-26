@@ -7,12 +7,13 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DefaultFunction } from 'type/Function';
 
 export interface ModalLayoutProps {
   open: boolean;
   title: string;
   width?: string | number;
-  onClose: () => void;
+  onClose: DefaultFunction;
   children: React.ReactNode;
   footer?: React.ReactNode;
 }

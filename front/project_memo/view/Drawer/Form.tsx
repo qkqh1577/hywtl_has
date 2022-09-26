@@ -2,9 +2,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import {
-  ArrowRight as RightIcon,
-} from '@mui/icons-material';
+import { ArrowRight as RightIcon, } from '@mui/icons-material';
 import React from 'react';
 import IconButton from 'components/IconButton';
 import TextField from 'components/TextField';
@@ -15,15 +13,19 @@ import {
 } from 'project_memo/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import Button from 'layouts/Button';
+import UserIcon from 'layouts/UserIcon';
+import { DefaultFunction } from 'type/Function';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
   onSubmit: () => void;
+  addUserModal: DefaultFunction;
 }
 
 export default function ProjectMemoForm({
                                           setOpen,
                                           onSubmit,
+                                          addUserModal,
                                         }: ProjectMemoFormProps) {
   return (
     <Box sx={{
@@ -77,9 +79,18 @@ export default function ProjectMemoForm({
         <Box sx={{
           display:        'flex',
           width:          '100%',
+          flexWrap:       'wrap',
+          justifyContent: 'flex-start',
+          padding:        '10px',
+        }}>
+          <UserIcon userId="plus" onClick={addUserModal} />
+        </Box>
+        <Box sx={{
+          display:        'flex',
+          width:          '100%',
           flexWrap:       'unwrap',
           justifyContent: 'space-between',
-          padding:        '10px',
+          padding:        '0 10px',
           flex:           1,
           alignItems:     'center',
         }}>

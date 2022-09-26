@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.user.view;
 
 import com.howoocast.hywtl_has.department.view.DepartmentItemView;
+import com.howoocast.hywtl_has.file.view.FileItemView;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.domain.User;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class UserShortView {
     private UserRole role;
     private DepartmentItemView department;
 
+    private FileItemView profile;
+
     public static UserShortView assemble(User source) {
         UserShortView target = new UserShortView();
         target.id = source.getId();
@@ -24,7 +27,7 @@ public class UserShortView {
         target.name = source.getName();
         target.role = source.getRole();
         target.department = DepartmentItemView.assemble(source.getDepartment());
-
+        target.profile = FileItemView.assemble(source.getProfile());
         return target;
     }
 
