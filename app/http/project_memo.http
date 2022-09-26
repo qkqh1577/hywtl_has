@@ -16,7 +16,7 @@ Content-Type: application/json
 GET http://localhost:8080/project/sales/1/memo
 
 ### project memo change
-PATCH http://localhost:8080/project/sales/memo/1
+PUT http://localhost:8080/project/sales/memo/1
 Content-Type: application/json
 
 {

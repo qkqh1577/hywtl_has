@@ -58,6 +58,7 @@ drop table if exists project_estimate_template_detail_title_list;
 drop table if exists project_estimate_template_list;
 drop table if exists project_log;
 drop table if exists project_memo;
+drop table if exists project_memo_attendance_list;
 drop table if exists project_rival_bid;
 drop table if exists project_rival_estimate;
 drop table if exists project_schedule;

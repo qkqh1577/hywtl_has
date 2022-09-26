@@ -2,9 +2,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import {
-  ArrowRight as RightIcon,
-} from '@mui/icons-material';
+import { ArrowRight as RightIcon, } from '@mui/icons-material';
 import React from 'react';
 import IconButton from 'components/IconButton';
 import TextField from 'components/TextField';
@@ -15,15 +13,24 @@ import {
 } from 'project_memo/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import Button from 'layouts/Button';
+import UserIcon from 'layouts/UserIcon';
+import { DefaultFunction } from 'type/Function';
+import { UserId } from 'user/domain';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
   onSubmit: () => void;
+  openUserModal: DefaultFunction;
+  userModal: React.ReactNode;
+  attendanceList: UserId[] | undefined;
 }
 
 export default function ProjectMemoForm({
                                           setOpen,
                                           onSubmit,
+                                          openUserModal,
+                                          userModal,
+                                          attendanceList
                                         }: ProjectMemoFormProps) {
   return (
     <Box sx={{
@@ -77,9 +84,27 @@ export default function ProjectMemoForm({
         <Box sx={{
           display:        'flex',
           width:          '100%',
+          flexWrap:       'wrap',
+          justifyContent: 'flex-start',
+          padding:        '10px',
+        }}>
+          {attendanceList?.map((item) => (
+            <UserIcon
+              key={item}
+              user={item}
+              sx={{
+                marginRight: '10px'
+              }}
+            />
+          ))}
+          <UserIcon user="plus" onClick={openUserModal} />
+        </Box>
+        <Box sx={{
+          display:        'flex',
+          width:          '100%',
           flexWrap:       'unwrap',
           justifyContent: 'space-between',
-          padding:        '10px',
+          padding:        '0 10px',
           flex:           1,
           alignItems:     'center',
         }}>
@@ -105,6 +130,7 @@ export default function ProjectMemoForm({
           </Button>
         </Box>
       </Box>
+      {userModal}
     </Box>
   );
 }

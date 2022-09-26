@@ -15,7 +15,6 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import { FormikSubmit } from 'type/Form';
 import { projectMemoAction } from 'project_memo/action';
 import { RootState } from 'services/reducer';
 
@@ -24,26 +23,20 @@ export default function ProjectMemoDrawerFilterRoute() {
   const { projectId } = useSelector((root: RootState) => root.projectMemo);
   const dispatch = useDispatch();
   const setFilter = useCallback(
-    (formikProps: FormikSubmit<ProjectMemoQuery>) =>
+    (formikProps: ProjectMemoQuery) =>
       dispatch(projectMemoAction.setFilter(formikProps)),
     [dispatch]);
 
   const formik = useFormik<ProjectMemoQuery>({
     initialValues: initialProjectMemoQuery,
-    onSubmit:      (values,
-                    helper
-                   ) => {
-      console.log(values);
-      setFilter({
-        values,
-        ...helper
-      });
+    onSubmit:      (values) => {
+      setFilter(values);
     }
   });
 
   useEffect(() => {
     if (projectId) {
-      dispatch(projectMemoAction.setFilter(formik));
+      dispatch(projectMemoAction.setFilter(formik.values));
     }
   }, [projectId]);
 
@@ -54,14 +47,10 @@ export default function ProjectMemoDrawerFilterRoute() {
           if (e.key === 'Enter') {
             const keyword: string = e.target['value'] ?? '';
             setFilter({
-              ...formik,
-              values: {
-                keyword,
-                category: formik.values.category,
-                page:     0,
-              },
+              keyword,
+              category: formik.values.category,
+              page:     0,
             });
-
           }
         }}
       />

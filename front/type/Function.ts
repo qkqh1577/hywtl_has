@@ -1,1 +1,1 @@
-export type DefaultFunction<P = any> = (p?: P) => void;
+export type DefaultFunction<P = undefined> = P extends undefined ? () => void : (p: P) => void;

@@ -17,14 +17,16 @@ import {
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectAddParameter } from 'project/parameter';
 import { FormikProvider } from 'formik';
-import { FormikPartial } from 'type/Form';
 import { ColorPalette } from 'app/view/App/theme';
+import { memoLabelList } from 'app/route/projectAddModal';
 
 export interface AddModalProps
-  extends FormikLayoutProps<FormikPartial<ProjectAddParameter>> {
+  extends FormikLayoutProps<ProjectAddParameter> {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
+
+
 
 export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps) {
 
@@ -35,6 +37,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
   const onSubmit = () => {
     formik.handleSubmit();
   };
+
   return (
     <ModalLayout
       open={open}
@@ -58,6 +61,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={12}>
                 <TextField
                   required
+                  labelPosition="top"
                   name="name"
                   label="프로젝트 풀네임"
                 />
@@ -65,6 +69,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <TextField
                   required
+                  labelPosition="top"
                   name="alias"
                   label="프로젝트 닉네임"
                 />
@@ -72,6 +77,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <UserSelector
                   required
+                  labelPosition="top"
                   name="receptionManagerId"
                   label="문의 접수자"
                 />
@@ -79,6 +85,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <SelectField
                   required
+                  labelPosition="top"
                   name="progressStatus"
                   label="진행 현황"
                   options={[{
@@ -93,6 +100,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
               <Grid item sm={6}>
                 <SelectField
                   required
+                  labelPosition="top"
                   name="bidType"
                   label="견적 구분"
                   options={projectBasicBidTypeList.map((item) => ({
@@ -110,33 +118,17 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
             border:  `1px solid ${ColorPalette._e4e9f2}`,
           }}>
             <Grid container spacing={2}>
-              <Grid item sm={12}>
-                견적 의뢰처 TBD
-              </Grid>
-              <Grid item sm={12}>
-                소개자 TBD
-              </Grid>
-              <Grid item sm={12}>
-                총 동 수 TBD
-              </Grid>
-              <Grid item sm={12}>
-                단지 수 TBD
-              </Grid>
-              <Grid item sm={12}>
-                예상 시작 시점 TBD
-              </Grid>
-              <Grid item sm={12}>
-                현재 인허가 단계 TBD
-              </Grid>
-              <Grid item sm={12}>
-                관계사 정보 TBD
-              </Grid>
-              <Grid item sm={12}>
-                견적 발송처 TBD
-              </Grid>
-              <Grid item sm={12}>
-                기타 메모사항 TBD
-              </Grid>
+              {memoLabelList.map((label,
+                                  i
+              ) => (
+                <Grid key={label} item sm={12}>
+                  <TextField
+                    labelPosition="top"
+                    name={`memo_${i}`}
+                    label={label}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </Box>
           <Box sx={{

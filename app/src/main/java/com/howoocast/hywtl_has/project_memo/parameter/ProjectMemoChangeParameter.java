@@ -16,5 +16,4 @@ public class ProjectMemoChangeParameter {
     @NotNull(message = ProjectMemo.KEY + ".category.not_null")
     private ProjectMemoCategory category;
 
-    // TODO: notificant
 }

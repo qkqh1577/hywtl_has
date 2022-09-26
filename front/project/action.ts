@@ -9,10 +9,6 @@ import {
   ProjectAddParameter,
   ProjectStatusParameter
 } from 'project/parameter';
-import {
-  FormikPartial,
-  FormikSubmit
-} from 'type/Form';
 
 export enum ProjectAction {
   setFilter    = 'project/sales/filter/set',
@@ -20,6 +16,7 @@ export enum ProjectAction {
   setOne       = 'project/sales/one/set',
   updateStatus = 'project/sales/status/update',
   add          = 'project/sales/add',
+  requestAdd   = 'project/sales/add/request',
   setAddModal  = 'project/sales/addModal/set'
 }
 
@@ -27,7 +24,8 @@ export const projectAction = {
   setFilter:    createAction(ProjectAction.setFilter)<ProjectQuery>(),
   setPage:      createAction(ProjectAction.setPage)<Page<ProjectShortVO> | undefined>(),
   setOne:       createAction(ProjectAction.setOne)<ProjectVO | undefined>(),
-  updateStatus: createAction(ProjectAction.updateStatus)<FormikSubmit<ProjectStatusParameter>>(),
-  add:          createAction(ProjectAction.add)<FormikSubmit<FormikPartial<ProjectAddParameter>>>(),
+  updateStatus: createAction(ProjectAction.updateStatus)<ProjectStatusParameter>(),
+  add:          createAction(ProjectAction.add)<ProjectAddParameter>(),
+  requestAdd:   createAction(ProjectAction.requestAdd)<string>(),
   setAddModal:  createAction(ProjectAction.setAddModal)<boolean>(),
 };

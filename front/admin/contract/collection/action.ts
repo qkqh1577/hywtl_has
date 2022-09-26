@@ -1,14 +1,15 @@
 import { createAction } from 'typesafe-actions';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
-import { FormikSubmit } from 'type/Form';
 import { ContractCollectionParameter } from 'admin/contract/collection/parameter';
 
 export enum ContractCollectionAction {
-  setOne = 'admin/contract/collection/one/set',
-  upsert = 'admin/contract/collection/upsert',
+  getOne = 'admin/contract-collection/get',
+  setOne = 'admin/contract-collection/set',
+  upsert = 'admin/contract-collection/upsert',
 }
 
 export const contractCollectionAction = {
+  getOne: createAction(ContractCollectionAction.getOne)(),
   setOne: createAction(ContractCollectionAction.setOne)<ContractCollectionVO | undefined>(),
-  upsert: createAction(ContractCollectionAction.upsert)<FormikSubmit<ContractCollectionParameter>>(),
-}
+  upsert: createAction(ContractCollectionAction.upsert)<ContractCollectionParameter>(),
+};

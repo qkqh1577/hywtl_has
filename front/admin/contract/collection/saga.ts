@@ -13,7 +13,7 @@ import { contractCollectionApi } from 'admin/contract/collection/api';
 import { dialogActions } from 'components/Dialog';
 
 function* watchPage() {
-  yield take(contractCollectionAction.setOne);
+  yield take(contractCollectionAction.getOne);
   try {
     const page: ContractCollectionVO = yield call(contractCollectionApi.getOne);
     yield put(contractCollectionAction.setOne(page));
@@ -25,20 +25,17 @@ function* watchPage() {
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(ContractCollectionAction.upsert);
+    const { payload: params } = yield take(ContractCollectionAction.upsert);
     try {
-      yield call(contractCollectionApi.upsert, formik.values);
+      yield call(contractCollectionApi.upsert, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
-      //  TODO: 저장후 갱신 로직
+      yield put(contractCollectionAction.getOne());
     }
     catch (e) {
       yield put(dialogActions.openAlert({
         children: '저장에 실패하였습니다.',
         status:   'error',
       }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }

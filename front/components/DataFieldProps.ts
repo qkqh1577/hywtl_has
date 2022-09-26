@@ -7,6 +7,14 @@ import { SxProps } from '@mui/system';
 import React from 'react';
 import { FormikContextType } from 'formik';
 
+export enum ApiStatus {
+  IDLE     = 'idle',
+  REQUEST  = 'request',
+  DONE     = 'done',
+  FAIL     = 'fail',
+  RESPONSE = 'response'
+}
+
 export type Values = {
   [key: string]: any;
 }

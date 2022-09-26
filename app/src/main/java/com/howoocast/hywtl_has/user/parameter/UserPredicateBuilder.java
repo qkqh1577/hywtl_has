@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.user.parameter;
 
-import com.howoocast.hywtl_has.user.domain.QUser;
 import com.howoocast.hywtl_has.user.common.UserRole;
+import com.howoocast.hywtl_has.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
@@ -38,8 +38,19 @@ public class UserPredicateBuilder {
         return this;
     }
 
+    public UserPredicateBuilder keyword(@Nullable String keyword) {
+        if (Objects.isNull(keyword) || keyword.trim().isEmpty()) {
+            return this;
+        }
+        final String keywordStr = keyword.trim();
+        criteria.or(user.name.containsIgnoreCase(keywordStr));
+        criteria.or(user.username.containsIgnoreCase(keywordStr));
+        criteria.or(user.email.containsIgnoreCase(keywordStr));
+        return this;
+    }
+
     @Nullable
     public Predicate build() {
-        return criteria.getValue();
+        return criteria;
     }
 }

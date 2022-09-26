@@ -11,35 +11,27 @@ import {
 import { RootState } from 'services/reducer';
 import { contractBasicAction, } from 'admin/contract/basic/action';
 import { useFormik } from 'formik';
-import {
-  ContractBasicParameter,
-  initialContractBasicParameter
-} from 'admin/contract/basic/parameter';
+import { ContractBasicParameter, } from 'admin/contract/basic/parameter';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
-import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const dispatch = useDispatch();
   const { template } = useSelector((root: RootState) => root.contractBasic);
-  const upsert = useCallback((formikProps: FormikSubmit<ContractBasicParameter>) =>
+  const upsert = useCallback((formikProps: ContractBasicParameter) =>
     dispatch(contractBasicAction.upsert(formikProps)), [dispatch]);
 
   const formik = useFormik<ContractBasicVO>({
       enableReinitialize: true,
-      initialValues:      template ? template : initialContractBasicParameter,
-      onSubmit:           (values,
-                           helper
-                          ) => {
-        upsert({
-          values,
-          ...helper
-        });
+      initialValues:      template,
+      onSubmit:           (values) => {
+        upsert(values);
+        formik.setSubmitting(false);
       }
     }
   );
 
   useEffect(() => {
-    dispatch(contractBasicAction.setOne(template));
+    dispatch(contractBasicAction.getOne());
   }, []);
 
   return (

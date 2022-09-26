@@ -23,7 +23,6 @@ import com.querydsl.core.types.Predicate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,10 +65,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserShortView> getAll() {
-        return repository.findAll().stream()
-            .map(UserShortView::assemble)
-            .collect(Collectors.toList());
+    public List<User> getAll(@Nullable Predicate predicate) {
+        if (Objects.isNull(predicate)) {
+            return repository.findAll();
+        }
+        return repository.findAll(predicate);
     }
 
     @Transactional(readOnly = true)
@@ -86,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserView add(UserAddParameter parameter) {
+    public void add(UserAddParameter parameter) {
         String email = parameter.getEmail();
         UserInvitation userInvitation = userInvitationRepository.findByEmail(email)
             .orElseThrow(() -> new NotFoundException(
@@ -109,7 +109,6 @@ public class UserService {
         userInvitation.delete();
         instance = repository.save(instance);
         eventPublisher.publishEvent(instance);
-        return UserView.assemble(instance);
     }
 
     @Transactional

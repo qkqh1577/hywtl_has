@@ -1,4 +1,7 @@
-import { UserVO } from 'user/domain';
+import {
+  UserId,
+  UserVO
+} from 'user/domain';
 
 export type ProjectMemoId = number & { readonly _brand: unique symbol; };
 
@@ -58,4 +61,5 @@ export interface ProjectMemoVO {
   writer: UserVO;
   createdAt: Date;
   modifiedAt?: Date;
+  attendanceList?: UserId[];
 }

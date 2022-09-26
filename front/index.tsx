@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router,
-  Routes,
   Route,
+  Routes,
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -23,44 +23,50 @@ import {
 } from '@mui/material';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faChartGantt,
-  faFilePowerpoint,
   faAddressCard,
-  faBuilding,
-  faListOl,
-  faGear,
-  faCircle,
-  faMinus,
   faAngleDown,
-  faAngleUp,
   faAngleLeft,
   faAngleRight,
+  faAngleUp,
+  faBuilding,
+  faChartGantt,
+  faCircle,
+  faDownload,
+  faFilePowerpoint,
+  faFloppyDisk,
+  faGear,
+  faListOl,
+  faMinus,
+  faPen,
+  faPlus,
   faStar,
   faTrash,
+  faUser,
   faXmark,
-  faPen,
-  faDownload,
 } from '@fortawesome/free-solid-svg-icons';
 import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 
 library.add(
-  faChartGantt,
-  faFilePowerpoint,
   faAddressCard,
-  faBuilding,
-  faListOl,
-  faGear,
-  faCircle,
-  faMinus,
   faAngleDown,
-  faAngleUp,
   faAngleLeft,
   faAngleRight,
+  faAngleUp,
+  faBuilding,
+  faChartGantt,
+  faCircle,
+  faDownload,
+  faFilePowerpoint,
+  faFloppyDisk,
+  faGear,
+  faListOl,
+  faMinus,
+  faPen,
+  faPlus,
   faStar,
   faTrash,
+  faUser,
   faXmark,
-  faPen,
-  faDownload,
 );
 
 const render = () => {
