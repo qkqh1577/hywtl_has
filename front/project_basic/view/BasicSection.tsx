@@ -10,7 +10,12 @@ import { FieldStatus } from 'components/DataFieldProps';
 import SelectField from 'components/SelectField';
 import UserSelector from 'components/UserSelector';
 
-export default function ProjectBasicSection() {
+interface Props {
+  handleChangeBidType: (e) => void;
+}
+
+
+export default function ProjectBasicBasicSection({handleChangeBidType}: Props) {
 
   return (
     <SectionLayout title="기본 정보">
@@ -48,6 +53,7 @@ export default function ProjectBasicSection() {
               key:  item as string,
               text: projectBasicBidTypeName(item),
             }))}
+            onChange={handleChangeBidType}
           />
         </Grid>
         <Grid item sm={3}>

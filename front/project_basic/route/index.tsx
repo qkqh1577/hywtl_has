@@ -1,62 +1,54 @@
 import { AppRoute } from 'services/routes';
 import React, { useEffect } from 'react';
 import ProjectContainerRoute from 'project/route/container';
+import ProjectBasicBasicRoute from 'project_basic/route/basic';
+import ProjectBasicEstimateRoute from 'project_basic/route/estimate';
+import ProjectBasicBusinessRoute from 'project_basic/route/business';
+import ProjectBasicTestRoute from 'project_basic/route/test';
+import ProjectBasicDesignRoute from 'project_basic/route/design';
+import ProjectBasicBidRoute from 'project_basic/route/bid';
+import ProjectBasicContractRoute from 'project_basic/route/contract';
+import ProjectBasicFailReasonRoute from 'project_basic/route/failReason';
+import { projectBasicActionType } from 'project_basic/action';
 import {
   useDispatch,
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import {
-  FormikProvider,
-  useFormik
-} from 'formik';
-import {
-  FormikPartial,
-  toPartial
-} from 'type/Form';
-import {
-  initialProjectVO,
-  ProjectVO
-} from 'project/domain';
-import ProjectBasicSection from 'project_basic/view/BasicSection';
-import ProjectBasicBusinessRoute from 'project_basic/route/business';
-import ProjectBasicTestRoute from 'project_basic/route/test';
-import { projectBasicActionType } from 'project_basic/action';
 
 function Element() {
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.project);
   const { id } = useSelector((root: RootState) => root.projectBasic);
 
-  const formik = useFormik<FormikPartial<ProjectVO>>({
-    enableReinitialize: true,
-    initialValues:      toPartial(detail, initialProjectVO),
-    onSubmit:           (values,
-                        ) => {
-      console.log(values);
-    }
-  });
-
   useEffect(() => {
     if (detail && detail.id !== id) {
       dispatch(projectBasicActionType.setId(detail.id));
+      dispatch(projectBasicActionType.setBasic({ ...detail }));
     }
   }, [detail]);
 
   return (
-    <ProjectContainerRoute>
-      <FormikProvider value={formik}>
-        <ProjectBasicSection />
-      </FormikProvider>
-      <ProjectBasicBusinessRoute />
-      <ProjectBasicTestRoute />
-    </ProjectContainerRoute>
+    <>
+      <ProjectBasicBasicRoute />
+      {/*<ProjectBasicBusinessRoute />*/}
+      {/*<ProjectBasicTestRoute />*/}
+      {/*<ProjectBasicDesignRoute />*/}
+      <ProjectBasicEstimateRoute />
+      <ProjectBasicBidRoute />
+      <ProjectBasicContractRoute />
+      {/*<ProjectBasicFailReasonRoute />*/}
+    </>
   );
 }
 
 const projectBasicRoute: AppRoute = {
   path:    '/project/sales-management/:id/basic',
-  element: <Element />
+  element: (
+             <ProjectContainerRoute>
+               <Element />
+             </ProjectContainerRoute>
+           )
 };
 
 export default projectBasicRoute;
