@@ -33,6 +33,7 @@ export default function CompanyForm() {
             <Grid item sm={6}>
               <Grid item sm={12}>
                 <DateField
+                  required
                   name="company.hiredDate"
                   label="입사일"
                 />
@@ -42,6 +43,7 @@ export default function CompanyForm() {
               <Grid item sm={12}>
                 {edit && (
                   <SelectField
+                    required
                     label="입사 구분"
                     name="company.hiredType"
                     options={hiredTypeList}

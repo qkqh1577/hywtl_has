@@ -77,6 +77,7 @@ export default function LanguageForm() {
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`languageList.${index}.name`}
                     label="자격증명"
                     labelPosition="top"
@@ -84,6 +85,7 @@ export default function LanguageForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`languageList.${index}.type`}
                     label="대상 언어"
                     labelPosition="top"
@@ -98,6 +100,7 @@ export default function LanguageForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`languageList.${index}.organizationName`}
                     label="발급기관명"
                     labelPosition="top"
@@ -105,13 +108,14 @@ export default function LanguageForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`languageList.${index}.certifiedDate`}
                     label="취득일(시작일)"
                     labelPosition="top"
                   />
                 </Grid>
                 <Grid item sm={2}>
-                  <DateField
+                  <TextField
                     name={`languageList.${index}.expiryPeriod`}
                     label="유효기간(종료일)"
                     labelPosition="top"

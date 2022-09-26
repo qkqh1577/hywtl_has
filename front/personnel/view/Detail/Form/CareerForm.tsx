@@ -77,6 +77,7 @@ export default function CareerForm() {
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`careerList.${index}.companyName`}
                     label="근무처명"
                     labelPosition="top"
@@ -84,6 +85,7 @@ export default function CareerForm() {
                 </Grid>
                 <Grid item sm={6}>
                   <TextField
+                    required
                     name={`careerList.${index}.majorJob`}
                     label="직급 및 담당업무"
                     labelPosition="top"
@@ -91,6 +93,7 @@ export default function CareerForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`careerList.${index}.startDate`}
                     label="입사일"
                     labelPosition="top"
@@ -98,6 +101,7 @@ export default function CareerForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`careerList.${index}.endDate`}
                     label="퇴사일"
                     labelPosition="top"

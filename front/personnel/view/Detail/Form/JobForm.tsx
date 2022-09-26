@@ -91,6 +91,7 @@ export default function JobForm(props) {
               </FormControl>
               <FormGroup row>
                 <Radio
+                  required
                   name={`representativeJob`}
                   value={job.department?.id}
                   checked={(formikContext.values as any).representativeJob === job.department?.id}
@@ -105,6 +106,7 @@ export default function JobForm(props) {
                 <Grid item sm={2}>
                   {edit && (
                     <SelectField
+                      required
                       label="소속부서"
                       labelPosition="top"
                       name={`jobList.${index}.department.id`}
@@ -121,6 +123,7 @@ export default function JobForm(props) {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     label="직함"
                     labelPosition="top"
                     name={`jobList.${index}.jobTitle`}
@@ -128,6 +131,7 @@ export default function JobForm(props) {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     label="직종"
                     labelPosition="top"
                     name={`jobList.${index}.jobType`}
@@ -135,6 +139,7 @@ export default function JobForm(props) {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     label="직위"
                     labelPosition="top"
                     name={`jobList.${index}.jobPosition`}

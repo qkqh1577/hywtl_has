@@ -77,6 +77,7 @@ export default function AcademicForm() {
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`academicList.${index}.academyName`}
                     label="교육기관명"
                     labelPosition="top"
@@ -84,6 +85,7 @@ export default function AcademicForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`academicList.${index}.major`}
                     label="전공(과)"
                     labelPosition="top"
@@ -98,6 +100,7 @@ export default function AcademicForm() {
                 </Grid>
                 <Grid item sm={1}>
                   <TextField
+                    required
                     name={`academicList.${index}.state`}
                     label="재적상태"
                     labelPosition="top"
@@ -112,6 +115,7 @@ export default function AcademicForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`academicList.${index}.startDate`}
                     label="입학일"
                     labelPosition="top"
@@ -119,6 +123,7 @@ export default function AcademicForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`academicList.${index}.endDate`}
                     label="졸업일"
                     labelPosition="top"

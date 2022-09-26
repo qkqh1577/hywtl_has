@@ -77,6 +77,7 @@ export default function LicenseForm() {
               <Grid container item sm={12} spacing={2}>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`licenseList.${index}.name`}
                     label="면허정보"
                     labelPosition="top"
@@ -91,6 +92,7 @@ export default function LicenseForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`licenseList.${index}.organizationName`}
                     label="발급기관명"
                     labelPosition="top"
@@ -98,6 +100,7 @@ export default function LicenseForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <TextField
+                    required
                     name={`licenseList.${index}.qualifiedNumber`}
                     label="인가번호"
                     labelPosition="top"
@@ -112,6 +115,7 @@ export default function LicenseForm() {
                 </Grid>
                 <Grid item sm={2}>
                   <DateField
+                    required
                     name={`licenseList.${index}.qualifiedDate`}
                     label="만료일"
                     labelPosition="top"
