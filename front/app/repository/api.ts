@@ -16,7 +16,7 @@ class LoginUserApi {
   }
 
   async getLoginUser(): Promise<LoginUser> {
-    const { data } = await apiClient.get('/users/login');
+    const { data } = await apiClient.get('/user/login');
     return data;
   }
 

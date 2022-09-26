@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -16,6 +17,8 @@ public class ProjectMemoView {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private List<Long> attendanceList;
+
     public static ProjectMemoView assemble(ProjectMemo source) {
         ProjectMemoView target = new ProjectMemoView();
         target.id = source.getId();
@@ -24,7 +27,7 @@ public class ProjectMemoView {
         target.description = source.getDescription();
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();
-        // TODO: get notificant list
+        target.attendanceList = source.getAttendanceList();
         return target;
     }
 }

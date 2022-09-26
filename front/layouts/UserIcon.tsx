@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   Box,
+  BoxProps,
   Tooltip
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
@@ -15,20 +16,27 @@ import {
 import { userApi } from 'user/api';
 
 interface Props {
-  userId: UserId | 'plus';
+  user: UserId | UserVO | string;
   onClick?: (userId?: UserId) => void;
+  sx?: BoxProps['sx'];
 }
 
 export default function UserIcon(props: Props) {
 
-  const isPlus = props.userId === 'plus';
+  const isPlus = props.user === 'plus';
 
   const [user, setUser] = useState<UserVO>();
 
   useEffect(() => {
-    if (typeof props.userId === 'number') {
-      userApi.getOne(props.userId)
+    if (typeof props.user === 'string') {
+      return;
+    }
+    if (typeof props.user === 'number') {
+      userApi.getOne(props.user)
              .then(setUser);
+    }
+    else {
+      setUser(props.user);
     }
   }, []);
 
@@ -40,6 +48,7 @@ export default function UserIcon(props: Props) {
         }
       }}
       sx={{
+        ...props.sx,
         display:         'flex',
         width:           '25px',
         height:          '25px',
@@ -53,6 +62,9 @@ export default function UserIcon(props: Props) {
         overflow:        'hidden',
         cursor:          props.onClick ? 'pointer' : 'default',
       }}>
+      {typeof props.user === 'string' && !isPlus && (
+        <span>{props.user}</span>
+      )}
       {isPlus && (
         <FontAwesomeIcon icon="plus" />
       )}

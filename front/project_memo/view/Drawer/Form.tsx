@@ -15,17 +15,22 @@ import { ColorPalette } from 'app/view/App/theme';
 import Button from 'layouts/Button';
 import UserIcon from 'layouts/UserIcon';
 import { DefaultFunction } from 'type/Function';
+import { UserId } from 'user/domain';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
   onSubmit: () => void;
-  addUserModal: DefaultFunction;
+  openUserModal: DefaultFunction;
+  userModal: React.ReactNode;
+  attendanceList: UserId[] | undefined;
 }
 
 export default function ProjectMemoForm({
                                           setOpen,
                                           onSubmit,
-                                          addUserModal,
+                                          openUserModal,
+                                          userModal,
+                                          attendanceList
                                         }: ProjectMemoFormProps) {
   return (
     <Box sx={{
@@ -83,7 +88,16 @@ export default function ProjectMemoForm({
           justifyContent: 'flex-start',
           padding:        '10px',
         }}>
-          <UserIcon userId="plus" onClick={addUserModal} />
+          {attendanceList?.map((item) => (
+            <UserIcon
+              key={item}
+              user={item}
+              sx={{
+                marginRight: '10px'
+              }}
+            />
+          ))}
+          <UserIcon user="plus" onClick={openUserModal} />
         </Box>
         <Box sx={{
           display:        'flex',
@@ -116,6 +130,7 @@ export default function ProjectMemoForm({
           </Button>
         </Box>
       </Box>
+      {userModal}
     </Box>
   );
 }

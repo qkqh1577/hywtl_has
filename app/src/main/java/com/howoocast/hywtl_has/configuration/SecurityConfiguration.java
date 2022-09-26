@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/user-verification/password-reset/authenticate",
                 "/user/authenticate",
                 "/user/password-reset",
-                "/users/login",
+                "/user/login",
                 "/login",
                 "errors/*"
             )

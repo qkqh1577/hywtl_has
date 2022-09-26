@@ -1,10 +1,12 @@
 import {
+  projectMemoCategoryList,
   projectMemoCategoryName,
   ProjectMemoId,
   ProjectMemoVO
 } from 'project_memo/domain';
 import {
   Box,
+  Tooltip,
   Typography
 } from '@mui/material';
 import React from 'react';
@@ -12,13 +14,30 @@ import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
+import Text from 'layouts/Text';
+import { LoginUser } from 'app/domain/login';
+import UserIcon from 'layouts/UserIcon';
+import TextField from 'components/TextField';
+import SelectField from 'components/SelectField';
+import { FormikProvider, } from 'formik';
+import { ProjectMemoChangeParameter } from 'project_memo/parameter';
+import { FormikLayoutProps } from 'layouts/PageLayout';
 
-export interface ProjectMemoListProps {
+export interface ProjectMemoListProps
+  extends FormikLayoutProps<Partial<ProjectMemoChangeParameter>> {
+  login: LoginUser | undefined;
   list: ProjectMemoVO[];
   onDelete: DefaultFunction<ProjectMemoId>;
 }
 
-export default function ProjectMemoList({ list, onDelete }: ProjectMemoListProps) {
+
+export default function ProjectMemoList({
+                                          login,
+                                          list,
+                                          onDelete,
+                                          formik
+                                        }: ProjectMemoListProps) {
+
 
   return (
     <Box sx={{
@@ -46,19 +65,27 @@ export default function ProjectMemoList({ list, onDelete }: ProjectMemoListProps
             display:        'flex',
             flexWrap:       'unwrap',
             width:          '100%',
-            justifyContent: 'space-between',
-            flex:           1,
+            justifyContent: item.writer.id === (login?.id ?? 1) ? 'space-between' : 'flex-start',
+            alignItems:     'center',
           }}>
             <Box sx={{
-              display:  'flex',
-              flexWrap: 'unwrap',
+              display:    'flex',
+              flexWrap:   'unwrap',
+              alignItems: 'center',
             }}>
               <Typography sx={{
                 fontSize:    '13px',
                 fontWeight:  'bold',
-                marginRight: '10px'
+                marginRight: '4px'
               }}>
                 <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
+              </Typography>
+              <Typography sx={{
+                fontSize:    '13px',
+                fontWeight:  'bold',
+                marginRight: '4px',
+              }}>
+                {item.writer.department.name === '한양풍동실험연구소' ? '회사' : item.writer.department.name}
               </Typography>
               <Typography sx={{
                 fontSize:   '13px',
@@ -67,58 +94,143 @@ export default function ProjectMemoList({ list, onDelete }: ProjectMemoListProps
                 {item.writer.name}
               </Typography>
             </Box>
-            {item.writer.id === 1 && (
+            {item.writer.id === (login?.id ?? 1) && (
               <Box sx={{
                 display:  'flex',
                 flexWrap: 'unwrap',
               }}>
-                <FontAwesomeIcon
-                  icon="pen"
-                  style={{
-                    fontSize:    '11px',
-                    color:       ColorPalette._9bb6ea,
-                    marginRight: '10px',
-                  }}
-                />
-                <FontAwesomeIcon
-                  icon="trash"
-                  style={{
-                    cursor:   'pointer',
-                    fontSize: '11px',
-                    color:    ColorPalette._9bb6ea,
-                  }}
-                  onClick={() => {
-                    onDelete(item.id);
-                  }}
-                />
+                <Tooltip title={formik.values.id === item.id ? '저장' : '수정'}>
+                  <FontAwesomeIcon
+                    icon={formik.values.id === item.id ? 'floppy-disk' : 'pen'}
+                    style={{
+                      cursor:      'pointer',
+                      fontSize:    '11px',
+                      color:       ColorPalette._9bb6ea,
+                      marginRight: '10px',
+                    }}
+                    onClick={() => {
+                      if (formik.values.id === item.id) {
+                        formik.handleSubmit();
+                      }
+                      else {
+                        formik.setValues({
+                          id:          item.id,
+                          description: item.description,
+                          category:    item.category,
+                        });
+                      }
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title={formik.values.id === item.id ? '변경 취소' : '삭제'}>
+                  <FontAwesomeIcon
+                    icon="trash"
+                    style={{
+                      cursor:   'pointer',
+                      fontSize: '11px',
+                      color:    ColorPalette._9bb6ea,
+                    }}
+                    onClick={() => {
+                      if (formik.values.id === item.id) {
+                        formik.setValues({});
+                      }
+                      else {
+                        onDelete(item.id);
+                      }
+                    }}
+                  />
+                </Tooltip>
               </Box>
             )}
           </Box>
-          <Box sx={{
-            display:  'flex',
-            flexWrap: 'wrap',
-            padding:  '12px 0'
-          }}>
-            <Typography
-              component="span"
-              sx={{
-                fontSize:   '13px',
-                color:      ColorPalette._252627,
-                wordBreak:  'break-all',
-                whiteSpace: 'break-spaces',
-              }}>
+          {formik.values.id !== item.id && (
+            <Box sx={{
+              display:  'flex',
+              flexWrap: 'wrap',
+              width:    '100%',
+              padding:  '12px 0'
+            }}>
               <Typography
                 component="span"
                 sx={{
-                  fontSize:    '13px',
-                  color:       ColorPalette._386dd6,
-                  fontWeight:  'bold',
-                  marginRight: '4px'
+                  fontSize:   '13px',
+                  color:      ColorPalette._252627,
+                  wordBreak:  'break-all',
+                  whiteSpace: 'break-spaces',
                 }}>
-                [{projectMemoCategoryName(item.category)}]
+                <Typography
+                  component="span"
+                  sx={{
+                    fontSize:    '13px',
+                    color:       ColorPalette._386dd6,
+                    fontWeight:  'bold',
+                    marginRight: '4px'
+                  }}>
+                  [{projectMemoCategoryName(item.category)}]
+                </Typography>
+                <Text variant="body9">
+                  {item.description}
+                </Text>
               </Typography>
-              {item.description}
-            </Typography>
+            </Box>
+          )}
+          {formik.values.id === item.id && (
+            <Box sx={{
+              display:  'flex',
+              width:    '100%',
+              flexWrap: 'wrap',
+              padding:  '12px 0'
+            }}>
+              <FormikProvider value={formik}>
+                <Box sx={{
+                  display: 'flex',
+                  width:   '50%',
+                }}>
+                  <SelectField
+                    required
+                    disableLabel
+                    variant="outlined"
+                    name="category"
+                    label="카테고리"
+                    options={projectMemoCategoryList.map(item => ({
+                      key:  item as string,
+                      text: projectMemoCategoryName(item),
+                    }))}
+                  />
+                </Box>
+                <Box sx={{
+                  display: 'flex',
+                  width:   '100%',
+                }}>
+                  <TextField
+                    required
+                    disableLabel
+                    variant="outlined"
+                    name="description"
+                    label="본문"
+                    placeholder="메모 입력"
+                    multiline
+                  />
+                </Box>
+
+              </FormikProvider>
+            </Box>
+          )}
+          <Box sx={{
+            display:        'flex',
+            flexWrap:       'wrap',
+            width:          '100%',
+            justifyContent: 'flex-start',
+          }}>
+            {item.attendanceList?.map((item) => (
+              <UserIcon
+                key={item}
+                user={item}
+                sx={{
+                  marginRight: '4px',
+                }}
+              />
+            ))}
           </Box>
         </Box>
       ))}

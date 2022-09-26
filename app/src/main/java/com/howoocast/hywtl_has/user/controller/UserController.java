@@ -14,6 +14,7 @@ import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user.view.UserView;
 import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordResetService passwordResetService;
 
-    @GetMapping({"/admin/users", "/users"})
+    @GetMapping("/admin/user")
     public Page<UserShortView> page(
         @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
@@ -56,12 +57,20 @@ public class UserController {
         );
     }
 
-    @GetMapping("/users")
-    public List<UserShortView> getAll() {
-        return userService.getAll();
+    @GetMapping("/user")
+    public List<UserShortView> getAll(
+        @RequestParam(required = false) String keyword
+    ) {
+        return userService.getAll(
+                new UserPredicateBuilder()
+                    .keyword(keyword)
+                    .build())
+            .stream()
+            .map(UserShortView::assemble)
+            .collect(Collectors.toList());
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/user/login")
     public UserView getLogin(Authentication authentication) {
         try {
             String username = authentication.getName();
@@ -72,41 +81,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/admin/user/{id}")
     public UserView get(@PathVariable Long id) {
         return userService.get(id);
     }
 
-    @PostMapping("/user/invite")
-    public UserView add(@Valid @RequestBody UserAddParameter parameter) {
-        return userService.add(parameter);
-    }
-
-    @PostMapping("/user/password-validate")
-    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter parameter) {
-        userService.validatePassword(parameter);
-    }
-
-    @PostMapping("/users/{id}/reset-password")
-    public void resetPassword(@PathVariable Long id) {
-        passwordResetService.reset(id);
-    }
-
-    @PatchMapping("/users/{id}")
-    public UserView change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter parameter) {
-        userService.change(id, parameter);
-        return userService.get(id);
-    }
-
-    @PatchMapping("/users/{id}/password")
-    public UserView changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter parameter) {
-        userService.changePassword(id, parameter);
-        return userService.get(id);
-    }
-
-    @DeleteMapping("/users/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
+    @PostMapping("/admin/user/invite")
+    public void add(@Valid @RequestBody UserAddParameter parameter) {
+        userService.add(parameter);
     }
 
     @PostMapping("/user/login")
@@ -114,5 +96,30 @@ public class UserController {
         Authentication authentication,
         @Valid @ModelAttribute LoginUserChangeParameter parameter) {
         userService.edit(authentication.getName(), parameter);
+    }
+
+    @PostMapping("/user/password-validate")
+    public void validatePassword(@Valid @RequestBody UserValidatePasswordParameter parameter) {
+        userService.validatePassword(parameter);
+    }
+
+    @PostMapping("/user/{id}/reset-password")
+    public void resetPassword(@PathVariable Long id) {
+        passwordResetService.reset(id);
+    }
+
+    @PatchMapping("/admin/user/{id}")
+    public void change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter parameter) {
+        userService.change(id, parameter);
+    }
+
+    @PatchMapping("/user/{id}/password")
+    public void changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter parameter) {
+        userService.changePassword(id, parameter);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }

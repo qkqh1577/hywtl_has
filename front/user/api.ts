@@ -1,4 +1,4 @@
-import apiClient from 'services/api';
+import apiClient, { toFormData } from 'services/api';
 import Page from 'type/Page';
 import { UserQuery } from 'user/query';
 import {
@@ -6,64 +6,34 @@ import {
   UserVO
 } from 'user/domain';
 import {
-  UserChangeParameter,
-  LoginUserEditParameter
+  LoginUserEditParameter,
+  UserChangeParameter
 } from 'user/parameter';
-import dayjs from 'dayjs';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
-    const { data } = await apiClient.get('/users', query);
+    const { data } = await apiClient.get('/admin/user', query);
     return data;
   }
 
-  async getList(): Promise<UserVO[]> {
-    const { data } = await apiClient.get('/users/all');
+  async getList(keyword?: string): Promise<UserVO[]> {
+    const { data } = await apiClient.get('/user', { keyword });
     return data;
   }
 
   async getOne(id: UserId): Promise<UserVO> {
-    const { data } = await apiClient.get(`/users/${id}`);
+    const { data } = await apiClient.get(`/admin/user/${id}`);
     return data;
   }
 
   async change(parameter: UserChangeParameter): Promise<void> {
     const { id, ...rest } = parameter;
-    const { data } = await apiClient.patch(`/users/${id}`, rest);
+    const { data } = await apiClient.patch(`/admin/user/${id}`, rest);
     return data;
   }
 
   async edit(params: LoginUserEditParameter): Promise<void> {
-    const formData = new FormData();
-    if (params.englishName) {
-      formData.append('englishName', params.englishName);
-    }
-    if (params.sex) {
-      formData.append('sex', params.sex);
-    }
-    if (params.mobilePhone) {
-      formData.append('mobilePhone', params.mobilePhone);
-    }
-    if (params.privateEmail) {
-      formData.append('privateEmail', params.privateEmail);
-    }
-    if (params.emergencyPhone) {
-      formData.append('emergencyPhone', params.emergencyPhone);
-    }
-    if (params.relationship) {
-      formData.append('relationship', params.relationship);
-    }
-    if (params.address) {
-      formData.append('address', params.address);
-    }
-    if (params.profile) {
-      formData.append('profile', params.profile);
-    }
-    if (params.birthDate) {
-      formData.append('birthDate', dayjs(params.birthDate)
-      .format('YYYY-MM-DD'));
-    }
-    const { data } = await apiClient.post('/user/login', formData);
+    const { data } = await apiClient.post('/user/login', toFormData(params));
     return data;
   }
 }

@@ -188,6 +188,7 @@ export default function Text({ variant, sx: customSX, ...props }: Props) {
 
   return (
     <Typography
+      component="span"
       {...props}
       sx={sx}
     />

@@ -5,7 +5,8 @@ import {
 } from 'react-redux';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import { projectMemoAction } from 'project_memo/action';
 import {
@@ -22,6 +23,8 @@ import {
   ProjectMemoAddParameter,
 } from 'project_memo/parameter';
 import { RootState } from 'services/reducer';
+import UserSelectModal from 'project_memo/view/UserModal';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectMemoDrawerFormRoute() {
   const { pathname } = useLocation();
@@ -40,19 +43,20 @@ export default function ProjectMemoDrawerFormRoute() {
   });
 
   const defaultCategory = getDefaultValue();
+  const [userModal, setUserModal] = useState<boolean>(false);
 
   useEffect(() => {
     formik.setFieldValue('category', defaultCategory);
   }, [defaultCategory]);
 
   useEffect(() => {
-    if (requestAdd === 'response') {
+    if (requestAdd === ApiStatus.RESPONSE) {
       formik.setValues({
         description: '',
         category:    defaultCategory,
       });
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-      dispatch(projectMemoAction.requestAdd('idle'));
+      dispatch(projectMemoAction.requestAdd(ApiStatus.IDLE));
     }
   }, [requestAdd]);
 
@@ -63,9 +67,21 @@ export default function ProjectMemoDrawerFormRoute() {
         onSubmit={() => {
           formik.handleSubmit();
         }}
-        addUserModal={() => {
-          console.log('add modal');
+        openUserModal={() => {
+          setUserModal(true);
         }}
+        userModal={
+          <UserSelectModal
+            open={userModal}
+            onClose={() => {
+              setUserModal(false);
+            }}
+            afterSubmit={(idList) => {
+              formik.setFieldValue('attendanceList', idList);
+            }}
+          />
+        }
+        attendanceList={formik.values.attendanceList}
       />
     </FormikProvider>
   );
