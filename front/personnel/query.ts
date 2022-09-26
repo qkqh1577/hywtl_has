@@ -87,8 +87,8 @@ export const accountStateTypeList: Option[] = [
     text: '사용'
   },
   {
-    key:  '사용중지',
-    text: '사용중지'
+    key:  '사용 중지',
+    text: '사용 중지'
   },
 ];
 

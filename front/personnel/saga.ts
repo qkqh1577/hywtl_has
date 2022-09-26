@@ -20,7 +20,6 @@ function* watchId() {
   while (true) {
     const { id } = yield take(PersonnelAction.setId);
     const detail: PersonnelVO = yield call(personnelApi.getOne, id);
-    console.log("inside of saga : ", detail);
     yield put(personnelAction.setOne(detail));
   }
 }

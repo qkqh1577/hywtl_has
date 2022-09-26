@@ -44,9 +44,7 @@ export interface PersonnelVOInputValue
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
-  const {
-          detail
-        } = useSelector((root: RootState) => root.personnel);
+  const { detail } = useSelector((root: RootState) => root.personnel);
 
   const personnelVO: PersonnelVOInputValue = {
     name:              detail?.name || '',
@@ -64,6 +62,7 @@ function Element() {
                          detail?.jobList?.filter((job) => job.isRepresentative)[0].department!.id
                          : undefined,
   };
+
   const { list } = useSelector((root: RootState) => root.department);
 
   const update = useCallback((formikProps: FormikSubmit<PersonnelParameter>) => {
@@ -72,7 +71,7 @@ function Element() {
 
   const formik = useFormik<PersonnelVOInputValue>({
     enableReinitialize: true,
-    initialValues:      personnelVO || initialPersonnelVO,
+    initialValues:      detail?.id === id ? { ...personnelVO } : { edit: false, ...initialPersonnelVO },
     onSubmit:           (values,
                          helpers
                         ) => {
@@ -92,18 +91,17 @@ function Element() {
   });
   const edit = formik.values.edit;
   useEffect(() => {
-    console.log('id : ', id);
-    console.log('detail.id : ', detail?.id);
-    if (detail?.id !== id) {
-      dispatch({
-        type: 'department/list/request'
-      });
+    if (id) {
       dispatch({
         type: PersonnelAction.setId,
         id
       });
+      dispatch({
+        type: 'department/list/request'
+      });
     }
   }, [id]);
+
   return (
     <PersonnelDetail
       formik={formik}

@@ -36,6 +36,7 @@ export default function BasicForm() {
               <Grid item sm={6}>
                 <Grid item sm={12}>
                   <TextField
+                    required
                     name="basic.engName"
                     label="영문명"
                   />
@@ -44,6 +45,7 @@ export default function BasicForm() {
               <Grid item sm={6}>
                 <Grid item sm={12}>
                   <DateField
+                    required
                     name="basic.birthDate"
                     label="생년월일"
                   />
@@ -54,6 +56,7 @@ export default function BasicForm() {
               <Grid item sm={6}>
                 {edit && (
                   <SelectField
+                    required={true}
                     label="성별"
                     name="basic.sex"
                     options={sexCategoryList}
