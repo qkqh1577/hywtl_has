@@ -11,23 +11,24 @@ import {
 import { dialogActions } from 'components/Dialog';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
 import { contractBasicApi } from 'admin/contract/basic/api';
+import { initialContractBasicParameter } from 'admin/contract/basic/parameter';
 
 function* watchPage() {
-  yield take(contractBasicAction.setOne);
+  yield take(contractBasicAction.getOne);
   try {
     const page: ContractBasicVO = yield call(contractBasicApi.getOne);
     yield put(contractBasicAction.setOne(page));
   }
   catch (e) {
-    yield put(contractBasicAction.setOne(undefined));
+    yield put(contractBasicAction.setOne(initialContractBasicParameter));
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(ContractBasicAction.upsert);
+    const { payload: params } = yield take(ContractBasicAction.upsert);
     try {
-      yield call(contractBasicApi.upsert, formik.values);
+      yield call(contractBasicApi.upsert, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
       //  TODO: 저장후 갱신 로직
     }
@@ -36,9 +37,6 @@ function* watchUpsert() {
         children: '저장에 실패하였습니다.',
         status:   'error',
       }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }

@@ -4,16 +4,19 @@ import {
   ContractConditionVariableVO,
 } from 'admin/contract/condition/domain';
 import { ContractConditionParameter } from 'admin/contract/condition/parameter';
-import { FormikSubmit } from 'type/Form';
 
 export enum ContractConditionAction {
-  setOne          = 'admin/contract/condition/one/set',
-  upsert          = 'admin/contract/condition/upsert',
-  setVariableList = 'admin/contract/condition/variable-list/set'
+  getOne          = 'admin/contract-condition/get',
+  setOne          = 'admin/contract-condition/one/set',
+  upsert          = 'admin/contract-condition/upsert',
+  getVariableList = 'admin/contract-condition/variable-list/get',
+  setVariableList = 'admin/contract-condition/variable-list/set',
 }
 
 export const contractConditionAction = {
+  getOne:          createAction(ContractConditionAction.getOne)(),
   setOne:          createAction(ContractConditionAction.setOne)<ContractConditionListVO | undefined>(),
-  upsert:          createAction(ContractConditionAction.upsert)<FormikSubmit<ContractConditionParameter>>(),
+  upsert:          createAction(ContractConditionAction.upsert)<ContractConditionParameter>(),
+  getVariableList: createAction(ContractConditionAction.getVariableList)(),
   setVariableList: createAction(ContractConditionAction.setVariableList)<ContractConditionVariableVO[]>(),
 };

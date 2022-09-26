@@ -9,7 +9,6 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import { FormikSubmit } from 'type/Form';
 import {
   ContractCollectionParameter,
   initialContractCollectionParameter
@@ -22,24 +21,19 @@ import TotalRatioCellRoute from './totalRatioCell';
 function Element() {
   const dispatch = useDispatch();
   const { template } = useSelector((root: RootState) => root.contractCollection);
-  const upsert = useCallback((formikProps: FormikSubmit<ContractCollectionParameter>) =>
+  const upsert = useCallback((formikProps: ContractCollectionParameter) =>
     dispatch(contractCollectionAction.upsert(formikProps)), [dispatch]);
 
   const formik = useFormik<ContractCollectionVO>({
     enableReinitialize: true,
     initialValues:      template ? template : initialContractCollectionParameter,
-    onSubmit:           (values,
-                         helper
-                        ) => {
-      upsert({
-        values,
-        ...helper
-      });
+    onSubmit:           (values) => {
+      upsert(values);
     }
   });
 
   useEffect(() => {
-    dispatch(contractCollectionAction.setOne(template));
+    dispatch(contractCollectionAction.getOne());
   }, []);
 
   return (

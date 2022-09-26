@@ -17,7 +17,7 @@ import {
 } from './action';
 
 function* watchPage() {
-  yield take(contractConditionAction.setOne);
+  yield take(contractConditionAction.getOne);
   try {
     const page: ContractConditionListVO = yield call(contractConditionApi.getOne);
     yield put(contractConditionAction.setOne(page));
@@ -29,11 +29,11 @@ function* watchPage() {
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(ContractConditionAction.upsert);
+    const { payload: params } = yield take(ContractConditionAction.upsert);
     try {
-      yield call(contractConditionApi.upsert, formik.values);
+      yield call(contractConditionApi.upsert, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
-      //  TODO: 저장후 갱신 로직
+      yield put(contractConditionAction.getOne());
     }
     catch (e) {
       yield put(dialogActions.openAlert({
@@ -41,15 +41,12 @@ function* watchUpsert() {
         status:   'error',
       }));
     }
-    finally {
-      yield call(formik.setSubmitting, false);
-    }
   }
 }
 
 function* watchVariableList() {
   while (true) {
-    yield take(ContractConditionAction.setVariableList);
+    yield take(contractConditionAction.getVariableList);
     const list: ContractConditionVariableVO[] = yield call(contractConditionApi.getVariableList);
     yield put(contractConditionAction.setVariableList(list));
   }
