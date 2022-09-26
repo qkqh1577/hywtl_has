@@ -1,5 +1,6 @@
 import {
   FieldStatus,
+  getValue,
   LabelProps
 } from 'components/DataFieldProps';
 import React, {
@@ -44,8 +45,7 @@ export default function UploadField(props: UploadFieldProps) {
     formikContext?.setFieldValue(name, file);
   };
 
-  const file: FileItemView | undefined = formikContext?.values[name];
-
+  const file = getValue<FileItemView>(formikContext?.values, name);
   const isView = status === FieldStatus.ReadOnly || status === FieldStatus.View;
   const isDisabled = status === FieldStatus.Disabled;
   const endAdornment = useMemo(() => {
@@ -89,7 +89,7 @@ export default function UploadField(props: UploadFieldProps) {
     }
 
     if (file.id) {
-      setImageUrl(`url(/file-items/${file.id})`);
+      setImageUrl(`/file-items/${file.id}`);
       return;
     }
     if (file.multipartFile) {
@@ -97,7 +97,6 @@ export default function UploadField(props: UploadFieldProps) {
     }
 
   }, [file]);
-
   return (
     <Box sx={{
       width:    '100%',

@@ -55,6 +55,7 @@ public class PersonnelView {
             target.jobList = new ArrayList<>();
             PersonnelJobView job = new PersonnelJobView();
             job.setDepartment(DepartmentView.assemble(source.getUser().getDepartment()));
+            job.setIsRepresentative(Boolean.TRUE);
             target.jobList.add(job);
         } else {
             target.jobList = ListConvertor.make(source.getJobList(), PersonnelJobView::assemble);

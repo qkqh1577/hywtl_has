@@ -69,7 +69,7 @@ export function useDataProps<T = DataFieldValue, E = HTMLInputElement | HTMLText
 
   const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
   const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);
-  const required = useMemo(() => edit && required, [edit, propsRequired]);
+  const required = useMemo(() => edit && propsRequired, [edit, propsRequired]);
 
   const onChange = (e) => {
     if (!edit) {

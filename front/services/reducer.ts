@@ -95,6 +95,10 @@ import {
   ProjectScheduleState
 } from 'project_schedule/reducer';
 import {
+  personnelReducer,
+  PersonnelState
+} from 'personnel/reducer';
+import {
   userNotificationReducer,
   UserNotificationState
 } from 'user_notification/reducer';
@@ -124,6 +128,7 @@ export interface RootState {
   rivalEstimate: RivalEstimateState;
   projectBid: ProjectBidState;
   projectSchedule: ProjectScheduleState;
+  personnel: PersonnelState;
   userNotification: UserNotificationState;
 }
 
@@ -152,6 +157,7 @@ const reducer = combineReducers<RootState>({
   rivalEstimate:      rivalEstimateReducer,
   projectBid:         projectBidReducer,
   projectSchedule:    projectScheduleReducer,
+  personnel:          personnelReducer,
   userNotification:   userNotificationReducer,
 });
 
