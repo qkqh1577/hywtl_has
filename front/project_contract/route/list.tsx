@@ -23,16 +23,16 @@ export default function ProjectContractListRoute() {
   const dispatch = useDispatch();
   const id = useId();
   //const { list } = useSelector((root: RootState) => root.projectContract);
-  //const openAddModal = useCallback((type: ProjectEstimateType) => dispatch(projectEstimateAction.setCustomAddModal(type)), [dispatch]);
+  const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
   //const openDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
 
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
     return {
       id:           i,
-      confirmed:    i % 2 === 0,
+      confirmed:    i === 7,
       code:         'code' + i,
       estimateCode: 'estimateCode' + i,
-      createdBy:    {name:'name' + i},
+      createdBy:    { name: 'name' + i },
       modifiedAt:   new Date(),
       createdAt:    new Date(),
       note:         'note' + i,
@@ -48,7 +48,7 @@ export default function ProjectContractListRoute() {
   return (
     <ProjectContractListSection
       list={list}
-      openAddModal={() => {}}
+      openAddModal={openAddModal}
       openDetailModal={() => {}}
       openConfirmModal={() => {}}
     />

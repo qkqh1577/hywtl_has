@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.controller;
 
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateConfirmParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateService;
+import com.howoocast.hywtl_has.project_estimate.view.ProjectCustomEstimateView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import java.util.List;
@@ -21,9 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectEstimateController {
 
-
     private final ProjectEstimateService service;
-
+    @GetMapping("/project/sales/estimate/{id}")
+    public ProjectEstimateView get(
+        @PathVariable Long id
+    ) {
+        return ProjectEstimateView.assemble(service.get(id));
+    }
     @GetMapping("/project/sales/{projectId}/estimate")
     public List<ProjectEstimateShortView> list(
         @PathVariable Long projectId

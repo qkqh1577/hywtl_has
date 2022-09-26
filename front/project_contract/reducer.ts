@@ -3,6 +3,7 @@ import {
   ProjectContractShort,
   ProjectContractId,
   ProjectContractVO,
+  ProjectEstimateVO,
 } from 'project_contract/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectContractActionType } from 'project_contract/action';
@@ -11,48 +12,65 @@ export interface ProjectContractState {
   projectId?: ProjectId;
   list?: ProjectContractShort[];
   detail?: ProjectContractVO;
-  customAddModal?: void;
-  customConfirmModal?: void;
-  customDetailModal?: ProjectContractId;
+  addModal?: boolean;
+  confirmModal?: ProjectContractId;
+  detailModal?: ProjectContractId;
+  estimateList?: ProjectEstimateVO[];
+  estimateDetail?: ProjectEstimateVO;
 }
 
 const initial: ProjectContractState = {};
 
 export const projectContractReducer = createReducer(initial, {
-  [ProjectContractActionType.setProjectId]:          (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setProjectId]:      (state,
+                                                  action
+                                                 ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectContractActionType.setList]:               (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setList]:           (state,
+                                                  action
+                                                 ) => ({
     ...state,
     list: action.payload,
   }),
-  [ProjectContractActionType.setDetail]:             (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setDetail]:         (state,
+                                                  action
+                                                 ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectContractActionType.setCustomAddModal]:     (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setAddModal]:       (state,
+                                                  action
+                                                 ) => {
+    console.log(state, action);
+    return ({
+      ...state,
+      addModal: action.payload,
+    });
+  },
+  [ProjectContractActionType.setConfirmModal]:   (state,
+                                                  action
+                                                 ) => ({
     ...state,
-    customAddModal: action.payload,
+    detailModal: action.payload,
   }),
-  [ProjectContractActionType.setCustomConfirmModal]: (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setDetailModal]:    (state,
+                                                  action
+                                                 ) => ({
     ...state,
-    customAddModal: action.payload,
+    DetailModal: action.payload
   }),
-  [ProjectContractActionType.setCustomDetailModal]:  (state,
-                                                      action
-                                                     ) => ({
+  [ProjectContractActionType.setEstimateList]:   (state,
+                                                  action
+                                                 ) => ({
     ...state,
-    customDetailModal: action.payload
-  })
+    list: action.payload,
+  }),
+  [ProjectContractActionType.setEstimateDetail]: (state,
+                                                  action
+                                                 ) => ({
+    ...state,
+    detail: action.payload,
+  }),
 });

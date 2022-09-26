@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSite;
@@ -43,6 +44,13 @@ public class ProjectEstimateService {
 
     private final ApplicationEventPublisher eventPublisher;
 
+
+    @Transactional(readOnly = true)
+    public ProjectEstimate get(Long id) {
+        return repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ProjectEstimate.KEY, id);
+        });
+    }
 
     @Transactional(readOnly = true)
     public List<ProjectEstimate> getList(
