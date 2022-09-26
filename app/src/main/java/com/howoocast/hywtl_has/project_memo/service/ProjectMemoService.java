@@ -70,6 +70,7 @@ public class ProjectMemoService {
             instance.getAttendanceList().stream()
                 .map(userId -> UserNotificationEvent.of(
                     new CustomFinder<>(userRepository, User.class).byId(userId),
+                    project,
                     "메모 알림",
                     instance.getDescription(),
                     String.format("/project/sales-management/%d", project.getId())))

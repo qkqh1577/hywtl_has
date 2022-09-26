@@ -15,6 +15,11 @@ public class UserNotificationView {
     private LocalDateTime readAt;
     private UserShortView sender;
 
+    private String projectCode;
+    private String projectName;
+
+    private LocalDateTime createdAt;
+
     public static UserNotificationView assemble(UserNotification source) {
         UserNotificationView target = new UserNotificationView();
         target.id = source.getId();
@@ -23,6 +28,9 @@ public class UserNotificationView {
         target.forwardUrl = source.getForwardUrl();
         target.readAt = source.getReadAt();
         target.sender = UserShortView.assemble(source.getSender());
+        target.projectCode = source.getProject().getBasic().getCode();
+        target.projectName = source.getProject().getBasic().getName();
+        target.createdAt = source.getCreatedAt();
         return target;
     }
 }

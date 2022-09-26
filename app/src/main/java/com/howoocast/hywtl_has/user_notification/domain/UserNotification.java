@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.user_notification.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -32,6 +33,9 @@ public class UserNotification extends CustomEntity {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Project project;
+
     /**
      * 알림 타입
      */
@@ -61,12 +65,14 @@ public class UserNotification extends CustomEntity {
 
     public static UserNotification of(
         User user,
+        Project project,
         String type,
         String note,
         String forwardUrl
     ) {
         UserNotification instance = new UserNotification();
         instance.user = user;
+        instance.project = project;
         instance.type = type;
         instance.note = note;
         instance.forwardUrl = forwardUrl;
