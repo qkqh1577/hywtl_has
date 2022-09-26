@@ -21,7 +21,10 @@ import {
   Box,
   CssBaseline
 } from '@mui/material';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  IconDefinition,
+  library
+} from '@fortawesome/fontawesome-svg-core';
 import {
   faAddressCard,
   faAngleDown,
@@ -44,6 +47,7 @@ import {
   faUser,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { faReadme, } from '@fortawesome/free-brands-svg-icons';
 import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 
 library.add(
@@ -63,6 +67,7 @@ library.add(
   faMinus,
   faPen,
   faPlus,
+  faReadme as IconDefinition,
   faStar,
   faTrash,
   faUser,
