@@ -17,6 +17,7 @@ import {
   PersonnelLanguageVO,
   PersonnelLicenseVO,
   PersonnelShortVO,
+  PersonnelVO,
 } from 'personnel/domain';
 import { personnelApi } from 'personnel/api';
 import {
@@ -25,6 +26,15 @@ import {
 } from 'user/domain';
 import { userApi } from 'user/api';
 import { dialogActions } from 'components/Dialog';
+
+function* watchId() {
+  while (true) {
+    const { id } = yield take(PersonnelAction.setId);
+    const detail: PersonnelVO = yield call(personnelApi.getOne, id);
+    console.log("inside of saga : ", detail);
+    yield put(personnelAction.setOne(detail));
+  }
+}
 
 function* watchFilter() {
   while (true) {
@@ -131,14 +141,15 @@ function* watchUpdate() {
 }
 
 export default function* personnelSaga() {
+  yield fork(watchId);
   yield fork(watchFilter);
-  yield fork(watchAccount);
-  yield fork(watchBasic);
-  yield fork(watchCompany);
-  yield fork(watchJobList);
-  yield fork(watchAcademicList);
-  yield fork(watchCareerList);
-  yield fork(watchLicenseList);
-  yield fork(watchLanguageList);
+  // yield fork(watchAccount);
+  // yield fork(watchBasic);
+  // yield fork(watchCompany);
+  // yield fork(watchJobList);
+  // yield fork(watchAcademicList);
+  // yield fork(watchCareerList);
+  // yield fork(watchLicenseList);
+  // yield fork(watchLanguageList);
   yield fork(watchUpdate);
 };

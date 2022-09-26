@@ -17,13 +17,13 @@ export default function AccountForm(props) {
         </Grid>
         <Grid item sm={10}>
           <Grid item sm={12}>
-            <TextField name="account.name" label="이름" />
+            <TextField name="name" label="이름" />
           </Grid>
           <Grid item sm={12}>
-            <TextField name="account.email" label="이메일" />
+            <TextField name="email" label="이메일" />
           </Grid>
           <Grid item sm={12}>
-            <TextField name="accountState" label="상태" />
+            <TextField name="userStatus" label="상태" />
           </Grid>
         </Grid>
       </Grid>

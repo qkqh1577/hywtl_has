@@ -9,12 +9,14 @@ import {
   PersonnelLanguageVO,
   PersonnelLicenseVO,
   PersonnelShortVO,
+  PersonnelVO,
 } from 'personnel/domain';
 import { createReducer } from 'typesafe-actions';
 import { PersonnelAction } from 'personnel/action';
 import { UserVO } from 'user/domain';
 
 export interface PersonnelState {
+  detail?: PersonnelVO;
   filter?: PersonnelQuery;
   page?: Page<PersonnelShortVO>;
   account?: UserVO;
@@ -30,6 +32,13 @@ export interface PersonnelState {
 const initialState: PersonnelState = {};
 
 export const personnelReducer = createReducer(initialState, {
+  [PersonnelAction.setOne]:          (state,
+                                      action
+                                     ) => ({
+    ...state,
+    detail: action.payload,
+
+  }),
   [PersonnelAction.setFilter]:       (state,
                                       action
                                      ) => ({

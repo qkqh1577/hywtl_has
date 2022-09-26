@@ -2,13 +2,12 @@ import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import FormList, { FormProps } from 'personnel/view/Detail/Form';
 import Footer from 'personnel/view/Detail/Footer';
-import { FormikEditable } from 'type/Form';
-import { PersonnelVO } from 'personnel/domain';
+import { PersonnelVOInputValue } from 'personnel/route/detail';
 
 interface Props
   extends
     FormProps,
-    FormikLayoutProps<FormikEditable<PersonnelVO>> {
+    FormikLayoutProps<PersonnelVOInputValue> {
   edit: boolean;
 }
 

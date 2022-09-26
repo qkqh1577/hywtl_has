@@ -8,6 +8,7 @@ import {
   PersonnelLanguageVO,
   PersonnelLicenseVO,
   PersonnelShortVO,
+  PersonnelVO,
 } from 'personnel/domain';
 import apiClient, { toFormData } from 'services/api';
 import { PersonnelQuery } from 'personnel/query';
@@ -19,6 +20,12 @@ class PersonnelApi {
     const { data } = await apiClient.get('/personnels', query);
     return data;
   }
+
+  async getOne(id: PersonnelId): Promise<PersonnelVO> {
+    const { data } = await apiClient.get(`/personnels/${id}`);
+    return data;
+  }
+
 
   async getBasic(id: PersonnelId): Promise<PersonnelBasicVO> {
     const { data } = await apiClient.get(`/personnels/${id}/basic`);

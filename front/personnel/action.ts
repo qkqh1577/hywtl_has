@@ -11,27 +11,30 @@ import {
   PersonnelLanguageVO,
   PersonnelLicenseVO,
   PersonnelShortVO,
+  PersonnelVO,
 } from 'personnel/domain';
 import { PersonnelParameter } from 'personnel/parameter';
 import { UserVO } from 'user/domain';
 
 export enum PersonnelAction {
-  setId             = 'personnel/id/set',
-  setFilter         = 'personnel/filter/set',
-  setPage           = 'personnel/page/set',
-  setAccount        = 'personnel/account/set',
-  setBasic          = 'personnel/basic/set',
-  setCompany        = 'personnel/company/set',
-  setJobList        = 'personnel/job-list/set',
-  setAcademicList   = 'personnel/academic-list/set',
-  setCareerList     = 'personnel/career-list/set',
-  setLicenseList    = 'personnel/license-list/set',
-  setLanguageList   = 'personnel/language-list/set',
-  update            = 'personnel/update',
+  setId           = 'personnel/id/set',
+  setOne          = 'personnel/one/set',
+  setFilter       = 'personnel/filter/set',
+  setPage         = 'personnel/page/set',
+  setAccount      = 'personnel/account/set',
+  setBasic        = 'personnel/basic/set',
+  setCompany      = 'personnel/company/set',
+  setJobList      = 'personnel/job-list/set',
+  setAcademicList = 'personnel/academic-list/set',
+  setCareerList   = 'personnel/career-list/set',
+  setLicenseList  = 'personnel/license-list/set',
+  setLanguageList = 'personnel/language-list/set',
+  update          = 'personnel/update',
 }
 
 export const personnelAction = {
   setId:           createAction(PersonnelAction.setId)<number>(),
+  setOne:          createAction(PersonnelAction.setOne)<PersonnelVO>(),
   setFilter:       createAction(PersonnelAction.setFilter)<FormikSubmit<PersonnelQuery>>(),
   setPage:         createAction(PersonnelAction.setPage)<Page<PersonnelShortVO> | undefined>(),
   setBasic:        createAction(PersonnelAction.setBasic)<PersonnelBasicVO | undefined>(),

@@ -19,7 +19,6 @@ import {
 import dayjs from 'dayjs';
 
 export function toPersonnelBasic(basic: PersonnelBasicVO): PersonnelBasicParameter {
-  console.log("basic : ", basic);
   return {
     engName:        basic.engName,
     birthDate:      dayjs(basic.birthDate)
@@ -43,15 +42,15 @@ export function toPersonnelCompany(company: PersonnelCompanyVO): PersonnelCompan
   };
 }
 
-export function toPersonnelJob(job: PersonnelJobVO): PersonnelJobParameter {
+export function toPersonnelJob(job: PersonnelJobVO, isRepresentative: number): PersonnelJobParameter {
   return {
-    isRepresentative: true,
-    departmentId: job.department?.id,
-    jobTitle:     job.jobTitle,
-    jobType:      job.jobType,
-    jobPosition:  job.jobPosition,
-    jobClass:     job.jobClass,
-    jobDuty:      job.jobDuty,
+    isRepresentative: isRepresentative === job.department?.id,
+    departmentId:     job.department?.id,
+    jobTitle:         job.jobTitle,
+    jobType:          job.jobType,
+    jobPosition:      job.jobPosition,
+    jobClass:         job.jobClass,
+    jobDuty:          job.jobDuty,
   };
 }
 

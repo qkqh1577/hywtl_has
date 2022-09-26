@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import {
   Box,
+  FormControl,
+  FormGroup,
+  FormLabel,
   Grid,
+  Radio,
   Typography
 } from '@mui/material';
 import TextField from 'components/TextField';
@@ -10,15 +14,14 @@ import {
   FormikContext,
   FormikContextType
 } from 'formik';
-import { FormikEditable } from 'type/Form';
 import {
   initialPersonnelJobVO,
-  PersonnelVO
+  PersonnelVO,
 } from 'personnel/domain';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import SelectField from 'components/SelectField';
-import RadioField from 'components/RadioField';
+import { FormikEditable } from 'type/Form';
 
 export default function JobForm(props) {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -75,12 +78,27 @@ export default function JobForm(props) {
         return (
           <Grid container key={index}>
             <Grid item sm={3}>
-              <RadioField
-                label="대표 정보"
-                name={`jobList.${index}.isRepresentative`}
-                options={['대표정보']}
-              />
-
+              <FormControl fullWidth variant="standard">
+                <FormLabel component="legend">
+                  <Typography sx={{
+                    color:      ColorPalette._9b9ea4,
+                    fontSize:   '13px',
+                    fontFamily: 'Noto Sans KR'
+                  }}>
+                    대표 정보
+                  </Typography>
+                </FormLabel>
+              </FormControl>
+              <FormGroup row>
+                <Radio
+                  name={`representativeJob`}
+                  value={job.department?.id}
+                  checked={(formikContext.values as any).representativeJob === job.department?.id}
+                  onChange={() => {
+                    formikContext.setFieldValue('representativeJob', job.department?.id);
+                  }}
+                />
+              </FormGroup>
             </Grid>
             <Grid item sm={edit ? 8.6 : 9}>
               <Grid container item sm={12} spacing={2}>
@@ -142,13 +160,13 @@ export default function JobForm(props) {
               <Grid container item sm={0.4} justifyContent="center" alignItems="center">
                 <FontAwesomeIcon
                   style={{
-                    color: ColorPalette._9bb6ea,
+                    color:  ColorPalette._9bb6ea,
                     cursor: 'pointer'
                   }}
                   icon="trash"
                   onClick={() => {
                     formikContext!.setFieldValue('jobList', jobList.filter((manager,
-                                                                                      j
+                                                                            j
                     ) => index !== j));
                   }}
                 />

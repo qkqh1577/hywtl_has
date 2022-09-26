@@ -36,6 +36,11 @@ import {
 import PersonnelDetail from 'personnel/view/Detail';
 import { toOption } from 'personnel/util/convertToOption';
 
+export interface PersonnelVOInputValue
+  extends FormikEditable<PersonnelVO> {
+  representativeJob?: number;
+}
+
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
@@ -47,27 +52,33 @@ function Element() {
           academicList,
           careerList,
           licenseList,
-          languageList
+          languageList,
+          detail
         } = useSelector((root: RootState) => root.personnel);
 
-  const { detail } = useSelector((root: RootState) => root.user);
-  const personnelVO: FormikEditable<PersonnelVO> = {
-    account,
-    basic,
-    company,
-    jobList:      jobList || [],
-    academicList: academicList || [],
-    careerList:   careerList || [],
-    licenseList:  licenseList || [],
-    languageList: languageList || [],
-    edit:         false,
+  const personnelVO: PersonnelVOInputValue = {
+    name:              detail?.name || '',
+    userStatus:        detail?.userStatus || '',
+    email:             detail?.email || '',
+    basic:             detail?.basic,
+    company:           detail?.company,
+    jobList:           detail?.jobList || [],
+    academicList:      detail?.academicList || [],
+    careerList:        detail?.careerList || [],
+    licenseList:       detail?.licenseList || [],
+    languageList:      detail?.languageList || [],
+    edit:              false,
+    representativeJob: detail?.jobList?.filter((job) => job.isRepresentative)[0] ?
+                         detail?.jobList?.filter((job) => job.isRepresentative)[0].department!.id
+                         : undefined,
   };
   const { list } = useSelector((root: RootState) => root.department);
 
   const update = useCallback((formikProps: FormikSubmit<PersonnelParameter>) => {
     return dispatch(personnelAction.update(formikProps));
   }, [dispatch]);
-  const formik = useFormik<FormikEditable<PersonnelVO>>({
+
+  const formik = useFormik<PersonnelVOInputValue>({
     enableReinitialize: true,
     initialValues:      personnelVO || initialPersonnelVO,
     onSubmit:           (values,
@@ -78,7 +89,7 @@ function Element() {
           id:           PersonnelId(id!),
           basic:        toPersonnelBasic(values.basic!),
           company:      toPersonnelCompany(values.company!),
-          jobList:      values.jobList.map((item) => toPersonnelJob(item)),
+          jobList:      values.jobList.map((item) => toPersonnelJob(item, values.representativeJob!)),
           academicList: values.academicList.map((item) => toPersonnelAcademy(item)),
           careerList:   values.careerList.map((item) => toPersonnelCareer(item)),
           licenseList:  values.licenseList.map((item) => toPersonnelLicense(item)),
@@ -89,7 +100,9 @@ function Element() {
   });
   const edit = formik.values.edit;
   useEffect(() => {
-    if (id) {
+    console.log('id : ', id);
+    console.log('detail.id : ', detail?.id);
+    if (detail?.id !== id) {
       dispatch({
         type: 'department/list/request'
       });
