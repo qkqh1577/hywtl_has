@@ -55,17 +55,6 @@ export const dateTypeList: Option[] = [
   }
 ];
 
-export const sexTypeList: Option[] = [
-  {
-    key:  '남성',
-    text: '남',
-  },
-  {
-    key:  '여성',
-    text: '여',
-  }
-];
-
 export const hiredTypeList: Option[] = [
   {
     key:  '신입',
