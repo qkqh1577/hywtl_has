@@ -1,37 +1,37 @@
 import React from 'react';
-import {
-  Box,
-  Typography
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import Button from 'layouts/Button';
 import {
   UserNotificationId,
-  UserNotificationListVO,
+  UserNotificationVO,
 } from 'user_notification/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextLink from 'components/TextLink';
 import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';
 import DateFormat from 'components/DateFormat';
+import Text from 'layouts/Text';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
   onDeleteAll: () => void;
   onReadAll: () => void;
-  userNotification: UserNotificationListVO | undefined;
+  onClose: () => void;
+  list: UserNotificationVO[] | undefined;
 }
 
 export default function List(props: Props) {
-
+  const navigate = useNavigate();
   const {
           onDelete,
-          userNotification,
+          list,
           onRead,
           onDeleteAll,
-          onReadAll
+          onReadAll,
+          onClose
         } = props;
-  const list = userNotification?.list;
   return (
     <>
       <Box
@@ -70,7 +70,9 @@ export default function List(props: Props) {
             padding:        '10px',
             margin:         '10px 0',
           }}>
-          <Typography>등록된 알람이 없습니다.</Typography>
+          <Text variant="heading3">
+            등록된 알림이 없습니다.
+          </Text>
         </Box>
       )}
       {list && list.map((notification) => {
@@ -102,19 +104,18 @@ export default function List(props: Props) {
               }}>
                 {!notification.readAt && (
                   <ReadButton
-                    id={UserNotificationId(notification.id! /* TODO: always exists */)}
-                    onRead={onRead}
+                    onClick={() => {
+                      onRead(notification.id);
+                    }}
                   />
                 )}
                 <RemoveButton
-                  // onClick = {() => {
-                  //   onDelete(id);
-                  // }}
-                  id={UserNotificationId(notification.id! /* TODO: always exists */)}
-                  onDelete={onDelete}
+                  onClick={() => {
+                    onDelete(notification.id);
+                  }}
                 />
                 <Box>
-                  <Typography>From : {notification.sender?.name /* TODO: always exists */}</Typography>
+                  <Text variant="body1">From : {notification.sender.name}</Text>
                 </Box>
               </Box>
             </Box>
@@ -123,13 +124,25 @@ export default function List(props: Props) {
               padding: '10px',
               margin:  '10px 0',
             }}>
-              <TextLink /* TODO: forwardUrl 이 없으면 link 일 수 없음 */
-                children={`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
-                onClick={notification.forwardUrl}
-              />
+              {notification.forwardUrl && (
+                <TextLink
+                  children={`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
+                  onClick={() => {
+                    navigate(notification.forwardUrl!);
+                    onClose();
+                  }}
+                />
+              )}
+              {!notification.forwardUrl && (
+                <Text variant="body2">
+                  {`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
+                </Text>
+              )}
             </Box>
             <Box>
-              {notification.type}
+              <Text variant="body2">
+                {notification.type}
+              </Text>
             </Box>
           </Box>
         );

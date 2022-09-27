@@ -2,14 +2,14 @@ import React from 'react';
 import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
 import {
   UserNotificationId,
-  UserNotificationListVO,
+  UserNotificationVO,
 } from 'user_notification/domain';
 import { Box } from '@mui/material';
 import List from 'user_notification/view/List';
 
 export interface UserNotificationModalProps {
   open: boolean;
-  userNotification: UserNotificationListVO;
+  list: UserNotificationVO[] | undefined;
   onClose: ModalLayoutProps['onClose'];
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
@@ -20,7 +20,7 @@ export interface UserNotificationModalProps {
 export default function UserNotificationModal(props: UserNotificationModalProps) {
   const {
           open,
-          userNotification,
+          list,
           onClose,
           onDelete,
           onRead,
@@ -40,11 +40,12 @@ export default function UserNotificationModal(props: UserNotificationModalProps)
           flexWrap: 'wrap',
         }}>
           <List
-            userNotification={userNotification}
+            list={list}
             onDelete={onDelete}
             onRead={onRead}
             onDeleteAll={onDeleteAll}
             onReadAll={onReadAll}
+            onClose={onClose}
           />
         </Box>
       } />

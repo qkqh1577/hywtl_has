@@ -4,24 +4,9 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import {
-  UserNotificationId,
-  UserNotificationListVO,
-  UserNotificationVO
-} from 'user_notification/domain';
+import { UserNotificationId, } from 'user_notification/domain';
 import { userNotificationAction } from 'user_notification/action';
 import UserNotificationModal from 'user_notification/view';
-
-function toUserNotificationListVO(list: UserNotificationVO[] | undefined): UserNotificationListVO {
-  if (!list) {
-    return {
-      list: [],
-    };
-  }
-  return {
-    list: list,
-  };
-}
 
 export default function UserNotificationModalRoute() {
   const dispatch = useDispatch();
@@ -47,7 +32,7 @@ export default function UserNotificationModalRoute() {
   return (
     <UserNotificationModal
       open={!!list}
-      userNotification={toUserNotificationListVO(list)}
+      list={list}
       onClose={onClose}
       onRead={onRead}
       onReadAll={onReadAll}

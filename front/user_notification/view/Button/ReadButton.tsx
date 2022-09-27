@@ -1,18 +1,15 @@
-import { UserNotificationId, } from 'user_notification/domain';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
 
 interface Props {
-  id: UserNotificationId;
-  onRead: (id: UserNotificationId) => void;
+  onClick: () => void;
 }
 
 export default function ReadButton(props: Props) {
   const {
-          id,
-          onRead,
+          onClick,
         } = props;
   return (
     <Box sx={{
@@ -20,13 +17,11 @@ export default function ReadButton(props: Props) {
     }}>
       <FontAwesomeIcon
         style={{
-          color:  ColorPalette._252627,
+          color:  ColorPalette._386dd6,
           cursor: 'pointer',
         }}
         icon={['fab', 'readme']}
-        onClick={() => {
-          onRead(id);
-        }}
+        onClick={onClick}
       />
     </Box>
   );

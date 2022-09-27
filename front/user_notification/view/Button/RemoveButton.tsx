@@ -2,17 +2,14 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
-import { UserNotificationId, } from 'user_notification/domain';
 
 interface Props {
-  id: UserNotificationId;
-  onDelete: (id: UserNotificationId) => void;
+  onClick: () => void;
 }
 
 export default function RemoveButton(props: Props) {
   const {
-          id,
-          onDelete,
+          onClick,
         } = props;
   return (
     <Box sx={{
@@ -24,9 +21,7 @@ export default function RemoveButton(props: Props) {
           cursor: 'pointer',
         }}
         icon="trash"
-        onClick={() => {
-          onDelete(id);
-        }}
+        onClick={onClick}
       />
     </Box>
   );
