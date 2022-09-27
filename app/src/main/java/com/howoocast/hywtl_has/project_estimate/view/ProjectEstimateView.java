@@ -25,6 +25,8 @@ public class ProjectEstimateView {
     private Boolean isSent;
     private Boolean confirmed;
     private String recipient;
+
+    private String note;
     private UserShortView createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -42,6 +44,7 @@ public class ProjectEstimateView {
         this.isSent = source.getIsSent();
         this.confirmed = source.getConfirmed();
         this.recipient = source.getRecipient();
+        this.note = source.getNote();
         this.createdBy = UserShortView.assemble(source.getWriter());
         this.createdAt = source.getCreatedAt();
         this.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());

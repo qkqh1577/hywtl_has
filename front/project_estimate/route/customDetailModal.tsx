@@ -1,4 +1,7 @@
-import React, { useCallback, } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+} from 'react';
 import {
   FormikProvider,
   useFormik
@@ -10,30 +13,68 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectEstimateAction } from 'project_estimate/action';
-import { ProjectCustomEstimateVO } from 'project_estimate/domain';
+import {
+  ProjectCustomEstimateVO,
+  ProjectEstimateId,
+  projectEstimateTypeName
+} from 'project_estimate/domain';
+import { FormikEditable } from 'type/Form';
+import { ProjectCustomEstimateChangeParameter } from 'project_estimate/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
+import { dialogActions } from 'components/Dialog';
+
+interface ProjectCustomEstimateDetailForm
+  extends FormikEditable<ProjectCustomEstimateVO> {
+  typeName: string;
+  isSentSelect: 'Y' | 'N';
+  isFinal: 'Y' | 'N';
+}
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, customDetail, requestChangeCustom } = useSelector((root: RootState) => root.projectEstimate);
 
   const onClose = useCallback(() => dispatch(projectEstimateAction.setCustomDetailModal(undefined)), [dispatch]);
-  const formik = useFormik<ProjectCustomEstimateVO & { edit: boolean; }>({
-    enableReinitialize: true,
-    initialValues:      {
-      ...detail!,
-      edit: false,
-    },
-    onSubmit:           (values) => {
+  const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
+  const onChangeCancel = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
 
+  const formik = useFormik<Partial<ProjectCustomEstimateDetailForm>>({
+    enableReinitialize: true,
+    initialValues:      {},
+    onSubmit:           (values) => {
+      onChange({
+        ...values,
+        businessId: values.business?.id,
+      } as ProjectCustomEstimateChangeParameter);
     }
   });
+  useEffect(() => {
+    if (customDetail) {
+      formik.setValues({
+        ...customDetail,
+        typeName:     projectEstimateTypeName(customDetail.type),
+        isSentSelect: customDetail.isSent ? 'Y' : 'N',
+        isFinal:      customDetail.confirmed ? 'Y' : 'N',
+        edit:         false,
+      });
+    }
+  }, [customDetail]);
+
+  useEffect(() => {
+    if (requestChangeCustom === ApiStatus.RESPONSE) {
+      dispatch(dialogActions.openAlert('저장되었습니다.'));
+      dispatch(projectEstimateAction.setProjectId(projectId!));
+      dispatch(projectEstimateAction.setCustomDetailModal(undefined));
+      dispatch(projectEstimateAction.requestChangeCustom(ApiStatus.IDLE));
+    }
+  }, [requestChangeCustom]);
 
   return (
     <FormikProvider value={formik}>
       <ProjectCustomEstimateDetailModal
-        edit={formik.values.edit}
-        open={!!detail}
+        open={!!customDetail}
         onClose={onClose}
+        onChangeCancel={onChangeCancel}
       />
     </FormikProvider>
   );

@@ -1,5 +1,8 @@
-import { UserVO } from 'user/domain';
-import { BusinessVO } from 'business/domain';
+import { UserShortVO, } from 'user/domain';
+import { BusinessShort, } from 'business/domain';
+import { ProjectDocumentShort } from 'project_document/domain';
+import { TestType } from 'estimate_template/domain';
+import { FileItemView } from 'file-item';
 
 export type ProjectEstimateId = number & { readonly  _brand: unique symbol; };
 
@@ -33,13 +36,17 @@ export interface ProjectEstimateVO {
   id: ProjectEstimateId;
   code: string;
   type: ProjectEstimateType;
-  recipient: string;
-  business: BusinessVO;
-  confirmed: boolean;
-  createdAt: Date;
-  createdBy: UserVO;
   isSent: boolean;
+  confirmed: boolean;
+  recipient: string;
+  note?: string;
+  createdBy: UserShortVO;
+  createdAt: Date;
   modifiedAt?: Date;
+  plan?: ProjectEstimatePlanVO;
+  siteList?: ProjectEstimateComplexSiteVO[];
+  buildingList?: ProjectEstimateComplexBuildingVO[];
+  business: BusinessShort;
 }
 
 export interface ProjectEstimatePlanVO {
@@ -47,10 +54,65 @@ export interface ProjectEstimatePlanVO {
   expectedServiceDate: Date;
   expectedTestDeadline: number;
   expectedFinalReportDeadline: number;
+  testAmount: number;
+  reviewAmount: number;
+  discountAmount: number;
+  totalAmount: number;
+}
+
+export interface ProjectEstimateComplexSiteVO {
+  id: number;
+  name: string;
+  withEnvironmentTest?: boolean;
+  estimateFigureDifficulty?: string;
+  figureDifficulty?: string;
+  manager?: UserShortVO;
+}
+
+export interface ProjectEstimateComplexBuildingVO {
+  id: number;
+  name: string;
+  site?: ProjectEstimateComplexSiteVO;
+  shape?: string;
+  floorCount?: number;
+  height?: number;
+  baseArea?: number;
+  ratio?: number;
+  buildingDocument?: ProjectDocumentShort;
+  conditionList?: string[];
+  inTest?: boolean;
+  testTypeList?: TestType[];
+  estimateFigureDifficulty?: string;
+  estimateTestDifficulty?: string;
+  estimateEvaluationDifficulty?: string;
+  estimateReportDifficulty?: string;
 }
 
 export interface ProjectCustomEstimateVO
   extends ProjectEstimateVO {
+  file: FileItemView;
+}
+
+export interface ProjectSystemEstimateVO
+  extends ProjectEstimateVO {
+  templateList: ProjectEstimateTemplateVO[];
+  contentList: string[];
+}
+
+export interface ProjectEstimateTemplateVO {
+  title: string;
+  testType: TestType;
+  detailList: ProjectEstimateTemplateDetailVO[];
+}
+
+export interface ProjectEstimateTemplateDetailVO {
+  titleList: string[];
+  unit: string;
+  testCount: number;
+  unitAmount: number;
+  totalAmount: number;
+  inUse: boolean;
+  note?: string;
 }
 
 

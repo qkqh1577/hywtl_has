@@ -139,7 +139,7 @@ public class ProjectContractTemplateService {
         }
         if (dateType == ContractCollectionStageExpectedDateType.DAY_TO_DELIVER_FOE_FINAL_REPORT) {
             return estimate.getPlan().getExpectedServiceDate()
-                .plusWeeks(estimate.getPlan().getExpectedFinalReviewDeadline());
+                .plusWeeks(estimate.getPlan().getExpectedFinalReportDeadline());
         }
         // 직접 입력
         return null;
