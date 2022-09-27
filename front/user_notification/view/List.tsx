@@ -10,9 +10,9 @@ import {
 } from 'user_notification/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextLink from 'components/TextLink';
-import dayjs from 'dayjs';
 import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';
+import DateFormat from 'components/DateFormat';
 
 interface Props {
   onDelete: (id: UserNotificationId) => void;
@@ -60,7 +60,7 @@ export default function List(props: Props) {
           </Button>
         </Box>
       </Box>
-      {(list && list?.length === 0) && (
+      {list && list.length === 0 && (
         <Box
           sx={{
             display:        'flex',
@@ -73,7 +73,7 @@ export default function List(props: Props) {
           <Typography>등록된 알람이 없습니다.</Typography>
         </Box>
       )}
-      {Array.isArray(list) && list.map((notification) => {
+      {list && list.map((notification) => {
         return (
           <Box
             key={notification.id}
@@ -95,24 +95,26 @@ export default function List(props: Props) {
                 justifyContent: 'space-between'
               }}>
               <Box>
-                <Typography>{dayjs(notification.createdAt)
-                .format('YYYY-MM-DD hh:mm')}</Typography>
+                <DateFormat date={notification.createdAt} format="YYYY-MM-DD HH:mm" />
               </Box>
               <Box sx={{
                 display: 'flex',
               }}>
                 {!notification.readAt && (
                   <ReadButton
-                    id={UserNotificationId(notification.id!)}
+                    id={UserNotificationId(notification.id! /* TODO: always exists */)}
                     onRead={onRead}
                   />
                 )}
                 <RemoveButton
-                  id={UserNotificationId(notification.id!)}
+                  // onClick = {() => {
+                  //   onDelete(id);
+                  // }}
+                  id={UserNotificationId(notification.id! /* TODO: always exists */)}
                   onDelete={onDelete}
                 />
                 <Box>
-                  <Typography>From : {notification.sender?.name}</Typography>
+                  <Typography>From : {notification.sender?.name /* TODO: always exists */}</Typography>
                 </Box>
               </Box>
             </Box>
@@ -121,7 +123,7 @@ export default function List(props: Props) {
               padding: '10px',
               margin:  '10px 0',
             }}>
-              <TextLink
+              <TextLink /* TODO: forwardUrl 이 없으면 link 일 수 없음 */
                 children={`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
                 onClick={notification.forwardUrl}
               />

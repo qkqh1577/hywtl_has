@@ -73,7 +73,7 @@ public class ProjectMemoService {
                     project,
                     "메모 알림",
                     instance.getDescription(),
-                    String.format("/project/sales-management/%d", project.getId())))
+                    String.format("/project/sales-management/%d/basic", project.getId())))
                 .forEach(eventPublisher::publishEvent);
         }
     }
