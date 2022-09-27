@@ -31,7 +31,6 @@ import React, {
 import {
   FormikContext,
   FormikContextType,
-  FormikProvider,
   useFormik
 } from 'formik';
 import { FieldStatus } from 'components/DataFieldProps';
@@ -40,13 +39,15 @@ import ModalLayout from 'layouts/ModalLayout';
 import { ColorPalette } from 'app/view/App/theme';
 import {
   Box,
+  FormControl,
+  FormControlLabel,
   Radio,
+  RadioGroup,
   TableBody,
   TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import RadioField from 'components/RadioField';
 import SelectField from 'components/SelectField';
 import Button from 'layouts/Button';
 import {
@@ -127,7 +128,6 @@ export function* businessSelectorSaga() {
 }
 
 interface ModalFormProps {
-  businessType: 'mine' | 'other';
   selectedId?: BusinessId;
   keywordType: string;
   keyword?: string;
@@ -139,9 +139,8 @@ export function BusinessSelectorModalRoute() {
   const { modal, list } = useSelector((root: RootState) => root.businessSelector);
 
   const initialValues: ModalFormProps = {
-    businessType: modal?.id === 1 ? 'mine' : 'other',
-    selectedId:   modal?.id,
-    keywordType:  'by_name'
+    selectedId:  modal?.id,
+    keywordType: 'by_name'
   };
 
   const onClose = useCallback(() => {
@@ -162,12 +161,7 @@ export function BusinessSelectorModalRoute() {
     enableReinitialize: true,
     initialValues,
     onSubmit:           (values) => {
-      console.log(values);
       if (!modal) {
-        return;
-      }
-      if (modal.allowMyBusiness && values.businessType === 'mine') {
-        requestUpdate(BusinessId(1));
         return;
       }
       if (values.selectedId === modal.id) {
@@ -187,135 +181,152 @@ export function BusinessSelectorModalRoute() {
 
   return (
     <ModalLayout
-      width="40vw"
+      width="30vw"
       open={typeof modal !== 'undefined'}
       title="업체 선택"
       onClose={onClose}
       children={
-        <FormikProvider value={formik}>
-          <Box sx={{
-            width:    '100%',
-            display:  'flex',
-            flexWrap: 'wrap',
-          }}>
-            {modal?.allowMyBusiness && (
-              <Box sx={{
-                width:    '100%',
-                display:  'flex',
-                flexWrap: 'nowrap',
-              }}>
-                <RadioField
-                  disableLabel
-                  required
-                  name="businessType"
-                  label="타업체 여부"
-                  options={[{
-                    key:  'mine',
-                    text: '한양풍동연구소',
-                  }, {
-                    key:  'other',
-                    text: '타업체'
-                  }]}
-                  onChange={(e) => {
-                    const businessType = e.target.value;
-                    if (businessType === 'mine') {
-                      formik.setFieldValue('selectedId', 1);
-                    }
-                    else {
-                      formik.setFieldValue('selectedId', undefined);
-                    }
-                  }}
-                />
-              </Box>
-            )}
+        <Box sx={{
+          width:    '100%',
+          display:  'flex',
+          flexWrap: 'wrap',
+        }}>
+          {modal?.allowMyBusiness && (
             <Box sx={{
-              width:          '100%',
-              display:        'flex',
-              flexWrap:       'nowrap',
-              border:         `1px solid ${ColorPalette._e4e9f2}`,
-              padding:        '10px 0',
-              alignItems:     'center',
-              justifyContent: 'space-around',
+              width:    '100%',
+              display:  'flex',
+              flexWrap: 'nowrap',
             }}>
-              <Box sx={{ width: '15%', display: 'flex' }}>
-                <SelectField
-                  disableLabel
-                  status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
-                  variant="outlined"
-                  name="keywordType"
-                  label="검색어 구분"
-                  options={keywordTypeList}
-                />
-              </Box>
-              <Box sx={{ width: '70%', display: 'flex' }}>
-                <TextField
-                  disableLabel
-                  status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
-                  variant="outlined"
-                  name="keyword"
-                  label="검색어"
-                  placeholder="검색어를 입력하세요"
-                />
-              </Box>
-              <Box sx={{ width: '10%', display: 'flex' }}>
-                <Button
-                  disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
-                  onClick={() => {
-                    setFilter(formik);
-                  }}>
-                  검색
-                </Button>
-              </Box>
+              <FormControl
+                fullWidth
+                variant="standard"
+                required
+              >
+                <RadioGroup row name="businessType">
+                  <FormControlLabel
+                    label="한양풍동실험연구소"
+                    control={
+                      <Radio
+                        value="mine"
+                        checked={formik.values.selectedId === 1}
+                        onChange={() => {
+                          formik.setFieldValue('selectedId', 1);
+                        }}
+                      />
+                    }
+                  />
+                  <FormControlLabel
+                    label="타 업체"
+                    control={
+                      <Radio
+                        value="other"
+                        checked={formik.values.selectedId !== 1}
+                        onChange={() => {
+                          formik.setFieldValue('selectedId', undefined);
+                        }}
+                      />
+                    }
+                  />
+                </RadioGroup>
+              </FormControl>
             </Box>
-            <Box sx={{ width: '100%' }}>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <Th>선택</Th>
-                      <Th>업체명</Th>
-                      <Th>대표명</Th>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {list.length === 0 && (
-                      <TableRow>
-                        <Td colSpan={3}>조회 결과가 없습니다.</Td>
-                      </TableRow>
-                    )}
-                    {list.map((item) => (
-                      <TableRow key={item.id}>
-                        <Td>
-                          <Radio
-                            disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
-                            value={item.id}
-                            checked={item.id === formik.values.selectedId}
-                            onClick={() => {
-                              formik.setFieldValue('selectedId', item.id);
-                            }}
-                          />
-                        </Td>
-                        <Td>{item.name}</Td>
-                        <Td>{item.ceoName}</Td>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+          )}
+          <Box sx={{
+            width:          '100%',
+            display:        'flex',
+            flexWrap:       'nowrap',
+            border:         `1px solid ${ColorPalette._e4e9f2}`,
+            padding:        '10px 0',
+            alignItems:     'center',
+            justifyContent: 'space-around',
+          }}>
+            <Box sx={{ width: '15%', display: 'flex' }}>
+              <SelectField
+                disableLabel
+                formik={formik}
+                status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+                variant="outlined"
+                name="keywordType"
+                label="검색어 구분"
+                options={keywordTypeList}
+              />
+            </Box>
+            <Box sx={{ width: '60%', display: 'flex' }}>
+              <TextField
+                disableLabel
+                formik={formik}
+                status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+                variant="outlined"
+                name="keyword"
+                label="검색어"
+                placeholder="검색어를 입력하세요"
+              />
+            </Box>
+            <Box sx={{ width: '10%', display: 'flex' }}>
+              <Button
+                disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
+                onClick={() => {
+                  setFilter(formik);
+                }}>
+                검색
+              </Button>
             </Box>
           </Box>
-        </FormikProvider>
+          <Box sx={{ width: '100%' }}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <Th>선택</Th>
+                    <Th>업체명</Th>
+                    <Th>대표명</Th>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {list.length === 0 && (
+                    <TableRow>
+                      <Td colSpan={3}>조회 결과가 없습니다.</Td>
+                    </TableRow>
+                  )}
+                  {list.map((item) => (
+                    <TableRow key={item.id}>
+                      <Td>
+                        <Radio
+                          disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
+                          value={item.id}
+                          checked={item.id === formik.values.selectedId}
+                          onClick={() => {
+                            formik.setFieldValue('selectedId', item.id);
+                          }}
+                        />
+                      </Td>
+                      <Td>{item.name}</Td>
+                      <Td>{item.ceoName}</Td>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Box>
       }
       footer={
         <Box sx={{ width: '100%', display: 'flex', flexWrap: 'nowrap', justifyContent: 'center' }}>
-          <Button onClick={() => {formik.handleSubmit();}} sx={{ marginRight: '10px' }}>저장</Button>
+          <Button
+            onClick={() => {
+              formik.handleSubmit();
+            }}
+            sx={{
+              marginRight: '10px'
+            }}>
+            저장
+          </Button>
           <Button shape="basic2" onClick={onClose}>취소</Button>
         </Box>
       }
     />
   );
 }
-
 
 interface FieldProps
   extends Omit<TextFieldProps,
@@ -371,12 +382,12 @@ export default function BusinessSelector(props: FieldProps) {
       {...restProps}
       name={`${name}.name`}
       status={FieldStatus.ReadOnly}
+      onClick={() => {
+        onClick(id || undefined);
+      }}
       endAdornment={
         <FontAwesomeIcon
           icon="building"
-          onClick={() => {
-            onClick(id || undefined);
-          }}
           style={{
             fontSize: '16px',
             color:    ColorPalette._386dd6,
