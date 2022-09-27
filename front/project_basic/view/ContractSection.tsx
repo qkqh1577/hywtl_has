@@ -26,8 +26,7 @@ interface Props {
 
 export default function ProjectBasicContractSection({ projectContractCollectionStageList }: Props) {
   const getTableRows = () => {
-    let collectionStageList = projectContractCollectionStageList;
-    if (collectionStageList.length === 0) {
+    if (projectContractCollectionStageList.length === 0) {
       return (
         <TableRow>
           <Td colSpan={4}>조회 결과가 없습니다.</Td>
@@ -35,7 +34,7 @@ export default function ProjectBasicContractSection({ projectContractCollectionS
       );
     }
 
-    return collectionStageList.map((e) =>
+    return projectContractCollectionStageList.map((e) =>
       <TableRow key={e.name}>
         <Td>{e.name}</Td>
         <Td>{e.ratio}</Td>

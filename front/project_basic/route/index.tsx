@@ -31,12 +31,12 @@ function Element() {
   return (
     <>
       <ProjectBasicBasicRoute />
-      {/*<ProjectBasicBusinessRoute />*/}
-      {/*<ProjectBasicDesignRoute />*/}
-      {/*<ProjectBasicTestRoute />*/}
-      {/*<ProjectBasicEstimateRoute />*/}
-      {/*<ProjectBasicBidRoute />*/}
-      {/*<ProjectBasicContractRoute />*/}
+      <ProjectBasicBusinessRoute />
+      <ProjectBasicDesignRoute />
+      <ProjectBasicTestRoute />
+      <ProjectBasicEstimateRoute />
+      <ProjectBasicBidRoute />
+      <ProjectBasicContractRoute />
       <ProjectBasicFailReasonRoute />
     </>
   );

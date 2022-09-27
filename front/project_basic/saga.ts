@@ -13,6 +13,7 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectBasicBid,
   ProjectBasicBusiness,
+  ProjectBasicBusinessId,
   ProjectBasicContract,
   ProjectBasicDesign,
   ProjectBasicEstimate,
@@ -25,6 +26,10 @@ import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import { RivalEstimateId } from 'rival_estimate/domain';
 import { TestType } from 'admin/estimate/content/domain';
+import {
+  BusinessInvolvedType,
+  BusinessManagerStatus
+} from 'business/domain';
 
 function* watchId() {
   while (true) {
@@ -40,8 +45,53 @@ function* watchId() {
 }
 
 function* requestBusinessList(id: ProjectId) {
-  const businessList: ProjectBasicBusiness[] = yield call(projectBasicApi.getBusinessList, id);
-  yield put(projectBasicActionType.setBusinessList(businessList));
+  // const businessList: ProjectBasicBusiness[] = yield call(projectBasicApi.getBusinessList, id);
+  // yield put(projectBasicActionType.setBusinessList(businessList));
+
+  yield put(projectBasicActionType.setBusinessList(testData()));
+
+  function testData(): ProjectBasicBusiness[] {
+    return [
+      {
+        id: ProjectBasicBusinessId(1),
+        involvedType: BusinessInvolvedType.BUILDER,
+        business: {
+          name: 'bl-business-name1',
+          id: '',
+          managerList: [],
+          registrationNumber: '',
+          projectCount: 0,
+          managerCount: 0
+        },
+        businessManager: {
+          name: 'bl-businessManager-name1',
+          department: 'bl-businessManager-department1',
+          jobTitle: 'bl-businessManager-jobTitle1',
+          mobilePhone: '010-1234-5678',
+          status: BusinessManagerStatus.IN_OFFICE
+        },
+      },
+      {
+        id: ProjectBasicBusinessId(2),
+        involvedType: BusinessInvolvedType.ORDERER,
+        business: {
+          name: 'bl-business-name2',
+          id: '',
+          managerList: [],
+          registrationNumber: '',
+          projectCount: 0,
+          managerCount: 0
+        },
+        businessManager: {
+          name: 'bl-businessManager-name2',
+          department: 'bl-businessManager-department2',
+          jobTitle: 'bl-businessManager-jobTitle2',
+          mobilePhone: '010-2345-6789',
+          status: BusinessManagerStatus.RESIGNATION
+        },
+      }
+    ];
+  }
 }
 
 function* requestDesign(id: ProjectId) {
