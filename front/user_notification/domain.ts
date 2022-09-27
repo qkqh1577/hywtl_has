@@ -11,13 +11,13 @@ export interface UserNotificationListVO{
 }
 
 export interface UserNotificationVO {
-  id?: UserNotificationId;
+  id?: UserNotificationId; // TODO: always exists
   type: string;
   note?: string;
   forwardUrl?: string;
   readAt?: Date;
-  sender: UserShortVO | undefined;
+  sender: UserShortVO | undefined;  // TODO: always exists
   projectCode?: string;
   projectName: string;
-  createdAt: Date | undefined;
+  createdAt: Date | undefined;  // TODO: always exists
 }
