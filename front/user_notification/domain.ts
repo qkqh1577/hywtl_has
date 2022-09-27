@@ -7,10 +7,25 @@ export function UserNotificationId(id: number) {
 }
 
 export interface UserNotificationVO {
-  id: UserNotificationId;
+  id?: UserNotificationId;
   type: string;
   note?: string;
   forwardUrl?: string;
   readAt?: Date;
-  sender: UserShortVO;
+  sender: UserShortVO | undefined;
+  projectCode?: string;
+  projectName: string;
+  createdAt: Date | undefined;
 }
+
+export const initialUserNotificationVO: UserNotificationVO = {
+  id:          undefined,
+  type:        '',
+  note:        '',
+  forwardUrl:  '',
+  readAt:      undefined,
+  sender:      undefined,
+  projectCode: '',
+  projectName: '',
+  createdAt: undefined,
+};

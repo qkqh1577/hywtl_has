@@ -4,9 +4,13 @@ import {
   put,
   take,
 } from 'redux-saga/effects';
-import { userNotificationAction } from 'user_notification/action';
+import {
+  userNotificationAction,
+  UserNotificationActionType
+} from 'user_notification/action';
 import { userNotificationApi } from 'user_notification/api';
 import { UserNotificationVO } from 'user_notification/domain';
+import { dialogActions } from 'components/Dialog';
 
 function* watchCount() {
   while (true) {
@@ -27,14 +31,22 @@ function* watchList() {
 function* read() {
   while (true) {
     const { payload: id } = yield take(userNotificationAction.read);
-    yield call(userNotificationAction.read, id);
+    yield call(userNotificationApi.read, id);
   }
 }
 
 function* deleteOne() {
   while (true) {
-    const { payload: id } = yield take(userNotificationAction.deleteOne);
-    yield call(userNotificationAction.deleteOne, id);
+    const { payload: id } = yield take(UserNotificationActionType.deleteOne);
+    try {
+     yield call(userNotificationApi.deleteOne, id);
+     yield put(dialogActions.openAlert('삭제 했습니다.'))
+    }catch (e){
+      yield put(dialogActions.openAlert({
+        children: '문제가 발생했습니다.',
+        status:   'error',
+      }));
+    }
   }
 }
 

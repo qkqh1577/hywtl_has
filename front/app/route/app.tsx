@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { userAction, } from 'user/action';
 import { LoginUser } from 'app/domain/login';
 import NotificationButtonRoute from 'app/route/notificationButton';
+import UserNotificationModalRoute from 'user_notification/route/userNotificationModal';
 
 export type OnLoginUserEditModalOpen = (loginUser: LoginUser) => void;
 
@@ -63,9 +64,10 @@ export default function () {
       projectDrawer={<ProjectDrawerRoute />}
       projectMemoDrawer={<ProjectMemoDrawerRoute />}
       projectAppBar={<ProjectAppBarRoute />}
-      onLoginUserEditModalOpen = {onLoginUserEditModalOpen}
+      onLoginUserEditModalOpen={onLoginUserEditModalOpen}
       loginUserEditModal={<LoginUserEditModalRoute />}
       notificationButton={<NotificationButtonRoute />}
+      userNotificationModal={<UserNotificationModalRoute />}
     />
   );
 }
