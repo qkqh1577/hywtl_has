@@ -11,12 +11,13 @@ export default function (props: FormikLayoutProps<any>) {
   const { formik } = props;
   return (
     <Box sx={{
-      width:    '100%',
-      display:  'flex',
-      flexWrap: 'wrap',
+      width:          '100%',
+      display:        'flex',
+      flexWrap:       'wrap',
+      justifyContent: 'space-between'
     }}>
       <Box sx={{
-        width:        '100%',
+        width:        '40%',
         paddingRight: '50%',
         display:      'flex',
         flexWrap:     'nowrap',
@@ -39,7 +40,7 @@ export default function (props: FormikLayoutProps<any>) {
         />
       </Box>
       <Box sx={{
-        width:    '50%',
+        width:    '40%',
         display:  'flex',
         flexWrap: 'nowrap',
       }}>
@@ -50,7 +51,7 @@ export default function (props: FormikLayoutProps<any>) {
         />
       </Box>
       <Box sx={{
-        width:    '50%',
+        width:    '40%',
         display:  'flex',
         flexWrap: 'nowrap',
       }}>
@@ -63,7 +64,7 @@ export default function (props: FormikLayoutProps<any>) {
         />
       </Box>
       <Box sx={{
-        width:    '100%',
+        width:    '90%',
         display:  'flex',
         flexWrap: 'nowrap',
       }}>
@@ -74,7 +75,7 @@ export default function (props: FormikLayoutProps<any>) {
         />
       </Box>
       <Box sx={{
-        width:    '100%',
+        width:    '90%',
         display:  'flex',
         flexWrap: 'nowrap',
       }}>

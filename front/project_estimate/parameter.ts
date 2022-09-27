@@ -4,6 +4,9 @@ import {
   ProjectEstimateType
 } from 'project_estimate/domain';
 import { BusinessId } from 'business/domain';
+import { UserId, } from 'user/domain';
+import { TestType } from 'estimate_template/domain';
+import { ProjectDocumentId } from 'project_document/domain';
 
 export interface ProjectCustomEstimateAddParameter {
   isSent: boolean;
@@ -24,14 +27,20 @@ export interface ProjectCustomEstimateChangeParameter {
 
 export interface ProjectCustomEstimateExtensionParameter {
   id: ProjectEstimateId;
+  plan: Partial<ProjectEstimatePlanParameter>;
+  siteList: ProjectEstimateComplexSiteParameter[];
+  buildingList: ProjectEstimateComplexBuildingParameter[];
 }
 
 export interface ProjectSystemEstimateParameter {
-  id?: ProjectEstimateId;
   isSent: boolean;
   recipient: string;
   note?: string;
   plan: ProjectEstimatePlanParameter;
+  siteList: ProjectEstimateComplexSiteParameter[];
+  buildingList: ProjectEstimateComplexBuildingParameter[];
+  templateList: ProjectEstimateTemplateParameter[];
+  contentList: string[];
 }
 
 export interface ProjectEstimatePlanParameter {
@@ -39,4 +48,51 @@ export interface ProjectEstimatePlanParameter {
   expectedServiceDate: Date;
   expectedTestDeadline: number;
   expectedFinalReportDeadline: number;
+  testAmount: number;
+  reviewAmount: number;
+  discountAmount: number;
+  totalAmount: number;
+}
+
+export interface ProjectEstimateComplexSiteParameter {
+  name: string;
+  withEnvironmentTest?: boolean;
+  estimateFigureDifficulty?: string;
+  figureDifficulty?: string;
+  managerId?: UserId;
+}
+
+export interface ProjectEstimateComplexBuildingParameter {
+
+  name: string;
+  siteId?: number;
+  shape?: string;
+  floorCount?: number;
+  height?: number;
+  baseArea?: number;
+  ratio?: number;
+  buildingDocumentId?: ProjectDocumentId;
+  conditionList?: string[];
+  inTest?: boolean;
+  testTypeList?: TestType[];
+  estimateFigureDifficulty?: string;
+  estimateTestDifficulty?: string;
+  estimateEvaluationDifficulty?: string;
+  estimateReportDifficulty?: string;
+}
+
+export interface ProjectEstimateTemplateParameter {
+  title: string;
+  testType: TestType;
+  detailList: ProjectEstimateTemplateDetailParameter[];
+}
+
+export interface ProjectEstimateTemplateDetailParameter {
+  titleList: string[];
+  unit: string;
+  testCount: number;
+  unitAmount: number;
+  totalAmount: number;
+  inUse: boolean;
+  note?: string;
 }

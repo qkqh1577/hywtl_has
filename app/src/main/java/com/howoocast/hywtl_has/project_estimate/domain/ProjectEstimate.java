@@ -199,8 +199,8 @@ public abstract class ProjectEstimate extends CustomEntity {
 
         eventList.add(EventEntity.of(
             "최종 보고서 납품 가능 주 변경",
-            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getExpectedFinalReviewDeadline).orElse(null),
-            Optional.ofNullable(plan).map(ProjectEstimatePlan::getExpectedFinalReviewDeadline).orElse(null)
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getExpectedFinalReportDeadline).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getExpectedFinalReportDeadline).orElse(null)
         ));
 
         eventList.add(EventEntity.of(
