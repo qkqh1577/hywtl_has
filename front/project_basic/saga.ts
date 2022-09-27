@@ -14,6 +14,7 @@ import {
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicContract,
+  ProjectBasicDesign,
   ProjectBasicEstimate,
   ProjectBasicTest,
   RivalBidId
@@ -28,6 +29,7 @@ function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
     yield call(requestBusinessList, id);
+    yield call(requestDesign, id);
     yield call(requestTest, id);
     yield call(requestEstimate, id);
     yield call(requestBid, id);
@@ -40,6 +42,29 @@ function* requestBusinessList(id: ProjectId) {
   yield put(projectBasicActionType.setBusinessList(businessList));
 }
 
+function* requestDesign(id: ProjectId) {
+  // const design: ProjectBasicDesign = yield call(projectBasicApi.getDesign, id);
+  // yield put(projectBasicActionType.setDesign(design));
+
+  yield put(projectBasicActionType.setDesign(testData()));
+
+  function testData(): ProjectBasicDesign {
+    return {
+      city: 'design-city',
+      address: 'design-addr',
+      complexCount: 10,
+      purpose1: 'design-pur1',
+      purpose2: 'design-pur2',
+      lotArea: 20,
+      totalArea: 30,
+      totalBuildingCount: 40,
+      householdCount: 50,
+      maximumFloor: 60,
+      maximumHeight: 70,
+    };
+  }
+}
+
 function* requestTest(id: ProjectId) {
   // const testDetail: ProjectComplexTestVO = yield call(projectComplexApi.getTestDetail, id);
   // yield put(projectBasicActionType.setTest(testDetail));
@@ -48,17 +73,17 @@ function* requestTest(id: ProjectId) {
 
   function testData(): ProjectBasicTest {
     return {
-      siteCount: 10,
+      siteCount:  10,
       targetTest: 'test-targetTest',
-      testList: [
+      testList:   [
         {
-          testType: TestType.A,
-          buildingCount: 3,
+          testType:         TestType.A,
+          buildingCount:    3,
           buildingNameList: ['A-1', 'A-2', 'A-3']
         },
         {
-          testType: TestType.B,
-          buildingCount: 2,
+          testType:         TestType.B,
+          buildingCount:    2,
           buildingNameList: ['B-1', 'B-2']
         }
       ]
@@ -80,45 +105,45 @@ function* requestEstimate(id: ProjectId) {
 
   function testData(): ProjectBasicEstimate {
     return {
-      estimate: {
-        code: 'test-code',
+      estimate:          {
+        code:      'test-code',
         confirmed: true,
-        plan: {
-          estimateDate: new Date('2022-09-26'),
-          testAmount: 1000,
-          reviewAmount: 2000,
-          totalAmount: 3000,
+        plan:      {
+          estimateDate:     new Date('2022-09-26'),
+          testAmount:       1000,
+          reviewAmount:     2000,
+          totalAmount:      3000,
           expectedDuration: 'esti-expectedDuration',
         }
       },
       rivalEstimateList: [
         {
-          id: RivalEstimateId(1),
-          business: {
-            id: '',
-            name: 'esti-expectedDuration-business1',
+          id:               RivalEstimateId(1),
+          business:         {
+            id:                 '',
+            name:               'esti-expectedDuration-business1',
             registrationNumber: '',
-            managerList: []
+            managerList:        []
           },
-          testAmount: 1001,
-          reviewAmount: 2001,
-          totalAmount: 3001,
+          testAmount:       1001,
+          reviewAmount:     2001,
+          totalAmount:      3001,
           expectedDuration: 'esti-rival-expectedDuration1',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
         {
-          id: RivalEstimateId(2),
-          business: {
-            id: '',
-            name: 'esti-expectedDuration-business2',
+          id:               RivalEstimateId(2),
+          business:         {
+            id:                 '',
+            name:               'esti-expectedDuration-business2',
             registrationNumber: '',
-            managerList: []
+            managerList:        []
           },
-          testAmount: 1002,
-          reviewAmount: 2002,
-          totalAmount: 3002,
+          testAmount:       1002,
+          reviewAmount:     2002,
+          totalAmount:      3002,
           expectedDuration: 'esti-rival-expectedDuration2',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         }
       ],
     };
@@ -138,48 +163,48 @@ function* requestBid(id: ProjectId) {
 
   function testData(): ProjectBasicBid {
     return {
-      bid: {
-        bidDate: new Date('2022-10-26'),
-        testAmount: 4000,
-        reviewAmount: 5000,
-        totalAmount: 6000,
+      bid:          {
+        bidDate:          new Date('2022-10-26'),
+        testAmount:       4000,
+        reviewAmount:     5000,
+        totalAmount:      6000,
         expectedDuration: 'bid-expectedDuration',
       },
       rivalBidList: [
         {
-          id:  RivalBidId(1),
-          business: {
-            id: '',
-            name: 'bid-expectedDuration-business1',
+          id:               RivalBidId(1),
+          business:         {
+            id:                 '',
+            name:               'bid-expectedDuration-business1',
             registrationNumber: '',
-            managerList: [],
-            managerCount: 0,
-            projectCount: 0,
+            managerList:        [],
+            managerCount:       0,
+            projectCount:       0,
           },
-          testAmount: 4001,
-          reviewAmount: 5001,
-          totalAmount: 6001,
+          testAmount:       4001,
+          reviewAmount:     5001,
+          totalAmount:      6001,
           expectedDuration: 'bid-rival-expectedDuration1',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
         {
-          id:  RivalBidId(2),
-          business: {
-            id: '',
-            name: 'bid-expectedDuration-business2',
+          id:               RivalBidId(2),
+          business:         {
+            id:                 '',
+            name:               'bid-expectedDuration-business2',
             registrationNumber: '',
-            managerList: [],
-            managerCount: 0,
-            projectCount: 0,
+            managerList:        [],
+            managerCount:       0,
+            projectCount:       0,
           },
-          testAmount: 4002,
-          reviewAmount: 5002,
-          totalAmount: 6002,
+          testAmount:       4002,
+          reviewAmount:     5002,
+          totalAmount:      6002,
           expectedDuration: 'bid-rival-expectedDuration2',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
       ],
-    }
+    };
   }
 }
 

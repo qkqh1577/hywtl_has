@@ -7,6 +7,7 @@ import {
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicContract,
+  ProjectBasicDesign,
   ProjectBasicEstimate,
   ProjectBasicTest
 } from 'project_basic/domain';
@@ -18,6 +19,7 @@ export interface ProjectBasicState {
   basic?: ProjectVO;
   bidType?: ProjectBasicBidType;
   businessList?: ProjectBasicBusiness[];
+  design?: ProjectBasicDesign;
   test?: ProjectBasicTest;
   estimate?: ProjectBasicEstimate;
   bid?: ProjectBasicBid;
@@ -50,6 +52,12 @@ export const projectBasicReducer = createReducer(initial, {
                                             ) => ({
     ...state,
     businessList: action.payload,
+  }),
+  [ProjectBasicActionType.setDesign]:       (state,
+                                             action
+                                            ) => ({
+    ...state,
+    design: action.payload,
   }),
   [ProjectBasicActionType.setTest]:         (state,
                                              action

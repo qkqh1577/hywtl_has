@@ -20,7 +20,23 @@ export interface ProjectBasicBusiness {
   involvedType: BusinessInvolvedType;
 }
 
-export interface ProjectBasicTest extends ProjectComplexTestVO {
+export interface ProjectBasicDesign {
+  city?: string; // 시/도
+  address?: string; // 주소
+  complexCount?: number; // 단지 수
+  purpose1?: string; // 건물 용도 1
+  purpose2?: string; // 건물 용도 2
+  lotArea?: number; // 대지면적
+  totalArea?: number; // 연면적
+  totalBuildingCount?: number; // 총 동 수
+  householdCount?: number; // 세대 수
+  maximumFloor?: number; // 최고 층 수
+  maximumHeight?: number; // 최고 높이
+  modifiedAt?: Date; // 최종수정일시
+}
+
+export interface ProjectBasicTest
+  extends ProjectComplexTestVO {
 }
 
 export interface ProjectBasicEstimate {
@@ -38,7 +54,7 @@ export interface ProjectBasicEstimateVO {
     reviewAmount?: number;
     totalAmount?: number;
     expectedDuration?: string;
-  }
+  };
 }
 
 export interface ProjectBasicBid {
