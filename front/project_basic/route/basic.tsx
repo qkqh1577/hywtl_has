@@ -9,7 +9,7 @@ import {
 } from 'formik';
 import React, { useEffect } from 'react';
 import ProjectBasicBasicSection from 'project_basic/view/BasicSection';
-import { projectBasicActionType } from 'project_basic/action';
+import { projectBasicAction } from 'project_basic/action';
 
 export default function ProjectBasicBasicRoute() {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ export default function ProjectBasicBasicRoute() {
     if (!basic?.bidType) {
       return;
     }
-    dispatch(projectBasicActionType.setBidType(basic.bidType));
+    dispatch(projectBasicAction.setBidType(basic.bidType));
   }, [basic]);
 
   return (
@@ -45,7 +45,7 @@ export default function ProjectBasicBasicRoute() {
         if (!e) {
           return;
         }
-        dispatch(projectBasicActionType.setBidType(e.target.value));
+        dispatch(projectBasicAction.setBidType(e.target.value));
       }} />
     </FormikProvider>
   );

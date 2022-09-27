@@ -9,7 +9,7 @@ import ProjectBasicDesignRoute from 'project_basic/route/design';
 import ProjectBasicBidRoute from 'project_basic/route/bid';
 import ProjectBasicContractRoute from 'project_basic/route/contract';
 import ProjectBasicFailReasonRoute from 'project_basic/route/failReason';
-import { projectBasicActionType } from 'project_basic/action';
+import { projectBasicAction } from 'project_basic/action';
 import {
   useDispatch,
   useSelector
@@ -23,20 +23,20 @@ function Element() {
 
   useEffect(() => {
     if (detail && detail.id !== id) {
-      dispatch(projectBasicActionType.setId(detail.id));
-      dispatch(projectBasicActionType.setBasic({ ...detail }));
+      dispatch(projectBasicAction.setId(detail.id));
+      dispatch(projectBasicAction.setBasic({ ...detail }));
     }
   }, [detail]);
 
   return (
     <>
       <ProjectBasicBasicRoute />
-      <ProjectBasicBusinessRoute />
-      <ProjectBasicDesignRoute />
-      <ProjectBasicTestRoute />
-      <ProjectBasicEstimateRoute />
-      <ProjectBasicBidRoute />
-      <ProjectBasicContractRoute />
+      {/*<ProjectBasicBusinessRoute />*/}
+      {/*<ProjectBasicDesignRoute />*/}
+      {/*<ProjectBasicTestRoute />*/}
+      {/*<ProjectBasicEstimateRoute />*/}
+      {/*<ProjectBasicBidRoute />*/}
+      {/*<ProjectBasicContractRoute />*/}
       <ProjectBasicFailReasonRoute />
     </>
   );

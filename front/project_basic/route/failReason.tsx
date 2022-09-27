@@ -8,17 +8,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
 
 export default function ProjectBasicFailReasonRoute() {
-  const { failReason } = useSelector((root: RootState) => root.projectBasic);
+  const { lossEstimateExpectation, failReason } = useSelector((root: RootState) => root.projectBasic);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      {
-      win: failReason?.win || {},
-      testAmount: failReason?.testAmount?.toString() || '',
-      reviewAmount: failReason?.reviewAmount?.toString() || '',
-      totalAmount: failReason?.totalAmount?.toString() || '',
+      win:              failReason?.win || {},
+      testAmount:       failReason?.testAmount?.toString() || '',
+      reviewAmount:     failReason?.reviewAmount?.toString() || '',
+      totalAmount:      failReason?.totalAmount?.toString() || '',
       expectedDuration: failReason?.expectedDuration || '',
-      reason: failReason?.reason || '',
+      reason:           failReason?.reason || '',
     },
     onSubmit:           (values) => {
       console.log(values);
@@ -26,8 +26,13 @@ export default function ProjectBasicFailReasonRoute() {
   });
 
   return (
-    <FormikProvider value={formik}>
-      <ProjectBasicFailReasonSection />
-    </FormikProvider>
+    <>
+      {
+        lossEstimateExpectation &&
+        <FormikProvider value={formik}>
+          <ProjectBasicFailReasonSection />
+        </FormikProvider>
+      }
+    </>
   );
 }

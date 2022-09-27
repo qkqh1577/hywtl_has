@@ -44,7 +44,11 @@ function DataBox(props: DataBoxProps) {
   );
 }
 
-export default function ProjectContainerStatusBar() {
+interface Props {
+  handleChangeEstimateExpectation?: (e) => void;
+}
+
+export default function ProjectContainerStatusBar({ handleChangeEstimateExpectation }: Props) {
 
   return (
     <Box sx={{
@@ -95,6 +99,7 @@ export default function ProjectContainerStatusBar() {
                 key:  item as string,
                 text: projectEstimateExpectationName(item)
               }))}
+              onChange={handleChangeEstimateExpectation || function () {}}
             />
           }
         />

@@ -26,68 +26,77 @@ export interface ProjectBasicState {
   bid?: ProjectBasicBid;
   contract?: ProjectBasicContract;
   failReason?: ProjectBasicFailReason;
+  lossEstimateExpectation: boolean;
 }
 
-const initial: ProjectBasicState = {};
+const initial: ProjectBasicState = {
+  lossEstimateExpectation: false,
+};
 
 export const projectBasicReducer = createReducer(initial, {
-  [ProjectBasicActionType.setId]:           (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setId]:                      (state,
+                                                        action
+                                                       ) => ({
     ...state,
     id: action.payload,
   }),
-  [ProjectBasicActionType.setBasic]:        (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setLossEstimateExpectation]: (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    lossEstimateExpectation: action.payload,
+  }),
+  [ProjectBasicActionType.setBasic]:                   (state,
+                                                        action
+                                                       ) => ({
     ...state,
     basic: action.payload,
   }),
-  [ProjectBasicActionType.setBidType]:      (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setBidType]:                 (state,
+                                                        action
+                                                       ) => ({
     ...state,
     bidType: action.payload,
   }),
-  [ProjectBasicActionType.setBusinessList]: (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setBusinessList]:            (state,
+                                                        action
+                                                       ) => ({
     ...state,
     businessList: action.payload,
   }),
-  [ProjectBasicActionType.setDesign]:       (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setDesign]:                  (state,
+                                                        action
+                                                       ) => ({
     ...state,
     design: action.payload,
   }),
-  [ProjectBasicActionType.setTest]:         (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setTest]:                    (state,
+                                                        action
+                                                       ) => ({
     ...state,
     test: action.payload,
   }),
-  [ProjectBasicActionType.setEstimate]:     (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setEstimate]:                (state,
+                                                        action
+                                                       ) => ({
     ...state,
     estimate: action.payload,
   }),
-  [ProjectBasicActionType.setBid]:          (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setBid]:                     (state,
+                                                        action
+                                                       ) => ({
     ...state,
     bid: action.payload,
   }),
-  [ProjectBasicActionType.setContract]:     (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setContract]:                (state,
+                                                        action
+                                                       ) => ({
     ...state,
     contract: action.payload,
   }),
-  [ProjectBasicActionType.setFailReason]:   (state,
-                                             action
-                                            ) => ({
+  [ProjectBasicActionType.setFailReason]:              (state,
+                                                        action
+                                                       ) => ({
     ...state,
     failReason: action.payload,
   })
