@@ -16,6 +16,7 @@ import {
   ProjectBasicContract,
   ProjectBasicDesign,
   ProjectBasicEstimate,
+  ProjectBasicFailReason,
   ProjectBasicTest,
   RivalBidId
 } from 'project_basic/domain';
@@ -34,6 +35,7 @@ function* watchId() {
     yield call(requestEstimate, id);
     yield call(requestBid, id);
     yield call(requestContract, id);
+    yield call(requestFailReason, id);
   }
 }
 
@@ -238,6 +240,32 @@ function* requestContract(id: ProjectId) {
           condition: '최종보고서 납품 (구조심의 완료시)'
         },
       ]
+    };
+  }
+}
+
+function* requestFailReason(id: ProjectId) {
+  // const failReason: ProjectBasicFailReason = yield call(projectBasicApi.getFailReason, id);
+  // yield put(projectBasicActionType.setFailReason(failReason));
+
+  yield put(projectBasicActionType.setFailReason(testData()));
+
+  function testData(): ProjectBasicFailReason {
+    return {
+      win: {
+        name: 'fr-win-name',
+        id: '',
+        managerList: [],
+        registrationNumber: '',
+        projectCount: 0,
+        managerCount: 0
+      },
+      testAmount: 10,
+      reviewAmount: 20,
+      totalAmount: 30,
+      expectedDuration: 'fr-expectedDuration',
+      reason: 'fr-reason',
+      modifiedAt: new Date()
     };
   }
 }

@@ -12,6 +12,7 @@ import {
   ProjectBasicContract,
   ProjectBasicDesign,
   ProjectBasicEstimate,
+  ProjectBasicFailReason,
   ProjectBasicTest
 } from 'project_basic/domain';
 import { FormikSubmit } from 'type/Form';
@@ -28,7 +29,8 @@ export enum ProjectBasicActionType {
   setTest         = 'project/basic/test/set',
   setEstimate     = 'project/basic/estimate/set',
   setBid          = 'project/basic/bid/set',
-  setContract     = 'project/basic/contract/set'
+  setContract     = 'project/basic/contract/set',
+  setFailReason   = 'project/basic/fail-reason/set'
 }
 
 export const projectBasicActionType = {
@@ -44,4 +46,5 @@ export const projectBasicActionType = {
   setEstimate:     createAction(ProjectBasicActionType.setEstimate)<ProjectBasicEstimate | undefined>(),
   setBid:          createAction(ProjectBasicActionType.setBid)<ProjectBasicBid | undefined>(),
   setContract:     createAction(ProjectBasicActionType.setContract)<ProjectBasicContract | undefined>(),
+  setFailReason:   createAction(ProjectBasicActionType.setFailReason)<ProjectBasicFailReason | undefined>(),
 };

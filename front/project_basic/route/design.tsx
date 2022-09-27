@@ -10,7 +10,6 @@ import { RootState } from 'services/reducer';
 export default function ProjectBasicDesignRoute() {
   const { design } = useSelector((root: RootState) => root.projectBasic);
 
-  console.log(design);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      {

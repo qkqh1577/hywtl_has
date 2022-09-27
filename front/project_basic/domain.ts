@@ -96,3 +96,13 @@ export interface ProjectBasicContract {
     note?: string; // 비고
   }[];
 }
+
+export interface ProjectBasicFailReason {
+  win?: BusinessShort; // 수주 업체
+  testAmount?: number; // 풍동 금액
+  reviewAmount?: number; // 구검 금액
+  totalAmount?: number; // 총액
+  expectedDuration?: string; // 일정
+  reason?: string; // 원인
+  modifiedAt: Date;
+}

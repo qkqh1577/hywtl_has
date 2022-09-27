@@ -9,7 +9,7 @@ export default function ProjectBasicFailReasonSection() {
       <Grid container spacing={2}>
         <Grid item sm={4}>
           <TextField
-            name="win"
+            name="win.name"
             label="수주업체"
             labelWidth={7 * 6}
           />
