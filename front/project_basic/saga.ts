@@ -1,4 +1,5 @@
 import {
+  all,
   call,
   fork,
   put,
@@ -19,28 +20,41 @@ import {
   ProjectBasicEstimate,
   ProjectBasicFailReason,
   ProjectBasicTest,
-  RivalBidId
+  RivalBidId,
+  RivalBidVO
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
-import { RivalEstimateId } from 'rival_estimate/domain';
+import {
+  RivalEstimateId,
+  RivalEstimateVO
+} from 'rival_estimate/domain';
 import { TestType } from 'admin/estimate/content/domain';
 import {
   BusinessInvolvedType,
   BusinessManagerStatus
 } from 'business/domain';
+import { ProjectComplexTestVO } from 'project_complex/domain';
+import { projectComplexApi } from 'project_complex/api';
+import { ProjectEstimateVO } from 'project_estimate/domain';
+import { projectEstimateApi } from 'project_estimate/api';
+import { rivalEstimateApi } from 'rival_estimate/api';
+import { ProjectBidVO } from 'project_bid/domain';
+import { projectBidApi } from 'project_bid/api';
 
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
-    yield call(requestBusinessList, id);
-    yield call(requestDesign, id);
-    yield call(requestTest, id);
-    yield call(requestEstimate, id);
-    yield call(requestBid, id);
-    yield call(requestContract, id);
-    yield call(requestFailReason, id);
+    yield all([
+      call(requestBusinessList, id),
+      call(requestDesign, id),
+      call(requestTest, id),
+      call(requestEstimate, id),
+      call(requestBid, id),
+      call(requestContract, id),
+      call(requestFailReason, id),
+    ]);
   }
 }
 
@@ -147,7 +161,7 @@ function* requestEstimate(id: ProjectId) {
   // TODO: API 사양과 해당 Domain 불일치로 보류
   // const estimateList: ProjectEstimateVO[] = yield call(projectEstimateApi.getList, id);
   // const rivalEstimateList: RivalEstimateVO[] = yield call(rivalEstimateApi.getList, id);
-  //
+
   // yield put(projectBasicActionType.setEstimate({
   //   estimate:          estimateList.filter((e) => e.confirmed)[0],
   //   rivalEstimateList: rivalEstimateList
@@ -205,7 +219,7 @@ function* requestEstimate(id: ProjectId) {
 function* requestBid(id: ProjectId) {
   // const bid: ProjectBidVO = yield call(projectBidApi.get, id);
   // const rivalBidList: RivalBidVO[] = yield call(projectBasicApi.getRivalBidList, id);
-  //
+
   // yield put(projectBasicActionType.setBid({
   //   bid,
   //   rivalBidList: rivalBidList

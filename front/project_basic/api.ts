@@ -2,7 +2,8 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectBasicBusiness,
   ProjectBasicDesign,
-  ProjectBasicFailReason
+  ProjectBasicFailReason,
+  RivalBidVO
 } from 'project_basic/domain';
 import apiClient from 'services/api';
 import { ProjectBasicBusinessParameter } from 'project_basic/parameter';
@@ -28,6 +29,10 @@ class ProjectBasicApi {
   async getFailReason(id: ProjectId): Promise<ProjectBasicFailReason> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/fail-reason`);
     return data;
+  }
+
+  async getRivalBidList(id: ProjectId): Promise<RivalBidVO> {
+    return new Promise(() => []);
   }
 }
 
