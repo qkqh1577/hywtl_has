@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
-import { UserNotificationId } from 'user_notification/domain';
+import { UserNotificationId, } from 'user_notification/domain';
 
 interface Props {
   id: UserNotificationId;

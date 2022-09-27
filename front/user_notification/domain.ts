@@ -6,6 +6,10 @@ export function UserNotificationId(id: number) {
   return id as UserNotificationId;
 }
 
+export interface UserNotificationListVO{
+  list: UserNotificationVO[];
+}
+
 export interface UserNotificationVO {
   id?: UserNotificationId;
   type: string;
@@ -17,15 +21,3 @@ export interface UserNotificationVO {
   projectName: string;
   createdAt: Date | undefined;
 }
-
-export const initialUserNotificationVO: UserNotificationVO = {
-  id:          undefined,
-  type:        '',
-  note:        '',
-  forwardUrl:  '',
-  readAt:      undefined,
-  sender:      undefined,
-  projectCode: '',
-  projectName: '',
-  createdAt: undefined,
-};

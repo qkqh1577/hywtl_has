@@ -32,6 +32,8 @@ function* read() {
   while (true) {
     const { payload: id } = yield take(userNotificationAction.read);
     yield call(userNotificationApi.read, id);
+    const list: UserNotificationVO[] = yield call(userNotificationApi.getList);
+    yield put(userNotificationAction.setList(list));
   }
 }
 
@@ -39,6 +41,8 @@ function* readAll() {
   while (true) {
     yield take(userNotificationAction.readAll);
     yield call(userNotificationApi.readAll);
+    const list: UserNotificationVO[] = yield call(userNotificationApi.getList);
+    yield put(userNotificationAction.setList(list));
   }
 }
 
@@ -47,7 +51,9 @@ function* deleteOne() {
     const { payload: id } = yield take(UserNotificationActionType.deleteOne);
     try {
       yield call(userNotificationApi.deleteOne, id);
-      yield put(dialogActions.openAlert('삭제 했습니다.'));
+      const list: UserNotificationVO[] = yield call(userNotificationApi.getList);
+      yield put(userNotificationAction.setList(list));
+      // yield put(dialogActions.openAlert('삭제 했습니다.'));
     }
     catch (e) {
       yield put(dialogActions.openAlert({
@@ -61,10 +67,11 @@ function* deleteOne() {
 function* deleteAll() {
   while (true) {
     yield take(userNotificationAction.deleteAll);
-    yield put(dialogActions.openAlert('전체 알람을 삭제 했습니다.'));
     try {
       yield call(userNotificationApi.deleteAll);
-
+      const list: UserNotificationVO[] = yield call(userNotificationApi.getList);
+      yield put(userNotificationAction.setList(list));
+      // yield put(dialogActions.openAlert('전체 알람을 삭제 했습니다.'));
     }catch (e){
       yield put(dialogActions.openAlert({
         children: '문제가 발생했습니다.',

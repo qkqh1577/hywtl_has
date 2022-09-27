@@ -1,19 +1,16 @@
 import React from 'react';
 import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
-import { FormikLayoutProps } from 'layouts/PageLayout';
 import {
   UserNotificationId,
-  UserNotificationVO
+  UserNotificationListVO,
 } from 'user_notification/domain';
 import { Box } from '@mui/material';
-import { FormikProvider } from 'formik';
 import List from 'user_notification/view/List';
 
-export interface UserNotificationModalProps
-  extends FormikLayoutProps<UserNotificationVO> {
+export interface UserNotificationModalProps {
   open: boolean;
+  userNotification: UserNotificationListVO;
   onClose: ModalLayoutProps['onClose'];
-  list: UserNotificationVO[] | undefined;
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
   onDeleteAll: () => void;
@@ -23,9 +20,8 @@ export interface UserNotificationModalProps
 export default function UserNotificationModal(props: UserNotificationModalProps) {
   const {
           open,
+          userNotification,
           onClose,
-          formik,
-          list,
           onDelete,
           onRead,
           onDeleteAll,
@@ -43,15 +39,13 @@ export default function UserNotificationModal(props: UserNotificationModalProps)
           width:    '100%',
           flexWrap: 'wrap',
         }}>
-          <FormikProvider value={formik}>
-            <List
-              list={list}
-              onDelete={onDelete}
-              onRead={onRead}
-              onDeleteAll={onDeleteAll}
-              onReadAll={onReadAll}
-            />
-          </FormikProvider>
+          <List
+            userNotification={userNotification}
+            onDelete={onDelete}
+            onRead={onRead}
+            onDeleteAll={onDeleteAll}
+            onReadAll={onReadAll}
+          />
         </Box>
       } />
   );

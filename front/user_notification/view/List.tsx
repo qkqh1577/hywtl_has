@@ -6,7 +6,7 @@ import {
 import Button from 'layouts/Button';
 import {
   UserNotificationId,
-  UserNotificationVO
+  UserNotificationListVO,
 } from 'user_notification/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextLink from 'components/TextLink';
@@ -15,21 +15,23 @@ import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';
 
 interface Props {
-  list: UserNotificationVO[] | undefined;
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
   onDeleteAll: () => void;
   onReadAll: () => void;
+  userNotification: UserNotificationListVO | undefined;
 }
 
 export default function List(props: Props) {
+
   const {
-          list,
           onDelete,
+          userNotification,
           onRead,
           onDeleteAll,
           onReadAll
         } = props;
+  const list = userNotification?.list;
   return (
     <>
       <Box
@@ -52,8 +54,8 @@ export default function List(props: Props) {
           <Button
             shape="basic3"
             onClick={() => {
-            onDeleteAll();
-          }}>
+              onDeleteAll();
+            }}>
             전체 삭제
           </Button>
         </Box>
@@ -97,7 +99,7 @@ export default function List(props: Props) {
                 .format('YYYY-MM-DD hh:mm')}</Typography>
               </Box>
               <Box sx={{
-                display:  'flex',
+                display: 'flex',
               }}>
                 {!notification.readAt && (
                   <ReadButton
