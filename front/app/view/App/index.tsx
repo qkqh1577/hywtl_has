@@ -4,7 +4,7 @@ import { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import MenuDrawer, { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 import AppBar from 'app/view/App/Bar';
 import ReactRouter from 'services/routes';
-import { OnLoginUserEditModalOpen } from 'app/route/app';
+import { OnLoginUserEditModalOpen, } from 'app/route/app';
 
 interface Props {
   isLoginPage: boolean;
@@ -17,6 +17,7 @@ interface Props {
   loginUserEditModal: React.ReactNode;
   onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
   notificationButton: React.ReactNode;
+  userNotificationModal: React.ReactNode;
 }
 
 export default function App(props: Props) {
@@ -42,6 +43,7 @@ export default function App(props: Props) {
             loginUserEditModal={props.loginUserEditModal}
             onLoginUserEditModalOpen={props.onLoginUserEditModalOpen}
             notificationButton={props.notificationButton}
+            userNotificationModal={props.userNotificationModal}
           />
           <MenuDrawer {...props.menuDrawerProps} />
           {props.projectDrawer}

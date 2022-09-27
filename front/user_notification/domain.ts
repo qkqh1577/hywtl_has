@@ -13,4 +13,7 @@ export interface UserNotificationVO {
   forwardUrl?: string;
   readAt?: Date;
   sender: UserShortVO;
+  projectCode?: string;
+  projectName: string;
+  createdAt: Date;
 }

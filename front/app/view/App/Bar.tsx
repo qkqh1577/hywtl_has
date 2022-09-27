@@ -9,7 +9,7 @@ import React from 'react';
 import MenuAppBar from 'app/view/App/MenuDrawer/AppBar';
 import { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 import { ColorPalette } from 'app/view/App/theme';
-import { OnLoginUserEditModalOpen } from 'app/route/app';
+import { OnLoginUserEditModalOpen, } from 'app/route/app';
 
 interface Props {
   projectAppBar: React.ReactNode;
@@ -18,6 +18,7 @@ interface Props {
   loginUserEditModal: React.ReactNode;
   onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
   notificationButton: React.ReactNode;
+  userNotificationModal: React.ReactNode;
 }
 
 export default function AppBar(props: Props) {
@@ -25,6 +26,7 @@ export default function AppBar(props: Props) {
           logoutButtonProps,
           menuDrawerProps,
           loginUserEditModal,
+          userNotificationModal,
           onLoginUserEditModalOpen
         } = props;
   return (
@@ -63,6 +65,7 @@ export default function AppBar(props: Props) {
         </Box>
       </MuiAppBar>
       {loginUserEditModal}
+      {userNotificationModal}
     </>
   );
 }

@@ -20,8 +20,18 @@ class UserNotificationApi {
     return data;
   }
 
+  async readAll(): Promise<void> {
+    const { data } = await apiClient.post('/user-notification');
+    return data;
+  }
+
   async deleteOne(id: UserNotificationId): Promise<void> {
     const { data } = await apiClient.delete(`/user-notification/${id}`);
+    return data;
+  }
+
+  async deleteAll(): Promise<void> {
+    const { data } = await apiClient.delete('/user-notification');
     return data;
   }
 }
