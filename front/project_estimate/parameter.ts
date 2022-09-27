@@ -22,13 +22,16 @@ export interface ProjectCustomEstimateChangeParameter {
   note?: string;
 }
 
+export interface ProjectCustomEstimateExtensionParameter {
+  id: ProjectEstimateId;
+}
+
 export interface ProjectSystemEstimateParameter {
   id?: ProjectEstimateId;
   isSent: boolean;
   recipient: string;
   note?: string;
   plan: ProjectEstimatePlanParameter;
-
 }
 
 export interface ProjectEstimatePlanParameter {

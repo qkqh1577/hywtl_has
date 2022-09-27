@@ -8,6 +8,7 @@ import {
 import {
   ProjectCustomEstimateAddParameter,
   ProjectCustomEstimateChangeParameter,
+  ProjectCustomEstimateExtensionParameter,
   ProjectSystemEstimateParameter
 } from 'project_estimate/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
@@ -43,11 +44,11 @@ export const projectEstimateAction = {
   requestChange:        createAction(ProjectEstimateActionType.requestChange)<ApiStatus>(),
   changeCustom:         createAction(ProjectEstimateActionType.changeCustom)<ProjectCustomEstimateChangeParameter>(),
   requestExtension:     createAction(ProjectEstimateActionType.requestExtension)<ApiStatus>(),
-  extensionCustom:      createAction(ProjectEstimateActionType.extensionCustom)<>(),
+  extensionCustom:      createAction(ProjectEstimateActionType.extensionCustom)<ProjectCustomEstimateExtensionParameter>(),
   setSystemModal:       createAction(ProjectEstimateActionType.setSystemModal)<ProjectEstimateId | null | undefined>(),
   addSystem:            createAction(ProjectEstimateActionType.addSystem)<ProjectSystemEstimateParameter>(),
   changeSystem:         createAction(ProjectEstimateActionType.changeSystem)<ProjectSystemEstimateParameter>(),
-  setFinalModal:        createAction(ProjectEstimateActionType.setFinalModal)<>(),
+  setFinalModal:        createAction(ProjectEstimateActionType.setFinalModal)<boolean>(),
   requestSetFinal:      createAction(ProjectEstimateActionType.requestSetFinal)<ApiStatus>(),
   setFinal:             createAction(ProjectEstimateActionType.setFinal)<ProjectEstimateId>(),
 };
