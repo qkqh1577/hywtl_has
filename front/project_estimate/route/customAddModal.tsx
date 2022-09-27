@@ -5,15 +5,13 @@ import {
 import { RootState } from 'services/reducer';
 import ProjectCustomEstimateAddModal from 'project_estimate/view/CustomAddModal';
 import { useFormik } from 'formik';
-import {
-  ProjectCustomEstimateAddParameter,
-} from 'project_estimate/parameter';
+import { ProjectCustomEstimateAddParameter, } from 'project_estimate/parameter';
 import React, {
   useCallback,
   useEffect,
 } from 'react';
 import { projectEstimateAction } from 'project_estimate/action';
-import useDialog from 'components/Dialog';
+import useDialog, { dialogActions } from 'components/Dialog';
 import { BusinessVO } from 'business/domain';
 
 export default function ProjectCustomEstimateAddModalRoute() {
@@ -49,7 +47,7 @@ export default function ProjectCustomEstimateAddModalRoute() {
       }
 
       addCustom({
-        isSent:     values.isSent,
+        isSent:     values.isSent ?? (values as any).isSentSelect === 'Y',
         businessId: business.id,
         recipient:  values.recipient,
         note:       values.note,
@@ -62,6 +60,8 @@ export default function ProjectCustomEstimateAddModalRoute() {
   useEffect(() => {
     if (requestAdd === 'response') {
       onClose();
+      dispatch(dialogActions.openAlert('등록하였습니다.'));
+      dispatch(projectEstimateAction.setProjectId(projectId));
       dispatch(projectEstimateAction.requestAdd('idle'));
     }
   }, [requestAdd]);
