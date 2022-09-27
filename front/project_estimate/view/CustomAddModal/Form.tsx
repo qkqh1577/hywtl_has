@@ -27,8 +27,8 @@ export default function (props: FormikLayoutProps<any>) {
           label="송부 여부"
           labelPosition="top"
           options={['Y', 'N']}
-          onChange={() => {
-            const value = formik.values.isSentSelect;
+          onChange={(e) => {
+            const value = e.target.value;
             if (value === 'Y') {
               formik.setFieldValue('isSent', true);
             }

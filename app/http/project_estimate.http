@@ -36,7 +36,7 @@ Content-Type: application/json
   "plan": {
     "estimateDate": "2022-07-01",
     "expectedTestDeadline": 7,
-    "expectedFinalReviewDeadline": 10
+    "expectedFinalReportDeadline": 10
   },
   "siteList": [
     {
@@ -138,7 +138,7 @@ Content-Type: application/json
   "plan": {
     "estimateDate": "2022-09-01",
     "expectedTestDeadline": 7,
-    "expectedFinalReviewDeadline": 9
+    "expectedFinalReportDeadline": 9
   },
   "siteList": [
     {
@@ -180,7 +180,7 @@ Content-Type: application/json
   "plan": {
     "estimateDate": "2022-09-01",
     "expectedTestDeadline": 7,
-    "expectedFinalReviewDeadline": 10
+    "expectedFinalReportDeadline": 10
   },
   "siteList": [
     {

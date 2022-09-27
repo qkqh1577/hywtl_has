@@ -124,7 +124,7 @@ public class ProjectEstimateService {
                     plan.getEstimateDate(),
                     plan.getExpectedServiceDate(),
                     plan.getExpectedTestDeadline(),
-                    plan.getExpectedFinalReviewDeadline(),
+                    plan.getExpectedFinalReportDeadline(),
                     plan.getTestAmount(),
                     plan.getReviewAmount(),
                     plan.getDiscountAmount(),

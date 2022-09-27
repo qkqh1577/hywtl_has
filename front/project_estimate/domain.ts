@@ -42,7 +42,15 @@ export interface ProjectEstimateVO {
   modifiedAt?: Date;
 }
 
+export interface ProjectEstimatePlanVO {
+  estimateDate: Date;
+  expectedServiceDate: Date;
+  expectedTestDeadline: number;
+  expectedFinalReportDeadline: number;
+}
+
 export interface ProjectCustomEstimateVO
   extends ProjectEstimateVO {
-
 }
+
+
