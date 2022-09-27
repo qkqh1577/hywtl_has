@@ -4,8 +4,8 @@ GET http://localhost:8080/user-notification/count
 ### get all list
 GET http://localhost:8080/user-notification
 
-### read 1
-POST http://localhost:8080/user-notification/2
+### read
+POST http://localhost:8080/user-notification
 
 ### delete
-DELETE  http://localhost:8080/user-notification/2
+DELETE  http://localhost:8080/user-notification

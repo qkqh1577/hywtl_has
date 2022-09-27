@@ -41,8 +41,20 @@ public class UserNotificationService {
     }
 
     @Transactional
+    public void readAll(String username) {
+        User user = new CustomFinder<>(userRepository, User.class).byField(username, "username");
+        repository.readByUser_Id(user.getId());
+    }
+
+    @Transactional
     public void read(Long id) {
         this.load(id).read();
+    }
+
+    @Transactional
+    public void deleteAll(String username) {
+        User user = new CustomFinder<>(userRepository, User.class).byField(username, "username");
+        repository.deleteByUser_Id(user.getId());
     }
 
     @Transactional
