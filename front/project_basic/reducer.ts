@@ -7,7 +7,8 @@ import {
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicContract,
-  ProjectBasicEstimate
+  ProjectBasicEstimate,
+  ProjectBasicTest
 } from 'project_basic/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
@@ -17,6 +18,7 @@ export interface ProjectBasicState {
   basic?: ProjectVO;
   bidType?: ProjectBasicBidType;
   businessList?: ProjectBasicBusiness[];
+  test?: ProjectBasicTest;
   estimate?: ProjectBasicEstimate;
   bid?: ProjectBasicBid;
   contract?: ProjectBasicContract;
@@ -48,6 +50,12 @@ export const projectBasicReducer = createReducer(initial, {
                                             ) => ({
     ...state,
     businessList: action.payload,
+  }),
+  [ProjectBasicActionType.setTest]:         (state,
+                                             action
+                                            ) => ({
+    ...state,
+    test: action.payload,
   }),
   [ProjectBasicActionType.setEstimate]:     (state,
                                              action

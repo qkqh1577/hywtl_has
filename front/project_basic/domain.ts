@@ -5,6 +5,7 @@ import {
 } from 'business/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
+import { ProjectComplexTestVO } from 'project_complex/domain';
 
 export type ProjectBasicBusinessId = number & { readonly _brand: unique symbol; }
 
@@ -17,6 +18,9 @@ export interface ProjectBasicBusiness {
   business: BusinessShort;
   businessManager: BusinessManagerVO;
   involvedType: BusinessInvolvedType;
+}
+
+export interface ProjectBasicTest extends ProjectComplexTestVO {
 }
 
 export interface ProjectBasicEstimate {

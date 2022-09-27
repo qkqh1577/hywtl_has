@@ -10,7 +10,8 @@ import {
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
   ProjectBasicContract,
-  ProjectBasicEstimate
+  ProjectBasicEstimate,
+  ProjectBasicTest
 } from 'project_basic/domain';
 import { FormikSubmit } from 'type/Form';
 
@@ -22,6 +23,7 @@ export enum ProjectBasicActionType {
   setBusiness     = 'project/basic/business/set',
   pushBusiness    = 'project/basic/business/push',
   deleteBusiness  = 'project/basic/business/delete',
+  setTest         = 'project/basic/test/set',
   setEstimate     = 'project/basic/estimate/set',
   setBid          = 'project/basic/bid/set',
   setContract     = 'project/basic/contract/set'
@@ -35,6 +37,7 @@ export const projectBasicActionType = {
   setBusiness:     createAction(ProjectBasicActionType.setBusiness)<ProjectBasicBusiness | undefined>(),
   pushBusiness:    createAction(ProjectBasicActionType.pushBusiness)<FormikSubmit<ProjectBasicBusinessParameter>>(),
   deleteBusiness:  createAction(ProjectBasicActionType.deleteBusiness)<ProjectBasicBusinessId>(),
+  setTest:         createAction(ProjectBasicActionType.setTest)<ProjectBasicTest | undefined>(),
   setEstimate:     createAction(ProjectBasicActionType.setEstimate)<ProjectBasicEstimate | undefined>(),
   setBid:          createAction(ProjectBasicActionType.setBid)<ProjectBasicBid | undefined>(),
   setContract:     createAction(ProjectBasicActionType.setContract)<ProjectBasicContract | undefined>(),

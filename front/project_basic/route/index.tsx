@@ -32,10 +32,10 @@ function Element() {
     <>
       <ProjectBasicBasicRoute />
       {/*<ProjectBasicBusinessRoute />*/}
-      {/*<ProjectBasicTestRoute />*/}
+      <ProjectBasicTestRoute />
       {/*<ProjectBasicDesignRoute />*/}
-      <ProjectBasicEstimateRoute />
-      <ProjectBasicBidRoute />
+      {/*<ProjectBasicEstimateRoute />*/}
+      {/*<ProjectBasicBidRoute />*/}
       <ProjectBasicContractRoute />
       {/*<ProjectBasicFailReasonRoute />*/}
     </>

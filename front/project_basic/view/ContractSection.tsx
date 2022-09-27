@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function ProjectBasicContractSection({ projectContractCollectionStageList }: Props) {
-  let getTableRows = () => {
+  const getTableRows = () => {
     let collectionStageList = projectContractCollectionStageList;
     if (collectionStageList.length === 0) {
       return (

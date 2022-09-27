@@ -14,7 +14,6 @@ interface Props {
   handleChangeBidType: (e) => void;
 }
 
-
 export default function ProjectBasicBasicSection({handleChangeBidType}: Props) {
 
   return (
@@ -54,6 +53,7 @@ export default function ProjectBasicBasicSection({handleChangeBidType}: Props) {
               text: projectBasicBidTypeName(item),
             }))}
             onChange={handleChangeBidType}
+            labelWidth={7 * 13}
           />
         </Grid>
         <Grid item sm={3}>

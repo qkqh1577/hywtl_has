@@ -15,30 +15,20 @@ import {
   ProjectBasicBusiness,
   ProjectBasicContract,
   ProjectBasicEstimate,
-  RivalBidId,
-  RivalBidVO
+  ProjectBasicTest,
+  RivalBidId
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
-import { projectEstimateApi } from 'project_estimate/api';
-import {
-  ProjectEstimateId,
-  ProjectEstimateType,
-  ProjectEstimateVO
-} from 'project_estimate/domain';
-import { rivalEstimateApi } from 'rival_estimate/api';
-import {
-  RivalEstimateId,
-  RivalEstimateVO
-} from 'rival_estimate/domain';
-import { ProjectBidVO } from 'project_bid/domain';
-import { projectBidApi } from 'project_bid/api';
+import { RivalEstimateId } from 'rival_estimate/domain';
+import { TestType } from 'admin/estimate/content/domain';
 
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
     yield call(requestBusinessList, id);
+    yield call(requestTest, id);
     yield call(requestEstimate, id);
     yield call(requestBid, id);
     yield call(requestContract, id);
@@ -48,6 +38,32 @@ function* watchId() {
 function* requestBusinessList(id: ProjectId) {
   const businessList: ProjectBasicBusiness[] = yield call(projectBasicApi.getBusinessList, id);
   yield put(projectBasicActionType.setBusinessList(businessList));
+}
+
+function* requestTest(id: ProjectId) {
+  // const testDetail: ProjectComplexTestVO = yield call(projectComplexApi.getTestDetail, id);
+  // yield put(projectBasicActionType.setTest(testDetail));
+
+  yield put(projectBasicActionType.setTest(testData()));
+
+  function testData(): ProjectBasicTest {
+    return {
+      siteCount: 10,
+      targetTest: 'test-targetTest',
+      testList: [
+        {
+          testType: TestType.A,
+          buildingCount: 3,
+          buildingNameList: ['A-1', 'A-2', 'A-3']
+        },
+        {
+          testType: TestType.B,
+          buildingCount: 2,
+          buildingNameList: ['B-1', 'B-2']
+        }
+      ]
+    };
+  }
 }
 
 function* requestEstimate(id: ProjectId) {
