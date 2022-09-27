@@ -39,11 +39,25 @@ public class UserNotificationController {
             .collect(Collectors.toList());
     }
 
+    @PostMapping("/user-notification")
+    public void readAll(
+        Authentication authentication
+    ) {
+        service.readAll(UsernameExtractor.get(authentication));
+    }
+
     @PostMapping("/user-notification/{id}")
     public void read(
         @PathVariable Long id
     ) {
         service.read(id);
+    }
+
+    @DeleteMapping("/user-notification")
+    public void deleteAll(
+        Authentication authentication
+    ) {
+        service.deleteAll(UsernameExtractor.get(authentication));
     }
 
     @DeleteMapping("/user-notification/{id}")
