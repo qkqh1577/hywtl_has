@@ -1,18 +1,18 @@
-import React from 'react';
+import { UserNotificationId } from 'user_notification/domain';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
-import { UserNotificationId } from 'user_notification/domain';
+import React from 'react';
 
 interface Props {
   id: UserNotificationId;
-  onDelete: (id: UserNotificationId) => void;
+  onRead: (id: UserNotificationId) => void;
 }
 
-export default function RemoveButton(props: Props) {
+export default function ReadButton(props: Props) {
   const {
           id,
-          onDelete,
+          onRead,
         } = props;
   return (
     <Box sx={{
@@ -20,12 +20,12 @@ export default function RemoveButton(props: Props) {
     }}>
       <FontAwesomeIcon
         style={{
-          color:  ColorPalette._9bb6ea,
+          color:  ColorPalette._252627,
           cursor: 'pointer',
         }}
-        icon="trash"
+        icon={['fab', 'readme']}
         onClick={() => {
-          onDelete(id);
+          onRead(id);
         }}
       />
     </Box>

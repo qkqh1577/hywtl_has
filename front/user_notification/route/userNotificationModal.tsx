@@ -16,7 +16,6 @@ import UserNotificationModal from 'user_notification/view';
 export default function UserNotificationModalRoute() {
   const dispatch = useDispatch();
   const { list } = useSelector((root: RootState) => root.userNotification);
-  console.log('list: ', list);
 
   const formik = useFormik<UserNotificationVO>({
     enableReinitialize: true,
@@ -24,16 +23,19 @@ export default function UserNotificationModalRoute() {
     onSubmit:           (values,
                          helper
                         ) => {
-      console.log('submit??? ');
     }
   });
   const onDelete = useCallback((id: UserNotificationId) =>
       dispatch(userNotificationAction.deleteOne(id)),
     [dispatch]);
 
+  const onDeleteAll = useCallback(() => dispatch(userNotificationAction.deleteAll()), [dispatch])
+
   const onRead = useCallback((id: UserNotificationId) =>
       dispatch(userNotificationAction.read(id))
     , [dispatch]);
+
+  const onReadAll = useCallback(() => dispatch(userNotificationAction.readAll()), [dispatch])
 
   const onClose = useCallback(() =>
     dispatch(userNotificationAction.setList(undefined)), [dispatch]);
@@ -44,8 +46,10 @@ export default function UserNotificationModalRoute() {
       onClose={onClose}
       formik={formik}
       list={list}
-      onDelete={onDelete}
       onRead={onRead}
+      onReadAll={onReadAll}
+      onDelete={onDelete}
+      onDeleteAll={onDeleteAll}
     />
   );
 }

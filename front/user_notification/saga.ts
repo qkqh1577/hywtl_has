@@ -35,12 +35,36 @@ function* read() {
   }
 }
 
+function* readAll() {
+  while (true) {
+    yield take(userNotificationAction.readAll);
+    yield call(userNotificationApi.readAll);
+  }
+}
+
 function* deleteOne() {
   while (true) {
     const { payload: id } = yield take(UserNotificationActionType.deleteOne);
     try {
-     yield call(userNotificationApi.deleteOne, id);
-     yield put(dialogActions.openAlert('삭제 했습니다.'))
+      yield call(userNotificationApi.deleteOne, id);
+      yield put(dialogActions.openAlert('삭제 했습니다.'));
+    }
+    catch (e) {
+      yield put(dialogActions.openAlert({
+        children: '문제가 발생했습니다.',
+        status:   'error',
+      }));
+    }
+  }
+}
+
+function* deleteAll() {
+  while (true) {
+    yield take(userNotificationAction.deleteAll);
+    yield put(dialogActions.openAlert('전체 알람을 삭제 했습니다.'));
+    try {
+      yield call(userNotificationApi.deleteAll);
+
     }catch (e){
       yield put(dialogActions.openAlert({
         children: '문제가 발생했습니다.',
@@ -54,5 +78,7 @@ export default function* userNotificationSaga() {
   yield fork(watchCount);
   yield fork(watchList);
   yield fork(read);
+  yield fork(readAll);
   yield fork(deleteOne);
+  yield fork(deleteAll);
 }

@@ -16,6 +16,8 @@ export interface UserNotificationModalProps
   list: UserNotificationVO[] | undefined;
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
+  onDeleteAll: () => void;
+  onReadAll: () => void;
 }
 
 export default function UserNotificationModal(props: UserNotificationModalProps) {
@@ -26,11 +28,13 @@ export default function UserNotificationModal(props: UserNotificationModalProps)
           list,
           onDelete,
           onRead,
+          onDeleteAll,
+          onReadAll,
         } = props;
   return (
     <ModalLayout
       title="알림"
-      width="30vw"
+      width="40vw"
       open={open}
       onClose={onClose}
       children={
@@ -44,6 +48,8 @@ export default function UserNotificationModal(props: UserNotificationModalProps)
               list={list}
               onDelete={onDelete}
               onRead={onRead}
+              onDeleteAll={onDeleteAll}
+              onReadAll={onReadAll}
             />
           </FormikProvider>
         </Box>

@@ -10,7 +10,9 @@ export enum UserNotificationActionType {
   requestList  = 'user-notification/list/request',
   setList      = 'user-notification/list/set',
   read         = 'user-notification/read',
+  readAll      = 'user-notification/all/read',
   deleteOne    = 'user-notification/delete',
+  deleteAll    = 'user-notification/all/delete',
 
 }
 
@@ -20,5 +22,7 @@ export const userNotificationAction = {
   requestList:  createAction(UserNotificationActionType.requestList)(),
   setList:      createAction(UserNotificationActionType.setList)<UserNotificationVO[] | undefined>(),
   read:         createAction(UserNotificationActionType.read)<UserNotificationId>(),
+  readAll:      createAction(UserNotificationActionType.readAll)(),
   deleteOne:    createAction(UserNotificationActionType.deleteOne)<UserNotificationId>(),
+  deleteAll:    createAction(UserNotificationActionType.deleteAll)(),
 };

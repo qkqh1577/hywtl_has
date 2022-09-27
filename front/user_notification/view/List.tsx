@@ -9,14 +9,17 @@ import {
   UserNotificationVO
 } from 'user_notification/domain';
 import { ColorPalette } from 'app/view/App/theme';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextLink from 'components/TextLink';
 import dayjs from 'dayjs';
+import RemoveButton from 'user_notification/view/Button/RemoveButton';
+import ReadButton from 'user_notification/view/Button/ReadButton';
 
 interface Props {
   list: UserNotificationVO[] | undefined;
   onDelete: (id: UserNotificationId) => void;
   onRead: (id: UserNotificationId) => void;
+  onDeleteAll: () => void;
+  onReadAll: () => void;
 }
 
 export default function List(props: Props) {
@@ -24,6 +27,8 @@ export default function List(props: Props) {
           list,
           onDelete,
           onRead,
+          onDeleteAll,
+          onReadAll
         } = props;
   return (
     <>
@@ -34,12 +39,38 @@ export default function List(props: Props) {
           justifyContent: 'flex-end',
           width:          '100%',
         }}>
-        <Button onClick={() => {
-          console.log('전체 삭제');
+        <Box sx={{
+          marginRight: '5px',
         }}>
-          전체 삭제
-        </Button>
+          <Button onClick={() => {
+            onReadAll();
+          }}>
+            전체 읽기
+          </Button>
+        </Box>
+        <Box>
+          <Button
+            shape="basic3"
+            onClick={() => {
+            onDeleteAll();
+          }}>
+            전체 삭제
+          </Button>
+        </Box>
       </Box>
+      {(list && list?.length === 0) && (
+        <Box
+          sx={{
+            display:        'flex',
+            flexWrap:       'wrap',
+            justifyContent: 'center',
+            width:          '100%',
+            padding:        '10px',
+            margin:         '10px 0',
+          }}>
+          <Typography>등록된 알람이 없습니다.</Typography>
+        </Box>
+      )}
       {Array.isArray(list) && list.map((notification) => {
         return (
           <Box
@@ -52,6 +83,7 @@ export default function List(props: Props) {
               border:        `1px solid ${ColorPalette._e4e9f2}`,
               padding:       '10px',
               margin:        '10px 0',
+              opacity:       `${notification.readAt && 0.5}`
             }}>
             <Box
               sx={{
@@ -66,12 +98,13 @@ export default function List(props: Props) {
               </Box>
               <Box sx={{
                 display:  'flex',
-                flexWrap: 'wrap',
               }}>
-                <ReadButton
-                  id={UserNotificationId(notification.id!)}
-                  onRead={onRead}
-                />
+                {!notification.readAt && (
+                  <ReadButton
+                    id={UserNotificationId(notification.id!)}
+                    onRead={onRead}
+                  />
+                )}
                 <RemoveButton
                   id={UserNotificationId(notification.id!)}
                   onDelete={onDelete}
@@ -100,60 +133,3 @@ export default function List(props: Props) {
     </>
   );
 }
-
-interface DeleteButtonProps {
-  id: UserNotificationId;
-  onDelete: (id: UserNotificationId) => void;
-}
-
-function RemoveButton(props: DeleteButtonProps) {
-  const {
-          id,
-          onDelete,
-        } = props;
-  return (
-    <Box sx={{
-      marginRight: '5px'
-    }}>
-      <FontAwesomeIcon
-        style={{
-          color:  ColorPalette._9bb6ea,
-          cursor: 'pointer'
-        }}
-        icon="trash"
-        onClick={() => {
-          onDelete(id);
-        }}
-      />
-    </Box>
-  );
-}
-
-interface ReadButtonProps {
-  id: UserNotificationId;
-  onRead: (id: UserNotificationId) => void;
-}
-
-function ReadButton(props: ReadButtonProps) {
-  const {
-          id,
-          onRead,
-        } = props;
-  return (
-    <Box sx={{
-      marginRight: '5px'
-    }}>
-      <FontAwesomeIcon
-        style={{
-          color:  ColorPalette._252627,
-          cursor: 'pointer'
-        }}
-        icon={['fab', 'readme']}
-        onClick={() => {
-          onRead(id);
-        }}
-      />
-    </Box>
-  );
-}
-
