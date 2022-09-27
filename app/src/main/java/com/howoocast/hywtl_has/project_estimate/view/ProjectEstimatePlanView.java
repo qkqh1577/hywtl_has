@@ -10,7 +10,7 @@ public class ProjectEstimatePlanView {
     private LocalDate estimateDate;
     private LocalDate expectedServiceDate;
     private Integer expectedTestDeadline;
-    private Integer expectedFinalReviewDeadline;
+    private Integer expectedFinalReportDeadline;
     private Long testAmount;
     private Long reviewAmount;
     private Long discountAmount;
@@ -23,7 +23,7 @@ public class ProjectEstimatePlanView {
         target.estimateDate = extensionInput.getEstimateDate();
         target.expectedServiceDate = extensionInput.getExpectedServiceDate();
         target.expectedTestDeadline = extensionInput.getExpectedTestDeadline();
-        target.expectedFinalReviewDeadline = extensionInput.getExpectedFinalReviewDeadline();
+        target.expectedFinalReportDeadline = extensionInput.getExpectedFinalReportDeadline();
         target.testAmount = extensionInput.getTestAmount();
         target.reviewAmount = extensionInput.getReviewAmount();
         target.discountAmount = extensionInput.getDiscountAmount();

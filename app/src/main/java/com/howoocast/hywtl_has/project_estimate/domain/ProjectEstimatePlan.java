@@ -32,7 +32,7 @@ public class ProjectEstimatePlan {
     /**
      * 최종 보고서 납품 가능 주
      */
-    private Integer expectedFinalReviewDeadline;
+    private Integer expectedFinalReportDeadline;
 
     /**
      * 풍동 금액
@@ -58,7 +58,7 @@ public class ProjectEstimatePlan {
         LocalDate estimateDate,
         LocalDate expectedServiceDate,
         Integer expectedTestDeadline,
-        Integer expectedFinalReviewDeadline,
+        Integer expectedFinalReportDeadline,
         Long testAmount,
         Long reviewAmount,
         Long discountAmount,
@@ -68,7 +68,7 @@ public class ProjectEstimatePlan {
         instance.estimateDate = estimateDate;
         instance.expectedServiceDate = expectedServiceDate;
         instance.expectedTestDeadline = expectedTestDeadline;
-        instance.expectedFinalReviewDeadline = expectedFinalReviewDeadline;
+        instance.expectedFinalReportDeadline = expectedFinalReportDeadline;
         instance.testAmount = testAmount;
         instance.reviewAmount = reviewAmount;
         instance.discountAmount = discountAmount;

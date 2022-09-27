@@ -11,7 +11,7 @@ public class ProjectEstimatePlanParameter {
     private LocalDate estimateDate;
     private LocalDate expectedServiceDate;
     private Integer expectedTestDeadline;
-    private Integer expectedFinalReviewDeadline;
+    private Integer expectedFinalReportDeadline;
     private Long testAmount;
     private Long reviewAmount;
     private Long discountAmount;
