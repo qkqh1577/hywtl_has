@@ -7,14 +7,6 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import {
-  FormikPartial,
-  toPartial
-} from 'type/Form';
-import {
-  initialProjectVO,
-  ProjectVO
-} from 'project/domain';
 import React, { useEffect } from 'react';
 import ProjectBasicBasicSection from 'project_basic/view/BasicSection';
 import { projectBasicActionType } from 'project_basic/action';
@@ -23,9 +15,18 @@ export default function ProjectBasicBasicRoute() {
   const dispatch = useDispatch();
   const { basic } = useSelector((root: RootState) => root.projectBasic);
 
-  const formik = useFormik<FormikPartial<ProjectVO>>({
+  const formik = useFormik({
     enableReinitialize: true,
-    initialValues:      toPartial(basic, initialProjectVO),
+    initialValues:      {
+      code: basic?.code || '',
+      alias: basic?.alias || '',
+      name: basic?.name || '',
+      bidType: basic?.bidType || '',
+      receptionManagerId: basic?.receptionManager.id || '',
+      salesManagerId: basic?.salesManager?.id || '',
+      projectManagerId: basic?.projectManager?.id || '',
+      isLh: !basic?.isLh ? '' : basic?.isLh ? 'true' : 'false',
+    },
     onSubmit:           (values) => {
       console.log(values);
     }

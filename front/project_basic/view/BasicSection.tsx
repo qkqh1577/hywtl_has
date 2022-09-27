@@ -59,21 +59,21 @@ export default function ProjectBasicBasicSection({handleChangeBidType}: Props) {
         <Grid item sm={3}>
           <UserSelector
             required
-            name="receptionManager.id"
+            name="receptionManagerId"
             label="문의 접수자"
             labelWidth={7 * 13}
           />
         </Grid>
         <Grid item sm={3}>
           <UserSelector
-            name="salesManager.id"
+            name="salesManagerId"
             label="영업 담당자"
             labelWidth={7 * 13}
           />
         </Grid>
         <Grid item sm={3}>
           <UserSelector
-            name="projectManager.id"
+            name="projectManagerId"
             label="담당 PM"
             labelWidth={7 * 13}
           />

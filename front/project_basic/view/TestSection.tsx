@@ -61,11 +61,19 @@ export default function ProjectBasicTestSection({ testList }: Props) {
           .fill('')
           .map((_,
                 i
-          ) => (
-            <Td key={item.buildingNameList[i] || `${testTypeName(item.testType)}-${i}`}>
-              {item.buildingNameList[i]}
-            </Td>
-          ))
+          ) => (<Td key={`${testTypeName(item.testType)}-${i}-key`}></Td>))
+          .map((emptyTd,
+                i
+          ) => {
+            if (!item.buildingNameList[i]) {
+              return emptyTd;
+            }
+            return (
+              <Td key={item.buildingNameList[i]}>
+                {item.buildingNameList[i]}
+              </Td>
+            );
+          })
         }
       </TableRow>
     ));
