@@ -79,7 +79,7 @@ export default function TableLayout(props: Props) {
             {props.pagination && (
               <TextBox variant="body7" sx={{ marginRight: '20px' }}>총 {props.pagination.totalElements}건</TextBox>
             )}
-            {formik.values.size && props.pagination && (
+            {!props.disablePagination && props.pagination && (
               <Box sx={{
                 display:     'flex',
                 flexWrap:    'nowrap',
