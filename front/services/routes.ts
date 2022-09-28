@@ -7,7 +7,7 @@ import {
 import userRoutes from 'user/route';
 import appRoutes from 'app/route';
 import departmentRoutes from 'department/route';
-import estimateTemplateRoutes from 'estimate_template/route';
+import estimateTemplateRoutes from 'admin/estimate/template/route';
 import projectRoutes from 'project/route';
 import businessRoutes from 'business/route';
 import estimateContentRoutes from 'admin/estimate/content/route';

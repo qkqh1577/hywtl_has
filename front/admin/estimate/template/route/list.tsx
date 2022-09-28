@@ -4,7 +4,7 @@ import React, {
   useState
 } from 'react';
 import { AppRoute } from 'services/routes';
-import EstimateTemplateList from 'estimate_template/view/List';
+import EstimateTemplateList from 'admin/estimate/template/view/List';
 import {
   useDispatch,
   useSelector
@@ -14,11 +14,11 @@ import { useFormik } from 'formik';
 import {
   EstimateTemplateQuery,
   initialEstimateTemplateQuery
-} from 'estimate_template/query';
-import { estimateTemplateAction } from 'estimate_template/action';
+} from 'admin/estimate/template/query';
+import { estimateTemplateAction } from 'admin/estimate/template/action';
 import { FormikSubmit } from 'type/Form';
-import { EstimateTemplateShort } from 'estimate_template/domain';
-import { estimateTemplateApi } from 'estimate_template/api';
+import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { estimateTemplateApi } from 'admin/estimate/template/api';
 
 function Element() {
 
@@ -63,7 +63,7 @@ function Element() {
     <EstimateTemplateList
       formik={formik}
       list={list}
-      onSeqModalOpen={() => {
+      openSeqModal={() => {
         setModalOpen(true);
         estimateTemplateApi.getList({
           sort:        'seq,asc',

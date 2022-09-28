@@ -8,7 +8,7 @@ import SelectField from 'components/SelectField';
 import {
   testTypeList,
   testTypeName
-} from 'estimate_template/domain';
+} from 'admin/estimate/template/domain';
 import DetailList from './DetailList';
 
 export default function () {

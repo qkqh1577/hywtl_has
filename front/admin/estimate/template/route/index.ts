@@ -1,6 +1,6 @@
 import { AppRoute } from 'services/routes';
-import estimateTemplateListRoute from 'estimate_template/route/list';
-import estimateTemplateDetailRoute from 'estimate_template/route/detail';
+import estimateTemplateListRoute from 'admin/estimate/template/route/list';
+import estimateTemplateDetailRoute from 'admin/estimate/template/route/detail';
 
 const estimateTemplateRoutes: AppRoute[] = [
   estimateTemplateListRoute,

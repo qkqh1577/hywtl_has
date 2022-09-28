@@ -25,7 +25,7 @@ import {
 import {
   estimateTemplateReducer,
   EstimateTemplateState
-} from 'estimate_template/reducer';
+} from 'admin/estimate/template/reducer';
 import {
   projectReducer,
   ProjectState

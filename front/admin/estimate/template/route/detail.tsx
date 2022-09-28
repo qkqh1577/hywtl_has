@@ -8,16 +8,16 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import EstimateTemplateDetail from 'estimate_template/view/Detail';
+import EstimateTemplateDetail from 'admin/estimate/template/view/Detail';
 import { useFormik } from 'formik';
 import useId from 'services/useId';
 import {
   EstimateTemplateVO,
   initialEstimateTemplateVO
-} from 'estimate_template/domain';
+} from 'admin/estimate/template/domain';
 import useDialog from 'components/Dialog';
-import { estimateTemplateAction } from 'estimate_template/action';
-import { EstimateTemplateParameter } from 'estimate_template/parameter';
+import { estimateTemplateAction } from 'admin/estimate/template/action';
+import { EstimateTemplateParameter } from 'admin/estimate/template/parameter';
 import {
   FormikEditable,
   FormikSubmit

@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextLink from 'components/TextLink';
 
 interface Props {
-  table: React.ReactNode;
+  children: React.ReactNode;
   pagination?: Pagination;
   pageFieldName?: string;
   sizeFieldName?: string;
@@ -67,18 +67,18 @@ export default function TableLayout(props: Props) {
         width:          '100%',
         justifyContent: 'space-between',
         alignItems:     'center',
+        marginBottom:   '10px',
       }}>
         {hasTitle && (
           <Box sx={{
-            display:      'flex',
-            flexWrap:     'nowrap',
-            alignItems:   'center',
-            marginBottom: '10px',
+            display:    'flex',
+            flexWrap:   'nowrap',
+            alignItems: 'center',
           }}>
             {props.pagination && (
               <TextBox variant="body7" sx={{ marginRight: '20px' }}>총 {props.pagination.totalElements}건</TextBox>
             )}
-            {props.pagination && (
+            {formik.values.size && props.pagination && (
               <Box sx={{
                 display:     'flex',
                 flexWrap:    'nowrap',
@@ -118,7 +118,7 @@ export default function TableLayout(props: Props) {
           width:     '100%',
           minHeight: !maxTableHeight ? `${maxTableHeight}px` : 'auto',
         }}>
-        {props.table}
+        {props.children}
       </Box>
       {props.pagination && (
         <Box sx={{
