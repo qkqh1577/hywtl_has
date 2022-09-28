@@ -1,6 +1,6 @@
 import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
-import { EstimateTemplateVO } from 'estimate_template/domain';
+import { EstimateTemplateVO } from 'admin/estimate/template/domain';
 import Form from './Form';
 import Footer from './Footer';
 import { FormikEditable } from 'type/Form';

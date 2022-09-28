@@ -1,10 +1,10 @@
-import { EstimateTemplateQuery } from 'estimate_template/query';
+import { EstimateTemplateQuery } from 'admin/estimate/template/query';
 import {
   EstimateTemplateShort,
   EstimateTemplateVO
-} from 'estimate_template/domain';
+} from 'admin/estimate/template/domain';
 import { createReducer } from 'typesafe-actions';
-import { EstimateTemplateAction } from 'estimate_template/action';
+import { EstimateTemplateAction } from 'admin/estimate/template/action';
 
 export interface EstimateTemplateState {
   filter?: EstimateTemplateQuery;

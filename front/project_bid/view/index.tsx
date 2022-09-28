@@ -6,7 +6,7 @@ import TextField from 'components/TextField';
 import React from 'react';
 import { DefaultFunction } from 'type/Function';
 import DateField from 'components/DateField';
-import Text from 'layouts/Text';
+import TextBox from 'layouts/Text';
 
 interface Props {
   detail?: ProjectBidVO;
@@ -48,7 +48,7 @@ export default function ProjectBidSection(props: Props) {
                 label="입찰 공고 기간"
               />
             </Box>
-            <Text variant="body4">~</Text>
+            <TextBox variant="body4">~</TextBox>
             <Box sx={{ width: '160px' }}>
               <DateField
                 disableLabel
@@ -97,7 +97,7 @@ export default function ProjectBidSection(props: Props) {
             alignItems:     'center',
             justifyContent: 'space-between'
           }}>
-            <Text variant="body4">입찰 일자</Text>
+            <TextBox variant="body4">입찰 일자</TextBox>
             <Box sx={{ width: '200px' }}>
               <DateField
                 disableLabel

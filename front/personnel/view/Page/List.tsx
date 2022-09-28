@@ -13,6 +13,7 @@ import {
   Th
 } from 'layouts/Table';
 import TextLink from 'components/TextLink';
+import TableLayout from 'layouts/TableLayout';
 
 export interface ListProps {
   page: Page<PersonnelShortVO> | undefined;
@@ -21,67 +22,73 @@ export interface ListProps {
 export default function List(props: ListProps) {
   const { page } = props;
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <Th>No</Th>
-            <Th>이름</Th>
-            <Th>이메일</Th>
-            <Th>성별</Th>
-            <Th>생년월일</Th>
-            <Th>소속 부서</Th>
-            <Th>입사 구분</Th>
-            <Th>입사일</Th>
-            <Th>상태</Th>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(!page || page.content.length === 0) && (
+    <TableLayout
+      pagination={page ? { ...page } : undefined}
+      sizeFieldName="size"
+      pageFieldName="page"
+    >
+      <TableContainer>
+        <Table>
+          <TableHead>
             <TableRow>
-              <Td colSpan={9} children="결과가 없습니다." />
+              <Th>No</Th>
+              <Th>이름</Th>
+              <Th>이메일</Th>
+              <Th>성별</Th>
+              <Th>생년월일</Th>
+              <Th>소속 부서</Th>
+              <Th>입사 구분</Th>
+              <Th>입사일</Th>
+              <Th>상태</Th>
             </TableRow>
-          )}
-          {page && page.content.map((item,
-                                     i
-          ) => {
-            const no = i + 1 + page.size * page.number;
-            return (
-              <TableRow hover role="checkbox" key={item.id}>
-                <Td>{no}</Td>
-                <Td>
-                  <TextLink onClick={`/user/hr-card-management/${item.id}`}>
-                    {item.name}
-                  </TextLink>
-                </Td>
-                <Td>
-                  <TextLink onClick={`/user/hr-card-management/${item.id}`}>
-                    {item.email}
-                  </TextLink>
-                </Td>
-                <Td>
-                  {item.basic?.sex}
-                </Td>
-                <Td>
-                  {item.basic?.birthDate}
-                </Td>
-                <Td>
-                  {item.department?.name}
-                </Td>
-                <Td>
-                  {item.company?.hiredType}
-                </Td>
-                <Td>
-                  {item.company?.hiredDate}
-                </Td>
-                <Td>
-                  {item.userStatus}
-                </Td>
+          </TableHead>
+          <TableBody>
+            {(!page || page.content.length === 0) && (
+              <TableRow>
+                <Td colSpan={9} children="결과가 없습니다." />
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            )}
+            {page && page.content.map((item,
+                                       i
+            ) => {
+              const no = i + 1 + page.size * page.number;
+              return (
+                <TableRow hover role="checkbox" key={item.id}>
+                  <Td>{no}</Td>
+                  <Td>
+                    <TextLink onClick={`/user/hr-card-management/${item.id}`}>
+                      {item.name}
+                    </TextLink>
+                  </Td>
+                  <Td>
+                    <TextLink onClick={`/user/hr-card-management/${item.id}`}>
+                      {item.email}
+                    </TextLink>
+                  </Td>
+                  <Td>
+                    {item.basic?.sex}
+                  </Td>
+                  <Td>
+                    {item.basic?.birthDate}
+                  </Td>
+                  <Td>
+                    {item.department?.name}
+                  </Td>
+                  <Td>
+                    {item.company?.hiredType}
+                  </Td>
+                  <Td>
+                    {item.company?.hiredDate}
+                  </Td>
+                  <Td>
+                    {item.userStatus}
+                  </Td>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </TableLayout>
   );
 }

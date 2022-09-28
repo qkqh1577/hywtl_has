@@ -28,8 +28,8 @@ export default function TextLink(props: Props) {
         fontSize:  'inherit',
         cursor:    'pointer',
         '&:hover': {
-          color:        ColorPalette._386dd6,
-          borderBottom: `1px solid ${ColorPalette._386dd6}`,
+          color:              ColorPalette._386dd6,
+          textDecorationLine: 'underline',
         }
       }}
     />

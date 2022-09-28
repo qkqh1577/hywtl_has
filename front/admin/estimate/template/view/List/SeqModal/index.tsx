@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalLayout from 'layouts/ModalLayout';
-import List, { SeqModalListProps } from './List';
-import ButtonBlock, { SeqModalButtonBlockProps } from './ButtonBlock';
+import List, { SeqModalListProps } from 'admin/estimate/template/view/List/SeqModal/List';
+import ButtonBlock, { SeqModalButtonBlockProps } from 'admin/estimate/template/view/List/SeqModal/ButtonBlock';
 import { Box } from '@mui/material';
 
 export interface EstimateTemplateSeqModalProps

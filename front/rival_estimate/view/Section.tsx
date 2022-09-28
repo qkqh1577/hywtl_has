@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import SectionLayout from 'layouts/SectionLayout';
 import Button from 'layouts/Button';
 import { Box } from '@mui/material';
-import Text from 'layouts/Text';
+import TextBox from 'layouts/Text';
 import RivalEstimateRowRoute from 'rival_estimate/route/row';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { DefaultFunction } from 'type/Function';
@@ -59,9 +59,9 @@ export default function RivalEstimateListSection(props: Props) {
             flexWrap:       'unwrap',
             justifyContent: 'center',
           }}>
-            <Text variant="body2">
+            <TextBox variant="body2">
               등록된 정보가 없습니다.
-            </Text>
+            </TextBox>
           </Box>
         )}
         {list && list.map((item) => (

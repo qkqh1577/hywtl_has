@@ -1,4 +1,4 @@
-import { TestType } from 'estimate_template/domain';
+import { TestType } from 'admin/estimate/template/domain';
 import { Option } from 'components/DataFieldProps';
 
 export interface EstimateTemplateQuery {

@@ -10,8 +10,8 @@ import TextLink from 'components/TextLink';
 import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';
 import DateFormat from 'components/DateFormat';
-import Text from 'layouts/Text';
 import { useNavigate } from 'react-router-dom';
+import TextBox from 'layouts/Text';
 
 interface Props {
   onDelete: (id: UserNotificationId) => void;
@@ -70,9 +70,9 @@ export default function List(props: Props) {
             padding:        '10px',
             margin:         '10px 0',
           }}>
-          <Text variant="heading3">
+          <TextBox variant="heading3">
             등록된 알림이 없습니다.
-          </Text>
+          </TextBox>
         </Box>
       )}
       {list && list.map((notification) => {
@@ -115,7 +115,7 @@ export default function List(props: Props) {
                   }}
                 />
                 <Box>
-                  <Text variant="body1">From : {notification.sender.name}</Text>
+                  <TextBox variant="body1">From : {notification.sender.name}</TextBox>
                 </Box>
               </Box>
             </Box>
@@ -134,15 +134,15 @@ export default function List(props: Props) {
                 />
               )}
               {!notification.forwardUrl && (
-                <Text variant="body2">
+                <TextBox variant="body2">
                   {`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
-                </Text>
+                </TextBox>
               )}
             </Box>
             <Box>
-              <Text variant="body2">
+              <TextBox variant="body2">
                 {notification.type}
-              </Text>
+              </TextBox>
             </Box>
           </Box>
         );

@@ -1,4 +1,4 @@
-import { EstimateTemplateVO } from 'estimate_template/domain';
+import { EstimateTemplateVO } from 'admin/estimate/template/domain';
 
 export interface EstimateTemplateParameter extends EstimateTemplateVO {
 

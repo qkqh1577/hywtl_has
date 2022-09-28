@@ -4,11 +4,9 @@ import { DepartmentQuery } from 'department/query';
 import TreeViewButton from 'department/view/Page/TreeViewButton';
 import SearchForm from './SearchForm';
 import List, { ListProps } from './List';
-import Footer, { FooterProps } from './Footer';
 
 interface Props
   extends ListProps,
-          FooterProps,
           FormikLayoutProps<DepartmentQuery> {
 
 }
@@ -21,7 +19,6 @@ export default function DepartmentPage(props: Props) {
       titleRightComponent={<TreeViewButton />}
       filter={<SearchForm />}
       body={<List {...props} />}
-      footer={<Footer {...props} />}
       formik={props.formik}
     />
   );

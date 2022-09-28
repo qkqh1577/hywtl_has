@@ -16,7 +16,7 @@ import {
   KeyboardArrowDown as DownIcon,
   KeyboardArrowUp as UpIcon
 } from '@mui/icons-material';
-import TitleListField from 'estimate_template/view/Detail/TitleListField';
+import TitleListField from 'admin/estimate/template/view/Detail/TitleListField';
 import {
   FormikContext,
   FormikContextType
@@ -25,7 +25,7 @@ import {
   EstimateTemplateDetailVO,
   EstimateTemplateVO,
   initialEstimateTemplateDetailVO
-} from 'estimate_template/domain';
+} from 'admin/estimate/template/domain';
 import Tooltip from 'components/Tooltip';
 import useDialog from 'components/Dialog';
 import { FormikEditable } from 'type/Form';

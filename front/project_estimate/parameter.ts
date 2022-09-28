@@ -5,7 +5,7 @@ import {
 } from 'project_estimate/domain';
 import { BusinessId } from 'business/domain';
 import { UserId, } from 'user/domain';
-import { TestType } from 'estimate_template/domain';
+import { TestType } from 'admin/estimate/template/domain';
 import { ProjectDocumentId } from 'project_document/domain';
 
 export interface ProjectCustomEstimateAddParameter {

@@ -7,9 +7,9 @@ import {
 import {
   EstimateTemplateShort,
   EstimateTemplateVO
-} from 'estimate_template/domain';
-import { estimateTemplateApi } from 'estimate_template/api';
-import { estimateTemplateAction } from 'estimate_template/action';
+} from 'admin/estimate/template/domain';
+import { estimateTemplateApi } from 'admin/estimate/template/api';
+import { estimateTemplateAction } from 'admin/estimate/template/action';
 import { dialogActions } from 'components/Dialog';
 
 function* watchFilter() {

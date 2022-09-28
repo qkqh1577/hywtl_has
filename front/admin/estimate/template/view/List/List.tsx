@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  EstimateContentShort,
-  testTypeName,
-} from 'admin/estimate/content/domain';
+  EstimateTemplateShort,
+  testTypeName
+} from 'admin/estimate/template/domain';
 import {
   TableBody,
   TableContainer,
@@ -16,13 +16,31 @@ import {
   Th
 } from 'layouts/Table';
 import TableLayout from 'layouts/TableLayout';
-import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 import TextLink from 'components/TextLink';
+import Button from 'layouts/Button';
+
+function OrderModalButton({
+                            onSeqModalOpen: onClick
+                          }: {
+  onSeqModalOpen: DefaultFunction;
+}) {
+
+  return (
+    <Button
+      children="순서 설정"
+      onClick={onClick}
+      sx={{
+        marginRight: '10px',
+      }}
+    />
+  );
+}
 
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/admin/estimate-content-management/add');
+    navigate('/admin/estimate/template-management/add');
   };
   return (
     <Button
@@ -33,12 +51,13 @@ function AddButton() {
 }
 
 export interface ListProps {
-  list: EstimateContentShort[] | undefined;
+  list: EstimateTemplateShort[] | undefined;
+  openSeqModal: DefaultFunction;
 }
 
-export default function ({ list }: ListProps) {
-  return (
+export default function ({ list, openSeqModal }: ListProps) {
 
+  return (
     <TableLayout
       disablePagination
       pagination={{
@@ -51,47 +70,38 @@ export default function ({ list }: ListProps) {
         last:             true,
         numberOfElements: 0,
       }}
-      titleRightComponent={<AddButton />}
-    >
+      titleRightComponent={
+        <>
+          <OrderModalButton onSeqModalOpen={openSeqModal} />
+          <AddButton />
+        </>
+      }>
       <TableContainer>
-        <Table
-          stickyHeader
-          aria-label={'sticky table'}>
+        <Table>
           <TableHead>
             <TableRow>
               <Th>No.</Th>
-              <Th>이름</Th>
               <Th>실험 타입</Th>
-              <Th>등록된 내용</Th>
+              <Th>용역 항목</Th>
+              <Th>세부 항목 수</Th>
             </TableRow>
           </TableHead>
           <TableBody>
             {(!list || list.length === 0) && (
               <TableRow>
-                <Td colSpan={4}>
-                  검색된 결과가 없습니다.
-                </Td>
+                <Td colSpan={4} children="결과가 없습니다." />
               </TableRow>
             )}
-            {Array.isArray(list) && list.map((item,
-                                              i
+            {list && list.map((item,
+                               i
             ) => (
-              <TableRow
-                hover
-                role="checkbox"
-                key={item.id}>
+              <TableRow hover role="checkbox" key={item.id}>
                 <Td>{i + 1}</Td>
+                <Td>{testTypeName(item.testType)}</Td>
                 <Td>
-                  <TextLink onClick={`/admin/estimate/content-management/${item.id}`}>
-                    {item.name}
+                  <TextLink onClick={`/admin/estimate/template-management/${item.id}`}>
+                    {item.title}
                   </TextLink>
-                </Td>
-                <Td>
-                  {
-                    item.testTypeList
-                        .map(testTypeName)
-                        .join(', ')
-                  }
                 </Td>
                 <Td>{item.detailCount}</Td>
               </TableRow>
@@ -99,7 +109,6 @@ export default function ({ list }: ListProps) {
           </TableBody>
         </Table>
       </TableContainer>
-
     </TableLayout>
   );
-};
+}

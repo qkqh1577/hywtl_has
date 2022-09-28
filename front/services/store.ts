@@ -9,7 +9,7 @@ import reducer from 'services/reducer';
 import userSaga from 'user/saga';
 import loginUserSaga from 'app/repository/saga';
 import departmentSaga from 'department/saga';
-import estimateTemplateSaga from 'estimate_template/saga';
+import estimateTemplateSaga from 'admin/estimate/template/saga';
 import projectSaga from 'project/saga';
 import estimateContentSaga from 'admin/estimate/content/saga';
 import businessSaga from 'business/saga';

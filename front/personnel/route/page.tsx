@@ -16,12 +16,10 @@ import {
 import { personnelAction } from 'personnel/action';
 import { useFormik } from 'formik';
 import PersonnelPage from 'personnel/view/Page';
-import { toOption } from 'personnel/util/convertToOption';
 
 function Element() {
   const dispatch = useDispatch();
   const { filter, page } = useSelector((root: RootState) => root.personnel);
-  const { list } = useSelector((root: RootState) => root.department);
 
   const setFilter = useCallback((formikProps: FormikSubmit<PersonnelQuery>) => {
     const result: PersonnelQuery = {
@@ -46,17 +44,6 @@ function Element() {
     }
   });
 
-  const onPageChange = (event,
-                        page
-  ) => {
-    setFilter({ ...formik, values: { page, size: formik.values.size } });
-  };
-
-  const onRowsPerPageChange = (event) => {
-    const size = +(event.target.value) || 10;
-    setFilter({ ...formik, values: { size, page: 0 } });
-  };
-
   useEffect(() => {
     dispatch({
       type: 'department/list/request'
@@ -68,9 +55,6 @@ function Element() {
     <PersonnelPage
       page={page}
       formik={formik}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-      list={toOption(list || [])}
     />
   );
 }

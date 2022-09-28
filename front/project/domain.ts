@@ -1,4 +1,4 @@
-import { TestType } from 'estimate_template/domain';
+import { TestType } from 'admin/estimate/template/domain';
 import { FormikPartial } from 'type/Form';
 import { UserVO } from 'user/domain';
 

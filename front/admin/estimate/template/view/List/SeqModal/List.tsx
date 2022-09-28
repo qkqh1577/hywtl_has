@@ -13,7 +13,7 @@ import {
 import {
   EstimateTemplateShort,
   testTypeName
-} from 'estimate_template/domain';
+} from 'admin/estimate/template/domain';
 import IconButton from 'components/IconButton';
 import {
   Table,

@@ -56,6 +56,8 @@ export interface FieldProps
   startAdornment?: React.ReactNode;
   formik?: FormikContextType<any>;
   autoSubmit?: boolean;
+  backgroundColor?: string;
+  border?: string;
 }
 
 export type FieldViewProps = | 'status'
