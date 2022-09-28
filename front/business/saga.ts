@@ -22,16 +22,13 @@ import { RootState } from 'services/reducer';
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take(businessAction.setFilter);
+    const { payload: query } = yield take(businessAction.setFilter);
     try {
-      const page: Page<BusinessShort> = yield call(businessApi.getPage, formik.values);
+      const page: Page<BusinessShort> = yield call(businessApi.getPage, query);
       yield put(businessAction.setPage(page));
     }
     catch (e) {
       yield put(businessAction.setPage(undefined));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }

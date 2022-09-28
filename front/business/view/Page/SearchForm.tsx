@@ -1,28 +1,34 @@
 import React from 'react';
-import SearchForm from 'layouts/SearchForm';
-import { Grid } from '@mui/material';
+import SearchForm, { SearchFormField } from 'layouts/SearchForm';
 import SelectField from 'components/SelectField';
 import { keywordTypeList } from 'business/query';
 import TextField from 'components/TextField';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
   return (
     <SearchForm>
-      <Grid container spacing={2}>
-        <Grid item sm={4}>
+      <SearchFormField
+        label={
           <SelectField
+            disableLabel
+            variant="outlined"
             name="keywordType"
             label="검색 대상"
+            backgroundColor={ColorPalette._f1f5fc}
             options={keywordTypeList}
           />
-        </Grid>
-        <Grid item sm={8}>
+        }
+        children={
           <TextField
+            disableLabel
+            variant="outlined"
             name="keyword"
             label="검색어"
+            placeholder="검색어를 입력하세요"
           />
-        </Grid>
-      </Grid>
+        }
+      />
     </SearchForm>
   );
 }

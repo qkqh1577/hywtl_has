@@ -60,9 +60,10 @@ export default function TextField(props: TextFieldProps) {
           labelPosition,
           labelWidth,
           labelSX,
-          required:   propsRequired,
-          label:      propsLabel,
-          helperText: propsHelperText,
+          required:        propsRequired,
+          label:           propsLabel,
+          helperText:      propsHelperText,
+          backgroundColor: propsBackgroundColor,
           autoSubmit,
           ...restProps
         } = props;
@@ -117,7 +118,7 @@ export default function TextField(props: TextFieldProps) {
       border:          useMemo(() => variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none', [variant]),
       borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
       borderRadius:    useMemo(() => variant === 'outlined' ? '5px' : '0', [variant]),
-      backgroundColor: ColorPalette._ffffff,
+      backgroundColor: propsBackgroundColor ?? ColorPalette._ffffff,
       boxSizing:       'border-box',
       textAlign:       type === 'amount' ? 'right' : 'left',
     },

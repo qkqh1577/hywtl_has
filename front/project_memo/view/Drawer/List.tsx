@@ -14,7 +14,7 @@ import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
-import Text from 'layouts/Text';
+import TextBox from 'layouts/Text';
 import { LoginUser } from 'app/domain/login';
 import UserIcon from 'layouts/UserIcon';
 import TextField from 'components/TextField';
@@ -168,9 +168,9 @@ export default function ProjectMemoList({
                   }}>
                   [{projectMemoCategoryName(item.category)}]
                 </Typography>
-                <Text variant="body9">
+                <TextBox variant="body9">
                   {item.description}
-                </Text>
+                </TextBox>
               </Typography>
             </Box>
           )}

@@ -5,6 +5,7 @@ import {
 } from 'formik';
 import {
   initialProjectStatusBar,
+  ProjectId,
   ProjectStatusBar
 } from 'project/domain';
 import {
@@ -21,7 +22,6 @@ import { projectAction } from 'project/action';
 import {
   FormikPartial,
   toPartial,
-  toValues
 } from 'type/Form';
 import useId from 'services/useId';
 import { RootState } from 'services/reducer';
@@ -34,18 +34,18 @@ export function StatusBar() {
   const { detail } = useSelector((root: RootState) => root.project);
   const dispatch = useDispatch();
 
-  const setProjectMemoProjectId = useCallback((projectId: number | undefined) => dispatch(projectMemoAction.setProjectId(projectId)), [dispatch]);
+  const setProjectMemoProjectId = useCallback((projectId: number | undefined) => dispatch(projectMemoAction.setProjectId(projectId ? ProjectId(projectId) : undefined)), [dispatch]);
 
   const initialValues = useMemo(() => toPartial(detail, initialProjectStatusBar), [detail]);
   const formik = useFormik<FormikPartial<ProjectStatusBar>>({
     enableReinitialize: true,
     initialValues,
-    onSubmit:           (values,
-                         helper
-                        ) => {
+    onSubmit: (values) => {
       dispatch(projectAction.updateStatus({
-        values: toValues(values),
-        ...helper
+        progressStatus:      values.progressStatus || undefined,
+        estimateExpectation: values.estimateExpectation || undefined,
+        estimateStatus:      values.estimateStatus || undefined,
+        contractStatus:      values.contractStatus || undefined,
       }));
     },
   });

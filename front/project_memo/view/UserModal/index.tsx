@@ -19,8 +19,8 @@ import {
 } from 'formik';
 import { userApi } from 'user/api';
 import TextField from 'components/TextField';
-import Text from 'layouts/Text';
 import UserIcon from 'layouts/UserIcon';
+import TextBox from 'layouts/Text';
 
 interface Props {
   open: boolean;
@@ -113,9 +113,9 @@ export default function UserSelectModal(props: Props) {
             flexWrap: 'wrap',
           }}>
             {userList.length === 0 && (
-              <Text variant="body2">
+              <TextBox variant="body2">
                 검색 결과가 없습니다.
-              </Text>
+              </TextBox>
             )}
             {userList.length !== 0 && (
               <Box sx={{
@@ -133,7 +133,7 @@ export default function UserSelectModal(props: Props) {
                     setIdList(checked ? [] : userList.map(item => item.id!));
                   }}
                 />
-                <Text variant="body2">전체 선택</Text>
+                <TextBox variant="body2">전체 선택</TextBox>
               </Box>
             )}
             {userList.map((item) => (
@@ -166,15 +166,15 @@ export default function UserSelectModal(props: Props) {
                       marginRight: '10px'
                     }}
                   />
-                  <Text
+                  <TextBox
                     variant="body2"
                     sx={{
                       marginRight: '10px'
                     }}>
                     {item.name}
-                  </Text>
+                  </TextBox>
                 </Box>
-                <Text variant="body2">{item.department.name}</Text>
+                <TextBox variant="body2">{item.department.name}</TextBox>
               </Box>
             ))}
           </Box>

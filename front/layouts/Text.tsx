@@ -179,7 +179,7 @@ function makeStyle(variant: TextVariant): SxProps<Theme> {
   }
 }
 
-export default function Text({ variant, sx: customSX, ...props }: Props) {
+export default function TextBox({ variant, sx: customSX, ...props }: Props) {
 
   const sx = {
     ...(customSX ?? {}),

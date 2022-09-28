@@ -111,8 +111,9 @@ function PageContent(props: PageLayoutProps) {
           ref={filterRef}
           children={props.filter}
           sx={{
-            display: 'flex',
-            width:   '100%',
+            display:  'flex',
+            width:    '100%',
+            flexWrap: 'nowrap',
           }}
         />
       )}
@@ -120,7 +121,7 @@ function PageContent(props: PageLayoutProps) {
         display:                      'flex',
         width:                        '100%',
         flexWrap:                     'wrap',
-        padding:                      '20px',
+        padding:                      '20px 20px 0 20px',
         overflowY:                    'scroll',
         height:                       `calc(100% - ${filterHeight + 66}px)`, // TODO: 실제 계산 높이 필요
         '&::-webkit-scrollbar':       {

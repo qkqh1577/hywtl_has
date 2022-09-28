@@ -51,6 +51,7 @@ function FieldView(props: ViewProps) {
 export default function SelectField(props: SelectFieldProps) {
   const {
           name,
+          autoSubmit,
           startAdornment,
           endAdornment,
           disableLabel,
@@ -63,10 +64,11 @@ export default function SelectField(props: SelectFieldProps) {
           SelectProps,
           options,
           variant = 'standard',
-          required:   propsRequired,
-          label:      propsLabel,
-          helperText: propsHelperText,
-          ...         restProps
+          required:        propsRequired,
+          label:           propsLabel,
+          helperText:      propsHelperText,
+          backgroundColor: propsBackgroundColor,
+          ...              restProps
         } = props;
 
   const children = useMemo((): React.ReactNode | React.ReactNode[] => {
@@ -138,7 +140,7 @@ export default function SelectField(props: SelectFieldProps) {
       ...SelectProps,
       multiple,
       displayEmpty: !required,
-      sx:           {
+      sx: {
         height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
         fontFamily:           'Noto Sans KR',
@@ -146,7 +148,7 @@ export default function SelectField(props: SelectFieldProps) {
         border:               variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
         borderBottom:         `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius:         variant === 'outlined' ? '5px' : '0',
-        backgroundColor:      ColorPalette._ffffff,
+        backgroundColor:      propsBackgroundColor ?? ColorPalette._ffffff,
         '& .MuiSvgIcon-root': {
           color: ColorPalette._386dd6,
         },

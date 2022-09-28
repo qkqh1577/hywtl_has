@@ -1,13 +1,11 @@
 import { createAction } from 'typesafe-actions';
-import {
-  BusinessQuery,
-} from 'business/query';
+import { BusinessQuery, } from 'business/query';
 import Page from 'type/Page';
 import {
   BusinessId,
+  BusinessInvolvedProjectVO,
   BusinessShort,
   BusinessVO,
-  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import { BusinessParameter } from 'business/parameter';
@@ -25,7 +23,7 @@ export enum BusinessAction {
 }
 
 export const businessAction = {
-  setFilter:              createAction(BusinessAction.setFilter)<FormikSubmit<BusinessQuery>>(),
+  setFilter:              createAction(BusinessAction.setFilter)<BusinessQuery>(),
   setRegistrationNumber:  createAction(BusinessAction.setRegistrationNumber)<string>(),
   setPage:                createAction(BusinessAction.setPage)<Page<BusinessShort> | undefined>(),
   setInvolvedProjectList: createAction(BusinessAction.setInvolvedProjectList)<BusinessInvolvedProjectVO[]>(),

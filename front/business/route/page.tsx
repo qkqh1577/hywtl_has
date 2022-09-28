@@ -15,55 +15,32 @@ import {
 import { businessAction } from 'business/action';
 import { useFormik } from 'formik';
 import BusinessPage from 'business/view/Page';
-import { FormikSubmit } from 'type/Form';
 
 function Element() {
   const dispatch = useDispatch();
   const { filter, page } = useSelector((root: RootState) => root.business);
-  const setFilter = useCallback((formikProps: FormikSubmit<Partial<BusinessQuery>>) => {
-    const result: BusinessQuery = {
-      ...(filter ?? initialBusinessQuery),
-      ...(formikProps.values ?? initialBusinessQuery),
-    };
-    dispatch(businessAction.setFilter({
-      ...formikProps,
-      values: result,
-    }));
-  }, [dispatch]);
+  const setFilter = useCallback((query?: BusinessQuery) => dispatch(businessAction.setFilter(query ?? initialBusinessQuery)), [dispatch]);
 
   const formik = useFormik<BusinessQuery>({
     initialValues: filter ?? initialBusinessQuery,
-    onSubmit:      (values,
-                    helper
+    onSubmit:      (values
                    ) => {
-      setFilter({
-        values: { ...values, page: 0 },
-        ...helper
-      });
+      setFilter(values);
     }
   });
 
-  const onPageChange = (event,
-                        page
-  ) => {
-    setFilter({ ...formik, values: { page } });
-  };
-
-  const onRowsPerPageChange = (event) => {
-    const size = +(event.target.value) || 10;
-    setFilter({ ...formik, values: { size, page: 0 } });
-  };
+  useEffect(() => {
+    setFilter();
+  }, []);
 
   useEffect(() => {
-    setFilter(formik);
-  }, []);
+    formik.setSubmitting(false);
+  }, [page]);
 
   return (
     <BusinessPage
       page={page}
       formik={formik}
-      onPageChange={onPageChange}
-      onRowsPerPageChange = {onRowsPerPageChange}
     />
   );
 }
