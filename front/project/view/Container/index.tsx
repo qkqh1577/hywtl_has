@@ -5,7 +5,7 @@ import ProjectContainerHeader from 'project/view/Container/Header';
 
 interface Props {
   children: React.ReactNode;
-  statusBar: React.ReactNode;
+  status: React.ReactNode;
   title: React.ReactNode;
 }
 
@@ -15,7 +15,7 @@ export default function ProjectContainer(props: Props) {
     <PageLayout
       title={props.title}
       titleRightComponent={<ProjectContainerTitleButtonBar />}
-      filter={<ProjectContainerHeader statusBar={props.statusBar} />}
+      filter={<ProjectContainerHeader status={props.status} />}
       body={props.children}
     />
   );

@@ -1,8 +1,4 @@
 import {
-  projectProgressStatusName,
-  ProjectShortVO
-} from 'project/domain';
-import {
   Table,
   TableBody,
   TableCell,
@@ -12,6 +8,8 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { ColorPalette } from 'app/view/App/theme';
+import { projectProgressStatusName } from 'project_status/domain';
+import { ProjectShortVO } from 'project/domain';
 
 export interface ListProps {
   list: ProjectShortVO[];

@@ -1,11 +1,11 @@
 import { ProjectQuery } from 'project/query';
 import Page from 'type/Page';
+import { createReducer } from 'typesafe-actions';
+import { ProjectActionType } from 'project/action';
 import {
   ProjectShortVO,
   ProjectVO
 } from 'project/domain';
-import { createReducer } from 'typesafe-actions';
-import { ProjectActionType } from 'project/action';
 
 export interface ProjectState {
   filter?: ProjectQuery;

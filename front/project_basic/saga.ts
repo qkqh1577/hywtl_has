@@ -10,10 +10,7 @@ import {
   projectBasicAction,
   ProjectBasicActionType
 } from 'project_basic/action';
-import {
-  ProjectEstimateExpectation,
-  ProjectId
-} from 'project/domain';
+import { ProjectId } from 'project/domain';
 import {
   ProjectBasicBid,
   ProjectBasicBusiness,
@@ -34,7 +31,8 @@ import {
   BusinessInvolvedType,
   BusinessManagerStatus
 } from 'business/domain';
-import { ProjectActionType } from 'project/action';
+import { ProjectEstimateExpectation } from 'project_status/domain';
+import { ProjectStatusActionType } from 'project_status/action';
 
 function* watchId() {
   while (true) {
@@ -351,7 +349,7 @@ function* pushBusiness() {
 
 function* watchEstimateExpectation() {
   while (true) {
-    const { payload: estimateExpectation } = yield take(ProjectActionType.setEstimateExpectation);
+    const { payload: estimateExpectation } = yield take(ProjectStatusActionType.setEstimateExpectation);
     yield put(projectBasicAction.setLossEstimateExpectation(estimateExpectation === ProjectEstimateExpectation.LOSE));
   }
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import ProjectContainerTab from './Tab';
+import { ProjectContainerStatusBar } from 'project/view/Container/StatusBar';
 
 interface Props {
-  statusBar: React.ReactNode;
+  status: React.ReactNode;
 }
 
-export default function ProjectContainerHeader({ statusBar }: Props) {
+export default function ProjectContainerHeader({ status }: Props) {
 
   return (
     <Box sx={{
@@ -14,7 +15,7 @@ export default function ProjectContainerHeader({ statusBar }: Props) {
       flexWrap: 'wrap',
       width:    '100%',
     }}>
-      {statusBar}
+      <ProjectContainerStatusBar status={status} />
       <ProjectContainerTab />
     </Box>
   );
