@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Grid,
-  Typography
-} from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
@@ -18,6 +14,9 @@ import {
 import { FormikEditable } from 'type/Form';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TextBox from 'layouts/Text';
+
+const spaceCount = 6;
 
 export default function LanguageForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -25,131 +24,149 @@ export default function LanguageForm() {
   const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      {edit && (
-        <Grid container justifyContent="space-between">
-          <Grid item sm={10}>
-            <Typography>
-              어학 정보
-            </Typography>
-          </Grid>
-          {languageList.length === 0 && (
-            <Grid container item sm={2} justifyContent="flex-end">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('languageList', [...(languageList ?? []), initialPersonnelLanguageVO]);
-                }}
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <TextBox variant="body7">어학 정보</TextBox>
+        {edit && (
+          <Button
+            onClick={() => {
+              formikContext!.setFieldValue('languageList', [...languageList, initialPersonnelLanguageVO]);
+            }}>
+            + 추가
+          </Button>
+        )}
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && languageList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            marginTop:   '15px',
+            paddingLeft: '50px',
+          }}>
+            <TextBox variant="body9">
+              어학 정보가 없습니다
+            </TextBox>
+          </Box>
+        )}
+        {languageList.map((item,
+                           i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+            }}>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`languageList.${i}.name`}
+                label="자격증명"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-          {languageList.length > 0 && (
-            <Grid container item sm={1} justifyContent="center">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('languageList', [...(languageList ?? []), initialPersonnelLanguageVO]);
-                }}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`languageList.${i}.type`}
+                label="대상 언어"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-        </Grid>
-      )}
-      {!edit && (
-        <Grid container>
-          <Grid item sm={12}>
-            <Typography>
-              어학 정보
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
-      {languageList.map((language,
-                         index
-      ) => {
-        return (
-          <Grid container key={index}>
-            <Grid item sm={edit ? 11.6 : 12}>
-              <Grid container item sm={12} spacing={2}>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`languageList.${index}.name`}
-                    label="자격증명"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`languageList.${index}.type`}
-                    label="대상 언어"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    name={`languageList.${index}.grade`}
-                    label="급수, 종류"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`languageList.${index}.organizationName`}
-                    label="발급기관명"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`languageList.${index}.certifiedDate`}
-                    label="취득일(시작일)"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    name={`languageList.${index}.expiryPeriod`}
-                    label="유효기간(종료일)"
-                    labelPosition="top"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            {edit && (
-              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`languageList.${i}.grade`}
+                label="급수, 종류"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`languageList.${i}.organizationName`}
+                label="발급기관명"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <DateField
+                required
+                name={`languageList.${i}.certifiedDate`}
+                label="취득일(시작일)"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <TextField
+                name={`languageList.${i}.expiryPeriod`}
+                label="유효기간(종료일)"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'center',
+              alignItems:     'flex-end',
+              width:          '50px',
+              height:         '60.69px',
+              fontSize:       '18px',
+              paddingBottom:  '12px',
+            }}>
+              {edit && (
                 <FontAwesomeIcon
                   style={{
-                    color: ColorPalette._9bb6ea,
-                    cursor: 'pointer'
+                    color:  ColorPalette._9bb6ea,
+                    cursor: 'pointer',
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('languageList', languageList.filter((manager,
-                                                                            j
-                    ) => index !== j));
+                    formikContext!.setFieldValue('languageList', languageList.filter((language,
+                                                                                      j
+                    ) => i !== j));
                   }}
                 />
-              </Grid>
-            )}
-          </Grid>
-        );
-      })}
-      {languageList.length === 0 && (
-        <Box sx={{
-          display:        'flex',
-          justifyContent: 'center',
-        }}>
-          어학 정보가 없습니다.
-        </Box>
-      )}
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

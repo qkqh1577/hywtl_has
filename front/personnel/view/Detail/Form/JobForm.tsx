@@ -4,7 +4,6 @@ import {
   FormControl,
   FormGroup,
   FormLabel,
-  Grid,
   Radio,
   Typography
 } from '@mui/material';
@@ -22,6 +21,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import SelectField from 'components/SelectField';
 import { FormikEditable } from 'type/Form';
+import TextBox from 'layouts/Text';
+
+const spaceCount = 7;
 
 export default function JobForm(props) {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -29,166 +31,195 @@ export default function JobForm(props) {
   const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      {edit && (
-        <Grid container justifyContent="space-between">
-          <Grid item sm={10}>
-            <Typography>
-              소속 정보
-            </Typography>
-          </Grid>
-          {jobList.length === 0 && (
-            <Grid container item sm={2} justifyContent="flex-end">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('jobList', [...(jobList ?? []), initialPersonnelJobVO]);
-                }}
-              />
-            </Grid>
-          )}
-          {jobList.length > 0 && (
-            <Grid container item sm={1} justifyContent="center">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('jobList', [...(jobList ?? []), initialPersonnelJobVO]);
-                }}
-              />
-            </Grid>
-          )}
-        </Grid>
-      )}
-      {!edit && (
-        <Grid container>
-          <Grid item sm={12}>
-            <Typography>
-              소속 정보
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
-      {jobList.map((job,
-                    index
-      ) => {
-        return (
-          <Grid container key={index}>
-            <Grid item sm={3}>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <TextBox variant="body7">소속 정보</TextBox>
+        {edit && (
+          <Button
+            onClick={() => {
+              formikContext!.setFieldValue('jobList', [...jobList, initialPersonnelJobVO]);
+            }}>
+            + 추가
+          </Button>
+        )}
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && jobList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            marginTop:   '15px',
+            paddingLeft: '50px',
+          }}>
+            <TextBox variant="body9">
+              소속 정보가 없습니다
+            </TextBox>
+          </Box>
+        )}
+        {jobList.map((item,
+                      i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+            }}>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
               <FormControl fullWidth variant="standard">
-                <FormLabel component="legend">
-                  <Typography sx={{
-                    color:      ColorPalette._9b9ea4,
-                    fontSize:   '13px',
-                    fontFamily: 'Noto Sans KR'
-                  }}>
-                    대표 정보
-                  </Typography>
-                </FormLabel>
+                {i === 0 && (
+                  <FormLabel component="legend">
+                    <Typography sx={{
+                      color:      ColorPalette._9b9ea4,
+                      fontSize:   '13px',
+                      fontFamily: 'Noto Sans KR'
+                    }}>
+                      대표 정보
+                    </Typography>
+                  </FormLabel>
+                )}
+                <FormGroup row>
+                  <Radio
+                    required
+                    disabled={!edit}
+                    name="representativeJob"
+                    value={item.department?.id}
+                    checked={item.isRepresentative}
+                    onChange={() => {
+
+                      formikContext.setFieldValue('jobList', jobList.map(((job,
+                                                                           j
+                      ) => ({
+                        ...job,
+                        isRepresentative: i === j,
+                      }))));
+                    }}
+                  />
+                </FormGroup>
               </FormControl>
-              <FormGroup row>
-                <Radio
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              {edit && (
+                <SelectField
                   required
-                  disabled={!edit}
-                  name={`representativeJob`}
-                  value={job.department?.id}
-                  checked={(formikContext.values as any).representativeJob === job.department?.id}
-                  onChange={() => {
-                    formikContext.setFieldValue('representativeJob', job.department?.id);
-                  }}
+                  label="소속부서"
+                  labelPosition="top"
+                  name={`jobList.${i}.department.id`}
+                  options={props.departmentList}
                 />
-              </FormGroup>
-            </Grid>
-            <Grid item sm={edit ? 8.6 : 9}>
-              <Grid container item sm={12} spacing={2}>
-                <Grid item sm={2}>
-                  {edit && (
-                    <SelectField
-                      required
-                      label="소속부서"
-                      labelPosition="top"
-                      name={`jobList.${index}.department.id`}
-                      options={props.departmentList}
-                    />
-                  )}
-                  {!edit && (
-                    <TextField
-                      label="소속부서"
-                      labelPosition="top"
-                      name={`jobList.${index}.department.name`}
-                    />
-                  )}
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    label="직함"
-                    labelPosition="top"
-                    name={`jobList.${index}.jobTitle`}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    label="직종"
-                    labelPosition="top"
-                    name={`jobList.${index}.jobType`}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    label="직위"
-                    labelPosition="top"
-                    name={`jobList.${index}.jobPosition`}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    label="직급"
-                    labelPosition="top"
-                    name={`jobList.${index}.jobClass`}
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    label="직책"
-                    labelPosition="top"
-                    name={`jobList.${index}.jobDuty`}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            {edit && (
-              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+              )}
+              {!edit && (
+                <TextField
+                  label="소속부서"
+                  labelPosition="top"
+                  name={`jobList.${i}.department.name`}
+                />
+              )}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                label="직함"
+                labelPosition="top"
+                name={`jobList.${i}.jobTitle`}
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                label="직종"
+                labelPosition="top"
+                name={`jobList.${i}.jobType`}
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                label="직위"
+                labelPosition="top"
+                name={`jobList.${i}.jobPosition`}
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                label="직급"
+                labelPosition="top"
+                name={`jobList.${i}.jobClass`}
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <TextField
+                label="직책"
+                labelPosition="top"
+                name={`jobList.${i}.jobDuty`}
+              />
+            </Box>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'center',
+              alignItems:     'flex-end',
+              width:          '50px',
+              height:         '60.69px',
+              fontSize:       '18px',
+              paddingBottom:  '12px',
+            }}>
+              {edit && (
                 <FontAwesomeIcon
                   style={{
                     color:  ColorPalette._9bb6ea,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('jobList', jobList.filter((manager,
+                    formikContext!.setFieldValue('jobList', jobList.filter((job,
                                                                             j
-                    ) => index !== j));
+                    ) => i !== j));
                   }}
                 />
-              </Grid>
-            )}
-          </Grid>
-        );
-      })}
-      {jobList.length === 0 && (
-        <Box sx={{
-          display:        'flex',
-          justifyContent: 'center',
-        }}>
-          소속 정보가 없습니다.
-        </Box>
-      )}
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
