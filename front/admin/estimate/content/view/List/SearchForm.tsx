@@ -1,5 +1,4 @@
-import SearchForm from 'layouts/SearchForm';
-import { Grid } from '@mui/material';
+import SearchForm, { SearchFormField } from 'layouts/SearchForm';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import React from 'react';
@@ -10,26 +9,16 @@ import {
   testTypeList,
   testTypeName
 } from 'admin/estimate/content/domain';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
   return (
     <SearchForm>
-      <Grid container spacing={2}>
-        <Grid item sm={4}>
-          <SelectField
-            name="keywordType"
-            label="검색 대상"
-            options={keywordTypeList}
-          />
-        </Grid>
-        <Grid item sm={8}>
-          <TextField
-            name="keyword"
-            label="검색어"
-          />
-        </Grid>
-        <Grid item sm={12}>
+      <SearchFormField
+        label="실험 종류"
+        children={
           <CheckboxField
+            disableLabel
             name="testType"
             label="실험 종류"
             options={testTypeList.map(item => ({
@@ -38,8 +27,29 @@ export default function () {
               disabled: item === TestType.COMMON || item === TestType.REVIEW
             }))}
           />
-        </Grid>
-      </Grid>
+        }
+      />
+      <SearchFormField
+        label={
+          <SelectField
+            disableLabel
+            variant="outlined"
+            border="none"
+            backgroundColor={ColorPalette.transparent}
+            name="keywordType"
+            label="검색 대상"
+            options={keywordTypeList}
+          />
+        }
+        children={
+          <TextField
+            disableLabel
+            variant="outlined"
+            name="keyword"
+            label="검색어"
+          />
+        }
+      />
     </SearchForm>
   );
 };

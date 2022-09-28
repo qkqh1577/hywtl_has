@@ -16,14 +16,15 @@ import {
   Th
 } from 'layouts/Table';
 import TableLayout from 'layouts/TableLayout';
-import { FooterProps } from 'admin/estimate/template/view/List/Footer';
 import { DefaultFunction } from 'type/Function';
 import TextLink from 'components/TextLink';
 import Button from 'layouts/Button';
 
 function OrderModalButton({
                             onSeqModalOpen: onClick
-                          }: FooterProps) {
+                          }: {
+  onSeqModalOpen: DefaultFunction;
+}) {
 
   return (
     <Button
@@ -58,6 +59,7 @@ export default function ({ list, openSeqModal }: ListProps) {
 
   return (
     <TableLayout
+      disablePagination
       pagination={{
         totalPages:       1,
         totalElements:    list?.length ?? 0,

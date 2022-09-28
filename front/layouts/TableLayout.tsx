@@ -25,6 +25,7 @@ interface Props {
   pageFieldName?: string;
   sizeFieldName?: string;
   sizeOptions?: number[];
+  disablePagination?: boolean;
   titleRightComponent?: React.ReactNode;
   formik?: FormikContextType<any>;
 }
@@ -120,7 +121,7 @@ export default function TableLayout(props: Props) {
         }}>
         {props.children}
       </Box>
-      {props.pagination && (
+      {!props.disablePagination && props.pagination && (
         <Box sx={{
           display:        'flex',
           justifyContent: 'center',
@@ -181,7 +182,6 @@ export default function TableLayout(props: Props) {
                 )}
             </Box>
           ))}
-
           <IconButton
             shape="square"
             disabled={formik.values[pageFieldName] + 1 === props.pagination.totalPages}

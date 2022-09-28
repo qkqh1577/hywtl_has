@@ -189,13 +189,13 @@ export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
           height:       '22px',
           borderRadius: '5px',
           overflow:     'hidden',
-          border:       `1px solid ${checked ? ColorPalette._9bb6ea : ColorPalette._e4e9f2}`,
+          border:       `1px solid ${checked ? (disabled || childDisabled ? ColorPalette._e4e9f2 : ColorPalette._9bb6ea) : ColorPalette._e4e9f2}`,
           '&:hover':    {
-            border: `1px solid ${ColorPalette._0047d3}`,
+            border: disabled || childDisabled ? ColorPalette._e4e9f2 : `1px solid ${ColorPalette._0047d3}`,
           },
           '& > svg':    {
             backgroundColor: `${ColorPalette._ffffff} !important`,
-            color:           `${checked ? ColorPalette._386dd6 : ColorPalette._ffffff} !important`,
+            color:           `${checked ? (disabled || childDisabled ? ColorPalette._e4e9f2 : ColorPalette._386dd6) : ColorPalette._ffffff} !important`,
           }
         }}
       />

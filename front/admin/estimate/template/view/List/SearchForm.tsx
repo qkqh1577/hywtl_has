@@ -34,9 +34,9 @@ export default function () {
             disableLabel
             variant="outlined"
             border="none"
+            backgroundColor={ColorPalette.transparent}
             name="keywordType"
             label="검색 대상"
-            backgroundColor={ColorPalette.transparent}
             options={keywordTypeList}
           />
         }
