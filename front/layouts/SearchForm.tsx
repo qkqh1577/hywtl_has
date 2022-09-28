@@ -66,18 +66,23 @@ export function SearchFormField(props: SearchFormFieldProps) {
       marginBottom:   '15px',
     }}>
       <Box sx={{
-        display:     'flex',
-        flexWrap:    'nowrap',
-        minWidth:    '130px',
-        marginRight: '20px',
-        alignItems:  'center',
+        display:         'flex',
+        flexWrap:        'nowrap',
+        minWidth:        '130px',
+        marginRight:     '20px',
+        alignItems:      'center',
+        borderRadius:    '5px',
+        backgroundColor: ColorPalette._f1f5fc,
+        fontSize:        '13px',
+        minHeight:       '30px',
+        padding:         typeof props.label === 'string' ? '0 10px' : '0'
       }}>
         {props.label}
       </Box>
       <Box sx={{
         display:    'flex',
         flexWrap:   'nowrap',
-        width:      '380px',
+        minWidth:   '380px',
         alignItems: 'center',
       }}>
         {props.children}

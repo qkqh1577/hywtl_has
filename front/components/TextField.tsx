@@ -64,6 +64,7 @@ export default function TextField(props: TextFieldProps) {
           label:           propsLabel,
           helperText:      propsHelperText,
           backgroundColor: propsBackgroundColor,
+          border:          propsBorder,
           autoSubmit,
           ...restProps
         } = props;
@@ -115,7 +116,7 @@ export default function TextField(props: TextFieldProps) {
       height:          props.multiline ? '80px' : mappingByShape('32px', '24px', '40px'),
       fontSize:        mappingByShape('13px', '11px', '13px'),
       color:           ColorPalette._252627,
-      border:          useMemo(() => variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none', [variant]),
+      border:          propsBorder ?? variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
       borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,
       borderRadius:    useMemo(() => variant === 'outlined' ? '5px' : '0', [variant]),
       backgroundColor: propsBackgroundColor ?? ColorPalette._ffffff,

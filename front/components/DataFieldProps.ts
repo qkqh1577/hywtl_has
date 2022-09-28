@@ -57,6 +57,7 @@ export interface FieldProps
   formik?: FormikContextType<any>;
   autoSubmit?: boolean;
   backgroundColor?: string;
+  border?: string;
 }
 
 export type FieldViewProps = | 'status'

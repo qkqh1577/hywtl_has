@@ -15,7 +15,7 @@ export default function () {
             variant="outlined"
             name="keywordType"
             label="검색 대상"
-            backgroundColor={ColorPalette._f1f5fc}
+            backgroundColor={ColorPalette.transparent}
             options={keywordTypeList}
           />
         }

@@ -1,4 +1,3 @@
-import { Grid } from '@mui/material';
 import CheckboxField from 'components/CheckboxField';
 import {
   departmentCategoryList,
@@ -8,15 +7,18 @@ import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import { keywordTypeList } from 'department/query';
 import React from 'react';
-import SearchForm from 'layouts/SearchForm';
+import SearchForm, { SearchFormField } from 'layouts/SearchForm';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
 
   return (
     <SearchForm>
-      <Grid container spacing={2}>
-        <Grid item sm={12}>
+      <SearchFormField
+        label="조직 유형"
+        children={
           <CheckboxField
+            disableLabel
             name="category"
             label="조직 유형"
             options={departmentCategoryList.map(item => ({
@@ -24,21 +26,29 @@ export default function () {
               text: departmentCategoryName(item),
             }))}
           />
-        </Grid>
-        <Grid item sm={4}>
+        }
+      />
+      <SearchFormField
+        label={
           <SelectField
+            disableLabel
+            variant="outlined"
             name="keywordType"
             label="검색 대상"
+            border="none"
+            backgroundColor={ColorPalette.transparent}
             options={keywordTypeList}
           />
-        </Grid>
-        <Grid item sm={8}>
+        }
+        children={
           <TextField
+            disableLabel
+            variant="outlined"
             name="keyword"
             label="검색어"
           />
-        </Grid>
-      </Grid>
+        }
+      />
     </SearchForm>
   );
 }

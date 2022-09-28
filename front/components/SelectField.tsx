@@ -68,6 +68,7 @@ export default function SelectField(props: SelectFieldProps) {
           label:           propsLabel,
           helperText:      propsHelperText,
           backgroundColor: propsBackgroundColor,
+          border:          propsBorder,
           ...              restProps
         } = props;
 
@@ -125,6 +126,14 @@ export default function SelectField(props: SelectFieldProps) {
     helperText,
     disabled,
     onChange,
+    sx:          {
+      '& > div.MuiInputBase-fullWidth': {
+        border:                        propsBorder ? `${propsBorder} !important` : (restProps.sx as any)?.border,
+        ' & > div.MuiInputBase-input': {
+          borderRadius: '5px',
+        }
+      }
+    },
     InputProps:  {
       ...InputProps,
       readOnly,
@@ -140,29 +149,29 @@ export default function SelectField(props: SelectFieldProps) {
       ...SelectProps,
       multiple,
       displayEmpty: !required,
-      sx: {
+      sx:           {
         height:               variant === 'outlined' ? '32px' : '40px',
         fontSize:             '13px',
         fontFamily:           'Noto Sans KR',
         color:                isEmptyValue ? ColorPalette._b2b4b7 : ColorPalette._252627,
-        border:               variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
-        borderBottom:         `1px solid ${ColorPalette._e4e9f2}`,
+        border:               propsBorder ?? variant === 'outlined' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
+        borderBottom:         propsBorder ?? `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius:         variant === 'outlined' ? '5px' : '0',
         backgroundColor:      propsBackgroundColor ?? ColorPalette._ffffff,
         '& .MuiSvgIcon-root': {
           color: ColorPalette._386dd6,
         },
         '&::after':           {
-          borderBottom: `1px solid ${ColorPalette._0047d3}`,
+          borderBottom: propsBorder === 'none' ? 'none !important' : `1px solid ${ColorPalette._0047d3}`,
         },
         '&:hover::before':    {
-          borderBottom: `1px solid ${ColorPalette._0047d3} !important`,
+          borderBottom: propsBorder === 'none' ? 'none !important' : `1px solid ${ColorPalette._0047d3} !important`,
         },
         '&:hover > fieldset': {
-          borderColor: `${ColorPalette._0047d3} !important`
+          borderColor: propsBorder === 'none' ? 'none !important' : `${ColorPalette._0047d3} !important`
         },
         '& > fieldset':       {
-          borderWidth: '1px !important',
+          border: 'none !important',
         },
       },
       MenuProps:    {

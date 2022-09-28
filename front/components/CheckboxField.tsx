@@ -21,6 +21,8 @@ import {
 } from '@mui/material';
 import { FormikContext, } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
+import { ColorPalette } from 'app/view/App/theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface CheckboxFieldProps
   extends FieldProps,
@@ -92,11 +94,26 @@ export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
         disabled={disabled}
         readOnly={readOnly}
         checked={allChecked}
+        checkedIcon={<FontAwesomeIcon icon="check" />}
         onChange={() => {
           setFieldValue(name, allChecked
             ? []
             : undefined
           );
+        }}
+        sx={{
+          width:        '22px',
+          height:       '22px',
+          borderRadius: '5px',
+          overflow:     'hidden',
+          border:       `1px solid ${allChecked ? ColorPalette._9bb6ea : ColorPalette._e4e9f2}`,
+          '&:hover':    {
+            border: `1px solid ${ColorPalette._0047d3}`,
+          },
+          '& > svg':    {
+            backgroundColor: `${ColorPalette._ffffff} !important`,
+            color:           `${allChecked ? ColorPalette._386dd6 : ColorPalette._ffffff} !important`,
+          }
         }}
       />
     );
@@ -108,6 +125,17 @@ export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
         key="all"
         label={allText ?? '전체'}
         control={Check}
+        sx={{
+          marginRight:                   '20px',
+          alignItems:                    'center',
+          '& > span.MuiTypography-root': {
+            marginLeft: '6px',
+            fontWeight: 'normal',
+            fontSize:   '13px',
+            lineHeight: '20px',
+            color:      ColorPalette._252627,
+          }
+        }}
       />
     );
   }
@@ -154,7 +182,22 @@ export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
         name={name}
         value={key}
         checked={checked}
+        checkedIcon={<FontAwesomeIcon icon="check" />}
         onChange={onChange}
+        sx={{
+          width:        '22px',
+          height:       '22px',
+          borderRadius: '5px',
+          overflow:     'hidden',
+          border:       `1px solid ${checked ? ColorPalette._9bb6ea : ColorPalette._e4e9f2}`,
+          '&:hover':    {
+            border: `1px solid ${ColorPalette._0047d3}`,
+          },
+          '& > svg':    {
+            backgroundColor: `${ColorPalette._ffffff} !important`,
+            color:           `${checked ? ColorPalette._386dd6 : ColorPalette._ffffff} !important`,
+          }
+        }}
       />
     );
     if (disableText) {
@@ -166,6 +209,17 @@ export function useCheckboxField(props: CheckboxFieldProps): React.ReactNode[] {
           key={key}
           label={text}
           control={Check}
+          sx={{
+            marginRight:                   i < children.length ? '20px' : 0,
+            alignItems:                    'center',
+            '& > span.MuiTypography-root': {
+              marginLeft: '6px',
+              fontWeight: 'normal',
+              fontSize:   '13px',
+              lineHeight: '20px',
+              color:      ColorPalette._252627,
+            }
+          }}
         />
       );
     }
