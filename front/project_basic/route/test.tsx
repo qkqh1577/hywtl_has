@@ -15,28 +15,22 @@ import {
 import { ProjectComplexTestVO } from 'project_complex/domain';
 
 export default function ProjectBasicTestRoute() {
+  const { test } = useSelector((root: RootState) => root.projectBasic);
 
-  const id = useId();
-  const dispatch = useDispatch();
-  const { testDetail } = useSelector((root: RootState) => root.projectComplex);
-  const formik = useFormik<Partial<ProjectComplexTestVO>>({
+  const formik = useFormik({
     enableReinitialize: true,
-    initialValues:      testDetail ?? {},
+    initialValues:      {
+      siteCount: test?.siteCount?.toString() || '',
+      targetTest: test?.targetTest || ''
+    },
     onSubmit:           () => {
       console.log('off');
     }
   });
-  useEffect(() => {
-    if (id) {
-      dispatch(projectComplexAction.setId(ProjectId(id)));
-    }
-  }, [id]);
 
   return (
     <FormikProvider value={formik}>
-      <ProjectBasicTestSection
-        {...testDetail}
-      />
+      <ProjectBasicTestSection testList={test?.testList || []} />
     </FormikProvider>
   );
 }

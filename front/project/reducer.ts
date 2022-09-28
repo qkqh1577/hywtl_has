@@ -5,7 +5,7 @@ import {
   ProjectVO
 } from 'project/domain';
 import { createReducer } from 'typesafe-actions';
-import { ProjectAction } from 'project/action';
+import { ProjectActionType } from 'project/action';
 
 export interface ProjectState {
   filter?: ProjectQuery;
@@ -21,32 +21,32 @@ const initial: ProjectState = {
 };
 
 export const projectReducer = createReducer(initial, {
-  [ProjectAction.setFilter]:   (state,
-                                action
+  [ProjectActionType.setFilter]:   (state,
+                                    action
                                ) => ({
     ...state,
     filter: action.payload,
   }),
-  [ProjectAction.setPage]:     (state,
-                                action
+  [ProjectActionType.setPage]:     (state,
+                                    action
                                ) => ({
     ...state,
     page: action.payload,
   }),
-  [ProjectAction.setOne]:      (state,
-                                action
+  [ProjectActionType.setOne]:      (state,
+                                    action
                                ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectAction.requestAdd]:  (state,
-                                action
+  [ProjectActionType.requestAdd]:  (state,
+                                    action
                                ) => ({
     ...state,
     requestAdd: action.payload,
   }),
-  [ProjectAction.setAddModal]: (state,
-                                action
+  [ProjectActionType.setAddModal]: (state,
+                                    action
                                ) => ({
     ...state,
     addModal: action.payload

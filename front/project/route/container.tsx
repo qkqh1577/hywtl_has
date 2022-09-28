@@ -60,13 +60,22 @@ export function StatusBar() {
     setProjectMemoProjectId(id);
   }, [id]);
 
+  useEffect(() => {
+    if (!detail?.estimateExpectation) {
+      return;
+    }
+    dispatch(projectAction.setEstimateExpectation(detail.estimateExpectation));
+  }, [detail]);
+
   if (!detail || detail.id !== id) {
     return <ProjectContainerStatusBar />;
   }
 
   return (
     <FormikProvider value={formik}>
-      <ProjectContainerStatusBar />
+      <ProjectContainerStatusBar handleChangeEstimateExpectation={(e) => {
+        dispatch(projectAction.setEstimateExpectation(e.target.value));
+      }} />
     </FormikProvider>
   );
 }

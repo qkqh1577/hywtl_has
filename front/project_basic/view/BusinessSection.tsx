@@ -19,7 +19,7 @@ import {
 } from 'layouts/Table';
 
 interface Props {
-  list?: ProjectBasicBusiness[];
+  projectBasicBusinessList: ProjectBasicBusiness[];
 }
 
 function Label(props: { children: string }) {
@@ -43,7 +43,43 @@ function Label(props: { children: string }) {
   );
 }
 
-export default function ProjectBasicBusinessSection(props: Props) {
+export default function ProjectBasicBusinessSection({ projectBasicBusinessList }: Props) {
+  const getTableRows = () => {
+    if (projectBasicBusinessList.length === 0) {
+      return (
+        <TableRow>
+          <Td colSpan={6}>등록된 관계사가 없습니다.</Td>
+        </TableRow>
+      );
+    }
+
+    return projectBasicBusinessList.map((item) => (
+      <TableRow
+        key={item.id}
+        onClick={() => {
+          // TODO: 상세 모달
+        }}>
+        <Td>
+          <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
+        </Td>
+        <Td>
+          {item.business.name}
+        </Td>
+        <Td>
+          {item.businessManager.department}
+        </Td>
+        <Td>
+          {item.businessManager.name}
+        </Td>
+        <Td>
+          {item.businessManager.jobTitle}
+        </Td>
+        <Td>
+          {item.businessManager.mobilePhone}
+        </Td>
+      </TableRow>
+    ));
+  };
 
   return (
     <SectionLayout
@@ -68,7 +104,7 @@ export default function ProjectBasicBusinessSection(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <Th />
+                  <Th><Label> </Label></Th>
                   <Th><Label>업체명</Label></Th>
                   <Th><Label>소속</Label></Th>
                   <Th><Label>이름</Label></Th>
@@ -77,35 +113,7 @@ export default function ProjectBasicBusinessSection(props: Props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(!props.list || props.list.length === 0) && (
-                  <TableRow>
-                    <Td colSpan={6}>등록된 관계사가 없습니다.</Td>
-                  </TableRow>
-                )}
-                {props.list && props.list.map((item) => (
-                  <TableRow key={item.id} onClick={() => {
-                    // TODO: 상세 모달
-                  }}>
-                    <Td>
-                      <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
-                    </Td>
-                    <Td>
-                      {item.business.name}
-                    </Td>
-                    <Td>
-                      {item.businessManager.department}
-                    </Td>
-                    <Td>
-                      {item.businessManager.name}
-                    </Td>
-                    <Td>
-                      {item.businessManager.jobTitle}
-                    </Td>
-                    <Td>
-                      {item.businessManager.mobilePhone}
-                    </Td>
-                  </TableRow>
-                ))}
+                {getTableRows()}
               </TableBody>
             </Table>
           </TableContainer>

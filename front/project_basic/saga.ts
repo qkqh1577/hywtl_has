@@ -1,4 +1,5 @@
 import {
+  all,
   call,
   fork,
   put,
@@ -6,103 +7,202 @@ import {
   take
 } from 'redux-saga/effects';
 import {
-  projectBasicActionType,
+  projectBasicAction,
   ProjectBasicActionType
 } from 'project_basic/action';
-import { ProjectId } from 'project/domain';
+import {
+  ProjectEstimateExpectation,
+  ProjectId
+} from 'project/domain';
 import {
   ProjectBasicBid,
   ProjectBasicBusiness,
+  ProjectBasicBusinessId,
   ProjectBasicContract,
+  ProjectBasicDesign,
   ProjectBasicEstimate,
-  RivalBidId,
-  RivalBidVO
+  ProjectBasicFailReason,
+  ProjectBasicTest,
+  RivalBidId
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
-import { projectEstimateApi } from 'project_estimate/api';
+import { RivalEstimateId } from 'rival_estimate/domain';
+import { TestType } from 'admin/estimate/content/domain';
 import {
-  ProjectEstimateId,
-  ProjectEstimateType,
-  ProjectEstimateVO
-} from 'project_estimate/domain';
-import { rivalEstimateApi } from 'rival_estimate/api';
-import {
-  RivalEstimateId,
-  RivalEstimateVO
-} from 'rival_estimate/domain';
-import { ProjectBidVO } from 'project_bid/domain';
-import { projectBidApi } from 'project_bid/api';
+  BusinessInvolvedType,
+  BusinessManagerStatus
+} from 'business/domain';
+import { ProjectActionType } from 'project/action';
 
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
-    yield call(requestBusinessList, id);
-    yield call(requestEstimate, id);
-    yield call(requestBid, id);
-    yield call(requestContract, id);
+    yield all([
+      call(requestBusinessList, id),
+      call(requestDesign, id),
+      call(requestTest, id),
+      call(requestEstimate, id),
+      call(requestBid, id),
+      call(requestContract, id),
+      call(requestFailReason, id),
+    ]);
   }
 }
 
 function* requestBusinessList(id: ProjectId) {
-  const businessList: ProjectBasicBusiness[] = yield call(projectBasicApi.getBusinessList, id);
-  yield put(projectBasicActionType.setBusinessList(businessList));
+  // const businessList: ProjectBasicBusiness[] = yield call(projectBasicApi.getBusinessList, id);
+  // yield put(projectBasicActionType.setBusinessList(businessList));
+
+  yield put(projectBasicAction.setBusinessList(testData()));
+
+  function testData(): ProjectBasicBusiness[] {
+    return [
+      {
+        id:              ProjectBasicBusinessId(1),
+        involvedType:    BusinessInvolvedType.BUILDER,
+        business:        {
+          name:               'bl-business-name1',
+          id:                 '',
+          managerList:        [],
+          registrationNumber: '',
+          projectCount:       0,
+          managerCount:       0
+        },
+        businessManager: {
+          name:        'bl-businessManager-name1',
+          department:  'bl-businessManager-department1',
+          jobTitle:    'bl-businessManager-jobTitle1',
+          mobilePhone: '010-1234-5678',
+          status:      BusinessManagerStatus.IN_OFFICE
+        },
+      },
+      {
+        id:              ProjectBasicBusinessId(2),
+        involvedType:    BusinessInvolvedType.ORDERER,
+        business:        {
+          name:               'bl-business-name2',
+          id:                 '',
+          managerList:        [],
+          registrationNumber: '',
+          projectCount:       0,
+          managerCount:       0
+        },
+        businessManager: {
+          name:        'bl-businessManager-name2',
+          department:  'bl-businessManager-department2',
+          jobTitle:    'bl-businessManager-jobTitle2',
+          mobilePhone: '010-2345-6789',
+          status:      BusinessManagerStatus.RESIGNATION
+        },
+      }
+    ];
+  }
+}
+
+function* requestDesign(id: ProjectId) {
+  // const design: ProjectBasicDesign = yield call(projectBasicApi.getDesign, id);
+  // yield put(projectBasicActionType.setDesign(design));
+
+  yield put(projectBasicAction.setDesign(testData()));
+
+  function testData(): ProjectBasicDesign {
+    return {
+      city:               'design-city',
+      address:            'design-addr',
+      complexCount:       10,
+      purpose1:           'design-pur1',
+      purpose2:           'design-pur2',
+      lotArea:            20,
+      totalArea:          30,
+      totalBuildingCount: 40,
+      householdCount:     50,
+      maximumFloor:       60,
+      maximumHeight:      70,
+    };
+  }
+}
+
+function* requestTest(id: ProjectId) {
+  // const testDetail: ProjectComplexTestVO = yield call(projectComplexApi.getTestDetail, id);
+  // yield put(projectBasicActionType.setTest(testDetail));
+
+  yield put(projectBasicAction.setTest(testData()));
+
+  function testData(): ProjectBasicTest {
+    return {
+      siteCount:  10,
+      targetTest: 'test-targetTest',
+      testList:   [
+        {
+          testType:         TestType.A,
+          buildingCount:    3,
+          buildingNameList: ['A-1', 'A-2', 'A-3']
+        },
+        {
+          testType:         TestType.B,
+          buildingCount:    2,
+          buildingNameList: ['B-1', 'B-2']
+        }
+      ]
+    };
+  }
 }
 
 function* requestEstimate(id: ProjectId) {
   // TODO: API 사양과 해당 Domain 불일치로 보류
   // const estimateList: ProjectEstimateVO[] = yield call(projectEstimateApi.getList, id);
   // const rivalEstimateList: RivalEstimateVO[] = yield call(rivalEstimateApi.getList, id);
-  //
+
   // yield put(projectBasicActionType.setEstimate({
   //   estimate:          estimateList.filter((e) => e.confirmed)[0],
   //   rivalEstimateList: rivalEstimateList
   // }));
 
-  yield put(projectBasicActionType.setEstimate(testData()));
+  yield put(projectBasicAction.setEstimate(testData()));
 
   function testData(): ProjectBasicEstimate {
     return {
-      estimate: {
-        code: 'test-code',
+      estimate:          {
+        code:      'test-code',
         confirmed: true,
-        plan: {
-          estimateDate: new Date('2022-09-26'),
-          testAmount: 1000,
-          reviewAmount: 2000,
-          totalAmount: 3000,
+        plan:      {
+          estimateDate:     new Date('2022-09-26'),
+          testAmount:       1000,
+          reviewAmount:     2000,
+          totalAmount:      3000,
           expectedDuration: 'esti-expectedDuration',
         }
       },
       rivalEstimateList: [
         {
-          id: RivalEstimateId(1),
-          business: {
-            id: '',
-            name: 'esti-expectedDuration-business1',
+          id:               RivalEstimateId(1),
+          business:         {
+            id:                 '',
+            name:               'esti-expectedDuration-business1',
             registrationNumber: '',
-            managerList: []
+            managerList:        []
           },
-          testAmount: 1001,
-          reviewAmount: 2001,
-          totalAmount: 3001,
+          testAmount:       1001,
+          reviewAmount:     2001,
+          totalAmount:      3001,
           expectedDuration: 'esti-rival-expectedDuration1',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
         {
-          id: RivalEstimateId(2),
-          business: {
-            id: '',
-            name: 'esti-expectedDuration-business2',
+          id:               RivalEstimateId(2),
+          business:         {
+            id:                 '',
+            name:               'esti-expectedDuration-business2',
             registrationNumber: '',
-            managerList: []
+            managerList:        []
           },
-          testAmount: 1002,
-          reviewAmount: 2002,
-          totalAmount: 3002,
+          testAmount:       1002,
+          reviewAmount:     2002,
+          totalAmount:      3002,
           expectedDuration: 'esti-rival-expectedDuration2',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         }
       ],
     };
@@ -112,63 +212,63 @@ function* requestEstimate(id: ProjectId) {
 function* requestBid(id: ProjectId) {
   // const bid: ProjectBidVO = yield call(projectBidApi.get, id);
   // const rivalBidList: RivalBidVO[] = yield call(projectBasicApi.getRivalBidList, id);
-  //
+
   // yield put(projectBasicActionType.setBid({
   //   bid,
   //   rivalBidList: rivalBidList
   // }));
 
-  yield put(projectBasicActionType.setBid(testData()));
+  yield put(projectBasicAction.setBid(testData()));
 
   function testData(): ProjectBasicBid {
     return {
-      bid: {
-        bidDate: new Date('2022-10-26'),
-        testAmount: 4000,
-        reviewAmount: 5000,
-        totalAmount: 6000,
+      bid:          {
+        bidDate:          new Date('2022-10-26'),
+        testAmount:       4000,
+        reviewAmount:     5000,
+        totalAmount:      6000,
         expectedDuration: 'bid-expectedDuration',
       },
       rivalBidList: [
         {
-          id:  RivalBidId(1),
-          business: {
-            id: '',
-            name: 'bid-expectedDuration-business1',
+          id:               RivalBidId(1),
+          business:         {
+            id:                 '',
+            name:               'bid-expectedDuration-business1',
             registrationNumber: '',
-            managerList: [],
-            managerCount: 0,
-            projectCount: 0,
+            managerList:        [],
+            managerCount:       0,
+            projectCount:       0,
           },
-          testAmount: 4001,
-          reviewAmount: 5001,
-          totalAmount: 6001,
+          testAmount:       4001,
+          reviewAmount:     5001,
+          totalAmount:      6001,
           expectedDuration: 'bid-rival-expectedDuration1',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
         {
-          id:  RivalBidId(2),
-          business: {
-            id: '',
-            name: 'bid-expectedDuration-business2',
+          id:               RivalBidId(2),
+          business:         {
+            id:                 '',
+            name:               'bid-expectedDuration-business2',
             registrationNumber: '',
-            managerList: [],
-            managerCount: 0,
-            projectCount: 0,
+            managerList:        [],
+            managerCount:       0,
+            projectCount:       0,
           },
-          testAmount: 4002,
-          reviewAmount: 5002,
-          totalAmount: 6002,
+          testAmount:       4002,
+          reviewAmount:     5002,
+          totalAmount:      6002,
           expectedDuration: 'bid-rival-expectedDuration2',
-          modifiedAt: new Date(),
+          modifiedAt:       new Date(),
         },
       ],
-    }
+    };
   }
 }
 
 function* requestContract(id: ProjectId) {
-  yield put(projectBasicActionType.setContract(testData()));
+  yield put(projectBasicAction.setContract(testData()));
 
   function testData(): ProjectBasicContract {
     return {
@@ -201,6 +301,32 @@ function* requestContract(id: ProjectId) {
   }
 }
 
+function* requestFailReason(id: ProjectId) {
+  // const failReason: ProjectBasicFailReason = yield call(projectBasicApi.getFailReason, id);
+  // yield put(projectBasicActionType.setFailReason(failReason));
+
+  yield put(projectBasicAction.setFailReason(testData()));
+
+  function testData(): ProjectBasicFailReason {
+    return {
+      win:              {
+        name:               'fr-win-name',
+        id:                 '',
+        managerList:        [],
+        registrationNumber: '',
+        projectCount:       0,
+        managerCount:       0
+      },
+      testAmount:       10,
+      reviewAmount:     20,
+      totalAmount:      30,
+      expectedDuration: 'fr-expectedDuration',
+      reason:           'fr-reason',
+      modifiedAt:       new Date()
+    };
+  }
+}
+
 function* pushBusiness() {
   while (true) {
     const { payload: formik } = yield take(ProjectBasicActionType.pushBusiness);
@@ -223,7 +349,15 @@ function* pushBusiness() {
   }
 }
 
+function* watchEstimateExpectation() {
+  while (true) {
+    const { payload: estimateExpectation } = yield take(ProjectActionType.setEstimateExpectation);
+    yield put(projectBasicAction.setLossEstimateExpectation(estimateExpectation === ProjectEstimateExpectation.LOSE));
+  }
+}
+
 export default function* projectBasicSaga() {
   yield fork(watchId);
   yield fork(pushBusiness);
+  yield fork(watchEstimateExpectation);
 }

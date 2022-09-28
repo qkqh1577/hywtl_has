@@ -6,7 +6,7 @@ import {
 } from 'redux-saga/effects';
 import {
   projectAction,
-  ProjectAction
+  ProjectActionType
 } from 'project/action';
 import Page from 'type/Page';
 import {
@@ -18,7 +18,7 @@ import { dialogActions } from 'components/Dialog';
 
 function* watchFilter() {
   while (true) {
-    const { payload: query } = yield take(ProjectAction.setFilter);
+    const { payload: query } = yield take(ProjectActionType.setFilter);
     yield put({ type: 'app/project/filter/status', filterStatus: 'open' });
     const page: Page<ProjectShortVO> = yield call(projectApi.getPage, query);
     yield put(projectAction.setPage(page));
@@ -36,7 +36,7 @@ function* watchId() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: params } = yield take(ProjectAction.add);
+    const { payload: params } = yield take(ProjectActionType.add);
     try {
       yield put(projectAction.requestAdd('request'));
       yield call(projectApi.add, params);

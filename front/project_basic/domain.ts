@@ -5,6 +5,7 @@ import {
 } from 'business/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
+import { ProjectComplexTestVO } from 'project_complex/domain';
 
 export type ProjectBasicBusinessId = number & { readonly _brand: unique symbol; }
 
@@ -17,6 +18,25 @@ export interface ProjectBasicBusiness {
   business: BusinessShort;
   businessManager: BusinessManagerVO;
   involvedType: BusinessInvolvedType;
+}
+
+export interface ProjectBasicDesign {
+  city?: string; // 시/도
+  address?: string; // 주소
+  complexCount?: number; // 단지 수
+  purpose1?: string; // 건물 용도 1
+  purpose2?: string; // 건물 용도 2
+  lotArea?: number; // 대지면적
+  totalArea?: number; // 연면적
+  totalBuildingCount?: number; // 총 동 수
+  householdCount?: number; // 세대 수
+  maximumFloor?: number; // 최고 층 수
+  maximumHeight?: number; // 최고 높이
+  modifiedAt?: Date; // 최종수정일시
+}
+
+export interface ProjectBasicTest
+  extends ProjectComplexTestVO {
 }
 
 export interface ProjectBasicEstimate {
@@ -34,7 +54,7 @@ export interface ProjectBasicEstimateVO {
     reviewAmount?: number;
     totalAmount?: number;
     expectedDuration?: string;
-  }
+  };
 }
 
 export interface ProjectBasicBid {
@@ -75,4 +95,14 @@ export interface ProjectBasicContract {
     condition: string; // 조건
     note?: string; // 비고
   }[];
+}
+
+export interface ProjectBasicFailReason {
+  win?: BusinessShort; // 수주 업체
+  testAmount?: number; // 풍동 금액
+  reviewAmount?: number; // 구검 금액
+  totalAmount?: number; // 총액
+  expectedDuration?: string; // 일정
+  reason?: string; // 원인
+  modifiedAt: Date;
 }
