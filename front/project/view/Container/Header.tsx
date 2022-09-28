@@ -6,7 +6,7 @@ interface Props {
   statusBar: React.ReactNode;
 }
 
-export default function ({ statusBar }: Props) {
+export default function ProjectContainerHeader({ statusBar }: Props) {
 
   return (
     <Box sx={{
