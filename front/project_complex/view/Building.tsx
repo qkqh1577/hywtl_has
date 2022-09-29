@@ -124,15 +124,18 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
+                    displayEmpty
                     variant="outlined"
-                    value={item.site?.id}
+                    value={props.siteList && item.site ? item.site.id : ''}
                     renderValue={(raw) => {
                       const value = props.siteList?.find((site) => site.id === raw);
-                      return value?.name;
+                      return value?.name ?? '선택';
                     }}
                     onChange={(e) => {
                       const value = (e.target.value || undefined) as ProjectComplexSiteId | undefined;
-                      props.onUpdate({ id: item.id, siteId: value });
+                      if (item.site?.id !== value) {
+                        props.onUpdate({ id: item.id, siteId: value ?? ProjectComplexSiteId(-1) });
+                      }
                     }}>
                     {props.siteList?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -293,11 +296,12 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 <Td key={item.id}>
                   <Select
                     multiple
+                    displayEmpty
                     variant="outlined"
                     value={item.conditionList}
                     renderValue={value => {
-                      if (!Array.isArray(value)) {
-                        return '';
+                      if (!Array.isArray(value) || value.length === 0) {
+                        return '선택';
                       }
                       return value.map((v) => `(${v})`)
                                   .join(', ');
@@ -365,11 +369,12 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 <Td key={item.id}>
                   <Select
                     multiple
+                    displayEmpty
                     variant="outlined"
                     value={item.testTypeList}
                     renderValue={value => {
-                      if (!Array.isArray(value)) {
-                        return '';
+                      if (!Array.isArray(value) || value.length === 0) {
+                        return '선택';
                       }
                       return value.map(testTypeName)
                                   .join(', ');
@@ -406,7 +411,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
+                    displayEmpty
                     variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
                     value={item.estimateFigureDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
@@ -424,7 +431,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
+                    displayEmpty
                     variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
                     value={item.estimateTestDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
@@ -442,7 +451,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
+                    displayEmpty
                     variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
                     value={item.estimateEvaluationDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
@@ -460,7 +471,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
+                    displayEmpty
                     variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
                     value={item.estimateReportDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;

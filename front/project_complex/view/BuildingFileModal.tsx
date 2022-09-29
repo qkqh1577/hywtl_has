@@ -103,7 +103,7 @@ function DetailFooter(props: DetailFooterProps) {
             children:     '연결을 해제하시겠습니까?',
             confirmText:  '해제',
             afterConfirm: () => {
-              props.onUpdate({ id: props.buildingId, /* TODO: unlink 동작 방식 정의 */ });
+              props.onUpdate({ id: props.buildingId, buildingDocumentId: ProjectComplexBuildingId(-1) });
             }
           });
         }}>
