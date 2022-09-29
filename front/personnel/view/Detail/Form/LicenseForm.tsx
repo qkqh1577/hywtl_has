@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Grid,
-  Typography
-} from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
@@ -18,6 +14,9 @@ import {
 } from 'personnel/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TextBox from 'layouts/Text';
+
+const spaceCount = 6;
 
 export default function LicenseForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -25,131 +24,150 @@ export default function LicenseForm() {
   const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      {edit && (
-        <Grid container justifyContent="space-between">
-          <Grid item sm={10}>
-            <Typography>
-              면허 정보
-            </Typography>
-          </Grid>
-          {licenseList.length === 0 && (
-            <Grid container item sm={2} justifyContent="flex-end">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('licenseList', [...(licenseList ?? []), initialPersonnelLicenseVO]);
-                }}
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <TextBox variant="body7">면허 정보</TextBox>
+        {edit && (
+          <Button
+            onClick={() => {
+              formikContext!.setFieldValue('licenseList', [...licenseList, initialPersonnelLicenseVO]);
+            }}>
+            + 추가
+          </Button>
+        )}
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && licenseList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            marginTop:   '15px',
+            paddingLeft: '50px',
+          }}>
+            <TextBox variant="body9">
+              면허 정보가 없습니다
+            </TextBox>
+          </Box>
+        )}
+        {licenseList.map((item,
+                          i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+            }}>
+
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`licenseList.${i}.name`}
+                label="면허정보"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-          {licenseList.length > 0 && (
-            <Grid container item sm={1} justifyContent="center">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('licenseList', [...(licenseList ?? []), initialPersonnelLicenseVO]);
-                }}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`licenseList.${i}.type`}
+                label="종별"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-        </Grid>
-      )}
-      {!edit && (
-        <Grid container>
-          <Grid item sm={12}>
-            <Typography>
-              면허 정보
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
-      {licenseList.map((license,
-                        index
-      ) => {
-        return (
-          <Grid container key={index}>
-            <Grid item sm={edit ? 11.6 : 12}>
-              <Grid container item sm={12} spacing={2}>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`licenseList.${index}.name`}
-                    label="면허정보"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    name={`licenseList.${index}.type`}
-                    label="종별"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`licenseList.${index}.organizationName`}
-                    label="발급기관명"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`licenseList.${index}.qualifiedNumber`}
-                    label="인가번호"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    name={`licenseList.${index}.note`}
-                    label="비고"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`licenseList.${index}.qualifiedDate`}
-                    label="만료일"
-                    labelPosition="top"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            {edit && (
-              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`licenseList.${i}.organizationName`}
+                label="발급기관명"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`licenseList.${i}.qualifiedNumber`}
+                label="인가번호"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`licenseList.${i}.note`}
+                label="비고"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <DateField
+                required
+                name={`licenseList.${i}.qualifiedDate`}
+                label="만료일"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'center',
+              alignItems:     'flex-end',
+              width:          '50px',
+              height:         '60.69px',
+              fontSize:       '18px',
+              paddingBottom:  '12px',
+            }}>
+              {edit && (
                 <FontAwesomeIcon
                   style={{
-                    color: ColorPalette._9bb6ea,
+                    color:  ColorPalette._9bb6ea,
                     cursor: 'pointer'
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('licenseList', licenseList.filter((manager,
-                                                                                      j
-                    ) => index !== j));
+                    formikContext!.setFieldValue('licenseList', licenseList.filter((license,
+                                                                                    j
+                    ) => i !== j));
                   }}
                 />
-              </Grid>
-            )}
-          </Grid>
-        );
-      })}
-      {licenseList.length === 0 && (
-        <Box sx={{
-          display:        'flex',
-          justifyContent: 'center',
-        }}>
-          면허 정보가 없습니다.
-        </Box>
-      )}
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

@@ -12,7 +12,7 @@ function ListButton() {
   };
   return (
     <Button
-      shape={'basic3'}
+      shape="basic3"
       children="목록"
       onClick={onClick}
     />
@@ -27,7 +27,6 @@ function EditButton() {
 
   return (
     <Button
-      shape={'basic1'}
       children="수정"
       onClick={onClick}
     />
@@ -37,22 +36,23 @@ function EditButton() {
 export default function Footer() {
   const formikContext = useContext(FormikContext);
   const edit: boolean = formikContext?.values.edit ?? true;
+
   return (
-    <DetailFormFooter
-      children={!edit && (
-        <Box sx={{
-          display:        'flex',
-          width:          '100%',
-          justifyContent: 'space-between'
-        }}>
-          <Box sx={{
-            width: '50%'
-          }}>
-            <ListButton />
-          </Box>
+    <Box sx={{
+      display:        'flex',
+      width:          '100%',
+      justifyContent: 'space-between',
+      marginTop:      '20px',
+    }}>
+      {!edit && (
+        <>
+          <ListButton />
           <EditButton />
-        </Box>
+        </>
       )}
-    />
+      {edit && (
+        <DetailFormFooter />
+      )}
+    </Box>
   );
 };

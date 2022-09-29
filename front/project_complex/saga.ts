@@ -15,6 +15,7 @@ import { projectComplexApi } from 'project_complex/api';
 import { RootState } from 'services/reducer';
 import { ProjectId } from 'project/domain';
 import { dialogActions } from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchId() {
   while (true) {
@@ -90,7 +91,7 @@ function* updateSite() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateSite);
     try {
-      yield put(projectComplexAction.requestSite('request'));
+      yield put(projectComplexAction.requestSite(ApiStatus.REQUEST));
       yield call(projectComplexApi.updateSite, params);
     }
     catch (e) {
@@ -101,7 +102,7 @@ function* updateSite() {
       }));
     }
     finally {
-      yield put(projectComplexAction.requestSite('response'));
+      yield put(projectComplexAction.requestSite(ApiStatus.RESPONSE));
     }
   }
 }
@@ -110,7 +111,7 @@ function* updateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
     try {
-      yield put(projectComplexAction.requestBuilding('request'));
+      yield put(projectComplexAction.requestBuilding(ApiStatus.REQUEST));
       yield call(projectComplexApi.updateBuilding, params);
     }
     catch (e) {
@@ -121,7 +122,7 @@ function* updateBuilding() {
       }));
     }
     finally {
-      yield put(projectComplexAction.requestBuilding('response'));
+      yield put(projectComplexAction.requestBuilding(ApiStatus.RESPONSE));
     }
   }
 }
@@ -162,6 +163,28 @@ function* deleteBuilding() {
   }
 }
 
+function* watchRequestSite() {
+  while (true) {
+    const { payload: requestSite } = yield take(projectComplexAction.requestSite);
+    if (requestSite === ApiStatus.RESPONSE) {
+      const { id } = yield select((root: RootState) => root.projectComplex);
+      yield call(getSiteList, id);
+      yield put(projectComplexAction.requestSite(ApiStatus.IDLE));
+    }
+  }
+}
+
+function* watchRequestBuilding() {
+  while (true) {
+    const { payload: requestBuilding } = yield take(projectComplexAction.requestBuilding);
+    if (requestBuilding === ApiStatus.RESPONSE) {
+      const { id } = yield select((root: RootState) => root.projectComplex);
+      yield call(getBuildList, id);
+      yield put(projectComplexAction.requestBuilding(ApiStatus.IDLE));
+    }
+  }
+}
+
 
 export default function* projectComplexSaga() {
   yield fork(watchId);
@@ -172,4 +195,6 @@ export default function* projectComplexSaga() {
   yield fork(updateBuilding);
   yield fork(deleteSite);
   yield fork(deleteBuilding);
+  yield fork(watchRequestSite);
+  yield fork(watchRequestBuilding);
 }

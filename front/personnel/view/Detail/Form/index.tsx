@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Box,
-  Divider
+  Divider as MuiDivider
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import AccountForm from 'personnel/view/Detail/Form/AccountForm';
@@ -15,19 +15,32 @@ import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import { Option } from 'components/DataFieldProps';
 
 export interface FormProps {
-  list: Option[]
+  list: Option[];
+}
+
+export function Divider() {
+  return (
+    <MuiDivider
+      sx={{
+        width:        '100%',
+        padding:      '0 20px',
+        margin:       '20px 0',
+        border:       'none',
+        borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
+      }}
+    />
+  );
 }
 
 export default function FormList(props: FormProps) {
   return (
     <Box sx={{
-      display:       'flex',
-      width:         '100%',
-      flexDirection: 'column',
-      padding:       '15px 20px',
-      border:        `1px solid ${ColorPalette._e4e9f2}`,
-      borderRadius:  '5px',
-      marginBottom:  '20px',
+      display:      'flex',
+      flexWrap:     'wrap',
+      width:        '100%',
+      padding:      '30px',
+      border:       `1px solid ${ColorPalette._e4e9f2}`,
+      borderRadius: '5px',
     }}>
       <AccountForm />
       <Divider />
@@ -35,15 +48,15 @@ export default function FormList(props: FormProps) {
       <Divider />
       <CompanyForm />
       <Divider />
-      <JobForm departmentList={props.list}/>
+      <JobForm departmentList={props.list} />
       <Divider />
-      <AcademicForm/>
+      <AcademicForm />
       <Divider />
-      <CareerForm/>
+      <CareerForm />
       <Divider />
-      <LicenseForm/>
+      <LicenseForm />
       <Divider />
-      <LanguageForm/>
+      <LanguageForm />
     </Box>
   );
 }

@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Grid,
-  Typography
-} from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
@@ -18,6 +14,9 @@ import {
 import { FormikEditable } from 'type/Form';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TextBox from 'layouts/Text';
+
+const spaceCount = 6;
 
 export default function CareerForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -25,117 +24,130 @@ export default function CareerForm() {
   const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      {edit && (
-        <Grid container justifyContent="space-between">
-          <Grid item sm={10}>
-            <Typography>
-              경력 정보
-            </Typography>
-          </Grid>
-          {careerList.length === 0 && (
-            <Grid container item sm={2} justifyContent="flex-end">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('careerList', [...(careerList ?? []), initialPersonnelCareerVO]);
-                }}
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <TextBox variant="body7">경력 정보</TextBox>
+        {edit && (
+          <Button
+            shape="basic1"
+            onClick={() => {
+              formikContext!.setFieldValue('careerList', [...careerList, initialPersonnelCareerVO]);
+            }}>
+            + 추가
+          </Button>
+        )}
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && careerList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            paddingLeft: '50px',
+            marginTop:   '15px',
+          }}>
+            <TextBox variant="body9">
+              경력 정보가 없습니다
+            </TextBox>
+          </Box>
+        )}
+        {careerList.map((item,
+                         i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+            }}>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                labelPosition="top"
+                name={`careerList.${i}.companyName`}
+                label="근무처명"
               />
-            </Grid>
-          )}
-          {careerList.length > 0 && (
-            <Grid container item sm={1} justifyContent="center">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('careerList', [...(careerList ?? []), initialPersonnelCareerVO]);
-                }}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount} * 3 + 60px)`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`careerList.${i}.majorJob`}
+                label="직급 및 담당업무"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-        </Grid>
-      )}
-      {!edit && (
-        <Grid container>
-          <Grid item sm={12}>
-            <Typography>
-              경력 정보
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
-      {careerList.map((career,
-                                     index
-      ) => {
-        return (
-          <Grid container key={index}>
-            <Grid item sm={edit ? 11.6 : 12}>
-              <Grid container item sm={12} spacing={2}>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`careerList.${index}.companyName`}
-                    label="근무처명"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <TextField
-                    required
-                    name={`careerList.${index}.majorJob`}
-                    label="직급 및 담당업무"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`careerList.${index}.startDate`}
-                    label="입사일"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`careerList.${index}.endDate`}
-                    label="퇴사일"
-                    labelPosition="top"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            {edit && (
-              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <DateField
+                required
+                name={`careerList.${i}.startDate`}
+                label="입사일"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <DateField
+                required
+                name={`careerList.${i}.endDate`}
+                label="퇴사일"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'center',
+              alignItems:     'flex-end',
+              width:          '50px',
+              height:         '60.69px',
+              fontSize:       '18px',
+              paddingBottom:  '12px',
+            }}>
+              {edit && (
                 <FontAwesomeIcon
                   style={{
-                    color: ColorPalette._9bb6ea,
-                    cursor: 'pointer'
+                    color:  ColorPalette._9bb6ea,
+                    cursor: 'pointer',
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('careerList', careerList.filter((manager,
-                                                                                      j
-                    ) => index !== j));
+                    formikContext!.setFieldValue('careerList', careerList.filter((career,
+                                                                                  j
+                    ) => i !== j));
                   }}
                 />
-              </Grid>
-            )}
-          </Grid>
-        );
-      })}
-      {careerList.length === 0 && (
-        <Box sx={{
-          display:        'flex',
-          justifyContent: 'center',
-        }}>
-          경력 정보가 없습니다.
-        </Box>
-      )}
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

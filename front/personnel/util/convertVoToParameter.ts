@@ -42,9 +42,9 @@ export function toPersonnelCompany(company: PersonnelCompanyVO): PersonnelCompan
   };
 }
 
-export function toPersonnelJob(job: PersonnelJobVO, isRepresentative: number): PersonnelJobParameter {
+export function toPersonnelJob(job: PersonnelJobVO): PersonnelJobParameter {
   return {
-    isRepresentative: isRepresentative === job.department?.id,
+    isRepresentative: job.isRepresentative,
     departmentId:     job.department?.id,
     jobTitle:         job.jobTitle,
     jobType:          job.jobType,

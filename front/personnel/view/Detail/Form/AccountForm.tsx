@@ -1,45 +1,70 @@
 import React from 'react';
-import {
-  Box,
-  Grid
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import TextField from 'components/TextField';
 import { FieldStatus } from 'components/DataFieldProps';
+import TextBox from 'layouts/Text';
 
-export default function AccountForm(props) {
+export default function AccountForm() {
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'nowrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      <Grid container>
-        <Grid item sm={2}>
-          <Grid container item sm={12}>계정 정보</Grid>
-        </Grid>
-        <Grid item sm={10}>
-          <Grid item sm={12}>
-            <TextField
-              name="name"
-              label="이름"
-              status={FieldStatus.ReadOnly}
-            />
-          </Grid>
-          <Grid item sm={12}>
-            <TextField
-              name="email"
-              label="이메일"
-              status={FieldStatus.ReadOnly}
-            />
-          </Grid>
-          <Grid item sm={12}>
-            <TextField
-              name="userStatus"
-              label="상태"
-              status={FieldStatus.ReadOnly}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '13%',
+        justifyContent: 'flex-start',
+        alignItems:     'flex-start'
+      }}>
+        <TextBox variant="body7">계정 정보</TextBox>
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '80%',
+        justifyContent: 'flex-start',
+        alignItems:     'flex-start'
+      }}>
+        <Box sx={{
+          display:      'flex',
+          flexWrap:     'nowrap',
+          width:        '100%',
+          marginBottom: '15px',
+        }}>
+          <TextField
+            name="name"
+            label="이름"
+            status={FieldStatus.ReadOnly}
+          />
+        </Box>
+        <Box sx={{
+          display:      'flex',
+          flexWrap:     'nowrap',
+          width:        '100%',
+          marginBottom: '15px',
+        }}>
+          <TextField
+            name="email"
+            label="이메일"
+            status={FieldStatus.ReadOnly}
+          />
+        </Box>
+        <Box sx={{
+          display:  'flex',
+          flexWrap: 'nowrap',
+          width:    '100%',
+        }}>
+          <TextField
+            name="userStatus"
+            label="상태"
+            status={FieldStatus.ReadOnly}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 }

@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Box,
-  Grid,
-  Typography
-} from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
@@ -18,6 +14,9 @@ import {
 } from 'personnel/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TextBox from 'layouts/Text';
+
+const spaceCount = 7;
 
 export default function AcademicForm() {
   const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
@@ -25,140 +24,161 @@ export default function AcademicForm() {
   const edit = formikContext?.values.edit ?? true;
   return (
     <Box sx={{
-      margin:  '10px 0px',
-      padding: '10px'
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      {edit && (
-        <Grid container justifyContent="space-between">
-          <Grid item sm={10}>
-            <Typography>
-              학력 정보
-            </Typography>
-          </Grid>
-          {academicList.length === 0 && (
-            <Grid container item sm={2} justifyContent="flex-end">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('academicList', [...(academicList ?? []), initialPersonnelAcademicVO]);
-                }}
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <TextBox variant="body7">학력 정보</TextBox>
+        {edit && (
+          <Button
+            shape="basic1"
+            onClick={() => {
+              formikContext!.setFieldValue('academicList', [...academicList, initialPersonnelAcademicVO]);
+            }}>
+            + 추가
+          </Button>
+        )}
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && academicList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            marginTop:   '15px',
+            paddingLeft: '50px',
+          }}>
+            <TextBox variant="body9">
+              학력 정보가 없습니다
+            </TextBox>
+          </Box>
+        )}
+        {academicList.map((item,
+                           i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+            }}>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`academicList.${i}.academyName`}
+                label="교육기관명"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-          {academicList.length > 0 && (
-            <Grid container item sm={1} justifyContent="center">
-              <Button
-                shape="basic1"
-                children="+추가"
-                onClick={() => {
-                  formikContext!.setFieldValue('academicList', [...(academicList ?? []), initialPersonnelAcademicVO]);
-                }}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`academicList.${i}.major`}
+                label="전공(과)"
+                labelPosition="top"
               />
-            </Grid>
-          )}
-        </Grid>
-      )}
-      {!edit && (
-        <Grid container>
-          <Grid item sm={12}>
-            <Typography>
-              학력 정보
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
-      {academicList.map((academy,
-                         index
-      ) => {
-        return (
-          <Grid container key={index}>
-            <Grid item sm={edit ? 11.6 : 12}>
-              <Grid container item sm={12} spacing={2}>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`academicList.${index}.academyName`}
-                    label="교육기관명"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    required
-                    name={`academicList.${index}.major`}
-                    label="전공(과)"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <TextField
-                    name={`academicList.${index}.degree`}
-                    label="학위"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={1}>
-                  <TextField
-                    required
-                    name={`academicList.${index}.state`}
-                    label="재적상태"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={1}>
-                  <TextField
-                    name={`academicList.${index}.grade`}
-                    label="학점"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`academicList.${index}.startDate`}
-                    label="입학일"
-                    labelPosition="top"
-                  />
-                </Grid>
-                <Grid item sm={2}>
-                  <DateField
-                    required
-                    name={`academicList.${index}.endDate`}
-                    label="졸업일"
-                    labelPosition="top"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            {edit && (
-              <Grid container item sm={0.4} justifyContent="center" alignItems="center">
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`academicList.${i}.degree`}
+                label="학위"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                required
+                name={`academicList.${i}.state`}
+                label="재적상태"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`academicList.${i}.grade`}
+                label="학점"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <DateField
+                required
+                name={`academicList.${i}.startDate`}
+                label="입학일"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <DateField
+                required
+                name={`academicList.${i}.endDate`}
+                label="졸업일"
+                labelPosition="top"
+              />
+            </Box>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'center',
+              alignItems:     'flex-end',
+              width:          '50px',
+              height:         '60.69px',
+              fontSize:       '18px',
+              paddingBottom:  '12px',
+            }}>
+              {edit && (
                 <FontAwesomeIcon
                   style={{
-                    color: ColorPalette._9bb6ea,
+                    color:  ColorPalette._9bb6ea,
                     cursor: 'pointer'
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('academicList', academicList.filter((manager,
+                    formikContext!.setFieldValue('academicList', academicList.filter((academic,
                                                                                       j
-                    ) => index !== j));
+                    ) => i !== j));
                   }}
                 />
-              </Grid>
-            )}
-          </Grid>
-        )
-          ;
-      })}
-      {academicList.length === 0 && (
-        <Box sx={{
-          display:        'flex',
-          justifyContent: 'center',
-        }}>
-          학력 정보가 없습니다.
-        </Box>
-      )}
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

@@ -80,7 +80,7 @@ function Element() {
           id:           PersonnelId(id!),
           basic:        toPersonnelBasic(values.basic!),
           company:      toPersonnelCompany(values.company!),
-          jobList:      values.jobList.map((item) => toPersonnelJob(item, values.representativeJob!)),
+          jobList:      values.jobList.map((item) => toPersonnelJob(item)),
           academicList: values.academicList.map((item) => toPersonnelAcademy(item)),
           careerList:   values.careerList.map((item) => toPersonnelCareer(item)),
           licenseList:  values.licenseList.map((item) => toPersonnelLicense(item)),
