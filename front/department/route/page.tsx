@@ -5,7 +5,7 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import {
+import React, {
   useCallback,
   useEffect
 } from 'react';
@@ -15,7 +15,6 @@ import {
 } from 'department/query';
 import { departmentAction } from 'department/action';
 import { useFormik } from 'formik';
-import React from 'react';
 import { FormikSubmit } from 'type/Form';
 
 function Element() {
@@ -45,16 +44,6 @@ function Element() {
       });
     }
   });
-  const onPageChange = (event,
-                        page
-  ) => {
-    setFilter({ ...formik, values: { page } });
-  };
-
-  const onRowsPerPageChange = (event) => {
-    const size = +(event.target.value) || 10;
-    setFilter({ ...formik, values: { size, page: 0 } });
-  };
 
   useEffect(() => {
     setFilter(formik);
@@ -64,8 +53,6 @@ function Element() {
     <DepartmentPage
       formik={formik}
       page={page}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
     />
   );
 }

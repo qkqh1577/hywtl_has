@@ -17,23 +17,23 @@ export default function (props: ProjectEstimateListButtonProps) {
         marginRight: '10px',
       }
     }}>
-      <Button>최종 선택</Button>
-      <Button onClick={() => {
+      <Button shape="small">최종 선택</Button>
+      <Button shape="small" onClick={() => {
         props.openAddModal(ProjectEstimateType.COMPARISON);
       }}>
         + 대비 견적서 등록
       </Button>
-      <Button onClick={() => {
+      <Button shape="small" onClick={() => {
         props.openAddModal(ProjectEstimateType.SUB_CONTRACTOR);
       }}>
         + 협력 견적서 등록
       </Button>
-      <Button onClick={() => {
+      <Button shape="small" onClick={() => {
         props.openAddModal(ProjectEstimateType.CUSTOM);
       }}>
         + 커스텀 견적서 등록
       </Button>
-      <Button onClick={() => {
+      <Button shape="small" onClick={() => {
         props.openAddModal(ProjectEstimateType.SYSTEM);
       }}>
         + 시스템 견적서 등록
