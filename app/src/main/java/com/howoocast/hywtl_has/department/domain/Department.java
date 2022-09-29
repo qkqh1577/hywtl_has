@@ -82,6 +82,12 @@ public class Department extends CustomEntity {
         return new Department();
     }
 
+    public static Department of(Long id) {
+        Department department = new Department();
+        department.id = id;
+        return department;
+    }
+
     public void change(
         String name,
         DepartmentCategory category,

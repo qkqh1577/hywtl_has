@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.parameters.P;
 
 @Slf4j
 @Getter
@@ -30,6 +31,12 @@ public class Project extends CustomEntity {
     @NotNull
     @Embedded
     private ProjectStatus status;
+
+    public static Project of(Long id){
+        Project project = new Project();
+        project.id = id;
+        return project;
+    }
 
     public static Project of(
         @Nullable String code,

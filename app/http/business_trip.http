@@ -1,0 +1,38 @@
+### add business trip
+POST http://localhost:8080/business-trip
+Content-Type: application/json
+
+{
+  "tripNumber": "TRIPNUMBER1",
+  "reporter": "홍길동",
+  "reportDate": "2022-09-29T10:22:30",
+  "approver1": "관리자1",
+  "approver2": "관리자2",
+  "approver3": "관리자3",
+  "departmentId": 1,
+  "tripDateFrom": "2022-09-29T09:00:00",
+  "tripDateTo": "2022-09-29T22:00:00",
+  "projectId": 1,
+  "location": "제주",
+  "accompanyIds": [1,2],
+  "purpose": "목적",
+  "counterpart": {
+    "companyName": "테스트고객사",
+    "department": "테스트부서",
+    "rank": "과장",
+    "name": "김담당"
+  },
+  "contents": "내용",
+  "etc": "기타",
+  "followUp": "후속업무내용",
+  "expanse": {
+    "distance": 600,
+    "distanceComment": "멀다",
+    "accommodationFee": 70000,
+    "accommodationFeeComment": "비싸다",
+    "transportationFee": 240000,
+    "transportationFeeComment": "항공기",
+    "extraFee": 90000,
+    "extraFeeComment": "렌터카"
+  }
+}

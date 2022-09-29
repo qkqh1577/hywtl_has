@@ -168,6 +168,12 @@ public class User extends CustomEntity {
         this.lockedAt = null;
     }
 
+    public static User of(Long id){
+        User user = new User();
+        user.id = id;
+        return user;
+    }
+
     public static User of(
         String username,
         String password,
