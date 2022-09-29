@@ -58,6 +58,7 @@ export default function SectionLayout(props: SectionLayoutProps) {
             display:        'flex',
             flexWrap:       'nowrap',
             justifyContent: 'flex-start',
+            alignItems:     'center',
           }}>
             <TextBox variant="body7" sx={{ marginRight: '10px' }}>
               {title}

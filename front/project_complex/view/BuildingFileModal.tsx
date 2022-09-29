@@ -142,6 +142,9 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
     if (open && !fileId) {
       setEdit(true);
     }
+    if (open && fileId) {
+      setEdit(false);
+    }
     if (open && fileId && fileList) {
       setFile(fileList.find(item => item.id === fileId));
     }

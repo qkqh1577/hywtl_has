@@ -100,6 +100,7 @@ function SmallButton(props: MuiButtonProps) {
         fontSize:        '12px',
         backgroundColor: ColorPalette._386dd6,
         color:           ColorPalette._ffffff,
+        minWidth:        'unset',
         ...props.sx,
       } as MuiButtonProps['sx']}
     />

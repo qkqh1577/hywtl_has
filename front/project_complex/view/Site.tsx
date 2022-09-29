@@ -65,7 +65,7 @@ export default function ProjectComplexSiteSection(props: Props) {
     <SectionLayout
       title="대지 모형"
       titleRightComponent={
-        <Button onClick={props.onAdd}>
+        <Button shape="small" onClick={props.onAdd}>
           + 추가
         </Button>
       }

@@ -17,7 +17,7 @@ export default function (props: ProjectEstimateListButtonProps) {
         marginRight: '10px',
       }
     }}>
-      <Button shape="small">최종 선택</Button>
+      <Button shape="small" sx={{ width: 'auto' }}>최종 선택</Button>
       <Button shape="small" onClick={() => {
         props.openAddModal(ProjectEstimateType.COMPARISON);
       }}>

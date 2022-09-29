@@ -140,6 +140,9 @@ export default function TableLayout(props: Props) {
               formik.setFieldValue(pageFieldName, 0);
               formik.handleSubmit();
             }}
+            sx={{
+              margin: '5px',
+            }}
           />
           <IconButton
             shape="square"
@@ -150,6 +153,9 @@ export default function TableLayout(props: Props) {
             onClick={() => {
               formik.setFieldValue(pageFieldName, formik.values[pageFieldName] - 1);
               formik.handleSubmit();
+            }}
+            sx={{
+              margin: '5px',
             }}
           />
           {getPageList(props.pagination)
@@ -163,7 +169,7 @@ export default function TableLayout(props: Props) {
                 display:        'flex',
                 justifyContent: 'center',
                 alignItems:     'center',
-                marginLeft:     '10px',
+                margin:         '5px',
               }}>
               {(page === formik.values[pageFieldName] + 1)
                 ? (
@@ -192,6 +198,9 @@ export default function TableLayout(props: Props) {
               formik.setFieldValue(pageFieldName, formik.values[pageFieldName] + 1);
               formik.handleSubmit();
             }}
+            sx={{
+              margin: '5px',
+            }}
           />
           <IconButton
             shape="square"
@@ -202,6 +211,9 @@ export default function TableLayout(props: Props) {
             onClick={() => {
               formik.setFieldValue(pageFieldName, props.pagination!.totalPages - 1);
               formik.handleSubmit();
+            }}
+            sx={{
+              margin: '5px',
             }}
           />
         </Box>

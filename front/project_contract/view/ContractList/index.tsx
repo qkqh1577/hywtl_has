@@ -3,7 +3,6 @@ import ButtonSection from 'project_contract/view/ContractList/ButtonSection';
 import {
   ProjectContractId,
   ProjectContractShort
-
 } from 'project_contract/domain';
 import React, {
   useEffect,
@@ -22,12 +21,8 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import IconButton from 'components/IconButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DateFormat from 'components/DateFormat';
 import TextLink from 'components/TextLink';
 import Button from 'layouts/Button';
-import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
   list?: ProjectContractShort[];

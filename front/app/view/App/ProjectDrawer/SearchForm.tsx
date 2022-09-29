@@ -54,7 +54,14 @@ export default function (props: SearchFormProps) {
         />
         <IconButton
           onClick={props.toggleFilter}
-          children={<FontAwesomeIcon icon={props.openFilter ? 'angle-up' : 'angle-down'} />}
+          children={
+            <FontAwesomeIcon
+              icon={props.openFilter ? 'angle-up' : 'angle-down'}
+            />
+          }
+          sx={{
+            marginLeft: '10px',
+          }}
         />
       </ItemBox>
       <ItemBox>

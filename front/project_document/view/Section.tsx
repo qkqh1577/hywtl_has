@@ -29,6 +29,7 @@ import {
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
+import TextBox from 'layouts/Text';
 
 interface Props {
   type: ProjectDocumentType;
@@ -105,11 +106,13 @@ export default function ProjectDocumentSection(props: Props) {
                     width:          '100%',
                     display:        'flex',
                     flexWrap:       'nowrap',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems:     'center'
                   }}>
-                    {item.file.filename}
-                    ({toReadableSize(item.file.size)})
+                    <TextBox variant="body8">
+                      {item.file.filename}
+                      ({toReadableSize(item.file.size)})
+                    </TextBox>
                     <IconButton
                       shape="square"
                       children={<FontAwesomeIcon icon="download" />}
