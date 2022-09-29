@@ -139,13 +139,13 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
   const isDetail = open && fileId && !edit;
 
   useEffect(() => {
-    if (!fileId) {
+    if (open && !fileId) {
       setEdit(true);
     }
-    if (fileId && fileList) {
+    if (open && fileId && fileList) {
       setFile(fileList.find(item => item.id === fileId));
     }
-  }, [fileId, fileList]);
+  }, [open, fileId, fileList]);
 
   return (
     <ModalLayout
@@ -193,12 +193,12 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                   </Td>
                   <Td>{file.note}</Td>
                   <Td>
-                    <DateFormat date={file.modifiedAt} format="YYYY-MM-DD HH:mm" />
+                    <DateFormat date={file.createdAt} format="YYYY-MM-DD HH:mm" />
                   </Td>
                   <Td>{file.createdBy.name}</Td>
                 </TableRow>
               )}
-              {fileList && fileList.map((item) => (
+              {!isDetail && fileList && fileList.map((item) => (
                 <TableRow key={item.id}>
                   {edit && (
                     <Td>
@@ -228,7 +228,7 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                   </Td>
                   <Td>{item.note}</Td>
                   <Td>
-                    <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
+                    <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                   </Td>
                   <Td>{item.createdBy.name}</Td>
                 </TableRow>

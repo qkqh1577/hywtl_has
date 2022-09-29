@@ -270,7 +270,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                   <Input
                     readOnly
                     variant="outlined"
-                    defaultValue={item.buildingDocument?.code}
+                    value={item.buildingDocument?.code || '-'}
                     endAdornment={
                       <InputAdornment position="end">
                         <FontAwesomeIcon
