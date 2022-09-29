@@ -11,6 +11,7 @@ import {
   ProjectComplexBuildingParameter,
   ProjectComplexSiteParameter
 } from 'project_complex/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export enum ProjectComplexActionType {
   setId             = 'project/sales/complex/id/set',
@@ -35,11 +36,11 @@ export const projectComplexAction = {
   setBuildingList:   createAction(ProjectComplexActionType.setBuildingList)<ProjectComplexBuildingVO[] | undefined>(),
   setBuilding:       createAction(ProjectComplexActionType.setBuilding)<ProjectComplexBuildingVO | undefined>(),
   pushSite:          createAction(ProjectComplexActionType.pushSite)(),
-  requestSite:       createAction(ProjectComplexActionType.requestSite)<string>(),
+  requestSite:       createAction(ProjectComplexActionType.requestSite)<ApiStatus>(),
   updateSite:        createAction(ProjectComplexActionType.updateSite)<ProjectComplexSiteParameter>(),
   deleteSite:        createAction(ProjectComplexActionType.deleteSite)<ProjectComplexSiteId>(),
   pushBuilding:      createAction(ProjectComplexActionType.pushBuilding)(),
-  requestBuilding:   createAction(ProjectComplexActionType.requestBuilding)<string>(),
+  requestBuilding:   createAction(ProjectComplexActionType.requestBuilding)<ApiStatus>(),
   updateBuilding:    createAction(ProjectComplexActionType.updateBuilding)<ProjectComplexBuildingParameter>(),
   deleteBuilding:    createAction(ProjectComplexActionType.deleteBuilding)<ProjectComplexBuildingId>(),
   buildingFileModal: createAction(ProjectComplexActionType.buildingFileModal)<ProjectComplexBuildingId | undefined>(),

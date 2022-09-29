@@ -7,21 +7,22 @@ import {
 } from 'project_complex/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectComplexActionType } from 'project_complex/action';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectComplexState {
   id?: ProjectId;
   siteList?: ProjectComplexSiteVO[];
   buildingList?: ProjectComplexBuildingVO[];
   buildingDetail?: ProjectComplexBuildingVO;
-  requestSite: string;
-  requestBuilding: string;
+  requestSite: ApiStatus;
+  requestBuilding: ApiStatus;
   buildingFileModal?: ProjectComplexBuildingId | undefined;
   testDetail?: ProjectComplexTestVO;
 }
 
 const initial: ProjectComplexState = {
-  requestSite:     'idle',
-  requestBuilding: 'idle',
+  requestSite:     ApiStatus.IDLE,
+  requestBuilding: ApiStatus.IDLE,
 };
 
 export const projectComplexReducer = createReducer(initial, {

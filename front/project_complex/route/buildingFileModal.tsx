@@ -15,6 +15,7 @@ import { ProjectComplexBuildingId } from 'project_complex/domain';
 import { ProjectDocumentId } from 'project_document/domain';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
 import useDialog from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface FormikProps {
   open: boolean;
@@ -76,7 +77,7 @@ export default function ProjectComplexBuildingFileModalRoute() {
       formik.setSubmitting(false);
       formik.setFieldValue('edit', false);
       formik.setFieldValue('open', false);
-      dispatch(projectComplexAction.requestBuilding('idle'));
+      dispatch(projectComplexAction.requestBuilding(ApiStatus.IDLE));
     }
   }, [requestBuilding]);
 

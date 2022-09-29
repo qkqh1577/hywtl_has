@@ -1,6 +1,4 @@
-import React, {
-  useCallback,
-} from 'react';
+import React, { useCallback, } from 'react';
 import ProjectComplexBuildingSection from 'project_complex/view/Building';
 import {
   useDispatch,
@@ -9,12 +7,8 @@ import {
 import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
 import useDialog from 'components/Dialog';
-import {
-  ProjectComplexBuildingParameter,
-} from 'project_complex/parameter';
-import {
-  ProjectComplexBuildingId,
-} from 'project_complex/domain';
+import { ProjectComplexBuildingParameter, } from 'project_complex/parameter';
+import { ProjectComplexBuildingId, } from 'project_complex/domain';
 
 export default function ProjectComplexBuildingRoute() {
 
@@ -37,7 +31,7 @@ export default function ProjectComplexBuildingRoute() {
     <ProjectComplexBuildingSection
       list={buildingList}
       onAdd={add}
-      onSubmit={update}
+      onUpdate={update}
       onDelete={deleteBuilding}
     />
   );
