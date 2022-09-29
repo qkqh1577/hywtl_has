@@ -1,20 +1,26 @@
 import React from 'react';
 import {
   Box,
+  MenuItem,
   Typography
 } from '@mui/material';
-import SelectField from 'components/SelectField';
 import { ColorPalette } from 'app/view/App/theme';
 import {
+  ProjectContractStatus,
   projectContractStatusList,
   projectContractStatusName,
+  ProjectEstimateExpectation,
   projectEstimateExpectationList,
   projectEstimateExpectationName,
+  ProjectEstimateStatus,
   projectEstimateStatusList,
   projectEstimateStatusName,
+  ProjectProgressStatus,
   projectProgressStatusList,
-  projectProgressStatusName
+  projectProgressStatusName,
+  ProjectStatus
 } from 'project_status/domain';
+import Select from 'layouts/Select';
 
 interface DataBoxProps {
   title: string;
@@ -45,10 +51,11 @@ function DataBox(props: DataBoxProps) {
 }
 
 interface Props {
-  handleChangeEstimateExpectation?: (e) => void;
+  status: ProjectStatus | undefined;
+  onChange: (status: Partial<ProjectStatus>) => void;
 }
 
-export default function ProjectContainerStatusBar({ handleChangeEstimateExpectation }: Props) {
+export default function ProjectContainerStatusBar({ status, onChange }: Props) {
 
   return (
     <Box sx={{
@@ -65,17 +72,18 @@ export default function ProjectContainerStatusBar({ handleChangeEstimateExpectat
         width={10}
         backgroundColor={ColorPalette._d2e7fa}
         children={
-          <SelectField
-            required
-            disableLabel
+          <Select
             variant="outlined"
-            name="progressStatus"
-            label="진행 현황"
-            options={projectProgressStatusList.map((item) => ({
-              key:  item as string,
-              text: projectProgressStatusName(item)
-            }))}
-          />
+            value={status?.progressStatus || '선택'}
+            onChange={(e) => {
+              onChange({ progressStatus: e.target.value as ProjectProgressStatus });
+            }}
+          >
+            {!status?.progressStatus && <MenuItem key="" value="선택">선택</MenuItem>}
+            {projectProgressStatusList.map((item) => (
+              <MenuItem key={item} value={item}>{projectProgressStatusName(item)}</MenuItem>
+            ))}
+          </Select>
         }
       />
       <DataBox
@@ -83,17 +91,18 @@ export default function ProjectContainerStatusBar({ handleChangeEstimateExpectat
         width={10}
         backgroundColor={ColorPalette._d2e7fa}
         children={
-          <SelectField
-            disableLabel
+          <Select
             variant="outlined"
-            name="estimateExpectation"
-            label="견적 분류"
-            options={projectEstimateExpectationList.map((item) => ({
-              key:  item as string,
-              text: projectEstimateExpectationName(item)
-            }))}
-            onChange={handleChangeEstimateExpectation || function () {}}
-          />
+            value={status?.estimateExpectation || '선택'}
+            onChange={(e) => {
+              onChange({ estimateExpectation: e.target.value as ProjectEstimateExpectation });
+            }}
+          >
+            {!status?.estimateExpectation && <MenuItem key="" value="선택">선택</MenuItem>}
+            {projectEstimateExpectationList.map((item) => (
+              <MenuItem key={item} value={item}>{projectEstimateExpectationName(item)}</MenuItem>
+            ))}
+          </Select>
         }
       />
       <DataBox
@@ -101,16 +110,18 @@ export default function ProjectContainerStatusBar({ handleChangeEstimateExpectat
         width={10}
         backgroundColor={ColorPalette._d2e7fa}
         children={
-          <SelectField
-            disableLabel
+          <Select
             variant="outlined"
-            name="estimateStatus"
-            label="견적 상태"
-            options={projectEstimateStatusList.map((item) => ({
-              key:  item as string,
-              text: projectEstimateStatusName(item)
-            }))}
-          />
+            value={status?.estimateStatus || '선택'}
+            onChange={(e) => {
+              onChange({ estimateStatus: e.target.value as ProjectEstimateStatus });
+            }}
+          >
+            {!status?.estimateStatus && <MenuItem key="" value="선택">선택</MenuItem>}
+            {projectEstimateStatusList.map((item) => (
+              <MenuItem key={item} value={item}>{projectEstimateStatusName(item)}</MenuItem>
+            ))}
+          </Select>
         }
       />
       <DataBox
@@ -118,16 +129,18 @@ export default function ProjectContainerStatusBar({ handleChangeEstimateExpectat
         width={10}
         backgroundColor={ColorPalette._d2e7fa}
         children={
-          <SelectField
-            disableLabel
+          <Select
             variant="outlined"
-            name="contractStatus"
-            label="계약 상태"
-            options={projectContractStatusList.map((item) => ({
-              key:  item as string,
-              text: projectContractStatusName(item)
-            }))}
-          />
+            value={status?.contractStatus || '선택'}
+            onChange={(e) => {
+              onChange({ contractStatus: e.target.value as ProjectContractStatus });
+            }}
+          >
+            {!status?.contractStatus && <MenuItem key="" value="선택">선택</MenuItem>}
+            {projectContractStatusList.map((item) => (
+              <MenuItem key={item} value={item}>{projectContractStatusName(item)}</MenuItem>
+            ))}
+          </Select>
         }
       />
     </Box>
