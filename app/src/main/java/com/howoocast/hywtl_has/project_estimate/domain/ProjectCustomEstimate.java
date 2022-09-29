@@ -32,6 +32,7 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         ProjectEstimateType type,
         Boolean isSent,
         String recipient,
+        Boolean isLh,
         String note,
         User writer,
         Project project,
@@ -42,6 +43,7 @@ public class ProjectCustomEstimate extends ProjectEstimate {
             type,
             isSent,
             recipient,
+            isLh,
             note,
             writer,
             project,
@@ -55,6 +57,7 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         ProjectEstimateType type,
         Boolean isSent,
         String recipient,
+        Boolean isLh,
         String note,
         Business business
     ) {
@@ -64,6 +67,7 @@ public class ProjectCustomEstimate extends ProjectEstimate {
                 type,
                 isSent,
                 recipient,
+                isLh,
                 note,
                 dto.getWriter(),
                 dto.getProject(),
@@ -76,12 +80,14 @@ public class ProjectCustomEstimate extends ProjectEstimate {
     public List<EventEntity> change(
         Boolean isSent,
         String recipient,
+        Boolean isLh,
         String note,
         Business business
     ) {
         return super.change(
             isSent,
             recipient,
+            isLh,
             note,
             business
         );

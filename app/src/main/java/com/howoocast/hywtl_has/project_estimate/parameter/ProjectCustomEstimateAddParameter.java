@@ -23,6 +23,8 @@ public class ProjectCustomEstimateAddParameter {
 
     private String note;
 
+    private Boolean isLh;
+
     private FileItemParameter file;
 
     @NotNull(message = ProjectCustomEstimate.KEY + ".type.not_null")

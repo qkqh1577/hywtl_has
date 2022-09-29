@@ -58,6 +58,7 @@ public class ProjectCustomEstimateService {
             parameter.getType(),
             parameter.getIsSent(),
             parameter.getRecipient(),
+            parameter.getIsLh(),
             parameter.getNote(),
             business
         );
@@ -81,6 +82,7 @@ public class ProjectCustomEstimateService {
         List<EventEntity> eventList = instance.change(
             parameter.getIsSent(),
             parameter.getRecipient(),
+            parameter.getIsLh(),
             parameter.getNote(),
             business
         );

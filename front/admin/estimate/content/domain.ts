@@ -39,6 +39,12 @@ export function testTypeName(testType: TestType | '') {
   }
 }
 
+export const buildingTestTypeList: TestType[] = [
+  TestType.F,
+  TestType.P,
+  TestType.A,
+];
+
 export const testTypeList: TestType[] = [
   TestType.COMMON,
   TestType.REVIEW,

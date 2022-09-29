@@ -19,7 +19,6 @@ export default function Input({ variant, ...props }: Props) {
 }
 
 export function OutlinedInput(props: Omit<Props, |'variant'>) {
-
   return (
     <MuiInput
       {...props}
@@ -32,8 +31,14 @@ export function OutlinedInput(props: Omit<Props, |'variant'>) {
         },
       } : {
         ...props.sx,
-        '&::before': {
+        '&::before':             {
           borderBottom: 'none !important',
+        },
+        '&::after':              {
+          borderBottom: 'none !important',
+        },
+        '&.Mui-focused > input': {
+          border: `1px solid ${ColorPalette._0047d3}  !important`
         }
       }}
       inputProps={{
@@ -46,9 +51,9 @@ export function OutlinedInput(props: Omit<Props, |'variant'>) {
           color:           ColorPalette._252627,
           border:          `1px solid ${ColorPalette._e4e9f2}`,
           borderRadius:    '5px',
-          backgroundColor: ColorPalette._ffffff,
+          backgroundColor: props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
           boxSizing:       'border-box',
-
+          cursor:          props.readOnly || props.disabled ? 'default' : 'text',
         },
       }}
     />
