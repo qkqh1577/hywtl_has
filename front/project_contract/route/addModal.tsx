@@ -5,23 +5,17 @@ import {
 import { RootState } from 'services/reducer';
 import ProjectContractAddModal from 'project_contract/view/AddModal';
 import { useFormik } from 'formik';
-import {
-  ProjectContractAddParameter,
-  ProjectContractParameter,
-} from 'project_contract/parameter';
+import { ProjectContractParameter, } from 'project_contract/parameter';
 import React, {
   useCallback,
   useEffect,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
-import {
-  ProjectEstimateId,
-  ProjectEstimateVO
-} from 'project_estimate/domain';
-import { BusinessVO } from 'business/domain';
+import { ProjectEstimateVO } from 'project_estimate/domain';
 import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectId } from 'project/domain';
+import CollectionTotalRatioCellRoute from 'project_contract/route/CollectionTotalRatioCellRoute';
 
 export default function ProjectContractAddModalRoute() {
 
@@ -36,7 +30,11 @@ export default function ProjectContractAddModalRoute() {
     note:          '',
     basic:         undefined,
     collection:    undefined,
-    conditionList: undefined,
+    conditionList: [{
+      id:              '',
+      title:           '',
+      descriptionList: []
+    }],
   };
 
   useEffect(() => {
@@ -76,6 +74,7 @@ export default function ProjectContractAddModalRoute() {
     <ProjectContractAddModal
       formik={formik}
       onClose={onClose}
+      totalRatioCell={<CollectionTotalRatioCellRoute />}
     />
   );
 }

@@ -15,9 +15,12 @@ import OrdererForm from 'project_contract/view/AddModal/OrdererForm';
 import ContractorForm from 'project_contract/view/AddModal/ContractorForm';
 import ServiceContractTermsForm from 'project_contract/view/AddModal/ServiceContractTermsForm';
 import ContractInfoHeader from 'project_contract/view/AddModal/ContractInfoHeader';
+import ContractDateForm from 'project_contract/view/AddModal/ContractDateForm';
 
-interface Props extends FormikLayoutProps<any> {
+interface Props
+  extends FormikLayoutProps<any>{
   onClose: ModalLayoutProps['onClose'];
+  totalRatioCell: React.ReactNode;
 }
 
 export default function ProjectContractAddModal(props: Props) {
@@ -50,7 +53,8 @@ export default function ProjectContractAddModal(props: Props) {
                 <ContractEstimateForm formik={formik} />
               </Grid>
               <Grid item xs={12} md={9}>
-                <ServiceAgreementForm formik={formik} />
+                <ServiceAgreementForm {...props} />
+                <ContractDateForm formik={formik} />
                 <OrdererForm formik={formik} />
                 <ContractorForm formik={formik} />
                 <ServiceContractTermsForm formik={formik} />

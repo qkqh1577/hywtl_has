@@ -2,11 +2,9 @@ import {
   UserShortVO,
   UserVO
 } from 'user/domain';
-import {
-  FormikPartial
-} from 'type/Form';
 import { FileItemView } from 'file-item';
 import { BusinessVO } from 'business/domain';
+import { ExpectedDateType } from 'admin/contract/collection/domain';
 
 export type ProjectContractId = number & { readonly _brand: symbol }
 
@@ -92,4 +90,12 @@ export interface ProjectEstimateVO {
 
 export interface ProjectCustomEstimateVO
   extends ProjectEstimateVO {
+}
+
+export interface ContractCollectionStageWithAmount {
+  name?: string;
+  ratio?: number;
+  note?: string;
+  expectedDate?: ExpectedDateType;
+  amount?: number,
 }
