@@ -99,7 +99,9 @@ export default function ProjectEstimateListSection(props: Props) {
                       <TextLink
                         onClick={() => {
                           openDetailModal(item.id);
-                        }}>{item.code}</TextLink>
+                        }}>
+                        {item.code}
+                      </TextLink>
                       <IconButton
                         shape="square"
                         onClick={() => {console.log(item);}}

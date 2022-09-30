@@ -20,6 +20,8 @@ public class ProjectSystemEstimateParameter {
 
     private String note;
 
+    private Boolean isLh;
+
     @NotNull(message = ProjectSystemEstimate.KEY + ".plan.not_null")
     private ProjectEstimatePlanParameter plan;
 

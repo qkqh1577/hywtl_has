@@ -2,6 +2,7 @@ import apiClient, { toFormData } from 'services/api';
 import {
   ProjectDocumentId,
   ProjectDocumentShort,
+  ProjectDocumentType,
   ProjectDocumentVO
 } from 'project_document/domain';
 import { ProjectId } from 'project/domain';
@@ -13,17 +14,17 @@ import {
 class ProjectDocumentApi {
 
   async getReceivedList(id: ProjectId): Promise<ProjectDocumentShort[]> {
-    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'RECEIVED' });
+    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.RECEIVED });
     return data;
   }
 
   async getSentList(id: ProjectId): Promise<ProjectDocumentShort[]> {
-    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'SENT' });
+    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.SENT });
     return data;
   }
 
   async getBuildingList(id: ProjectId): Promise<ProjectDocumentShort[]> {
-    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: 'BUILDING' });
+    const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.BUILDING });
     return data;
   }
 
@@ -32,11 +33,16 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async add(params: ProjectDocumentParameter): Promise<void> {
+  async add(projectId: ProjectId,
+            type: ProjectDocumentType,
+            params: ProjectDocumentParameter
+  ): Promise<void> {
 
-    const formData = toFormData(params);
-    console.log(params, formData.get('file'));
-    const { data } = await apiClient.post(`/project/sales/${params.projectId}/document`, formData);
+    const formData = toFormData({
+      ...params,
+      type,
+    });
+    const { data } = await apiClient.post(`/project/sales/${projectId}/document`, formData);
     return data;
   }
 

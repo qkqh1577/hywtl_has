@@ -1,6 +1,4 @@
-import {
-  Box,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import IconButton from 'components/IconButton';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,7 +31,14 @@ export default function ProjectAppBar({
       <IconButton
         tooltip={'프로젝트 메뉴 ' + (open ? '접기' : '펴기')}
         onClick={toggle}
-        children={<FontAwesomeIcon icon={open ? 'angle-left' : 'angle-right'} />}
+        children={
+          <FontAwesomeIcon
+            icon={open ? 'angle-left' : 'angle-right'}
+          />
+        }
+        sx={{
+          marginLeft: '10px',
+        }}
       />
     </Box>
   );

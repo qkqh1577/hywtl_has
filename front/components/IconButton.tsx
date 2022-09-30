@@ -40,7 +40,6 @@ function SquareIconButton(props: Props) {
         color:           ColorPalette._ffffff,
         backgroundColor: ColorPalette._386dd6,
         borderRadius:    '5px',
-        marginLeft:      '10px',
         boxShadow:       0,
         '&:hover':       {
           backgroundColor: ColorPalette._0047d3,
@@ -72,7 +71,6 @@ function RoundIconButton(props: Props) {
         height:          size ?? '22px',
         color:           ColorPalette._ffffff,
         backgroundColor: ColorPalette._4c9eeb,
-        marginLeft:      '10px',
         '&:hover':       {
           backgroundColor: ColorPalette._0047d3,
         }

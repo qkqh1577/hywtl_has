@@ -20,4 +20,6 @@ public class ProjectCustomEstimateChangeParameter {
     private Long businessId;
 
     private String note;
+
+    private Boolean isLh;
 }

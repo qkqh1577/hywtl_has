@@ -45,7 +45,7 @@ export default function RivalEstimateListSection(props: Props) {
       title="경쟁 업체 견적 정보"
       modifiedAt={modifiedAt}
       titleRightComponent={
-        <Button shape="basic1" onClick={props.onAdd}>+ 등록</Button>
+        <Button shape="small" onClick={props.onAdd}>+ 등록</Button>
       }>
       <Box sx={{
         width:    '100%',

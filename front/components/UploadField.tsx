@@ -55,7 +55,7 @@ export default function UploadField(props: UploadFieldProps) {
     if (isView) {
       if (file) {
         return (
-          <Button onClick={() => {
+          <Button shape="small" onClick={() => {
             if (file) {
               window.open(`/file-items/${file.id}`, '_blank');
             }

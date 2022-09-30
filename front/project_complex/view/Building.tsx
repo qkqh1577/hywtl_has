@@ -3,7 +3,9 @@ import {
   Difficulty,
   difficultyList,
   ProjectComplexBuildingId,
-  ProjectComplexBuildingVO
+  ProjectComplexBuildingVO,
+  ProjectComplexSiteId,
+  ProjectComplexSiteVO
 } from 'project_complex/domain';
 import React, {
   useEffect,
@@ -12,10 +14,12 @@ import React, {
 import dayjs from 'dayjs';
 import Button from 'layouts/Button';
 import {
+  Box,
+  InputAdornment,
   MenuItem,
   TableBody,
   TableContainer,
-  TableRow
+  TableRow,
 } from '@mui/material';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
 import { DefaultFunction } from 'type/Function';
@@ -27,12 +31,22 @@ import {
 import Input from 'layouts/Input';
 import Checkbox from 'layouts/Checkbox';
 import Select from 'layouts/Select';
+import { ColorPalette } from 'app/view/App/theme';
+import {
+  buildingTestTypeList,
+  TestType,
+  testTypeList,
+  testTypeName
+} from 'admin/estimate/content/domain';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
   list: ProjectComplexBuildingVO[] | undefined;
+  siteList: ProjectComplexSiteVO[] | undefined;
   onAdd: DefaultFunction;
   onUpdate: DefaultFunction<ProjectComplexBuildingParameter>;
   onDelete: DefaultFunction<ProjectComplexBuildingId>;
+  openDocumentModal: DefaultFunction<ProjectComplexBuildingId>;
 }
 
 export default function ProjectComplexBuildingSection(props: Props) {
@@ -63,13 +77,14 @@ export default function ProjectComplexBuildingSection(props: Props) {
       titleRightComponent={
         <>
           <Button
+            shape="small"
             onClick={props.onAdd}
             sx={{
               marginRight: '10px'
             }}>
             + 추가
           </Button>
-          <Button>
+          <Button shape="small">
             계약에 사용된 견적서 새창열기
           </Button>
         </>
@@ -84,10 +99,22 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Input
+                    variant="outlined"
                     type="text"
                     defaultValue={item.name ?? ''}
                     onBlur={(e) => {
-                      props.onUpdate({ id: item.id, name: e.target.value || undefined });
+                      const value = e.target.value || undefined;
+                      if (value !== item.name) {
+                        props.onUpdate({ id: item.id, name: value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.toLowerCase() === 'enter') {
+                        const value = (e.target as HTMLInputElement).value ?? undefined;
+                        if (value !== item.name) {
+                          props.onUpdate({ id: item.id, name: value });
+                        }
+                      }
                     }}
                   />
                 </Td>
@@ -97,7 +124,26 @@ export default function ProjectComplexBuildingSection(props: Props) {
               <Th>대지 모형</Th>
               {list?.map(item => (
                 <Td key={item.id}>
-                  {item.site?.name}
+                  <Select
+                    displayEmpty
+                    variant="outlined"
+                    value={props.siteList && item.site ? item.site.id : ''}
+                    renderValue={(raw) => {
+                      const value = props.siteList?.find((site) => site.id === raw);
+                      return value?.name ?? '선택';
+                    }}
+                    onChange={(e) => {
+                      const value = (e.target.value || undefined) as ProjectComplexSiteId | undefined;
+                      if (item.site?.id !== value) {
+                        props.onUpdate({ id: item.id, siteId: value ?? ProjectComplexSiteId(-1) });
+                      }
+                    }}>
+                    {props.siteList?.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Td>
               ))}
             </TableRow>
@@ -106,10 +152,22 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Input
+                    variant="outlined"
                     type="text"
                     defaultValue={item.shape ?? ''}
                     onBlur={(e) => {
-                      props.onUpdate({ id: item.id, shape: e.target.value || undefined });
+                      const value = e.target.value || undefined;
+                      if (value !== item.shape) {
+                        props.onUpdate({ id: item.id, shape: value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.toLowerCase() === 'enter') {
+                        const value = (e.target as HTMLInputElement).value ?? undefined;
+                        if (value !== item.shape) {
+                          props.onUpdate({ id: item.id, shape: value });
+                        }
+                      }
                     }}
                   />
                 </Td>
@@ -120,11 +178,22 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Input
+                    variant="outlined"
                     type="number"
                     defaultValue={item.floorCount ?? ''}
-                    onChange={(e) => {
-                      const value = +e.target.value;
-                      props.onUpdate({ id: item.id, floorCount: value ?? undefined });
+                    onBlur={(e) => {
+                      const value = +e.target.value ?? undefined;
+                      if (value !== item.floorCount) {
+                        props.onUpdate({ id: item.id, floorCount: value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.toLowerCase() === 'enter') {
+                        const value = +(e.target as HTMLInputElement).value ?? undefined;
+                        if (value !== item.floorCount) {
+                          props.onUpdate({ id: item.id, floorCount: value });
+                        }
+                      }
                     }}
                   />
                 </Td>
@@ -135,11 +204,22 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Input
+                    variant="outlined"
                     type="number"
                     defaultValue={item.height ?? ''}
-                    onChange={(e) => {
-                      const value = +e.target.value;
-                      props.onUpdate({ id: item.id, height: value ?? undefined });
+                    onBlur={(e) => {
+                      const value = +e.target.value ?? undefined;
+                      if (value !== item.height) {
+                        props.onUpdate({ id: item.id, height: value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.toLowerCase() === 'enter') {
+                        const value = +(e.target as HTMLInputElement).value ?? undefined;
+                        if (value !== item.height) {
+                          props.onUpdate({ id: item.id, height: value });
+                        }
+                      }
                     }}
                   />
                 </Td>
@@ -150,11 +230,22 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Input
+                    variant="outlined"
                     type="number"
                     defaultValue={item.baseArea ?? ''}
                     onChange={(e) => {
-                      const value = +e.target.value;
-                      props.onUpdate({ id: item.id, baseArea: value ?? undefined });
+                      const value = +e.target.value ?? undefined;
+                      if (value !== item.baseArea) {
+                        props.onUpdate({ id: item.id, baseArea: value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key.toLowerCase() === 'enter') {
+                        const value = +(e.target as HTMLInputElement).value ?? undefined;
+                        if (value !== item.baseArea) {
+                          props.onUpdate({ id: item.id, baseArea: value });
+                        }
+                      }
                     }}
                   />
                 </Td>
@@ -166,8 +257,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 <Td key={item.id}>
                   <Input
                     readOnly
+                    variant="outlined"
                     type="number"
-                    defaultValue={item.ratio?.toFixed(4) ?? ''}
+                    value={item.ratio?.toFixed(4) ?? ''}
                   />
                 </Td>
               ))}
@@ -176,7 +268,26 @@ export default function ProjectComplexBuildingSection(props: Props) {
               <Th>형상비 검토 파일 ID</Th>
               {list?.map(item => (
                 <Td key={item.id}>
-                  {item.buildingDocument?.code}
+                  <Input
+                    readOnly
+                    variant="outlined"
+                    value={item.buildingDocument?.code || '-'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <FontAwesomeIcon
+                          icon="link"
+                          style={{
+                            fontSize: '13px',
+                            color:    ColorPalette._386dd6,
+                            cursor:   'pointer',
+                          }}
+                          onClick={() => {
+                            props.openDocumentModal(item.id);
+                          }}
+                        />
+                      </InputAdornment>
+                    }
+                  />
                 </Td>
               ))}
             </TableRow>
@@ -184,7 +295,42 @@ export default function ProjectComplexBuildingSection(props: Props) {
               <Th>특별 풍하중 조건</Th>
               {list?.map(item => (
                 <Td key={item.id}>
-                  {item.conditionList?.join(', ')}
+                  <Select
+                    multiple
+                    displayEmpty
+                    variant="outlined"
+                    value={item.conditionList}
+                    renderValue={value => {
+                      if (!Array.isArray(value) || value.length === 0) {
+                        return '선택';
+                      }
+                      return value.map((v) => `(${v})`)
+                                  .join(', ');
+                    }}
+                    onChange={(e) => {
+                      const value = (e.target.value as string[]).sort((a,
+                                                                       b
+                      ) => a.localeCompare(b));
+                      props.onUpdate({ id: item.id, conditionList: value });
+                    }}>
+                    {['2', '3', '4', '5'].map((value) => (
+                      <MenuItem key={value} value={value}>
+                        <Checkbox
+                          readOnly
+                          checked={item.conditionList?.includes(value)}
+                          value={value}
+                        />
+                        <Box sx={{
+                          fontSize:   '13px',
+                          color:      ColorPalette._252627,
+                          marginLeft: '6px',
+                          display:    'flex',
+                        }}>
+                          ({value})
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Td>
               ))}
             </TableRow>
@@ -192,12 +338,29 @@ export default function ProjectComplexBuildingSection(props: Props) {
               <Th>실험 대상 여부</Th>
               {list?.map(item => (
                 <Td key={item.id}>
-                  <Checkbox
-                    defaultChecked={item.inTest}
-                    onChange={() => {
-                      props.onUpdate({ id: item.id, inTest: !item.inTest });
-                    }}
-                  />
+                  <Box sx={{
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    width:          '100%',
+                    height:         '100%',
+                    justifyContent: 'center',
+                    alignItems:     'center',
+                  }}>
+                    <Checkbox
+                      defaultChecked={item.inTest}
+                      onChange={() => {
+                        props.onUpdate({ id: item.id, inTest: !item.inTest });
+                      }}
+                    />
+                    <Box sx={{
+                      fontSize:   '13px',
+                      color:      ColorPalette._252627,
+                      marginLeft: '6px',
+                      display:    'flex',
+                    }}>
+                      (1)
+                    </Box>
+                  </Box>
                 </Td>
               ))}
             </TableRow>
@@ -205,7 +368,42 @@ export default function ProjectComplexBuildingSection(props: Props) {
               <Th>실험 종류</Th>
               {list?.map(item => (
                 <Td key={item.id}>
-                  {item.testTypeList?.join(', ')}
+                  <Select
+                    multiple
+                    displayEmpty
+                    variant="outlined"
+                    value={item.testTypeList}
+                    renderValue={value => {
+                      if (!Array.isArray(value) || value.length === 0) {
+                        return '선택';
+                      }
+                      return value.map(testTypeName)
+                                  .join(', ');
+                    }}
+                    onChange={(e) => {
+                      const value = (e.target.value as TestType[]).sort((a,
+                                                                         b
+                      ) => testTypeList.indexOf(a) - testTypeList.indexOf(b));
+                      props.onUpdate({ id: item.id, testTypeList: value });
+                    }}>
+                    {buildingTestTypeList.map((value) => (
+                      <MenuItem key={value} value={value}>
+                        <Checkbox
+                          readOnly
+                          checked={item.testTypeList?.includes(value)}
+                          value={value}
+                        />
+                        <Box sx={{
+                          fontSize:   '13px',
+                          color:      ColorPalette._252627,
+                          marginLeft: '6px',
+                          display:    'flex',
+                        }}>
+                          {testTypeName(value)}
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Td>
               ))}
             </TableRow>
@@ -214,8 +412,10 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
-                    variant="standard"
-                    defaultValue={item.estimateFigureDifficulty ?? ''}
+                    displayEmpty
+                    variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
+                    value={item.estimateFigureDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
                       props.onUpdate({ id: item.id, estimateFigureDifficulty: value });
@@ -232,8 +432,10 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
-                    variant="standard"
-                    defaultValue={item.estimateTestDifficulty ?? ''}
+                    displayEmpty
+                    variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
+                    value={item.estimateTestDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
                       props.onUpdate({ id: item.id, estimateTestDifficulty: value });
@@ -250,8 +452,10 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
-                    variant="standard"
-                    defaultValue={item.estimateEvaluationDifficulty ?? ''}
+                    displayEmpty
+                    variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
+                    value={item.estimateEvaluationDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
                       props.onUpdate({ id: item.id, estimateEvaluationDifficulty: value });
@@ -268,8 +472,10 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Select
-                    variant="standard"
-                    defaultValue={item.estimateReportDifficulty ?? ''}
+                    displayEmpty
+                    variant="outlined"
+                    renderValue={(value) => value as any || '선택'}
+                    value={item.estimateReportDifficulty ?? ''}
                     onChange={(e) => {
                       const value = (e.target.value as Difficulty) || undefined;
                       props.onUpdate({ id: item.id, estimateReportDifficulty: value });

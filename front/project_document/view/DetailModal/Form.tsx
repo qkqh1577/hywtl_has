@@ -1,57 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Typography,
 } from '@mui/material';
-import TextField from 'components/TextField';
-import { FieldStatus } from 'components/DataFieldProps';
 import { ColorPalette } from 'app/view/App/theme';
-import UploadField from 'components/UploadField';
+import { FormikContext } from 'formik';
+import FieldBox from 'project_document/view/FieldBox';
+import Input from 'layouts/Input';
+import FieldLabel from 'layouts/FieldLabel';
+import FileInput from 'layouts/FileInput';
 
-function FieldBox(props: { children: React.ReactNode }) {
-  return (
-    <Box
-      children={props.children}
-      sx={{
-        width:        '100%',
-        display:      'flex',
-        marginBottom: '15px',
-      }}
-    />
-  );
-}
-
-function TextBox(props: {
-  text: string[];
-}) {
-  return (
-    <Box sx={{
-      backgroundColor: ColorPalette._f1f5fc,
-      border:          `1px solid ${ColorPalette._e4e9f2}`,
-      padding:         '10px',
-      marginBottom:    '15px',
-      width:           '100%',
-    }}>
-      {props.text.map((t) => (
-        <Typography
-          key={t}
-          sx={{
-            fontSize: '11px',
-            color:    ColorPalette._252627,
-          }}>
-          &#183; {t}
-        </Typography>
-      ))}
-    </Box>
-  );
-}
-
-
-interface Props {
-  edit: boolean;
-}
-
-export default function ProjectDocumentDetailModalForm({ edit }: Props) {
+export default function ProjectDocumentDetailModalForm() {
+  const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       width:        '100%',
@@ -60,55 +21,141 @@ export default function ProjectDocumentDetailModalForm({ edit }: Props) {
       alignContent: 'flex-start',
     }}>
       {!edit && (
-        <FieldBox>
-          <TextField
-            labelPosition="top"
-            name="code"
-            label="자료번호"
-            status={FieldStatus.ReadOnly}
-          />
-          <TextField
-            labelPosition="top"
-            name="createdBy.name"
-            label="등록자"
-            status={FieldStatus.ReadOnly}
-          />
-        </FieldBox>
+        <Box sx={{
+          width:          '100%',
+          display:        'flex',
+          flexWrap:       'nowrap',
+          justifyContent: 'space-between',
+        }}>
+          <Box sx={{
+            width:    '45%',
+            display:  'flex',
+            flexWrap: 'nowrap',
+          }}>
+            <FieldBox
+              label={
+                <FieldLabel>
+                  자료 번호
+                </FieldLabel>
+              }
+              children={
+                <Input
+                  readOnly
+                  defaultValue={formik.values.code ?? ''}
+                />
+              }
+            />
+          </Box>
+          <Box sx={{
+            width:    '45%',
+            display:  'flex',
+            flexWrap: 'nowrap',
+          }}>
+            <FieldBox
+              label={
+                <FieldLabel>
+                  등록자
+                </FieldLabel>
+              }
+              children={
+                <Input
+                  readOnly
+                  defaultValue={formik.values.createdBy?.name ?? ''}
+                />
+              }
+            />
+          </Box>
+        </Box>
       )}
-      <FieldBox>
-        <TextField
-          labelPosition="top"
-          name="recipient"
-          label="수신처"
-        />
-      </FieldBox>
-      <FieldBox>
-        <UploadField
-          status={edit ? FieldStatus.Disabled : FieldStatus.View}
-          name="file"
-          label="파일"
-        />
-      </FieldBox>
-      <FieldBox>
-        <UploadField
-          status={edit ? FieldStatus.Idle : FieldStatus.View}
-          name="mailFile"
-          label="메일 자료"
-          accept=".eml"
-        />
-      </FieldBox>
-      <TextBox text={[
-        '파일 크기는 각 10MB를 초과 할 수 없습니다.',
-        '등록 가능한 파일양식: eml'
-      ]}
+      <FieldBox
+        label={
+          <FieldLabel required={edit}>
+            수신처
+          </FieldLabel>
+        }
+        children={
+          <Input
+            required
+            value={formik.values.recipient ?? ''}
+            readOnly={!edit}
+            onChange={(e) => {
+              formik.setFieldValue('recipient', e.target.value || undefined);
+            }}
+          />
+        }
       />
-      <FieldBox>
-        <TextField
-          labelPosition="top"
-          name="note"
-          label="비고"
-        />
-      </FieldBox>
+      <FieldBox
+        label={
+          <FieldLabel>
+            파일
+          </FieldLabel>
+        }
+        children={
+          <FileInput
+            mode="view"
+            disableDownload={edit}
+            value={formik.values.file}
+            onChange={(file) => {
+              formik.setFieldValue('file', file);
+            }}
+          />
+        }
+      />
+      <FieldBox
+        label={
+          <FieldLabel>
+            메일 자료
+          </FieldLabel>
+        }
+        children={
+          <FileInput
+            mode={edit ? 'edit' : 'view'}
+            accept=".eml"
+            value={formik.values.mailFile}
+            onChange={(file) => {
+              formik.setFieldValue('mailFile', file);
+            }}
+          />
+        }
+      />
+      <Box sx={{
+        backgroundColor: ColorPalette._f1f5fc,
+        border:          `1px solid ${ColorPalette._e4e9f2}`,
+        padding:         '10px',
+        marginBottom:    '15px',
+        width:           '100%',
+      }}>
+        <Typography
+          sx={{
+            fontSize: '11px',
+            color:    ColorPalette._252627,
+          }}>
+          &#183; 파일 크기는 각 10MB를 초과 할 수 없습니다.
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '11px',
+            color:    ColorPalette._252627,
+          }}>
+          &#183; 등록 가능한 파일양식: eml
+        </Typography>
+      </Box>
+      <FieldBox
+        label={
+          <FieldLabel>
+            비고
+          </FieldLabel>
+        }
+        children={
+          <Input
+            readOnly={!edit}
+            value={formik.values.note ?? ''}
+            onChange={(e) => {
+              formik.setFieldValue('note', e.target.value || undefined);
+            }}
+          />
+        }
+      />
     </Box>
   );
 }

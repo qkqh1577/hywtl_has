@@ -81,6 +81,28 @@ public class ProjectComplexBuilding extends CustomEntity {
     }
 
 
+    public EventEntity unlinkSite() {
+
+        EventEntity event = EventEntity.of(
+            "대지 모형 변경",
+            this.site,
+            null
+        );
+        this.site = null;
+        return event;
+    }
+
+    public EventEntity unlinkDocument() {
+
+        EventEntity event = EventEntity.of(
+            "형상비 검토 파일 변경",
+            this.buildingDocument,
+            null
+        );
+        this.buildingDocument = null;
+        return event;
+    }
+
     public List<EventEntity> update(
         @Nullable String name,
         @Nullable ProjectComplexSite site,

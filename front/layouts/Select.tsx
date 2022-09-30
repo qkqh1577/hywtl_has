@@ -37,7 +37,7 @@ export function OutlinedSelect(props: SelectProps) {
         height:               '32px',
         fontSize:             '13px',
         fontFamily:           'Noto Sans KR',
-        color:                props.defaultValue || props.value ? ColorPalette._252627 : ColorPalette._b2b4b7,
+        color:                (!Array.isArray(props.value) && props.value) || (Array.isArray(props.value) && props.value.length > 0) ? ColorPalette._252627 : ColorPalette._b2b4b7,
         border:               `1px solid ${ColorPalette._e4e9f2}`,
         borderRadius:         '5px',
         backgroundColor:      ColorPalette._ffffff,
@@ -61,13 +61,12 @@ export function OutlinedSelect(props: SelectProps) {
         ...props.MenuProps,
         sx: {
           '& > .MuiMenu-paper': {
-            marginTop:    '-8px',
-            marginLeft:   '8px',
-            overflowY:    'scroll',
-            borderRadius: '5px',
-            boxShadow:    `2px 2px 10px 0px ${ColorPalette._b2b4b7}`,
-            maxHeight:    `${28 * 5}px`,
-
+            marginTop:     '-8px',
+            marginLeft:    '8px',
+            overflowY:     'scroll',
+            borderRadius:  '5px',
+            boxShadow:     `2px 2px 10px 0px ${ColorPalette._b2b4b7}`,
+            maxHeight:     `${28 * 5}px`,
             '& > ul':      {
               padding:      0,
               borderRadius: '5px 0 0 5px',
