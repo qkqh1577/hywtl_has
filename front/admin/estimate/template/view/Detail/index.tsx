@@ -7,6 +7,7 @@ import { DefaultFunction } from 'type/Function';
 
 interface Props {
   onDelete: DefaultFunction;
+  onCancel: DefaultFunction;
 }
 
 export default function EstimateTemplateDetail(props: Props) {
@@ -16,7 +17,12 @@ export default function EstimateTemplateDetail(props: Props) {
     <PageLayout
       title={formik.values?.id ? '용역 항목 상세 정보' : '용역 항목 등록'}
       body={<Form />}
-      footer={<Footer onDelete={props.onDelete} />}
+      footer={
+        <Footer
+          onCancel={props.onCancel}
+          onDelete={props.onDelete}
+        />
+      }
     />
   );
 }

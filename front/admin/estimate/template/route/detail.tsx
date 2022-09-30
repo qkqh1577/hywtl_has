@@ -32,7 +32,6 @@ function Element() {
   const { detail, requestUpsert, requestDelete } = useSelector((root: RootState) => root.estimateTemplate);
   const { error, alert } = useDialog();
   const upsert = useCallback((params: EstimateTemplateParameter) => dispatch(estimateTemplateAction.upsert(params)), [dispatch]);
-
   const onDelete = useCallback(() => dispatch(estimateTemplateAction.deleteOne()), [dispatch]);
   const formik = useFormik<EstimateTemplateParameter>({
     enableReinitialize: true,
@@ -98,7 +97,16 @@ function Element() {
 
   return (
     <FormikProvider value={formik}>
-      <EstimateTemplateDetail onDelete={onDelete} />
+      <EstimateTemplateDetail
+        onCancel={() => {
+          if (detail) {
+            formik.setValues({ ...detail, edit: false } as EstimateTemplateParameter);
+          }
+          else {
+            formik.setValues(initialEstimateTemplateParameter);
+          }
+        }}
+        onDelete={onDelete} />
     </FormikProvider>
   );
 }

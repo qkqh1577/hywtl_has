@@ -9,6 +9,7 @@ import useDialog from 'components/Dialog';
 
 interface Props {
   onDelete: DefaultFunction;
+  onCancel: DefaultFunction;
 }
 
 export default function (props: Props) {
@@ -61,9 +62,7 @@ export default function (props: Props) {
             shape="basic2"
             children="취소"
             onClick={() => {
-              rollback(() => {
-                navigate(`/admin/estimate-template-management/${id}`);
-              });
+              rollback(props.onCancel);
             }}
           />
         )}

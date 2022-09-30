@@ -66,7 +66,7 @@ function RoundIconButton(props: Props) {
     <MuiIconButton
       sx={{
         ...sx,
-        fontSize:        '11px',
+        fontSize:        size ? `calc(${size} - 5px) ` : '11px',
         width:           size ?? '22px',
         height:          size ?? '22px',
         color:           ColorPalette._ffffff,

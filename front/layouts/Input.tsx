@@ -54,7 +54,7 @@ export function OutlinedInput(props: Omit<InputProps, |'variant'>) {
           backgroundColor: props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
           boxSizing:       'border-box',
           cursor:          props.readOnly || props.disabled ? 'default' : 'text',
-          textAlign:       props.type === 'number' ? 'right' : (props.readOnly ? 'center' : 'left'),
+          textAlign:       props.type === 'number' ? 'right' : (props.multiline ? 'left' : props.readOnly ? 'center' : 'left'),
         },
       }}
     />
