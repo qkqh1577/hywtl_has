@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.estimate_template.view;
 
 import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplateDetail;
+import com.howoocast.hywtl_has.estimate_template.domain.EstimateUnit;
 import java.util.List;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ public class EstimateTemplateDetailView {
 
     private List<String> titleList;
 
-    private String unit;
+    private EstimateUnit unit;
 
     private Long unitAmount;
 

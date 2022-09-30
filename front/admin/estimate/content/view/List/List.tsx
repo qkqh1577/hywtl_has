@@ -82,7 +82,7 @@ export default function ({ list }: ListProps) {
                 key={item.id}>
                 <Td>{i + 1}</Td>
                 <Td>
-                  <TextLink onClick={`/admin/estimate/content-management/${item.id}`}>
+                  <TextLink onClick={`/admin/estimate-content-management/${item.id}`}>
                     {item.name}
                   </TextLink>
                 </Td>

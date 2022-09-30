@@ -57,6 +57,7 @@ export function Td(props: TdProps) {
 
 export function Table(props: TableProps & {
   variant?: 'top' | 'left';
+  hasFoot?: boolean;
 }) {
 
   const leftStyle = {
@@ -109,6 +110,24 @@ export function Table(props: TableProps & {
       }
     },
     '& > tbody': {
+      '& > tr > td:last-child': {
+        borderRight: `1px solid ${ColorPalette._e4e9f2}`,
+      },
+      '& > tr:last-child':      props.hasFoot ? undefined : {
+        '& > td':               {
+          borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
+        },
+        '& > td:first-of-type': {
+          borderBottom:           `1px solid ${ColorPalette._e4e9f2}`,
+          borderBottomLeftRadius: '5px',
+        },
+        '& > td:last-child':    {
+          borderBottom:            `1px solid ${ColorPalette._e4e9f2}`,
+          borderBottomRightRadius: '5px',
+        },
+      }
+    },
+    '& > tfoot': {
       '& > tr > td:last-child': {
         borderRight: `1px solid ${ColorPalette._e4e9f2}`,
       },

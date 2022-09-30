@@ -40,7 +40,7 @@ function OrderModalButton({
 function AddButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/admin/estimate/template-management/add');
+    navigate('/admin/estimate-template-management/add');
   };
   return (
     <Button
@@ -50,12 +50,12 @@ function AddButton() {
   );
 }
 
-export interface ListProps {
+interface Props {
   list: EstimateTemplateShort[] | undefined;
   openSeqModal: DefaultFunction;
 }
 
-export default function ({ list, openSeqModal }: ListProps) {
+export default function ({ list, openSeqModal }: Props) {
 
   return (
     <TableLayout
@@ -99,7 +99,7 @@ export default function ({ list, openSeqModal }: ListProps) {
                 <Td>{i + 1}</Td>
                 <Td>{testTypeName(item.testType)}</Td>
                 <Td>
-                  <TextLink onClick={`/admin/estimate/template-management/${item.id}`}>
+                  <TextLink onClick={`/admin/estimate-template-management/${item.id}`}>
                     {item.title}
                   </TextLink>
                 </Td>
