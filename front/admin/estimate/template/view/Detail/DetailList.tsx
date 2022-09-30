@@ -5,7 +5,6 @@ import {
   TableFooter,
   TableHead,
   TableRow,
-  Typography
 } from '@mui/material';
 import React, { useContext } from 'react';
 import TitleListField from 'admin/estimate/template/view/Detail/TitleListField';
@@ -29,6 +28,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import { initialEstimateTemplateDetailParameter } from 'admin/estimate/template/parameter';
+import TextBox from 'layouts/Text';
 
 export default function () {
   const { error } = useDialog();
@@ -63,12 +63,15 @@ export default function () {
               <Td>
                 <TitleListField
                   index={i}
-                  edit={edit}
-                  titleList={detail.titleList}
+                  list={detail.titleList}
                 />
               </Td>
               <Td>
-                {!edit && (<Typography>{testUnitName(detail.unit)} </Typography>)}
+                {!edit && (
+                  <TextBox variant="body9">
+                    {testUnitName(detail.unit)}
+                  </TextBox>
+                )}
                 {edit && (
                   <Select
                     required
@@ -105,6 +108,7 @@ export default function () {
               </Td>
               <Td>
                 <Input
+                  multiline
                   readOnly={!edit}
                   variant="outlined"
                   value={detail.note ?? ''}
@@ -128,6 +132,9 @@ export default function () {
                       shape="square"
                       disabled={i === 0}
                       children={<FontAwesomeIcon icon="angle-up" />}
+                      sx={{
+                        marginRight: '10px',
+                      }}
                       onClick={() => {
                         const prevList = list.filter((t,
                                                       k
