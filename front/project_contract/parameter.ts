@@ -1,4 +1,4 @@
-import { ProjectEstimateId } from 'project_estimate/domain';
+import { ProjectEstimateId } from 'project_contract/domain';
 
 export interface ProjectContractParameter {
   estimateId: ProjectEstimateId;
@@ -19,7 +19,6 @@ export interface ProjectContractParameter {
     contractorCompanyName: string; // 수급자 상호
     contractorCeoName: string; // 수급자 대표명
   };
-
   collection?: {
     stageNote: string;
     stageList: {

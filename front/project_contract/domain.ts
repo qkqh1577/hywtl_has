@@ -59,20 +59,15 @@ export enum ProjectEstimateType {
   COMPARISON     = 'COMPARISON',
   SUB_CONTRACTOR = 'SUB_CONTRACTOR',
 }
-
-export function projectEstimateTypeName(type: ProjectEstimateType) {
-  switch (type) {
-    case ProjectEstimateType.CUSTOM:
-      return '커스텀';
-    case ProjectEstimateType.SYSTEM:
-      return '시스템';
-    case ProjectEstimateType.COMPARISON:
-      return '대비';
-    case ProjectEstimateType.SUB_CONTRACTOR:
-      return '협력';
-    default:
-      return '-';
-  }
+export interface ProjectEstimatePlanVO {
+  estimateDate: Date;
+  expectedServiceDate: Date;
+  expectedTestDeadline: number;
+  expectedFinalReportDeadline: number;
+  testAmount: number;
+  reviewAmount: number;
+  discountAmount: number;
+  totalAmount: number;
 }
 
 export interface ProjectEstimateVO {
@@ -80,6 +75,7 @@ export interface ProjectEstimateVO {
   code: string;
   type: ProjectEstimateType;
   recipient: string;
+  plan: ProjectEstimatePlanVO;
   business: BusinessVO;
   confirmed: boolean;
   createdAt: Date;
@@ -88,8 +84,34 @@ export interface ProjectEstimateVO {
   modifiedAt?: Date;
 }
 
-export interface ProjectCustomEstimateVO
-  extends ProjectEstimateVO {
+export class ProjectEstimateVO
+  implements ProjectEstimateVO {
+  constructor(data: ProjectEstimateVO) {
+    Object.assign(this, data);
+  }
+
+  get typeName() {
+    switch (this.type) {
+      case ProjectEstimateType.CUSTOM:
+        return '커스텀';
+      case ProjectEstimateType.SYSTEM:
+        return '시스템';
+      case ProjectEstimateType.COMPARISON:
+        return '대비';
+      case ProjectEstimateType.SUB_CONTRACTOR:
+        return '협력';
+      default:
+        return '-';
+    }
+  }
+
+  get isSentYn() {
+    return this.isSent ? 'Y' : 'N';
+  }
+
+  set isSentYn(value: string) {
+    this.isSent = value === 'Y';
+  }
 }
 
 export interface ContractCollectionStageWithAmount {

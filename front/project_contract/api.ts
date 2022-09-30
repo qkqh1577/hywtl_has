@@ -34,7 +34,6 @@ class ProjectContractApi {
             params: ProjectContractParameter
   ): Promise<void> {
     const formData = toFormData(params);
-    console.log(params, formData.get('file'));
     const { data } = await apiClient.post(`/project/sales/${projectId}/contract`, formData);
     return data;
   }
@@ -56,13 +55,13 @@ class ProjectContractApi {
   /** 견적서 목록 조회*/
   async getEstimateList(id: ProjectId): Promise<ProjectEstimateVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/estimate`);
-    return data;
+    return data.map((item: any) => new ProjectEstimateVO(item));
   }
 
   /** 견적서 조회*/
   async getEstimateDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
     const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
-    return data;
+    return new ProjectEstimateVO(data);
   }
 }
 

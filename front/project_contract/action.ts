@@ -31,5 +31,5 @@ export const projectContractAction = {
   setDetailModal:    createAction(ProjectContractActionType.setDetailModal)<ProjectContractId | undefined>(),
   addContract:       createAction(ProjectContractActionType.addContract)<ProjectContractParameter | undefined>(),
   setEstimateList:   createAction(ProjectContractActionType.setEstimateList)<ProjectEstimateVO[] | undefined>(),
-  setEstimateDetail: createAction(ProjectContractActionType.setEstimateDetail)<ProjectContractVO | undefined>(),
+  setEstimateDetail: createAction(ProjectContractActionType.setEstimateDetail)<ProjectEstimateVO | undefined>(),
 };

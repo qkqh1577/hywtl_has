@@ -23,9 +23,9 @@ interface Props
 
 export default function (props: Props) {
   const {
-          formik,
-          totalRatioCell
+          totalRatioCell,
         } = props;
+
   return (
     <>
       <TableContainer sx={{
@@ -69,7 +69,7 @@ export default function (props: Props) {
             <TableRow>
               <Td>
                 <TextField
-                  name="견적서에 등록된 납품가능 주 value"
+                  name="basic.serviceDuration"
                   label="견적서에 등록된 납품가능 주"
                   disableLabel
                   variant="outlined"

@@ -9,13 +9,31 @@ import { ProjectContractParameter, } from 'project_contract/parameter';
 import React, {
   useCallback,
   useEffect,
+  useState,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
-import { ProjectEstimateVO } from 'project_estimate/domain';
-import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectId } from 'project/domain';
 import CollectionTotalRatioCellRoute from 'project_contract/route/CollectionTotalRatioCellRoute';
+import { projectContractApi } from 'project_contract/api';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_contract/domain';
+
+const initialValues = {
+  estimateId:    undefined,
+  isSent:        'N',
+  recipient:     '',
+  note:          '',
+  basic:         undefined,
+  collection:    undefined,
+  conditionList: [{
+    id:              '',
+    title:           '',
+    descriptionList: []
+  }],
+};
 
 export default function ProjectContractAddModalRoute() {
 
@@ -23,30 +41,17 @@ export default function ProjectContractAddModalRoute() {
   const { projectId, addModal } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
 
-  const initialValues = {
-    estimateId:    undefined,
-    isSent:        'N',
-    recipient:     '',
-    note:          '',
-    basic:         undefined,
-    collection:    undefined,
-    conditionList: [{
-      id:              '',
-      title:           '',
-      descriptionList: []
-    }],
-  };
 
   useEffect(() => {
     if (projectId) {
-      dispatch(projectEstimateAction.setProjectId(ProjectId(projectId)));
+      dispatch(projectContractAction.setProjectId(ProjectId(projectId)));
     }
   }, [projectId]);
 
   const onClose = useCallback(() => dispatch(projectContractAction.setAddModal(undefined)), [dispatch]);
   const addContract = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.addContract(params)), [dispatch]);
   const formik = useFormik<ProjectContractParameter>({
-    enableReinitialize: true,
+    enableReinitialize: false,
     initialValues:      initialValues as unknown as ProjectContractParameter,
     onSubmit:           (values) => {
       if (!projectId || !addModal) {
@@ -58,6 +63,7 @@ export default function ProjectContractAddModalRoute() {
         error('업체가 선택되지 않았습니다.');
         return;
       }
+      //용역 기간 용역 금액 기성 단계 금액 계산 필요
       addContract({
         estimateId:    estimate.id,
         isSent:        values.isSent,
@@ -67,14 +73,24 @@ export default function ProjectContractAddModalRoute() {
         collection:    values.collection,
         conditionList: values.conditionList,
       });
-    }
+    },
   });
+
+  const handleEstimateIdChange = (estimateId: number) => {
+    formik.setFieldValue('estimateId', estimateId);
+    projectContractApi.getEstimateDetail(ProjectEstimateId(estimateId))
+                      .then((estimateDetail) => {
+                        dispatch(projectContractAction.setEstimateDetail(estimateDetail));
+                        formik.setFieldValue('basic.serviceDuration', `구조설계용 풍하중은 ${estimateDetail?.plan.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan.expectedFinalReportDeadline}주차`);
+                      });
+  };
 
   return (
     <ProjectContractAddModal
       formik={formik}
       onClose={onClose}
       totalRatioCell={<CollectionTotalRatioCellRoute />}
+      handleEstimateIdChange={handleEstimateIdChange}
     />
   );
 }

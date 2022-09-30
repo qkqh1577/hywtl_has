@@ -71,6 +71,6 @@ export const projectContractReducer = createReducer(initial, {
                                                   action
                                                  ) => ({
     ...state,
-    detail: action.payload,
+    estimateDetail: action.payload,
   }),
 });

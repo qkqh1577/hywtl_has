@@ -16,21 +16,26 @@ import ContractorForm from 'project_contract/view/AddModal/ContractorForm';
 import ServiceContractTermsForm from 'project_contract/view/AddModal/ServiceContractTermsForm';
 import ContractInfoHeader from 'project_contract/view/AddModal/ContractInfoHeader';
 import ContractDateForm from 'project_contract/view/AddModal/ContractDateForm';
+import { ProjectEstimateVO } from 'project_contract/domain';
 
 interface Props
-  extends FormikLayoutProps<any>{
+  extends FormikLayoutProps<any> {
   onClose: ModalLayoutProps['onClose'];
   totalRatioCell: React.ReactNode;
+  handleEstimateIdChange: (estimateId: number) => void;
 }
 
 export default function ProjectContractAddModal(props: Props) {
   const {
           onClose,
-          formik
+          formik,
+          handleEstimateIdChange,
         } = props;
 
-  const { addModal } = useSelector((root: RootState) => root.projectContract);
+  const { addModal, estimateDetail } = useSelector((root: RootState) => root.projectContract);
   const onSubmit = () => {formik.handleSubmit();};
+  console.log('render ProjectContractAddModal');
+  console.log(estimateDetail);
   return (
     <ModalLayout
       title="계약서 등록"
@@ -50,7 +55,7 @@ export default function ProjectContractAddModal(props: Props) {
               </Grid>
               <Grid item xs={12} md={3}>
                 <ContractInfoForm formik={formik} />
-                <ContractEstimateForm formik={formik} />
+                <ContractEstimateForm estimateDetail={estimateDetail} handleEstimateIdChange={handleEstimateIdChange} formik={formik} />
               </Grid>
               <Grid item xs={12} md={9}>
                 <ServiceAgreementForm {...props} />
