@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
+import javax.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BidDTO extends CustomEntity {
 

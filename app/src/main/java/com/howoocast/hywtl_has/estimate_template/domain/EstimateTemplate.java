@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -38,6 +37,7 @@ public class EstimateTemplate extends CustomEntity {
     /**
      * 실험 타입
      */
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TestType testType;
 
@@ -52,7 +52,6 @@ public class EstimateTemplate extends CustomEntity {
      * 세부 항목 목록
      */
     @OneToMany(cascade = CascadeType.ALL)
-    @OrderBy("seq asc")
     private List<EstimateTemplateDetail> detailList;
 
     public static EstimateTemplate of(
