@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,16 +28,14 @@ public class EstimateTemplateDetail extends CustomEntity {
     /**
      * 세부 항목 문구 목록
      */
-    @NotEmpty
     @ElementCollection
     private List<String> titleList;
 
     /**
      * 단위
      */
-    @NotBlank
-    @Column(nullable = false)
-    private String unit;
+    @Enumerated(EnumType.STRING)
+    private EstimateUnit unit;
 
     /**
      * 단가
@@ -61,7 +59,7 @@ public class EstimateTemplateDetail extends CustomEntity {
 
     public static EstimateTemplateDetail of(
         List<String> titleList,
-        String unit,
+        EstimateUnit unit,
         Long unitAmount,
         String note,
         Integer seq
@@ -77,7 +75,7 @@ public class EstimateTemplateDetail extends CustomEntity {
 
     public void change(
         List<String> titleList,
-        String unit,
+        EstimateUnit unit,
         Long unitAmount,
         String note,
         Integer seq

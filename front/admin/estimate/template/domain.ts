@@ -54,14 +54,14 @@ export const testTypeList: TestType[] = [
  */
 export enum TestUnit {
   /** 단지 */
-  GROUP    = 'GROUP',
+  SITE     = 'SITE',
   /** 동 */
   BUILDING = 'BUILDING',
 }
 
 export function testUnitName(unit: TestUnit | '') {
   switch (unit) {
-    case TestUnit.GROUP:
+    case TestUnit.SITE:
       return '단지';
     case TestUnit.BUILDING:
       return '동';
@@ -71,7 +71,7 @@ export function testUnitName(unit: TestUnit | '') {
 }
 
 export const testUnitList: TestUnit[] = [
-  TestUnit.GROUP,
+  TestUnit.SITE,
   TestUnit.BUILDING
 ];
 
@@ -81,41 +81,20 @@ export function EstimateTemplateId(id: number) {
   return id as EstimateTemplateId;
 }
 
-export type EstimateTemplateDetailId = number & { readonly _brand: unique symbol; }
-
-export function EstimateTemplateDetailId(id: number) {
-  return id as EstimateTemplateDetailId;
-}
-
 export interface EstimateTemplateDetailVO {
-  id: EstimateTemplateDetailId | '';
   titleList: string[];
-  unit: TestUnit | '';
-  unitAmount: number | '';
+  unit: TestUnit;
+  unitAmount: number;
   note?: string;
 }
 
-export const initialEstimateTemplateDetailVO: EstimateTemplateDetailVO = {
-  id:         '',
-  titleList:  [],
-  unit:       '',
-  unitAmount: '',
-  note:       ''
-};
-
 export interface EstimateTemplateVO {
-  id?: EstimateTemplateId | '';
+  id: EstimateTemplateId;
   title: string;
-  testType: TestType | '';
+  testType: TestType;
   detailList: EstimateTemplateDetailVO[];
 }
 
-export const initialEstimateTemplateVO: EstimateTemplateVO = {
-  id:         '',
-  title:      '',
-  testType:   '',
-  detailList: [],
-};
 
 export interface EstimateTemplateShort
   extends Omit<EstimateTemplateVO, |'detailList'> {

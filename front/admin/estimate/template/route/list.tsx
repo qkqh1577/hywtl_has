@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useEffect,
-  useState
 } from 'react';
 import { AppRoute } from 'services/routes';
 import EstimateTemplateList from 'admin/estimate/template/view/List';
@@ -16,77 +15,32 @@ import {
   initialEstimateTemplateQuery
 } from 'admin/estimate/template/query';
 import { estimateTemplateAction } from 'admin/estimate/template/action';
-import { FormikSubmit } from 'type/Form';
-import { EstimateTemplateShort } from 'admin/estimate/template/domain';
-import { estimateTemplateApi } from 'admin/estimate/template/api';
+import EstimateTemplateSeqModalRoute from 'admin/estimate/template/route/seqModal';
 
 function Element() {
 
   const dispatch = useDispatch();
-  const { list, filter } = useSelector((root: RootState) => root.estimateTemplate);
-  const setFilter = useCallback((formikProps: FormikSubmit<Partial<EstimateTemplateQuery>>) => {
-      const result: EstimateTemplateQuery = {
-        ...(filter ?? initialEstimateTemplateQuery),
-        ...formikProps.values,
-      };
-      dispatch(estimateTemplateAction.setFilter({
-        ...formikProps,
-        values: result
-      }));
-    },
-    [dispatch]
-  );
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [itemList, setItemList] = useState<EstimateTemplateShort[]>([]);
-  const changeSeq = useCallback((list) =>
-      dispatch(estimateTemplateAction.changeSeq(list.map(item => item.id)))
-    , [dispatch]);
+  const { list, seqModal } = useSelector((root: RootState) => root.estimateTemplate);
+  const setFilter = useCallback((query: EstimateTemplateQuery) => dispatch(estimateTemplateAction.setFilter(query)), [dispatch]);
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues:      filter ?? initialEstimateTemplateQuery,
-    onSubmit:           (values,
-                         helper
-                        ) => {
-      setFilter({
-        values,
-        ...helper
-      });
+  const openSeqModal = useCallback(() => dispatch(estimateTemplateAction.seqModal(true)), [dispatch]);
+  const formik = useFormik<EstimateTemplateQuery>({
+    initialValues: initialEstimateTemplateQuery,
+    onSubmit:      (values) => {
+      setFilter(values);
     }
   });
 
   useEffect(() => {
-    setFilter(formik);
-  }, []);
+    setFilter(initialEstimateTemplateQuery);
+  }, [seqModal]);
 
   return (
     <EstimateTemplateList
       formik={formik}
       list={list}
-      openSeqModal={() => {
-        setModalOpen(true);
-        estimateTemplateApi.getList({
-          sort:        'seq,asc',
-          keyword:     '',
-          keywordType: '',
-          testType:    undefined,
-        })
-                           .then((list) => {
-                             setItemList(list);
-                           });
-      }}
-      modalProps={{
-        open:     modalOpen,
-        list:     itemList,
-        setList:  setItemList,
-        onClose:  () => {
-          setModalOpen(false);
-          setItemList([]);
-        },
-        onSubmit: () => {
-          changeSeq(list);
-        },
-      }}
+      openSeqModal={openSeqModal}
+      seqModal={<EstimateTemplateSeqModalRoute />}
     />
   );
 }

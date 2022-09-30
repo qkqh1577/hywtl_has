@@ -2,13 +2,15 @@ import React from 'react';
 import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateQuery } from 'admin/estimate/template/query';
 import SearchForm from 'admin/estimate/template/view/List/SearchForm';
-import List, { ListProps } from 'admin/estimate/template/view/List/List';
-import SeqModal, { EstimateTemplateSeqModalProps } from 'admin/estimate/template/view/List/SeqModal';
+import List from 'admin/estimate/template/view/List/List';
+import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { DefaultFunction } from 'type/Function';
 
 interface Props
-  extends ListProps,
-          FormikLayoutProps<EstimateTemplateQuery> {
-  modalProps: EstimateTemplateSeqModalProps;
+  extends FormikLayoutProps<EstimateTemplateQuery> {
+  seqModal: JSX.Element;
+  list: EstimateTemplateShort[] | undefined;
+  openSeqModal: DefaultFunction;
 }
 
 export default function EstimateTemplateList(props: Props) {
@@ -19,7 +21,7 @@ export default function EstimateTemplateList(props: Props) {
       filter={<SearchForm />}
       body={<List {...props} />}
       formik={props.formik}
-      modals={<SeqModal {...props.modalProps} />}
+      modals={props.seqModal}
     />
   );
 }
