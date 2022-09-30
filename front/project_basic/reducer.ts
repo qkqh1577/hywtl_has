@@ -1,9 +1,6 @@
+import { ProjectId } from 'project/domain';
 import {
-  ProjectBasicBidType,
-  ProjectId,
-  ProjectVO
-} from 'project/domain';
-import {
+  ProjectBasic,
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicContract,
@@ -14,10 +11,11 @@ import {
 } from 'project_basic/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
+import { ProjectBasicBidType } from 'project_status/domain';
 
 export interface ProjectBasicState {
   id?: ProjectId;
-  basic?: ProjectVO;
+  basic?: ProjectBasic;
   bidType?: ProjectBasicBidType;
   businessList?: ProjectBasicBusiness[];
   design?: ProjectBasicDesign;

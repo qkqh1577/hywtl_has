@@ -10,11 +10,9 @@ import {
   projectBasicAction,
   ProjectBasicActionType
 } from 'project_basic/action';
+import { ProjectId } from 'project/domain';
 import {
-  ProjectEstimateExpectation,
-  ProjectId
-} from 'project/domain';
-import {
+  ProjectBasic,
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
@@ -34,12 +32,21 @@ import {
   BusinessInvolvedType,
   BusinessManagerStatus
 } from 'business/domain';
-import { ProjectActionType } from 'project/action';
+import {
+  projectStatusAction,
+  ProjectStatusActionType,
+  ProjectStatusEventType
+} from 'project_status/action';
+import {
+  ProjectEstimateExpectation,
+  ProjectStatus
+} from 'project_status/domain';
 
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
     yield all([
+      call(requestBasic, id),
       call(requestBusinessList, id),
       call(requestDesign, id),
       call(requestTest, id),
@@ -49,6 +56,11 @@ function* watchId() {
       call(requestFailReason, id),
     ]);
   }
+}
+
+function* requestBasic(id: ProjectId) {
+  const basic: ProjectBasic = yield call(projectBasicApi.getOne, id);
+  yield put(projectBasicAction.setBasic(basic));
 }
 
 function* requestBusinessList(id: ProjectId) {
@@ -302,10 +314,10 @@ function* requestContract(id: ProjectId) {
 }
 
 function* requestFailReason(id: ProjectId) {
-  // const failReason: ProjectBasicFailReason = yield call(projectBasicApi.getFailReason, id);
-  // yield put(projectBasicActionType.setFailReason(failReason));
+  const failReason: ProjectBasicFailReason = yield call(projectBasicApi.getFailReason, id);
+  yield put(projectBasicAction.setFailReason(failReason));
 
-  yield put(projectBasicAction.setFailReason(testData()));
+  // yield put(projectBasicAction.setFailReason(testData()));
 
   function testData(): ProjectBasicFailReason {
     return {
@@ -344,20 +356,35 @@ function* pushBusiness() {
       }));
     }
     finally {
-      yield  call(formik.setSubmitting, false);
+      yield call(formik.setSubmitting, false);
     }
   }
 }
 
-function* watchEstimateExpectation() {
+function* watchSetStatusInProjectStatusAction() {
   while (true) {
-    const { payload: estimateExpectation } = yield take(ProjectActionType.setEstimateExpectation);
-    yield put(projectBasicAction.setLossEstimateExpectation(estimateExpectation === ProjectEstimateExpectation.LOSE));
+    const { payload: status } = (yield take(ProjectStatusActionType.setStatus)) as { payload: ProjectStatus };
+    if (status.estimateExpectation === ProjectEstimateExpectation.LOSE) {
+      yield put(projectBasicAction.setLossEstimateExpectation(true));
+    } else {
+      yield put(projectBasicAction.setLossEstimateExpectation(false));
+    }
+  }
+}
+
+function* watchFinishFailReasonAdd() {
+  while (true) {
+    const { payload: { success } } = yield take(ProjectStatusEventType.finishFailReasonAdd);
+    if (success) {
+      const { id } = yield select((root: RootState) => root.projectBasic);
+      yield requestFailReason(id);
+    }
   }
 }
 
 export default function* projectBasicSaga() {
   yield fork(watchId);
   yield fork(pushBusiness);
-  yield fork(watchEstimateExpectation);
+  yield fork(watchSetStatusInProjectStatusAction);
+  yield fork(watchFinishFailReasonAdd);
 }

@@ -1,11 +1,11 @@
 import PageLayout from 'layouts/PageLayout';
 import React from 'react';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
-import ProjectStatus from 'project/view/Container/ProjectStatus';
+import ProjectContainerHeader from 'project/view/Container/Header';
 
 interface Props {
   children: React.ReactNode;
-  statusBar: React.ReactNode;
+  status: React.ReactNode;
   title: React.ReactNode;
 }
 
@@ -15,7 +15,7 @@ export default function ProjectContainer(props: Props) {
     <PageLayout
       title={props.title}
       titleRightComponent={<ProjectContainerTitleButtonBar />}
-      filter={<ProjectStatus statusBar={props.statusBar} />}
+      filter={<ProjectContainerHeader status={props.status} />}
       body={props.children}
     />
   );

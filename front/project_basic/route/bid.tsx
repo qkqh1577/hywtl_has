@@ -4,9 +4,9 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import { ProjectBasicBidType } from 'project/domain';
 import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
+import { ProjectBasicBidType } from 'project_status/domain';
 
 export default function ProjectBasicBidRoute() {
   const { bidType, bid } = useSelector((root: RootState) => root.projectBasic);

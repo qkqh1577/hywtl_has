@@ -1,5 +1,9 @@
-import { ProjectId } from 'project/domain';
 import {
+  ProjectId,
+  ProjectVO
+} from 'project/domain';
+import {
+  ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicDesign,
   ProjectBasicFailReason,
@@ -9,6 +13,11 @@ import apiClient from 'services/api';
 import { ProjectBasicBusinessParameter } from 'project_basic/parameter';
 
 class ProjectBasicApi {
+  async getOne(id: ProjectId): Promise<ProjectBasic> {
+    const { data } = await apiClient.get(`/project/sales/${id}`) as { data: ProjectVO };
+    return { ...data };
+  }
+
   async getBusinessList(id: ProjectId): Promise<ProjectBasicBusiness[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/business`);
     return data;

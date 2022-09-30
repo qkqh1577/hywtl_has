@@ -1,11 +1,8 @@
 import { createAction } from 'typesafe-actions';
-import {
-  ProjectBasicBidType,
-  ProjectId,
-  ProjectVO
-} from 'project/domain';
+import { ProjectId } from 'project/domain';
 import { ProjectBasicBusinessParameter } from 'project_basic/parameter';
 import {
+  ProjectBasic,
   ProjectBasicBid,
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
@@ -16,6 +13,7 @@ import {
   ProjectBasicTest
 } from 'project_basic/domain';
 import { FormikSubmit } from 'type/Form';
+import { ProjectBasicBidType } from 'project_status/domain';
 
 export enum ProjectBasicActionType {
   setId                      = 'project/basic/id/set',
@@ -37,7 +35,7 @@ export enum ProjectBasicActionType {
 export const projectBasicAction = {
   setId:                      createAction(ProjectBasicActionType.setId)<ProjectId | undefined>(),
   setLossEstimateExpectation: createAction(ProjectBasicActionType.setLossEstimateExpectation)<boolean>(),
-  setBasic:                   createAction(ProjectBasicActionType.setBasic)<ProjectVO | undefined>(),
+  setBasic:                   createAction(ProjectBasicActionType.setBasic)<ProjectBasic | undefined>(),
   setBidType:                 createAction(ProjectBasicActionType.setBidType)<ProjectBasicBidType | undefined>(),
   setBusinessList:            createAction(ProjectBasicActionType.setBusinessList)<ProjectBasicBusiness[] | undefined>(),
   setBusiness:                createAction(ProjectBasicActionType.setBusiness)<ProjectBasicBusiness | undefined>(),

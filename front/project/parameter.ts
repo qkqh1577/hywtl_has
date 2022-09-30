@@ -1,9 +1,8 @@
+import { UserId } from 'user/domain';
 import {
   ProjectBasicBidType,
-  ProjectProgressStatus,
-  ProjectStatus
-} from 'project/domain';
-import { UserId } from 'user/domain';
+  ProjectProgressStatus
+} from 'project_status/domain';
 
 export interface ProjectAddParameter {
   name: string;
@@ -12,8 +11,4 @@ export interface ProjectAddParameter {
   progressStatus: ProjectProgressStatus;
   bidType: ProjectBasicBidType;
   memo?: string;
-}
-
-export interface ProjectStatusParameter
-  extends Partial<ProjectStatus> {
 }
