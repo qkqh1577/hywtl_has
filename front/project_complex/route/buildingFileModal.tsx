@@ -24,7 +24,7 @@ export default function ProjectComplexBuildingFileModalRoute() {
 
   useEffect(() => {
     if (projectId) {
-      dispatch(projectDocumentAction.setAllList(projectId));
+      dispatch(projectDocumentAction.setProjectId(projectId));
     }
     onClose();
   }, [projectId]);
