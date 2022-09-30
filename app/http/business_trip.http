@@ -36,3 +36,49 @@ Content-Type: application/json
     "extraFeeComment": "렌터카"
   }
 }
+### get business trip
+GET http://localhost:8080/business-trip/1
+Content-Type: application/json
+
+### change business trip
+PUT http://localhost:8080/business-trip/1
+Content-Type: application/json
+
+{
+  "tripNumber": "TRIPNUMBER1@",
+  "reporter": "홍길동@",
+  "reportDate": "2022-09-30T10:22:30",
+  "approver1": "관리자1@",
+  "approver2": "관리자2@",
+  "approver3": "관리자3@",
+  "departmentId": 1,
+  "tripDateFrom": "2022-09-30T09:00:00",
+  "tripDateTo": "2022-09-30T22:00:00",
+  "projectId": 1,
+  "location": "제주@",
+  "accompanyIds": [1,3],
+  "purpose": "목적@",
+  "counterpart": {
+    "companyName": "테스트고객사@",
+    "department": "테스트부서@",
+    "rank": "과장@",
+    "name": "김담당@"
+  },
+  "contents": "내용@",
+  "etc": "기타@",
+  "followUp": "후속업무내용@",
+  "expanse": {
+    "distance": 6000,
+    "distanceComment": "멀다@",
+    "accommodationFee": 700000,
+    "accommodationFeeComment": "비싸다@",
+    "transportationFee": 2400000,
+    "transportationFeeComment": "항공기@",
+    "extraFee": 900000,
+    "extraFeeComment": "렌터카@"
+  }
+}
+
+### change business trip
+DELETE http://localhost:8080/business-trip/1
+Content-Type: application/json

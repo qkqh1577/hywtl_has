@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.user.view.UserShortView;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,9 +22,13 @@ public class BusinessTripParameter {
     private String approver1;
     private String approver2;
     private String approver3;
+
+    @NotNull(message = "business_trip.departmentId.not_null")
     private Long departmentId;
     private LocalDateTime tripDateFrom;
     private LocalDateTime tripDateTo;
+
+    @NotNull(message = "business_trip.projectId.not_null")
     private Long projectId;
     private String location;
     private List<Long> accompanyIds;

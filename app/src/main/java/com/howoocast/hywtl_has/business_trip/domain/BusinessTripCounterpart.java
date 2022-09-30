@@ -1,9 +1,12 @@
 package com.howoocast.hywtl_has.business_trip.domain;
 
+import lombok.Getter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
+@Getter
 public class BusinessTripCounterpart {
 
     /**

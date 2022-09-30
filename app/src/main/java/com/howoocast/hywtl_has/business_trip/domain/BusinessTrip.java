@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business_trip.domain;
 
+import com.howoocast.hywtl_has.business_trip.parameter.BusinessTripParameter;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.project.domain.Project;
@@ -83,13 +84,12 @@ public class BusinessTrip extends CustomEntity {
     /**
      * 출장 동행자
      */
-    @OneToMany
+    @ManyToMany
     private List<User> accompany;
 
     /**
      * 출장 목적
      */
-    @Column(nullable = false)
     private String purpose;
 
     /**
@@ -122,6 +122,42 @@ public class BusinessTrip extends CustomEntity {
     @Embedded
     private BusinessTripExpanse expanse;
 
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void change(
+            String tripNumber, String reporter, LocalDateTime reportDate,
+            String approver1, String approver2, String approver3,
+            Department department,
+            LocalDateTime tripDateFrom, LocalDateTime tripDateTo,
+            Project project,
+            String location,
+            List<User> accompany,
+            String purpose,
+            BusinessTripCounterpart counterpart,
+            String contents, String etc, String followUp,
+            BusinessTripExpanse expanse
+    ) {
+        this.tripNumber = tripNumber;
+        this.reporter = reporter;
+        this.reportDate = reportDate;
+        this.approver1 = approver1;
+        this.approver2 = approver2;
+        this.approver3 = approver3;
+        this.department = department;
+        this.tripDateFrom = tripDateFrom;
+        this.tripDateTo = tripDateTo;
+        this.project = project;
+        this.location = location;
+        this.accompany = accompany;
+        this.purpose = purpose;
+        this.counterpart = counterpart;
+        this.contents = contents;
+        this.etc = etc;
+        this.followUp = followUp;
+        this.expanse = expanse;
+    }
 
     public static BusinessTrip of(
             String tripNumber, String reporter, LocalDateTime reportDate,

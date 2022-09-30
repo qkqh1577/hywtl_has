@@ -11,8 +11,12 @@ import java.util.List;
 
 public interface BusinessTripRepository extends CustomRepository<BusinessTrip>, QuerydslPredicateExecutor<BusinessTrip> {
 
+    List<BusinessTrip> findAllByOrderByIdDesc();
+
     List<BusinessTrip> findAll(Predicate predicate);
 
     Page<BusinessTrip> findAll(Predicate predicate, Pageable pageable);
+
+
 
 }

@@ -5,6 +5,8 @@ import com.howoocast.hywtl_has.business_trip.domain.BusinessTripCounterpart;
 import com.howoocast.hywtl_has.business_trip.domain.BusinessTripExpanse;
 import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.domain.ProjectBasic;
+import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import lombok.Getter;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class BusinessTripView {
+    private Long id;
     private String tripNumber;
     private String reporter;
     private LocalDateTime reportDate;
@@ -23,7 +26,7 @@ public class BusinessTripView {
     private DepartmentShortView department;
     private LocalDateTime tripDateFrom;
     private LocalDateTime tripDateTo;
-    private Project project;
+    private ProjectShortView project;
     private String location;
     private List<UserShortView> accompany;
     private String purpose;
@@ -35,6 +38,7 @@ public class BusinessTripView {
 
     public static BusinessTripView assemble(BusinessTrip source) {
         BusinessTripView target = new BusinessTripView();
+        target.id = source.getId();
         target.tripNumber = source.getTripNumber();
         target.reporter = source.getReporter();
         target.reportDate = source.getReportDate();
@@ -44,7 +48,7 @@ public class BusinessTripView {
         target.department = DepartmentShortView.assemble(source.getDepartment());
         target.tripDateFrom = source.getTripDateFrom();
         target.tripDateTo = source.getTripDateTo();
-        target.project = source.getProject();
+        target.project = ProjectShortView.assemble(source.getProject());
         target.location = source.getLocation();
         target.accompany = source.getAccompany().stream().map(UserShortView::assemble).collect(Collectors.toList());
         target.purpose = source.getPurpose();

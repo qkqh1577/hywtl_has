@@ -82,18 +82,12 @@ public class Department extends CustomEntity {
         return new Department();
     }
 
-    public static Department of(Long id) {
-        Department department = new Department();
-        department.id = id;
-        return department;
-    }
-
     public void change(
-        String name,
-        DepartmentCategory category,
-        @Nullable Department parent,
-        Integer seq,
-        String note
+            String name,
+            DepartmentCategory category,
+            @Nullable Department parent,
+            Integer seq,
+            String note
     ) {
         this.name = name;
         this.category = category;
@@ -103,8 +97,8 @@ public class Department extends CustomEntity {
     }
 
     public void changeParent(
-        @Nullable Department parent,
-        int seq
+            @Nullable Department parent,
+            int seq
     ) {
         this.parent = parent;
         this.seq = seq;
