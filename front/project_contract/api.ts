@@ -1,5 +1,8 @@
 import apiClient, { toFormData } from 'services/api';
 import {
+  ProjectContractBasicVO,
+  ProjectContractCollectionVO,
+  ProjectContractConditionVO,
   ProjectContractId,
   ProjectContractShort,
   ProjectContractVO,
@@ -7,9 +10,7 @@ import {
   ProjectEstimateVO
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
-import {
-  ProjectContractParameter
-} from 'project_contract/parameter';
+import { ProjectContractParameter } from 'project_contract/parameter';
 
 class ProjectContractApi {
 
@@ -62,6 +63,26 @@ class ProjectContractApi {
   async getEstimateDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
     const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
     return new ProjectEstimateVO(data);
+  }
+
+  /** 계약서 기본 정보 조회*/
+  async getContractBasic(projectId: ProjectId): Promise<ProjectContractBasicVO> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/basic`);
+    return data;
+  }
+
+  async getContractCollection(projectId: ProjectId,
+                              estimateId: ProjectEstimateId
+  ): Promise<ProjectContractCollectionVO> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/collection?estimateId=${estimateId ? estimateId : ''}`);
+    return data;
+  }
+
+  async getContractCondition(projectId: ProjectId,
+                             estimateId: ProjectEstimateId
+  ): Promise<ProjectContractConditionVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition?estimateId=${estimateId ? estimateId : ''}`);
+    return data;
   }
 }
 

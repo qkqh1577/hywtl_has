@@ -1,12 +1,16 @@
 import { ProjectId } from 'project/domain';
 import {
-  ProjectContractShort,
+  ProjectContractBasicVO,
+  ProjectContractCollectionVO,
+  ProjectContractConditionVO,
   ProjectContractId,
+  ProjectContractShort,
   ProjectContractVO,
   ProjectEstimateVO,
 } from 'project_contract/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectContractActionType } from 'project_contract/action';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
 export interface ProjectContractState {
   projectId?: ProjectId;
@@ -17,6 +21,10 @@ export interface ProjectContractState {
   detailModal?: ProjectContractId;
   estimateList?: ProjectEstimateVO[];
   estimateDetail?: ProjectEstimateVO;
+  variableList?: ContractConditionVariableVO[];
+  basic?: ProjectContractBasicVO;
+  collection?: ProjectContractCollectionVO;
+  condition?: ProjectContractConditionVO;
 }
 
 const initial: ProjectContractState = {};
@@ -73,4 +81,32 @@ export const projectContractReducer = createReducer(initial, {
     ...state,
     estimateDetail: action.payload,
   }),
+  [ProjectContractActionType.setVariableList]:   (state,
+                                                  action
+                                                 ) => ({
+    ...state,
+    variableList: action.payload,
+  }),
+  [ProjectContractActionType.setContractBasic]:  (
+                                                   state,
+                                                   action
+                                                 ) => ({
+    ...state,
+    basic: action.payload,
+  }),
+
+  [ProjectContractActionType.setContractCollectionList]: (
+                                                           state,
+                                                           action
+                                                         ) => ({
+    ...state,
+    collection: action.payload
+  }),
+  [ProjectContractActionType.setContractConditionList]:  (
+                                                           state,
+                                                           action
+                                                         ) => ({
+    ...state,
+    condition: action.payload
+  })
 });

@@ -9,7 +9,6 @@ import { ProjectContractParameter, } from 'project_contract/parameter';
 import React, {
   useCallback,
   useEffect,
-  useState,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
@@ -27,7 +26,20 @@ const initialValues = {
   recipient:     '',
   note:          '',
   basic:         undefined,
-  collection:    undefined,
+  collection:    {
+    stageNote:       '',
+    stageList:       [
+      {
+        name:         '',
+        ratio:        0,
+        amount:       0,
+        note:         '',
+        expectedDate: undefined,
+      }
+    ],
+    totalAmountNote: '',
+    totalAmount:     0,
+  },
   conditionList: [{
     id:              '',
     title:           '',
@@ -38,9 +50,8 @@ const initialValues = {
 export default function ProjectContractAddModalRoute() {
 
   const dispatch = useDispatch();
-  const { projectId, addModal } = useSelector((root: RootState) => root.projectContract);
+  const { projectId, addModal, variableList } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
-
 
   useEffect(() => {
     if (projectId) {
@@ -91,6 +102,7 @@ export default function ProjectContractAddModalRoute() {
       onClose={onClose}
       totalRatioCell={<CollectionTotalRatioCellRoute />}
       handleEstimateIdChange={handleEstimateIdChange}
+      variableList={variableList}
     />
   );
 }

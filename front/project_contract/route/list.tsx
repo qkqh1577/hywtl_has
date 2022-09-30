@@ -2,11 +2,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux';
-import { RootState } from 'services/reducer';
+import { useDispatch } from 'react-redux';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectId } from 'project/domain';
 import useId from 'services/useId';
@@ -25,7 +21,7 @@ export default function ProjectContractListRoute() {
   //const { list } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
   //const openDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
-
+  const getVariableList = useCallback(() => dispatch(projectContractAction.getVariableList()), [dispatch]);
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
     return {
       id:           i,
@@ -49,6 +45,7 @@ export default function ProjectContractListRoute() {
     <ProjectContractListSection
       list={list}
       openAddModal={openAddModal}
+      getVariableList={getVariableList}
       openDetailModal={() => {}}
       openConfirmModal={() => {}}
     />

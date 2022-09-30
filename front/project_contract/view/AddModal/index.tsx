@@ -16,13 +16,14 @@ import ContractorForm from 'project_contract/view/AddModal/ContractorForm';
 import ServiceContractTermsForm from 'project_contract/view/AddModal/ServiceContractTermsForm';
 import ContractInfoHeader from 'project_contract/view/AddModal/ContractInfoHeader';
 import ContractDateForm from 'project_contract/view/AddModal/ContractDateForm';
-import { ProjectEstimateVO } from 'project_contract/domain';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
 interface Props
   extends FormikLayoutProps<any> {
   onClose: ModalLayoutProps['onClose'];
   totalRatioCell: React.ReactNode;
   handleEstimateIdChange: (estimateId: number) => void;
+  variableList: ContractConditionVariableVO[] | undefined;
 }
 
 export default function ProjectContractAddModal(props: Props) {
@@ -32,10 +33,9 @@ export default function ProjectContractAddModal(props: Props) {
           handleEstimateIdChange,
         } = props;
 
-  const { addModal, estimateDetail } = useSelector((root: RootState) => root.projectContract);
+  const { addModal, estimateDetail, variableList } = useSelector((root: RootState) => root.projectContract);
+
   const onSubmit = () => {formik.handleSubmit();};
-  console.log('render ProjectContractAddModal');
-  console.log(estimateDetail);
   return (
     <ModalLayout
       title="계약서 등록"
@@ -58,11 +58,16 @@ export default function ProjectContractAddModal(props: Props) {
                 <ContractEstimateForm estimateDetail={estimateDetail} handleEstimateIdChange={handleEstimateIdChange} formik={formik} />
               </Grid>
               <Grid item xs={12} md={9}>
-                <ServiceAgreementForm {...props} />
-                <ContractDateForm formik={formik} />
-                <OrdererForm formik={formik} />
-                <ContractorForm formik={formik} />
-                <ServiceContractTermsForm formik={formik} />
+                <Box sx={{
+                  maxHeight: `1000px`,
+                  overflow:  'auto',
+                }}>
+                  <ServiceAgreementForm {...props} />
+                  <ContractDateForm formik={formik} />
+                  <OrdererForm formik={formik} />
+                  <ContractorForm formik={formik} />
+                  <ServiceContractTermsForm formik={formik} variableList={variableList} />
+                </Box>
               </Grid>
             </Grid>
           </FormikProvider>

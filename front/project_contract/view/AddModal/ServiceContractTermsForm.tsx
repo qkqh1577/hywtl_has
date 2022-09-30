@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
 import AddRow from 'admin/contract/condition/view/addRow';
 import {
+  ContractConditionVariableVO,
   ContractConditionVO,
   initialContractConditionVO
 } from 'admin/contract/condition/domain';
@@ -26,8 +27,16 @@ import Text from 'layouts/Text';
 import VariableList from 'admin/contract/condition/view/VariableList';
 import useDialog from 'components/Dialog';
 
-export default function (props: FormikLayoutProps<any>) {
-  const { formik } = props;
+interface Props
+  extends FormikLayoutProps<any> {
+  variableList: ContractConditionVariableVO[] | undefined;
+}
+
+export default function (props: Props) {
+  const {
+          formik,
+          variableList
+        } = props;
   const { error } = useDialog();
   const list = formik.values.conditionList;
   const onAddForm = () => {
@@ -259,7 +268,7 @@ export default function (props: FormikLayoutProps<any>) {
                   );
                 })}
           </Grid>
-          <VariableList variableList={[]} />
+          <VariableList variableList={ variableList ? variableList : []} />
         </Grid>
       </Box>
     </>
