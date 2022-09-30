@@ -49,41 +49,17 @@ public class EstimateTemplateDetail extends CustomEntity {
      */
     private String note;
 
-    /**
-     * 정렬 순서
-     */
-    @NotNull
-    @Column(nullable = false)
-    private Integer seq;
-
-
     public static EstimateTemplateDetail of(
         List<String> titleList,
         EstimateUnit unit,
         Long unitAmount,
-        String note,
-        Integer seq
+        String note
     ) {
         EstimateTemplateDetail instance = new EstimateTemplateDetail();
         instance.titleList = titleList;
         instance.unit = unit;
         instance.unitAmount = unitAmount;
         instance.note = note;
-        instance.seq = seq;
         return instance;
-    }
-
-    public void change(
-        List<String> titleList,
-        EstimateUnit unit,
-        Long unitAmount,
-        String note,
-        Integer seq
-    ) {
-        this.titleList = titleList;
-        this.unit = unit;
-        this.unitAmount = unitAmount;
-        this.note = note;
-        this.seq = seq;
     }
 }
