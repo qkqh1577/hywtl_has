@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  EstimateContentShort,
-  testTypeName,
-} from 'admin/estimate/content/domain';
+import { EstimateContentShort } from 'admin/estimate/content/domain';
+import { testTypeName } from 'type/TestType';
 import {
   TableBody,
   TableContainer,

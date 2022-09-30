@@ -1,29 +1,29 @@
-import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
+import React, { useContext } from 'react';
+import PageLayout from 'layouts/PageLayout';
 import Form from 'admin/estimate/content/view/Detail/Form';
-import {
-  FormikEditable,
-  FormikPartial
-} from 'type/Form';
-import Footer, { FooterProps } from 'admin/estimate/content/view/Detail/Footer';
-import { EstimateContentParameter } from 'admin/estimate/content/parameter';
-import { DetailListProps } from 'admin/estimate/content/view/Detail/DetailList';
-import { VariableListProps } from 'admin/estimate/content/view/Detail/VariableList';
+import Footer from 'admin/estimate/content/view/Detail/Footer';
+import { FormikContext } from 'formik';
+import { DefaultFunction } from 'type/Function';
+import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 
-interface Props
-  extends DetailListProps,
-          FooterProps,
-          VariableListProps,
-          FormikLayoutProps<FormikEditable<FormikPartial<EstimateContentParameter>>> {
+interface Props {
+  onDelete: DefaultFunction;
+  onCancel: DefaultFunction;
+  variableList: EstimateContentVariableVO[] | undefined;
 }
 
 export default function EstimateContentDetail(props: Props) {
+  const formik = useContext(FormikContext);
   return (
     <PageLayout
-      title={props.formik?.values?.id ? '견적서 내용 상세 정보' : '견적서 내용 등록'}
+      title={formik.values.id ? '견적서 내용 상세 정보' : '견적서 내용 등록'}
       body={<Form {...props} />}
-      footer={<Footer removeButton={props.removeButton} />}
-      formik={props.formik}
+      footer={
+        <Footer
+          onDelete={props.onDelete}
+          onCancel={props.onCancel}
+        />
+      }
     />
   );
 };

@@ -37,7 +37,7 @@ import {
   TestType,
   testTypeList,
   testTypeName
-} from 'admin/estimate/content/domain';
+} from 'type/TestType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {

@@ -27,13 +27,12 @@ import { projectBasicApi } from 'project_basic/api';
 import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import { RivalEstimateId } from 'rival_estimate/domain';
-import { TestType } from 'admin/estimate/content/domain';
+import { TestType } from 'type/TestType';
 import {
   BusinessInvolvedType,
   BusinessManagerStatus
 } from 'business/domain';
 import {
-  projectStatusAction,
   ProjectStatusActionType,
   ProjectStatusEventType
 } from 'project_status/action';
@@ -366,7 +365,8 @@ function* watchSetStatusInProjectStatusAction() {
     const { payload: status } = (yield take(ProjectStatusActionType.setStatus)) as { payload: ProjectStatus };
     if (status.estimateExpectation === ProjectEstimateExpectation.LOSE) {
       yield put(projectBasicAction.setLossEstimateExpectation(true));
-    } else {
+    }
+    else {
       yield put(projectBasicAction.setLossEstimateExpectation(false));
     }
   }

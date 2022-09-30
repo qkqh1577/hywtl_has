@@ -1,42 +1,34 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useRef
+} from 'react';
 import useDialog from 'components/Dialog';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
-import { EstimateContentVO } from 'admin/estimate/content/domain';
+import { FormikContext, } from 'formik';
 import {
   Box,
-  Button,
-  IconButton,
   TableBody,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
 } from '@mui/material';
-import TextField from 'components/TextField';
-import Tooltip from 'components/Tooltip';
-import {
-  KeyboardArrowDown as DownIcon,
-  KeyboardArrowUp as UpIcon
-} from '@mui/icons-material';
 import RequiredMark from 'components/RequiredMark';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
+import Input from 'layouts/Input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from 'layouts/Button';
+import IconButton from 'components/IconButton';
 
-export interface DetailListProps {
-  detailListFooter: React.ReactNode;
-}
-
-export default function (props: DetailListProps) {
+export default function () {
   const { error } = useDialog();
-  const formikContext: FormikContextType<FormikEditable<EstimateContentVO>> = useContext(FormikContext);
-  const edit = formikContext?.values.edit ?? true;
-  const list = formikContext?.values.detailList ?? [];
+  const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
+  const list = formik.values.detailList ?? [];
+  const newInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <TableContainer>
@@ -47,8 +39,8 @@ export default function (props: DetailListProps) {
             <Th>
               <RequiredMark required={edit} text="문구" />
             </Th>
-            {edit && <Th>순서</Th>}
-            {edit && <Th>삭제</Th>}
+            {edit && (<Th sx={{ width: '70px' }}>순서</Th>)}
+            {edit && (<Th sx={{ width: '48px' }}>삭제</Th>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -61,16 +53,18 @@ export default function (props: DetailListProps) {
                   {i + 1}
                 </Td>
                 <Td>
-                  {!edit && detail}
-                  {edit && (
-                    <TextField
-                      required
-                      disableLabel
-                      type=" text"
-                      name={`detailList.${i}`}
-                      label="문구"
-                    />
-                  )}
+                  <Input
+                    variant="outlined"
+                    readOnly={!edit}
+                    value={detail ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (detail !== value) {
+                        formik.setFieldValue(`detailList.${i}`, detail);
+                      }
+                    }}
+
+                  />
                 </Td>
                 {edit && (
                   <Td>
@@ -79,59 +73,62 @@ export default function (props: DetailListProps) {
                       width:          '100%',
                       justifyContent: 'space-around',
                     }}>
-                      <Tooltip title="순서 올리기">
-                        <IconButton
-                          disabled={i === 0}
-                          children={<UpIcon />}
-                          onClick={() => {
-                            const prevList = list.filter((t,
-                                                          k
-                            ) => k !== i);
-                            const detailList: string[] = [];
-                            for (let k = 0; k < prevList.length; k++) {
-                              if (detailList.length === i - 1) {
-                                detailList.push(detail);
-                              }
-                              detailList.push(prevList[k]);
+                      <IconButton
+                        tooltip="순서 올리기"
+                        shape="square"
+                        disabled={i === 0}
+                        children={<FontAwesomeIcon icon="angle-up" />}
+                        sx={{
+                          marginRight: '10px',
+                        }}
+                        onClick={() => {
+                          const prevList = list.filter((t,
+                                                        k
+                          ) => k !== i);
+                          const detailList: string[] = [];
+                          for (let k = 0; k < prevList.length; k++) {
+                            if (detailList.length === i - 1) {
+                              detailList.push(detail);
                             }
-                            formikContext!.setFieldValue('detailList', detailList);
-                          }}
-                        />
-                      </Tooltip>
-                      <Tooltip title="순서 내리기">
-                        <IconButton
-                          disabled={i === list.length - 1}
-                          children={<DownIcon />}
-                          onClick={() => {
-                            const prevList = list.filter((t,
-                                                          k
-                            ) => k !== i);
-                            const detailList: string[] = [];
-                            for (let k = 0; k < prevList.length; k++) {
-                              detailList.push(prevList[k]);
-                              if (detailList.length === i + 1) {
-                                detailList.push(detail);
-                              }
+                            detailList.push(prevList[k]);
+                          }
+                          formik.setFieldValue('detailList', detailList);
+                        }}
+                      />
+                      <IconButton
+                        tooltip="순서 내리기"
+                        shape="square"
+                        disabled={i === list.length - 1}
+                        children={<FontAwesomeIcon icon="angle-down" />}
+                        onClick={() => {
+                          const prevList = list.filter((t,
+                                                        k
+                          ) => k !== i);
+                          const detailList: string[] = [];
+                          for (let k = 0; k < prevList.length; k++) {
+                            detailList.push(prevList[k]);
+                            if (detailList.length === i + 1) {
+                              detailList.push(detail);
                             }
-                            formikContext!.setFieldValue('detailList', detailList);
-                          }}
-                        />
-                      </Tooltip>
+                          }
+                          formik.setFieldValue('detailList', detailList);
+                        }}
+                      />
                     </Box>
                   </Td>
                 )}
                 {edit && (
                   <Td>
                     <Button
-                      color="warning"
+                      shape="small"
                       disabled={list.length <= 1}
                       onClick={() => {
                         if (list.length === 1) {
                           error('최소 하나 이상의 세부 항목이 필요합니다.');
                           return;
                         }
-                        formikContext!.setFieldValue('detailList', list.filter((detail,
-                                                                                k
+                        formik.setFieldValue('detailList', list.filter((detail,
+                                                                        k
                         ) => k !== i));
                       }}>
                       삭제
@@ -142,7 +139,38 @@ export default function (props: DetailListProps) {
             );
           })}
         </TableBody>
-        {edit && props.detailListFooter}
+        {edit && (
+          <TableFooter>
+            <TableRow>
+              <Td>신규</Td>
+              <Td>
+                <Input
+                  variant="outlined"
+                  inputRef={newInputRef}
+                />
+              </Td>
+              <Td colSpan={2}>
+                <Box sx={{
+                  display:        'flex',
+                  flexWrap:       'nowrap',
+                  justifyContent: 'right',
+                }}>
+                  <Button shape="small" onClick={() => {
+                    const value = newInputRef.current?.value;
+                    if (!value) {
+                      error('문구를 입력해 주시기 바랍니다.');
+                      return;
+                    }
+                    formik.setFieldValue('detailList', [...list, value]);
+                    newInputRef.current!.value = '';
+                  }}>
+                    추가
+                  </Button>
+                </Box>
+              </Td>
+            </TableRow>
+          </TableFooter>
+        )}
       </Table>
     </TableContainer>
   );

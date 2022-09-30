@@ -9,7 +9,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import { testTypeName } from 'admin/estimate/content/domain';
+import { testTypeName } from 'type/TestType';
 import React from 'react';
 import { ProjectComplexTestVO } from 'project_complex/domain';
 

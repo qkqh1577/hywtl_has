@@ -29,7 +29,7 @@ export const estimateTemplateReducer = createReducer(initialEstimateTemplateStat
                                            action
                                           ) => ({
     ...state,
-    filter: action.payload.values,
+    filter: action.payload,
   }),
   [EstimateTemplateAction.setId]:         (state,
                                            action

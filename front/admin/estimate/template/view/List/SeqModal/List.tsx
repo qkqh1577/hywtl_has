@@ -6,10 +6,8 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import {
-  EstimateTemplateShort,
-  testTypeName
-} from 'admin/estimate/template/domain';
+import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { testTypeName } from 'type/TestType';
 import IconButton from 'components/IconButton';
 import {
   Table,

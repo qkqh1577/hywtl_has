@@ -8,7 +8,7 @@ import {
   TestType,
   testTypeList,
   testTypeName
-} from 'admin/estimate/content/domain';
+} from 'type/TestType';
 import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {

@@ -12,7 +12,7 @@ import { FieldStatus } from 'components/DataFieldProps';
 import {
   TestType,
   testTypeName
-} from 'admin/estimate/content/domain';
+} from 'type/TestType';
 import {
   Table,
   Td,

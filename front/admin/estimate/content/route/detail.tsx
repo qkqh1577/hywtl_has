@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useContext,
   useEffect,
 } from 'react';
 import { AppRoute } from 'services/routes';
@@ -13,117 +12,72 @@ import {
 import { RootState } from 'services/reducer';
 import useDialog from 'components/Dialog';
 import {
-  FormikContext,
-  FormikContextType,
+  FormikProvider,
   useFormik
 } from 'formik';
-import {
-  FormikEditable,
-  FormikPartial,
-  FormikSubmit,
-  toValues
-} from 'type/Form';
+import { FormikEditable, } from 'type/Form';
 import {
   EstimateContentParameter,
   initialEstimateContentParameter
 } from 'admin/estimate/content/parameter';
-import {
-  EstimateContentAction,
-  estimateContentAction
-} from 'admin/estimate/content/action';
-import EstimateContentRemoveButton from 'admin/estimate/content/view/Detail/Footer/RemoveButton';
+import { estimateContentAction } from 'admin/estimate/content/action';
 import { EstimateContentId } from 'admin/estimate/content/domain';
-import AddDescription from 'admin/estimate/content/view/Detail/DetailList/Footer';
-
-interface WithDescription
-  extends FormikPartial<EstimateContentParameter> {
-  newDescription: string;
-}
-
-function DetailListFooterRoute() {
-
-  const { error } = useDialog();
-  const formik: FormikContextType<WithDescription> = useContext(FormikContext);
-
-  return (
-    <AddDescription
-      onClick={() => {
-        const { values } = formik;
-        const { newDescription, detailList } = values;
-        if (!newDescription) {
-          error('추가할 내용이 없습니다.');
-          return;
-        }
-        formik.setFieldValue('detailList', [...(detailList || []), newDescription]);
-        formik.setFieldValue('newDescription', '');
-      }}
-    />
-  );
-}
-
-function RemoveButtonRoute() {
-
-  const id = useId();
-  const dispatch = useDispatch();
-  const remove = useCallback((id: EstimateContentId) => dispatch(estimateContentAction.delete(id)), [dispatch]);
-
-  return (
-    <EstimateContentRemoveButton
-      onClick={() => {
-        if (id) {
-          remove(EstimateContentId(id));
-        }
-      }}
-    />
-  );
-}
-
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail, variableList } = useSelector((root: RootState) => root.estimateContent);
   const { error } = useDialog();
-  const upsert = useCallback((formikProps: FormikSubmit<FormikPartial<EstimateContentParameter>>) =>
-      dispatch(estimateContentAction.upsert({
-        ...formikProps,
-        values: toValues(formikProps.values) as EstimateContentParameter,
-      })),
-    [dispatch]
-  );
-  const formik = useFormik<FormikEditable<FormikPartial<EstimateContentParameter>>>({
+  const upsert = useCallback((params: EstimateContentParameter) => dispatch(estimateContentAction.upsert(params)), [dispatch]);
+  const onDelete = useCallback(() => dispatch(estimateContentAction.deleteOne()), [dispatch]);
+  const formik = useFormik<EstimateContentParameter>({
     enableReinitialize: true,
-    initialValues:      detail ? { edit: false, ...detail } : { edit: true, ...initialEstimateContentParameter },
-    onSubmit:           (values,
-                         helper
-                        ) => {
-      if (!values.edit) {
+    initialValues:      initialEstimateContentParameter,
+    onSubmit:           (formikValues) => {
+      const values = formikValues as FormikEditable<EstimateContentParameter>;
+      if (id && !values.edit) {
         error('수정 상태가 아닙니다.');
-        helper.setSubmitting(false);
         return;
       }
-      upsert({ values, ...helper });
+      upsert(values);
+      formik.setSubmitting(false);
     }
   });
 
   useEffect(() => {
     if (id) {
-      dispatch({
-        type: EstimateContentAction.setOne,
-        id,
-      });
+      dispatch(estimateContentAction.setId(EstimateContentId(id)));
     }
-    dispatch({
-      type: EstimateContentAction.setVariableList
-    });
+    else {
+      dispatch(estimateContentAction.setId(undefined));
+    }
+    dispatch(estimateContentAction.requestVariableList());
   }, [id]);
+
+  useEffect(() => {
+    if (detail) {
+      formik.setValues({ ...detail, edit: false } as EstimateContentParameter);
+    }
+    else {
+      formik.setValues(initialEstimateContentParameter);
+    }
+  }, [detail]);
+
   return (
-    <EstimateContentDetail
-      formik={formik}
-      detailListFooter={<DetailListFooterRoute />}
-      removeButton={<RemoveButtonRoute />}
-      variableList={variableList}
-    />
+    <FormikProvider value={formik}>
+      <EstimateContentDetail
+        variableList={variableList}
+        onDelete={onDelete}
+        onCancel={() => {
+          if (detail) {
+            formik.setValues({ ...detail, edit: false } as EstimateContentParameter);
+          }
+          else {
+            formik.setValues(initialEstimateContentParameter);
+          }
+        }}
+      />
+    </FormikProvider>
   );
 }
 

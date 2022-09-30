@@ -5,7 +5,7 @@ import SelectField from 'components/SelectField';
 import {
   testTypeList,
   testTypeName
-} from 'admin/estimate/template/domain';
+} from 'type/TestType';
 import DetailList from './DetailList';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';

@@ -1,13 +1,15 @@
-import { EstimateContentVO } from 'admin/estimate/content/domain';
-import { FormikPartial } from 'type/Form';
+import {
+  EstimateContentId,
+  EstimateContentVO
+} from 'admin/estimate/content/domain';
 
 export interface EstimateContentParameter
-  extends EstimateContentVO {
+  extends Omit<EstimateContentVO, |'id'> {
+  id?: EstimateContentId;
 }
 
-export const initialEstimateContentParameter: FormikPartial<EstimateContentParameter> = {
-  id:         '',
-  name:       '',
-  testTypeList:   '',
-  detailList: [],
-};
+export const initialEstimateContentParameter = {
+  testType:   [],
+  detailList: [''],
+  edit:       true,
+} as unknown as EstimateContentParameter;
