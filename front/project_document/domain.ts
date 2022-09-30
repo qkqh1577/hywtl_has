@@ -1,9 +1,4 @@
-import {
-  UserVO
-} from 'user/domain';
-import {
-  FormikPartial
-} from 'type/Form';
+import { UserVO } from 'user/domain';
 import { FileItemView } from 'file-item';
 
 export type ProjectDocumentId = number & { readonly _brand: symbol }
@@ -14,7 +9,7 @@ export function ProjectDocumentId(id: number) {
 
 export interface ProjectDocumentVO {
   id: ProjectDocumentId;
-  code: string; // 자료ID
+  code: string; // 자료 ID
   createdBy: UserVO; // 등록자
   recipient: string; // 수신처
   file: FileItemView; // 파일
@@ -29,16 +24,6 @@ export interface ProjectDocumentShort
   createdAt: Date; // 등록 일시
   modifiedAt?: Date; // 수정 일시
 }
-
-export const initialProjectDocumentVO: FormikPartial<ProjectDocumentVO> = {
-  id:        '',
-  code:      '',
-  createdBy: '',
-  recipient: '',
-  file:      '',
-  mailFile:  '',
-  note:      '',
-};
 
 /**
  * 자료 타입
@@ -72,20 +57,4 @@ export function projectDocumentTypeName(type: ProjectDocumentType) {
     default:
       return '-';
   }
-}
-
-/**
- * 메일파일 버튼 유형과 파일 버튼 유형
- */
-export enum ButtonType {
-  /**
-   * 파일 버튼
-   */
-  FILE_BUTTON      = 'FILE_BUTTON',
-
-  /**
-   * 메일 파일 버튼
-   */
-  MAIL_FILE_BUTTON = 'MAIL_FILE_BUTTON'
-
 }

@@ -1,30 +1,26 @@
-import ProjectDocumentModalButtonBlock from 'project_document/view/AddModal/ButtonBlock';
-import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
+import ModalLayout from 'layouts/ModalLayout';
 import { Box } from '@mui/material';
 import React from 'react';
 import Form from 'project_document/view/AddModal/Form';
-import { FormikProvider } from 'formik';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { FormikPartial } from 'type/Form';
-import { ProjectDocumentParameter } from 'project_document/parameter';
+import { DefaultFunction } from 'type/Function';
+import Button from 'layouts/Button';
 
-interface Props
-  extends FormikLayoutProps<FormikPartial<ProjectDocumentParameter>> {
+interface Props {
   open: boolean;
-  onClose: ModalLayoutProps['onClose'];
+  onAdd: DefaultFunction;
+  onClose: DefaultFunction;
 }
 
 export default function ProjectDocumentAddModal(props: Props) {
   const {
           open,
           onClose,
-          formik
+          onAdd,
         } = props;
-  const onSubmit = () => {formik.handleSubmit();};
   return (
     <ModalLayout
       title="자료 등록"
-      width="40vw"
+      width="30vw"
       open={open}
       onClose={onClose}
       children={
@@ -33,16 +29,26 @@ export default function ProjectDocumentAddModal(props: Props) {
           flexWrap: 'wrap',
           width:    '100%',
         }}>
-          <FormikProvider value={formik}>
-            <Form />
-          </FormikProvider>
+          <Form />
         </Box>
       }
       footer={
-        <ProjectDocumentModalButtonBlock
-          onSubmit={onSubmit}
-          onClose={onClose}
-        />
+        <Box sx={{
+          display:        'flex',
+          width:          '100%',
+          justifyContent: 'center',
+        }}>
+          <Button
+            onClick={onAdd}
+            sx={{
+              marginRight: '10px',
+            }}>
+            저장
+          </Button>
+          <Button shape="basic3" onClick={onClose}>
+            취소
+          </Button>
+        </Box>
       }
     />
   );

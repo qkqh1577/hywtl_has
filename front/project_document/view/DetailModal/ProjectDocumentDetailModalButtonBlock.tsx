@@ -1,13 +1,12 @@
 import React from 'react';
-import {
-  Box,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
 interface Props {
-  onDelete: () => void;
-  onEdit: () => void;
-  onClose: () => void;
+  onDelete: DefaultFunction;
+  onEdit: DefaultFunction;
+  onClose: DefaultFunction;
 }
 
 export default function ProjectDocumentDetailModalButtonBlock({

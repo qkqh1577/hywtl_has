@@ -1,6 +1,6 @@
 import React, {
   useCallback,
-  useEffect
+  useEffect,
 } from 'react';
 import ProjectDocumentAddModal from 'project_document/view/AddModal';
 import {
@@ -9,58 +9,58 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectDocumentAction } from 'project_document/action';
-import { useFormik } from 'formik';
 import {
-  FormikPartial,
-  toValues
-} from 'type/Form';
+  FormikProvider,
+  useFormik
+} from 'formik';
 import {
   initialProjectDocumentParameter,
   ProjectDocumentParameter
 } from 'project_document/parameter';
-import useId from 'services/useId';
 import useDialog from 'components/Dialog';
-import { ProjectId } from 'project/domain';
 
 export default function ProjectDocumentAddModalRoute() {
 
-  const projectId = useId();
   const { error } = useDialog();
   const dispatch = useDispatch();
-  const { addModal } = useSelector((root: RootState) => root.projectDocument);
+  const { projectId, addModal } = useSelector((root: RootState) => root.projectDocument);
 
-  const onClose = useCallback(() => dispatch(projectDocumentAction.addModal('close')), [dispatch]);
+  const onClose = useCallback(() => dispatch(projectDocumentAction.addModal(undefined)), [dispatch]);
+  const onAdd = useCallback((params: ProjectDocumentParameter) => dispatch(projectDocumentAction.add(params)), [dispatch]);
 
-  const formik = useFormik<FormikPartial<ProjectDocumentParameter>>({
-    enableReinitialize: true,
-    initialValues:      initialProjectDocumentParameter,
-    onSubmit:           (formikValues,
-                         helper
-                        ) => {
+  const formik = useFormik<ProjectDocumentParameter>({
+    initialValues: initialProjectDocumentParameter,
+    onSubmit:      (values) => {
       if (!projectId) {
         error('프로젝트가 선택되지 않았습니다.');
-        helper.setSubmitting(false);
+        formik.setSubmitting(false);
         return;
       }
-      if (addModal == 'close' || addModal === 'request' || addModal === 'response') {
+      if (!addModal) {
         error('자료 형식이 선택되지 않았습니다.');
-        helper.setSubmitting(false);
+        formik.setSubmitting(false);
         return;
       }
-      dispatch(projectDocumentAction.add(toValues({ ...formikValues, projectId: ProjectId(projectId), type: addModal })));
+      onAdd(values);
+      formik.setSubmitting(false);
     }
   });
+
   useEffect(() => {
-    if (addModal === 'response') {
-      onClose();
+    if (!addModal) {
+      formik.setValues(initialProjectDocumentParameter);
     }
   }, [addModal]);
 
   return (
-    <ProjectDocumentAddModal
-      open={addModal !== 'close'}
-      onClose={onClose}
-      formik={formik}
-    />
+    <FormikProvider value={formik}>
+      <ProjectDocumentAddModal
+        open={!!addModal}
+        onClose={onClose}
+        onAdd={() => {
+          formik.handleSubmit();
+        }}
+      />
+    </FormikProvider>
   );
 }

@@ -1,24 +1,24 @@
 import React from 'react';
 import {
   Input as MuiInput,
-  InputProps
+  InputProps as MuiInputProps,
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 
-interface Props
-  extends Omit<InputProps, | 'fullWidth' | 'inputProps'> {
+export interface InputProps
+  extends Omit<MuiInputProps, | 'fullWidth' | 'inputProps'> {
   variant?: 'outlined' | 'standard';
-  inputProps?: Omit<InputProps['inputProps'], |'style'>;
+  inputProps?: Omit<MuiInputProps['inputProps'], |'style'>;
 }
 
-export default function Input({ variant, ...props }: Props) {
+export default function Input({ variant, ...props }: InputProps) {
   if (variant === 'outlined') {
     return (<OutlinedInput {...props} />);
   }
   return (<StandardInput {...props} />);
 }
 
-export function OutlinedInput(props: Omit<Props, |'variant'>) {
+export function OutlinedInput(props: Omit<InputProps, |'variant'>) {
   return (
     <MuiInput
       {...props}
@@ -61,7 +61,7 @@ export function OutlinedInput(props: Omit<Props, |'variant'>) {
   );
 }
 
-export function StandardInput(props: Omit<Props, |'variant'>) {
+export function StandardInput(props: Omit<InputProps, |'variant'>) {
 
   return (
     <MuiInput

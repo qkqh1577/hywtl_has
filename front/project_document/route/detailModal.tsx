@@ -1,6 +1,6 @@
 import React, {
   useCallback,
-  useMemo
+  useEffect,
 } from 'react';
 import ProjectDocumentDetailModal from 'project_document/view/DetailModal';
 import {
@@ -9,71 +9,75 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectDocumentAction } from 'project_document/action';
-import { useFormik } from 'formik';
 import {
-  FormikEditable,
-  FormikPartial,
-  FormikSubmit,
-  toPartial,
-  toValues
-} from 'type/Form';
+  FormikProvider,
+  useFormik
+} from 'formik';
+import { ProjectDocumentId, } from 'project_document/domain';
 import {
-  initialProjectDocumentVO,
-  ProjectDocumentId,
-  ProjectDocumentVO
-} from 'project_document/domain';
-import { ProjectDocumentChangeParameter } from 'project_document/parameter';
+  initialProjectDocumentChangeParameter,
+  ProjectDocumentChangeParameter
+} from 'project_document/parameter';
+import useDialog from 'components/Dialog';
 
-export type DetailModalFormik = FormikEditable<FormikPartial<ProjectDocumentVO>>;
 
 export default function ProjectDocumentDetailModalRoute() {
 
   const dispatch = useDispatch();
+  const { rollback, error } = useDialog();
   const { detail } = useSelector((root: RootState) => root.projectDocument);
 
   const onClose = useCallback(() => dispatch(projectDocumentAction.setOne(undefined)), [dispatch]);
 
-  const change = useCallback((formikProps: FormikSubmit<ProjectDocumentChangeParameter>) =>
-    dispatch(projectDocumentAction.change(formikProps)), [dispatch]);
-  const initialValues: DetailModalFormik = useMemo(() => ({
-    ...toPartial(detail, initialProjectDocumentVO),
-    edit: false
-  }), [detail]);
-
-  const formik = useFormik<DetailModalFormik>({
-    enableReinitialize: true,
-    initialValues,
-    onSubmit:           (formikValues,
-                         helper
-                        ) => {
-      const values = toValues(formikValues);
-
-      change({
-        values: {
-          id:        values.id!,
-          note:      values.note,
-          recipient: values.recipient!,
-          mailFile:  values.mailFile,
-        },
-        ...helper
-      });
-    }
-  });
+  const change = useCallback((params: ProjectDocumentChangeParameter) => dispatch(projectDocumentAction.change(params)), [dispatch]);
 
   const remove = useCallback((id: ProjectDocumentId) => dispatch(projectDocumentAction.delete(id)), [dispatch]);
 
-  const onDelete = () => {
-    if (detail) {
-      remove(detail.id);
+  const onCancel = () => {
+    if (!detail) {
+      error('자료가 선택되지 않았습니다.');
+      return;
     }
+    rollback(() => {
+      formik.setValues(detail as ProjectDocumentChangeParameter);
+    });
   };
 
+  const onDelete = () => {
+    if (!detail) {
+      error('자료가 선택되지 않았습니다.');
+      return;
+    }
+    remove(detail.id);
+  };
+
+  const formik = useFormik<ProjectDocumentChangeParameter>({
+    initialValues: initialProjectDocumentChangeParameter,
+    onSubmit:      (values) => {
+      change(values);
+    }
+  });
+
+  useEffect(() => {
+    if (detail) {
+      formik.setValues(detail as ProjectDocumentChangeParameter);
+    }
+    else {
+      formik.setValues(initialProjectDocumentChangeParameter);
+    }
+  }, [detail]);
+
   return (
-    <ProjectDocumentDetailModal
-      open={typeof detail !== 'undefined'}
-      onClose={onClose}
-      formik={formik}
-      onDelete={onDelete}
-    />
+    <FormikProvider value={formik}>
+      <ProjectDocumentDetailModal
+        open={typeof detail !== 'undefined'}
+        onClose={onClose}
+        onChange={() => {
+          formik.handleSubmit();
+        }}
+        onCancel={onCancel}
+        onDelete={onDelete}
+      />
+    </FormikProvider>
   );
 }
