@@ -152,7 +152,7 @@ export interface ProjectContractCollectionStage {
   expectedDate: Date; // 예정일
 }
 
-export interface ProjectContractConditionVO{
+export interface ProjectContractConditionVO {
   title: string; // 제목
   descriptionList: string[]; // 내용 목록
 }

@@ -16,24 +16,22 @@ import ContractorForm from 'project_contract/view/AddModal/ContractorForm';
 import ServiceContractTermsForm from 'project_contract/view/AddModal/ServiceContractTermsForm';
 import ContractInfoHeader from 'project_contract/view/AddModal/ContractInfoHeader';
 import ContractDateForm from 'project_contract/view/AddModal/ContractDateForm';
-import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
 interface Props
   extends FormikLayoutProps<any> {
   onClose: ModalLayoutProps['onClose'];
-  totalRatioCell: React.ReactNode;
   handleEstimateIdChange: (estimateId: number) => void;
-  variableList: ContractConditionVariableVO[] | undefined;
 }
 
 export default function ProjectContractAddModal(props: Props) {
+
   const {
           onClose,
           formik,
           handleEstimateIdChange,
         } = props;
 
-  const { addModal, estimateDetail, variableList } = useSelector((root: RootState) => root.projectContract);
+  const { addModal, estimateDetail } = useSelector((root: RootState) => root.projectContract);
 
   const onSubmit = () => {formik.handleSubmit();};
   return (
@@ -62,11 +60,11 @@ export default function ProjectContractAddModal(props: Props) {
                   maxHeight: `1000px`,
                   overflow:  'auto',
                 }}>
-                  <ServiceAgreementForm {...props} />
+                  <ServiceAgreementForm formik={formik} />
                   <ContractDateForm formik={formik} />
                   <OrdererForm formik={formik} />
                   <ContractorForm formik={formik} />
-                  <ServiceContractTermsForm formik={formik} variableList={variableList} />
+                  <ServiceContractTermsForm formik={formik} variableList={[]} />
                 </Box>
               </Grid>
             </Grid>

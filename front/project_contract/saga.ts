@@ -9,14 +9,9 @@ import { projectContractAction } from 'project_contract/action';
 import { ProjectId } from 'project/domain';
 import {
   ProjectContractBasicVO,
-  ProjectContractCollectionVO,
-  ProjectContractConditionVO,
   ProjectContractVO,
-  ProjectEstimateId,
 } from 'project_contract/domain';
 import { projectContractApi } from 'project_contract/api';
-import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
-import { contractConditionApi } from 'admin/contract/condition/api';
 import { RootState } from 'services/reducer';
 
 function* watchProjectId() {
@@ -24,7 +19,7 @@ function* watchProjectId() {
     const { payload: projectId } = yield  take(projectContractAction.setProjectId);
     if (projectId) {
       yield call(getList, projectId);
-      yield call(watchVariableList);
+      //yield call(watchVariableList);
     }
   }
 }
@@ -43,6 +38,7 @@ function* watchContractBasic() {
   }
 }
 
+/*
 function* watchContractCollection() {
   while (true) {
     yield take(projectContractAction.getContractCollection);
@@ -52,7 +48,9 @@ function* watchContractCollection() {
     yield put(projectContractAction.setContractCollection(collection));
   }
 }
+*/
 
+/*
 function* watchContractConditionList() {
   while (true) {
     yield take(projectContractAction.getContractConditionList);
@@ -62,7 +60,9 @@ function* watchContractConditionList() {
     yield put(projectContractAction.setContractConditionList(conditionList));
   }
 }
+*/
 
+/*
 function* watchVariableList() {
   while (true) {
     yield take(projectContractAction.getVariableList);
@@ -70,12 +70,13 @@ function* watchVariableList() {
     yield put(projectContractAction.setVariableList(list));
   }
 }
+*/
 
 
 export default function* projectContractSaga() {
   yield fork(watchProjectId);
   yield fork(watchContractBasic);
-  yield fork(watchContractCollection);
+  /*yield fork(watchContractCollection);
   yield fork(watchContractConditionList);
-  yield fork(watchVariableList);
+  yield fork(watchVariableList);*/
 }

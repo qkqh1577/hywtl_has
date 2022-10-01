@@ -51,7 +51,6 @@ export const projectContractReducer = createReducer(initial, {
   [ProjectContractActionType.setAddModal]:       (state,
                                                   action
                                                  ) => {
-    console.log(state, action);
     return ({
       ...state,
       addModal: action.payload,

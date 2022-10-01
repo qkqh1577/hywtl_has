@@ -4,6 +4,50 @@ GET http://localhost:8080/project/sales/1/contract
 ### get detail
 GET http://localhost:8080/project/sales/contract/1
 
+### add basic
+PUT http://localhost:8080/admin/contract-basic
+Content-Type: application/json
+
+{
+  "collectionStageNote": "collectionStageNote",
+  "description": "description",
+  "outcome": "outcome",
+  "serviceDuration": "serviceDuration",
+  "contractor": {
+    "address": "address",
+    "ceoName": "ceoName",
+    "companyName": "companyName"
+  }
+}
+
+### add contract collection
+PUT http://localhost:8080/admin/contract-collection
+Content-Type: application/json
+
+{
+  "stageList": [
+    {
+      "name": "단계명1",
+      "ratio": 10,
+      "note": "시기",
+      "expectedDate": "CONTRACT_DAY"
+    },
+    {
+      "name": "단계명2",
+      "ratio": 20,
+      "note": "시기",
+      "expectedDate": "DAY_TO_DELIVER_THOUGH_SNOW_AND_WIND"
+    },
+    {
+      "name": "단계명3",
+      "ratio": 30,
+      "note": "시기",
+      "expectedDate": "DAY_TO_DELiVER_FOE_FINAL_REPORT"
+    }
+  ],
+  "totalAmountNote": "금액에 대한 설명"
+}
+
 ### add
 PUT http://localhost:8080/project/sales/1/contract
 Content-Type: application/json

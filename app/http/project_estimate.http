@@ -36,7 +36,10 @@ Content-Type: application/json
   "plan": {
     "estimateDate": "2022-07-01",
     "expectedTestDeadline": 7,
-    "expectedFinalReportDeadline": 10
+    "expectedFinalReportDeadline": 10,
+    "testAmount": 50000000,
+    "reviewAmount": 10000000,
+    "totalAmount": 60000000
   },
   "siteList": [
     {

@@ -9,6 +9,7 @@ export interface ProjectContractParameter {
   basic?: {
     serviceName: string; // 용역명
     serviceDuration: string; // 용역 기간
+    serviceDurationWeekNumber: string; // 용역 기간 마감 주차
     outcome: string; // 성과품
     description?: string; // 추가 사항
     contractDate: Date; // 계약 날짜

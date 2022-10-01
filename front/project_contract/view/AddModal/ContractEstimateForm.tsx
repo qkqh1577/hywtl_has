@@ -43,7 +43,6 @@ export default function (props: {
   const closeSelectEstimateModal = () => {
     setSelectEstimateModalOpen(false);
   };
-
   return <>
     {selectEstimateModalOpen && <SelectEstimateModal estimateId={formik.values.estimateId} onClose={closeSelectEstimateModal} onSubmit={handleEstimateIdChange} />}
     <Box sx={{

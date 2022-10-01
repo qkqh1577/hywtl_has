@@ -21,6 +21,7 @@ export default function CollectionTotalRatioCellRoute() {
     if (!list) {
       return;
     }
+
     setValue(
       list.map((item) => item.ratio)
           .map(ratio => !ratio || Number.isNaN(+ratio) ? 0 : +ratio)

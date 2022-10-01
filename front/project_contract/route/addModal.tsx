@@ -12,58 +12,92 @@ import React, {
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
-import { ProjectId } from 'project/domain';
-import CollectionTotalRatioCellRoute from 'project_contract/route/CollectionTotalRatioCellRoute';
+import {
+  ProjectId,
+  ProjectVO
+} from 'project/domain';
 import { projectContractApi } from 'project_contract/api';
+
 import {
   ProjectEstimateId,
   ProjectEstimateVO
 } from 'project_contract/domain';
-
-const initialValues = {
-  estimateId:    undefined,
-  isSent:        'N',
-  recipient:     '',
-  note:          '',
-  basic:         undefined,
-  collection:    {
-    stageNote:       '',
-    stageList:       [
-      {
-        name:         '',
-        ratio:        0,
-        amount:       0,
-        note:         '',
-        expectedDate: undefined,
-      }
-    ],
-    totalAmountNote: '',
-    totalAmount:     0,
-  },
-  conditionList: [{
-    id:              '',
-    title:           '',
-    descriptionList: []
-  }],
-};
+import { projectApi } from 'project/api';
+import {
+  ContractCollectionVO,
+  ExpectedDateType
+} from 'admin/contract/collection/domain';
+import { contractCollectionApi } from 'admin/contract/collection/api';
+import { ContractConditionListVO } from 'admin/contract/condition/domain';
+import { contractConditionApi } from 'admin/contract/condition/api';
+import { contractBasicApi } from 'admin/contract/basic/api';
+import { ContractBasicVO } from 'admin/contract/basic/domain';
 
 export default function ProjectContractAddModalRoute() {
-
   const dispatch = useDispatch();
-  const { projectId, addModal, variableList } = useSelector((root: RootState) => root.projectContract);
+  const { projectId, addModal } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
 
   useEffect(() => {
     if (projectId) {
       dispatch(projectContractAction.setProjectId(ProjectId(projectId)));
+      (async () => {
+        let values = await getInitialValues(projectId);
+        console.debug(values);
+        await formik.setValues(values);
+      })();
     }
   }, [projectId]);
 
+  const getInitialValues: any = async (pid) => {
+    if (!pid) {
+      return undefined;
+    }
+    const project: ProjectVO = await projectApi.getOne(ProjectId(pid));
+    const basic: ContractBasicVO = await contractBasicApi.getOne();
+    const collection: ContractCollectionVO = await contractCollectionApi.getOne();
+    const conditionList: ContractConditionListVO = await contractConditionApi.getOne();
+    //const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getContractCondition, projectId, ProjectEstimateId(1));
+    const initialValues = {
+      estimateId:    undefined,
+      isSent:        'N',
+      recipient:     '',
+      note:          '',
+      basic:         {
+        ...basic,
+        serviceName:           project.name,
+        serviceDuration:       `${'확인필요'}(착수보고 시) ~ ${'확인필요'}(최종보고서 인도)`,
+        contractorAddress:     basic.contractor.address,
+        contractorCompanyName: basic.contractor.companyName,
+        contractorCeoName:     basic.contractor.ceoName,
+        contractDate:          new Date(),
+        contractDateSplit:     {
+          year:  new Date().getFullYear(),
+          month: new Date().getMonth() + 1,
+          day:   new Date().getDate(),
+        }
+      },
+      collection:    { ...collection },
+      conditionList: [...conditionList.contractConditionList],
+    };
+    return new Promise((resolve) => {
+      resolve(initialValues);
+    });
+  };
+
   const onClose = useCallback(() => dispatch(projectContractAction.setAddModal(undefined)), [dispatch]);
   const addContract = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.addContract(params)), [dispatch]);
-  const formik = useFormik<ProjectContractParameter>({
-    enableReinitialize: false,
-    initialValues:      initialValues as unknown as ProjectContractParameter,
+  const formik = useFormik<any>({
+    enableReinitialize: true,
+    initialValues:      {
+                          estimateId:    undefined,
+                          isSent:        'N',
+                          recipient:     '',
+                          note:          '',
+                          basic:         {},
+                          collection:    { stageList: [] },
+                          conditionList: [],
+                        } as any,
     onSubmit:           (values) => {
       if (!projectId || !addModal) {
         error('프로젝트가 선택되지 않았습니다.');
@@ -92,17 +126,33 @@ export default function ProjectContractAddModalRoute() {
     projectContractApi.getEstimateDetail(ProjectEstimateId(estimateId))
                       .then((estimateDetail) => {
                         dispatch(projectContractAction.setEstimateDetail(estimateDetail));
-                        formik.setFieldValue('basic.serviceDuration', `구조설계용 풍하중은 ${estimateDetail?.plan.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan.expectedFinalReportDeadline}주차`);
+                        const totalAmount = Math.floor(estimateDetail?.plan.totalAmount * 1.1);
+                        formik.setValues({
+                          ...formik.values,
+                          basic:      {
+                            ...formik.values.basic,
+                            serviceDurationWeekNumber: `구조설계용 풍하중은 ${estimateDetail?.plan.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan.expectedFinalReportDeadline}주차`
+                          },
+                          collection: {
+                            ...formik.values.collection,
+                            totalAmount: totalAmount,
+                            stageList:   formik.values.collection?.stageList.map((stage) => {
+                              return {
+                                ...stage,
+                                amount: totalAmount * stage.ratio / 100
+                              };
+                            })
+                          }
+                        });
                       });
   };
 
   return (
-    <ProjectContractAddModal
-      formik={formik}
-      onClose={onClose}
-      totalRatioCell={<CollectionTotalRatioCellRoute />}
-      handleEstimateIdChange={handleEstimateIdChange}
-      variableList={variableList}
-    />
-  );
+    <>
+      {<ProjectContractAddModal
+        formik={formik}
+        onClose={onClose}
+        handleEstimateIdChange={handleEstimateIdChange}
+      />}
+    </>);
 }

@@ -10,7 +10,7 @@ import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/custom
 import ProjectContractAddModalRoute from 'project_contract/route/addModal';
 
 function Element() {
-
+  console.log('index rerender')
   return (
     <ProjectContainerRoute>
       <ProjectEstimateListRoute />

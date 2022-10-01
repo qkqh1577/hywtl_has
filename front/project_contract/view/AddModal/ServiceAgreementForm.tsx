@@ -15,17 +15,22 @@ import {
 import { ColorPalette } from 'app/view/App/theme';
 import TextField from 'components/TextField';
 import CollectionForm from 'project_contract/view/AddModal/CollectionForm/CollectionForm';
+import { toAmountKor } from 'util/NumberUtil';
 
 interface Props
   extends FormikLayoutProps<any> {
-  totalRatioCell: React.ReactNode;
 }
 
 export default function (props: Props) {
-  const {
-          totalRatioCell,
-        } = props;
+  const { formik } = props;
+  const getServiceAmount = () => {
+    let totalAmount = props.formik?.values?.collection?.totalAmount;
+    if (totalAmount) {
+      return `${toAmountKor(totalAmount)} (￦ ${totalAmount.toLocaleString()}) 부가세 포함`;
+    }
+    return '';
 
+  };
   return (
     <>
       <TableContainer sx={{
@@ -46,7 +51,7 @@ export default function (props: Props) {
               </Th>
               <Td>
                 <TextField
-                  name="serviceName"
+                  name="basic.serviceName"
                   label="용역명"
                   disableLabel
                   variant="outlined"
@@ -58,22 +63,12 @@ export default function (props: Props) {
                 용역 기간
               </Th>
               <Td>
-                <TextField
-                  name="serviceDuration"
-                  label="용역기간"
-                  disableLabel
-                  variant="outlined"
-                />
+                {formik?.values?.basic?.serviceDuration}
               </Td>
             </TableRow>
             <TableRow>
               <Td>
-                <TextField
-                  name="basic.serviceDuration"
-                  label="견적서에 등록된 납품가능 주"
-                  disableLabel
-                  variant="outlined"
-                />
+                {formik?.values?.basic?.serviceDurationDeadline}
               </Td>
             </TableRow>
             <TableRow>
@@ -81,12 +76,7 @@ export default function (props: Props) {
                 용역금액
               </Th>
               <Td>
-                <TextField
-                  name="견적서에 등록된 금액(부가세 포함) value"
-                  label="견적서에 등록된 금액(부가세 포함)"
-                  disableLabel
-                  variant="outlined"
-                />
+                {getServiceAmount()}
               </Td>
             </TableRow>
             <TableRow>
@@ -94,12 +84,7 @@ export default function (props: Props) {
                 기성 단계
               </Th>
               <Td>
-                <TextField
-                  name="collectionStageNote"
-                  label="기성단계"
-                  disableLabel
-                  variant="outlined"
-                />
+                {formik?.values?.basic?.collectionStageNote}
               </Td>
             </TableRow>
             <TableRow>
@@ -113,7 +98,7 @@ export default function (props: Props) {
               </Th>
               <Td>
                 <TextField
-                  name="outcome"
+                  name="basic.outcome"
                   label="성과품"
                   disableLabel
                   variant="outlined" />
@@ -134,7 +119,7 @@ export default function (props: Props) {
           disableLabel
           multiline
           variant="outlined"
-          name="description"
+          name="basic.description"
           label="설명"
         />
       </Box>

@@ -1,8 +1,6 @@
 import apiClient, { toFormData } from 'services/api';
 import {
   ProjectContractBasicVO,
-  ProjectContractCollectionVO,
-  ProjectContractConditionVO,
   ProjectContractId,
   ProjectContractShort,
   ProjectContractVO,
@@ -71,19 +69,19 @@ class ProjectContractApi {
     return data;
   }
 
-  async getContractCollection(projectId: ProjectId,
+  /*async getContractCollection(projectId: ProjectId,
                               estimateId: ProjectEstimateId
   ): Promise<ProjectContractCollectionVO> {
     const { data } = await apiClient.get(`/project/sales/${projectId}/contract/collection?estimateId=${estimateId ? estimateId : ''}`);
     return data;
-  }
+  }*/
 
-  async getContractCondition(projectId: ProjectId,
+  /*async getContractCondition(projectId: ProjectId,
                              estimateId: ProjectEstimateId
   ): Promise<ProjectContractConditionVO[]> {
     const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition?estimateId=${estimateId ? estimateId : ''}`);
     return data;
-  }
+  }*/
 }
 
 export const projectContractApi = new ProjectContractApi();
