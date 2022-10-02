@@ -12,6 +12,8 @@ public class ProjectContractCollectionView {
     private List<ProjectContractCollectionStageView> stageList;
     private String totalAmountNote;
 
+    private Long totalAmount;
+
     public static ProjectContractCollectionView assemble(ProjectContractCollection source) {
         ProjectContractCollectionView target = new ProjectContractCollectionView();
         target.stageNote = source.getStageNote();
@@ -19,6 +21,7 @@ public class ProjectContractCollectionView {
             .map(ProjectContractCollectionStageView::assemble)
             .collect(Collectors.toList());
         target.totalAmountNote = source.getTotalAmountNote();
+        target.totalAmount = source.getTotalAmount();
         return target;
     }
 }

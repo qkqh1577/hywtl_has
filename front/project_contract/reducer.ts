@@ -66,7 +66,7 @@ export const projectContractReducer = createReducer(initial, {
                                                   action
                                                  ) => ({
     ...state,
-    DetailModal: action.payload
+    detailModal: action.payload
   }),
   [ProjectContractActionType.setEstimateList]:   (state,
                                                   action

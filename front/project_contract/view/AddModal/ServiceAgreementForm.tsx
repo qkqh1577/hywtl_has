@@ -84,7 +84,7 @@ export default function (props: Props) {
                 기성 단계
               </Th>
               <Td>
-                {formik?.values?.basic?.collectionStageNote}
+                {formik?.values?.collection?.stageNote}
               </Td>
             </TableRow>
             <TableRow>

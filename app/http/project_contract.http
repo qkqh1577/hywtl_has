@@ -58,6 +58,7 @@ Content-Type: application/json
   "recipient": "me3",
   "note": "note test",
   "basic": {
+    "description": "추가사항",
     "serviceName": "용역명 테스트",
     "serviceDuration": "용역 개시일(착수 보고 시) ~ 용역 완료일(최종 보고서 인도)",
     "outcome": "최종 보고서 4부(인쇄본)와 1개 전자본(pdf 파일)",
@@ -75,20 +76,27 @@ Content-Type: application/json
       {
         "name": "계약금",
         "ratio": 30,
+        "amount": 1000000,
+        "note": "계약일",
         "expectedDate": "2022-10-10"
       },
       {
         "name": "중도금",
         "ratio": 50,
+        "amount": 1000000,
+        "node": "중도금시기",
         "expectedDate": "2022-12-15"
       },
       {
         "name": "잔금",
         "ratio": 20,
+        "amount": 1000000,
+        "node": "잔금시기",
         "expectedDate": "2022-12-31"
       }
     ],
-    "totalAmountNote": "부가세 포함"
+    "totalAmountNote": "부가세 포함",
+    "totalAmount": 3000000
   },
   "conditionList": [
     {

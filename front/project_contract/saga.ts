@@ -13,13 +13,15 @@ import {
 } from 'project_contract/domain';
 import { projectContractApi } from 'project_contract/api';
 import { RootState } from 'services/reducer';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
+import { contractConditionApi } from 'admin/contract/condition/api';
 
 function* watchProjectId() {
   while (true) {
     const { payload: projectId } = yield  take(projectContractAction.setProjectId);
     if (projectId) {
       yield call(getList, projectId);
-      //yield call(watchVariableList);
+      yield call(getVariableList);
     }
   }
 }
@@ -62,15 +64,10 @@ function* watchContractConditionList() {
 }
 */
 
-/*
-function* watchVariableList() {
-  while (true) {
-    yield take(projectContractAction.getVariableList);
-    const list: ContractConditionVariableVO[] = yield call(contractConditionApi.getVariableList);
-    yield put(projectContractAction.setVariableList(list));
-  }
+function* getVariableList() {
+  const list: ContractConditionVariableVO[] = yield call(contractConditionApi.getVariableList);
+  yield put(projectContractAction.setVariableList(list));
 }
-*/
 
 
 export default function* projectContractSaga() {

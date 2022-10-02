@@ -37,7 +37,7 @@ export default function (props: FormikLayoutProps<any>) {
               </Th>
               <Td>
                 <TextField
-                  name="orderer.address"
+                  name="basic.ordererAddress"
                   label="소재"
                   disableLabel
                   variant="outlined"
@@ -50,7 +50,7 @@ export default function (props: FormikLayoutProps<any>) {
               </Th>
               <Td>
                 <TextField
-                  name="orderer.companyName"
+                  name="basic.ordererCompanyName"
                   label="회사명"
                   disableLabel
                   variant="outlined"
@@ -63,7 +63,7 @@ export default function (props: FormikLayoutProps<any>) {
               </Th>
               <Td>
                 <TextField
-                  name="orderer.ceoName"
+                  name="basic.ordererCeoName"
                   label="대표자"
                   disableLabel
                   variant="outlined"

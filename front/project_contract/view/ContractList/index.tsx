@@ -98,6 +98,7 @@ export default function ProjectContractListSection(props: Props) {
                     }}>
                       <TextLink
                         onClick={() => {
+                          console.log(item.id);
                           openDetailModal(item.id);
                         }}>{item.code}</TextLink>
                     </Box>

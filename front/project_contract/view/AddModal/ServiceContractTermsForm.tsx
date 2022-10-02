@@ -104,7 +104,7 @@ export default function (props: Props) {
                               <Td colSpan={3}>
                                 <TextField
                                   label="제목"
-                                  name={`contractConditionList.${j}.title`}
+                                  name={`conditionList.${j}.title`}
                                   disableLabel
                                   variant="outlined"
                                 />
@@ -119,7 +119,7 @@ export default function (props: Props) {
                                     <Td>
                                       <TextField
                                         disableLabel
-                                        name={`contractConditionList.${j}.descriptionList.${i}`}
+                                        name={`conditionList.${j}.descriptionList.${i}`}
                                         label="설명"
                                         variant="outlined"
                                       />
@@ -146,7 +146,7 @@ export default function (props: Props) {
                                                 }
                                                 descriptionList.push(prevList[k]);
                                               }
-                                              formik!.setFieldValue(`contractConditionList.${j}.descriptionList`, descriptionList);
+                                              formik!.setFieldValue(`conditionList.${j}.descriptionList`, descriptionList);
                                             }}
                                           />
                                         </Tooltip>
@@ -166,7 +166,7 @@ export default function (props: Props) {
                                                   descriptionList.push(item);
                                                 }
                                               }
-                                              formik!.setFieldValue(`contractConditionList.${j}.descriptionList`, descriptionList);
+                                              formik!.setFieldValue(`conditionList.${j}.descriptionList`, descriptionList);
                                             }}
                                           />
                                         </Tooltip>
@@ -182,7 +182,7 @@ export default function (props: Props) {
                                             error('최소 하나 이상의 세부 항목이 필요합니다.');
                                             return;
                                           }
-                                          formik!.setFieldValue(`contractConditionList.${j}.descriptionList`, condition.descriptionList.filter((detail,
+                                          formik!.setFieldValue(`conditionList.${j}.descriptionList`, condition.descriptionList.filter((detail,
                                                                                                                                                 k
                                           ) => k !== i));
                                         }}>
@@ -220,7 +220,7 @@ export default function (props: Props) {
                                 }
                                 contractConditionList.push(prevList[k]);
                               }
-                              formik!.setFieldValue('contractConditionList', contractConditionList);
+                              formik!.setFieldValue('conditionList', contractConditionList);
                             }}
                           />
                         </Tooltip>
@@ -240,7 +240,7 @@ export default function (props: Props) {
                                   contractConditionList.push(condition);
                                 }
                               }
-                              formik!.setFieldValue('contractConditionList', contractConditionList);
+                              formik!.setFieldValue('conditionList', contractConditionList);
                             }}
                           />
                         </Tooltip>
@@ -253,7 +253,7 @@ export default function (props: Props) {
                               error('최소 하나 이상의 세부 항목이 필요합니다.');
                               return;
                             }
-                            formik!.setFieldValue('contractConditionList', list.filter((detail,
+                            formik!.setFieldValue('conditionList', list.filter((detail,
                                                                                         k
                             ) => k !== j));
                           }}
