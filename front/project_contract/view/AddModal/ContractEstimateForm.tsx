@@ -27,6 +27,10 @@ import Input from 'layouts/Input';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import { toAmountKor } from 'util/NumberUtil';
 import { FormikContextType } from 'formik';
+import {
+  TestType,
+  testTypeList
+} from 'admin/estimate/template/domain';
 
 export default function (props: {
   formik: FormikContextType<any>,
@@ -102,7 +106,65 @@ export default function (props: {
         width:        '100%',
       }}>
         <div>합계(부가세 별도): {estimateDetail?.plan?.totalAmount && `${toAmountKor(estimateDetail?.plan.totalAmount)}(￦ ${estimateDetail?.plan.totalAmount.toLocaleString()})`}</div>
-      </Box>}
+      </Box>
+    }
+    {estimateDetail &&
+      <Box sx={{
+        border:       `1px solid ${ColorPalette._e4e9f2}`,
+        padding:      '10px',
+        marginBottom: '15px',
+        width:        '100%',
+      }}>
+        <Grid container>
+          <Grid item xs={6}>
+            <DataFieldWithLabel label="대지모형 수" labelPosition="top" required={false}>
+              <Input value={estimateDetail?.siteList?.length} readOnly />
+            </DataFieldWithLabel>
+          </Grid>
+          <Grid item xs={6}>
+            <DataFieldWithLabel label="실험대상 동수" labelPosition="top" required={false}>
+              <Input value={estimateDetail?.buildingList?.length} readOnly />
+            </DataFieldWithLabel>
+          </Grid>
+          <Grid item xs={12}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {testTypeList.map((testType) => <Th key={testType}>{testType}</Th>)}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key={-1}>
+                    {testTypeList.map((testType) => {
+                        if (!estimateDetail?.buildingList) {
+                          return <Td key={testType}>0</Td>;
+                        }
+                        const buildings = estimateDetail?.buildingList.filter((building) => building?.testTypeList?.includes(testType));
+                        const count = buildings ? buildings.length : 0;
+                        return <Td key={testType}>{count}</Td>;
+                      }
+                    )}
+                  </TableRow>
+                  {estimateDetail?.buildingList?.map((item) => (
+                    <TableRow key={item.id}>
+                      {testTypeList.map((testType) => {
+                          if (testType === TestType.E) {
+                            return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.site?.name}</Td>;
+                          }
+                          return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.name}</Td>;
+                        }
+                      )}
+
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
+      </Box>
+    }
   </>;
 }
 ;

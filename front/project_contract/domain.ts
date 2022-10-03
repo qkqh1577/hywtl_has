@@ -5,6 +5,8 @@ import {
 import { FileItemView } from 'file-item';
 import { BusinessVO } from 'business/domain';
 import { ExpectedDateType } from 'admin/contract/collection/domain';
+import { ProjectDocumentShort } from 'project_document/domain';
+import { TestType } from 'admin/estimate/template/domain';
 
 export type ProjectContractId = number & { readonly _brand: symbol }
 
@@ -91,12 +93,42 @@ export interface ProjectEstimateVO {
   type: ProjectEstimateType;
   recipient: string;
   plan: ProjectEstimatePlanVO;
+  siteList?: ProjectEstimateComplexSiteVO[];
+  buildingList?: ProjectEstimateComplexBuildingVO[];
   business: BusinessVO;
   confirmed: boolean;
   createdAt: Date;
   createdBy: UserVO;
   isSent: boolean;
   modifiedAt?: Date;
+}
+
+export interface ProjectEstimateComplexSiteVO {
+  id: number;
+  name: string;
+  withEnvironmentTest?: boolean;
+  estimateFigureDifficulty?: string;
+  figureDifficulty?: string;
+  manager?: UserShortVO;
+}
+
+export interface ProjectEstimateComplexBuildingVO {
+  id: number;
+  name: string;
+  site?: ProjectEstimateComplexSiteVO;
+  shape?: string;
+  floorCount?: number;
+  height?: number;
+  baseArea?: number;
+  ratio?: number;
+  buildingDocument?: ProjectDocumentShort;
+  conditionList?: string[];
+  inTest?: boolean;
+  testTypeList?: TestType[];
+  estimateFigureDifficulty?: string;
+  estimateTestDifficulty?: string;
+  estimateEvaluationDifficulty?: string;
+  estimateReportDifficulty?: string;
 }
 
 export class ProjectEstimateVO
