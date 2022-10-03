@@ -83,11 +83,11 @@ public class Department extends CustomEntity {
     }
 
     public void change(
-        String name,
-        DepartmentCategory category,
-        @Nullable Department parent,
-        Integer seq,
-        String note
+            String name,
+            DepartmentCategory category,
+            @Nullable Department parent,
+            Integer seq,
+            String note
     ) {
         this.name = name;
         this.category = category;
@@ -97,8 +97,8 @@ public class Department extends CustomEntity {
     }
 
     public void changeParent(
-        @Nullable Department parent,
-        int seq
+            @Nullable Department parent,
+            int seq
     ) {
         this.parent = parent;
         this.seq = seq;
