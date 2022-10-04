@@ -1,9 +1,9 @@
 # TODO: customize this file
 spring:
     datasource:
-        url: jdbc:mysql://localhost:3304/hywtl_has_api?useSSL=false
-        username: hywtl_has
-        password: hywtl_has7698
+        url: # TODO: fix here
+        username: # TODO: fix here
+        password: # TODO: fix here
     jpa:
         show-sql: true
         hibernate:
@@ -22,9 +22,9 @@ application:
         auth: true
         starttls: true
         name: 발송자
-        dev-receiver: woo@howoocast.com
+        dev-receiver: # TODO: fix here
     file:
-        root-path: D:/temp/hywtl_has_files
+        root-path: # TODO: fix here
 
 logging:
     level:
