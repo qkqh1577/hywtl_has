@@ -12,22 +12,24 @@ import {
   call,
   fork,
   put,
+  select,
   take
 } from 'redux-saga/effects';
 import { dialogActions } from 'components/Dialog';
+import { RootState } from 'services/reducer';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take(EstimateContentAction.setFilter);
-    const list: EstimateContentShort[] = yield call(estimateContentApi.getList, formik.values);
+    const { payload: query } = yield take(EstimateContentAction.setFilter);
+    const list: EstimateContentShort[] = yield call(estimateContentApi.getList, query);
     yield put(estimateContentAction.setList(list));
-    yield call(formik.setSubmitting, false);
   }
 }
 
 function* watchId() {
   while (true) {
-    const { id } = yield take(EstimateContentAction.setOne);
+    const { payload: id } = yield take(EstimateContentAction.setId);
     const detail: EstimateContentVO = yield call(estimateContentApi.getOne, id);
     yield put(estimateContentAction.setOne(detail));
   }
@@ -35,46 +37,39 @@ function* watchId() {
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(EstimateContentAction.upsert);
+    const { payload: params } = yield take(EstimateContentAction.upsert);
     try {
-      yield call(estimateContentApi.upsert, formik.values);
+      yield put(estimateContentAction.requestUpsert(ApiStatus.REQUEST));
+      yield call(estimateContentApi.upsert, params);
+      yield put(estimateContentAction.requestUpsert(ApiStatus.DONE));
       yield put(dialogActions.openAlert('저장했습니다.'));
-      yield put({
-        type: EstimateContentAction.setOne,
-        id:   formik.values.id,
-      });
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패했습니다.',
-        status:   'error',
-      }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
+      console.error(e);
+      yield put(estimateContentAction.requestUpsert(ApiStatus.FAIL));
     }
   }
 }
 
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(EstimateContentAction.delete);
+    yield take(EstimateContentAction.deleteOne);
     try {
+      const { id } = yield select((root: RootState) => root.estimateContent);
+      yield put(estimateContentAction.requestDelete(ApiStatus.REQUEST));
       yield call(estimateContentApi.delete, id);
-      yield put(dialogActions.openAlert('삭제 했습니다.'));
+      yield put(estimateContentAction.requestDelete(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '삭제에 실패했습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(estimateContentAction.requestDelete(ApiStatus.FAIL));
     }
   }
 }
 
 function* watchVariableList() {
   while (true) {
-    yield take(EstimateContentAction.setVariableList);
+    yield take(EstimateContentAction.requestVariableList);
     const list: EstimateContentVariableVO[] = yield call(estimateContentApi.getVariableList);
     yield put(estimateContentAction.setVariableList(list));
   }

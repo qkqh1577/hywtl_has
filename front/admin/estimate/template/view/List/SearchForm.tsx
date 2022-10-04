@@ -3,7 +3,7 @@ import CheckboxField from 'components/CheckboxField';
 import {
   testTypeList,
   testTypeName
-} from 'admin/estimate/template/domain';
+} from 'type/TestType';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
 import { keywordTypeList } from 'admin/estimate/template/query';

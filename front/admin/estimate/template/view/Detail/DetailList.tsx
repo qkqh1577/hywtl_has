@@ -9,12 +9,12 @@ import {
 import React, { useContext } from 'react';
 import TitleListField from 'admin/estimate/template/view/Detail/TitleListField';
 import { FormikContext, } from 'formik';
+import { EstimateTemplateDetailVO, } from 'admin/estimate/template/domain';
 import {
-  EstimateTemplateDetailVO,
   TestUnit,
   testUnitList,
   testUnitName
-} from 'admin/estimate/template/domain';
+} from 'type/TestType';
 import useDialog from 'components/Dialog';
 import {
   Table,
@@ -204,7 +204,7 @@ export default function () {
                 justifyContent: 'right',
               }}>
                 <Button shape="small" onClick={() => {
-                  formik.setFieldValue('detailList', [...(list ?? []), initialEstimateTemplateDetailParameter]);
+                  formik.setFieldValue('detailList', [...list, initialEstimateTemplateDetailParameter]);
                 }}>
                   추가
                 </Button>

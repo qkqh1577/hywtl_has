@@ -9,17 +9,16 @@ import { EstimateTemplateParameter } from 'admin/estimate/template/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export enum EstimateTemplateAction {
-  setFilter     = 'estimate/template/filter/set',
-  setList       = 'estimate/template/list/set',
-  setId         = 'estimate/template/id/set',
-  setOne        = 'estimate/template/one/set',
-  upsert        = 'estimate/template/upsert',
-  requestUpsert = 'estimate/template/upsert/request',
-  changeSeq     = 'estimate/template/changeSeq',
-  seqModal      = 'estimate/template/seq-modal',
-  deleteOne     = 'estimate/template/delete',
-  requestDelete = 'estimate/template/delete/request',
-
+  setFilter     = 'admin/estimate/template/filter/set',
+  setList       = 'admin/estimate/template/list/set',
+  setId         = 'admin/estimate/template/id/set',
+  setOne        = 'admin/estimate/template/one/set',
+  upsert        = 'admin/estimate/template/upsert',
+  requestUpsert = 'admin/estimate/template/upsert/request',
+  changeSeq     = 'admin/estimate/template/changeSeq',
+  seqModal      = 'admin/estimate/template/seq-modal',
+  deleteOne     = 'admin/estimate/template/delete',
+  requestDelete = 'admin/estimate/template/delete/request',
 }
 
 export const estimateTemplateAction = {

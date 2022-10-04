@@ -8,7 +8,6 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import { FormikSubmit } from 'type/Form';
 import {
   EstimateContentQuery,
   initialEstimateContentQuery
@@ -20,34 +19,19 @@ import EstimateContentList from 'admin/estimate/content/view/List';
 function Element() {
   const dispatch = useDispatch();
   const { list, filter } = useSelector((root: RootState) => root.estimateContent);
-  const setFilter = useCallback((formikProps: FormikSubmit<Partial<EstimateContentQuery>>) => {
-    const result: EstimateContentQuery = {
-      ...(filter ?? initialEstimateContentQuery),
-      ...formikProps.values,
-    };
-    dispatch(estimateContentAction.setFilter({
-      ...formikProps,
-      values: result,
-
-    }));
-  }, [dispatch]);
+  const setFilter = useCallback((query: EstimateContentQuery) => dispatch(estimateContentAction.setFilter(query)), [dispatch]);
 
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      filter ?? initialEstimateContentQuery,
-    onSubmit:           (values,
-                         helper
-                        ) => {
-      setFilter({
-        values,
-        ...helper
-      });
+    onSubmit:           (values) => {
+      setFilter(values);
     }
   });
 
   useEffect(() => {
-    setFilter(formik);
+    setFilter(initialEstimateContentQuery);
   }, []);
 
   return (
@@ -56,7 +40,6 @@ function Element() {
       list={list}
     />
   );
-
 }
 
 const estimateContentListRoute: AppRoute = {

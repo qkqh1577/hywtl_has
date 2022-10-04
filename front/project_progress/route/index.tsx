@@ -1,8 +1,8 @@
 import ProjectContainer from 'project/route/container';
 import { Box } from '@mui/material';
 import React from 'react';
-import TextBox from 'layouts/Text';
 import { AppRoute } from 'services/routes';
+import ProjectProgress from 'project_progress/view';
 
 
 function Element() {
@@ -16,7 +16,7 @@ function Element() {
         alignContent: 'flex-start',
         flex:         1,
       }}>
-        <TextBox variant="body4">준비중</TextBox>
+        <ProjectProgress />
       </Box>
     </ProjectContainer>
   );

@@ -1,7 +1,7 @@
 import { UserShortVO, } from 'user/domain';
 import { BusinessShort, } from 'business/domain';
 import { ProjectDocumentShort } from 'project_document/domain';
-import { TestType } from 'admin/estimate/template/domain';
+import { TestType } from 'type/TestType';
 import { FileItemView } from 'file-item';
 
 export type ProjectEstimateId = number & { readonly  _brand: unique symbol; };

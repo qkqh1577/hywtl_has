@@ -3,7 +3,7 @@ import {
   ProjectStatus
 } from 'project_status/domain';
 import { ProjectBasic } from 'project_basic/domain';
-import { TestType } from 'admin/estimate/template/domain';
+import { TestType } from 'type/TestType';
 
 export type ProjectId = number & { readonly _brand: unique symbol; }
 
