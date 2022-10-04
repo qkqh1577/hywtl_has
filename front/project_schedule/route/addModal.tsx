@@ -22,13 +22,14 @@ import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import useLogin from 'app/service/loginHook';
 import dayjs from 'dayjs';
 import { UserId } from 'user/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectScheduleAddModalRoute() {
   const { user } = useLogin();
   const projectId = useId();
-  const { error } = useDialog();
+  const { alert, error } = useDialog();
   const dispatch = useDispatch();
-  const { addModal } = useSelector((root: RootState) => root.projectSchedule);
+  const { addModal, requestAdd, filter } = useSelector((root: RootState) => root.projectSchedule);
   const add = useCallback((formikProps: ProjectScheduleParameter) =>
     dispatch(projectScheduleAction.add(formikProps)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectScheduleAction.addModal(false)), [dispatch]);
@@ -42,7 +43,6 @@ export default function ProjectScheduleAddModalRoute() {
         formik.setSubmitting(false);
         return;
       }
-      console.log(values);
       const allDay = values.allDay;
       const startTime = allDay ? dayjs(values.startTime)
       .format('YYYY-MM-DD') + ' 00:00' : dayjs(values.startTime)
@@ -67,6 +67,18 @@ export default function ProjectScheduleAddModalRoute() {
       formik.setValues({ ...initialProjectScheduleParameter, managerId: user?.id ?? UserId(1) });
     }
   }, [addModal]);
+  useEffect(() => {
+    if (requestAdd === ApiStatus.DONE) {
+      alert('등록하였습니다.');
+      dispatch(projectScheduleAction.addModal(false));
+      dispatch(projectScheduleAction.setFilter({ ...filter }));
+      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+    }
+    else if (requestAdd === ApiStatus.FAIL) {
+      error('등록에 실패하였습니다.');
+      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+    }
+  }, [requestAdd]);
 
   return (
     <FormikProvider value={formik}>

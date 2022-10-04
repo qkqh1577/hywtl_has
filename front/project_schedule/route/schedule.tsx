@@ -1,11 +1,8 @@
 import React, {
   useCallback,
-  useEffect,
   useMemo,
 } from 'react';
-import { AppRoute } from 'services/routes';
 import ProjectSchedule from 'project_schedule/view';
-import ProjectContainer from 'project/route/container';
 import {
   useDispatch,
   useSelector
@@ -17,19 +14,14 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import ProjectScheduleAddModalRoute from 'project_schedule/route/addModal';
-import ProjectScheduleDetailModalRoute from 'project_schedule/route/detailModal';
 import { ProjectScheduleId } from 'project_schedule/domain';
-import useId from 'services/useId';
-import { ProjectId } from 'project/domain';
 
 export type OnAddModalOpen = (open: boolean) => void
 export type OnDetailModalOpen = (id: ProjectScheduleId) => void;
 
-function Element() {
-  const id = useId();
+export default function ProjectScheduleRoute() {
   const dispatch = useDispatch();
-  const { list, projectId, filter } = useSelector((root: RootState) => root.projectSchedule);
+  const { list, filter, projectId } = useSelector((root: RootState) => root.projectSchedule);
 
   const setFilter = useCallback((filter: ProjectScheduleQuery) => dispatch(projectScheduleAction.setFilter(filter)), [dispatch]);
 
@@ -53,7 +45,7 @@ function Element() {
                    endDate: string
   ) => {
     setFilter({
-      projectId: ProjectId(id!),
+      projectId,
       startDate,
       endDate
     });
@@ -61,14 +53,10 @@ function Element() {
 
   const setKeyword = (keyword: string) => {
     setFilter({
-      projectId: ProjectId(id!),
+      projectId,
       keyword,
     });
   };
-
-  useEffect(() => {
-    dispatch(projectScheduleAction.setProjectId(id && id !== projectId ? ProjectId(id) : undefined));
-  }, [id]);
 
   const onAddModalOpen: OnAddModalOpen = useCallback(() =>
     dispatch(projectScheduleAction.addModal(true)), [dispatch]);
@@ -77,24 +65,15 @@ function Element() {
     dispatch(projectScheduleAction.setId(id)), [dispatch]);
 
   return (
-    <ProjectContainer>
-      <FormikProvider value={formik}>
-        <ProjectSchedule
-          list={list}
-          onAddModalOpen={onAddModalOpen}
-          onDetailModalOpen={onDetailModalOpen}
-          isSearchForm={isSearchForm}
-          setDate={setDate}
-          setKeyword={setKeyword}
-        />
-      </FormikProvider>
-      <ProjectScheduleAddModalRoute />
-      <ProjectScheduleDetailModalRoute />
-    </ProjectContainer>
+    <FormikProvider value={formik}>
+      <ProjectSchedule
+        list={list}
+        onAddModalOpen={onAddModalOpen}
+        onDetailModalOpen={onDetailModalOpen}
+        isSearchForm={isSearchForm}
+        setDate={setDate}
+        setKeyword={setKeyword}
+      />
+    </FormikProvider>
   );
 }
-
-export const projectScheduleRoute: AppRoute = {
-  path:    '/project/sales-management/:id/schedule',
-  element: <Element />
-};

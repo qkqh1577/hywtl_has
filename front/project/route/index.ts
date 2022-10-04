@@ -5,7 +5,7 @@ import projectComplexRoute from 'project_complex/route';
 import projectEstimateContractRoute from 'project_estimate_contract/route';
 import { projectProgressRoute } from 'project_progress/route';
 import { projectLogRoute } from 'project_log/route/log';
-import { projectScheduleRoute } from 'project_schedule/route/schedule';
+import { projectScheduleRoute } from 'project_schedule/route';
 
 const projectRoutes: AppRoute[] = [
   projectBasicRoute,

@@ -13,6 +13,7 @@ import {
 } from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
 import { dialogActions } from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchId() {
   while (true) {
@@ -42,14 +43,14 @@ function* watchAdd() {
     console.log(action);
     try {
       const { projectId } = yield select((root: RootState) => root.projectSchedule);
+      yield put(projectScheduleAction.requestAdd(ApiStatus.REQUEST));
       yield call(projectScheduleApi.add, projectId, params);
+      yield put(projectScheduleAction.requestAdd(ApiStatus.DONE));
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(projectScheduleAction.requestAdd(ApiStatus.FAIL));
     }
   }
 }
@@ -72,9 +73,9 @@ function* watchUpdate() {
 
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(projectScheduleAction.delete);
+    const { payload: id } = yield take(projectScheduleAction.deleteOne);
     try {
-      yield call(projectScheduleApi.delete, id);
+      yield call(projectScheduleApi.deleteOne, id);
       yield put(dialogActions.openAlert('삭제 했습니다.'));
     }
     catch (e) {

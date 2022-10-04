@@ -96,12 +96,12 @@ export default function ProjectScheduleDetailModalRoute() {
     }
   });
 
-  const remove = useCallback((id: ProjectScheduleId) =>
-    dispatch(projectScheduleAction.delete(id)), [dispatch]);
+  const deleteOne = useCallback((id: ProjectScheduleId) =>
+    dispatch(projectScheduleAction.deleteOne(id)), [dispatch]);
 
   const onDelete = () => {
     if (detail && detail.id) {
-      remove(detail.id);
+      deleteOne(detail.id);
     }
   };
 
