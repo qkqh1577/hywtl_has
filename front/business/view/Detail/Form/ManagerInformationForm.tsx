@@ -1,150 +1,200 @@
-import React, {
-  useContext
-} from 'react';
+import React, { useContext } from 'react';
+import { Box } from '@mui/material';
 import {
-  Box,
-  Button,
-  Grid,
-  Typography,
-} from '@mui/material';
-import {
-  BusinessManagerStatus,
   businessManagerStatusList,
   businessManagerStatusName,
-  BusinessVO,
   initialBusinessManagerVO,
 } from 'business/domain';
 import TextField from 'components/TextField';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
+import { FormikContext } from 'formik';
 import useDialog from 'components/Dialog';
-import { ColorPalette } from 'app/view/App/theme';
 import RadioField from 'components/RadioField';
+import TextBox from 'layouts/Text';
+import Button from 'layouts/Button';
 
+const spaceCount = 4;
 export default function () {
   const { error } = useDialog();
-  const formikContext: FormikContextType<BusinessVO & { edit: boolean; }> = useContext(FormikContext);
-  const managerList = formikContext?.values.managerList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const managerList = formik.values.managerList;
+  const edit = formik.values.edit;
 
   return (
     <Box sx={{
       display:  'flex',
+      flexWrap: 'nowrap',
       width:    '100%',
-      flexWrap: 'wrap',
+      margin:   '10px 0px',
+      padding:  '10px',
     }}>
-      <Grid container spacing={2}>
-        <Grid item sm={edit ? 8 : 12}>
-          <Typography variant="h6">담당자 정보</Typography>
-        </Grid>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'nowrap',
+        width:          '13%',
+        justifyContent: 'flex-start',
+        alignItems:     'flex-start'
+      }}>
+        <TextBox variant="body7">담당자 정보</TextBox>
         {edit && (
-          <Grid item sm={4}>
-            <Button
-              children="+추가"
-              onClick={() => {
-                formikContext!.setFieldValue('managerList', [...(managerList ?? []), initialBusinessManagerVO]);
-              }}
-            />
-          </Grid>
+          <Button
+            shape="basic1"
+            onClick={() => {
+              formik!.setFieldValue('managerList', [...(managerList ?? []), initialBusinessManagerVO]);
+            }}>
+            + 추가
+          </Button>
         )}
-      </Grid>
-      {managerList && managerList.map((manager,
-                                       i
-      ) => {
-        return (
-          <Box key={i} sx={{
-            display:         'flex',
-            width:           '100%',
-            backgroundColor: manager.status === BusinessManagerStatus.RESIGNATION ? '#eee' : 'inherit',
-            padding:         '12px 0',
-            border:          `1px solid ${ColorPalette._e4e9f2}`,
-            margin:          '12px 0'
+      </Box>
+      <Box sx={{
+        display:        'flex',
+        flexWrap:       'wrap',
+        width:          '100%',
+        justifyContent: 'space-between',
+        alignItems:     'flex-start'
+      }}>
+        {!edit && managerList.length === 0 && (
+          <Box sx={{
+            display:     'flex',
+            width:       '100%',
+            marginTop:   '15px',
+            paddingLeft: '50px',
           }}>
-
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <TextField
-                  required
-                  name={`managerList.${i}.name`}
-                  label="담당자명"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.department`}
-                  label="소속"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.jobTitle`}
-                  label="직위"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.mobilePhone`}
-                  label="핸드폰"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.officePhone`}
-                  label="전화번호"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.meta`}
-                  label="메타"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  name={`managerList.${i}.email`}
-                  label="이메일"
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <RadioField
-                  name={`managerList.${i}.status`}
-                  label="상태"
-                  options={businessManagerStatusList.map((item) => ({
-                    key:  item,
-                    text: businessManagerStatusName(item)
-                  }))}
-                />
-              </Grid>
-              {!edit && (
-                <Grid item xs={4}>
-                  <TextField
-                    name={`managerList.${i}.projectCount`}
-                    label="담당 프로젝트"
-                  />
-                </Grid>
-              )}
-              {edit && (
-                <Grid item sm={4}>
-                  <Button
-                    children="삭제"
-                    onClick={() => {
-                      if (managerList.length === 1) {
-                        error('최소 하나 이상의 담당자 정보가 필요합니다.');
-                        return;
-                      }
-                      formikContext!.setFieldValue('managerList', managerList.filter((manager,
-                                                                                      j
-                      ) => i !== j));
-                    }}
-                  />
-                </Grid>
-              )}
-            </Grid>
+            <TextBox variant="body9">
+              담당자 정보가 없습니다
+            </TextBox>
           </Box>
-        );
-      })}
+        )}
+        {managerList && managerList.map((manager,
+                                         i
+        ) => (
+          <Box
+            key={i}
+            sx={{
+              display:     'flex',
+              width:       '100%',
+              paddingLeft: '50px',
+              marginTop:   '15px',
+              flexWrap:    'wrap',
+            }}>
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'space-between',
+              alignItems:     'flex-start',
+              width:          `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight:    '30px',
+            }}>
+              <TextField
+                required
+                name={`managerList.${i}.name`}
+                label="담당자명"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.department`}
+                label="소속"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.jobTitle`}
+                label="직위"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <TextField
+                name={`managerList.${i}.mobilePhone`}
+                label="핸드폰"
+              />
+            </Box>
+
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.officePhone`}
+                label="전화번호"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.meta`}
+                label="메타"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.email`}
+                label="이메일"
+              />
+            </Box>
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}>
+              <RadioField
+                name={`managerList.${i}.status`}
+                label="상태"
+                options={businessManagerStatusList.map((item) => ({
+                  key:  item,
+                  text: businessManagerStatusName(item)
+                }))}
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              <TextField
+                name={`managerList.${i}.projectCount`}
+                label="담당 프로젝트"
+              />
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}>
+              {edit && (
+                <Button
+                  children="삭제"
+                  onClick={() => {
+                    if (managerList.length === 1) {
+                      error('최소 하나 이상의 담당자 정보가 필요합니다.');
+                      return;
+                    }
+                    formik.setFieldValue('managerList', managerList.filter((manager,
+                                                                            j
+                    ) => i !== j));
+                  }}
+                />
+              )}
+            </Box>
+            <Box sx={{
+              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              marginRight: '30px',
+            }}
+            />
+            <Box sx={{
+              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+            }}
+            />
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
-};
+}

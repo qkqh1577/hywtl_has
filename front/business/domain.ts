@@ -112,7 +112,7 @@ export interface RivalProjectVO {
   name: string;
   bidBeginDate: Date;
   bidCloseDate: Date;
-  win: string;
+  win: BusinessShort;
 }
 
 /** 관계사 유형 */

@@ -12,7 +12,7 @@ import VariableList from 'admin/estimate/content/view/Detail/VariableList';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
-import { Divider } from 'personnel/view/Detail/Form';
+import Divider from 'layouts/Divider';
 
 interface Props {
   variableList: EstimateContentVariableVO[] | undefined;

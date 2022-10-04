@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
-import DetailFormFooter from 'layouts/DetailFormFooter';
 import { FormikContext } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button
-} from '@mui/material';
+import { Box } from '@mui/material';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
 function ListButton() {
   const navigate = useNavigate();
@@ -14,16 +12,20 @@ function ListButton() {
   };
   return (
     <Button
+      shape="basic3"
       children="목록"
       onClick={onClick}
+      sx={{
+        marginRight: '10px'
+      }}
     />
   );
 }
 
 function EditButton() {
-  const formikContext = useContext(FormikContext);
+  const formik = useContext(FormikContext);
   const onClick = () => {
-    formikContext?.setFieldValue('edit', true);
+    formik.setFieldValue('edit', true);
   };
 
   return (
@@ -34,32 +36,52 @@ function EditButton() {
   );
 }
 
-export interface FooterProps {
-  removeButton: React.ReactNode;
+interface Props {
+  onCancel: DefaultFunction;
+  onDelete: DefaultFunction;
 }
 
-export default function (props: FooterProps) {
-  const formikContext = useContext(FormikContext);
-  const edit: boolean = formikContext?.values.edit ?? true;
-  return (
-    <DetailFormFooter
-      children={!edit
-        ? (
-          <Box sx={{
-            display:        'flex',
-            width:          '100%',
-            justifyContent: 'space-between'
+export default function (props: Props) {
+  const formik = useContext(FormikContext);
+  if (formik.values.edit) {
+    return (
+      <Box sx={{
+        width:          '100%',
+        margin:         '10px 0',
+        display:        'flex',
+        justifyContent: 'center',
+        alignItems:     'center'
+      }}>
+        <Button
+          sx={{
+            marginRight: '10px',
+          }}
+          onClick={() => {
+            formik.handleSubmit();
           }}>
-            <Box sx={{
-              width: '50%'
-            }}>
-              <ListButton />
-              {props.removeButton}
-            </Box>
-            <EditButton />
-          </Box>
-        )
-        : undefined}
-    />
+          저장
+        </Button>
+        <Button shape="basic3" onClick={props.onCancel}>
+          취소
+        </Button>
+      </Box>
+    );
+  }
+  return (
+    <Box sx={{
+      width:          '100%',
+      margin:         '10px 0',
+      display:        'flex',
+      justifyContent: 'space-between',
+      alignItems:     'center'
+    }}>
+      <Box sx={{
+        width: '50%'
+      }}>
+        <ListButton />
+        <Button shape="basic2" onClick={props.onDelete}>삭제</Button>
+      </Box>
+      <EditButton />
+    </Box>
   );
 };

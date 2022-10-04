@@ -5,13 +5,12 @@ import {
   select,
   take
 } from 'redux-saga/effects';
-import {
-  BusinessAction,
-  businessAction
-} from 'business/action';
+import { businessAction } from 'business/action';
 import Page from 'type/Page';
 import {
+  BusinessId,
   BusinessInvolvedProjectVO,
+  BusinessInvolvedType,
   BusinessShort,
   BusinessVO,
   RivalProjectVO
@@ -19,6 +18,7 @@ import {
 import { businessApi } from 'business/api';
 import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
@@ -51,75 +51,90 @@ function* watchRegistrationNumber() {
   }
 }
 
-function* watchInvolvedProjectList() {
-  while (true) {
-    const { id } = yield take('business/id/set');
-    const list: BusinessInvolvedProjectVO[] = yield call(businessApi.getInvolvedProjectList, id);
-    yield put(businessAction.setInvolvedProjectList(list));
+function* getOne(id: BusinessId | undefined) {
+  if (id) {
+    const detail: BusinessVO = yield call(businessApi.getOne, id);
+    yield put(businessAction.setOne(detail));
+  }
+  else {
+    yield put(businessAction.setOne(undefined));
   }
 }
 
-function* watchRivalProjectList() {
-  while (true) {
-    const { id } = yield take('business/id/set');
+function* getInvolvedProjectList(id: BusinessId | undefined,
+                                 involvedType?: BusinessInvolvedType
+) {
+  if (id) {
+    const list: BusinessInvolvedProjectVO[] = yield call(businessApi.getInvolvedProjectList, id, involvedType);
+    yield put(businessAction.setInvolvedProjectList(list));
+  }
+  else {
+    yield put(businessAction.setInvolvedProjectList(undefined));
+  }
+}
+
+function* getRivalProjectList(id: BusinessId | undefined) {
+  if (id) {
     const list: RivalProjectVO[] = yield call(businessApi.getRivalProjectList, id);
     yield put(businessAction.setRivalProjectList(list));
+  }
+  else {
+    yield put(businessAction.setRivalProjectList(undefined));
   }
 }
 
 function* watchId() {
   while (true) {
-    const { id } = yield take('business/id/set');
-    const detail: BusinessVO = yield call(businessApi.getOne, id);
-    yield put(businessAction.setOne(detail));
+    const { payload: id } = yield take(businessAction.setId);
+    yield call(getOne, id);
+    yield call(getInvolvedProjectList, id);
+    yield call(getRivalProjectList, id);
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(BusinessAction.upsert);
+    const { payload: params } = yield take(businessAction.upsert);
     try {
-      yield call(businessApi.upsert, formik.values);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put({
-        type: 'business/id/set',
-        id:   formik.values.id,
-      });
+      yield put(businessAction.requestUpsert(ApiStatus.REQUEST));
+      yield call(businessApi.upsert, params);
+      yield put(businessAction.requestUpsert(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
+      console.error(e);
+      yield put(businessAction.requestUpsert(ApiStatus.FAIL));
     }
   }
 }
 
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(BusinessAction.delete);
+    const { payload: id } = yield take(businessAction.deleteOne);
     try {
+      yield put(businessAction.requestDelete(ApiStatus.REQUEST));
       yield call(businessApi.delete, id);
-      yield put(dialogActions.openAlert('삭제 했습니다.'));
+      yield put(businessAction.requestDelete(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '삭제에 실패했습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(businessAction.requestDelete(ApiStatus.FAIL));
     }
+  }
+}
+
+function* watchInvolvedProjectList() {
+  while (true) {
+    const { payload: type } = yield take(businessAction.requestInvolvedProjectList);
+    const { id } = yield select((root: RootState) => root.business);
+    yield call(getInvolvedProjectList, id, type);
   }
 }
 
 export default function* businessSaga() {
   yield fork(watchFilter);
   yield fork(watchRegistrationNumber);
-  yield fork(watchInvolvedProjectList);
-  yield fork(watchRivalProjectList);
   yield fork(watchId);
   yield fork(watchUpsert);
   yield fork(watchDelete);
+  yield fork(watchInvolvedProjectList);
 };

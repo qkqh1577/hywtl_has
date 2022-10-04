@@ -31,6 +31,7 @@ export default function DataFieldWithLabel(props: Props) {
       flexWrap:       useMemo(() => labelPosition === 'top' ? 'wrap' : 'nowrap', [labelPosition]),
       justifyContent: 'space-between',
       alignContent:   'center',
+      alignItems:     'center',
     }}>
       <Box sx={{
         display:      'flex',

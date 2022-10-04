@@ -1,15 +1,15 @@
+import { BusinessQuery, } from 'business/query';
 import {
-  BusinessQuery,
-} from 'business/query';
-import {
+  BusinessId,
+  BusinessInvolvedProjectVO,
   BusinessShort,
   BusinessVO,
-  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from 'business/domain';
 import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
 import { BusinessAction } from 'business/action';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface BusinessState {
   filter?: BusinessQuery;
@@ -18,9 +18,15 @@ export interface BusinessState {
   detail?: BusinessVO;
   involvedProjectList?: BusinessInvolvedProjectVO[];
   rivalProjectList?: RivalProjectVO[];
+  requestUpsert: ApiStatus;
+  requestDelete: ApiStatus;
+  id?: BusinessId;
 }
 
-const initialState: BusinessState = {};
+const initialState: BusinessState = {
+  requestUpsert: ApiStatus.IDLE,
+  requestDelete: ApiStatus.IDLE,
+};
 
 export const businessReducer = createReducer(initialState, {
   [BusinessAction.setFilter]:              (state,
@@ -34,6 +40,12 @@ export const businessReducer = createReducer(initialState, {
                                            ) => ({
     ...state,
     filter: action.payload.values
+  }),
+  [BusinessAction.setId]:                  (state,
+                                            action
+                                           ) => ({
+    ...state,
+    id: action.payload,
   }),
   [BusinessAction.setPage]:                (state,
                                             action
@@ -59,4 +71,16 @@ export const businessReducer = createReducer(initialState, {
     ...state,
     detail: action.payload
   }),
+  [BusinessAction.requestUpsert]:          (state,
+                                            action
+                                           ) => ({
+    ...state,
+    requestUpsert: action.payload
+  }),
+  [BusinessAction.requestDelete]:          (state,
+                                            action
+                                           ) => ({
+    ...state,
+    requestDelete: action.payload
+  })
 });
