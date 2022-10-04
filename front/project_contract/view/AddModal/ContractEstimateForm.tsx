@@ -93,7 +93,7 @@ export default function (props: {
           </Grid>
           <Grid item xs={2}>
             <DataFieldWithLabel label="LH 여부" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan.estimateDate} readOnly />
+              <Input value={'N'} readOnly />
             </DataFieldWithLabel>
           </Grid>
         </Grid>}
