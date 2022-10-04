@@ -5,9 +5,11 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectScheduleAction } from 'project_schedule/action';
-import { FormikSubmit } from 'type/Form';
 import { ProjectScheduleParameter, } from 'project_schedule/parameter';
-import { useFormik, } from 'formik';
+import {
+  FormikProvider,
+  useFormik,
+} from 'formik';
 import {
   ProjectScheduleId,
   ProjectScheduleVO,
@@ -75,7 +77,7 @@ export default function ProjectScheduleDetailModalRoute() {
   const onClose = useCallback(() =>
     dispatch(projectScheduleAction.setOne(undefined)), [dispatch]);
 
-  const update = useCallback((formikProps: FormikSubmit<ProjectScheduleParameter>) =>
+  const update = useCallback((formikProps: ProjectScheduleParameter) =>
     dispatch(projectScheduleAction.update(formikProps)), [dispatch]);
 
   const formik = useFormik<DetailModalFormik | object>({
@@ -89,12 +91,7 @@ export default function ProjectScheduleDetailModalRoute() {
         return;
       }
       if (isFormikType(values)) {
-        update({
-          values: {
-            ...toParameter(values),
-          },
-          ...helper
-        });
+        update(toParameter(values));
       }
     }
   });
@@ -109,11 +106,12 @@ export default function ProjectScheduleDetailModalRoute() {
   };
 
   return (
-    <ProjectScheduleDetailModal
-      open={typeof detail !== 'undefined'}
-      onClose={onClose}
-      formik={formik}
-      onDelete={onDelete}
-    />
+    <FormikProvider value={formik}>
+      <ProjectScheduleDetailModal
+        open={typeof detail !== 'undefined'}
+        onClose={onClose}
+        onDelete={onDelete}
+      />
+    </FormikProvider>
   );
 };

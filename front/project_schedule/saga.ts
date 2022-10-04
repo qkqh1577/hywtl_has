@@ -5,10 +5,7 @@ import {
   select,
   take
 } from 'redux-saga/effects';
-import {
-  ProjectScheduleAction,
-  projectScheduleAction
-} from 'project_schedule/action';
+import { projectScheduleAction } from 'project_schedule/action';
 import { RootState } from 'services/reducer';
 import {
   ProjectScheduleShort,
@@ -40,11 +37,12 @@ function* watchFilter() {
 
 function* watchAdd() {
   while (true) {
-    const { payload: formik } = yield take(ProjectScheduleAction.add);
+    const action = yield take(projectScheduleAction.add);
+    const { payload: params } = action;
+    console.log(action);
     try {
       const { projectId } = yield select((root: RootState) => root.projectSchedule);
-      yield put(projectScheduleAction.addModal(false));
-      yield call(projectScheduleApi.add, projectId, formik.values);
+      yield call(projectScheduleApi.add, projectId, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {
@@ -58,9 +56,9 @@ function* watchAdd() {
 
 function* watchUpdate() {
   while (true) {
-    const { payload: formik } = yield take(ProjectScheduleAction.update);
+    const { payload: params } = yield take(projectScheduleAction.update);
     try {
-      yield call(projectScheduleApi.update, formik.values);
+      yield call(projectScheduleApi.update, params);
       yield put(dialogActions.openAlert('저장하였습니다.'));
     }
     catch (e) {
@@ -69,15 +67,12 @@ function* watchUpdate() {
         status:   'error',
       }));
     }
-    finally {
-      yield call(formik.setSubmitting, false);
-    }
   }
 }
 
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(ProjectScheduleAction.delete);
+    const { payload: id } = yield take(projectScheduleAction.delete);
     try {
       yield call(projectScheduleApi.delete, id);
       yield put(dialogActions.openAlert('삭제 했습니다.'));

@@ -5,7 +5,6 @@ import {
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import { ProjectScheduleQuery } from 'project_schedule/query';
-import { FormikSubmit } from 'type/Form';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
 
 export enum ProjectScheduleAction {
@@ -27,7 +26,7 @@ export const projectScheduleAction = {
   setFilter:    createAction(ProjectScheduleAction.setFilter)<ProjectScheduleQuery>(),
   setList:      createAction(ProjectScheduleAction.setList)<ProjectScheduleShort[] | undefined>(),
   addModal:     createAction(ProjectScheduleAction.addModal)<boolean>(),
-  add:          createAction(ProjectScheduleAction.add)<FormikSubmit<ProjectScheduleParameter>>(),
-  update:       createAction(ProjectScheduleAction.update)<FormikSubmit<ProjectScheduleParameter>>(),
+  add:          createAction(ProjectScheduleAction.add)<ProjectScheduleParameter>(),
+  update:       createAction(ProjectScheduleAction.update)<ProjectScheduleParameter>(),
   delete:       createAction(ProjectScheduleAction.delete)<number>(),
 };
