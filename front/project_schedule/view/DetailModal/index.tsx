@@ -1,16 +1,14 @@
-import React from 'react';
-import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { FormikProvider } from 'formik';
+import React, { useContext } from 'react';
+import ModalLayout from 'layouts/ModalLayout';
 import Form from 'project_schedule/view/DetailModal/Form';
 import ButtonBlock from 'project_schedule/view/DetailModal/ButtonBlock';
-import { DetailModalFormik } from 'project_schedule/route/detailModal';
+import { DefaultFunction } from 'type/Function';
+import { FormikContext } from 'formik';
 
-interface Props
-  extends FormikLayoutProps<DetailModalFormik | object> {
+interface Props {
   open: boolean;
-  onClose: ModalLayoutProps['onClose'];
-  onDelete: () => void;
+  onClose: DefaultFunction;
+  onDelete: DefaultFunction;
 }
 
 export default function ProjectScheduleDetailModal(props: Props) {
@@ -18,10 +16,10 @@ export default function ProjectScheduleDetailModal(props: Props) {
           open,
           onClose,
           onDelete,
-          formik
         } = props;
+  const formik = useContext(FormikContext);
 
-  const edit = (formik.values as any).edit ?? false;
+  const edit = formik.values.edit ?? false;
   const onEdit = () => {
     formik.setFieldValue('edit', true);
   };
@@ -32,13 +30,11 @@ export default function ProjectScheduleDetailModal(props: Props) {
   return (
     <ModalLayout
       title={edit ? '일정 수정' : '일정 상세'}
-      width="40vw"
+      width="30vw"
       open={open}
       onClose={onClose}
       children={
-        <FormikProvider value={formik}>
-          <Form edit={edit} />
-        </FormikProvider>
+        <Form edit={edit} />
       }
       footer={
         <ButtonBlock

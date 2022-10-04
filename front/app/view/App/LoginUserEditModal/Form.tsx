@@ -1,16 +1,18 @@
-import React, {} from 'react';
-import {
-  Box,
-} from '@mui/material';
+import React, { useContext } from 'react';
+import { Box, } from '@mui/material';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
-import DateField from 'components/DateField';
 import {
   sexTypeList,
   sexTypeName
 } from 'user/domain';
 import UploadField from 'components/UploadField';
 import RadioField from 'components/RadioField';
+import { DatePicker } from '@mui/x-date-pickers';
+import { FormikContext } from 'formik';
+import dayjs from 'dayjs';
+import Input from 'layouts/Input';
+import DataFieldWithLabel from 'components/DataFieldLabel';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -26,12 +28,12 @@ function FieldBox(props: { children: React.ReactNode }) {
 }
 
 export default function () {
+  const formik = useContext(FormikContext);
   return (
     <Box sx={{
       width:    '100%',
       display:  'flex',
       flexWrap: 'wrap',
-      height:   '100%',
     }}>
       <FieldBox>
         <TextField
@@ -73,9 +75,36 @@ export default function () {
         />
       </FieldBox>
       <FieldBox>
-        <DateField
-          name="birthDate"
+        <DataFieldWithLabel
           label="생년월일"
+          labelPosition="top"
+          children={
+            <DatePicker
+              disableFuture
+              value={formik.values.birthDate || null}
+              inputFormat="YYYY-MM-DD"
+              mask="____-__-__"
+              openTo="year"
+              onChange={(e) => {
+                if (e === null) {
+                  formik.setFieldValue('birthDate', undefined);
+                }
+                else {
+                  formik.setFieldValue('birthDate', dayjs(e)
+                  .format('YYYY-MM-DD'));
+                }
+              }}
+              renderInput={(parameter) => (
+                <Input
+                  {...parameter.InputProps}
+                  inputRef={parameter.inputRef}
+                  variant="standard"
+                  value={parameter.value}
+                  inputProps={parameter.inputProps}
+                />
+              )}
+            />
+          }
         />
       </FieldBox>
       <FieldBox>

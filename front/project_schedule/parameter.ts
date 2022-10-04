@@ -19,12 +19,6 @@ export const initialProjectScheduleParameter: ProjectScheduleParameter = {
   endTime:          '',
   alertBefore:      undefined,
   allDay:           false,
-  managerId:        undefined,
   attendanceIdList: [],
 };
 
-export interface ProjectScheduleTempParameter
-  extends ProjectScheduleParameter {
-  start?: string;
-  end?: string;
-}

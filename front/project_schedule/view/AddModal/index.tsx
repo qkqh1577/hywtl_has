@@ -1,29 +1,26 @@
 import React from 'react';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { ProjectScheduleParameter } from 'project_schedule/parameter';
 import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
 import { Box } from '@mui/material';
-import { FormikProvider } from 'formik';
 import ButtonBlock from 'project_schedule/view/AddModal/ButtonBlock';
 import Form from 'project_schedule/view/AddModal/Form';
+import { DefaultFunction } from 'type/Function';
 
-interface Props
-  extends FormikLayoutProps<ProjectScheduleParameter> {
+interface Props {
   open: boolean;
   onClose: ModalLayoutProps['onClose'];
+  onSubmit: DefaultFunction;
 }
 
 export default function ProjectScheduleAddModal(props: Props) {
   const {
           open,
           onClose,
-          formik,
+          onSubmit
         } = props;
-  const onSubmit = () => {formik.handleSubmit();};
   return (
     <ModalLayout
       title="일정 등록"
-      width="40vw"
+      width="30vw"
       open={open}
       onClose={onClose}
       children={
@@ -32,9 +29,7 @@ export default function ProjectScheduleAddModal(props: Props) {
           flexWrap: 'wrap',
           width:    '100%',
         }}>
-          <FormikProvider value={formik}>
-            <Form />
-          </FormikProvider>
+          <Form />
         </Box>
       }
       footer={

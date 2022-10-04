@@ -10,7 +10,7 @@ import { LabelProps } from 'components/DataFieldProps';
 interface Props
   extends LabelProps {
   children: React.ReactNode;
-  required: boolean | undefined;
+  required?: boolean;
 }
 
 export default function DataFieldWithLabel(props: Props) {
