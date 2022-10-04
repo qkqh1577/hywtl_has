@@ -9,7 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 import Button from 'layouts/Button';
-import { ProjectBasicBusiness } from 'project_basic/domain';
+import {
+  ProjectBasicBusiness,
+  ProjectBasicBusinessId
+} from 'project_basic/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import { businessInvolvedTypeName } from 'business/domain';
 import {
@@ -17,10 +20,6 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-
-interface Props {
-  projectBasicBusinessList: ProjectBasicBusiness[];
-}
 
 function Label(props: { children: string }) {
   return (
@@ -43,7 +42,13 @@ function Label(props: { children: string }) {
   );
 }
 
-export default function ProjectBasicBusinessSection({ projectBasicBusinessList }: Props) {
+interface Props {
+  projectBasicBusinessList: ProjectBasicBusiness[];
+  handleAddBusiness: () => void;
+  handleDetailBusiness: (id: ProjectBasicBusinessId) => void;
+}
+
+export default function ProjectBasicBusinessSection({ projectBasicBusinessList, handleAddBusiness, handleDetailBusiness }: Props) {
   const getTableRows = () => {
     if (projectBasicBusinessList.length === 0) {
       return (
@@ -57,7 +62,7 @@ export default function ProjectBasicBusinessSection({ projectBasicBusinessList }
       <TableRow
         key={item.id}
         onClick={() => {
-          // TODO: 상세 모달
+          handleDetailBusiness(item.id);
         }}>
         <Td>
           <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
@@ -85,7 +90,7 @@ export default function ProjectBasicBusinessSection({ projectBasicBusinessList }
     <SectionLayout
       title="관계사"
       titleRightComponent={
-        <Button>
+        <Button onClick={() => handleAddBusiness()}>
           + 등록
         </Button>
       }>
@@ -93,7 +98,6 @@ export default function ProjectBasicBusinessSection({ projectBasicBusinessList }
         display:  'flex',
         width:    '100%',
         flexWrap: 'nowrap',
-        padding:  '15px 20px'
       }}>
         <Box sx={{
           display:  'flex',
