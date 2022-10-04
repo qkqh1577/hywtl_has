@@ -59,6 +59,7 @@ export default function ProjectScheduleAddModalRoute() {
         alertBefore:      values.alertBefore,
         attendanceIdList: values.attendanceIdList,
       });
+      formik.setSubmitting(false);
     }
   });
 

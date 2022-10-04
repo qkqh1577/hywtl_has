@@ -18,8 +18,13 @@ import { ApiStatus } from 'components/DataFieldProps';
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(projectScheduleAction.setId);
-    const detail: ProjectScheduleVO = yield call(projectScheduleApi.getOne, id);
-    yield put(projectScheduleAction.setOne(detail));
+    if (id) {
+      const detail: ProjectScheduleVO = yield call(projectScheduleApi.getOne, id);
+      yield put(projectScheduleAction.setOne(detail));
+    }
+    else {
+      yield put(projectScheduleAction.setOne(undefined));
+    }
   }
 }
 

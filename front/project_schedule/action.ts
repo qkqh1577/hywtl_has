@@ -1,6 +1,7 @@
 import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import {
+  ProjectScheduleId,
   ProjectScheduleShort,
   ProjectScheduleVO
 } from 'project_schedule/domain';
@@ -26,7 +27,7 @@ export enum ProjectScheduleAction {
 export const projectScheduleAction = {
   setProjectId:  createAction(ProjectScheduleAction.setProjectId)<ProjectId | undefined>(),
   setOne:        createAction(ProjectScheduleAction.setOne)<ProjectScheduleVO | undefined>(),
-  setId:         createAction(ProjectScheduleAction.setId)<number>(),
+  setId:         createAction(ProjectScheduleAction.setId)<ProjectScheduleId | undefined>(),
   setFilter:     createAction(ProjectScheduleAction.setFilter)<ProjectScheduleQuery>(),
   setList:       createAction(ProjectScheduleAction.setList)<ProjectScheduleShort[] | undefined>(),
   addModal:      createAction(ProjectScheduleAction.addModal)<boolean>(),

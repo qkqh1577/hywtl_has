@@ -15,11 +15,14 @@ import {
   useFormik
 } from 'formik';
 import { ProjectScheduleId } from 'project_schedule/domain';
+import useId from 'services/useId';
+import { ProjectId } from 'project/domain';
 
 export type OnAddModalOpen = (open: boolean) => void
 export type OnDetailModalOpen = (id: ProjectScheduleId) => void;
 
 export default function ProjectScheduleRoute() {
+  const id = useId();
   const dispatch = useDispatch();
   const { list, filter, projectId } = useSelector((root: RootState) => root.projectSchedule);
 
@@ -45,7 +48,7 @@ export default function ProjectScheduleRoute() {
                    endDate: string
   ) => {
     setFilter({
-      projectId,
+      projectId: projectId ?? ProjectId(id!),
       startDate,
       endDate
     });
@@ -53,7 +56,7 @@ export default function ProjectScheduleRoute() {
 
   const setKeyword = (keyword: string) => {
     setFilter({
-      projectId,
+      projectId: projectId ?? ProjectId(id!),
       keyword,
     });
   };

@@ -9,6 +9,7 @@ interface Props {
   open: boolean;
   onClose: DefaultFunction;
   onDelete: DefaultFunction;
+  onCancel: DefaultFunction;
 }
 
 export default function ProjectScheduleDetailModal(props: Props) {
@@ -16,33 +17,24 @@ export default function ProjectScheduleDetailModal(props: Props) {
           open,
           onClose,
           onDelete,
+          onCancel,
         } = props;
   const formik = useContext(FormikContext);
 
   const edit = formik.values.edit ?? false;
-  const onEdit = () => {
-    formik.setFieldValue('edit', true);
-  };
 
-  const onSubmit = () => {
-    formik.handleSubmit();
-  };
   return (
     <ModalLayout
       title={edit ? '일정 수정' : '일정 상세'}
       width="30vw"
       open={open}
       onClose={onClose}
-      children={
-        <Form edit={edit} />
-      }
+      children={<Form />}
       footer={
         <ButtonBlock
-          onEdit={onEdit}
           onDelete={onDelete}
           onClose={onClose}
-          onSubmit={onSubmit}
-          edit={edit}
+          onCancel={onCancel}
         />
       }
     />
