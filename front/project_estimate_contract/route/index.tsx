@@ -9,19 +9,22 @@ import ProjectBidRoute from 'project_bid/route';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
 import ProjectContractAddModalRoute from 'project_contract/route/addModal';
 import ProjectContractDetailModalRoute from 'project_contract/route/detailModal';
+import { Box } from '@mui/material';
 
 function Element() {
 
   return (
     <ProjectContainerRoute>
-      <ProjectEstimateListRoute />
-      <RivalEstimateListRoute />
-      <ProjectBidRoute />
-      <ProjectContractListRoute />
-      <ProjectCustomEstimateAddModalRoute />
-      <ProjectCustomEstimateDetailModalRoute />
-      <ProjectContractAddModalRoute />
-      <ProjectContractDetailModalRoute />
+      <Box sx={{ width: '100%' }}>
+        <ProjectEstimateListRoute />
+        <RivalEstimateListRoute />
+        <ProjectBidRoute />
+        <ProjectContractListRoute />
+        <ProjectCustomEstimateAddModalRoute />
+        <ProjectCustomEstimateDetailModalRoute />
+        <ProjectContractAddModalRoute />
+        <ProjectContractDetailModalRoute />
+      </Box>
     </ProjectContainerRoute>
   );
 }

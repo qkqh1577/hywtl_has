@@ -15,6 +15,7 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
+import { Box } from '@mui/material';
 
 function Element() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function Element() {
   }, [detail]);
 
   return (
-    <>
+    <Box sx={{ width: '100%' }}>
       <ProjectBasicBasicRoute />
       <ProjectBasicBusinessRoute />
       <ProjectBasicDesignRoute />
@@ -37,7 +38,7 @@ function Element() {
       <ProjectBasicBidRoute />
       <ProjectBasicContractRoute />
       <ProjectBasicFailReasonRoute />
-    </>
+    </Box>
   );
 }
 
