@@ -8,6 +8,7 @@ import RivalEstimateListRoute from 'rival_estimate/route/section';
 import ProjectBidRoute from 'project_bid/route';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
 import ProjectContractAddModalRoute from 'project_contract/route/addModal';
+import ProjectContractDetailModalRoute from 'project_contract/route/detailModal';
 
 function Element() {
 
@@ -20,6 +21,7 @@ function Element() {
       <ProjectCustomEstimateAddModalRoute />
       <ProjectCustomEstimateDetailModalRoute />
       <ProjectContractAddModalRoute />
+      <ProjectContractDetailModalRoute />
     </ProjectContainerRoute>
   );
 }

@@ -1,5 +1,6 @@
 import apiClient, { toFormData } from 'services/api';
 import {
+  ProjectContractBasicVO,
   ProjectContractId,
   ProjectContractShort,
   ProjectContractVO,
@@ -7,9 +8,7 @@ import {
   ProjectEstimateVO
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
-import {
-  ProjectContractParameter
-} from 'project_contract/parameter';
+import { ProjectContractParameter } from 'project_contract/parameter';
 
 class ProjectContractApi {
 
@@ -34,7 +33,6 @@ class ProjectContractApi {
             params: ProjectContractParameter
   ): Promise<void> {
     const formData = toFormData(params);
-    console.log(params, formData.get('file'));
     const { data } = await apiClient.post(`/project/sales/${projectId}/contract`, formData);
     return data;
   }
@@ -56,14 +54,34 @@ class ProjectContractApi {
   /** 견적서 목록 조회*/
   async getEstimateList(id: ProjectId): Promise<ProjectEstimateVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/estimate`);
-    return data;
+    return data.map((item: any) => new ProjectEstimateVO(item));
   }
 
   /** 견적서 조회*/
   async getEstimateDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
     const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
+    return new ProjectEstimateVO(data);
+  }
+
+  /** 계약서 기본 정보 조회*/
+  async getContractBasic(projectId: ProjectId): Promise<ProjectContractBasicVO> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/basic`);
     return data;
   }
+
+  /*async getContractCollection(projectId: ProjectId,
+                              estimateId: ProjectEstimateId
+  ): Promise<ProjectContractCollectionVO> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/collection?estimateId=${estimateId ? estimateId : ''}`);
+    return data;
+  }*/
+
+  /*async getContractCondition(projectId: ProjectId,
+                             estimateId: ProjectEstimateId
+  ): Promise<ProjectContractConditionVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition?estimateId=${estimateId ? estimateId : ''}`);
+    return data;
+  }*/
 }
 
 export const projectContractApi = new ProjectContractApi();

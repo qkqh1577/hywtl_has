@@ -6,12 +6,16 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import { RootState } from 'services/reducer';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectId } from 'project/domain';
 import useId from 'services/useId';
 import ProjectContractListSection from 'project_contract/view/ContractList';
-import { ProjectContractShort } from 'project_contract/domain';
+import {
+  ProjectContractId,
+  ProjectContractShort,
+} from 'project_contract/domain';
+import { projectEstimateAction } from 'project_estimate/action';
+import { RootState } from 'services/reducer';
 /*import {
   ProjectEstimateId,
   ProjectEstimateType
@@ -22,11 +26,14 @@ export default function ProjectContractListRoute() {
 
   const dispatch = useDispatch();
   const id = useId();
-  //const { list } = useSelector((root: RootState) => root.projectContract);
+  const { list } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
-  //const openDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
-
-  const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
+  const openDetailModal = useCallback((id: ProjectContractId) => {
+    console.log('openDetailModal',id);
+    dispatch(projectContractAction.setDetailModal(id));
+  }, [dispatch]);
+  const getVariableList = useCallback(() => dispatch(projectContractAction.getVariableList()), [dispatch]);
+  /*const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
     return {
       id:           i,
       confirmed:    i === 7,
@@ -37,7 +44,7 @@ export default function ProjectContractListRoute() {
       createdAt:    new Date(),
       note:         'note' + i,
     } as ProjectContractShort;
-  });
+  });*/
 
   useEffect(() => {
     if (id) {
@@ -49,7 +56,8 @@ export default function ProjectContractListRoute() {
     <ProjectContractListSection
       list={list}
       openAddModal={openAddModal}
-      openDetailModal={() => {}}
+      getVariableList={getVariableList}
+      openDetailModal={openDetailModal}
       openConfirmModal={() => {}}
     />
   );

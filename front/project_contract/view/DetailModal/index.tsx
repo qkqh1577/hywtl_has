@@ -23,7 +23,7 @@ interface Props
   handleEstimateIdChange: (estimateId: number) => void;
 }
 
-export default function ProjectContractAddModal(props: Props) {
+export default function ProjectContractDetailModal(props: Props) {
 
   const {
           onClose,
@@ -31,14 +31,15 @@ export default function ProjectContractAddModal(props: Props) {
           handleEstimateIdChange,
         } = props;
 
-  const { addModal, estimateDetail } = useSelector((root: RootState) => root.projectContract);
+  const { detailModal, estimateDetail, variableList } = useSelector((root: RootState) => root.projectContract);
 
   const onSubmit = () => {formik.handleSubmit();};
+  console.log(estimateDetail)
   return (
     <ModalLayout
-      title="계약서 등록"
+      title="계약서 상세"
       width="90vw"
-      open={addModal || false}
+      open={!!detailModal || false}
       onClose={onClose}
       children={
         <Box sx={{
@@ -64,7 +65,7 @@ export default function ProjectContractAddModal(props: Props) {
                   <ContractDateForm formik={formik} />
                   <OrdererForm formik={formik} />
                   <ContractorForm formik={formik} />
-                  <ServiceContractTermsForm formik={formik} variableList={[]} />
+                  <ServiceContractTermsForm formik={formik} variableList={variableList} />
                 </Box>
               </Grid>
             </Grid>
