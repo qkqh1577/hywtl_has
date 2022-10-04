@@ -6,7 +6,7 @@ import { FileItemView } from 'file-item';
 import { BusinessVO } from 'business/domain';
 import { ExpectedDateType } from 'admin/contract/collection/domain';
 import { ProjectDocumentShort } from 'project_document/domain';
-import { TestType } from 'admin/estimate/template/domain';
+import { TestType } from 'type/TestType';
 
 export type ProjectContractId = number & { readonly _brand: symbol }
 

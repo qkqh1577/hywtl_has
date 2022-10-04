@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ColorPalette } from 'app/view/App/theme';
 import {
   Box,
@@ -30,7 +29,7 @@ import { FormikContextType } from 'formik';
 import {
   TestType,
   testTypeList
-} from 'admin/estimate/template/domain';
+} from 'type/TestType';
 
 export default function (props: {
   formik: FormikContextType<any>,
