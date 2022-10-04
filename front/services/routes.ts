@@ -23,17 +23,17 @@ export interface AppRoute
 
 const Routes = () => {
   const routes: AppRoute[] = [
-    ...userRoutes,
     ...appRoutes,
-    ...departmentRoutes,
-    ...estimateTemplateRoutes,
-    ...projectRoutes,
     ...businessRoutes,
+    ...departmentRoutes,
     ...estimateContentRoutes,
+    ...estimateTemplateRoutes,
+    ...personnelRoutes,
+    ...projectRoutes,
+    ...userRoutes,
     contractBasicTemplateRoute,
     contractCollectionTemplateRoute,
     contractConditionTemplateRoute,
-    ...personnelRoutes,
   ];
 
   return useRoutes(routes as RouteObject[]);
