@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   Box,
   Modal,
@@ -26,9 +26,6 @@ export default function ModalLayout({
                                       children,
                                       footer,
                                     }: ModalLayoutProps) {
-
-  const footerRef = useRef<HTMLDivElement>(null);
-  const footerHeight = footerRef.current?.offsetHeight ?? 0;
   return (
     <Modal
       open={open}
@@ -42,18 +39,19 @@ export default function ModalLayout({
       }}
       disableEscapeKeyDown
     >
-      <Paper sx={{
-        position:  'absolute',
-        top:       '50%',
-        left:      '50%',
-        transform: 'translate(-50%, -50%)',
-        width,
-        maxWidth:  '1850px',
-        maxHeight: '80vh',
-        overflow:  'hidden',
-        bgColor:   ColorPalette._b2b4b7,
-        boxShadow: `4px 4px 20px 0px ${ColorPalette._252627}`
-      }}>
+      <Paper
+        sx={{
+          width,
+          position:     'absolute',
+          top:          '50%',
+          left:         '50%',
+          transform:    'translate(-50%, -50%)',
+          borderRadius: 0,
+          maxWidth:     '1850px',
+          overflow:     'hidden',
+          bgColor:      ColorPalette._b2b4b7,
+          boxShadow:    `4px 4px 20px 0px ${ColorPalette._252627}`
+        }}>
         <Box sx={{
           display:         'flex',
           justifyContent:  'space-between',
@@ -80,37 +78,51 @@ export default function ModalLayout({
           />
         </Box>
         <Box sx={{
-          display:        'flex',
-          height:         'calc(100% - 50px)',
-          padding:        '20px',
-          justifyContent: 'center',
-          alignContent:   'flex-start',
-          flexWrap:       'wrap',
-          flex:           1,
-          overflowY:      'auto'
+          display:      'flex',
+          alignContent: 'flex-start',
+          width:        '100%',
+          flexWrap:     'nowrap',
+          overflow:     'hidden',
+          maxHeight:    '80vh',
         }}>
           <Box sx={{
-            display: 'flex',
-            width:   '100%',
-            height:  `calc(100% - ${footerHeight + 60}px)`,
+            display:                      'flex',
+            width:                        '100%',
+            padding:                      '20px',
+            flexWrap:                     'wrap',
+            overflowY:                    'scroll',
+            '&::-webkit-scrollbar':       {
+              width:           '10px',
+              height:          '10px',
+              backgroundColor: ColorPalette._e4e9f2,
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: ColorPalette._697183,
+            }
           }}>
-            {children}
-          </Box>
-          {footer && (
+
             <Box
-              ref={footerRef}
               sx={{
-                width:          '100%',
-                justifyContent: 'center',
                 display:        'flex',
-                alignItems:     'center',
-                flex:           1,
-                paddingTop:     '20px',
-                height:         'auto'
-              }}
-              children={footer}
-            />
-          )}
+                justifyContent: 'center',
+                flexWrap:       'wrap',
+              }}>
+              {children}
+            </Box>
+            {footer && (
+              <Box
+                sx={{
+                  width:          '100%',
+                  justifyContent: 'center',
+                  display:        'flex',
+                  alignItems:     'center',
+                  flex:           1,
+                  paddingTop:     '20px',
+                }}
+                children={footer}
+              />
+            )}
+          </Box>
         </Box>
       </Paper>
     </Modal>
