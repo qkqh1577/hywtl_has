@@ -6,9 +6,7 @@ import { AppRoute } from 'services/routes';
 import useId from 'services/useId';
 import ProjectContainer from 'project/route/container';
 import ProjectDocument from 'project_document/view';
-import {
-  projectDocumentAction,
-} from 'project_document/action';
+import { projectDocumentAction, } from 'project_document/action';
 import {
   useDispatch,
   useSelector
@@ -20,6 +18,7 @@ import {
   ProjectDocumentId,
   ProjectDocumentType
 } from 'project_document/domain';
+import { ProjectId } from 'project/domain';
 
 export type OnAddModalOpen = (type: ProjectDocumentType) => void;
 export type OnDetailModalOpen = (id: ProjectDocumentId) => void;
@@ -33,11 +32,14 @@ function Element() {
           buildingList,
         } = useSelector((root: RootState) => root.projectDocument);
 
-
   useEffect(() => {
     if (id) {
-      dispatch(projectDocumentAction.setAllList(id));
+      dispatch(projectDocumentAction.setProjectId(ProjectId(id)));
     }
+    else {
+      dispatch(projectDocumentAction.setProjectId(undefined));
+    }
+    dispatch(projectDocumentAction.addModal(undefined));
   }, [id]);
 
   const onAddModalOpen: OnAddModalOpen = useCallback(
@@ -62,9 +64,7 @@ function Element() {
   );
 }
 
-const projectDocumentRoute
-        :
-        AppRoute = {
+const projectDocumentRoute: AppRoute = {
   path:    '/project/sales-management/:id/document',
   element: <Element />
 };

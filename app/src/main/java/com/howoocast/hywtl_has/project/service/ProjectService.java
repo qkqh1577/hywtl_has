@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
+import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -151,6 +153,16 @@ public class ProjectService {
             ));
             instance.getStatus().setProgressStatus(parameter.getProgressStatus());
 
+        }
+
+        if (Objects.nonNull(parameter.getEstimateExpectation())) {
+            eventPublisher.publishEvent(ProjectLogEvent.of(
+                instance,
+                "프로젝트 견적 분류 변경",
+                Optional.ofNullable(instance.getStatus().getEstimateExpectation()).orElse(ProjectEstimateExpectation.AVERAGE).getName(),
+                parameter.getEstimateExpectation().getName()
+            ));
+            instance.getStatus().setEstimateExpectation(parameter.getEstimateExpectation());
         }
 
         if (Objects.nonNull(parameter.getEstimateStatus())) {

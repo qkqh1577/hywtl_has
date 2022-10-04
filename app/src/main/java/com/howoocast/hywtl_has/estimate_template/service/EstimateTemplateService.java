@@ -4,13 +4,12 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplate;
 import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplateDetail;
 import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateChangeSeqParameter;
-import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateDetailParameter;
 import com.howoocast.hywtl_has.estimate_template.parameter.EstimateTemplateParameter;
 import com.howoocast.hywtl_has.estimate_template.repository.EstimateTemplateRepository;
 import com.querydsl.core.types.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,17 +42,14 @@ public class EstimateTemplateService {
     @Transactional
     public void add(EstimateTemplateParameter parameter) {
 
-        List<EstimateTemplateDetail> detailList = new ArrayList<>();
-        for (int i = 0; i < parameter.getDetailList().size(); i++) {
-            EstimateTemplateDetailParameter detailParams = parameter.getDetailList().get(i);
-            detailList.add(EstimateTemplateDetail.of(
+        List<EstimateTemplateDetail> detailList = parameter.getDetailList()
+            .stream().map(detailParams -> EstimateTemplateDetail.of(
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitAmount(),
-                detailParams.getNote(),
-                i + 1
-            ));
-        }
+                detailParams.getNote()
+            ))
+            .collect(Collectors.toList());
 
         int maxSeq = repository.findAll().stream().map(EstimateTemplate::getSeq).reduce(0, Math::max);
         EstimateTemplate instance = EstimateTemplate.of(
@@ -68,34 +64,15 @@ public class EstimateTemplateService {
     @Transactional
     public void change(Long id, EstimateTemplateParameter parameter) {
         EstimateTemplate instance = this.load(id);
-        List<EstimateTemplateDetail> detailList = new ArrayList<>();
-        for (int i = 0; i < parameter.getDetailList().size(); i++) {
-            EstimateTemplateDetailParameter detailParams = parameter.getDetailList().get(i);
-            if (Objects.isNull(detailParams.getId())) {
-                detailList.add(EstimateTemplateDetail.of(
-                    detailParams.getTitleList(),
-                    detailParams.getUnit(),
-                    detailParams.getUnitAmount(),
-                    detailParams.getNote(),
-                    i + 1
-                ));
-                continue;
-            }
 
-            EstimateTemplateDetail detailInstance = instance.getDetailList().stream()
-                .filter(item -> Objects.equals(item.getId(), detailParams.getId()))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(EstimateTemplateDetail.KEY, detailParams.getId()));
-            detailInstance.change(
+        List<EstimateTemplateDetail> detailList = parameter.getDetailList()
+            .stream().map(detailParams -> EstimateTemplateDetail.of(
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitAmount(),
-                detailParams.getNote(),
-                i + 1
-            );
-            detailList.add(detailInstance);
-        }
-        // TODO: 삭제 항목 delete 처리
+                detailParams.getNote()
+            ))
+            .collect(Collectors.toList());
         instance.change(
             parameter.getTitle(),
             parameter.getTestType(),

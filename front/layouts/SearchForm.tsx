@@ -10,18 +10,19 @@ export interface SearchFormProps {
 
 function SubmitButton() {
 
-  const formikContext = useContext(FormikContext);
+  const formik = useContext(FormikContext);
   const onClick = () => {
-    if (formikContext) {
-      formikContext.setFieldValue('page', 0);
-      formikContext.handleSubmit();
+    if (formik) {
+      formik.setFieldValue('page', 0);
+      formik.handleSubmit();
+      formik.setSubmitting(false);
     }
   };
 
   return (
     <Button
       children="검색"
-      disabled={formikContext?.isSubmitting}
+      disabled={formik?.isSubmitting}
       onClick={onClick}
       sx={{
         marginBottom: '15px',
@@ -32,10 +33,13 @@ function SubmitButton() {
 
 function ClearButton() {
 
-  const formikContext = useContext(FormikContext);
+  const formik = useContext(FormikContext);
   const onClick = () => {
-    formikContext?.handleReset();
-    formikContext?.handleSubmit();
+    if (formik) {
+      formik.handleReset();
+      formik.handleSubmit();
+      formik.setSubmitting(false);
+    }
   };
 
   return (

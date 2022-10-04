@@ -102,6 +102,10 @@ import {
   userNotificationReducer,
   UserNotificationState
 } from 'user_notification/reducer';
+import {
+  projectStatusReducer,
+  ProjectStatusState
+} from 'project_status/reducer';
 
 export interface RootState {
   user: UserState;
@@ -116,6 +120,7 @@ export interface RootState {
   estimateContent: EstimateContentState;
   projectMemo: ProjectMemoState;
   projectBasic: ProjectBasicState;
+  projectStatus: ProjectStatusState;
   projectDocument: ProjectDocumentState;
   projectComplex: ProjectComplexState;
   projectEstimate: ProjectEstimateState;
@@ -145,6 +150,7 @@ const reducer = combineReducers<RootState>({
   estimateContent:    estimateContentReducer,
   projectMemo:        projectMemoReducer,
   projectBasic:       projectBasicReducer,
+  projectStatus:      projectStatusReducer,
   projectDocument:    projectDocumentReducer,
   projectComplex:     projectComplexReducer,
   projectEstimate:    projectEstimateReducer,

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'components/IconButton';
+import TextBox from 'layouts/Text';
 
 export interface SectionLayoutProps {
   title?: string;
@@ -52,21 +53,16 @@ export default function SectionLayout(props: SectionLayoutProps) {
           alignItems:     'center',
           justifyContent: 'space-between',
           width:          'calc(100% - 197px)',
-          marginRight:    '20px',
         }}>
           <Box sx={{
             display:        'flex',
             flexWrap:       'nowrap',
             justifyContent: 'flex-start',
+            alignItems:     'center',
           }}>
-            <Typography sx={{
-              fontSize:   '14px',
-              fontWeight: 'bold',
-              lineHeight: '22px',
-              color:      ColorPalette._252627
-            }}>
+            <TextBox variant="body7" sx={{ marginRight: '10px' }}>
               {title}
-            </Typography>
+            </TextBox>
             {!disableFold && (
               <IconButton
                 children={<FontAwesomeIcon icon="angle-up" />}

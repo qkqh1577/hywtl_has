@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,16 +28,14 @@ public class EstimateTemplateDetail extends CustomEntity {
     /**
      * 세부 항목 문구 목록
      */
-    @NotEmpty
     @ElementCollection
     private List<String> titleList;
 
     /**
      * 단위
      */
-    @NotBlank
-    @Column(nullable = false)
-    private String unit;
+    @Enumerated(EnumType.STRING)
+    private EstimateUnit unit;
 
     /**
      * 단가
@@ -51,41 +49,17 @@ public class EstimateTemplateDetail extends CustomEntity {
      */
     private String note;
 
-    /**
-     * 정렬 순서
-     */
-    @NotNull
-    @Column(nullable = false)
-    private Integer seq;
-
-
     public static EstimateTemplateDetail of(
         List<String> titleList,
-        String unit,
+        EstimateUnit unit,
         Long unitAmount,
-        String note,
-        Integer seq
+        String note
     ) {
         EstimateTemplateDetail instance = new EstimateTemplateDetail();
         instance.titleList = titleList;
         instance.unit = unit;
         instance.unitAmount = unitAmount;
         instance.note = note;
-        instance.seq = seq;
         return instance;
-    }
-
-    public void change(
-        List<String> titleList,
-        String unit,
-        Long unitAmount,
-        String note,
-        Integer seq
-    ) {
-        this.titleList = titleList;
-        this.unit = unit;
-        this.unitAmount = unitAmount;
-        this.note = note;
-        this.seq = seq;
     }
 }

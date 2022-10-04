@@ -24,19 +24,18 @@ function Element() {
   useEffect(() => {
     if (detail && detail.id !== id) {
       dispatch(projectBasicAction.setId(detail.id));
-      dispatch(projectBasicAction.setBasic({ ...detail }));
     }
   }, [detail]);
 
   return (
     <>
       <ProjectBasicBasicRoute />
-      {/*<ProjectBasicBusinessRoute />*/}
-      {/*<ProjectBasicDesignRoute />*/}
-      {/*<ProjectBasicTestRoute />*/}
-      {/*<ProjectBasicEstimateRoute />*/}
-      {/*<ProjectBasicBidRoute />*/}
-      {/*<ProjectBasicContractRoute />*/}
+      <ProjectBasicBusinessRoute />
+      <ProjectBasicDesignRoute />
+      <ProjectBasicTestRoute />
+      <ProjectBasicEstimateRoute />
+      <ProjectBasicBidRoute />
+      <ProjectBasicContractRoute />
       <ProjectBasicFailReasonRoute />
     </>
   );

@@ -6,6 +6,24 @@ import {
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { ProjectComplexTestVO } from 'project_complex/domain';
+import { ProjectBasicBidType } from 'project_status/domain';
+import { UserVO } from 'user/domain';
+import { ProjectId } from 'project/domain';
+
+export interface ProjectBasic {
+  id: ProjectId;
+  code?: string;
+  name: string;
+  alias: string;
+  bidType: ProjectBasicBidType;
+  receptionManager: UserVO;
+  salesManager?: UserVO;
+  projectManager?: UserVO;
+  expectedMonth?: Date;
+  requestedMonth?: Date;
+  isLh?: boolean;
+  modifiedAt?: Date;
+}
 
 export type ProjectBasicBusinessId = number & { readonly _brand: unique symbol; }
 

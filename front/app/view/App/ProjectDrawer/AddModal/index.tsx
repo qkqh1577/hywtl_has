@@ -8,17 +8,17 @@ import {
 import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
 import SelectField from 'components/SelectField';
-import {
-  projectBasicBidTypeList,
-  projectBasicBidTypeName,
-  ProjectProgressStatus,
-  projectProgressStatusName
-} from 'project/domain';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectAddParameter } from 'project/parameter';
 import { FormikProvider } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { memoLabelList } from 'app/route/projectAddModal';
+import {
+  projectBasicBidTypeList,
+  projectBasicBidTypeName,
+  ProjectProgressStatus,
+  projectProgressStatusName
+} from 'project_status/domain';
 
 export interface AddModalProps
   extends FormikLayoutProps<ProjectAddParameter> {

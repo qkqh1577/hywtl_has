@@ -19,16 +19,20 @@ class EstimateTemplateApi {
   }
 
   async upsert(parameter: EstimateTemplateParameter): Promise<void> {
-    if (parameter.id) {
-      const { data } = await apiClient.patch(`/admin/estimate-template/${parameter.id}`, parameter);
-      return data;
-    }
-    const { data } = await apiClient.post('/admin/estimate-template', parameter);
+    const { data } = await apiClient.put(
+      parameter.id ? `/admin/estimate-template/${parameter.id}` : '/admin/estimate-template',
+      parameter
+    );
     return data;
   }
 
   async changeSeq(idList: EstimateTemplateId[]): Promise<void> {
     const { data } = await apiClient.post('/admin/estimate-template/seq', { idList });
+    return data;
+  }
+
+  async deleteOne(id: EstimateTemplateId): Promise<void> {
+    const { data } = await apiClient.delete(`/admin/estimate-template/${id}`);
     return data;
   }
 }

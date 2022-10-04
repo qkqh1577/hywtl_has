@@ -9,12 +9,12 @@ import {
   ProjectActionType
 } from 'project/action';
 import Page from 'type/Page';
+import { projectApi } from 'project/api';
+import { dialogActions } from 'components/Dialog';
 import {
   ProjectShortVO,
   ProjectVO
 } from 'project/domain';
-import { projectApi } from 'project/api';
-import { dialogActions } from 'components/Dialog';
 
 function* watchFilter() {
   while (true) {

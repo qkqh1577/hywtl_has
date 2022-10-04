@@ -42,7 +42,7 @@ export default function Footer() {
       display:        'flex',
       width:          '100%',
       justifyContent: 'space-between',
-      marginTop:      '20px',
+      margin:         '20px 0',
     }}>
       {!edit && (
         <>

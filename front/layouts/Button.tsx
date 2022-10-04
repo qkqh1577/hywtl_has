@@ -4,14 +4,13 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
-import { SxProps } from '@mui/system';
 
 interface ButtonProps
   extends Omit<MuiButtonProps, | 'variant' | 'size'> {
   shape?: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small';
 }
 
-const basicStyle: SxProps = {
+const basicStyle: MuiButtonProps['sx'] = {
   fontFamily:   'Noto Sans KR',
   height:       '32px',
   fontSize:     '13px',
@@ -36,8 +35,8 @@ function Basic1Button(props: MuiButtonProps) {
         ...basicStyle,
         backgroundColor: ColorPalette._386dd6,
         color:           ColorPalette._ffffff,
-        ...(props.sx ?? {})
-      }}
+        ...props.sx,
+      } as MuiButtonProps['sx']}
     />
   );
 }
@@ -51,8 +50,8 @@ function Basic2Button(props: MuiButtonProps) {
         ...basicStyle,
         backgroundColor: `${ColorPalette._e4e9f2} !important`,
         color:           ColorPalette._386dd6,
-        ...(props.sx ?? {})
-      }}
+        ...props.sx,
+      } as MuiButtonProps['sx']}
     />
   );
 }
@@ -67,8 +66,8 @@ function Basic3Button(props: MuiButtonProps) {
         backgroundColor: ColorPalette._ffffff,
         color:           ColorPalette._386dd6,
         borderColor:     ColorPalette._9bb6ea,
-        ...(props.sx ?? {})
-      }}
+        ...props.sx,
+      } as MuiButtonProps['sx']}
     />
   );
 }
@@ -83,8 +82,8 @@ function Basic4Button(props: MuiButtonProps) {
         backgroundColor: ColorPalette._e4e9f2,
         color:           ColorPalette._386dd6,
         borderColor:     ColorPalette._9bb6ea,
-        ...(props.sx ?? {})
-      }}
+        ...props.sx,
+      } as MuiButtonProps['sx']}
     />
   );
 }
@@ -101,8 +100,9 @@ function SmallButton(props: MuiButtonProps) {
         fontSize:        '12px',
         backgroundColor: ColorPalette._386dd6,
         color:           ColorPalette._ffffff,
-        ...(props.sx ?? {})
-      }}
+        minWidth:        'unset',
+        ...props.sx,
+      } as MuiButtonProps['sx']}
     />
   );
 }

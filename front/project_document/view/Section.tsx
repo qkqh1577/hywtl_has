@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
 } from '@mui/material';
 import DateFormat from 'components/DateFormat';
 import dayjs from 'dayjs';
@@ -26,9 +25,10 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
+import TextBox from 'layouts/Text';
+import TextLink from 'components/TextLink';
 
 interface Props {
   type: ProjectDocumentType;
@@ -39,7 +39,7 @@ interface Props {
 
 function AddButton(props: Props) {
   return (
-    <Button onClick={() => {
+    <Button shape="small" onClick={() => {
       props.onAddModalOpen(props.type);
     }}>
       + 등록
@@ -60,9 +60,7 @@ export default function ProjectDocumentSection(props: Props) {
       titleRightComponent={<AddButton {...props} />}
       modifiedAt={modifiedAt?.toDate()}
     >
-      <TableContainer sx={{
-        width: '100%'
-      }}>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -88,28 +86,24 @@ export default function ProjectDocumentSection(props: Props) {
               <TableRow key={item.id}>
                 <Td>{i + 1}</Td>
                 <Td>
-                  <Typography sx={{
-                    fontSize:   '11px',
-                    lineHeight: '16px',
-                    color:      ColorPalette._386dd6,
-                    cursor:     'pointer',
-                  }}
-                    onClick={() => {
-                      props.onDetailModalOpen(item.id);
-                    }}
-                    children={item.code}
-                  />
+                  <TextLink onClick={() => {
+                    props.onDetailModalOpen(item.id);
+                  }}>
+                    {item.code}
+                  </TextLink>
                 </Td>
                 <Td>
                   <Box sx={{
                     width:          '100%',
                     display:        'flex',
                     flexWrap:       'nowrap',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems:     'center'
                   }}>
-                    {item.file.filename}
-                    ({toReadableSize(item.file.size)})
+                    <TextBox variant="body8">
+                      {item.file.filename}
+                      ({toReadableSize(item.file.size)})
+                    </TextBox>
                     <IconButton
                       shape="square"
                       children={<FontAwesomeIcon icon="download" />}
@@ -121,15 +115,24 @@ export default function ProjectDocumentSection(props: Props) {
                 </Td>
                 <Td>{item.recipient}</Td>
                 <Td>
-                  {item.mailFileId && (
-                    <IconButton
-                      shape="square"
-                      children={<FontAwesomeIcon icon="download" />}
-                      onClick={() => {
-                        window.open(`/file-items/${item.mailFileId}`, '_blank');
-                      }}
-                    />
-                  )}
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    justifyContent: 'center',
+                    alignItems:     'center',
+                    height:         '100%',
+                  }}>
+                    {item.mailFileId && (
+                      <IconButton
+                        shape="square"
+                        children={<FontAwesomeIcon icon="download" />}
+                        onClick={() => {
+                          window.open(`/file-items/${item.mailFileId}`, '_blank');
+                        }}
+                      />
+                    )}
+                  </Box>
                 </Td>
                 <Td>{item.note}</Td>
                 <Td>

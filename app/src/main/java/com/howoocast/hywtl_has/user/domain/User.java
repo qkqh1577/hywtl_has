@@ -146,12 +146,12 @@ public class User extends CustomEntity {
     private String status; // 사용, 사용 중지
 
     protected User(
-        String username,
-        String password,
-        String name,
-        String email,
-        Department department,
-        UserRole role
+            String username,
+            String password,
+            String name,
+            String email,
+            Department department,
+            UserRole role
     ) {
         this.username = username;
         this.name = name;
@@ -169,20 +169,20 @@ public class User extends CustomEntity {
     }
 
     public static User of(
-        String username,
-        String password,
-        String name,
-        String email,
-        Department department,
-        UserRole role
+            String username,
+            String password,
+            String name,
+            String email,
+            Department department,
+            UserRole role
     ) {
         return new User(
-            username,
-            password,
-            name,
-            email,
-            department,
-            role
+                username,
+                password,
+                name,
+                email,
+                department,
+                role
         );
     }
 
@@ -198,10 +198,10 @@ public class User extends CustomEntity {
     }
 
     public void change(
-        String name,
-        String email,
-        UserRole role,
-        Department department
+            String name,
+            String email,
+            UserRole role,
+            Department department
     ) {
         this.name = name;
         this.email = email;
@@ -210,8 +210,8 @@ public class User extends CustomEntity {
     }
 
     public void changePassword(
-        String nowPassword,
-        String newPassword
+            String nowPassword,
+            String newPassword
     ) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(nowPassword, this.password)) {
@@ -224,7 +224,7 @@ public class User extends CustomEntity {
     }
 
     public void login(
-        String invalidatePeriod
+            String invalidatePeriod
     ) {
         this.checkCanLogin(invalidatePeriod);
         this.loginAt = LocalDateTime.now();
@@ -252,15 +252,15 @@ public class User extends CustomEntity {
 
     /* 계정 정보 수정 api */
     public void edit(
-        @Nullable String englishName,
-        @Nullable LocalDate birthDate,
-        @Nullable String sex,
-        @Nullable String mobilePhone,
-        @Nullable String privateEmail,
-        @Nullable String emergencyPhone,
-        @Nullable String relationship,
-        @Nullable String address,
-        @Nullable FileItem profile
+            @Nullable String englishName,
+            @Nullable LocalDate birthDate,
+            @Nullable String sex,
+            @Nullable String mobilePhone,
+            @Nullable String privateEmail,
+            @Nullable String emergencyPhone,
+            @Nullable String relationship,
+            @Nullable String address,
+            @Nullable FileItem profile
     ) {
         if (Objects.nonNull(englishName) && !englishName.isEmpty()) {
             this.englishName = englishName;

@@ -1,25 +1,24 @@
 import React from 'react';
 import {
   Input as MuiInput,
-  InputProps
+  InputProps as MuiInputProps,
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 
-interface Props
-  extends Omit<InputProps, | 'fullWidth' | 'inputProps'> {
+export interface InputProps
+  extends Omit<MuiInputProps, | 'fullWidth' | 'inputProps'> {
   variant?: 'outlined' | 'standard';
-  inputProps?: Omit<InputProps['inputProps'], |'style'>;
+  inputProps?: Omit<MuiInputProps['inputProps'], |'style'>;
 }
 
-export default function Input({ variant, ...props }: Props) {
+export default function Input({ variant, ...props }: InputProps) {
   if (variant === 'outlined') {
     return (<OutlinedInput {...props} />);
   }
   return (<StandardInput {...props} />);
 }
 
-export function OutlinedInput(props: Omit<Props, |'variant'>) {
-
+export function OutlinedInput(props: Omit<InputProps, |'variant'>) {
   return (
     <MuiInput
       {...props}
@@ -32,8 +31,14 @@ export function OutlinedInput(props: Omit<Props, |'variant'>) {
         },
       } : {
         ...props.sx,
-        '&::before': {
+        '&::before':             {
           borderBottom: 'none !important',
+        },
+        '&::after':              {
+          borderBottom: 'none !important',
+        },
+        '&.Mui-focused > input': {
+          border: `1px solid ${ColorPalette._0047d3}  !important`
         }
       }}
       inputProps={{
@@ -46,16 +51,17 @@ export function OutlinedInput(props: Omit<Props, |'variant'>) {
           color:           ColorPalette._252627,
           border:          `1px solid ${ColorPalette._e4e9f2}`,
           borderRadius:    '5px',
-          backgroundColor: ColorPalette._ffffff,
+          backgroundColor: props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
           boxSizing:       'border-box',
-
+          cursor:          props.readOnly || props.disabled ? 'default' : 'text',
+          textAlign:       props.type === 'number' ? 'right' : (props.multiline ? 'left' : props.readOnly ? 'center' : 'left'),
         },
       }}
     />
   );
 }
 
-export function StandardInput(props: Omit<Props, |'variant'>) {
+export function StandardInput(props: Omit<InputProps, |'variant'>) {
 
   return (
     <MuiInput

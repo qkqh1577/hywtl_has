@@ -32,23 +32,23 @@ public class Project extends CustomEntity {
     private ProjectStatus status;
 
     public static Project of(
-        @Nullable String code,
-        String name,
-        String alias,
-        ProjectBasicBidType bidType,
-        User receptionManager,
-        ProjectProgressStatus progressStatus
+            @Nullable String code,
+            String name,
+            String alias,
+            ProjectBasicBidType bidType,
+            User receptionManager,
+            ProjectProgressStatus progressStatus
     ) {
         Project instance = new Project();
         instance.basic = ProjectBasic.of(
-            code,
-            name,
-            alias,
-            bidType,
-            receptionManager
+                code,
+                name,
+                alias,
+                bidType,
+                receptionManager
         );
         instance.status = ProjectStatus.of(
-            progressStatus
+                progressStatus
         );
         return instance;
     }

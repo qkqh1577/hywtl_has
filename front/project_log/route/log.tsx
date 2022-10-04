@@ -85,6 +85,6 @@ function Element() {
 }
 
 export const projectLogRoute: AppRoute = {
-  path:    `/project/sales-management/:id/log`,
+  path:    '/project/sales-management/:id/log',
   element: <Element />
 };

@@ -136,6 +136,12 @@ public class ProjectComplexService {
             parameter.getEstimateEvaluationDifficulty(),
             parameter.getEstimateReportDifficulty()
         );
+        if (Objects.nonNull(parameter.getSiteId()) && parameter.getSiteId() < 0) {
+            eventList.add(instance.unlinkSite());
+        }
+        if (Objects.nonNull(parameter.getBuildingDocumentId()) && parameter.getBuildingDocumentId() < 0) {
+            eventList.add(instance.unlinkDocument());
+        }
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
     }

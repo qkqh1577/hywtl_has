@@ -65,7 +65,7 @@ export default function ProjectComplexSiteSection(props: Props) {
     <SectionLayout
       title="대지 모형"
       titleRightComponent={
-        <Button onClick={props.onAdd}>
+        <Button shape="small" onClick={props.onAdd}>
           + 추가
         </Button>
       }
@@ -119,7 +119,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                   </Td>
                   <Td>
                     <Checkbox
-                      defaultChecked={item.withEnvironmentTest}
+                      checked={item.withEnvironmentTest}
                       onChange={() => {
                         props.onUpdate({ id: item.id, withEnvironmentTest: !item.withEnvironmentTest });
                       }}
@@ -128,7 +128,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                   <Td>
                     <Select
                       variant="outlined"
-                      defaultValue={item.estimateFigureDifficulty ?? ''}
+                      value={item.estimateFigureDifficulty ?? ''}
                       onChange={(e) => {
                         const value = (e.target.value as Difficulty) || undefined;
                         if (item.estimateFigureDifficulty !== value) {
@@ -143,7 +143,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                   <Td>
                     <Select
                       variant="outlined"
-                      defaultValue={item.figureDifficulty ?? ''}
+                      value={item.figureDifficulty ?? ''}
                       onChange={(e) => {
                         const value = (e.target.value as Difficulty) || undefined;
                         if (item.figureDifficulty !== value) {

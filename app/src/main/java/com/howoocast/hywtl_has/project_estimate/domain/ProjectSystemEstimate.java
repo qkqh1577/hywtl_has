@@ -33,6 +33,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String code,
         Boolean isSent,
         String recipient,
+        Boolean isLh,
         String note,
         User writer,
         Project project,
@@ -43,6 +44,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             ProjectEstimateType.SYSTEM,
             isSent,
             recipient,
+            isLh,
             note,
             writer,
             project,
@@ -53,7 +55,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
     public static ProjectSystemEstimate of(
         ProjectEstimate dto,
         Boolean isSent,
-        String recipient,
+        String recipient, Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
         List<String> contentList,
@@ -63,6 +65,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             dto.getCode(),
             isSent,
             recipient,
+            isLh,
             note,
             dto.getWriter(),
             dto.getProject(),
@@ -76,6 +79,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
     public List<EventEntity> change(
         Boolean isSent,
         String recipient,
+        Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
         List<String> contentList
@@ -83,6 +87,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         List<EventEntity> eventList = super.change(
             isSent,
             recipient,
+            isLh,
             note,
             this.getBusiness()
         );

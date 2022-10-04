@@ -29,6 +29,7 @@ import projectScheduleSaga from 'project_schedule/saga';
 import personnelSaga from 'personnel/saga';
 import userNotificationSaga from 'user_notification/saga';
 import projectContractSaga from 'project_contract/saga';
+import projectStatusSaga from 'project_status/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -58,6 +59,7 @@ function* saga() {
     projectScheduleSaga(),
     userNotificationSaga(),
     projectContractSaga(),
+    projectStatusSaga(),
   ]);
 }
 

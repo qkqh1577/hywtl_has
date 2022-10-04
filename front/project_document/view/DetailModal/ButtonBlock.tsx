@@ -1,12 +1,11 @@
-import {
-  Box,
-  Button
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import React from 'react';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
 interface Props {
-  onSubmit: () => void;
-  onClose: () => void;
+  onChange: DefaultFunction;
+  onCancel: DefaultFunction;
 }
 
 export default function ProjectDocumentUpdateModalButtonBlock(props: Props) {
@@ -17,8 +16,16 @@ export default function ProjectDocumentUpdateModalButtonBlock(props: Props) {
       width:          '100%',
       justifyContent: 'center',
     }}>
-      <Button onClick={props.onSubmit}>저장</Button>
-      <Button onClick={props.onClose}>취소</Button>
+      <Button
+        onClick={props.onChange}
+        sx={{
+          marginRight: '10px',
+        }}>
+        저장
+      </Button>
+      <Button shape="basic2" onClick={props.onCancel}>
+        취소
+      </Button>
     </Box>
   );
 };

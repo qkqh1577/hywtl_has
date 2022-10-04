@@ -5,20 +5,33 @@ import {
 } from 'project_document/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectDocumentAction } from 'project_document/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import { ProjectId } from 'project/domain';
 
 export interface ProjectDocumentState {
+  projectId?: ProjectId;
   receivedList?: ProjectDocumentShort[];
   sentList?: ProjectDocumentShort[];
   buildingList?: ProjectDocumentShort[];
   detail?: ProjectDocumentVO;
-  addModal: 'close' | ProjectDocumentType | 'request' | 'response';
+  addModal?: ProjectDocumentType;
+  requestAdd: ApiStatus;
+  requestChange: ApiStatus;
   detailModal?: ProjectDocumentVO;
 }
 
-const initialDocumentState: ProjectDocumentState = { addModal: 'close' };
+const initialDocumentState: ProjectDocumentState = {
+  requestAdd:    ApiStatus.IDLE,
+  requestChange: ApiStatus.IDLE,
+};
 
 export const projectDocumentReducer = createReducer(initialDocumentState, {
-
+  [ProjectDocumentAction.setProjectId]:    (state,
+                                            action
+                                           ) => ({
+    ...state,
+    projectId: action.payload,
+  }),
   [ProjectDocumentAction.setReceivedList]: (state,
                                             action
                                            ) => ({
@@ -40,17 +53,29 @@ export const projectDocumentReducer = createReducer(initialDocumentState, {
     buildingList: action.payload
   }),
 
-  [ProjectDocumentAction.setOne]:   (state,
-                                     action
-                                    ) => ({
+  [ProjectDocumentAction.setOne]:        (state,
+                                          action
+                                         ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectDocumentAction.addModal]: (state,
-                                     action
-                                    ) => ({
+  [ProjectDocumentAction.addModal]:      (state,
+                                          action
+                                         ) => ({
     ...state,
     addModal: action.payload,
   }),
+  [ProjectDocumentAction.requestAdd]:    (state,
+                                          action
+                                         ) => ({
+    ...state,
+    requestAdd: action.payload
+  }),
+  [ProjectDocumentAction.requestChange]: (state,
+                                          action
+                                         ) => ({
+    ...state,
+    requestChange: action.payload,
+  })
 });
 

@@ -13,11 +13,12 @@ import React, {
 import { projectEstimateAction } from 'project_estimate/action';
 import useDialog, { dialogActions } from 'components/Dialog';
 import { BusinessVO } from 'business/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectCustomEstimateAddModalRoute() {
 
   const dispatch = useDispatch();
-  const { projectId, customAddModal, requestAdd } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, customAddModal, requestAddCustom } = useSelector((root: RootState) => root.projectEstimate);
   const { error } = useDialog();
 
   const initialValues = {
@@ -58,13 +59,13 @@ export default function ProjectCustomEstimateAddModalRoute() {
   });
 
   useEffect(() => {
-    if (requestAdd === 'response') {
+    if (requestAddCustom === ApiStatus.RESPONSE) {
       onClose();
       dispatch(dialogActions.openAlert('등록하였습니다.'));
       dispatch(projectEstimateAction.setProjectId(projectId));
-      dispatch(projectEstimateAction.requestAdd('idle'));
+      dispatch(projectEstimateAction.requestAddCustom(ApiStatus.IDLE));
     }
-  }, [requestAdd]);
+  }, [requestAddCustom]);
 
   return (
     <ProjectCustomEstimateAddModal

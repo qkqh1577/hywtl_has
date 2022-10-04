@@ -49,6 +49,7 @@ public class ProjectSystemEstimateService {
             estimateService.of(projectId, username),
             parameter.getIsSent(),
             parameter.getRecipient(),
+            parameter.getIsLh(),
             parameter.getNote(),
             toTemplateList(parameter.getTemplateList()),
             parameter.getContentList(),
@@ -71,6 +72,7 @@ public class ProjectSystemEstimateService {
         List<EventEntity> eventList = instance.change(
             parameter.getIsSent(),
             parameter.getRecipient(),
+            parameter.getIsLh(),
             parameter.getNote(),
             toTemplateList(parameter.getTemplateList()),
             parameter.getContentList()

@@ -46,10 +46,12 @@ function* watchBuildingFileModal() {
   while (true) {
     const { payload: id } = yield take(projectComplexAction.buildingFileModal);
     if (!id) {
-      continue;
+      yield put(projectComplexAction.setBuilding(undefined));
     }
-    const detail: ProjectComplexBuildingVO = yield call(projectComplexApi.getBuilding, id);
-    yield put(projectComplexAction.setBuilding(detail));
+    else {
+      const detail: ProjectComplexBuildingVO = yield call(projectComplexApi.getBuilding, id);
+      yield put(projectComplexAction.setBuilding(detail));
+    }
   }
 }
 
@@ -180,11 +182,12 @@ function* watchRequestBuilding() {
     if (requestBuilding === ApiStatus.RESPONSE) {
       const { id } = yield select((root: RootState) => root.projectComplex);
       yield call(getBuildList, id);
+      yield call(getTestDetail, id);
+      yield put(projectComplexAction.buildingFileModal(undefined));
       yield put(projectComplexAction.requestBuilding(ApiStatus.IDLE));
     }
   }
 }
-
 
 export default function* projectComplexSaga() {
   yield fork(watchId);

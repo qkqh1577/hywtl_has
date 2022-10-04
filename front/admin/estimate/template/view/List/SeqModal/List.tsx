@@ -7,10 +7,6 @@ import {
   TableRow
 } from '@mui/material';
 import {
-  ArrowDownward as DownIcon,
-  ArrowUpward as UpIcon,
-} from '@mui/icons-material';
-import {
   EstimateTemplateShort,
   testTypeName
 } from 'admin/estimate/template/domain';
@@ -20,13 +16,19 @@ import {
   Td,
   Th
 } from 'layouts/Table';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DefaultFunction } from 'type/Function';
 
 export interface SeqModalListProps {
   list: EstimateTemplateShort[];
-  setList: (list: EstimateTemplateShort[]) => void;
+  setList: DefaultFunction<EstimateTemplateShort[]>;
 }
 
-export default function EstimateTemplateSeqModalList({ list, setList }: SeqModalListProps) {
+export default function EstimateTemplateSeqModalList(props: SeqModalListProps) {
+
+  const {
+          list, setList
+        } = props;
 
   return (
     <TableContainer>
@@ -54,8 +56,10 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
                   justifyContent: 'space-around',
                 }}>
                   <IconButton
+                    tooltip="순서 올리기"
+                    shape="square"
                     disabled={i === 0}
-                    children={<UpIcon />}
+                    children={<FontAwesomeIcon icon="angle-up" />}
                     onClick={() => {
                       const result: EstimateTemplateShort[] = [];
                       for (let j = 0; j < list.length; j++) {
@@ -71,7 +75,10 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
                     }}
                   />
                   <IconButton
+                    tooltip="순서 내리기"
+                    shape="square"
                     disabled={i === list.length - 1}
+                    children={<FontAwesomeIcon icon="angle-down" />}
                     onClick={() => {
                       const result: EstimateTemplateShort[] = [];
                       for (let j = 0; j < list.length; j++) {
@@ -85,7 +92,6 @@ export default function EstimateTemplateSeqModalList({ list, setList }: SeqModal
                       }
                       setList(result);
                     }}
-                    children={<DownIcon />}
                   />
                 </Box>
               </Td>
