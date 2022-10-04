@@ -36,7 +36,10 @@ Content-Type: application/json
   "plan": {
     "estimateDate": "2022-07-01",
     "expectedTestDeadline": 7,
-    "expectedFinalReportDeadline": 10
+    "expectedFinalReportDeadline": 10,
+    "testAmount": 50000000,
+    "reviewAmount": 10000000,
+    "totalAmount": 60000000
   },
   "siteList": [
     {
@@ -55,25 +58,29 @@ Content-Type: application/json
       "name": "101동",
       "siteSeq": 0,
       "shape": "사각형",
-      "floorCount": 21
+      "floorCount": 21,
+      "testTypeList": ["F","A","B"]
     },
     {
       "name": "102동",
       "siteSeq": 0,
       "shape": "사각형",
-      "floorCount": 21
+      "floorCount": 21,
+      "testTypeList": ["P","E","B"]
     },
     {
       "name": "201동",
       "siteSeq": 0,
       "shape": "T자형",
-      "floorCount": 18
+      "floorCount": 18,
+      "testTypeList": ["F","P"]
     },
     {
       "name": "202동",
       "siteSeq": 0,
       "shape": "사각형",
-      "floorCount": 20
+      "floorCount": 20,
+      "testTypeList": ["F","B"]
     }
   ],
   "templateList": [

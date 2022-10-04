@@ -3,90 +3,54 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import ProjectContractAddModal from 'project_contract/view/AddModal';
 import { useFormik } from 'formik';
-import { ProjectContractParameter, } from 'project_contract/parameter';
 import React, {
   useCallback,
   useEffect,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
-import {
-  ProjectId,
-  ProjectVO
-} from 'project/domain';
 import { projectContractApi } from 'project_contract/api';
 
 import {
+  ProjectContractId,
   ProjectEstimateId,
   ProjectEstimateVO
 } from 'project_contract/domain';
-import { projectApi } from 'project/api';
-import {
-  ContractCollectionVO,
-  ExpectedDateType
-} from 'admin/contract/collection/domain';
-import { contractCollectionApi } from 'admin/contract/collection/api';
-import { ContractConditionListVO } from 'admin/contract/condition/domain';
-import { contractConditionApi } from 'admin/contract/condition/api';
-import { contractBasicApi } from 'admin/contract/basic/api';
-import { ContractBasicVO } from 'admin/contract/basic/domain';
+import ProjectContractDetailModal from 'project_contract/view/DetailModal';
 
-export default function ProjectContractAddModalRoute() {
+export default function ProjectContractDetailModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, addModal } = useSelector((root: RootState) => root.projectContract);
+  const { projectId, detailModal: projectContractId } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
 
   useEffect(() => {
-    if (projectId) {
-      dispatch(projectContractAction.setProjectId(ProjectId(projectId)));
-      (async () => {
-        let values = await getInitialValues(projectId);
-        console.debug(values);
-        await formik.setValues(values);
-      })();
+    if (projectContractId) {
+      projectContractApi.getOne(ProjectContractId(projectContractId))
+                        .then((data) => {
+                          formik.setValues({
+                            ...data,
+                            estimateId: ProjectEstimateId(data.estimate.id),
+                            basic:      {
+                              ...data.basic,
+                              contractDateSplit: getDateSplit(data?.basic?.contractDate ?? new Date()),
+                            }
+                          } as any);
+                          dispatch(projectContractAction.setEstimateDetail(data.estimate));
+                        });
     }
-  }, [projectId]);
+  }, [projectContractId]);
 
-  const getInitialValues: any = async (pid) => {
-    if (!pid) {
-      return undefined;
-    }
-    const project: ProjectVO = await projectApi.getOne(ProjectId(pid));
-    const basic: ContractBasicVO = await contractBasicApi.getOne();
-    const collection: ContractCollectionVO = await contractCollectionApi.getOne();
-    const conditionList: ContractConditionListVO = await contractConditionApi.getOne();
-    //const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getContractCondition, projectId, ProjectEstimateId(1));
-    const initialValues = {
-      estimateId:    undefined,
-      isSent:        'N',
-      recipient:     '',
-      note:          '',
-      basic:         {
-        ...basic,
-        serviceName:           project.name,
-        serviceDuration:       `${'확인필요'}(착수보고 시) ~ ${'확인필요'}(최종보고서 인도)`,
-        contractorAddress:     basic.contractor.address,
-        contractorCompanyName: basic.contractor.companyName,
-        contractorCeoName:     basic.contractor.ceoName,
-        contractDate:          new Date(),
-        contractDateSplit:     {
-          year:  new Date().getFullYear(),
-          month: new Date().getMonth() + 1,
-          day:   new Date().getDate(),
-        }
-      },
-      collection:    { ...collection },
-      conditionList: [...conditionList.contractConditionList],
+  const getDateSplit = (contractDate: Date) => {
+    const date = new Date(contractDate);
+    return {
+      year:  date.getFullYear(),
+      month: date.getMonth() + 1,
+      day:   date.getDate(),
     };
-    return new Promise((resolve) => {
-      resolve(initialValues);
-    });
   };
 
-  const onClose = useCallback(() => dispatch(projectContractAction.setAddModal(undefined)), [dispatch]);
-  const addContract = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.addContract(params)), [dispatch]);
+  const onClose = useCallback(() => dispatch(projectContractAction.setDetailModal(undefined)), [dispatch]);
   const formik = useFormik<any>({
     enableReinitialize: true,
     initialValues:      {
@@ -99,17 +63,23 @@ export default function ProjectContractAddModalRoute() {
                           conditionList: [],
                         } as any,
     onSubmit:           (values) => {
-      if (!projectId || !addModal) {
+      if (!projectId) {
         error('프로젝트가 선택되지 않았습니다.');
         return;
       }
+      else if (!projectContractId) {
+        error('계약서가 선택되지 않았습니다.');
+        return;
+      }
+
       const estimate: ProjectEstimateVO | '' | undefined = (values as any).estimateId;
       if (!estimate || !estimate.id) {
         error('업체가 선택되지 않았습니다.');
         return;
       }
+      console.log(values);
       //용역 기간 용역 금액 기성 단계 금액 계산 필요
-      addContract({
+      /*addContract({
         estimateId:    estimate.id,
         isSent:        values.isSent,
         recipient:     values.recipient,
@@ -117,7 +87,7 @@ export default function ProjectContractAddModalRoute() {
         basic:         values.basic,
         collection:    values.collection,
         conditionList: values.conditionList,
-      });
+      });*/
     },
   });
 
@@ -149,7 +119,7 @@ export default function ProjectContractAddModalRoute() {
 
   return (
     <>
-      {<ProjectContractAddModal
+      {<ProjectContractDetailModal
         formik={formik}
         onClose={onClose}
         handleEstimateIdChange={handleEstimateIdChange}

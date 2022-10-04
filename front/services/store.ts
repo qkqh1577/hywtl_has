@@ -28,6 +28,7 @@ import projectBidSaga from 'project_bid/saga';
 import projectScheduleSaga from 'project_schedule/saga';
 import personnelSaga from 'personnel/saga';
 import userNotificationSaga from 'user_notification/saga';
+import projectContractSaga from 'project_contract/saga';
 import projectStatusSaga from 'project_status/saga';
 
 const middleware = createSagaMiddleware();
@@ -57,6 +58,7 @@ function* saga() {
     personnelSaga(),
     projectScheduleSaga(),
     userNotificationSaga(),
+    projectContractSaga(),
     projectStatusSaga(),
   ]);
 }

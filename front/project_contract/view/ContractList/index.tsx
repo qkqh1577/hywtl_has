@@ -29,11 +29,12 @@ interface Props {
   openConfirmModal: () => void;
   openAddModal: () => void;
   openDetailModal: (id: ProjectContractId) => void;
+  getVariableList: () => void
 }
 
 export default function ProjectContractListSection(props: Props) {
 
-  const { list, openConfirmModal, openAddModal, openDetailModal } = props;
+  const { list, openConfirmModal, openAddModal, openDetailModal, getVariableList } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
   useEffect(() => {
@@ -57,7 +58,10 @@ export default function ProjectContractListSection(props: Props) {
       title="계약서"
       modifiedAt={modifiedAt}
       titleRightComponent={
-        <ButtonSection openConfirmModal={openConfirmModal} openAddModal={openAddModal} />
+        <ButtonSection openConfirmModal={openConfirmModal} openAddModal={ () => {
+          openAddModal();
+          getVariableList();
+        }} />
       }>
       <Box sx={{ width: '100%' }}>
         <TableContainer>
@@ -94,6 +98,7 @@ export default function ProjectContractListSection(props: Props) {
                     }}>
                       <TextLink
                         onClick={() => {
+                          console.log(item.id);
                           openDetailModal(item.id);
                         }}>{item.code}</TextLink>
                     </Box>
