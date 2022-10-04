@@ -104,7 +104,7 @@ export default function () {
           marginRight: '10px',
         }}>
           <DataFieldWithLabel
-            required
+            required={!formik.values.allDay}
             label="시작 시간"
             labelPosition="top"
           >
@@ -214,7 +214,7 @@ export default function () {
           marginRight: '10px',
         }}>
           <DataFieldWithLabel
-            required
+            required={!formik.values.allDay}
             label="종료 시간"
             labelPosition="top"
           >
@@ -264,8 +264,7 @@ export default function () {
           marginRight: '10px',
         }}>
           <DataFieldWithLabel
-            required
-            label="일정명"
+            label="미리 알림 사용"
             labelPosition="top"
           >
             <Box sx={{
@@ -333,7 +332,6 @@ export default function () {
         marginBottom: '10px',
       }}>
         <DataFieldWithLabel
-          required
           label="일정 공유 대상"
           labelPosition="top"
         >

@@ -18,11 +18,13 @@ import UserIcon from 'layouts/UserIcon';
 import TextBox from 'layouts/Text';
 import Input from 'layouts/Input';
 import DataFieldWithLabel from 'components/DataFieldLabel';
+import useDialog from 'components/Dialog';
 
 interface Props {
   viewCount?: number;
-  afterSubmit: DefaultFunction<UserId[]>;
+  afterSubmit: (list: UserId[] | undefined) => void;
   list: UserId[] | undefined;
+  readOnly?: boolean;
 }
 
 interface ModalProps
@@ -211,6 +213,7 @@ export function AttendanceSelectModal(props: ModalProps) {
 
 export default function AttendanceListField(props: Props) {
 
+  const { confirm } = useDialog();
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -219,6 +222,7 @@ export default function AttendanceListField(props: Props) {
       width:          '100%',
       flexWrap:       'nowrap',
       justifyContent: 'flex-start',
+      height:         '40px',
     }}>
       {props.list?.filter((item,
                            i
@@ -228,19 +232,35 @@ export default function AttendanceListField(props: Props) {
                 key={item}
                 user={item}
                 sx={{
-                  marginRight: '10px'
+                  marginRight: '10px',
+                  cursor:      props.readOnly ? 'default' : 'pointer'
+                }}
+                onClick={() => {
+                  if (props.readOnly) {
+                    return;
+                  }
+                  confirm({
+                    children:     '해당 유저를 제외하겠습니까?',
+                    confirmText:  '제외',
+                    afterConfirm: () => {
+                      const idList = props.list!.filter(id => id !== item);
+                      props.afterSubmit(idList.length === 0 ? undefined : idList);
+                    }
+                  });
                 }}
               />
             ))}
       {props.list && props.viewCount && props.list.length > props.viewCount && (
         <TextBox variant="body10">외 {props.list.length - props.viewCount}명</TextBox>
       )}
-      <UserIcon
-        user="plus"
-        onClick={() => {
-          setOpen(true);
-        }}
-      />
+      {!props.readOnly && (
+        <UserIcon
+          user="plus"
+          onClick={() => {
+            setOpen(true);
+          }}
+        />
+      )}
       <AttendanceSelectModal
         open={open}
         onClose={() => {

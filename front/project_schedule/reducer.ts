@@ -6,6 +6,7 @@ import {
 } from 'project_schedule/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectScheduleAction } from 'project_schedule/action';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectScheduleState {
   projectId?: ProjectId;
@@ -13,9 +14,16 @@ export interface ProjectScheduleState {
   filter?: ProjectScheduleQuery;
   list?: ProjectScheduleShort[];
   addModal?: boolean;
+  requestAdd: ApiStatus;
+  requestUpdate: ApiStatus;
+  requestDelete: ApiStatus;
 }
 
-const initialState: ProjectScheduleState = {};
+const initialState: ProjectScheduleState = {
+  requestAdd:    ApiStatus.IDLE,
+  requestUpdate: ApiStatus.IDLE,
+  requestDelete: ApiStatus.IDLE,
+};
 
 export const projectScheduleReducer = createReducer(initialState, {
   [ProjectScheduleAction.setProjectId]: (state,
@@ -44,10 +52,28 @@ export const projectScheduleReducer = createReducer(initialState, {
     list: action.payload
   }),
 
-  [ProjectScheduleAction.addModal]: (state,
-                                     action
-                                    ) => ({
+  [ProjectScheduleAction.addModal]:      (state,
+                                          action
+                                         ) => ({
     ...state,
     addModal: action.payload,
-  })
+  }),
+  [ProjectScheduleAction.requestAdd]:    (state,
+                                          action
+                                         ) => ({
+    ...state,
+    requestAdd: action.payload,
+  }),
+  [ProjectScheduleAction.requestUpdate]: (state,
+                                          action
+                                         ) => ({
+    ...state,
+    requestUpdate: action.payload,
+  }),
+  [ProjectScheduleAction.requestDelete]: (state,
+                                          action
+                                         ) => ({
+    ...state,
+    requestDelete: action.payload,
+  }),
 });

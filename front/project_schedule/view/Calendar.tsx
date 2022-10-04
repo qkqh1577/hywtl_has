@@ -344,7 +344,6 @@ export default function ProjectScheduleCalendar(props: ProjectScheduleProps) {
           customButtons={{
             addButton: {
               text: '등록',
-
               click: () => {
                 props.onAddModalOpen(true);
               }

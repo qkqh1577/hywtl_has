@@ -33,7 +33,7 @@ class ProjectScheduleApi {
     return data;
   }
 
-  async delete(id: ProjectScheduleId): Promise<void> {
+  async deleteOne(id: ProjectScheduleId): Promise<void> {
     const { data } = await apiClient.delete(`/project/sales/schedule/${id}`);
     return data;
   }

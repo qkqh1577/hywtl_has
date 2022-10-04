@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,14 +104,20 @@ public class ProjectSchedule extends CustomEntity {
             "일정 시작 변경",
             this.startTime,
             startTime,
-            this.allDay || allDay ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"
+            Objects.equals(Boolean.TRUE, this.allDay)
+                || Objects.equals(Boolean.TRUE, allDay)
+                ? "yyyy-MM-dd HH:mm"
+                : "yyyy-MM-dd"
         ));
         this.startTime = startTime;
         eventList.add(EventEntity.of(
             "일정 종료 변경",
             this.endTime,
             endTime,
-            this.allDay || allDay ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"
+            Objects.equals(Boolean.TRUE, this.allDay)
+                || Objects.equals(Boolean.TRUE, allDay)
+                ? "yyyy-MM-dd HH:mm"
+                : "yyyy-MM-dd"
         ));
         this.endTime = endTime;
         eventList.add(EventEntity.of(
