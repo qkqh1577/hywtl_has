@@ -1,6 +1,6 @@
-import { Button } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from 'layouts/Button';
 
 export default function () {
 

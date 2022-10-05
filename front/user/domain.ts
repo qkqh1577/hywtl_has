@@ -1,8 +1,6 @@
-import {
-  DepartmentVO,
-  initialDepartment
-} from 'department/domain';
+import { DepartmentVO } from 'department/domain';
 import { FileItemView } from 'file-item';
+import { initialDepartmentParameter } from 'department/parameter';
 
 /**
  * 유저 권한
@@ -60,11 +58,11 @@ export interface UserVO {
   profile?: FileItemView;
 }
 
-export interface UserShortVO{
+export interface UserShortVO {
   name: string | undefined;
   username: string | undefined;
   email: string | undefined;
-  englishName: string | undefined ;
+  englishName: string | undefined;
   sex?: string;
   mobilePhone?: string | undefined;
   privateEmail?: string | undefined;
@@ -76,20 +74,20 @@ export interface UserShortVO{
 }
 
 export const initialUser: UserVO = {
-  name:       '',
-  username:   '',
-  email:      '',
-  role:       UserRole.NORMAL,
-  department: initialDepartment,
-  createdAt:  new Date(),
-  englishName: '',
-  sex: '',
-  mobilePhone: '',
-  privateEmail: '',
+  name:           '',
+  username:       '',
+  email:          '',
+  role:           UserRole.NORMAL,
+  department:     initialDepartmentParameter as DepartmentVO,
+  createdAt:      new Date(),
+  englishName:    '',
+  sex:            '',
+  mobilePhone:    '',
+  privateEmail:   '',
   emergencyPhone: '',
-  relationship: '',
-  address: '',
-  birthDate: undefined,
+  relationship:   '',
+  address:        '',
+  birthDate:      undefined,
 };
 
 /**
@@ -110,7 +108,7 @@ export enum SexType {
 export const sexTypeList: SexType[] = [
   SexType.MALE,
   SexType.FEMALE
-]
+];
 
 export function sexTypeName(sexType: SexType | '') {
   switch (sexType) {

@@ -47,7 +47,7 @@ export default function (props: Props) {
     return (
       <Box sx={{
         width:          '100%',
-        margin:         '10px 0',
+        margin:         '20px 0',
         display:        'flex',
         justifyContent: 'center',
         alignItems:     'center'
@@ -76,12 +76,20 @@ export default function (props: Props) {
       alignItems:     'center'
     }}>
       <Box sx={{
-        width: '50%'
+        width: '40%'
       }}>
         <ListButton />
-        <Button shape="basic2" onClick={props.onDelete}>삭제</Button>
+        <Button shape="basic2" onClick={props.onDelete}>
+          삭제
+        </Button>
       </Box>
-      <EditButton />
+      <Box sx={{
+        width:          '40%',
+        display:        'flex',
+        justifyContent: 'flex-end',
+      }}>
+        <EditButton />
+      </Box>
     </Box>
   );
 };

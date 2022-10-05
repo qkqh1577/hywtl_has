@@ -53,12 +53,12 @@ export function DepartmentId(id: number) {
 }
 
 export interface DepartmentVO {
-  id?: DepartmentId;
+  id: DepartmentId;
   name: string;
   parent?: DepartmentVO;
-  category: DepartmentCategory | '';
+  category: DepartmentCategory;
   seq: number;
-  parentId?: number | '';
+  parentId?: number;
   note?: string;
   childrenList?: DepartmentVO[];
   userList?: UserVO[];
@@ -69,11 +69,3 @@ export interface DepartmentShort
   userCount: number;
   childrenCount: number;
 }
-
-export const initialDepartment: DepartmentVO = {
-  name:     '',
-  category: '',
-  seq:      0,
-  parentId: '',
-  note:     ''
-};

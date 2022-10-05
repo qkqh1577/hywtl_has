@@ -59,7 +59,7 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
         flexWrap:       'nowrap',
         width:          '100%',
         justifyContent: 'space-between',
-        padding:        '20px'
+        padding: '20px 30px 20px 20px'
       }}>
         {typeof title === 'string' && (
           <Typography sx={{

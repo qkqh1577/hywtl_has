@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
+    private final DepartmentService service;
 
     @GetMapping("/department")
     public Page<DepartmentShortView> page(
@@ -43,7 +44,7 @@ public class DepartmentController {
             @SortDefault(sort = "parent.id", direction = Sort.Direction.ASC),
             @SortDefault(sort = "seq", direction = Sort.Direction.ASC),
         }) Pageable pageable) {
-        return departmentService.page(
+        return service.page(
             new DepartmentPredicateBuilder()
                 .parentIdIn(parentIdList)
                 .categoryIn(categoryList)
@@ -56,27 +57,31 @@ public class DepartmentController {
     @GetMapping(value = "/department", params = "type")
     public List<? extends DepartmentItemView> list(@RequestParam String type) {
         if (type.equals("as_list")) {
-            return departmentService.list();
+            return service.list();
         }
-        return departmentService.itemList();
+        return service.itemList();
     }
 
     @GetMapping("/department/{id}")
     public DepartmentView get(@PathVariable Long id) {
-        return departmentService.get(id);
+        return service.get(id);
     }
 
     @PutMapping({"/department", "/department/{id}"})
-    public DepartmentView upsert(
+    public void upsert(
         @PathVariable(required = false) Long id,
         @Valid @RequestBody DepartmentParameter parameter
     ) {
-        return departmentService.upsert(id, parameter);
+        service.upsert(id, parameter);
     }
 
     @PostMapping("/department/tree")
-    public List<? extends DepartmentItemView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter parameter) {
-        departmentService.changeTree(parameter);
-        return departmentService.list();
+    public void changeTree(@Valid @RequestBody DepartmentChangeTreeParameter parameter) {
+        service.changeTree(parameter);
+    }
+
+    @DeleteMapping("/department/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

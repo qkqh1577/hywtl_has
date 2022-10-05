@@ -15,4 +15,6 @@ public interface UserRepository extends CustomRepository<User>, QuerydslPredicat
 
     List<User> findAll(Predicate predicate);
 
+    List<User> findByDepartment_Id(Long departmentId);
+
 }
