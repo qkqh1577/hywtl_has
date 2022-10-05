@@ -33,7 +33,7 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/departments")
+    @GetMapping("/department")
     public Page<DepartmentShortView> page(
         @RequestParam(required = false, name = "parentId[]") List<Long> parentIdList,
         @RequestParam(required = false, name = "category[]") List<DepartmentCategory> categoryList,
@@ -53,7 +53,7 @@ public class DepartmentController {
         );
     }
 
-    @GetMapping(value = "/departments", params = "type")
+    @GetMapping(value = "/department", params = "type")
     public List<? extends DepartmentItemView> list(@RequestParam String type) {
         if (type.equals("as_list")) {
             return departmentService.list();
@@ -61,12 +61,12 @@ public class DepartmentController {
         return departmentService.itemList();
     }
 
-    @GetMapping("/departments/{id}")
+    @GetMapping("/department/{id}")
     public DepartmentView get(@PathVariable Long id) {
         return departmentService.get(id);
     }
 
-    @PutMapping({"/departments", "/departments/{id}"})
+    @PutMapping({"/department", "/department/{id}"})
     public DepartmentView upsert(
         @PathVariable(required = false) Long id,
         @Valid @RequestBody DepartmentParameter parameter
@@ -74,7 +74,7 @@ public class DepartmentController {
         return departmentService.upsert(id, parameter);
     }
 
-    @PostMapping("/departments/tree")
+    @PostMapping("/department/tree")
     public List<? extends DepartmentItemView> changeTree(@Valid @RequestBody DepartmentChangeTreeParameter parameter) {
         departmentService.changeTree(parameter);
         return departmentService.list();

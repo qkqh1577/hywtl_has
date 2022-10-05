@@ -10,22 +10,22 @@ import { DepartmentParameter } from 'department/parameter';
 
 class DepartmentApi {
   async getList(): Promise<DepartmentShort[]> {
-    const { data } = await apiClient.get('/departments', { type: 'as_list' });
+    const { data } = await apiClient.get('/department', { type: 'as_list' });
     return data;
   }
 
   async getPage(query: DepartmentQuery): Promise<Page<DepartmentShort>> {
-    const { data } = await apiClient.get('/departments', query);
+    const { data } = await apiClient.get('/department', query);
     return data;
   }
 
   async getOne(id: DepartmentId): Promise<DepartmentVO> {
-    const { data } = await apiClient.get(`/departments/${id}`);
+    const { data } = await apiClient.get(`/department/${id}`);
     return data;
   }
 
   async upsert(parameter: DepartmentParameter): Promise<void> {
-    const { data } = await apiClient.put(`/departments${parameter.id ? `/${parameter.id}` : ''}`, parameter);
+    const { data } = await apiClient.put(`/department${parameter.id ? `/${parameter.id}` : ''}`, parameter);
     return data;
   }
 }
