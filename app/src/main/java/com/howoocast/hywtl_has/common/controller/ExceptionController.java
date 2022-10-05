@@ -16,11 +16,14 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 public class ExceptionController {
 
     private final Dictionary dictionary = new Dictionary();
@@ -99,28 +102,42 @@ public class ExceptionController {
             ));
     }
 
+    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(this.errorBody(e), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseBody
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFound(NotFoundException e) {
         return e.getResponse();
     }
 
+    @ResponseBody
     @ExceptionHandler(DuplicatedValueException.class)
     public ResponseEntity<?> duplicatedValue(DuplicatedValueException e) {
         return e.getResponse();
     }
 
+    @ResponseBody
     @ExceptionHandler(IllegalRequestException.class)
     public ResponseEntity<?> illegalRequest(IllegalRequestException e) {
         return e.getResponse();
     }
 
+    @ResponseBody
     @ExceptionHandler(CustomExceptionAdaptor.class)
     public ResponseEntity<?> exception(CustomExceptionAdaptor e) {
         return e.getResponse();
     }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView error404() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("index");
+        return mav;
+    }
+
+
 }
