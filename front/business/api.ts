@@ -1,8 +1,9 @@
 import {
   BusinessId,
+  BusinessInvolvedProjectVO,
+  BusinessInvolvedType,
   BusinessShort,
   BusinessVO,
-  BusinessInvolvedProjectVO,
   RivalProjectVO
 } from './domain';
 import apiClient from 'services/api';
@@ -31,8 +32,10 @@ class BusinessApi {
     return data;
   }
 
-  async getInvolvedProjectList(id: BusinessId): Promise<BusinessInvolvedProjectVO[]> {
-    const { data } = await apiClient.get(`/business/${id}/involved-project`);
+  async getInvolvedProjectList(id: BusinessId,
+                               type?: BusinessInvolvedType
+  ): Promise<BusinessInvolvedProjectVO[]> {
+    const { data } = await apiClient.get(`/business/${id}/involved-project`, { type });
     return data;
   }
 

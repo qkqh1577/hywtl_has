@@ -79,7 +79,7 @@ export default function AcademicForm() {
               marginTop:   '15px',
             }}>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -90,7 +90,7 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -101,7 +101,7 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -111,7 +111,7 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -122,7 +122,7 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -132,7 +132,7 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <DateField
@@ -143,7 +143,8 @@ export default function AcademicForm() {
               />
             </Box>
             <Box sx={{
-              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight: '30px',
             }}>
               <DateField
                 required

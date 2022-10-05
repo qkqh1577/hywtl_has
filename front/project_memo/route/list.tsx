@@ -57,6 +57,7 @@ export default function ProjectMemoDrawerListRoute() {
       formik.setValues({});
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
       dispatch(projectMemoAction.requestChange(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestChange]);
   useEffect(() => {

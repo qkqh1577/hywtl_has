@@ -85,7 +85,7 @@ export default function JobForm(props) {
               marginTop:   '15px',
             }}>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <FormControl fullWidth variant="standard">
@@ -108,7 +108,6 @@ export default function JobForm(props) {
                     value={item.department?.id}
                     checked={item.isRepresentative}
                     onChange={() => {
-
                       formikContext.setFieldValue('jobList', jobList.map(((job,
                                                                            j
                       ) => ({
@@ -121,7 +120,7 @@ export default function JobForm(props) {
               </FormControl>
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               {edit && (
@@ -142,7 +141,7 @@ export default function JobForm(props) {
               )}
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -153,7 +152,7 @@ export default function JobForm(props) {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -164,7 +163,7 @@ export default function JobForm(props) {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -175,7 +174,7 @@ export default function JobForm(props) {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -185,7 +184,8 @@ export default function JobForm(props) {
               />
             </Box>
             <Box sx={{
-              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight: '30px',
             }}>
               <TextField
                 label="직책"

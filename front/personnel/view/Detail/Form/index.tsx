@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Divider as MuiDivider
-} from '@mui/material';
+import { Box } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import AccountForm from 'personnel/view/Detail/Form/AccountForm';
 import BasicForm from 'personnel/view/Detail/Form/BasicForm';
@@ -13,24 +10,12 @@ import CareerForm from 'personnel/view/Detail/Form/CareerForm';
 import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import { Option } from 'components/DataFieldProps';
+import Divider from 'layouts/Divider';
 
 export interface FormProps {
   list: Option[];
 }
 
-export function Divider() {
-  return (
-    <MuiDivider
-      sx={{
-        width:        '100%',
-        padding:      '0 20px',
-        margin:       '20px 0',
-        border:       'none',
-        borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
-      }}
-    />
-  );
-}
 
 export default function FormList(props: FormProps) {
   return (

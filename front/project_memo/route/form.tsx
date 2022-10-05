@@ -57,6 +57,7 @@ export default function ProjectMemoDrawerFormRoute() {
       });
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
       dispatch(projectMemoAction.requestAdd(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestAdd]);
 

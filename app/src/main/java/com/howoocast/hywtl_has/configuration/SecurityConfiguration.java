@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/user/password-reset",
                 "/user/login",
                 "/login",
-                "errors/*"
+                "/static/**"
             )
             .permitAll()
             .antMatchers(HttpMethod.POST,

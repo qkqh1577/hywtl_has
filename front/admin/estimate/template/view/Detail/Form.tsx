@@ -9,7 +9,7 @@ import {
 import DetailList from './DetailList';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
-import { Divider } from 'personnel/view/Detail/Form';
+import Divider from 'layouts/Divider';
 import { FormikContext } from 'formik';
 import { FieldStatus } from 'components/DataFieldProps';
 

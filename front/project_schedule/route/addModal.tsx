@@ -74,10 +74,12 @@ export default function ProjectScheduleAddModalRoute() {
       dispatch(projectScheduleAction.addModal(false));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
     else if (requestAdd === ApiStatus.FAIL) {
       error('등록에 실패하였습니다.');
       dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestAdd]);
 

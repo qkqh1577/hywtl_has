@@ -108,62 +108,62 @@ import {
 } from 'project_status/reducer';
 
 export interface RootState {
-  user: UserState;
-  login: LoginState;
-  department: DepartmentState;
-  menu: MenuState;
-  dialog: DialogState;
-  estimateTemplate: EstimateTemplateState;
-  project: ProjectState;
-  projectDrawer: ProjectDrawerState;
   business: BusinessState;
-  estimateContent: EstimateContentState;
-  projectMemo: ProjectMemoState;
-  projectBasic: ProjectBasicState;
-  projectStatus: ProjectStatusState;
-  projectDocument: ProjectDocumentState;
-  projectComplex: ProjectComplexState;
-  projectEstimate: ProjectEstimateState;
-  projectContract: ProjectContractState;
   businessSelector: BusinessSelectorState;
   contractBasic: ContractBasicState;
   contractCollection: ContractCollectionState;
   contractCondition: ContractConditionState;
-  projectLog: ProjectLogState;
-  rivalEstimate: RivalEstimateState;
-  projectBid: ProjectBidState;
-  projectSchedule: ProjectScheduleState;
+  department: DepartmentState;
+  dialog: DialogState;
+  estimateContent: EstimateContentState;
+  estimateTemplate: EstimateTemplateState;
+  login: LoginState;
+  menu: MenuState;
   personnel: PersonnelState;
+  project: ProjectState;
+  projectBasic: ProjectBasicState;
+  projectBid: ProjectBidState;
+  projectComplex: ProjectComplexState;
+  projectContract: ProjectContractState;
+  projectDocument: ProjectDocumentState;
+  projectDrawer: ProjectDrawerState;
+  projectEstimate: ProjectEstimateState;
+  projectLog: ProjectLogState;
+  projectMemo: ProjectMemoState;
+  projectSchedule: ProjectScheduleState;
+  projectStatus: ProjectStatusState;
+  rivalEstimate: RivalEstimateState;
+  user: UserState;
   userNotification: UserNotificationState;
 }
 
 const reducer = combineReducers<RootState>({
-  user:               userReducer,
-  login:              loginReducer,
-  department:         departmentReducer,
-  menu:               menuReducer,
-  dialog:             dialogReducer,
-  estimateTemplate:   estimateTemplateReducer,
-  project:            projectReducer,
-  projectDrawer:      projectDrawerReducer,
   business:           businessReducer,
-  estimateContent:    estimateContentReducer,
-  projectMemo:        projectMemoReducer,
-  projectBasic:       projectBasicReducer,
-  projectStatus:      projectStatusReducer,
-  projectDocument:    projectDocumentReducer,
-  projectComplex:     projectComplexReducer,
-  projectEstimate:    projectEstimateReducer,
-  projectContract:    projectContractReducer,
   businessSelector:   businessSelectorReducer,
   contractBasic:      contractBasicReducer,
   contractCollection: contractCollectionReducer,
   contractCondition:  contractConditionReducer,
-  projectLog:         projectLogReducer,
-  rivalEstimate:      rivalEstimateReducer,
-  projectBid:         projectBidReducer,
-  projectSchedule:    projectScheduleReducer,
+  department:         departmentReducer,
+  dialog:             dialogReducer,
+  estimateContent:    estimateContentReducer,
+  estimateTemplate:   estimateTemplateReducer,
+  login:              loginReducer,
+  menu:               menuReducer,
   personnel:          personnelReducer,
+  project:            projectReducer,
+  projectBasic:       projectBasicReducer,
+  projectBid:         projectBidReducer,
+  projectComplex:     projectComplexReducer,
+  projectContract:    projectContractReducer,
+  projectDocument:    projectDocumentReducer,
+  projectDrawer:      projectDrawerReducer,
+  projectEstimate:    projectEstimateReducer,
+  projectLog:         projectLogReducer,
+  projectMemo:        projectMemoReducer,
+  projectSchedule:    projectScheduleReducer,
+  projectStatus:      projectStatusReducer,
+  rivalEstimate:      rivalEstimateReducer,
+  user:               userReducer,
   userNotification:   userNotificationReducer,
 });
 
