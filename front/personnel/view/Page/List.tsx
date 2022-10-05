@@ -56,12 +56,12 @@ export default function List(props: ListProps) {
                 <TableRow hover role="checkbox" key={item.id}>
                   <Td>{no}</Td>
                   <Td>
-                    <TextLink onClick={`/user/hr-card-management/${item.id}`}>
+                    <TextLink onClick={`/hr-card-management/${item.id}`}>
                       {item.name}
                     </TextLink>
                   </Td>
                   <Td>
-                    <TextLink onClick={`/user/hr-card-management/${item.id}`}>
+                    <TextLink onClick={`/hr-card-management/${item.id}`}>
                       {item.email}
                     </TextLink>
                   </Td>

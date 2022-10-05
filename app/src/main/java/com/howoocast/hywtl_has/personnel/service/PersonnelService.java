@@ -12,8 +12,6 @@ import com.howoocast.hywtl_has.personnel.domain.PersonnelCompany;
 import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
 import com.howoocast.hywtl_has.personnel.parameter.PersonnelParameter;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
-import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
-import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.querydsl.core.types.Predicate;
 import java.util.Objects;
@@ -39,18 +37,24 @@ public class PersonnelService {
     private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
-    public Page<PersonnelShortView> page(
+    public Page<Personnel> page(
         Predicate predicate,
         Pageable pageable
     ) {
-        return repository.findAll(predicate, pageable)
-            .map(PersonnelShortView::assemble);
+        return repository.findAll(predicate, pageable);
     }
 
     @Transactional(readOnly = true)
-    public PersonnelView get(Long id) {
-        Personnel instance = this.load(id);
-        return PersonnelView.assemble(instance);
+    public Personnel get(Long id) {
+        return this.load(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Personnel getByUserId(Long userId) {
+        return repository.findByUser_Id(userId)
+            .orElseThrow(() -> {
+                throw new NotFoundException(User.KEY, userId);
+            });
     }
 
     @Transactional

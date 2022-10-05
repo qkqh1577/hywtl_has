@@ -3,25 +3,18 @@ import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
-import {
-  initialPersonnelCareerVO,
-  PersonnelVO
-} from 'personnel/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
+import { initialPersonnelCareerParameter } from 'personnel/parameter';
 
 const spaceCount = 6;
 
 export default function CareerForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const careerList = formikContext.values.careerList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const careerList = formik.values.careerList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -42,7 +35,7 @@ export default function CareerForm() {
           <Button
             shape="basic1"
             onClick={() => {
-              formikContext!.setFieldValue('careerList', [...careerList, initialPersonnelCareerVO]);
+              formik.setFieldValue('careerList', [...careerList, initialPersonnelCareerParameter]);
             }}>
             + 추가
           </Button>
@@ -139,8 +132,8 @@ export default function CareerForm() {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('careerList', careerList.filter((career,
-                                                                                  j
+                    formik.setFieldValue('careerList', careerList.filter((career,
+                                                                          j
                     ) => i !== j));
                   }}
                 />

@@ -9,26 +9,24 @@ import {
 } from '@mui/material';
 import TextField from 'components/TextField';
 import Button from 'layouts/Button';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import {
-  initialPersonnelJobVO,
-  PersonnelVO,
-} from 'personnel/domain';
+import { FormikContext } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
 import SelectField from 'components/SelectField';
-import { FormikEditable } from 'type/Form';
 import TextBox from 'layouts/Text';
+import { DepartmentShort } from 'department/domain';
+import { Option } from 'components/DataFieldProps';
+import { initialPersonnelJobParameter } from 'personnel/parameter';
+
+interface Props {
+  departmentList: DepartmentShort[] | undefined;
+}
 
 const spaceCount = 7;
-
-export default function JobForm(props) {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const jobList = formikContext.values.jobList;
-  const edit = formikContext?.values.edit ?? true;
+export default function JobForm(props: Props) {
+  const formik = useContext(FormikContext);
+  const jobList = formik.values.jobList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -48,7 +46,7 @@ export default function JobForm(props) {
         {edit && (
           <Button
             onClick={() => {
-              formikContext!.setFieldValue('jobList', [...jobList, initialPersonnelJobVO]);
+              formik.setFieldValue('jobList', [...jobList, initialPersonnelJobParameter]);
             }}>
             + 추가
           </Button>
@@ -108,8 +106,8 @@ export default function JobForm(props) {
                     value={item.department?.id}
                     checked={item.isRepresentative}
                     onChange={() => {
-                      formikContext.setFieldValue('jobList', jobList.map(((job,
-                                                                           j
+                      formik.setFieldValue('jobList', jobList.map(((job,
+                                                                    j
                       ) => ({
                         ...job,
                         isRepresentative: i === j,
@@ -129,7 +127,10 @@ export default function JobForm(props) {
                   label="소속부서"
                   labelPosition="top"
                   name={`jobList.${i}.department.id`}
-                  options={props.departmentList}
+                  options={props.departmentList?.map(department => ({
+                    key:  department.id,
+                    text: department.name,
+                  } as Option)) ?? undefined}
                 />
               )}
               {!edit && (
@@ -210,8 +211,8 @@ export default function JobForm(props) {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('jobList', jobList.filter((job,
-                                                                            j
+                    formik.setFieldValue('jobList', jobList.filter((job,
+                                                                    j
                     ) => i !== j));
                   }}
                 />

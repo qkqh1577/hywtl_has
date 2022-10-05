@@ -3,25 +3,18 @@ import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
-import {
-  initialPersonnelAcademicVO,
-  PersonnelVO
-} from 'personnel/domain';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
+import { initialPersonnelAcademicParameter } from 'personnel/parameter';
 
 const spaceCount = 7;
 
 export default function AcademicForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const academicList = formikContext.values.academicList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const academicList = formik.values.academicList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -42,7 +35,7 @@ export default function AcademicForm() {
           <Button
             shape="basic1"
             onClick={() => {
-              formikContext!.setFieldValue('academicList', [...academicList, initialPersonnelAcademicVO]);
+              formik.setFieldValue('academicList', [...academicList, initialPersonnelAcademicParameter]);
             }}>
             + 추가
           </Button>
@@ -170,8 +163,8 @@ export default function AcademicForm() {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('academicList', academicList.filter((academic,
-                                                                                      j
+                    formik.setFieldValue('academicList', academicList.filter((academic,
+                                                                              j
                     ) => i !== j));
                   }}
                 />

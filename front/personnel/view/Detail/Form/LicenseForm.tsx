@@ -3,25 +3,17 @@ import { Box } from '@mui/material';
 import TextField from 'components/TextField';
 import DateField from 'components/DateField';
 import Button from 'layouts/Button';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
-import {
-  initialPersonnelLicenseVO,
-  PersonnelVO
-} from 'personnel/domain';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
+import { initialPersonnelLicenseParameter } from 'personnel/parameter';
 
 const spaceCount = 6;
-
 export default function LicenseForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const licenseList = formikContext.values.licenseList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const licenseList = formik.values.licenseList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -41,7 +33,7 @@ export default function LicenseForm() {
         {edit && (
           <Button
             onClick={() => {
-              formikContext!.setFieldValue('licenseList', [...licenseList, initialPersonnelLicenseVO]);
+              formik.setFieldValue('licenseList', [...licenseList, initialPersonnelLicenseParameter]);
             }}>
             + 추가
           </Button>
@@ -159,8 +151,8 @@ export default function LicenseForm() {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('licenseList', licenseList.filter((license,
-                                                                                    j
+                    formik.setFieldValue('licenseList', licenseList.filter((license,
+                                                                            j
                     ) => i !== j));
                   }}
                 />

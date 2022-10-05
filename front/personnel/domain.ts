@@ -57,24 +57,14 @@ export const initialPersonnelCompany: PersonnelCompanyVO = {
 };
 
 export interface PersonnelJobVO {
-  isRepresentative?: boolean; // 대표소속정보
-  department?: DepartmentVO; // 부서
-  jobTitle?: string; // 직함
-  jobType?: string; // 직종
+  isRepresentative: boolean; // 대표소속정보
+  department: DepartmentVO; // 부서
+  jobTitle: string; // 직함
+  jobType: string; // 직종
   jobPosition?: string; // 직위
   jobClass?: string; // 직급
   jobDuty?: string; // 직책
 }
-
-export const initialPersonnelJobVO: PersonnelJobVO = {
-  isRepresentative: false,
-  department:       undefined,
-  jobTitle:         '',
-  jobType:          '',
-  jobPosition:      '',
-  jobClass:         '',
-  jobDuty:          '',
-};
 
 export interface PersonnelAcademicVO {
   academyName?: string; // 교육기관명

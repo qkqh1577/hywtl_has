@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import SearchForm, { SearchFormField } from 'layouts/SearchForm';
 import SelectField from 'components/SelectField';
 import TextField from 'components/TextField';
@@ -9,7 +9,6 @@ import {
   keywordTypeList,
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
-import DateField from 'components/DateField';
 import {
   sexCategoryList,
   sexCategoryName
@@ -17,8 +16,14 @@ import {
 import DepartmentCheckboxField from 'components/DepartmentCheckboxField';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import Input from 'layouts/Input';
+import { FormikContext } from 'formik';
+import { Box } from '@mui/material';
 
 export default function SearchBox() {
+  const formik = useContext(FormikContext);
   return (
     <SearchForm>
       <SearchFormField
@@ -91,12 +96,37 @@ export default function SearchBox() {
           />
         }
         children={
-          <>
-            <DateField
-              disableLabel
-              variant="outlined"
-              name="startDate"
-              label="시작일"
+          <Box sx={{
+            width:          '100%',
+            display:        'flex',
+            alignItems:     'center',
+            justifyContent: 'space-between',
+          }}>
+            <DatePicker
+              allowSameDateSelection
+              value={formik.values.startDate ? dayjs(formik.values.startDate)
+              .format('YYYY-MM-DD') : null}
+              inputFormat="YYYY-MM-DD"
+              mask="____-__-__"
+              openTo="day"
+              onChange={(e) => {
+                if (e === null) {
+                  formik.setFieldValue('startDate', undefined);
+                }
+                else {
+                  formik.setFieldValue('startDate', dayjs(e)
+                  .format('YYYY-MM-DD'));
+                }
+              }}
+              renderInput={(parameter) => (
+                <Input
+                  {...parameter.InputProps}
+                  inputRef={parameter.inputRef}
+                  variant="outlined"
+                  value={parameter.value}
+                  inputProps={parameter.inputProps}
+                />
+              )}
             />
             <TextBox
               variant="body9"
@@ -105,13 +135,33 @@ export default function SearchBox() {
               }}>
               ~
             </TextBox>
-            <DateField
-              disableLabel
-              variant="outlined"
-              name="endDate"
-              label="종료일"
+            <DatePicker
+              allowSameDateSelection
+              value={formik.values.endDate ? dayjs(formik.values.endDate)
+              .format('YYYY-MM-DD') : null}
+              inputFormat="YYYY-MM-DD"
+              mask="____-__-__"
+              openTo="day"
+              onChange={(e) => {
+                if (e === null) {
+                  formik.setFieldValue('endDate', undefined);
+                }
+                else {
+                  formik.setFieldValue('endDate', dayjs(e)
+                  .format('YYYY-MM-DD'));
+                }
+              }}
+              renderInput={(parameter) => (
+                <Input
+                  {...parameter.InputProps}
+                  inputRef={parameter.inputRef}
+                  variant="outlined"
+                  value={parameter.value}
+                  inputProps={parameter.inputProps}
+                />
+              )}
             />
-          </>
+          </Box>
         }
       />
       <SearchFormField

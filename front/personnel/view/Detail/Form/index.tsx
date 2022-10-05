@@ -9,15 +9,14 @@ import AcademicForm from 'personnel/view/Detail/Form/AcademicForm';
 import CareerForm from 'personnel/view/Detail/Form/CareerForm';
 import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
-import { Option } from 'components/DataFieldProps';
 import Divider from 'layouts/Divider';
+import { DepartmentShort } from 'department/domain';
 
-export interface FormProps {
-  list: Option[];
+interface Props {
+  departmentList: DepartmentShort[] | undefined;
 }
 
-
-export default function FormList(props: FormProps) {
+export default function FormList(props: Props) {
   return (
     <Box sx={{
       display:      'flex',
@@ -33,7 +32,7 @@ export default function FormList(props: FormProps) {
       <Divider />
       <CompanyForm />
       <Divider />
-      <JobForm departmentList={props.list} />
+      <JobForm departmentList={props.departmentList} />
       <Divider />
       <AcademicForm />
       <Divider />

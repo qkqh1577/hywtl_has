@@ -36,7 +36,7 @@ public class PersonnelController {
 
     private final PersonnelService personnelService;
 
-    @GetMapping("/personnels")
+    @GetMapping("/personnel")
     public Page<PersonnelShortView> page(
         @RequestParam(required = false, name = "sex[]") List<String> sexList,
         @RequestParam(required = false, name = "hiredType[]") List<String> hiredTypeList,
@@ -59,57 +59,70 @@ public class PersonnelController {
                 .date(dateType, startDate, endDate)
                 .build(),
             pageable
-        );
+        ).map(PersonnelShortView::assemble);
     }
 
-    @GetMapping("/personnels/{id}")
+    @GetMapping(value = "/personnel", params = "userId")
+    public PersonnelView getByUserId(@RequestParam Long userId) {
+        return PersonnelView.assemble(personnelService.getByUserId(userId));
+    }
+
+    @GetMapping("/personnel/{id}")
     public PersonnelView get(
         @PathVariable Long id
     ) {
-        return personnelService.get(id);
+        return PersonnelView.assemble(personnelService.get(id));
     }
 
-    @GetMapping("/personnels/{id}/basic")
+    @GetMapping("/personnel/{id}/basic")
     public PersonnelBasicView basic(@PathVariable Long id) {
-        return personnelService.get(id).getBasic();
+        return PersonnelView.assemble(personnelService.get(id)).getBasic();
     }
 
-    @GetMapping("/personnels/{id}/company")
+    @GetMapping("/personnel/{id}/company")
     public PersonnelCompanyView company(@PathVariable Long id) {
-        return personnelService.get(id).getCompany();
+        return PersonnelView.assemble(personnelService.get(id)).getCompany();
     }
 
-    @GetMapping("/personnels/{id}/job")
+    @GetMapping("/personnel/{id}/job")
     public PersonnelJobView job(@PathVariable Long id) {
-        return personnelService.get(id).getJobList().get(0);
+        List<PersonnelJobView> jobList = PersonnelView.assemble(personnelService.get(id)).getJobList();
+        return jobList.stream().filter(PersonnelJobView::getIsRepresentative)
+            .findFirst()
+            .orElse(jobList.get(0));
     }
 
-    @GetMapping("/personnels/{id}/job-list")
+    @GetMapping("/personnel/{id}/job-list")
     public List<PersonnelJobView> jobList(@PathVariable Long id) {
-        return personnelService.get(id).getJobList();
+        return PersonnelView.assemble(personnelService.get(id)).getJobList();
     }
 
-    @GetMapping("/personnels/{id}/academic-list")
+    @GetMapping(value = "/personnel/job-list", params = "userId")
+    public List<PersonnelJobView> jobListByUserId(@RequestParam Long userId) {
+        return PersonnelView.assemble(personnelService.getByUserId(userId)).getJobList();
+    }
+
+    @GetMapping("/personnel/{id}/academic-list")
     public List<PersonnelAcademicView> academicList(@PathVariable Long id) {
-        return personnelService.get(id).getAcademicList();
+        return PersonnelView.assemble(personnelService.get(id)).getAcademicList();
     }
 
-    @GetMapping("/personnels/{id}/career-list")
+    @GetMapping("/personnel/{id}/career-list")
     public List<PersonnelCareerView> careerList(@PathVariable Long id) {
-        return personnelService.get(id).getCareerList();
+        return PersonnelView.assemble(personnelService.get(id)).getCareerList();
     }
 
-    @GetMapping("/personnels/{id}/license-list")
+    @GetMapping("/personnel/{id}/license-list")
     public List<PersonnelLicenseView> licenseList(@PathVariable Long id) {
-        return personnelService.get(id).getLicenseList();
+        return PersonnelView.assemble(personnelService.get(id)).getLicenseList();
     }
 
-    @GetMapping("/personnels/{id}/language-list")
+    @GetMapping("/personnel/{id}/language-list")
     public List<PersonnelLanguageView> languageList(@PathVariable Long id) {
-        return personnelService.get(id).getLanguageList();
+        return PersonnelView.assemble(personnelService.get(id)).getLanguageList();
     }
 
-    @PutMapping("/personnels/{id}")
+    @PutMapping("/personnel/{id}")
     public void update(
         @PathVariable Long id,
         @Valid @ModelAttribute PersonnelParameter parameter

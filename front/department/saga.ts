@@ -34,7 +34,7 @@ function* watchFilter() {
 
 function* watchList() {
   while (true) {
-    yield take('department/list/request');
+    yield take(departmentAction.requestList);
     const list: DepartmentShort[] = yield call(departmentApi.getList);
     yield put(departmentAction.setList(list));
   }
