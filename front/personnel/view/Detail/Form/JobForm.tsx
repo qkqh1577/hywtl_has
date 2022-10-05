@@ -4,19 +4,21 @@ import {
   FormControl,
   FormGroup,
   FormLabel,
+  MenuItem,
   Radio,
   Typography
 } from '@mui/material';
-import TextField from 'components/TextField';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
-import SelectField from 'components/SelectField';
 import TextBox from 'layouts/Text';
 import { DepartmentShort } from 'department/domain';
-import { Option } from 'components/DataFieldProps';
 import { initialPersonnelJobParameter } from 'personnel/parameter';
+import RequiredMark from 'components/RequiredMark';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Select from 'layouts/Select';
+import Input from 'layouts/Input';
 
 interface Props {
   departmentList: DepartmentShort[] | undefined;
@@ -42,7 +44,9 @@ export default function JobForm(props: Props) {
         justifyContent: 'space-between',
         alignItems:     'center',
       }}>
-        <TextBox variant="body7">소속 정보</TextBox>
+        <TextBox variant="body7">
+          <RequiredMark required={edit} text="소속 정보" />
+        </TextBox>
         {edit && (
           <Button
             onClick={() => {
@@ -71,7 +75,7 @@ export default function JobForm(props: Props) {
             </TextBox>
           </Box>
         )}
-        {jobList.map((item,
+        {jobList.map((values,
                       i
         ) => (
           <Box
@@ -100,11 +104,10 @@ export default function JobForm(props: Props) {
                 )}
                 <FormGroup row>
                   <Radio
-                    required
                     disabled={!edit}
                     name="representativeJob"
-                    value={item.department?.id}
-                    checked={item.isRepresentative}
+                    value={values.department?.id}
+                    checked={values.isRepresentative}
                     onChange={() => {
                       formik.setFieldValue('jobList', jobList.map(((job,
                                                                     j
@@ -121,78 +124,128 @@ export default function JobForm(props: Props) {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              {edit && (
-                <SelectField
-                  required
-                  label="소속부서"
-                  labelPosition="top"
-                  name={`jobList.${i}.department.id`}
-                  options={props.departmentList?.map(department => ({
-                    key:  department.id,
-                    text: department.name,
-                  } as Option)) ?? undefined}
-                />
-              )}
-              {!edit && (
-                <TextField
-                  label="소속부서"
-                  labelPosition="top"
-                  name={`jobList.${i}.department.name`}
-                />
-              )}
+              <DataFieldWithLabel
+                required={edit}
+                label="소속부서"
+                labelPosition="top"
+              >
+                <Select
+                  disabled={!edit}
+                  value={values.departmentId ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.departmentId !== value) {
+                      formik.setFieldValue(`jobList.${i}.departmentId`, value);
+                    }
+                  }}>
+                  {props.departmentList?.map(item => (
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                  ))}
+                </Select>
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
+              <DataFieldWithLabel
+                required={edit}
                 label="직함"
                 labelPosition="top"
-                name={`jobList.${i}.jobTitle`}
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.jobTitle ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.jobTitle !== value) {
+                      formik.setFieldValue(`jobList.${i}.jobTitle`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
+              <DataFieldWithLabel
+                required={edit}
                 label="직종"
                 labelPosition="top"
-                name={`jobList.${i}.jobType`}
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.jobType ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.jobType !== value) {
+                      formik.setFieldValue(`jobList.${i}.jobType`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
+              <DataFieldWithLabel
+                required={edit}
                 label="직위"
                 labelPosition="top"
-                name={`jobList.${i}.jobPosition`}
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.jobPosition ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.jobPosition !== value) {
+                      formik.setFieldValue(`jobList.${i}.jobPosition`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
+              <DataFieldWithLabel
                 label="직급"
                 labelPosition="top"
-                name={`jobList.${i}.jobClass`}
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.jobClass ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.jobClass !== value) {
+                      formik.setFieldValue(`jobList.${i}.jobClass`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
+              <DataFieldWithLabel
                 label="직책"
                 labelPosition="top"
-                name={`jobList.${i}.jobDuty`}
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.jobDuty ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.jobDuty !== value) {
+                      formik.setFieldValue(`jobList.${i}.jobDuty`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               display:        'flex',

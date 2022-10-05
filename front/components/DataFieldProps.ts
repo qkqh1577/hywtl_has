@@ -39,7 +39,7 @@ export type DataFieldValue = string | number;
 type SX = SxProps | undefined;
 
 export interface LabelProps {
-  label: string;
+  label: React.ReactNode;
   disableLabel?: boolean;
   labelWidth?: number;
   labelPosition?: 'top' | 'left';

@@ -126,8 +126,9 @@ export default function UploadField(props: UploadFieldProps) {
         </Box>
       )}
       <TextField
+        disableLabel={props.disableLabel}
         required={props.required}
-        labelPosition="top"
+        labelPosition={props.labelPosition}
         name={`${name}.filename`}
         label={label}
         status={FieldStatus.ReadOnly}

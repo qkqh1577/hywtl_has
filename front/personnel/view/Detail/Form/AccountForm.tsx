@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, } from '@mui/material';
-import TextField from 'components/TextField';
-import { FieldStatus } from 'components/DataFieldProps';
 import TextBox from 'layouts/Text';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Input from 'layouts/Input';
+import { FormikContext } from 'formik';
 
 export default function AccountForm() {
+  const formik = useContext(FormikContext);
+  const values = formik.values ?? {};
   return (
     <Box sx={{
       display:  'flex',
@@ -35,11 +38,12 @@ export default function AccountForm() {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="name"
-            label="이름"
-            status={FieldStatus.ReadOnly}
-          />
+          <DataFieldWithLabel label="이름">
+            <Input
+              disabled
+              value={values.name ?? ''}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -47,22 +51,24 @@ export default function AccountForm() {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="email"
-            label="이메일"
-            status={FieldStatus.ReadOnly}
-          />
+          <DataFieldWithLabel label="이메일">
+            <Input
+              disabled
+              value={values.email ?? ''}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:  'flex',
           flexWrap: 'nowrap',
           width:    '100%',
         }}>
-          <TextField
-            name="userStatus"
-            label="상태"
-            status={FieldStatus.ReadOnly}
-          />
+          <DataFieldWithLabel label="상태">
+            <Input
+              disabled
+              value={values.userStatus ?? ''}
+            />
+          </DataFieldWithLabel>
         </Box>
       </Box>
     </Box>

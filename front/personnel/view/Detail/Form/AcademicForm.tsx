@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import TextField from 'components/TextField';
-import DateField from 'components/DateField';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
 import { initialPersonnelAcademicParameter } from 'personnel/parameter';
+import Input from 'layouts/Input';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const spaceCount = 7;
-
 export default function AcademicForm() {
   const formik = useContext(FormikContext);
   const academicList = formik.values.academicList ?? [];
@@ -60,7 +61,7 @@ export default function AcademicForm() {
             </TextBox>
           </Box>
         )}
-        {academicList.map((item,
+        {academicList.map((values,
                            i
         ) => (
           <Box
@@ -75,76 +76,177 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`academicList.${i}.academyName`}
-                label="교육기관명"
+              <DataFieldWithLabel
+                required={edit}
+                label="직책"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.academyName ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.academyName !== value) {
+                      formik.setFieldValue(`academicList.${i}.academyName`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`academicList.${i}.major`}
+              <DataFieldWithLabel
+                required={edit}
                 label="전공(과)"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.major ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.major !== value) {
+                      formik.setFieldValue(`academicList.${i}.major`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                name={`academicList.${i}.degree`}
+              <DataFieldWithLabel
                 label="학위"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.degree ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.degree !== value) {
+                      formik.setFieldValue(`academicList.${i}.degree`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`academicList.${i}.state`}
+              <DataFieldWithLabel
                 label="재적상태"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.state ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.state !== value) {
+                      formik.setFieldValue(`academicList.${i}.state`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                name={`academicList.${i}.grade`}
+              <DataFieldWithLabel
                 label="학점"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.grade ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.grade !== value) {
+                      formik.setFieldValue(`academicList.${i}.grade`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DateField
-                required
-                name={`academicList.${i}.startDate`}
+              <DataFieldWithLabel
+                required={edit}
                 label="입학일"
                 labelPosition="top"
-              />
+              >
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  disabled={!edit}
+                  value={values.startDate ? dayjs(values.startDate)
+                  .format('YYYY-MM-DD') : null}
+                  onChange={(e) => {
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = values.startDate ? dayjs(values.startDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`academicList.${i}.startDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="standard"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DateField
-                required
-                name={`academicList.${i}.endDate`}
+              <DataFieldWithLabel
+                required={edit}
                 label="졸업일"
                 labelPosition="top"
-              />
+              >
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  disabled={!edit}
+                  value={values.endDate ? dayjs(values.endDate)
+                  .format('YYYY-MM-DD') : null}
+                  onChange={(e) => {
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = values.endDate ? dayjs(values.endDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`academicList.${i}.endDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="standard"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               display:        'flex',

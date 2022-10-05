@@ -1,22 +1,21 @@
 import React, { useContext } from 'react';
-import { Box } from '@mui/material';
-import TextField from 'components/TextField';
-import DateField from 'components/DateField';
 import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
-import {
-  hiredTypeList,
-  PersonnelVO
-} from 'personnel/domain';
-import SelectField from 'components/SelectField';
+  Box,
+  MenuItem
+} from '@mui/material';
+import { FormikContext } from 'formik';
+import { hiredTypeList } from 'personnel/domain';
 import TextBox from 'layouts/Text';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Select from 'layouts/Select';
+import Input from 'layouts/Input';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 export default function CompanyForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
+  const values = formik.values.company ?? {};
   return (
     <Box sx={{
       display:  'flex',
@@ -47,11 +46,34 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DateField
-            required
-            name="company.hiredDate"
-            label="입사일"
-          />
+          <DataFieldWithLabel required={edit} label="입사일">
+            <DatePicker
+              openTo="year"
+              inputFormat="YYYY-MM-DD"
+              mask="____-__-__"
+              disabled={!edit}
+              value={values.hiredDate ? dayjs(values.hiredDate)
+              .format('YYYY-MM-DD') : null}
+              onChange={(e) => {
+                const value = e ? dayjs(e)
+                .format('YYYY-MM-DD') : undefined;
+                const formikValue = values.hiredDate ? dayjs(values.hiredDate)
+                .format('YYYY-MM-DD') : undefined;
+                if (formikValue !== value) {
+                  formik.setFieldValue('company.hiredDate', value);
+                }
+              }}
+              renderInput={(parameter) => (
+                <Input
+                  {...parameter.InputProps}
+                  inputRef={parameter.inputRef}
+                  variant="standard"
+                  value={parameter.value}
+                  inputProps={parameter.inputProps}
+                />
+              )}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -59,20 +81,21 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          {edit && (
-            <SelectField
-              required
-              label="입사 구분"
-              name="company.hiredType"
-              options={hiredTypeList}
-            />
-          )}
-          {!edit && (
-            <TextField
-              name="company.hiredType"
-              label="입사 구분"
-            />
-          )}
+          <DataFieldWithLabel required={edit} label="입사 구분">
+            <Select
+              disabled={!edit}
+              value={values.hiredType ?? ''}
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (values.hiredType !== value) {
+                  formik.setFieldValue('company.hiredType', value);
+                }
+              }}>
+              {hiredTypeList.map(item => (
+                <MenuItem key={item} value={item as string}>{item}</MenuItem>
+              ))}
+            </Select>
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -81,10 +104,18 @@ export default function CompanyForm() {
           marginBottom: '15px',
           marginRight:  '47%',
         }}>
-          <TextField
-            name="company.recommender"
-            label="추천자"
-          />
+          <DataFieldWithLabel label="추천자">
+            <Input
+              disabled={!edit}
+              defaultValue={values.recommender ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (values.phone !== value) {
+                  formik.setFieldValue('company.recommender', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
       </Box>
     </Box>

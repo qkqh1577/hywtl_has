@@ -9,10 +9,7 @@ import {
   keywordTypeList,
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
-import {
-  sexCategoryList,
-  sexCategoryName
-} from 'personnel/domain';
+import { sexCategoryList } from 'personnel/domain';
 import DepartmentCheckboxField from 'components/DepartmentCheckboxField';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
@@ -35,7 +32,7 @@ export default function SearchBox() {
             label="성별"
             options={sexCategoryList.map(item => ({
               key:  item as string,
-              text: sexCategoryName(item)
+              text: item
             }))}
           />
         }

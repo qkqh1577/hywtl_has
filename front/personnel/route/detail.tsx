@@ -61,7 +61,8 @@ function Element() {
     if (detail) {
       formik.setValues({
         ...detail,
-        edit: false,
+        jobList: detail.jobList.map(job => ({ ...job, departmentId: job.department?.id })),
+        edit:    false,
       } as PersonnelParameter);
     }
     else {
