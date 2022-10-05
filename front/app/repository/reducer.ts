@@ -66,7 +66,7 @@ export const initMenuState: MenuState = {
     }]
   }, {
     title: '인사카드 관리',
-    path:  '/user/hr-card-management',
+    path:  '/hr-card-management',
     icon:  'address-card',
   }, {
     title: '업체 관리',

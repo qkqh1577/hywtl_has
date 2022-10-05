@@ -1,27 +1,22 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import TextField from 'components/TextField';
-import DateField from 'components/DateField';
 import Button from 'layouts/Button';
-import {
-  initialPersonnelLanguageVO,
-  PersonnelVO
-} from 'personnel/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
+import { initialPersonnelLanguageParameter } from 'personnel/parameter';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Input from 'layouts/Input';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const spaceCount = 6;
 
 export default function LanguageForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const languageList = formikContext.values.languageList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const languageList = formik.values.languageList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -41,7 +36,7 @@ export default function LanguageForm() {
         {edit && (
           <Button
             onClick={() => {
-              formikContext!.setFieldValue('languageList', [...languageList, initialPersonnelLanguageVO]);
+              formik.setFieldValue('languageList', [...languageList, initialPersonnelLanguageParameter]);
             }}>
             + 추가
           </Button>
@@ -66,7 +61,7 @@ export default function LanguageForm() {
             </TextBox>
           </Box>
         )}
-        {languageList.map((item,
+        {languageList.map((values,
                            i
         ) => (
           <Box
@@ -81,65 +76,142 @@ export default function LanguageForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`languageList.${i}.name`}
+              <DataFieldWithLabel
+                required={edit}
                 label="자격증명"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.name ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.name !== value) {
+                      formik.setFieldValue(`languageList.${i}.name`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`languageList.${i}.type`}
+              <DataFieldWithLabel
+                required={edit}
                 label="대상 언어"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.type ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.type !== value) {
+                      formik.setFieldValue(`languageList.${i}.type`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                name={`languageList.${i}.grade`}
+              <DataFieldWithLabel
+                required={edit}
                 label="급수, 종류"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  value={values.grade ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.grade !== value) {
+                      formik.setFieldValue(`languageList.${i}.grade`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`languageList.${i}.organizationName`}
+              <DataFieldWithLabel
+                required={edit}
                 label="발급기관명"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.organizationName ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.organizationName !== value) {
+                      formik.setFieldValue(`languageList.${i}.organizationName`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DateField
-                required
-                name={`languageList.${i}.certifiedDate`}
+              <DataFieldWithLabel
+                required={edit}
                 label="취득일(시작일)"
                 labelPosition="top"
-              />
+              >
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  disabled={!edit}
+                  value={values.certifiedDate ? dayjs(values.certifiedDate)
+                  .format('YYYY-MM-DD') : null}
+                  onChange={(e) => {
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = values.certifiedDate ? dayjs(values.certifiedDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`languageList.${i}.certifiedDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="standard"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                name={`languageList.${i}.expiryPeriod`}
+              <DataFieldWithLabel
                 label="유효기간(종료일)"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  value={values.expiryPeriod ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.expiryPeriod !== value) {
+                      formik.setFieldValue(`languageList.${i}.expiryPeriod`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               display:        'flex',
@@ -158,8 +230,8 @@ export default function LanguageForm() {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('languageList', languageList.filter((language,
-                                                                                      j
+                    formik.setFieldValue('languageList', languageList.filter((language,
+                                                                              j
                     ) => i !== j));
                   }}
                 />

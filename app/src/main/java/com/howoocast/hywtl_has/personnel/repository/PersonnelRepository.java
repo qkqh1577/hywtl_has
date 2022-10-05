@@ -34,6 +34,15 @@ public class PersonnelRepository {
             .stream().findFirst();
     }
 
+    public Optional<Personnel> findByUser_Id(Long userId) {
+        BooleanBuilder criteria = new BooleanBuilder();
+        criteria.and(personnel.user.id.eq(userId));
+        return queryFactory
+            .selectFrom(personnel)
+            .where(criteria)
+            .stream().findFirst();
+    }
+
     public Page<Personnel> findAll(Predicate predicate, Pageable pageable) {
         List<Personnel> list = this.findAll(predicate);
         int start = (int) pageable.getOffset();

@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
-import DetailFormFooter from 'layouts/DetailFormFooter';
 import { Box, } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
 function ListButton() {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/user/hr-card-management');
+    navigate('/hr-card-management');
   };
   return (
     <Button
@@ -33,9 +33,34 @@ function EditButton() {
   );
 }
 
-export default function Footer() {
-  const formikContext = useContext(FormikContext);
-  const edit: boolean = formikContext?.values.edit ?? true;
+interface Props {
+  onCancel: DefaultFunction;
+}
+
+export default function Footer(props: Props) {
+  const formik = useContext(FormikContext);
+  const edit: boolean = formik.values.edit;
+
+  if (edit) {
+    return (
+      <Box sx={{
+        display:        'flex',
+        width:          '100%',
+        justifyContent: 'center',
+        margin:         '20px 0',
+      }}>
+        <Button sx={{
+          marginRight: '10px',
+        }}
+          onClick={() => {
+            formik.handleSubmit();
+          }}>
+          저장
+        </Button>
+        <Button shape="basic2" onClick={props.onCancel}>취소</Button>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{
@@ -44,15 +69,8 @@ export default function Footer() {
       justifyContent: 'space-between',
       margin:         '20px 0',
     }}>
-      {!edit && (
-        <>
-          <ListButton />
-          <EditButton />
-        </>
-      )}
-      {edit && (
-        <DetailFormFooter />
-      )}
+      <ListButton />
+      <EditButton />
     </Box>
   );
 };

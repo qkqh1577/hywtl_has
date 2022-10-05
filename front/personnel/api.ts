@@ -10,18 +10,18 @@ import { PersonnelParameter } from 'personnel/parameter';
 
 class PersonnelApi {
   async getPage(query: PersonnelQuery): Promise<Page<PersonnelShortVO>> {
-    const { data } = await apiClient.get('/personnels', query);
+    const { data } = await apiClient.get('/personnel', query);
     return data;
   }
 
   async getOne(id: PersonnelId): Promise<PersonnelVO> {
-    const { data } = await apiClient.get(`/personnels/${id}`);
+    const { data } = await apiClient.get(`/personnel/${id}`);
     return data;
   }
 
   async update(params: PersonnelParameter): Promise<void> {
-    const formData = toFormData(params)
-    const { data } = await apiClient.put(`/personnels/${params.id}`, formData);
+    const formData = toFormData(params);
+    const { data } = await apiClient.put(`/personnel/${params.id}`, formData);
     return data;
   }
 }

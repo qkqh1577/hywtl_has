@@ -1,5 +1,5 @@
 ### update
-PUT http://localhost:8080/personnels/2
+PUT http://localhost:8080/personnel/2
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -63,13 +63,13 @@ true
 --WebAppBoundary--
 
 ### get page
-GET http://localhost:8080/personnels
+GET http://localhost:8080/personnel
 
 ### get basic
-GET http://localhost:8080/personnels/1/basic
+GET http://localhost:8080/personnel/1/basic
 
 ### get company
-GET http://localhost:8080/personnels/1/company
+GET http://localhost:8080/personnel/1/company
 
 ### get job list
-GET http://localhost:8080/personnels/1/job-list
+GET http://localhost:8080/personnel/1/job-list

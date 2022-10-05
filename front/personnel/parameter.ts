@@ -12,6 +12,10 @@ export interface PersonnelParameter {
   languageList?: PersonnelLanguageParameter[]; // 어학정보
 }
 
+export const initialPersonnelParameter = {
+  edit: false,
+} as unknown as PersonnelParameter;
+
 export interface PersonnelBasicParameter {
   engName?: string;
   birthDate?: string;
@@ -40,6 +44,8 @@ export interface PersonnelJobParameter {
   jobDuty?: string;
 }
 
+export const initialPersonnelJobParameter = {} as PersonnelJobParameter;
+
 export interface PersonnelAcademicParameter {
   academyName?: string;
   major?: string;
@@ -50,12 +56,16 @@ export interface PersonnelAcademicParameter {
   endDate?: string;
 }
 
+export const initialPersonnelAcademicParameter = {} as PersonnelAcademicParameter;
+
 export interface PersonnelCareerParameter {
   companyName?: string;
   majorJob?: string;
   startDate?: string;
   endDate?: string;
 }
+
+export const initialPersonnelCareerParameter = {} as PersonnelCareerParameter;
 
 export interface PersonnelLicenseParameter {
   name?: string;
@@ -66,6 +76,8 @@ export interface PersonnelLicenseParameter {
   note?: string;
 }
 
+export const initialPersonnelLicenseParameter = {} as PersonnelLicenseParameter;
+
 export interface PersonnelLanguageParameter {
   name?: string;
   type?: string;
@@ -75,3 +87,5 @@ export interface PersonnelLanguageParameter {
   expiryPeriod?: string;
   trainingPeriod?: string;
 }
+
+export const initialPersonnelLanguageParameter = {} as PersonnelLanguageParameter;

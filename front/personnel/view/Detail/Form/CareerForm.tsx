@@ -1,27 +1,21 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import TextField from 'components/TextField';
-import DateField from 'components/DateField';
 import Button from 'layouts/Button';
-import {
-  initialPersonnelCareerVO,
-  PersonnelVO
-} from 'personnel/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FormikEditable } from 'type/Form';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
+import { initialPersonnelCareerParameter } from 'personnel/parameter';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Input from 'layouts/Input';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const spaceCount = 6;
-
 export default function CareerForm() {
-  const formikContext: FormikContextType<FormikEditable<PersonnelVO>> = useContext(FormikContext);
-  const careerList = formikContext.values.careerList;
-  const edit = formikContext?.values.edit ?? true;
+  const formik = useContext(FormikContext);
+  const careerList = formik.values.careerList ?? [];
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -42,7 +36,7 @@ export default function CareerForm() {
           <Button
             shape="basic1"
             onClick={() => {
-              formikContext!.setFieldValue('careerList', [...careerList, initialPersonnelCareerVO]);
+              formik.setFieldValue('careerList', [...careerList, initialPersonnelCareerParameter]);
             }}>
             + 추가
           </Button>
@@ -67,7 +61,7 @@ export default function CareerForm() {
             </TextBox>
           </Box>
         )}
-        {careerList.map((item,
+        {careerList.map((values,
                          i
         ) => (
           <Box
@@ -82,45 +76,117 @@ export default function CareerForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                labelPosition="top"
-                name={`careerList.${i}.companyName`}
+              <DataFieldWithLabel
+                required={!edit}
                 label="근무처명"
-              />
+                labelPosition="top"
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.companyName ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.companyName !== value) {
+                      formik.setFieldValue(`careerList.${i}.companyName`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <TextField
-                required
-                name={`careerList.${i}.majorJob`}
+              <DataFieldWithLabel
+                required={!edit}
                 label="직급 및 담당업무"
                 labelPosition="top"
-              />
+              >
+                <Input
+                  disabled={!edit}
+                  defaultValue={values.majorJob ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (values.majorJob !== value) {
+                      formik.setFieldValue(`careerList.${i}.majorJob`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DateField
-                required
-                name={`careerList.${i}.startDate`}
+              <DataFieldWithLabel
+                required={edit}
                 label="입사일"
                 labelPosition="top"
-              />
+              >
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  disabled={!edit}
+                  value={values.startDate ? dayjs(values.startDate)
+                  .format('YYYY-MM-DD') : null}
+                  onChange={(e) => {
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = values.startDate ? dayjs(values.startDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`careerList.${i}.startDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="standard"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DateField
-                required
-                name={`careerList.${i}.endDate`}
+              <DataFieldWithLabel
+                required={edit}
                 label="퇴사일"
                 labelPosition="top"
-              />
+              >
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  disabled={!edit}
+                  value={values.endDate ? dayjs(values.endDate)
+                  .format('YYYY-MM-DD') : null}
+                  onChange={(e) => {
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = values.endDate ? dayjs(values.endDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`careerList.${i}.endDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="standard"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               display:        'flex',
@@ -139,8 +205,8 @@ export default function CareerForm() {
                   }}
                   icon="trash"
                   onClick={() => {
-                    formikContext!.setFieldValue('careerList', careerList.filter((career,
-                                                                                  j
+                    formik.setFieldValue('careerList', careerList.filter((career,
+                                                                          j
                     ) => i !== j));
                   }}
                 />

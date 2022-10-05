@@ -14,51 +14,45 @@ import {
   PersonnelVO,
 } from 'personnel/domain';
 import { personnelApi } from 'personnel/api';
-import { dialogActions } from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchId() {
   while (true) {
-    const { id } = yield take(PersonnelAction.setId);
-    const detail: PersonnelVO = yield call(personnelApi.getOne, id);
-    yield put(personnelAction.setOne(detail));
+    const { payload: id } = yield take(PersonnelAction.setId);
+    if (id) {
+      const detail: PersonnelVO = yield call(personnelApi.getOne, id);
+      yield put(personnelAction.setOne(detail));
+    }
+    else {
+      yield put(personnelAction.setOne(undefined));
+    }
   }
 }
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take(personnelAction.setFilter);
+    const { payload: query } = yield take(personnelAction.setFilter);
     try {
-      const page: Page<PersonnelShortVO> = yield call(personnelApi.getPage, formik.values);
+      const page: Page<PersonnelShortVO> = yield call(personnelApi.getPage, query);
       yield put(personnelAction.setPage(page));
     }
     catch (e) {
       yield put(personnelAction.setPage(undefined));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }
 
 function* watchUpdate() {
   while (true) {
-    const { payload: formik } = yield take(PersonnelAction.update);
+    const { payload: params } = yield take(PersonnelAction.update);
     try {
-      yield call(personnelApi.update, formik.values);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put({
-        type: PersonnelAction.setId,
-        id:   formik.values.id
-      });
+      yield put(personnelAction.requestUpdate(ApiStatus.REQUEST));
+      yield call(personnelApi.update, params);
+      yield put(personnelAction.requestUpdate(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
+      console.error(e);
+      yield put(personnelAction.requestUpdate(ApiStatus.FAIL));
     }
   }
 }
