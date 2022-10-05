@@ -79,7 +79,7 @@ export default function LicenseForm() {
             }}>
 
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -90,7 +90,7 @@ export default function LicenseForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -100,7 +100,7 @@ export default function LicenseForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -111,7 +111,7 @@ export default function LicenseForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -122,7 +122,7 @@ export default function LicenseForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -132,7 +132,8 @@ export default function LicenseForm() {
               />
             </Box>
             <Box sx={{
-              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight: '30px',
             }}>
               <DateField
                 required

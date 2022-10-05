@@ -66,6 +66,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
       dispatch(projectEstimateAction.setProjectId(projectId!));
       dispatch(projectEstimateAction.setCustomDetailModal(undefined));
       dispatch(projectEstimateAction.requestChangeCustom(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestChangeCustom]);
 

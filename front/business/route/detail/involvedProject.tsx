@@ -11,7 +11,7 @@ import {
 import { BusinessInvolvedType } from 'business/domain';
 import { businessAction } from 'business/action';
 import { RootState } from 'services/reducer';
-import BusinessInvolvedProjectSection from 'business/view/Detail/Form/InvolvedProjectInformationList';
+import BusinessInvolvedProjectSection from 'business/view/Detail/Form/InvolvedProject';
 
 export default function BusinessInvolvedProjectRoute() {
 

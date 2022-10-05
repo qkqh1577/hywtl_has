@@ -76,10 +76,12 @@ function Element() {
         }
       });
       dispatch(estimateTemplateAction.requestUpsert(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
     else if (requestUpsert === ApiStatus.FAIL) {
       error('저장에 실패하였습니다.');
       dispatch(estimateTemplateAction.requestUpsert(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestUpsert]);
 
@@ -87,11 +89,13 @@ function Element() {
     if (requestDelete === ApiStatus.DONE) {
       alert('삭제하였습니다.');
       dispatch(estimateTemplateAction.requestDelete(ApiStatus.IDLE));
+      formik.setSubmitting(false);
       navigate('/admin/estimate-template-management');
     }
     else if (requestDelete === ApiStatus.FAIL) {
       error('삭제에 실패하였습니다.');
       dispatch(estimateTemplateAction.requestDelete(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestDelete]);
 

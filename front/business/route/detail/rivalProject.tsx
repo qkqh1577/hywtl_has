@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
-import BusinessRivalProjectListSection from 'business/view/Detail/Form/RivalProjectInformationList';
+import BusinessRivalProjectListSection from 'business/view/Detail/Form/RivalProject';
 import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
 

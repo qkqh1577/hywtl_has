@@ -21,7 +21,7 @@ interface StatisticProps {
   loseCount: number | undefined;
 }
 
-export default function BusinessRivalStatisticTable(props: StatisticProps) {
+export default function BusinessRivalStatistic(props: StatisticProps) {
   const {
           count,
           minYear,

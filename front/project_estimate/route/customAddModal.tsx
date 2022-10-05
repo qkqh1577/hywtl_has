@@ -64,6 +64,7 @@ export default function ProjectCustomEstimateAddModalRoute() {
       dispatch(dialogActions.openAlert('등록하였습니다.'));
       dispatch(projectEstimateAction.setProjectId(projectId));
       dispatch(projectEstimateAction.requestAddCustom(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestAddCustom]);
 

@@ -85,10 +85,12 @@ export default function ProjectScheduleDetailModalRoute() {
       dispatch(projectScheduleAction.requestUpdate(ApiStatus.IDLE));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
+      formik.setSubmitting(false);
     }
     else if (requestUpdate === ApiStatus.FAIL) {
       error('수정에 실패하였습니다.');
       dispatch(projectScheduleAction.requestUpdate(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
   }, [requestUpdate]);
 
@@ -98,12 +100,14 @@ export default function ProjectScheduleDetailModalRoute() {
       dispatch(projectScheduleAction.requestDelete(ApiStatus.IDLE));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
+      formik.setSubmitting(false);
     }
     else if (requestDelete === ApiStatus.FAIL) {
       error('삭제에 실패하였습니다.');
       dispatch(projectScheduleAction.requestDelete(ApiStatus.IDLE));
+      formik.setSubmitting(false);
     }
-  }, []);
+  }, [requestDelete]);
 
   return (
     <FormikProvider value={formik}>

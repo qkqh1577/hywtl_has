@@ -7,7 +7,7 @@ import React from 'react';
 
 interface ButtonProps
   extends Omit<MuiButtonProps, | 'variant' | 'size'> {
-  shape?: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small';
+  shape?: 'basic1' | 'basic2' | 'basic3' | 'basic4' | 'small' | 'small3';
 }
 
 const basicStyle: MuiButtonProps['sx'] = {
@@ -107,6 +107,26 @@ function SmallButton(props: MuiButtonProps) {
   );
 }
 
+function Small3Button(props: MuiButtonProps) {
+  return (
+    <MuiButton
+      {...props}
+      variant="outlined"
+      sx={{
+        ...basicStyle,
+        width:           '100%',
+        height:          '28px',
+        fontSize:        '12px',
+        backgroundColor: ColorPalette._ffffff,
+        color:           ColorPalette._386dd6,
+        borderColor:     ColorPalette._9bb6ea,
+        minWidth:        'unset',
+        ...props.sx,
+      } as MuiButtonProps['sx']}
+    />
+  );
+}
+
 export default function Button({ shape = 'basic1', ...props }: ButtonProps) {
   switch (shape) {
     case 'basic1':
@@ -119,5 +139,7 @@ export default function Button({ shape = 'basic1', ...props }: ButtonProps) {
       return (<Basic4Button {...props} />);
     case 'small':
       return (<SmallButton {...props} />);
+    case 'small3':
+      return (<Small3Button {...props} />);
   }
 }

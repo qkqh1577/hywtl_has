@@ -1,15 +1,13 @@
 import React from 'react';
-import { Box, } from '@mui/material';
+import { Box } from '@mui/material';
 import TextField from 'components/TextField';
-import RegistrationNumberCheckButton from 'business/view/Detail/Form/RegistrationNumberCheckButton';
 import TextBox from 'layouts/Text';
-import { DefaultFunction } from 'type/Function';
 
 interface Props {
-  onCheck: DefaultFunction<string>;
+  checkButton: React.ReactNode;
 }
 
-export default function (props: Props) {
+export default function BusinessBasicSection(props: Props) {
   return (
     <Box sx={{
       display:  'flex',
@@ -67,7 +65,7 @@ export default function (props: Props) {
             required
             name="registrationNumber"
             label="사업자번호"
-            endAdornment={<RegistrationNumberCheckButton onCheck={props.onCheck} />}
+            endAdornment={props.checkButton}
           />
         </Box>
         <Box sx={{

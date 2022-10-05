@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
 import dayjs from 'dayjs';
-import BusinessRivalStatisticTable from 'business/view/Detail/Form/RivalStatisticSection';
+import BusinessRivalStatisticTable from 'business/view/Detail/Form/RivalStatistic';
 import { FormikContext } from 'formik';
 
 export default function BusinessRivalStatisticRoute() {

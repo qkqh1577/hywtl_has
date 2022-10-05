@@ -36,7 +36,7 @@ export function BusinessManagerId(id: number) {
 }
 
 export interface BusinessManagerVO {
-  id?: BusinessManagerId;
+  id: BusinessManagerId;
   name: string;
   jobTitle?: string;
   department?: string;
@@ -47,17 +47,6 @@ export interface BusinessManagerVO {
   status: BusinessManagerStatus;
 }
 
-export const initialBusinessManagerVO: BusinessManagerVO = {
-  name:        '',
-  jobTitle:    '',
-  department:  '',
-  mobilePhone: '',
-  officePhone: '',
-  email:       '',
-  meta:        [],
-  status:      BusinessManagerStatus.IN_OFFICE,
-};
-
 export type BusinessId = number & { readonly _brand: symbol }
 
 export function BusinessId(id: number) {
@@ -65,7 +54,7 @@ export function BusinessId(id: number) {
 }
 
 export interface BusinessVO {
-  id: BusinessId | '';
+  id: BusinessId;
   name: string;
   ceoName?: string;
   officePhone?: string;
@@ -82,22 +71,11 @@ export interface BusinessShort
   projectCount: number;
 }
 
-export const initialBusiness: BusinessVO = {
-  id:                 '',
-  address:            '',
-  ceoName:            '',
-  managerList:        [initialBusinessManagerVO],
-  name:               '',
-  note:               '',
-  officePhone:        '',
-  registrationNumber: ''
-};
-
 
 /* 참여 or 경쟁 프로젝트 정보 */
 
 export interface BusinessInvolvedProjectVO {
-  id?: ProjectId;
+  id: ProjectId;
   name: string;
   code: string;
   involvedType: BusinessInvolvedType;

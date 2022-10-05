@@ -78,7 +78,7 @@ export default function LanguageForm() {
               marginTop:   '15px',
             }}>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -89,7 +89,7 @@ export default function LanguageForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -100,7 +100,7 @@ export default function LanguageForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -110,7 +110,7 @@ export default function LanguageForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <TextField
@@ -121,7 +121,7 @@ export default function LanguageForm() {
               />
             </Box>
             <Box sx={{
-              width:       `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
               <DateField
@@ -132,7 +132,8 @@ export default function LanguageForm() {
               />
             </Box>
             <Box sx={{
-              width: `calc((100% - ${100 + (30 * spaceCount - 1)}px) / ${spaceCount})`,
+              width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight: '30px',
             }}>
               <TextField
                 name={`languageList.${i}.expiryPeriod`}
