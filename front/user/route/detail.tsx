@@ -4,10 +4,7 @@ import React, {
 } from 'react';
 import useId from 'services/useId';
 import useDialog from 'components/Dialog';
-import {
-  initialUser,
-  UserVO
-} from 'user/domain';
+import { UserId } from 'user/domain';
 import UserDetail from 'user/view/Detail';
 import { AppRoute } from 'services/routes';
 import {
@@ -15,64 +12,84 @@ import {
   useSelector
 } from 'react-redux';
 import {
-  FormikValues,
-  useFormik,
+  FormikProvider,
+  useFormik
 } from 'formik';
+import { userAction } from 'user/action';
 import {
-  userAction
-} from 'user/action';
-import { UserChangeParameter } from 'user/parameter';
-import { FormikSubmit } from 'type/Form';
+  initialUserParameter,
+  UserChangeParameter
+} from 'user/parameter';
+import { RootState } from 'services/reducer';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
-
-  const { confirm } = useDialog();
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: FormikValues) => root.user);
+  const { detail, requestChange } = useSelector((root: RootState) => root.user);
+  const { confirm, error, rollback, alert } = useDialog();
+  const change = useCallback((formikProps: UserChangeParameter) => dispatch(userAction.change(formikProps)), [dispatch]);
 
-  const change = useCallback(
-    (formikProps: FormikSubmit<UserChangeParameter>) =>
-      dispatch(userAction.change(formikProps)),
-    [dispatch]
-  );
-
-  const formik = useFormik<UserVO>({
-    enableReinitialize: true,
-    initialValues:      detail ?? initialUser,
-    onSubmit:           (values,
-                         helpers
-                        ) => {
-      change({
-        values,
-        ...helpers
-      });
+  const formik = useFormik<UserChangeParameter>({
+    initialValues: initialUserParameter,
+    onSubmit:      (values) => {
+      change(values);
     }
   });
 
   useEffect(() => {
-    if (id) {
-      dispatch({
-        type: 'user/id/set',
-        id
-      });
-    }
+    dispatch(userAction.setId(id ? UserId(id) : undefined));
   }, [id]);
 
+  useEffect(() => {
+    if (detail) {
+      formik.setValues({
+        ...detail,
+        edit: false,
+      } as unknown as UserChangeParameter);
+    }
+    else {
+      formik.setValues(initialUserParameter);
+    }
+  }, [detail]);
+
+  useEffect(() => {
+    if (requestChange === ApiStatus.DONE) {
+      alert('변경하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(userAction.setId(UserId(id!)));
+      dispatch(userAction.requestChange(ApiStatus.IDLE));
+    }
+    else if (requestChange === ApiStatus.FAIL) {
+      error('변경에 실패하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(userAction.requestChange(ApiStatus.IDLE));
+    }
+  }, [requestChange]);
+
   return (
-    <UserDetail
-      formik={formik}
-      handlePassword={() => {
-        confirm({
-          status:       'ok',
-          children:     '비밀번호 변경 안내 메일을 발송하겠습니까?',
-          confirmText:  '발송',
-          afterConfirm: () => {
-            console.log('TODO: reset password');
-          }
-        });
-      }}
-    />
+    <FormikProvider value={formik}>
+      <UserDetail
+        onCancel={() => {
+          rollback(() => {
+            formik.setValues({
+              ...detail,
+              edit: false,
+            } as unknown as UserChangeParameter);
+          });
+        }}
+        onPasswordChange={() => {
+          confirm({
+            status:       'ok',
+            children:     '비밀번호 변경 안내 메일을 발송하겠습니까?',
+            confirmText:  '발송',
+            afterConfirm: () => {
+              console.log('TODO: reset password');
+            }
+          });
+        }}
+      />
+    </FormikProvider>
   );
 }
 

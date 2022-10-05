@@ -7,7 +7,6 @@ import { all } from 'redux-saga/effects';
 
 import reducer from 'services/reducer';
 import userSaga from 'user/saga';
-import loginUserSaga from 'app/repository/saga';
 import departmentSaga from 'department/saga';
 import estimateTemplateSaga from 'admin/estimate/template/saga';
 import projectSaga from 'project/saga';
@@ -30,6 +29,7 @@ import personnelSaga from 'personnel/saga';
 import userNotificationSaga from 'user_notification/saga';
 import projectContractSaga from 'project_contract/saga';
 import projectStatusSaga from 'project_status/saga';
+import loginSaga from 'login/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -43,7 +43,7 @@ function* saga() {
     departmentSaga(),
     estimateContentSaga(),
     estimateTemplateSaga(),
-    loginUserSaga(),
+    loginSaga(),
     personnelSaga(),
     projectBasicSaga(),
     projectBidSaga(),

@@ -3,8 +3,8 @@ import ModalLayout, { ModalLayoutProps } from 'layouts/ModalLayout';
 import { Box } from '@mui/material';
 import { FormikProvider } from 'formik';
 import { FormikLayoutProps } from 'layouts/PageLayout';
-import Form from 'app/view/App/LoginUserEditModal/Form';
-import LoginUserEditModalButtonBlock from 'app/view/App/LoginUserEditModal/LoginUserEditModalButtonBlock';
+import Form from 'app/view/App/LoginChangeModal/Form';
+import LoginUserEditModalButtonBlock from 'app/view/App/LoginChangeModal/LoginUserEditModalButtonBlock';
 import { UserShortVO } from 'user/domain';
 
 export interface LoginUserEditModalProps

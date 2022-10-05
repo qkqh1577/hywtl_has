@@ -1,14 +1,11 @@
-import apiClient, { toFormData } from 'services/api';
+import apiClient from 'services/api';
 import Page from 'type/Page';
 import { UserQuery } from 'user/query';
 import {
   UserId,
   UserVO
 } from 'user/domain';
-import {
-  LoginUserEditParameter,
-  UserChangeParameter
-} from 'user/parameter';
+import { UserChangeParameter } from 'user/parameter';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -32,10 +29,6 @@ class UserApi {
     return data;
   }
 
-  async edit(params: LoginUserEditParameter): Promise<void> {
-    const { data } = await apiClient.post('/user/login', toFormData(params));
-    return data;
-  }
 }
 
 export const userApi = new UserApi();

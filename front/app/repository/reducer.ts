@@ -1,32 +1,9 @@
 import { createReducer } from 'typesafe-actions';
 import {
-  LoginAction,
   MenuAction,
   ProjectDrawerAction
 } from 'app/domain/action';
-import { LoginUser } from 'app/domain/login';
 import { Menu } from 'app/domain/menu';
-
-export interface LoginState {
-  user: LoginUser | undefined | null;
-}
-
-const initLoginState: LoginState = {
-  user: undefined
-};
-
-export const loginReducer = createReducer(initLoginState, {
-  [LoginAction.setLoginUser]:   (state,
-                                 action
-                                ) => ({
-    ...state,
-    user: { ...action.payload, loginAt: new Date() },
-  }),
-  [LoginAction.clearLoginUser]: (state) => ({
-    ...state,
-    user: undefined,
-  })
-});
 
 export interface MenuState {
   menu: Menu[];

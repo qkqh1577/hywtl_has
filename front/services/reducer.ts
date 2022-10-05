@@ -7,8 +7,6 @@ import {
   UserState,
 } from 'user/reducer';
 import {
-  loginReducer,
-  LoginState,
   menuReducer,
   MenuState,
   projectDrawerReducer,
@@ -106,6 +104,10 @@ import {
   projectStatusReducer,
   ProjectStatusState
 } from 'project_status/reducer';
+import {
+  loginReducer,
+  LoginState
+} from 'login/reducer';
 
 export interface RootState {
   business: BusinessState;

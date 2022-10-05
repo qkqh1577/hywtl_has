@@ -1,42 +1,55 @@
 import { createReducer } from 'typesafe-actions';
 import Page from 'type/Page';
-import { UserVO } from 'user/domain';
+import {
+  UserId,
+  UserShortVO,
+  UserVO
+} from 'user/domain';
 import { UserQuery } from 'user/query';
-import { UserAction } from 'user/action';
-import { LoginUser } from 'app/domain/login';
+import { UserActionType } from 'user/action';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface UserState {
   filter?: UserQuery;
-  page?: Page<UserVO>;
+  page?: Page<UserShortVO>;
   detail?: UserVO;
-  loginUser?: LoginUser;
+  id?: UserId;
+  requestChange: ApiStatus;
 }
 
-const initialState: UserState = {};
+const initialState: UserState = {
+  requestChange: ApiStatus.IDLE,
+};
 
 export const userReducer = createReducer(initialState, {
-  [UserAction.setFilter]: (state,
-                           action
-                          ) => ({
+  [UserActionType.setFilter]:     (state,
+                                   action
+                                  ) => ({
     ...state,
-    filter: action.payload.values,
+    filter: action.payload,
   }),
-  [UserAction.setPage]:   (state,
-                           action
-                          ) => ({
+  [UserActionType.setPage]:       (state,
+                                   action
+                                  ) => ({
     ...state,
     page: action.payload,
   }),
-  [UserAction.setOne]:    (state,
-                           action
-                          ) => ({
+  [UserActionType.setId]:         (state,
+                                   action
+                                  ) => ({
+    ...state,
+    id: action.payload,
+  }),
+  [UserActionType.setOne]:        (state,
+                                   action
+                                  ) => ({
     ...state,
     detail: action.payload,
   }),
-  [UserAction.editModal]: (state,
-                           action
-                          ) => ({
+  [UserActionType.requestChange]: (state,
+                                   action
+                                  ) => ({
     ...state,
-    loginUser: action.payload,
-  })
+    requestChange: action.payload,
+  }),
 });

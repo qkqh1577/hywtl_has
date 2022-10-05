@@ -1,8 +1,9 @@
-import { LoginParameter } from 'app/domain/parameter';
 import apiClient from 'services/api';
-import { LoginUser } from 'app/domain/login';
+import { LoginParameter } from 'user/parameter';
+import { LoginVO } from 'login/domain';
+import { LoginChangeParameter } from 'login/parameter';
 
-class LoginUserApi {
+class LoginApi {
   async login(parameter: LoginParameter): Promise<void> {
     const form = new FormData();
     form.append('username', parameter.username);
@@ -15,8 +16,13 @@ class LoginUserApi {
     return data;
   }
 
-  async getLoginUser(): Promise<LoginUser> {
+  async get(): Promise<LoginVO> {
     const { data } = await apiClient.get('/user/login');
+    return data;
+  }
+
+  async change(params: LoginChangeParameter): Promise<void> {
+    const { data } = await apiClient.put('/user/login', params);
     return data;
   }
 
@@ -31,4 +37,4 @@ class LoginUserApi {
   }
 }
 
-export const loginUserApi = new LoginUserApi();
+export const loginApi = new LoginApi();

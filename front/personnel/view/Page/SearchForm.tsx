@@ -9,7 +9,6 @@ import {
   keywordTypeList,
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
-import { sexCategoryList } from 'personnel/domain';
 import DepartmentCheckboxField from 'components/DepartmentCheckboxField';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
@@ -18,6 +17,7 @@ import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
 import { Box } from '@mui/material';
+import { sexCategoryList } from 'user/domain';
 
 export default function SearchBox() {
   const formik = useContext(FormikContext);

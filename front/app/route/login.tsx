@@ -1,18 +1,19 @@
-import useLogin from 'app/service/loginHook';
 import LoginForm from 'app/view/LoginForm';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'services/routes';
+import { useSelector } from 'react-redux';
+import { RootState } from 'services/reducer';
 
 function Element() {
   const navigate = useNavigate();
-  const { user } = useLogin();
+  const { detail: loginUser } = useSelector((root: RootState) => root.login);
 
   useEffect(() => {
-    if (user) {
+    if (loginUser) {
       navigate('/');
     }
-  }, [user]);
+  }, [loginUser]);
 
   return (<LoginForm />);
 }

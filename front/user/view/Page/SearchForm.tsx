@@ -1,5 +1,4 @@
-import SearchForm from 'layouts/SearchForm';
-import { Grid } from '@mui/material';
+import SearchForm, { SearchFormField } from 'layouts/SearchForm';
 import CheckboxField from 'components/CheckboxField';
 import {
   userRoleList,
@@ -13,31 +12,34 @@ import React from 'react';
 export default function () {
   return (
     <SearchForm>
-      <Grid container spacing={2}>
-        <Grid item sm={12}>
-          <CheckboxField
-            name="role"
-            label="권한"
-            options={userRoleList.map((item) => ({
-              key:  item as string,
-              text: userRoleName(item)
-            }))}
-          />
-        </Grid>
-        <Grid item sm={4}>
+      <SearchFormField label="권한">
+        <CheckboxField
+          disableLabel
+          name="role"
+          label="권한"
+          options={userRoleList.map((item) => ({
+            key:  item as string,
+            text: userRoleName(item)
+          }))}
+        />
+      </SearchFormField>
+      <SearchFormField
+        label={
           <SelectField
+            disableLabel
             name="keywordType"
             label="검색 대상"
             options={keywordTypeList}
           />
-        </Grid>
-        <Grid item sm={8}>
+        }
+        children={
           <TextField
+            disableLabel
             name="keyword"
             label="검색어"
           />
-        </Grid>
-      </Grid>
+        }
+      />
     </SearchForm>
   );
 }

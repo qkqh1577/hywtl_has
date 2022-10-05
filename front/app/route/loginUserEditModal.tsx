@@ -6,15 +6,11 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import {
-  FormikSubmit,
-} from 'type/Form';
-import {
-  LoginUserEditParameter
-} from 'user/parameter';
+import { FormikSubmit, } from 'type/Form';
+import { LoginUserEditParameter } from 'user/parameter';
 import { userAction } from 'user/action';
 import { useFormik } from 'formik';
-import LoginUserEditModal from 'app/view/App/LoginUserEditModal';
+import LoginUserEditModal from 'app/view/App/LoginChangeModal';
 import { RootState } from 'services/reducer';
 import { UserShortVO } from 'user/domain';
 

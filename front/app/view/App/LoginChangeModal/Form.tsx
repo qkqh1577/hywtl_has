@@ -2,10 +2,6 @@ import React, { useContext } from 'react';
 import { Box, } from '@mui/material';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextField from 'components/TextField';
-import {
-  sexTypeList,
-  sexTypeName
-} from 'user/domain';
 import UploadField from 'components/UploadField';
 import RadioField from 'components/RadioField';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -13,6 +9,7 @@ import { FormikContext } from 'formik';
 import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import DataFieldWithLabel from 'components/DataFieldLabel';
+import { sexCategoryList } from 'user/domain';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -111,9 +108,9 @@ export default function () {
         <RadioField
           name="sex"
           label="성별"
-          options={sexTypeList.map((item) => ({
+          options={sexCategoryList.map((item) => ({
             key:  item as string,
-            text: sexTypeName(item),
+            text: item
           }))}
         />
       </FieldBox>
