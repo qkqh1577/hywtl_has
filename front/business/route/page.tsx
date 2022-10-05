@@ -18,11 +18,11 @@ import BusinessPage from 'business/view/Page';
 
 function Element() {
   const dispatch = useDispatch();
-  const { filter, page } = useSelector((root: RootState) => root.business);
+  const { page } = useSelector((root: RootState) => root.business);
   const setFilter = useCallback((query?: BusinessQuery) => dispatch(businessAction.setFilter(query ?? initialBusinessQuery)), [dispatch]);
 
   const formik = useFormik<BusinessQuery>({
-    initialValues: filter ?? initialBusinessQuery,
+    initialValues: initialBusinessQuery,
     onSubmit:      (values
                    ) => {
       setFilter(values);

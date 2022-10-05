@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.department.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.exception.DepartmentViolationParentException;
@@ -10,6 +11,8 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.department.view.DepartmentItemView;
 import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
+import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
+import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DepartmentService {
 
     private final DepartmentRepository repository;
+
+    private final UserRepository userRepository;
+
+    private final PersonnelRepository personnelRepository;
 
     @Transactional(readOnly = true)
     public Page<DepartmentShortView> page(
@@ -62,7 +69,7 @@ public class DepartmentService {
     }
 
     @Transactional
-    public DepartmentView upsert(@Nullable Long id, DepartmentParameter parameter) {
+    public void upsert(@Nullable Long id, DepartmentParameter parameter) {
 
         Department parent = this.find(parameter.getParentId());
         Integer seq = repository.countByParent_Id(parameter.getParentId()) + 1;
@@ -84,7 +91,6 @@ public class DepartmentService {
         this.checkName(instance);
         this.checkParent(instance);
         arrangeChildrenSeq(parameter.getParentId());
-        return DepartmentView.assemble(instance);
     }
 
 
@@ -94,6 +100,19 @@ public class DepartmentService {
             this.find(item.getParentId()),
             item.getSeq()
         ));
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Department instance = this.load(id);
+        if (!instance.getChildrenList().isEmpty()) {
+            throw new IllegalRequestException("department.children_list.not_empty", "하위 조직이 있는 경우 삭제할 수 없습니다.");
+        }
+        if (!userRepository.findByDepartment_Id(id).isEmpty()
+            || !personnelRepository.findByDepartment_Id(id).isEmpty()) {
+            throw new IllegalRequestException("department.children_list.not_empty", "소속 사용자가 있는 경우 삭제할 수 없습니다.");
+        }
+        instance.delete();
     }
 
     private Department load(Long id) {

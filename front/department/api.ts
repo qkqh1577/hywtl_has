@@ -28,6 +28,11 @@ class DepartmentApi {
     const { data } = await apiClient.put(`/department${parameter.id ? `/${parameter.id}` : ''}`, parameter);
     return data;
   }
+
+  async deleteOne(id: DepartmentId): Promise<void> {
+    const { data } = await apiClient.delete(`/department/${id}`);
+    return data;
+  }
 }
 
 export const departmentApi = new DepartmentApi();

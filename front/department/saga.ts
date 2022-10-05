@@ -1,7 +1,4 @@
-import {
-  DepartmentAction,
-  departmentAction
-} from 'department/action';
+import { departmentAction } from 'department/action';
 import {
   call,
   fork,
@@ -14,20 +11,17 @@ import {
   DepartmentVO
 } from 'department/domain';
 import { departmentApi } from 'department/api';
-import { dialogActions } from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
-    const { payload: formik } = yield take('department/filter/set');
+    const { payload: query } = yield take(departmentAction.setFilter);
     try {
-      const page: Page<DepartmentShort> = yield call(departmentApi.getPage, formik.values);
+      const page: Page<DepartmentShort> = yield call(departmentApi.getPage, query);
       yield put(departmentAction.setPage(page));
     }
     catch (e) {
       yield put(departmentAction.setPage(undefined));
-    }
-    finally {
-      yield call(formik.setSubmitting, false);
     }
   }
 }
@@ -42,32 +36,43 @@ function* watchList() {
 
 function* watchId() {
   while (true) {
-    const { id } = yield take('department/id/set');
-    const detail: DepartmentVO = yield call(departmentApi.getOne, id);
-    yield put(departmentAction.setOne(detail));
+    const { payload: id } = yield take(departmentAction.setId);
+    if (id) {
+      const detail: DepartmentVO = yield call(departmentApi.getOne, id);
+      yield put(departmentAction.setOne(detail));
+    }
+    else {
+      yield put(departmentAction.setOne(undefined));
+    }
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: formik } = yield take(DepartmentAction.upsert);
+    const { payload: params } = yield take(departmentAction.upsert);
     try {
-      yield call(departmentApi.upsert, formik.values);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put({
-        type: 'department/id/set',
-        id:   formik.values.id
-      });
+      yield put(departmentAction.requestUpsert(ApiStatus.REQUEST));
+      yield call(departmentApi.upsert, params);
+      yield put(departmentAction.requestUpsert(ApiStatus.DONE));
     }
     catch (e) {
-      console.log(e);
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error'
-      }));
+      console.error(e);
+      yield put(departmentAction.requestUpsert(ApiStatus.FAIL));
     }
-    finally {
-      yield call(formik.setSubmitting, false);
+  }
+}
+
+function* watchDelete() {
+  while (true) {
+    const { payload: id } = yield take(departmentAction.deleteOne);
+    try {
+      yield put(departmentAction.requestDelete(ApiStatus.REQUEST));
+      yield call(departmentApi.deleteOne, id);
+      yield put(departmentAction.requestDelete(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(departmentAction.requestDelete(ApiStatus.FAIL));
     }
   }
 }
@@ -77,4 +82,5 @@ export default function* departmentSaga() {
   yield fork(watchList);
   yield fork(watchId);
   yield fork(watchUpsert);
+  yield fork(watchDelete);
 }
