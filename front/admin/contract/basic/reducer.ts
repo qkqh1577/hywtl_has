@@ -1,21 +1,30 @@
 import { ContractBasicVO } from 'admin/contract/basic/domain';
 import { createReducer } from 'typesafe-actions';
-import { ContractBasicAction } from 'admin/contract/basic/action';
+import { ContractBasicActionType } from 'admin/contract/basic/action';
 import { initialContractBasicParameter } from 'admin/contract/basic/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ContractBasicState {
   template: ContractBasicVO;
+  requestUpsert: ApiStatus;
 }
 
 const initialContractBasicState: ContractBasicState = {
-  template: initialContractBasicParameter,
+  template:      initialContractBasicParameter,
+  requestUpsert: ApiStatus.IDLE,
 };
 
 export const contractBasicReducer = createReducer(initialContractBasicState, {
-  [ContractBasicAction.setOne]: (state,
-                                 action
-                                ) => ({
+  [ContractBasicActionType.setOne]:        (state,
+                                            action
+                                           ) => ({
     ...state,
     template: action.payload,
   }),
+  [ContractBasicActionType.requestUpsert]: (state,
+                                            action
+                                           ) => ({
+    ...state,
+    requestUpsert: action.payload,
+  })
 });

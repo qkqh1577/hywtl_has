@@ -317,6 +317,8 @@ export default function ProjectScheduleCalendar(props: ProjectScheduleProps) {
       }}>
         <FullCalendar
           locale="ko"
+          handleWindowResize
+          height="1030px"
           plugins={[dayGridPlugin, momentPlugin]}
           events={events}
           eventTimeFormat={{
@@ -343,7 +345,7 @@ export default function ProjectScheduleCalendar(props: ProjectScheduleProps) {
           fixedWeekCount={true}
           customButtons={{
             addButton: {
-              text: '등록',
+              text:  '등록',
               click: () => {
                 props.onAddModalOpen(true);
               }

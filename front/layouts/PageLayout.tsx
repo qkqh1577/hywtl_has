@@ -1,4 +1,8 @@
-import React, { useRef } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import {
   Box,
   Paper,
@@ -10,6 +14,7 @@ import {
   FormikProvider,
 } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
+import { useLocation } from 'react-router-dom';
 
 export interface PageLayoutProps
   extends TitleProps {
@@ -101,29 +106,32 @@ function PageContent(props: PageLayoutProps) {
     return typeof (props as any).filter !== 'undefined';
   }
 
-  const filterRef = useRef<HTMLDivElement>(null);
-  const filterHeight = filterRef.current?.offsetHeight ?? 0;
+  const { pathname } = useLocation();
+  const filterRef = useRef<HTMLDivElement>();
+  const [filterHeight, setFilterHeight] = useState<number>(0);
+
+  useEffect(() => {
+    setFilterHeight(filterRef.current?.offsetHeight ?? 0);
+  }, [pathname]);
 
   return (
     <>
-      {isSearchForm(props) && (
-        <Box
-          ref={filterRef}
-          children={props.filter}
-          sx={{
-            display:  'flex',
-            width:    '100%',
-            flexWrap: 'nowrap',
-          }}
-        />
-      )}
+      <Box
+        ref={filterRef}
+        children={isSearchForm(props) && props.filter}
+        sx={{
+          display:  'flex',
+          width:    '100%',
+          flexWrap: 'nowrap',
+        }}
+      />
       <Box sx={{
         display:                      'flex',
         width:                        '100%',
         flexWrap:                     'wrap',
         padding:                      '20px 20px 0 20px',
         overflowY:                    'scroll',
-        height:                       `calc(100% - ${filterHeight + 66}px)`, // TODO: 실제 계산 높이 필요
+        height:                       `calc(100% - ${filterHeight + 66}px)`,
         '&::-webkit-scrollbar':       {
           width:           '10px',
           backgroundColor: ColorPalette._e4e9f2
@@ -141,9 +149,7 @@ function PageContent(props: PageLayoutProps) {
         {props.footer && (
           <Box
             children={props.footer}
-            sx={{
-              width: '100%',
-            }}
+            sx={{ width: '100%' }}
           />
         )}
       </Box>

@@ -35,14 +35,13 @@ export default function ProjectSchedule(props: ProjectScheduleProps) {
       width:        '100%',
       flexWrap:     'wrap',
       alignContent: 'flex-start',
-      flex:         1,
+      marginBottom: '20px',
+      height:       '100%',
     }}>
       <Box sx={{
-        display:      'flex',
-        width:        '100%',
-        flexWrap:     'nowrap',
-        marginBottom: '15px',
-        marginTop:    '20px',
+        display:  'flex',
+        width:    '100%',
+        flexWrap: 'nowrap',
       }}>
         <SearchSection isSearchForm={isSearchForm} setKeyword={setKeyword} />
       </Box>

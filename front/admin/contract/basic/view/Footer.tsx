@@ -1,45 +1,45 @@
-import React from 'react';
-import {
-  Box,
-  Typography
-} from '@mui/material';
+import React, { useContext } from 'react';
+import { Box } from '@mui/material';
 import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
+import { FormikContext } from 'formik';
+import TextBox from 'layouts/Text';
 
 export interface Props {
-  onSubmit: () => void;
+  onCancel: DefaultFunction;
 }
 
 export default function Footer(props: Props) {
+  const formik = useContext(FormikContext);
   return (
     <Box sx={{
       display:        'flex',
       width:          '100%',
       justifyContent: 'center',
-      alignItems:     'center',
-      flexDirection:  'column',
-      marginTop:      '30px',
+      flexWrap:       'wrap',
     }}>
-      <Box>
+      <Box sx={{
+        width:          '100%',
+        display:        'flex',
+        justifyContent: 'center',
+      }}>
         <Button
-          shape="basic1"
           onClick={() => {
-            props.onSubmit();
+            formik.handleSubmit();
           }}
           sx={{
             marginRight: '10px',
           }}>
           저장
         </Button>
+        <Button shape="basic2" onClick={props.onCancel}>
+          취소
+        </Button>
       </Box>
-      <Box sx={{
-        marginTop: '15px',
-      }}>
-        <Typography sx={{
-          color:      '#9b9ea4',
-          fontWeight: 'bold'
-        }} variant="body2">
+      <Box sx={{ marginTop: '15px' }}>
+        <TextBox variant="body4">
           &#183; 내용 변경 후, 저장 하지 않고 페이지를 이동 할 경우 변경입력된 내용은 반영되지 않습니다.
-        </Typography>
+        </TextBox>
       </Box>
     </Box>
   );

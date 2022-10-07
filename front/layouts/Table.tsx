@@ -55,10 +55,55 @@ export function Td(props: TdProps) {
   );
 }
 
-export function Table(props: TableProps & {
-  variant?: 'top' | 'left';
+interface StyleProps {
+  variant?: 'top' | 'left' | 'cross';
   hasFoot?: boolean;
-}) {
+}
+
+function getStyle(props: StyleProps) {
+
+  const crossStyle = {
+    '& > thead': {
+      '& > tr:first-of-type': {
+        '& > th:first-of-type': {
+          borderTopLeftRadius: '5px',
+        },
+        '& > th:last-child':    {
+          borderRight:          `1px solid ${ColorPalette._e4e9f2}`,
+          borderTopRightRadius: '5px',
+        },
+      },
+      '& > tr:last-child':    {
+        '& > th': {
+          borderBottom: `5px solid ${ColorPalette._e4e9f2}`,
+        }
+      },
+      '& > tr > th':          {
+        backgroundColor: ColorPalette._e4e9f2,
+      }
+    },
+    '& > tbody': {
+      '& > tr':            {
+        '& > td:first-of-type': {
+          borderRight: `5px solid ${ColorPalette._e4e9f2}`
+        },
+        '& > td:last-child':    {
+          borderRight: `1px solid ${ColorPalette._e4e9f2}`,
+        },
+      },
+      '& > tr:last-child': {
+        '& > td:first-of-type': {
+          borderBottomLeftRadius: '5px',
+        },
+        '& > td':               {
+          borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
+        },
+        '& > td:last-child':    {
+          borderBottomRightRadius: '5px',
+        },
+      },
+    }
+  };
 
   const leftStyle = {
     '& > tbody': {
@@ -91,7 +136,6 @@ export function Table(props: TableProps & {
       },
     }
   };
-
   const topStyle = {
     '& > thead': {
       '& > tr:first-of-type': {
@@ -146,13 +190,25 @@ export function Table(props: TableProps & {
       }
     },
   };
+  if (props.variant === 'left') {
+    return leftStyle;
+  }
+  if (props.variant === 'cross') {
+    return crossStyle;
+  }
+
+  return topStyle;
+}
+
+export function Table(props: TableProps & StyleProps) {
+
 
   return (
     <MuiTable
       stickyHeader
       aria-label="sticky table"
       sx={{
-        ...(props.sx ?? {}),
+        ...props.sx,
         width:           props.variant === 'left' ? 'unset' : '100%',
         backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
@@ -160,8 +216,7 @@ export function Table(props: TableProps & {
           borderLeft: `1px solid ${ColorPalette._e4e9f2}`,
           borderTop:  `1px solid ${ColorPalette._e4e9f2}`,
         },
-        ...(props.variant === 'left' ? leftStyle : topStyle),
-
+        ...getStyle(props),
       }}
       {...props}
     />

@@ -1,145 +1,117 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-  Box,
   TableBody,
-  TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material';
-import TextField from 'components/TextField';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
-import { ColorPalette } from 'app/view/App/theme';
-
-interface PlainTextProps {
-  children: string;
-}
-
-function PlainText(props: PlainTextProps) {
-  return (
-    <Typography sx={{
-      width:      '100%',
-      padding:    '0 10px',
-      fontSize:   'inherit',
-      fontWeight: 'inherit',
-      textAlign:  'left'
-    }}>
-      {props.children}
-    </Typography>
-  );
-}
+import TextBox from 'layouts/Text';
+import Input from 'layouts/Input';
+import { FormikContext } from 'formik';
 
 export default function BasicContractForm() {
+  const formik = useContext(FormikContext);
 
   return (
-    <>
-      <TableContainer sx={{
-        marginBottom: '20px',
-      }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <Th colSpan={2} backgroundColor={ColorPalette._e4e9f2}>
-                풍동실험 용역 계약서
-              </Th>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <Th>
-                용역명
-              </Th>
-              <Td>
-                <PlainText>
-                  프로젝트 명이 보여집니다.
-                </PlainText>
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Th rowSpan={2}>
-                용역 기간
-              </Th>
-              <Td>
-                <TextField
-                  name="serviceDuration"
-                  label="용역기간"
-                  disableLabel
-                  variant="outlined"
-                />
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Td>
-                <PlainText>
-                  견적서에 등록된 남품가능 주가 보여집니다.
-                </PlainText>
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Th>
-                용역금액
-              </Th>
-              <Td>
-                <PlainText>
-                  견적서에 등록된 금액(부가세 포함)이 보여집니다.
-                </PlainText>
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Th rowSpan={2}>
-                기성 단계
-              </Th>
-              <Td>
-                <TextField
-                  name="collectionStageNote"
-                  label="기성단계"
-                  disableLabel
-                  variant="outlined"
-                />
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Td>
-                <PlainText>
-                  기성은 기성단계 관리 메뉴에서 관리할 수 있습니다.
-                </PlainText>
-              </Td>
-            </TableRow>
-            <TableRow>
-              <Th>
-                성과품
-              </Th>
-              <Td>
-                <TextField
-                  name="outcome"
-                  label="성과품"
-                  disableLabel
-                  variant="outlined" />
-              </Td>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box sx={{
-        display:      'flex',
-        width:        '100%',
-        padding:      '15px 20px',
-        border:       `1px solid ${ColorPalette._e4e9f2}`,
-        borderRadius: '5px',
-        marginBottom: '20px',
-      }}>
-        <TextField
-          disableLabel
-          multiline
-          variant="outlined"
-          name="description"
-          label="설명"
-        />
-      </Box>
-    </>
+    <Table variant="cross">
+      <TableHead>
+        <TableRow>
+          <Th colSpan={2}>
+            풍동실험 용역 계약서
+          </Th>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <Th sx={{ width: '140px' }}>
+            용역명
+          </Th>
+          <Td align="left">
+            <TextBox variant="body3">
+              프로젝트 명이 보여집니다.
+            </TextBox>
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Th rowSpan={2}>
+            용역 기간
+          </Th>
+          <Td>
+            <Input
+              value={formik.values.serviceDuration ?? ''}
+              variant="outlined"
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.serviceDuration !== value) {
+                  formik.setFieldValue('serviceDuration', value);
+                }
+              }}
+            />
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Td align="left">
+            <TextBox variant="body3">
+              견적서에 등록된 납품 가능 주가 보여집니다.
+            </TextBox>
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Th>
+            용역 금액
+          </Th>
+          <Td align="left">
+            <TextBox variant="body3">
+              견적서에 등록된 금액(부가세 포함)이 보여집니다.
+            </TextBox>
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Th rowSpan={2}>
+            기성 단계
+          </Th>
+          <Td>
+            <Input
+              value={formik.values.collectionStageNote ?? ''}
+              variant="outlined"
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.collectionStageNote !== value) {
+                  formik.setFieldValue('collectionStageNote', value);
+                }
+              }}
+            />
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Td align="left">
+            <TextBox variant="body3">
+              기성은 기성단계 관리 메뉴에서 관리할 수 있습니다.
+            </TextBox>
+          </Td>
+        </TableRow>
+        <TableRow>
+          <Th>
+            성과품
+          </Th>
+          <Td>
+            <Input
+              value={formik.values.outcome ?? ''}
+              variant="outlined"
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.outcome !== value) {
+                  formik.setFieldValue('outcome', value);
+                }
+              }}
+            />
+          </Td>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 };

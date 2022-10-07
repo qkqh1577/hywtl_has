@@ -1,47 +1,44 @@
-import {
-  contractBasicAction,
-  ContractBasicAction
-} from 'admin/contract/basic/action';
+import { contractBasicAction } from 'admin/contract/basic/action';
 import {
   call,
   fork,
   put,
   take
 } from 'redux-saga/effects';
-import { dialogActions } from 'components/Dialog';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
 import { contractBasicApi } from 'admin/contract/basic/api';
 import { initialContractBasicParameter } from 'admin/contract/basic/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
-function* watchPage() {
-  yield take(contractBasicAction.getOne);
-  try {
-    const page: ContractBasicVO = yield call(contractBasicApi.getOne);
-    yield put(contractBasicAction.setOne(page));
-  }
-  catch (e) {
-    yield put(contractBasicAction.setOne(initialContractBasicParameter));
+function* watchOne() {
+  while (true) {
+    yield take(contractBasicAction.requestOne);
+    try {
+      const detail: ContractBasicVO = yield call(contractBasicApi.getOne);
+      yield put(contractBasicAction.setOne(detail));
+    }
+    catch (e) {
+      yield put(contractBasicAction.setOne(initialContractBasicParameter));
+    }
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: params } = yield take(ContractBasicAction.upsert);
+    const { payload: params } = yield take(contractBasicAction.upsert);
     try {
+      yield put(contractBasicAction.requestUpsert(ApiStatus.REQUEST));
       yield call(contractBasicApi.upsert, params);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      //  TODO: 저장후 갱신 로직
+      yield put(contractBasicAction.requestUpsert(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(contractBasicAction.requestUpsert(ApiStatus.FAIL));
     }
   }
 }
 
 export default function* contractBasicSage() {
-  yield fork(watchPage);
+  yield fork(watchOne);
   yield fork(watchUpsert);
 }

@@ -10,34 +10,61 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { contractBasicAction, } from 'admin/contract/basic/action';
-import { useFormik } from 'formik';
-import { ContractBasicParameter, } from 'admin/contract/basic/parameter';
+import {
+  FormikProvider,
+  useFormik
+} from 'formik';
+import {
+  ContractBasicParameter,
+  initialContractBasicParameter,
+} from 'admin/contract/basic/parameter';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
+import useDialog from 'components/Dialog';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function Element() {
   const dispatch = useDispatch();
-  const { template } = useSelector((root: RootState) => root.contractBasic);
+  const { alert, error, rollback } = useDialog();
+  const { template, requestUpsert } = useSelector((root: RootState) => root.contractBasic);
   const upsert = useCallback((formikProps: ContractBasicParameter) =>
     dispatch(contractBasicAction.upsert(formikProps)), [dispatch]);
 
   const formik = useFormik<ContractBasicVO>({
-      enableReinitialize: true,
-      initialValues:      template,
-      onSubmit:           (values) => {
+      initialValues: template,
+      onSubmit:      (values) => {
         upsert(values);
-        formik.setSubmitting(false);
       }
     }
   );
 
   useEffect(() => {
-    dispatch(contractBasicAction.getOne());
+    dispatch(contractBasicAction.requestOne());
   }, []);
 
+  useEffect(() => {
+    formik.setValues(template ? { ...template } : initialContractBasicParameter);
+  }, [template]);
+
+  useEffect(() => {
+    if (requestUpsert === ApiStatus.DONE) {
+      alert('저장하였습니다.');
+      dispatch(contractBasicAction.requestOne());
+      dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
+    }
+    else if (requestUpsert === ApiStatus.FAIL) {
+      error('저장에 실패하였습니다.');
+      dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
+    }
+  }, [requestUpsert]);
+
   return (
-    <ContractBasicTemplate
-      formik={formik}
-    />
+    <FormikProvider value={formik}>
+      <ContractBasicTemplate onCancel={() => {
+        rollback(() => {
+          formik.setValues(template ? { ...template } : initialContractBasicParameter);
+        });
+      }} />
+    </FormikProvider>
   );
 }
 
