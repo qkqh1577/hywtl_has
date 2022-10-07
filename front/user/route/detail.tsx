@@ -45,7 +45,8 @@ function Element() {
     if (detail) {
       formik.setValues({
         ...detail,
-        edit: false,
+        departmentId: detail.department.id,
+        edit:         false,
       } as unknown as UserChangeParameter);
     }
     else {

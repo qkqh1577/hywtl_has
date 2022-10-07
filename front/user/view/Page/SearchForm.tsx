@@ -8,6 +8,7 @@ import SelectField from 'components/SelectField';
 import { keywordTypeList } from 'user/query';
 import TextField from 'components/TextField';
 import React from 'react';
+import { ColorPalette } from 'app/view/App/theme';
 
 export default function () {
   return (
@@ -27,6 +28,9 @@ export default function () {
         label={
           <SelectField
             disableLabel
+            variant="outlined"
+            border="none"
+            backgroundColor={ColorPalette.transparent}
             name="keywordType"
             label="검색 대상"
             options={keywordTypeList}
@@ -35,6 +39,7 @@ export default function () {
         children={
           <TextField
             disableLabel
+            variant="outlined"
             name="keyword"
             label="검색어"
           />

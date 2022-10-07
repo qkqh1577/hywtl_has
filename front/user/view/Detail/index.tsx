@@ -1,10 +1,12 @@
 import React from 'react';
 import PageLayout from 'layouts/PageLayout';
-import Footer, { FooterProps } from 'user/view/Detail/Footer';
+import Footer from 'user/view/Detail/Footer';
 import Form from 'user/view/Detail/Form';
+import { DefaultFunction } from 'type/Function';
 
-interface Props
-  extends FooterProps {
+interface Props {
+  onCancel: DefaultFunction;
+  onPasswordChange: DefaultFunction;
 }
 
 export default function (props: Props) {
