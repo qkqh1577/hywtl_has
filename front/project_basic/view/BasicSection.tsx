@@ -14,7 +14,7 @@ interface Props {
   handleChangeBidType: (e) => void;
 }
 
-export default function ProjectBasicBasicSection({handleChangeBidType}: Props) {
+export default function ProjectBasicBasicSection({ handleChangeBidType }: Props) {
 
   return (
     <SectionLayout title="기본 정보">
