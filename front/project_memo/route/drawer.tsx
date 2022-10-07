@@ -23,13 +23,20 @@ export default function ProjectMemoDrawerRoute() {
   const setOpen = useCallback((open: boolean) => dispatch(projectMemoAction.setDrawer(open)), [dispatch]);
   const isProjectPage = pathname.startsWith('/project/');
 
-  if (!isProjectPage) {
-    return null;
-  }
 
   useEffect(() => {
     dispatch(projectMemoAction.setProjectId(isProjectPage && id ? ProjectId(id) : undefined));
   }, [isProjectPage, id]);
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(projectMemoAction.setDrawer(true));
+    }
+  }, [projectId]);
+
+  if (!isProjectPage || !projectId) {
+    return null;
+  }
 
   return (
     <ProjectMemoDrawer
