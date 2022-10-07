@@ -21,8 +21,8 @@ export default function ProjectBasicBusinessDetailComponent({ involvedType, busi
   return (
     <Formik
       initialValues={{
-        involvedType: businessInvolvedTypeName(involvedType),
-        businessName: business.name,
+        involvedType:    businessInvolvedTypeName(involvedType),
+        businessName:    business.name,
         businessAddress: business.address
       }}
       onSubmit={() => {}}

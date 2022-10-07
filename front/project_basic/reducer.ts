@@ -102,14 +102,19 @@ export const projectBasicReducer = createReducer(initial, {
                                                         action
                                                        ) => ({
     ...state,
-    basic: action.payload,
+    basic:   action.payload,
+    bidType: action.payload.bidType,
   }),
   [ProjectBasicActionType.setBidType]:                 (state,
                                                         action
                                                        ) => ({
     ...state,
+    basic:   {
+      ...state.basic,
+      bidType: action.payload,
+    },
     bidType: action.payload,
-  }),
+  } as ProjectBasicState),
   [ProjectBasicActionType.setBusinessList]:            (state,
                                                         action
                                                        ) => ({

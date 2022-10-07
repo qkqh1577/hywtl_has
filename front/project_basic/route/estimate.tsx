@@ -14,20 +14,21 @@ export default function ProjectBasicEstimateRoute() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      {
-      estimate: {
-        estimateDate: estimate?.estimate?.plan?.estimateDate?.toISOString().slice(0, 10) || '',
-        estimateCode: estimate?.estimate?.code || '',
-        testAmount: estimate?.estimate?.plan?.testAmount?.toString() || '',
-        reviewAmount: estimate?.estimate?.plan?.reviewAmount?.toString() || '',
-        totalAmount: estimate?.estimate?.plan?.totalAmount?.toString() || '',
+      estimate:          {
+        estimateDate:     estimate?.estimate?.plan?.estimateDate?.toISOString()
+                                  .slice(0, 10) || '',
+        estimateCode:     estimate?.estimate?.code || '',
+        testAmount:       estimate?.estimate?.plan?.testAmount?.toString() || '',
+        reviewAmount:     estimate?.estimate?.plan?.reviewAmount?.toString() || '',
+        totalAmount:      estimate?.estimate?.plan?.totalAmount?.toString() || '',
         expectedDuration: estimate?.estimate?.plan?.expectedDuration || ''
       },
       rivalEstimateList: estimate?.rivalEstimateList?.map(e => ({
-        id: e.id,
-        business: e.business?.name || '',
-        testAmount: e.testAmount?.toString() || '',
-        reviewAmount: e.reviewAmount?.toString() || '',
-        totalAmount: e.totalAmount?.toString() || '',
+        id:               e.id,
+        business:         e.business?.name || '',
+        testAmount:       e.testAmount?.toString() || '',
+        reviewAmount:     e.reviewAmount?.toString() || '',
+        totalAmount:      e.totalAmount?.toString() || '',
         expectedDuration: e.expectedDuration || '',
       }))
     },

@@ -2,13 +2,6 @@ import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import { Grid } from '@mui/material';
 import TextField from 'components/TextField';
-import { FieldStatus } from 'components/DataFieldProps';
-import SelectField from 'components/SelectField';
-import UserSelector from 'components/UserSelector';
-import {
-  projectBasicBidTypeList,
-  projectBasicBidTypeName
-} from 'project_status/domain';
 
 export default function ProjectBasicDesignSection() {
   return (
