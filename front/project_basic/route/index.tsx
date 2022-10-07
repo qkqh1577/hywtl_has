@@ -16,6 +16,9 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { Box } from '@mui/material';
+import ProjectBasicBusinessAddModalRoute from 'project_basic/route/businessAddModal';
+import ProjectBasicBusinessDetailModalRoute from 'project_basic/route/businessDetailModal';
+import ProjectBasicBusinessUpdateModalRoute from 'project_basic/route/businessUpdateModal';
 
 function Element() {
   const dispatch = useDispatch();
@@ -32,6 +35,9 @@ function Element() {
     <Box sx={{ width: '100%' }}>
       <ProjectBasicBasicRoute />
       <ProjectBasicBusinessRoute />
+      <ProjectBasicBusinessAddModalRoute />
+      <ProjectBasicBusinessDetailModalRoute />
+      <ProjectBasicBusinessUpdateModalRoute />
       <ProjectBasicDesignRoute />
       <ProjectBasicTestRoute />
       <ProjectBasicEstimateRoute />

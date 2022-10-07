@@ -69,6 +69,7 @@ function* handleConfirmClickFailReasonAdd() {
     const { payload: { params } } = (yield take(ProjectStatusEventType.confirmClickFailReasonAdd)) as { payload: { params: ProjectBasicFailReasonParameter } };
     try {
       yield addFailReason(params);
+      yield put(dialogActions.openAlert('등록하였습니다.'));
       yield put(projectStatusEvent.finishFailReasonAdd(true));
     } catch (e) {
       console.error(e);

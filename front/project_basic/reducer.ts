@@ -3,6 +3,7 @@ import {
   ProjectBasic,
   ProjectBasicBid,
   ProjectBasicBusiness,
+  ProjectBasicBusinessId,
   ProjectBasicContract,
   ProjectBasicDesign,
   ProjectBasicEstimate,
@@ -12,12 +13,68 @@ import {
 import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
 import { ProjectBasicBidType } from 'project_status/domain';
+import {
+  BusinessId,
+  BusinessInvolvedType,
+  BusinessManagerId,
+  BusinessManagerVO,
+  BusinessVO
+} from 'business/domain';
+
+type filterCondition = { keywordType: string, keyword: string };
+
+export type BusinessAddModal = {
+  open: boolean,
+  isSubmitting: boolean,
+  selected?: {
+    involvedType?: BusinessInvolvedType;
+    businessId?: BusinessId;
+    businessManagerId?: BusinessManagerId;
+  },
+  values?: {
+    businessList: BusinessVO[];
+    businessFilterCondition?: filterCondition;
+    businessManagerList: BusinessManagerVO[];
+    businessManagerFilterCondition?: filterCondition;
+  }
+};
+
+export type BusinessDetailModal = {
+  open: boolean,
+  isSubmitting: boolean,
+  id?: ProjectBasicBusinessId,
+  values?: {
+    involvedType: BusinessInvolvedType;
+    business: BusinessVO;
+    businessManager: BusinessManagerVO;
+  }
+};
+
+export type BusinessUpdateModal = {
+  open: boolean,
+  isSubmitting: boolean,
+  id?: ProjectBasicBusinessId,
+  selected?: {
+    involvedType?: BusinessInvolvedType;
+    businessId?: BusinessId;
+    businessManagerId?: BusinessManagerId;
+  },
+  values?: {
+    businessList: BusinessVO[];
+    businessFilterCondition?: filterCondition;
+    businessManagerList: BusinessManagerVO[];
+    businessManagerFilterCondition?: filterCondition;
+  }
+};
 
 export interface ProjectBasicState {
   id?: ProjectId;
   basic?: ProjectBasic;
   bidType?: ProjectBasicBidType;
   businessList?: ProjectBasicBusiness[];
+  businessAddModal: BusinessAddModal;
+  businessDetailModal: BusinessDetailModal;
+  businessUpdateModal: BusinessUpdateModal;
   design?: ProjectBasicDesign;
   test?: ProjectBasicTest;
   estimate?: ProjectBasicEstimate;
@@ -28,6 +85,9 @@ export interface ProjectBasicState {
 }
 
 const initial: ProjectBasicState = {
+  businessAddModal:        { open: false, isSubmitting: false },
+  businessDetailModal:     { open: false, isSubmitting: false },
+  businessUpdateModal:     { open: false, isSubmitting: false },
   lossEstimateExpectation: false,
 };
 
@@ -37,12 +97,6 @@ export const projectBasicReducer = createReducer(initial, {
                                                        ) => ({
     ...state,
     id: action.payload,
-  }),
-  [ProjectBasicActionType.setLossEstimateExpectation]: (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    lossEstimateExpectation: action.payload,
   }),
   [ProjectBasicActionType.setBasic]:                   (state,
                                                         action
@@ -61,6 +115,24 @@ export const projectBasicReducer = createReducer(initial, {
                                                        ) => ({
     ...state,
     businessList: action.payload,
+  }),
+  [ProjectBasicActionType.setBusinessAddModal]:        (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    businessAddModal: action.payload,
+  }),
+  [ProjectBasicActionType.setBusinessDetailModal]:     (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    businessDetailModal: action.payload,
+  }),
+  [ProjectBasicActionType.setBusinessUpdateModal]:     (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    businessUpdateModal: action.payload,
   }),
   [ProjectBasicActionType.setDesign]:                  (state,
                                                         action
@@ -97,5 +169,11 @@ export const projectBasicReducer = createReducer(initial, {
                                                        ) => ({
     ...state,
     failReason: action.payload,
-  })
+  }),
+  [ProjectBasicActionType.setLossEstimateExpectation]: (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    lossEstimateExpectation: action.payload,
+  }),
 });
