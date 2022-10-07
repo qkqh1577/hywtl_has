@@ -13,13 +13,13 @@ export default function ProjectBasicContractRoute() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      {
-      orderer1: contract?.orderer1 || '',
-      orderer2: contract?.orderer2 || '',
-      orderer3: contract?.orderer3 || '',
-      orderer4: contract?.orderer4 || '',
-      testAmount: contract?.testAmount?.toString() || '',
-      reviewAmount: contract?.reviewAmount?.toString() || '',
-      totalAmount: contract?.totalAmount?.toString() || '',
+      orderer1:         contract?.orderer1 || '',
+      orderer2:         contract?.orderer2 || '',
+      orderer3:         contract?.orderer3 || '',
+      orderer4:         contract?.orderer4 || '',
+      testAmount:       contract?.testAmount?.toString() || '',
+      reviewAmount:     contract?.reviewAmount?.toString() || '',
+      totalAmount:      contract?.totalAmount?.toString() || '',
       expectedDuration: contract?.expectedDuration || ''
     },
     onSubmit:           () => {

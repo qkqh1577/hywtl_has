@@ -14,19 +14,20 @@ export default function ProjectBasicBidRoute() {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues:      {
-      bid: {
-        bidDate: bid?.bid?.bidDate?.toISOString().slice(0, 10) || '',
-        testAmount: bid?.bid?.testAmount?.toString() || '',
-        reviewAmount: bid?.bid?.reviewAmount?.toString() || '',
-        totalAmount: bid?.bid?.totalAmount?.toString() || '',
+      bid:          {
+        bidDate:          bid?.bid?.bidDate?.toISOString()
+                             .slice(0, 10) || '',
+        testAmount:       bid?.bid?.testAmount?.toString() || '',
+        reviewAmount:     bid?.bid?.reviewAmount?.toString() || '',
+        totalAmount:      bid?.bid?.totalAmount?.toString() || '',
         expectedDuration: bid?.bid?.expectedDuration || '',
       },
       rivalBidList: bid?.rivalBidList?.map(e => ({
-        id: e.id,
-        business: e.business?.name || '',
-        testAmount: e.testAmount?.toString() || '',
-        reviewAmount: e.reviewAmount?.toString() || '',
-        totalAmount: e.totalAmount?.toString() || '',
+        id:               e.id,
+        business:         e.business?.name || '',
+        testAmount:       e.testAmount?.toString() || '',
+        reviewAmount:     e.reviewAmount?.toString() || '',
+        totalAmount:      e.totalAmount?.toString() || '',
         expectedDuration: e.expectedDuration || ''
       }))
     },
