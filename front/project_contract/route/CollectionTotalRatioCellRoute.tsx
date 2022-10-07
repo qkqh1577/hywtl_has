@@ -7,8 +7,9 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import TotalRatioCell from 'admin/contract/collection/view/Form/TotalRatioCell';
 import { ProjectContractParameter } from 'project_contract/parameter';
+import { ColorPalette } from 'app/view/App/theme';
+import { Typography } from '@mui/material';
 
 export default function CollectionTotalRatioCellRoute() {
 
@@ -33,6 +34,14 @@ export default function CollectionTotalRatioCellRoute() {
   }, [list]);
 
   return (
-    <TotalRatioCell value={value} />
+    <Typography
+      sx={{
+        fontSize:   'inherit',
+        fontWeight: 'inherit',
+        color:      value !== 100 ? ColorPalette._eb4c4c : 'inherit',
+      }}
+    >
+      {value}
+    </Typography>
   );
 }

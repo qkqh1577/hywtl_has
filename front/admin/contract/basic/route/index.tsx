@@ -48,11 +48,13 @@ function Element() {
   useEffect(() => {
     if (requestUpsert === ApiStatus.DONE) {
       alert('저장하였습니다.');
+      formik.setSubmitting(false);
       dispatch(contractBasicAction.requestOne());
       dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
     }
     else if (requestUpsert === ApiStatus.FAIL) {
       error('저장에 실패하였습니다.');
+      formik.setSubmitting(false);
       dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
     }
   }, [requestUpsert]);

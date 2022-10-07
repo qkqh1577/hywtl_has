@@ -1,11 +1,17 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import {
   Box,
   IconButton,
+  MenuItem,
   TableBody,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import {
   Table,
@@ -13,17 +19,12 @@ import {
   Th
 } from 'layouts/Table';
 import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 import {
   ContractCollectionStage,
-  ContractCollectionVO,
   expectedDateTypeList,
   expectedDateTypeName
 } from 'admin/contract/collection/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
+import { FormikContext } from 'formik';
 import Tooltip from 'components/Tooltip';
 import {
   KeyboardArrowDown as DownIcon,
@@ -32,25 +33,53 @@ import {
 import useDialog from 'components/Dialog';
 import Button from 'layouts/Button';
 import AddRow from 'admin/contract/collection/view/Form/AddRow';
+import Input from 'layouts/Input';
+import RequiredMark from 'components/RequiredMark';
+import Select from 'layouts/Select';
+import { ColorPalette } from 'app/view/App/theme';
 
-interface Props {
-  totalRatioCell: React.ReactNode;
+function TotalRatio() {
+
+  const formik = useContext(FormikContext);
+  const list = formik.values.stageList;
+  const [value, setValue] = useState<number>(0);
+  useEffect(() => {
+    setValue(
+      list.map((item) => item.ratio)
+          .map(ratio => !ratio || Number.isNaN(+ratio) ? 0 : +ratio)
+          .reduce((a,
+                   b
+            ) => a + b
+            , 0)
+    );
+  }, [list]);
+  return (
+    <Typography
+      sx={{
+        fontSize:   'inherit',
+        fontWeight: 'inherit',
+        color:      value !== 100 ? ColorPalette._eb4c4c : 'inherit',
+      }}
+    >
+      {value}
+    </Typography>
+  );
 }
 
-export default function Form(props: Props) {
+export default function Form() {
   const { error } = useDialog();
-  const formikContext: FormikContextType<ContractCollectionVO> = useContext(FormikContext);
-  const list = formikContext?.values.stageList ?? [];
+  const formik = useContext(FormikContext);
+  const list = formik.values.stageList ?? [];
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
             <Th width="10%">
-              단계
+              <RequiredMark required text="단계" />
             </Th>
             <Th width="5%">
-              비율(%)
+              <RequiredMark required text="비율(%)" />
             </Th>
             <Th width="10%">
               금액(원)
@@ -76,45 +105,62 @@ export default function Form(props: Props) {
             return (
               <TableRow key={i}>
                 <Td>
-                  <TextField
-                    name={`stageList.${i}.name`}
-                    label="단계"
-                    disableLabel
+                  <Input
+                    value={item.name ?? ''}
                     variant="outlined"
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (item.name !== value) {
+                        formik.setFieldValue(`stageList.${i}.name`, value);
+                      }
+                    }}
                   />
                 </Td>
                 <Td>
-                  <TextField
+                  <Input
                     type="number"
-                    name={`stageList.${i}.ratio`}
-                    label="비율"
-                    disableLabel
+                    value={item.ratio ?? ''}
                     variant="outlined"
+                    onChange={(e) => {
+                      const value = +(e.target.value) || undefined;
+                      if (item.ratio !== value) {
+                        formik.setFieldValue(`stageList.${i}.ratio`, value);
+                      }
+                    }}
                   />
                 </Td>
                 <Td align="right">
                   용역금액 × 비율
                 </Td>
                 <Td>
-                  <TextField
-                    name={`stageList.${i}.note`}
-                    label="시기"
-                    disableLabel
+                  <Input
+                    value={item.note ?? ''}
                     variant="outlined"
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (item.note !== value) {
+                        formik.setFieldValue(`stageList.${i}.note`, value);
+                      }
+                    }}
                   />
                 </Td>
                 <Td>
-                  <SelectField
-                    disableLabel
-                    options={expectedDateTypeList.map(
-                      (item) => ({
-                        key:  item as string,
-                        text: expectedDateTypeName(item)
-                      })
+                  <Select
+                    value={item.expectedDate ?? ''}
+                    variant="outlined"
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (item.expectedDate !== value) {
+                        formik.setFieldValue(`stageList.${i}.expectedDate`, value);
+                      }
+                    }}>
+                    {expectedDateTypeList.map((type) => (
+                        <MenuItem key={type} value={type}>
+                          {expectedDateTypeName(type)}
+                        </MenuItem>
+                      )
                     )}
-                    name={`stageList.${i}.expectedDate`}
-                    label="예정일"
-                  />
+                  </Select>
                 </Td>
                 <Td>
                   <Box sx={{
@@ -137,7 +183,7 @@ export default function Form(props: Props) {
                             }
                             stageList.push(prevList[k]);
                           }
-                          formikContext!.setFieldValue('stageList', stageList);
+                          formik.setFieldValue('stageList', stageList);
                         }}
                       />
                     </Tooltip>
@@ -156,7 +202,7 @@ export default function Form(props: Props) {
                               stageList.push(item);
                             }
                           }
-                          formikContext!.setFieldValue('stageList', stageList);
+                          formik.setFieldValue('stageList', stageList);
                         }}
                       />
                     </Tooltip>
@@ -172,8 +218,8 @@ export default function Form(props: Props) {
                         error('최소 하나 이상의 세부 항목이 필요합니다.');
                         return;
                       }
-                      formikContext!.setFieldValue('stageList', list.filter((detail,
-                                                                             k
+                      formik.setFieldValue('stageList', list.filter((detail,
+                                                                     k
                       ) => k !== i));
                     }}>
                     삭제
@@ -188,7 +234,7 @@ export default function Form(props: Props) {
               합계
             </Td>
             <Td>
-              {props.totalRatioCell}
+              <TotalRatio />
             </Td>
             <Td align="right">
               금액 합계

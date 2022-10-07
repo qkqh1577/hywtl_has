@@ -1,18 +1,30 @@
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
 import { createReducer } from 'typesafe-actions';
-import { ContractCollectionAction } from 'admin/contract/collection/action';
+import { ContractCollectionActionType } from 'admin/contract/collection/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
 
 export interface ContractCollectionState {
-  template?: ContractCollectionVO;
+  template: ContractCollectionVO;
+  requestUpsert: ApiStatus;
 }
 
-const initialContractCollectionState = {};
+const initialContractCollectionState = {
+  template:      initialContractCollectionParameter,
+  requestUpsert: ApiStatus.IDLE,
+};
 
 export const contractCollectionReducer = createReducer(initialContractCollectionState, {
-  [ContractCollectionAction.setOne]: (state,
-                                      action
-                                     ) => ({
+  [ContractCollectionActionType.setOne]:        (state,
+                                                 action
+                                                ) => ({
     ...state,
     template: action.payload,
+  }),
+  [ContractCollectionActionType.requestUpsert]: (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    requestUpsert: action.payload,
   })
 });

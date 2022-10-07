@@ -1,95 +1,103 @@
 import { Td } from 'layouts/Table';
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 import {
   ContractCollectionStage,
-  ContractCollectionVO,
   ExpectedDateType,
   expectedDateTypeList,
   expectedDateTypeName
 } from 'admin/contract/collection/domain';
-import { TableRow } from '@mui/material';
-import React, { useContext, } from 'react';
-import Button from 'layouts/Button';
 import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-
-
-interface Props {
-  newName?: string;
-  newRatio?: number;
-  newNote?: string;
-  newExpectedDate?: ExpectedDateType;
-}
+  MenuItem,
+  TableRow
+} from '@mui/material';
+import React, {
+  useContext,
+  useState,
+} from 'react';
+import Button from 'layouts/Button';
+import { FormikContext } from 'formik';
+import Input from 'layouts/Input';
+import Select from 'layouts/Select';
+import useDialog from 'components/Dialog';
 
 export default function () {
-
-  const formik: FormikContextType<ContractCollectionVO> = useContext(FormikContext);
-
-
+  const { error } = useDialog();
+  const formik = useContext(FormikContext);
+  const [item, setItem] = useState<ContractCollectionStage>({});
   const onAdd = () => {
-    const values = formik.values as Props;
-    const stage: ContractCollectionStage = {
-      name:         values.newName,
-      ratio:        +(values.newRatio || 0),
-      note:         values.newNote,
-      expectedDate: values.newExpectedDate,
-    };
+    if (!item.name) {
+      error('단계가 필요합니다.');
+      return;
+    }
+    if (!item.ratio) {
+      error('비율이 필요합니다.');
+      return;
+    }
     const stageList: ContractCollectionStage[] = formik.values.stageList ?? [];
-    formik.setFieldValue('stageList', [...stageList, stage]);
-    formik.setFieldValue('newName', '');
-    formik.setFieldValue('newRatio', '');
-    formik.setFieldValue('newNote', '');
-    formik.setFieldValue('newExpectedDate', '');
+    formik.setFieldValue('stageList', [...stageList, item]);
+    setItem({});
   };
 
   return (
     <TableRow>
       <Td>
-        <TextField
-          name="newName"
-          label="단계"
-          disableLabel
+        <Input
+          value={item.name ?? ''}
           variant="outlined"
-          placeholder="입력"
+          onChange={(e) => {
+            const value = e.target.value || undefined;
+            if (item.name !== value) {
+              setItem((prevState => ({ ...prevState, name: value })));
+            }
+          }}
         />
       </Td>
       <Td>
-        <TextField
+        <Input
           type="number"
-          name="newRatio"
-          label="비율"
-          disableLabel
+          value={item.ratio ?? ''}
           variant="outlined"
-          placeholder="입력"
+          onChange={(e) => {
+            const value = +(e.target.value) || undefined;
+            if (item.ratio !== value) {
+              setItem((prevState => ({ ...prevState, ratio: value })));
+            }
+          }}
         />
       </Td>
       <Td align="right">
         용역금액 × 비율
       </Td>
       <Td>
-        <TextField
-          name="newNote"
-          label="시기"
-          disableLabel
+        <Input
+          value={item.note ?? ''}
           variant="outlined"
-          placeholder="입력"
+          onChange={(e) => {
+            const value = e.target.value || undefined;
+            if (item.note !== value) {
+              setItem((prevState => ({ ...prevState, note: value })));
+            }
+          }}
         />
       </Td>
       <Td>
-        <SelectField
-          disableLabel
-          options={expectedDateTypeList.map(
-            (item) => ({
-              key:  item as string,
-              text: expectedDateTypeName(item)
-            })
+        <Select
+          displayEmpty
+          value={item.expectedDate ?? ''}
+          variant="outlined"
+          onChange={(e) => {
+            const value = e.target.value as ExpectedDateType || undefined;
+            if (item.expectedDate !== value) {
+              setItem((prevState => ({ ...prevState, expectedDate: value })));
+            }
+          }}>
+          <MenuItem value="">선택</MenuItem>
+          {expectedDateTypeList.map((type) => (
+              <MenuItem key={type} value={type}>
+                {expectedDateTypeName(type)}
+              </MenuItem>
+            )
           )}
-          name="newExpectedDate"
-          label="예정일 선택"
-        />
+        </Select>
       </Td>
       <Td colSpan={2}>
         <Button onClick={onAdd}>

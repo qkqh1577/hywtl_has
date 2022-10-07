@@ -1,7 +1,4 @@
-import {
-  ContractCollectionAction,
-  contractCollectionAction
-} from 'admin/contract/collection/action';
+import { contractCollectionAction } from 'admin/contract/collection/action';
 import {
   call,
   fork,
@@ -10,37 +7,38 @@ import {
 } from 'redux-saga/effects';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
 import { contractCollectionApi } from 'admin/contract/collection/api';
-import { dialogActions } from 'components/Dialog';
+import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
-function* watchPage() {
-  yield take(contractCollectionAction.getOne);
-  try {
-    const page: ContractCollectionVO = yield call(contractCollectionApi.getOne);
-    yield put(contractCollectionAction.setOne(page));
-  }
-  catch (e) {
-    yield put(contractCollectionAction.setOne(undefined));
+function* watchOne() {
+  while (true) {
+    yield take(contractCollectionAction.requestOne);
+    try {
+      const page: ContractCollectionVO = yield call(contractCollectionApi.getOne);
+      yield put(contractCollectionAction.setOne(page));
+    }
+    catch (e) {
+      yield put(contractCollectionAction.setOne(initialContractCollectionParameter));
+    }
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: params } = yield take(ContractCollectionAction.upsert);
+    const { payload: params } = yield take(contractCollectionAction.upsert);
     try {
+      yield put(contractCollectionAction.requestUpsert(ApiStatus.REQUEST));
       yield call(contractCollectionApi.upsert, params);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put(contractCollectionAction.getOne());
+      yield put(contractCollectionAction.requestUpsert(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(contractCollectionAction.requestUpsert(ApiStatus.FAIL));
     }
   }
 }
 
 export default function* contractCollectionSaga() {
-  yield fork(watchPage);
+  yield fork(watchOne);
   yield fork(watchUpsert);
 };

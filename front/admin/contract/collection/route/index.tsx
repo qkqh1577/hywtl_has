@@ -14,33 +14,60 @@ import {
   initialContractCollectionParameter
 } from 'admin/contract/collection/parameter';
 import { contractCollectionAction } from 'admin/contract/collection/action';
-import { useFormik } from 'formik';
-import { ContractCollectionVO, } from 'admin/contract/collection/domain';
-import TotalRatioCellRoute from './totalRatioCell';
+import {
+  FormikProvider,
+  useFormik
+} from 'formik';
+import { ContractCollectionVO } from 'admin/contract/collection/domain';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 function Element() {
   const dispatch = useDispatch();
-  const { template } = useSelector((root: RootState) => root.contractCollection);
+  const { alert, error, rollback } = useDialog();
+  const { template, requestUpsert } = useSelector((root: RootState) => root.contractCollection);
   const upsert = useCallback((formikProps: ContractCollectionParameter) =>
     dispatch(contractCollectionAction.upsert(formikProps)), [dispatch]);
 
   const formik = useFormik<ContractCollectionVO>({
-    enableReinitialize: true,
-    initialValues:      template ? template : initialContractCollectionParameter,
-    onSubmit:           (values) => {
+    initialValues: initialContractCollectionParameter,
+    onSubmit:      (values) => {
       upsert(values);
     }
   });
 
   useEffect(() => {
-    dispatch(contractCollectionAction.getOne());
+    dispatch(contractCollectionAction.requestOne());
   }, []);
 
+  useEffect(() => {
+    formik.setValues(template ? { ...template } : initialContractCollectionParameter);
+  }, [template]);
+
+  useEffect(() => {
+    if (requestUpsert === ApiStatus.DONE) {
+      alert('저장하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(contractCollectionAction.requestUpsert(ApiStatus.IDLE));
+      dispatch(contractCollectionAction.requestOne());
+    }
+    else if (requestUpsert === ApiStatus.FAIL) {
+      error('저장에 실패하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(contractCollectionAction.requestUpsert(ApiStatus.IDLE));
+    }
+  }, [requestUpsert]);
+
   return (
-    <ContractCollectionTemplate
-      formik={formik}
-      totalRatioCell={<TotalRatioCellRoute />}
-    />
+    <FormikProvider value={formik}>
+      <ContractCollectionTemplate
+        onCancel={() => {
+          rollback(() => {
+            formik.setValues(template ? { ...template } : initialContractCollectionParameter);
+          });
+        }}
+      />
+    </FormikProvider>
   );
 }
 
