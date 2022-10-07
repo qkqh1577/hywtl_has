@@ -24,10 +24,6 @@ export interface ProjectShortVO {
   alias: string;
 }
 
-export interface ProjectStatusBar
-  extends ProjectStatus,
-          ProjectSummary {}
-
 export interface ProjectSummary {
   testType?: TestType[];
   progress: number;

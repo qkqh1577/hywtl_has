@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
 import {
   Box,
@@ -8,9 +8,6 @@ import {
 import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
 import SelectField from 'components/SelectField';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { ProjectAddParameter } from 'project/parameter';
-import { FormikProvider } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { memoLabelList } from 'app/route/projectAddModal';
 import {
@@ -19,20 +16,17 @@ import {
   ProjectProgressStatus,
   projectProgressStatusName
 } from 'project_status/domain';
+import { FormikContext } from 'formik';
+import { DefaultFunction } from 'type/Function';
 
-export interface AddModalProps
-  extends FormikLayoutProps<ProjectAddParameter> {
+export interface AddModalProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  onClose: DefaultFunction;
 }
 
 
-
-export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps) {
-
-  const onClose = () => {
-    setOpen(false);
-  };
+export default function ProjectAddModal({ open, onClose }: AddModalProps) {
+  const formik = useContext(FormikContext);
 
   const onSubmit = () => {
     formik.handleSubmit();
@@ -44,7 +38,7 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
       title="신규 프로젝트 등록"
       onClose={onClose}
       width="45vw"
-      children={<FormikProvider value={formik}>
+      children={
         <Box sx={{
           display:        'flex',
           width:          '100%',
@@ -139,7 +133,6 @@ export default function ProjectAddModal({ open, setOpen, formik }: AddModalProps
           }}>
           </Box>
         </Box>
-      </FormikProvider>
       }
       footer={
         <>

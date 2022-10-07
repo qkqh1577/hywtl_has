@@ -4,30 +4,31 @@ import { ProjectMemoVO } from 'project_memo/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectMemoAction } from 'project_memo/action';
 import { ProjectId } from 'project/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectMemoState {
-  drawer: boolean;
+  open: boolean;
   projectId?: ProjectId;
   filter?: ProjectMemoQuery;
   page?: Page<ProjectMemoVO>;
   detail?: ProjectMemoVO;
-  requestAdd: string;
-  requestChange: string;
-  requestDelete: string;
+  requestAdd: ApiStatus;
+  requestChange: ApiStatus;
+  requestDelete: ApiStatus;
 }
 
 const initial: ProjectMemoState = {
-  drawer:        true,
-  requestAdd:    'idle',
-  requestChange: 'idle',
-  requestDelete: 'idle'
+  open:          true,
+  requestAdd:    ApiStatus.IDLE,
+  requestChange: ApiStatus.IDLE,
+  requestDelete: ApiStatus.IDLE,
 };
 export const projectMemoReducer = createReducer(initial, {
   [ProjectMemoAction.setDrawer]:     (state,
                                       action
                                      ) => ({
     ...state,
-    drawer: action.payload,
+    open: action.payload,
   }),
   [ProjectMemoAction.setProjectId]:  (state,
                                       action

@@ -25,9 +25,17 @@ export function OutlinedInput(props: Omit<InputProps, |'variant'>) {
       fullWidth
       sx={props.multiline ? {
         ...props.sx,
+        padding:                       0,
+        borderRadius:                  '5px',
         backgroundColor:               ColorPalette._ffffff,
         '& > .MuiInputBase-multiline': {
           padding: 0,
+        },
+        '&::before':                   {
+          borderBottom: 'none !important',
+        },
+        '&::after':                    {
+          borderBottom: 'none !important',
         },
       } : {
         ...props.sx,

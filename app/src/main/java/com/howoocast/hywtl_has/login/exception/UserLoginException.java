@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.user.exception;
+package com.howoocast.hywtl_has.login.exception;
 
 import com.howoocast.hywtl_has.common.exception.CustomExceptionAdaptor;
 import lombok.RequiredArgsConstructor;

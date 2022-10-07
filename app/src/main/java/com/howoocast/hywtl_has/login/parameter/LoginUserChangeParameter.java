@@ -1,16 +1,16 @@
-package com.howoocast.hywtl_has.user.parameter;
+package com.howoocast.hywtl_has.login.parameter;
 
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 public class LoginUserChangeParameter {
 
-    private MultipartFile profile;
+    private FileItemParameter profile;
     private String englishName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
@@ -20,5 +20,4 @@ public class LoginUserChangeParameter {
     private String emergencyPhone;
     private String relationship;
     private String address;
-
 }

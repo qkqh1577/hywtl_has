@@ -109,16 +109,6 @@ export interface PersonnelVO {
   languageList: PersonnelLanguageVO[],
 }
 
-export enum SexCategory {
-  MALE   = '남성',
-  FEMALE = '여성',
-}
-
-export const sexCategoryList: SexCategory[] = [
-  SexCategory.MALE,
-  SexCategory.FEMALE
-];
-
 export enum HiredTypeCategory {
   NEWCOMER   = '신입',
   EXPERIENCE = '경력',

@@ -1,12 +1,10 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
-import { UserVO } from 'user/domain';
+import PageLayout from 'layouts/PageLayout';
 import Footer, { FooterProps } from 'user/view/Detail/Footer';
 import Form from 'user/view/Detail/Form';
 
 interface Props
-  extends FooterProps,
-          FormikLayoutProps<UserVO> {
+  extends FooterProps {
 }
 
 export default function (props: Props) {
@@ -16,7 +14,6 @@ export default function (props: Props) {
       title="유저 상세"
       body={<Form />}
       footer={<Footer {...props} />}
-      formik={props.formik}
     />
   );
 }

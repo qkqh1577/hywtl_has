@@ -1,4 +1,8 @@
-import React, { KeyboardEvent } from 'react';
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useEffect
+} from 'react';
 import {
   Box,
   Button,
@@ -13,12 +17,22 @@ import {
   Formik,
   FormikHelpers
 } from 'formik';
-import { LoginParameter } from 'app/domain/parameter';
-import useLogin from 'app/service/loginHook';
 import PageLayout from 'layouts/PageLayout';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
+import { loginAction } from 'login/action';
+import { LoginParameter } from 'user/parameter';
+import { RootState } from 'services/reducer';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
-const LoginForm = () => {
-  const { login } = useLogin();
+export default function LoginForm() {
+  const dispatch = useDispatch();
+  const { requestLogin } = useSelector((root: RootState) => root.login);
+  const { error } = useDialog();
+  const login = useCallback((params: LoginParameter) => dispatch(loginAction.login(params)), [dispatch]);
 
   const handler = {
     keyDown: (e: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -57,6 +71,17 @@ const LoginForm = () => {
       login(parameter);
     },
   };
+
+  useEffect(() => {
+    if (requestLogin === ApiStatus.DONE) {
+      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+      dispatch(loginAction.requestDetail());
+    }
+    else if (requestLogin === ApiStatus.FAIL) {
+      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+      error('로그인에 실패하였습니다.');
+    }
+  }, [requestLogin]);
 
   return (
     <PageLayout
@@ -142,8 +167,5 @@ const LoginForm = () => {
       }
     />
   );
-};
-
-export default LoginForm;
-
+}
 

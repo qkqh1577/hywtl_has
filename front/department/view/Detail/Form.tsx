@@ -60,7 +60,6 @@ export default function () {
       border:       `1px solid ${ColorPalette._e4e9f2}`,
       borderRadius: '5px',
     }}>
-
       <Box sx={{
         display:  'flex',
         flexWrap: 'nowrap',

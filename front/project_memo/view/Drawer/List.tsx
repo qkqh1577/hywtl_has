@@ -15,21 +15,20 @@ import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
 import TextBox from 'layouts/Text';
-import { LoginUser } from 'app/domain/login';
 import UserIcon from 'layouts/UserIcon';
 import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
-import { FormikProvider, } from 'formik';
-import { ProjectMemoChangeParameter } from 'project_memo/parameter';
+import { FormikProvider } from 'formik';
+import { LoginVO } from 'login/domain';
 import { FormikLayoutProps } from 'layouts/PageLayout';
+import { ProjectMemoChangeParameter } from 'project_memo/parameter';
 
 export interface ProjectMemoListProps
-  extends FormikLayoutProps<Partial<ProjectMemoChangeParameter>> {
-  login: LoginUser | undefined;
+  extends FormikLayoutProps<ProjectMemoChangeParameter> {
+  login: LoginVO | undefined;
   list: ProjectMemoVO[];
   onDelete: DefaultFunction<ProjectMemoId>;
 }
-
 
 export default function ProjectMemoList({
                                           login,
@@ -37,7 +36,6 @@ export default function ProjectMemoList({
                                           onDelete,
                                           formik
                                         }: ProjectMemoListProps) {
-
 
   return (
     <Box sx={{
@@ -132,7 +130,7 @@ export default function ProjectMemoList({
                     }}
                     onClick={() => {
                       if (formik.values.id === item.id) {
-                        formik.setValues({});
+                        formik.setValues({} as ProjectMemoChangeParameter);
                       }
                       else {
                         onDelete(item.id);
@@ -212,7 +210,6 @@ export default function ProjectMemoList({
                     multiline
                   />
                 </Box>
-
               </FormikProvider>
             </Box>
           )}

@@ -12,6 +12,7 @@ import { projectMemoApi } from 'project_memo/api';
 import { RootState } from 'services/reducer';
 import { dialogActions } from 'components/Dialog';
 import { ProjectId } from 'project/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
@@ -43,18 +44,13 @@ function* watchAdd() {
     const { payload: params } = yield take(projectMemoAction.add);
     try {
       const projectId: ProjectId = yield call(getProjectId);
-      yield put(projectMemoAction.requestAdd('request'));
+      yield put(projectMemoAction.requestAdd(ApiStatus.REQUEST));
       yield call(projectMemoApi.add, projectId, params);
-      yield put(dialogActions.openAlert('등록하였습니다.'));
+      yield put(projectMemoAction.requestAdd(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: e as string,
-      }));
-    }
-    finally {
-      yield put(projectMemoAction.requestAdd('response'));
+      console.error(e);
+      yield put(projectMemoAction.requestAdd(ApiStatus.FAIL));
     }
   }
 }
@@ -63,18 +59,13 @@ function* watchChange() {
   while (true) {
     const { payload: params } = yield take(projectMemoAction.change);
     try {
-      yield put(projectMemoAction.requestChange('request'));
+      yield put(projectMemoAction.requestChange(ApiStatus.REQUEST));
       yield call(projectMemoApi.change, params.id, params);
-      yield put(dialogActions.openAlert('수정하였습니다.'));
+      yield put(projectMemoAction.requestChange(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: e as string,
-      }));
-    }
-    finally {
-      yield put(projectMemoAction.requestChange('response'));
+      console.error(e);
+      yield put(projectMemoAction.requestChange(ApiStatus.FAIL));
     }
   }
 }
@@ -83,18 +74,13 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(projectMemoAction.deleteOne);
     try {
-      yield put(projectMemoAction.requestDelete('request'));
+      yield put(projectMemoAction.requestDelete(ApiStatus.REQUEST));
       yield call(projectMemoApi.deleteOne, id);
-      yield put(dialogActions.openAlert('삭제하였습니다.'));
+      yield put(projectMemoAction.requestDelete(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: e as string,
-      }));
-    }
-    finally {
-      yield put(projectMemoAction.requestDelete('response'));
+      console.error(e);
+      yield put(projectMemoAction.requestDelete(ApiStatus.FAIL));
     }
   }
 }

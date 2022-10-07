@@ -1,67 +1,50 @@
 import React from 'react';
 import { Box, } from '@mui/material';
-import { LogoutButtonProps } from 'app/view/App/LogoutButton';
-import MenuDrawer, { MenuDrawerProps } from 'app/view/App/MenuDrawer';
-import AppBar from 'app/view/App/Bar';
 import ReactRouter from 'services/routes';
-import { OnLoginUserEditModalOpen, } from 'app/route/app';
+import { useLocation } from 'react-router-dom';
 
 interface Props {
-  isLoginPage: boolean;
-  isProjectPage: boolean;
-  logoutButtonProps: LogoutButtonProps;
-  menuDrawerProps: MenuDrawerProps;
+  appBar: React.ReactNode;
+  menuDrawer: React.ReactNode;
   projectDrawer: React.ReactNode;
   projectMemoDrawer: React.ReactNode;
-  projectAppBar: React.ReactNode;
-  loginUserEditModal: React.ReactNode;
-  onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
-  notificationButton: React.ReactNode;
+  projectAddModal: React.ReactNode;
+  loginChangeModal: React.ReactNode;
   userNotificationModal: React.ReactNode;
 }
 
 export default function App(props: Props) {
-  const {
-          isLoginPage,
-          isProjectPage,
-          logoutButtonProps,
-          menuDrawerProps,
-        } = props;
 
+  const { pathname } = useLocation();
+  const isLoginPage = pathname.startsWith('/login');
   return (
-    <Box sx={{
-      display: 'flex',
-      width:   '100%',
-      height:  '100vh'
-    }}>
-      {!isLoginPage && (
-        <>
-          <AppBar
-            projectAppBar={props.projectAppBar}
-            logoutButtonProps={logoutButtonProps}
-            menuDrawerProps={menuDrawerProps}
-            loginUserEditModal={props.loginUserEditModal}
-            onLoginUserEditModalOpen={props.onLoginUserEditModalOpen}
-            notificationButton={props.notificationButton}
-            userNotificationModal={props.userNotificationModal}
-          />
-          <MenuDrawer {...props.menuDrawerProps} />
-          {props.projectDrawer}
-        </>
-      )}
-      <Box
-        component="main"
-        sx={{
-          flexGrow:     1,
-          height:       '100vh',
-          overflow:     'auto',
-          paddingLeft:  0,
-          paddingRight: 0,
-          paddingTop:   !isLoginPage ? '50px' : 0,
-        }}>
-        <ReactRouter />
+    <>
+      <Box sx={{
+        display:  'flex',
+        width:    '100%',
+        height:   '100vh',
+        overflow: 'hidden'
+      }}>
+        {props.appBar}
+        {props.menuDrawer}
+        {props.projectDrawer}
+        <Box
+          component="main"
+          sx={{
+            flexGrow:     1,
+            height:       '100vh',
+            overflow:     'hidden',
+            paddingLeft:  0,
+            paddingRight: 0,
+            paddingTop:   !isLoginPage ? '50px' : 0,
+          }}>
+          <ReactRouter />
+        </Box>
+        {props.projectMemoDrawer}
       </Box>
-      {isProjectPage && props.projectMemoDrawer}
-    </Box>
+      {props.loginChangeModal}
+      {props.userNotificationModal}
+      {props.projectAddModal}
+    </>
   );
 }

@@ -1,34 +1,22 @@
 import React, { useContext } from 'react';
 import { Button } from '@mui/material';
-import {
-  FormikContext,
-  FormikContextType,
-} from 'formik';
-import { UserVO } from 'user/domain';
+import { FormikContext } from 'formik';
+import { DefaultFunction } from 'type/Function';
 
-export interface PasswordResetButtonProps {
-  handlePassword: () => void;
+interface Props {
+  onPasswordChange: DefaultFunction;
 }
 
 export default function ({
-                           handlePassword
-                         }: PasswordResetButtonProps) {
-  const formikContext: FormikContextType<UserVO> = useContext(FormikContext);
-  if (formikContext) {
-    const { values } = formikContext;
-    if (!values.id) {
-      return null;
-    }
-    return (
-      <Button
-        children="비밀번호 변경"
-        onClick={handlePassword}
-        disabled={typeof values.id === 'undefined'}
-      />
-    );
-  }
-  else {
-    return null;
-  }
+                           onPasswordChange
+                         }: Props) {
+  const formik = useContext(FormikContext);
+  return (
+    <Button
+      children="비밀번호 변경"
+      onClick={onPasswordChange}
+      disabled={typeof formik.values.id === 'undefined'}
+    />
+  );
 
 }

@@ -1,18 +1,16 @@
 import Drawer from 'layouts/Drawer';
 import React from 'react';
-import {
-  Box,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import IconButton from 'components/IconButton';
 import { ArrowLeft as LeftIcon } from '@mui/icons-material';
 import Fade from 'components/Fade';
 import { ColorPalette } from 'app/view/App/theme';
 
 interface Props {
+  open: boolean;
   form: React.ReactNode;
   filter: React.ReactNode;
   list: React.ReactNode;
-  open: boolean;
   setOpen: (open: boolean) => void;
 }
 
@@ -44,7 +42,7 @@ export default function ProjectMemoDrawer(props: Props) {
               width:           '100%',
               justifyContent:  'center',
               backgroundColor: 'transparent',
-              paddingRight:    '10px',
+              padding:         '0 10px',
             }}>
               <IconButton
                 children={<LeftIcon />}

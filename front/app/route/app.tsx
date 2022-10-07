@@ -3,70 +3,55 @@ import {
   useNavigate
 } from 'react-router-dom';
 import useDialog from 'components/Dialog';
-import useLogin from 'app/service/loginHook';
-import useMenu from 'app/service/menuHook';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useEffect } from 'react';
 import App from 'app/view/App';
-import ProjectMemoDrawerRoute from 'project_memo/route/drawer';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
+import { RootState } from 'services/reducer';
+import { loginAction } from 'login/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import AppBarRoute from 'app/route/appBar';
 import ProjectDrawerRoute from 'app/route/projectDrawer';
-import ProjectAppBarRoute from 'app/route/projectAppBar';
-import LoginUserEditModalRoute from 'app/route/loginUserEditModal';
-import { useDispatch } from 'react-redux';
-import { userAction, } from 'user/action';
-import { LoginUser } from 'app/domain/login';
-import NotificationButtonRoute from 'app/route/notificationButton';
+import ProjectMemoDrawerRoute from 'project_memo/route/drawer';
 import UserNotificationModalRoute from 'user_notification/route/userNotificationModal';
-
-export type OnLoginUserEditModalOpen = (loginUser: LoginUser) => void;
+import LoginChangeModalRoute from 'login/route/changeModal';
+import MenuDrawerRoute from 'app/route/menuDrawer';
+import ProjectAddModalRoute from 'app/route/projectAddModal';
 
 export default function () {
 
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isProjectPage = useMemo(() => pathname.startsWith('/project/sales-management'), [pathname]);
-  const isLoginPage = useMemo(() => pathname === '/login', [pathname]);
-  const { alert } = useDialog();
-  const { user, getLoginUser, logout } = useLogin();
-  const { open: openMenu, menu, toggleMenu } = useMenu();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const onLoginUserEditModalOpen: OnLoginUserEditModalOpen = useCallback((loginUser) =>
-    dispatch(userAction.editModal(loginUser)), [dispatch]);
+  const { detail: loginUser, requestLogin } = useSelector((root: RootState) => root.login);
+  const { alert } = useDialog();
 
   useEffect(() => {
-    if (pathname !== '/login') {
-      if (user === null) {
-        alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.', () => {
-          navigate('/login');
-        });
-        return;
-      }
-      if (!user) {
-        getLoginUser();
-      }
+    if (!loginUser) {
+      dispatch(loginAction.requestDetail());
     }
-  }, [user, pathname]);
+  }, [loginUser]);
+
+  useEffect(() => {
+    if (requestLogin === ApiStatus.FAIL) {
+      if (pathname !== '/login') {
+        alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
+        navigate('/login');
+      }
+      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+    }
+  }, [requestLogin]);
 
   return (
     <App
-      isLoginPage={isLoginPage}
-      isProjectPage={isProjectPage}
-      logoutButtonProps={{ handleLogout: logout }}
-      menuDrawerProps={{
-        menu,
-        openMenu,
-        toggleMenu
-      }}
+      appBar={<AppBarRoute />}
+      menuDrawer={<MenuDrawerRoute />}
       projectDrawer={<ProjectDrawerRoute />}
       projectMemoDrawer={<ProjectMemoDrawerRoute />}
-      projectAppBar={<ProjectAppBarRoute />}
-      onLoginUserEditModalOpen={onLoginUserEditModalOpen}
-      loginUserEditModal={<LoginUserEditModalRoute />}
-      notificationButton={<NotificationButtonRoute />}
+      projectAddModal={<ProjectAddModalRoute />}
+      loginChangeModal={<LoginChangeModalRoute />}
       userNotificationModal={<UserNotificationModalRoute />}
     />
   );

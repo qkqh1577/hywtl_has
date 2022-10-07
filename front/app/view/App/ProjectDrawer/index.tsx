@@ -20,9 +20,12 @@ export default function ProjectDrawer(props: ProjectDrawerProps) {
   const searchFormRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Drawer open={props.openMenu} openedWidth={310} sx={{
-      backgroundColor: ColorPalette._f1f5fc,
-    }}>
+    <Drawer
+      open={props.openMenu}
+      openedWidth={310}
+      sx={{
+        backgroundColor: ColorPalette._f1f5fc,
+      }}>
       <FormikProvider value={props.formik}>
         <Form>
           <SearchForm {...props} searchFormRef={searchFormRef} />

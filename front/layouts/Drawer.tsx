@@ -30,6 +30,7 @@ export default function Drawer(props: Props) {
         borderRight: props.direction !== 'right' ? `1px solid ${ColorPalette._e4e9f2}` : 'none',
         width:       `${props.openedWidth ?? 260}px`,
         paddingTop:  '50px',
+        overflowY:   'hidden',
         transition:  theme.transitions.create('width', {
           easing:   theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,

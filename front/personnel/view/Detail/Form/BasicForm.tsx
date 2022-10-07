@@ -7,13 +7,13 @@ import {
 } from '@mui/material';
 import UploadField from 'components/UploadField';
 import { FormikContext } from 'formik';
-import { sexCategoryList } from 'personnel/domain';
 import { FieldStatus } from 'components/DataFieldProps';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';
+import { sexCategoryList } from 'user/domain';
 
 export default function BasicForm() {
   const formik = useContext(FormikContext);

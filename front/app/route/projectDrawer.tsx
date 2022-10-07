@@ -29,12 +29,16 @@ export default function ProjectDrawerRoute() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const isProjectPage = useMemo(() => pathname.startsWith('/project/sales-management'), [pathname]);
-  const { open: openProjectMenu, filterOpen, filterStatus } = useSelector((root: RootState) => root.projectDrawer);
+  const isProjectPage = useMemo(() => pathname.startsWith('/project/'), [pathname]);
+  const { open, filterOpen, filterStatus } = useSelector((root: RootState) => root.projectDrawer);
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const { page } = useSelector((root: RootState) => root.project);
   const setFilter = useCallback((query: ProjectQuery) => dispatch(projectAction.setFilter(query)), [dispatch]);
   const toggleFilter = useCallback(() => dispatch(projectDrawerAction.toggleFilter()), [dispatch]);
+
+  const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
+    navigate(`/project/sales-management/${item.id}/basic`);
+  };
 
   const formik = useFormik({
     initialValues: initialProjectQuery,
@@ -49,10 +53,6 @@ export default function ProjectDrawerRoute() {
       dispatch({ type: 'app/project/filter/status', filterStatus: 'idle' });
     }
   }, [filterStatus]);
-
-  const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
-    navigate(`/project/sales-management/${item.id}/basic`);
-  };
 
   useEffect(() => {
     if (pathname === '/project/sales-management') {
@@ -84,7 +84,7 @@ export default function ProjectDrawerRoute() {
     <ProjectDrawer
       openFilter={filterOpen}
       toggleFilter={toggleFilter}
-      openMenu={openProjectMenu}
+      openMenu={open}
       list={list}
       onRowClick={onRowClick}
       formik={formik}

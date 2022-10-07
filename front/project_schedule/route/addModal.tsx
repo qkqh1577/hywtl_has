@@ -19,13 +19,12 @@ import {
   ProjectScheduleParameter,
 } from 'project_schedule/parameter';
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
-import useLogin from 'app/service/loginHook';
 import dayjs from 'dayjs';
 import { UserId } from 'user/domain';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectScheduleAddModalRoute() {
-  const { user } = useLogin();
+  const { detail: loginUser } = useSelector((root: RootState) => root.login);
   const projectId = useId();
   const { alert, error } = useDialog();
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export default function ProjectScheduleAddModalRoute() {
 
   const formik = useFormik<ProjectScheduleParameter>({
     enableReinitialize: true,
-    initialValues:      { ...initialProjectScheduleParameter, managerId: user?.id ?? UserId(1) },
+    initialValues:      { ...initialProjectScheduleParameter, managerId: loginUser?.id ?? UserId(1) },
     onSubmit:           (values) => {
       if (!projectId) {
         error('프로젝트가 선택되지 않았습니다.');
@@ -65,7 +64,7 @@ export default function ProjectScheduleAddModalRoute() {
 
   useEffect(() => {
     if (addModal) {
-      formik.setValues({ ...initialProjectScheduleParameter, managerId: user?.id ?? UserId(1) });
+      formik.setValues({ ...initialProjectScheduleParameter, managerId: loginUser?.id ?? UserId(1) });
     }
   }, [addModal]);
   useEffect(() => {
