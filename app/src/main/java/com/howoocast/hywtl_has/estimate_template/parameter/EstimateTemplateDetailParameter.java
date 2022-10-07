@@ -25,5 +25,8 @@ public class EstimateTemplateDetailParameter {
     @Min(value = 0, message = EstimateTemplateDetail.KEY + ".unit_amount.positive")
     private Long unitAmount;
 
+    @NotNull(message = EstimateTemplateDetail.KEY + ".in_use.not_null")
+    private Boolean inUse;
+
     private String note;
 }

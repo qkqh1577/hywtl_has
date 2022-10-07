@@ -37,7 +37,6 @@ public class EstimateTemplate extends CustomEntity {
     /**
      * 실험 타입
      */
-    @NotNull
     @Enumerated(EnumType.STRING)
     private TestType testType;
 

@@ -44,6 +44,10 @@ public class EstimateTemplateDetail extends CustomEntity {
     @Column(nullable = false)
     private Long unitAmount;
 
+    @NotNull
+    @Column(nullable = false)
+    private Boolean inUse;
+
     /**
      * 비고
      */
@@ -53,12 +57,14 @@ public class EstimateTemplateDetail extends CustomEntity {
         List<String> titleList,
         EstimateUnit unit,
         Long unitAmount,
+        Boolean inUse,
         String note
     ) {
         EstimateTemplateDetail instance = new EstimateTemplateDetail();
         instance.titleList = titleList;
         instance.unit = unit;
         instance.unitAmount = unitAmount;
+        instance.inUse = inUse;
         instance.note = note;
         return instance;
     }

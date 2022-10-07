@@ -47,6 +47,7 @@ public class EstimateTemplateService {
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitAmount(),
+                detailParams.getInUse(),
                 detailParams.getNote()
             ))
             .collect(Collectors.toList());
@@ -70,6 +71,7 @@ public class EstimateTemplateService {
                 detailParams.getTitleList(),
                 detailParams.getUnit(),
                 detailParams.getUnitAmount(),
+                detailParams.getInUse(),
                 detailParams.getNote()
             ))
             .collect(Collectors.toList());

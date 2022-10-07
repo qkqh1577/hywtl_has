@@ -29,6 +29,7 @@ import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import { initialEstimateTemplateDetailParameter } from 'admin/estimate/template/parameter';
 import TextBox from 'layouts/Text';
+import Toggle from 'layouts/Toggle';
 
 export default function () {
   const { error } = useDialog();
@@ -48,6 +49,9 @@ export default function () {
           </Th>
           <Th sx={{ width: '230px' }}>
             <RequiredMark required={edit} text="단가" />
+          </Th>
+          <Th sx={{ width: '130px' }}>
+            <RequiredMark text="금액" />
           </Th>
           <Th>비고</Th>
           {edit && (<Th sx={{ width: '70px' }}>순서</Th>)}
@@ -105,6 +109,21 @@ export default function () {
                     }
                   }}
                 />
+              </Td>
+              <Td>
+                {!edit && (
+                  <TextBox variant="body9">{detail.inUse ? '사용' : '미사용'}</TextBox>
+                )}
+                {edit && (
+                  <Toggle
+                    checked={detail.inUse}
+                    onText="사용"
+                    offText="미사용"
+                    onChange={() => {
+                      formik.setFieldValue(`detailList.${i}.inUse`, !detail.inUse);
+                    }}
+                  />
+                )}
               </Td>
               <Td>
                 <Input

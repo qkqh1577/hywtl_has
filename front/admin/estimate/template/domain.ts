@@ -13,6 +13,7 @@ export interface EstimateTemplateDetailVO {
   titleList: string[];
   unit: TestUnit;
   unitAmount: number;
+  inUse: boolean;
   note?: string;
 }
 

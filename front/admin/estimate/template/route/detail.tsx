@@ -48,12 +48,7 @@ function Element() {
   });
 
   useEffect(() => {
-    if (id) {
-      dispatch(estimateTemplateAction.setId(EstimateTemplateId(id)));
-    }
-    else {
-      dispatch(estimateTemplateAction.setId(undefined));
-    }
+    dispatch(estimateTemplateAction.setId(id ? EstimateTemplateId(id) : undefined));
   }, [id]);
 
   useEffect(() => {
@@ -67,16 +62,10 @@ function Element() {
 
   useEffect(() => {
     if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다', () => {
-        if (id) {
-          dispatch(estimateTemplateAction.setId(EstimateTemplateId(id)));
-        }
-        else {
-          navigate('/admin/estimate-template-management');
-        }
-      });
-      dispatch(estimateTemplateAction.requestUpsert(ApiStatus.IDLE));
+      alert('저장하였습니다');
       formik.setSubmitting(false);
+      dispatch(estimateTemplateAction.setId(id ? EstimateTemplateId(id) : undefined));
+      dispatch(estimateTemplateAction.requestUpsert(ApiStatus.IDLE));
     }
     else if (requestUpsert === ApiStatus.FAIL) {
       error('저장에 실패하였습니다.');

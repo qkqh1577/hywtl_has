@@ -11,7 +11,6 @@ import {
 } from 'admin/estimate/template/domain';
 import { estimateTemplateApi } from 'admin/estimate/template/api';
 import { estimateTemplateAction } from 'admin/estimate/template/action';
-import { dialogActions } from 'components/Dialog';
 import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
 
@@ -55,15 +54,13 @@ function* watchSeq() {
   while (true) {
     const { payload: idList } = yield take(estimateTemplateAction.changeSeq);
     try {
+      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.REQUEST));
       yield call(estimateTemplateApi.changeSeq, idList);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put(estimateTemplateAction.seqModal(false));
+      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error'
-      }));
+      console.error(e);
+      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.FAIL));
     }
   }
 }

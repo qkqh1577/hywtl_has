@@ -106,6 +106,7 @@ export default function ModalLayout({
                 display:        'flex',
                 justifyContent: 'center',
                 flexWrap:       'wrap',
+                width:          '100%',
               }}>
               {children}
             </Box>

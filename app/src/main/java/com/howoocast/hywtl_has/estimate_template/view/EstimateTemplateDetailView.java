@@ -16,6 +16,7 @@ public class EstimateTemplateDetailView {
 
     private Long unitAmount;
 
+    private Boolean inUse;
     private String note;
 
 
@@ -25,6 +26,7 @@ public class EstimateTemplateDetailView {
         target.titleList = source.getTitleList();
         target.unit = source.getUnit();
         target.unitAmount = source.getUnitAmount();
+        target.inUse = source.getInUse();
         target.note = source.getNote();
         return target;
     }
