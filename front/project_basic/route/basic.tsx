@@ -3,11 +3,7 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import {
-  FormikProvider,
-  useFormik
-} from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProjectBasicBasicSection from 'project_basic/view/BasicSection';
 import { projectBasicAction } from 'project_basic/action';
 
@@ -15,38 +11,10 @@ export default function ProjectBasicBasicRoute() {
   const dispatch = useDispatch();
   const { basic } = useSelector((root: RootState) => root.projectBasic);
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues:      {
-      code:               basic?.code || '',
-      alias:              basic?.alias || '',
-      name:               basic?.name || '',
-      bidType:            basic?.bidType || '',
-      receptionManagerId: basic?.receptionManager.id || '',
-      salesManagerId:     basic?.salesManager?.id || '',
-      projectManagerId:   basic?.projectManager?.id || '',
-      isLh:               !basic?.isLh ? '' : basic?.isLh ? 'true' : 'false',
-    },
-    onSubmit:           (values) => {
-      console.log(values);
-    }
-  });
-
-  useEffect(() => {
-    if (!basic?.bidType) {
-      return;
-    }
-    dispatch(projectBasicAction.setBidType(basic.bidType));
-  }, [basic]);
-
   return (
-    <FormikProvider value={formik}>
-      <ProjectBasicBasicSection handleChangeBidType={(e) => {
-        if (!e) {
-          return;
-        }
-        dispatch(projectBasicAction.setBidType(e.target.value));
-      }} />
-    </FormikProvider>
+    <ProjectBasicBasicSection
+      basic={basic}
+      handleChangeBidType={(v) => dispatch(projectBasicAction.setBidType(v))}
+    />
   );
 }
