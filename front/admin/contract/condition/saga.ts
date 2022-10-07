@@ -4,49 +4,46 @@ import {
   put,
   take
 } from 'redux-saga/effects';
-
 import {
   ContractConditionListVO,
   ContractConditionVariableVO
 } from 'admin/contract/condition/domain';
 import { contractConditionApi } from 'admin/contract/condition/api';
-import { dialogActions } from 'components/Dialog';
-import {
-  ContractConditionAction,
-  contractConditionAction
-} from './action';
+import { contractConditionAction } from './action';
+import { initialContractConditionListParameter } from 'admin/contract/condition/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchPage() {
-  yield take(contractConditionAction.getOne);
-  try {
-    const page: ContractConditionListVO = yield call(contractConditionApi.getOne);
-    yield put(contractConditionAction.setOne(page));
-  }
-  catch (e) {
-    yield put(contractConditionAction.setOne(undefined));
+  while (true) {
+    yield take(contractConditionAction.requestOne);
+    try {
+      const page: ContractConditionListVO = yield call(contractConditionApi.getOne);
+      yield put(contractConditionAction.setOne(page));
+    }
+    catch (e) {
+      yield put(contractConditionAction.setOne(initialContractConditionListParameter));
+    }
   }
 }
 
 function* watchUpsert() {
   while (true) {
-    const { payload: params } = yield take(ContractConditionAction.upsert);
+    const { payload: params } = yield take(contractConditionAction.upsert);
     try {
+      yield put(contractConditionAction.requestUpsert(ApiStatus.REQUEST));
       yield call(contractConditionApi.upsert, params);
-      yield put(dialogActions.openAlert('저장하였습니다.'));
-      yield put(contractConditionAction.getOne());
+      yield put(contractConditionAction.requestUpsert(ApiStatus.DONE));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   'error',
-      }));
+      console.error(e);
+      yield put(contractConditionAction.requestUpsert(ApiStatus.FAIL));
     }
   }
 }
 
 function* watchVariableList() {
   while (true) {
-    yield take(contractConditionAction.getVariableList);
+    yield take(contractConditionAction.requestVariableList);
     const list: ContractConditionVariableVO[] = yield call(contractConditionApi.getVariableList);
     yield put(contractConditionAction.setVariableList(list));
   }

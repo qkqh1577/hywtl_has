@@ -1,27 +1,39 @@
-import {
-  ContractConditionListVO,
-  ContractConditionVariableVO,
-} from 'admin/contract/condition/domain';
+import { ContractConditionVariableVO, } from 'admin/contract/condition/domain';
 import { createReducer } from 'typesafe-actions';
-import { ContractConditionAction } from 'admin/contract/condition/action';
+import { ContractConditionActionType } from 'admin/contract/condition/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import {
+  ContractConditionListParameter,
+  initialContractConditionListParameter
+} from 'admin/contract/condition/parameter';
 
 export interface ContractConditionState {
-  template?:   ContractConditionListVO;
+  template: ContractConditionListParameter;
   variableList?: ContractConditionVariableVO[];
+  requestUpsert: ApiStatus;
 }
 
-const initialContractConditionState = {};
+const initialContractConditionState = {
+  template:      initialContractConditionListParameter,
+  requestUpsert: ApiStatus.IDLE,
+};
 
 export const contractConditionReducer = createReducer(initialContractConditionState, {
-  [ContractConditionAction.setOne]: (state,
-                                     action
-                                    ) => ({
+  [ContractConditionActionType.setOne]:          (state,
+                                                  action
+                                                 ) => ({
     ...state,
     template: action.payload,
   }),
-  [ContractConditionAction.setVariableList]: (state,
-                                              action
-                                    ) => ({
+  [ContractConditionActionType.requestUpsert]:   (state,
+                                                  action
+                                                 ) => ({
+    ...state,
+    requestUpsert: action.payload,
+  }),
+  [ContractConditionActionType.setVariableList]: (state,
+                                                  action
+                                                 ) => ({
     ...state,
     variableList: action.payload,
   })

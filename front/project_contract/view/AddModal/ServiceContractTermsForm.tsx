@@ -17,15 +17,15 @@ import Tooltip from 'components/Tooltip';
 import IconButton from 'components/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
-import AddRow from 'admin/contract/condition/view/addRow';
+import AddRow from 'admin/contract/condition/view/AddRow';
 import {
   ContractConditionVariableVO,
   ContractConditionVO,
-  initialContractConditionVO
 } from 'admin/contract/condition/domain';
 import Text from 'layouts/Text';
 import VariableList from 'admin/contract/condition/view/VariableList';
 import useDialog from 'components/Dialog';
+import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
 
 interface Props
   extends FormikLayoutProps<any> {
@@ -40,7 +40,7 @@ export default function (props: Props) {
   const { error } = useDialog();
   const list = formik.values.conditionList;
   const onAddForm = () => {
-    formik.setFieldValue(`contractConditionList`, [...(list ?? []), initialContractConditionVO]);
+    formik.setFieldValue(`contractConditionList`, [...(list ?? []), initialContractCollectionParameter]);
   };
 
   return (

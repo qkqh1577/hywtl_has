@@ -1,24 +1,20 @@
 import React from 'react';
-import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
+import PageLayout from 'layouts/PageLayout';
 import Form from 'admin/contract/condition/view/Form';
 import Footer from 'admin/contract/condition/view/Footer';
-import { ContractConditionListVO } from 'admin/contract/condition/domain';
-import { VariableListProps } from './VariableList';
+import { DefaultFunction } from 'type/Function';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
-interface Props
-  extends FormikLayoutProps<ContractConditionListVO>,
-          VariableListProps {
+interface Props {
+  onCancel: DefaultFunction;
+  variableList: ContractConditionVariableVO[] | undefined;
 }
 
 export default function ContractConditionTemplate(props: Props) {
-  const onSubmit = () => {
-    props.formik.handleSubmit();
-  };
   return (
     <PageLayout
-      body={<Form {...props} />}
-      footer={<Footer onSubmit={onSubmit} />}
-      formik={props.formik}
+      body={<Form variableList={props.variableList} />}
+      footer={<Footer onCancel={props.onCancel} />}
     />
   );
 }

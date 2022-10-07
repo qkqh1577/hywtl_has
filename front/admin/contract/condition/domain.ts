@@ -5,7 +5,7 @@ export function ContractConditionId(id: number) {
 }
 
 export interface ContractConditionVO {
-  id: ContractConditionId | '';
+  id: ContractConditionId;
   title: string;
   descriptionList: string[];
 }
@@ -13,16 +13,6 @@ export interface ContractConditionVO {
 export interface ContractConditionListVO {
   contractConditionList: ContractConditionVO[];
 }
-
-export const initialContractConditionListVO: ContractConditionListVO = {
-  contractConditionList: [],
-};
-
-export const initialContractConditionVO: ContractConditionVO = {
-  id:              '',
-  title:           '',
-  descriptionList: []
-};
 
 export interface ContractConditionVariableVO {
   name: string;

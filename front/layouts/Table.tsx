@@ -207,9 +207,9 @@ export function Table(props: TableProps & StyleProps) {
     <MuiTable
       stickyHeader
       aria-label="sticky table"
+      {...props}
       sx={{
-        ...props.sx,
-        width:           props.variant === 'left' ? 'unset' : '100%',
+        width:           (props.sx as any)?.width ?? props.variant === 'left' ? 'unset' : '100%',
         backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
         '& td, & th':    {
@@ -218,7 +218,6 @@ export function Table(props: TableProps & StyleProps) {
         },
         ...getStyle(props),
       }}
-      {...props}
     />
   );
 }

@@ -5,10 +5,9 @@ export interface ContractCollectionParameter
 
 }
 
-export const initialContractCollectionParameter: ContractCollectionVO = {
-  stageList:       [{
+export const initialContractCollectionParameter: ContractCollectionParameter = {
+  stageList: [{
     name: '',
     note: '',
   }],
-  totalAmountNote: ''
 };

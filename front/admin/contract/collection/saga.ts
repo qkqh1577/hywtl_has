@@ -7,8 +7,8 @@ import {
 } from 'redux-saga/effects';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
 import { contractCollectionApi } from 'admin/contract/collection/api';
-import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
+import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
 
 function* watchOne() {
   while (true) {
