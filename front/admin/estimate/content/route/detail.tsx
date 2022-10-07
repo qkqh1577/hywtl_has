@@ -15,32 +15,27 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import { FormikEditable, } from 'type/Form';
 import {
   EstimateContentParameter,
   initialEstimateContentParameter
 } from 'admin/estimate/content/parameter';
 import { estimateContentAction } from 'admin/estimate/content/action';
 import { EstimateContentId } from 'admin/estimate/content/domain';
+import { ApiStatus } from 'components/DataFieldProps';
+import { useNavigate } from 'react-router-dom';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
-  const { detail, variableList } = useSelector((root: RootState) => root.estimateContent);
-  const { error } = useDialog();
+  const navigate = useNavigate();
+  const { alert, error } = useDialog();
+  const { detail, variableList, requestUpsert, requestDelete } = useSelector((root: RootState) => root.estimateContent);
   const upsert = useCallback((params: EstimateContentParameter) => dispatch(estimateContentAction.upsert(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(estimateContentAction.deleteOne()), [dispatch]);
   const formik = useFormik<EstimateContentParameter>({
-    enableReinitialize: true,
-    initialValues:      initialEstimateContentParameter,
-    onSubmit:           (formikValues) => {
-      const values = formikValues as FormikEditable<EstimateContentParameter>;
-      if (id && !values.edit) {
-        error('수정 상태가 아닙니다.');
-        return;
-      }
+    initialValues: initialEstimateContentParameter,
+    onSubmit:      (values) => {
       upsert(values);
-      formik.setSubmitting(false);
     }
   });
 
@@ -56,12 +51,47 @@ function Element() {
 
   useEffect(() => {
     if (detail) {
-      formik.setValues({ ...detail, edit: false } as EstimateContentParameter);
+      formik.setValues({
+        ...detail,
+        testTypeList: detail.testTypeList ?? initialEstimateContentParameter.testTypeList,
+        edit:         false
+      } as EstimateContentParameter);
     }
     else {
       formik.setValues(initialEstimateContentParameter);
     }
   }, [detail]);
+
+  useEffect(() => {
+    if (requestUpsert === ApiStatus.DONE) {
+      alert('저장하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(estimateContentAction.requestUpsert(ApiStatus.IDLE));
+      if (id) {
+        dispatch(estimateContentAction.setId(EstimateContentId(id)));
+      }
+      else {
+        navigate('/admin/estimate-content-management');
+      }
+    }
+    else if (requestUpsert === ApiStatus.FAIL) {
+      error('저장에 실패하였습니다.');
+      formik.setSubmitting(false);
+      dispatch(estimateContentAction.requestUpsert(ApiStatus.IDLE));
+    }
+  }, [requestUpsert]);
+
+  useEffect(() => {
+    if (requestDelete === ApiStatus.DONE) {
+      alert('삭제하였습니다.');
+      dispatch(estimateContentAction.requestDelete(ApiStatus.IDLE));
+      navigate('/admin/estimate-content-management');
+    }
+    else if (requestDelete === ApiStatus.FAIL) {
+      error('삭제에 실패하였습니다.');
+      dispatch(estimateContentAction.requestDelete(ApiStatus.IDLE));
+    }
+  }, [requestDelete]);
 
   return (
     <FormikProvider value={formik}>
@@ -70,7 +100,11 @@ function Element() {
         onDelete={onDelete}
         onCancel={() => {
           if (detail) {
-            formik.setValues({ ...detail, edit: false } as EstimateContentParameter);
+            formik.setValues({
+              ...detail,
+              testTypeList: detail.testTypeList ?? initialEstimateContentParameter.testTypeList,
+              edit:         false
+            } as EstimateContentParameter);
           }
           else {
             formik.setValues(initialEstimateContentParameter);

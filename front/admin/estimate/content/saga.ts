@@ -15,7 +15,6 @@ import {
   select,
   take
 } from 'redux-saga/effects';
-import { dialogActions } from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import { ApiStatus } from 'components/DataFieldProps';
 
@@ -42,7 +41,6 @@ function* watchUpsert() {
       yield put(estimateContentAction.requestUpsert(ApiStatus.REQUEST));
       yield call(estimateContentApi.upsert, params);
       yield put(estimateContentAction.requestUpsert(ApiStatus.DONE));
-      yield put(dialogActions.openAlert('저장했습니다.'));
     }
     catch (e) {
       console.error(e);

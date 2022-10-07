@@ -35,7 +35,7 @@ export default function () {
       <Table>
         <TableHead>
           <TableRow>
-            <Th>No.</Th>
+            <Th sx={{ width: '52px' }}>No.</Th>
             <Th>
               <RequiredMark required={edit} text="문구" />
             </Th>
@@ -58,12 +58,15 @@ export default function () {
                     readOnly={!edit}
                     value={detail ?? ''}
                     onChange={(e) => {
-                      const value = e.target.value || undefined;
+                      const value: string | undefined = e.target.value || undefined;
                       if (detail !== value) {
-                        formik.setFieldValue(`detailList.${i}`, detail);
+                        const result: string[] = [];
+                        for (let j = 0; j < list.length; j++) {
+                          result.push(j === i ? value : list[j]);
+                        }
+                        formik.setFieldValue(`detailList`, result);
                       }
                     }}
-
                   />
                 </Td>
                 {edit && (
