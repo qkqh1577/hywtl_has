@@ -3,11 +3,11 @@ package com.howoocast.hywtl_has.user.domain;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.file.domain.FileItem;
+import com.howoocast.hywtl_has.login.exception.UserLoginException;
+import com.howoocast.hywtl_has.login.exception.UserLoginException.UserLoginExceptionType;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.exception.PasswordException;
 import com.howoocast.hywtl_has.user.exception.PasswordException.PasswordExceptionType;
-import com.howoocast.hywtl_has.user.exception.UserLoginException;
-import com.howoocast.hywtl_has.user.exception.UserLoginException.UserLoginExceptionType;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +19,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -70,12 +69,9 @@ public class User extends CustomEntity {
     /**
      * 소속 조직
      */
-    @NotNull
     @ManyToOne
     private Department department;
 
-    @NotNull
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -146,12 +142,12 @@ public class User extends CustomEntity {
     private String status; // 사용, 사용 중지
 
     protected User(
-            String username,
-            String password,
-            String name,
-            String email,
-            Department department,
-            UserRole role
+        String username,
+        String password,
+        String name,
+        String email,
+        Department department,
+        UserRole role
     ) {
         this.username = username;
         this.name = name;
@@ -169,20 +165,20 @@ public class User extends CustomEntity {
     }
 
     public static User of(
-            String username,
-            String password,
-            String name,
-            String email,
-            Department department,
-            UserRole role
+        String username,
+        String password,
+        String name,
+        String email,
+        Department department,
+        UserRole role
     ) {
         return new User(
-                username,
-                password,
-                name,
-                email,
-                department,
-                role
+            username,
+            password,
+            name,
+            email,
+            department,
+            role
         );
     }
 
@@ -198,10 +194,10 @@ public class User extends CustomEntity {
     }
 
     public void change(
-            String name,
-            String email,
-            UserRole role,
-            Department department
+        String name,
+        String email,
+        UserRole role,
+        Department department
     ) {
         this.name = name;
         this.email = email;
@@ -210,8 +206,8 @@ public class User extends CustomEntity {
     }
 
     public void changePassword(
-            String nowPassword,
-            String newPassword
+        String nowPassword,
+        String newPassword
     ) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(nowPassword, this.password)) {
@@ -224,7 +220,7 @@ public class User extends CustomEntity {
     }
 
     public void login(
-            String invalidatePeriod
+        String invalidatePeriod
     ) {
         this.checkCanLogin(invalidatePeriod);
         this.loginAt = LocalDateTime.now();
@@ -250,46 +246,26 @@ public class User extends CustomEntity {
         this.deletedAt = LocalDateTime.now();
     }
 
-    /* 계정 정보 수정 api */
-    public void edit(
-            @Nullable String englishName,
-            @Nullable LocalDate birthDate,
-            @Nullable String sex,
-            @Nullable String mobilePhone,
-            @Nullable String privateEmail,
-            @Nullable String emergencyPhone,
-            @Nullable String relationship,
-            @Nullable String address,
-            @Nullable FileItem profile
+    public void change(
+        String englishName,
+        LocalDate birthDate,
+        String sex,
+        String mobilePhone,
+        String privateEmail,
+        String emergencyPhone,
+        String relationship,
+        String address,
+        @Nullable FileItem profile
     ) {
-        if (Objects.nonNull(englishName) && !englishName.isEmpty()) {
-            this.englishName = englishName;
-        }
-        if (Objects.nonNull(birthDate)) {
-            this.birthDate = birthDate;
-        }
-        if (Objects.nonNull(sex) && !sex.isEmpty()) {
-            this.sex = sex;
-        }
-
-        if (Objects.nonNull(mobilePhone) && !mobilePhone.isEmpty()) {
-            this.mobilePhone = mobilePhone;
-        }
-        if (Objects.nonNull(privateEmail) && !privateEmail.isEmpty()) {
-            this.privateEmail = privateEmail;
-        }
-        if (Objects.nonNull(emergencyPhone) && !emergencyPhone.isEmpty()) {
-            this.emergencyPhone = emergencyPhone;
-        }
-        if (Objects.nonNull(relationship) && !relationship.isEmpty()) {
-            this.relationship = relationship;
-        }
-        if (Objects.nonNull(address) && !address.isEmpty()) {
-            this.address = address;
-        }
-        if (Objects.nonNull(profile)) {
-            this.profile = profile;
-        }
+        this.englishName = englishName;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.mobilePhone = mobilePhone;
+        this.privateEmail = privateEmail;
+        this.emergencyPhone = emergencyPhone;
+        this.relationship = relationship;
+        this.address = address;
+        this.profile = profile;
     }
 
 }

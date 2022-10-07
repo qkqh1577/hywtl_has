@@ -6,7 +6,6 @@ import {
 import React, {
   useCallback,
   useEffect,
-  useState
 } from 'react';
 import { projectMemoAction } from 'project_memo/action';
 import {
@@ -23,12 +22,13 @@ import {
   ProjectMemoAddParameter,
 } from 'project_memo/parameter';
 import { RootState } from 'services/reducer';
-import UserSelectModal from 'project_memo/view/UserModal';
 import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 export default function ProjectMemoDrawerFormRoute() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const { alert, error } = useDialog();
   const { requestAdd } = useSelector((root: RootState) => root.projectMemo);
   const setOpen = useCallback((open: boolean) => dispatch(projectMemoAction.setDrawer(open)), [dispatch]);
   const add = useCallback((formikProps: ProjectMemoAddParameter) => dispatch(projectMemoAction.add(formikProps)), [dispatch]);
@@ -43,21 +43,26 @@ export default function ProjectMemoDrawerFormRoute() {
   });
 
   const defaultCategory = getDefaultValue();
-  const [userModal, setUserModal] = useState<boolean>(false);
 
   useEffect(() => {
     formik.setFieldValue('category', defaultCategory);
   }, [defaultCategory]);
 
   useEffect(() => {
-    if (requestAdd === ApiStatus.RESPONSE) {
+    if (requestAdd === ApiStatus.DONE) {
+      formik.setSubmitting(false);
+      alert('등록하였습니다.');
       formik.setValues({
         description: '',
         category:    defaultCategory,
       });
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
       dispatch(projectMemoAction.requestAdd(ApiStatus.IDLE));
+    }
+    else if (requestAdd === ApiStatus.FAIL) {
       formik.setSubmitting(false);
+      error('등록에 실패하였습니다.');
+
     }
   }, [requestAdd]);
 
@@ -65,24 +70,6 @@ export default function ProjectMemoDrawerFormRoute() {
     <FormikProvider value={formik}>
       <ProjectMemoForm
         setOpen={setOpen}
-        onSubmit={() => {
-          formik.handleSubmit();
-        }}
-        openUserModal={() => {
-          setUserModal(true);
-        }}
-        userModal={
-          <UserSelectModal
-            open={userModal}
-            onClose={() => {
-              setUserModal(false);
-            }}
-            afterSubmit={(idList) => {
-              formik.setFieldValue('attendanceList', idList);
-            }}
-          />
-        }
-        attendanceList={formik.values.attendanceList}
       />
     </FormikProvider>
   );

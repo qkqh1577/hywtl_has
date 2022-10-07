@@ -3,19 +3,20 @@ import { IconButton } from '@mui/material';
 import { Logout as LogoutIcon } from '@mui/icons-material';
 import React from 'react';
 import useDialog from 'components/Dialog';
+import { DefaultFunction } from 'type/Function';
 
-export interface LogoutButtonProps {
-  handleLogout: () => void;
+interface Props {
+  onLogout: DefaultFunction;
 }
 
-export default function ({ handleLogout }: LogoutButtonProps) {
+export default function (props: Props) {
 
   const { confirm } = useDialog();
   const onClick = () => {
     confirm({
       children:     '로그아웃하시겠습니까?',
       confirmText:  '로그아웃',
-      afterConfirm: handleLogout
+      afterConfirm: props.onLogout
     });
   };
 

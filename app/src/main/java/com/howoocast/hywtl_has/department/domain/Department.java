@@ -9,14 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
@@ -41,8 +41,6 @@ public class Department extends CustomEntity {
     /**
      * 조직 유형
      */
-    @NotNull
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DepartmentCategory category;
 
@@ -64,18 +62,12 @@ public class Department extends CustomEntity {
      */
     private String note;
 
-    /**
-     * 하위 조직 리스트
-     */
-    @OneToMany(mappedBy = "parent")
-    @OrderBy("seq")
+    @Setter
+    @Transient
     private List<Department> childrenList;
 
-    /**
-     * 소속 유저 리스트
-     */
-    @OneToMany(mappedBy = "department")
-    @OrderBy("id")
+    @Setter
+    @Transient
     private List<User> userList;
 
     public static Department of() {
@@ -83,11 +75,11 @@ public class Department extends CustomEntity {
     }
 
     public void change(
-            String name,
-            DepartmentCategory category,
-            @Nullable Department parent,
-            Integer seq,
-            String note
+        String name,
+        DepartmentCategory category,
+        @Nullable Department parent,
+        Integer seq,
+        String note
     ) {
         this.name = name;
         this.category = category;
@@ -97,8 +89,8 @@ public class Department extends CustomEntity {
     }
 
     public void changeParent(
-            @Nullable Department parent,
-            int seq
+        @Nullable Department parent,
+        int seq
     ) {
         this.parent = parent;
         this.seq = seq;

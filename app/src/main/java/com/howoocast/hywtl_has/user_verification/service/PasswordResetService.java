@@ -44,7 +44,6 @@ public class PasswordResetService {
         this.resetByEmail(parameter.getEmail());
     }
 
-    @Transactional
     public void reset(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(User.KEY, userId));

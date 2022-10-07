@@ -8,14 +8,14 @@ export interface LoginState {
   requestLogin: ApiStatus;
   requestLogout: ApiStatus;
   requestChange: ApiStatus;
-  userModal: boolean;
+  changeModal: boolean;
 }
 
 const initial: LoginState = {
   requestLogin:  ApiStatus.IDLE,
   requestLogout: ApiStatus.IDLE,
   requestChange: ApiStatus.IDLE,
-  userModal:     false,
+  changeModal:   false,
 };
 
 export const loginReducer = createReducer(initial, {
@@ -43,10 +43,10 @@ export const loginReducer = createReducer(initial, {
     ...state,
     requestChange: action.payload,
   }),
-  [LoginActionType.userModal]:     (state,
-                                    action
-                                   ) => ({
+  [LoginActionType.changeModal]: (state,
+                                  action
+                                 ) => ({
     ...state,
-    userModal: action.payload
+    changeModal: action.payload
   })
 });

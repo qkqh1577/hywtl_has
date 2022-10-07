@@ -42,11 +42,17 @@ function* watchLogout() {
 function* watchDetail() {
   while (true) {
     yield take(loginAction.requestDetail);
-    const detail: LoginVO = yield call(loginApi.get);
-    if (detail) {
-      yield put(loginAction.setDetail(detail));
+    try {
+      const detail: LoginVO = yield call(loginApi.get);
+      if (detail) {
+        yield put(loginAction.setDetail(detail));
+      }
+      else {
+        yield put(loginAction.setDetail(undefined));
+        yield put(loginAction.requestLogin(ApiStatus.FAIL));
+      }
     }
-    else {
+    catch (e) {
       yield put(loginAction.setDetail(undefined));
       yield put(loginAction.requestLogin(ApiStatus.FAIL));
     }

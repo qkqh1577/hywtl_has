@@ -4,21 +4,16 @@ import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
-import com.howoocast.hywtl_has.file.domain.FileItem;
-import com.howoocast.hywtl_has.file.service.FileItemService;
+import com.howoocast.hywtl_has.login.parameter.UserPasswordChangeParameter;
 import com.howoocast.hywtl_has.user.domain.User;
-import com.howoocast.hywtl_has.user.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
-import com.howoocast.hywtl_has.user.parameter.UserPasswordChangeParameter;
-import com.howoocast.hywtl_has.user.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user.view.UserView;
-import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
-import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
+import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
 import java.util.Objects;
@@ -45,11 +40,10 @@ public class UserService {
 
     private final UserInvitationRepository userInvitationRepository;
 
-    private final PasswordResetRepository passwordResetRepository;
-
     private final DepartmentRepository departmentRepository;
 
-    private final FileItemService fileItemService;
+    private final PasswordResetService passwordResetService;
+
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -78,12 +72,6 @@ public class UserService {
         return UserView.assemble(instance);
     }
 
-    @Transactional(readOnly = true)
-    public UserView get(String username) {
-        User instance = repository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
-        return UserView.assemble(instance);
-    }
 
     @Transactional
     public void add(UserAddParameter parameter) {
@@ -131,54 +119,14 @@ public class UserService {
     }
 
     @Transactional
-    public void validatePassword(UserValidatePasswordParameter parameter) {
-        PasswordReset passwordReset = passwordResetRepository.findByEmail(parameter.getEmail())
-            .orElseThrow(() -> new NotFoundException(
-                "user_verification.password_reset",
-                "email",
-                parameter.getEmail()
-            ));
-        passwordReset.checkValid(invalidateDuration, parameter.getAuthKey());
-
-        User instance = repository.findByEmail(parameter.getEmail())
-            .orElseThrow(
-                () -> new NotFoundException(
-                    User.KEY,
-                    "email",
-                    parameter.getEmail()
-                )
-            );
-        instance.validatePassword(parameter.getPassword());
-        passwordReset.delete();
+    public void resetPassword(Long id) {
+        passwordResetService.reset(id);
     }
+
 
     @Transactional
     public void delete(Long id) {
         this.load(id).delete();
-    }
-
-    /* 계정 정보 수정 api */
-    @Transactional
-    public void edit(String username, LoginUserChangeParameter parameter) {
-
-        FileItem profile = fileItemService.build(parameter.getProfile());
-        User loginUser = this.findByUsername(username);
-        loginUser.edit(
-            parameter.getEnglishName(),
-            parameter.getBirthDate(),
-            parameter.getSex(),
-            parameter.getMobilePhone(),
-            parameter.getPrivateEmail(),
-            parameter.getEmergencyPhone(),
-            parameter.getRelationship(),
-            parameter.getAddress(),
-            profile
-        );
-    }
-
-    private User findByUsername(String username) {
-        return repository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException(User.KEY, "username", username));
     }
 
     private User load(Long id) {

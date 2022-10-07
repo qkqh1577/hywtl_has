@@ -3,32 +3,18 @@ import {
   Box
 } from '@mui/material';
 import SearchBar from 'app/view/App/SearchBar';
-import AccountButton from 'app/view/App/AccountButton';
-import LogoutButton, { LogoutButtonProps } from 'app/view/App/LogoutButton';
 import React from 'react';
-import MenuAppBar from 'app/view/App/MenuDrawer/AppBar';
-import { MenuDrawerProps } from 'app/view/App/MenuDrawer';
 import { ColorPalette } from 'app/view/App/theme';
-import { OnLoginUserEditModalOpen, } from 'app/route/app';
 
 interface Props {
   projectAppBar: React.ReactNode;
-  logoutButtonProps: LogoutButtonProps;
-  menuDrawerProps: MenuDrawerProps;
-  loginUserEditModal: React.ReactNode;
-  onLoginUserEditModalOpen: OnLoginUserEditModalOpen;
+  logoutButton: React.ReactNode;
+  menuDrawerBar: React.ReactNode;
+  accountButton: React.ReactNode;
   notificationButton: React.ReactNode;
-  userNotificationModal: React.ReactNode;
 }
 
 export default function AppBar(props: Props) {
-  const {
-          logoutButtonProps,
-          menuDrawerProps,
-          loginUserEditModal,
-          userNotificationModal,
-          onLoginUserEditModalOpen
-        } = props;
   return (
     <>
       <MuiAppBar sx={(theme) => ({
@@ -50,7 +36,7 @@ export default function AppBar(props: Props) {
             display: 'flex',
             height:  '100%',
           }}>
-            <MenuAppBar {...menuDrawerProps} />
+            {props.menuDrawerBar}
             {props.projectAppBar}
           </Box>
           <Box sx={{
@@ -59,13 +45,11 @@ export default function AppBar(props: Props) {
           }}>
             <SearchBar />
             {props.notificationButton}
-            <AccountButton onLoginUserEditModalOpen={onLoginUserEditModalOpen} />
-            <LogoutButton {...logoutButtonProps} />
+            {props.accountButton}
+            {props.logoutButton}
           </Box>
         </Box>
       </MuiAppBar>
-      {loginUserEditModal}
-      {userNotificationModal}
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function ProjectMemoDrawerFilterRoute() {
 
   useEffect(() => {
     if (projectId) {
-      dispatch(projectMemoAction.setFilter(formik.values));
+      dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
     }
   }, [projectId]);
 

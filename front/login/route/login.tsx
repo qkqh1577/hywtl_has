@@ -1,4 +1,4 @@
-import LoginForm from 'app/view/LoginForm';
+import LoginForm from 'login/view/LoginForm';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'services/routes';

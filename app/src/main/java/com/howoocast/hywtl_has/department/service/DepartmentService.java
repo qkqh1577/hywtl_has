@@ -8,9 +8,6 @@ import com.howoocast.hywtl_has.department.exception.DepartmentViolationParentExc
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
-import com.howoocast.hywtl_has.department.view.DepartmentItemView;
-import com.howoocast.hywtl_has.department.view.DepartmentShortView;
-import com.howoocast.hywtl_has.department.view.DepartmentView;
 import com.howoocast.hywtl_has.personnel.repository.PersonnelRepository;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
@@ -39,33 +36,43 @@ public class DepartmentService {
     private final PersonnelRepository personnelRepository;
 
     @Transactional(readOnly = true)
-    public Page<DepartmentShortView> page(
+    public Page<Department> page(
         @Nullable Predicate predicate,
         Pageable pageable
     ) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
-            .map(DepartmentShortView::assemble);
+            .map(department -> {
+                department.setChildrenList(repository.findByParent_IdOrderBySeq(department.getId()));
+                department.setUserList(userRepository.findByDepartment_Id(department.getId()));
+                return department;
+            });
     }
 
     @Transactional(readOnly = true)
-    public List<DepartmentShortView> list() {
+    public List<Department> list() {
         return repository.findAll().stream()
-            .map(DepartmentShortView::assemble)
+            .peek(department -> {
+                department.setChildrenList(repository.findByParent_IdOrderBySeq(department.getId()));
+                department.setUserList(userRepository.findByDepartment_Id(department.getId()));
+            })
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<DepartmentItemView> itemList() {
+    public List<Department> itemList() {
         return repository.findAll().stream()
-            .map(DepartmentItemView::assemble)
+            .peek(department -> {
+                department.setChildrenList(repository.findByParent_IdOrderBySeq(department.getId()));
+                department.setUserList(userRepository.findByDepartment_Id(department.getId()));
+            })
             .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public DepartmentView get(Long id) {
-        return DepartmentView.assemble(this.load(id));
+    public Department get(Long id) {
+        return this.load(id);
     }
 
     @Transactional

@@ -10,6 +10,7 @@ import {
   ProjectMemoVO
 } from 'project_memo/domain';
 import { ProjectId } from 'project/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export enum ProjectMemoAction {
   setDrawer     = 'project/memo/drawer/set',
@@ -30,9 +31,9 @@ export const projectMemoAction = {
   setFilter:     createAction(ProjectMemoAction.setFilter)<ProjectMemoQuery>(),
   setPage:       createAction(ProjectMemoAction.setPage)<Page<ProjectMemoVO>>(),
   add:           createAction(ProjectMemoAction.add)<ProjectMemoAddParameter>(),
-  requestAdd:    createAction(ProjectMemoAction.requestAdd)<string>(),
+  requestAdd:    createAction(ProjectMemoAction.requestAdd)<ApiStatus>(),
   change:        createAction(ProjectMemoAction.change)<ProjectMemoChangeParameter>(),
-  requestChange: createAction(ProjectMemoAction.requestChange)<string>(),
+  requestChange: createAction(ProjectMemoAction.requestChange)<ApiStatus>(),
   deleteOne:     createAction(ProjectMemoAction.deleteOne)<ProjectMemoId>(),
-  requestDelete: createAction(ProjectMemoAction.requestDelete)<string>(),
+  requestDelete: createAction(ProjectMemoAction.requestDelete)<ApiStatus>(),
 };

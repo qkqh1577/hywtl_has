@@ -1,18 +1,11 @@
-import apiClient from 'services/api';
+import apiClient, { toFormData } from 'services/api';
 import { LoginParameter } from 'user/parameter';
 import { LoginVO } from 'login/domain';
 import { LoginChangeParameter } from 'login/parameter';
 
 class LoginApi {
   async login(parameter: LoginParameter): Promise<void> {
-    const form = new FormData();
-    form.append('username', parameter.username);
-    form.append('password', parameter.password);
-    const { data } = await apiClient.post('/login', form, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-    });
+    const { data } = await apiClient.post('/login', toFormData(parameter));
     return data;
   }
 
@@ -22,17 +15,12 @@ class LoginApi {
   }
 
   async change(params: LoginChangeParameter): Promise<void> {
-    const { data } = await apiClient.put('/user/login', params);
+    const { data } = await apiClient.put('/user/login', toFormData(params));
     return data;
   }
 
   async logout(): Promise<void> {
-    const form = new FormData();
-    const { data } = await apiClient.post('/logout', form, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-    });
+    const { data } = await apiClient.post('/logout', new FormData());
     return data;
   }
 }

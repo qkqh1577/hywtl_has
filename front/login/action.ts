@@ -13,7 +13,7 @@ export enum LoginActionType {
   setDetail     = 'login/detail/set',
   change        = 'login/change',
   requestChange = 'login/change/request',
-  userModal     = 'login/modal'
+  changeModal = 'login/change-modal'
 }
 
 export const loginAction = {
@@ -25,5 +25,5 @@ export const loginAction = {
   setDetail:     createAction(LoginActionType.setDetail)<LoginVO | undefined>(),
   change:        createAction(LoginActionType.change)<LoginChangeParameter>(),
   requestChange: createAction(LoginActionType.requestChange)<ApiStatus>(),
-  userModal:     createAction(LoginActionType.userModal)<boolean>(),
+  changeModal:   createAction(LoginActionType.changeModal)<boolean>(),
 };

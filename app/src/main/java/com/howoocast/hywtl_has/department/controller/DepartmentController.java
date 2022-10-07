@@ -9,6 +9,7 @@ import com.howoocast.hywtl_has.department.view.DepartmentItemView;
 import com.howoocast.hywtl_has.department.view.DepartmentShortView;
 import com.howoocast.hywtl_has.department.view.DepartmentView;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,20 +52,17 @@ public class DepartmentController {
                 .keyword(keywordType, keyword)
                 .build(),
             pageable
-        );
+        ).map(DepartmentShortView::assemble);
     }
 
-    @GetMapping(value = "/department", params = "type")
-    public List<? extends DepartmentItemView> list(@RequestParam String type) {
-        if (type.equals("as_list")) {
-            return service.list();
-        }
-        return service.itemList();
+    @GetMapping(value = "/department/all")
+    public List<? extends DepartmentItemView> list() {
+        return service.itemList().stream().map(DepartmentShortView::assemble).collect(Collectors.toList());
     }
 
     @GetMapping("/department/{id}")
     public DepartmentView get(@PathVariable Long id) {
-        return service.get(id);
+        return DepartmentView.assemble(service.get(id));
     }
 
     @PutMapping({"/department", "/department/{id}"})

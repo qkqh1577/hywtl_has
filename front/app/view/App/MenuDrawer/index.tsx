@@ -6,25 +6,23 @@ import Button from 'layouts/Button';
 import { ColorPalette } from 'app/view/App/theme';
 import Depth1Menu from 'app/view/App/MenuDrawer/Depth1Menu';
 
-export interface MenuDrawerProps {
+interface Props {
   menu: Menu[];
-  openMenu: boolean;
-  toggleMenu: () => void;
+  open: boolean;
 }
 
-export default function (props: MenuDrawerProps) {
-
-  const {
-          openMenu,
-          menu,
-        } = props;
+export default function MenuDrawer(props: Props) {
 
   const ganttBoxRef = useRef<HTMLDivElement>(null);
   const ganttBoxHeight = ganttBoxRef.current?.offsetHeight;
   return (
-    <Drawer open={openMenu} padding="10px" openedWidth={230} sx={{
-      backgroundColor: ColorPalette._2d3a54,
-    }}>
+    <Drawer
+      open={props.open}
+      padding="10px"
+      openedWidth={230}
+      sx={{
+        backgroundColor: ColorPalette._2d3a54,
+      }}>
       <Box sx={{
         display:       'flex',
         width:         '100%',
@@ -55,7 +53,7 @@ export default function (props: MenuDrawerProps) {
           padding:      '10px',
           alignContent: 'flex-start',
         }}>
-          {menu.map((item) => (
+          {props.menu.map((item) => (
             <Depth1Menu
               key={item.title}
               {...item}

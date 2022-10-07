@@ -1,7 +1,6 @@
 import React, {
   useCallback,
-  useEffect,
-  useState
+  useEffect
 } from 'react';
 import ProjectAddModal from 'app/view/App/ProjectDrawer/AddModal';
 import { projectAction } from 'project/action';
@@ -10,10 +9,14 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import { useFormik } from 'formik';
-import Button from 'layouts/Button';
+import {
+  FormikProvider,
+  useFormik
+} from 'formik';
 import { RootState } from 'services/reducer';
 import { initialProjectQuery } from 'project/query';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 export const memoLabelList: string[] = [
   '견적 의뢰처',
@@ -28,14 +31,12 @@ export const memoLabelList: string[] = [
 ];
 
 export default function ProjectAddModalRoute() {
-  const [open, setOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { requestAdd } = useSelector((root: RootState) => root.project);
-  const addProject = useCallback((formikProps: ProjectAddParameter) =>
-      dispatch(projectAction.add(formikProps))
-    , [dispatch]);
-
-  const addModalFormik = useFormik<ProjectAddParameter>({
+  const { alert, error } = useDialog();
+  const { requestAdd, addModal } = useSelector((root: RootState) => root.project);
+  const addProject = useCallback((formikProps: ProjectAddParameter) => dispatch(projectAction.add(formikProps)), [dispatch]);
+  const onClose = useCallback(() => dispatch(projectAction.setAddModal(false)), [dispatch]);
+  const formik = useFormik<ProjectAddParameter>({
     initialValues: {} as ProjectAddParameter,
     onSubmit:      (values) => {
       const memo = memoLabelList.map((label,
@@ -59,26 +60,26 @@ export default function ProjectAddModalRoute() {
       });
     }
   });
-  const onClick = () => {
-    setOpen(true);
-  };
 
   useEffect(() => {
-    if (requestAdd === 'response') {
-      dispatch(projectAction.requestAdd('idle'));
-      setOpen(false);
+    if (requestAdd === ApiStatus.DONE) {
+      alert('등록하였습니다.');
+      dispatch(projectAction.setAddModal(false));
+      dispatch(projectAction.requestAdd(ApiStatus.IDLE));
       dispatch(projectAction.setFilter(initialProjectQuery));
+    }
+    else if (requestAdd === ApiStatus.FAIL) {
+      error('등록에 실패하였습니다.');
+      dispatch(projectAction.requestAdd(ApiStatus.IDLE));
     }
   }, [requestAdd]);
 
   return (
-    <>
-      <Button shape="small" onClick={onClick}>신규 프로젝트 등록</Button>
+    <FormikProvider value={formik}>
       <ProjectAddModal
-        open={open}
-        setOpen={setOpen}
-        formik={addModalFormik}
+        open={addModal}
+        onClose={onClose}
       />
-    </>
+    </FormikProvider>
   );
 }

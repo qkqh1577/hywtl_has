@@ -3,17 +3,19 @@ import IconButton from 'components/IconButton';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';
+import { DefaultFunction } from 'type/Function';
+import Button from 'layouts/Button';
 
 export interface ProjectAppBarProps {
   open: boolean;
-  toggle: () => void;
-  projectAddModal: React.ReactNode;
+  toggle: DefaultFunction;
+  openAddModal: DefaultFunction;
 }
 
 export default function ProjectAppBar({
                                         open,
                                         toggle,
-                                        projectAddModal
+                                        openAddModal
                                       }: ProjectAppBarProps) {
 
   return (
@@ -27,7 +29,7 @@ export default function ProjectAppBar({
       padding:         '10px 10px',
       backgroundColor: ColorPalette._414d65
     }}>
-      {projectAddModal}
+      <Button shape="small" onClick={openAddModal}>신규 프로젝트 등록</Button>
       <IconButton
         tooltip={'프로젝트 메뉴 ' + (open ? '접기' : '펴기')}
         onClick={toggle}

@@ -3,9 +3,8 @@ import {
   Typography
 } from '@mui/material';
 import { ArrowRight as RightIcon, } from '@mui/icons-material';
-import React from 'react';
+import React, { useContext } from 'react';
 import IconButton from 'components/IconButton';
-import TextField from 'components/TextField';
 import SelectField from 'components/SelectField';
 import {
   projectMemoCategoryList,
@@ -13,25 +12,19 @@ import {
 } from 'project_memo/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import Button from 'layouts/Button';
-import UserIcon from 'layouts/UserIcon';
-import { DefaultFunction } from 'type/Function';
-import { UserId } from 'user/domain';
+import Input from 'layouts/Input';
+import { FormikContext } from 'formik';
+import AttendanceListField from 'components/AttendanceListField';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
-  onSubmit: () => void;
-  openUserModal: DefaultFunction;
-  userModal: React.ReactNode;
-  attendanceList: UserId[] | undefined;
 }
 
-export default function ProjectMemoForm({
-                                          setOpen,
-                                          onSubmit,
-                                          openUserModal,
-                                          userModal,
-                                          attendanceList
-                                        }: ProjectMemoFormProps) {
+export default function ProjectMemoForm({ setOpen }: ProjectMemoFormProps) {
+  const formik = useContext(FormikContext);
+  const onSubmit = () => {
+    formik.handleSubmit();
+  };
   return (
     <Box sx={{
       display:  'flex',
@@ -42,7 +35,7 @@ export default function ProjectMemoForm({
         display:  'flex',
         width:    '100%',
         flexWrap: 'nowrap',
-        padding:  '15px 0',
+        padding:  '15px 10px',
       }}>
         <IconButton
           children={<RightIcon />}
@@ -71,14 +64,18 @@ export default function ProjectMemoForm({
           flexWrap: 'unwrap',
           padding:  '0 10px',
         }}>
-          <TextField
+          <Input
             required
-            disableLabel
-            variant="outlined"
-            name="description"
-            label="본문"
-            placeholder="메모 입력"
             multiline
+            value={formik.values.description ?? ''}
+            variant="outlined"
+            placeholder="메모 입력"
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (value !== formik.values.description) {
+                formik.setFieldValue('description', value);
+              }
+            }}
           />
         </Box>
         <Box sx={{
@@ -88,16 +85,12 @@ export default function ProjectMemoForm({
           justifyContent: 'flex-start',
           padding:        '10px',
         }}>
-          {attendanceList?.map((item) => (
-            <UserIcon
-              key={item}
-              user={item}
-              sx={{
-                marginRight: '10px'
-              }}
-            />
-          ))}
-          <UserIcon user="plus" onClick={openUserModal} />
+          <AttendanceListField
+            list={formik.values.attendanceList}
+            afterSubmit={(list) => {
+              formik.setFieldValue('attendanceList', list);
+            }}
+          />
         </Box>
         <Box sx={{
           display:        'flex',
@@ -130,7 +123,6 @@ export default function ProjectMemoForm({
           </Button>
         </Box>
       </Box>
-      {userModal}
     </Box>
   );
 }
