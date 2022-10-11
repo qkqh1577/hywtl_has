@@ -25,11 +25,14 @@ export default function TextLink(props: Props) {
         }
       }}
       sx={{
-        fontSize:  'inherit',
-        cursor:    'pointer',
-        '&:hover': {
+        width:      '100%',
+        textAlign:  'center',
+        fontSize:   'inherit',
+        fontWeight: props.onClick ? 'bold' : 'inherit',
+        cursor:     props.onClick ? 'pointer' : 'default',
+        '&:hover':  {
           color:              ColorPalette._386dd6,
-          textDecorationLine: 'underline',
+          textDecorationLine: props.onClick ? 'underline' : 'inherit',
         }
       }}
     />

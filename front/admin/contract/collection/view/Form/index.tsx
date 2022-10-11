@@ -210,8 +210,7 @@ export default function Form() {
                 </Td>
                 <Td>
                   <Button
-                    shape="basic2"
-                    color="warning"
+                    shape="basic3"
                     disabled={list.length <= 1}
                     onClick={() => {
                       if (list.length === 1) {

@@ -159,7 +159,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                     담당자
                   </Td>
                   <Td>
-                    <Button shape="basic2" onClick={() => {props.onDelete(item.id);}}>삭제</Button>
+                    <Button shape="basic3" onClick={() => {props.onDelete(item.id);}}>삭제</Button>
                   </Td>
                 </TableRow>
               ))}

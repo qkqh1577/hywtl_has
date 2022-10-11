@@ -34,7 +34,6 @@ export default function AcademicForm() {
         <TextBox variant="body7">학력 정보</TextBox>
         {edit && (
           <Button
-            shape="basic1"
             onClick={() => {
               formik.setFieldValue('academicList', [...academicList, initialPersonnelAcademicParameter]);
             }}>

@@ -61,7 +61,7 @@ export default function (props: Props) {
           }}>
           저장
         </Button>
-        <Button shape="basic3" onClick={props.onCancel}>
+        <Button shape="basic2" onClick={props.onCancel}>
           취소
         </Button>
       </Box>
@@ -79,7 +79,7 @@ export default function (props: Props) {
         width: '40%'
       }}>
         <ListButton />
-        <Button shape="basic2" onClick={props.onDelete}>
+        <Button shape="basic3" onClick={props.onDelete}>
           삭제
         </Button>
       </Box>

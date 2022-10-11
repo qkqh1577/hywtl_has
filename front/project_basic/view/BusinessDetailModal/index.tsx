@@ -44,7 +44,7 @@ export default function ProjectBasicBusinessDetailModal(props: Props) {
       footer={
         <>
           <Button
-            shape="basic2"
+            shape="basic3"
             children="삭제"
             disabled={isSubmitting}
             onClick={() => {
@@ -55,7 +55,6 @@ export default function ProjectBasicBusinessDetailModal(props: Props) {
             }}
           />
           <Button
-            shape="basic1"
             children="수정"
             disabled={isSubmitting}
             onClick={() => {
@@ -66,7 +65,7 @@ export default function ProjectBasicBusinessDetailModal(props: Props) {
             }}
           />
           <Button
-            shape="basic3"
+            shape="basic2"
             children="닫기"
             onClick={() => {
               onClose();

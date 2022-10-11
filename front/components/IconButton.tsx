@@ -41,8 +41,9 @@ function SquareIconButton(props: Props) {
         backgroundColor: ColorPalette._386dd6,
         borderRadius:    '5px',
         boxShadow:       0,
-        '&:hover':       {
+        '&:hover': {
           backgroundColor: ColorPalette._0047d3,
+          boxShadow:       0,
         }
       }}
       disabled={disabled}

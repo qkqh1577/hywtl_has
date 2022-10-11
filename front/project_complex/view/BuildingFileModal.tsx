@@ -96,7 +96,7 @@ function DetailFooter(props: DetailFooterProps) {
       }
     }}>
       <Button
-        shape="basic2"
+        shape="basic3"
         onClick={() => {
           confirm({
             status:       'warn',
@@ -112,7 +112,7 @@ function DetailFooter(props: DetailFooterProps) {
       <Button onClick={props.onEdit}>
         자료 변경
       </Button>
-      <Button shape="basic3" onClick={props.onClose}>
+      <Button shape="basic2" onClick={props.onClose}>
         닫기
       </Button>
     </Box>

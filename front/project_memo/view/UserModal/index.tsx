@@ -187,7 +187,6 @@ export default function UserSelectModal(props: Props) {
           justifyContent: 'center',
         }}>
           <Button
-            shape="basic1"
             sx={{
               marginRight: '10px'
             }}

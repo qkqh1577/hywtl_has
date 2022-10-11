@@ -34,7 +34,7 @@ export default function (props: Props) {
           }}>
           저장
         </Button>
-        <Button shape="basic3" onClick={props.onCancel}>취소</Button>
+        <Button shape="basic2" onClick={props.onCancel}>취소</Button>
       </Box>
     );
   }
@@ -45,14 +45,14 @@ export default function (props: Props) {
       display:        'flex',
       justifyContent: 'space-between',
     }}>
-      <Button shape="basic2" onClick={props.onDelete}>삭제</Button>
+      <Button shape="basic3" onClick={props.onDelete}>삭제</Button>
       <Box>
-        <Button shape="basic1" onClick={() => {formik.setFieldValue('edit', true);}}>수정</Button>
-        <Button shape="basic3" onClick={props.onClose}>닫기</Button>
+        <Button onClick={() => {formik.setFieldValue('edit', true);}}>수정</Button>
+        <Button shape="basic2" onClick={props.onClose}>닫기</Button>
       </Box>
       <Box>
-        <Button shape="basic2" onClick={props.onExtend}>실험정보 입력</Button>
-        <Button shape="basic1" onClick={props.onContract}>계약서 등록</Button>
+        <Button onClick={props.onExtend}>실험정보 입력</Button>
+        <Button onClick={props.onContract}>계약서 등록</Button>
       </Box>
     </Box>
   );

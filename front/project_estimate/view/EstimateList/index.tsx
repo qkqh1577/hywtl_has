@@ -93,7 +93,7 @@ export default function ProjectEstimateListSection(props: Props) {
                       width:          '100%',
                       display:        'flex',
                       flexWrap:       'nowrap',
-                      justifyContent: 'center',
+                      justifyContent: 'space-between',
                       alignItems:     'center',
                     }}>
                       <TextLink

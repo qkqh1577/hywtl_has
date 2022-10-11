@@ -33,11 +33,9 @@ export default function CareerForm() {
       }}>
         <TextBox variant="body7">경력 정보</TextBox>
         {edit && (
-          <Button
-            shape="basic1"
-            onClick={() => {
-              formik.setFieldValue('careerList', [...careerList, initialPersonnelCareerParameter]);
-            }}>
+          <Button onClick={() => {
+            formik.setFieldValue('careerList', [...careerList, initialPersonnelCareerParameter]);
+          }}>
             + 추가
           </Button>
         )}

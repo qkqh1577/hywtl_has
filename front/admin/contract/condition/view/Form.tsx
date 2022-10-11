@@ -200,8 +200,7 @@ export default function Form({ variableList }: Props) {
                         </Td>
                         <Td sx={{ width: '100px' }}>
                           <Button
-                            shape="basic2"
-                            color="warning"
+                            shape="basic3"
                             disabled={condition.descriptionList.length <= 1}
                             onClick={() => {
                               if (condition.descriptionList.length === 1) {
@@ -276,8 +275,7 @@ export default function Form({ variableList }: Props) {
                 />
               </Tooltip>
               <Button
-                shape="basic2"
-                color="warning"
+                shape="basic3"
                 disabled={list.length <= 1}
                 onClick={() => {
                   if (list.length === 1) {
@@ -302,7 +300,6 @@ export default function Form({ variableList }: Props) {
           justifyContent: 'flex-end',
         }}>
           <Button
-            shape="basic1"
             onClick={onAddForm}
             sx={{
               marginRight: '10px',
