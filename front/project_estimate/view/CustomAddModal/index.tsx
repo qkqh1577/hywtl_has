@@ -1,43 +1,51 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
-import {
-  ProjectEstimateType,
-  projectEstimateTypeName
-} from 'project_estimate/domain';
-import DetailFormFooter from 'layouts/DetailFormFooter';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { FormikProvider } from 'formik';
+import { projectEstimateTypeName } from 'project_estimate/domain';
 import { DefaultFunction } from 'type/Function';
 import Form from './Form';
+import { FormikContext } from 'formik';
+import Button from 'layouts/Button';
+import { Box } from '@mui/material';
 
-interface Props
-  extends FormikLayoutProps<any> {
+interface Props {
   onClose: DefaultFunction;
 }
 
 export default function ProjectCustomEstimateAddModal(props: Props) {
-  const { formik, onClose } = props;
-  const type: ProjectEstimateType | '' | undefined = formik.values.type;
-  const open = typeof type !== 'undefined' && type !== '';
+  const { onClose } = props;
+  const formik = useContext(FormikContext);
+  const open = !!formik.values.type;
 
   return (
     <ModalLayout
       width="30vw"
-      open={open}
-      title={`${open ? projectEstimateTypeName(type!) : ''} 견적서 등록`}
+      open={!!formik.values.type}
+      title={`${open ? projectEstimateTypeName(formik.values.type) : ''} 견적서 등록`}
       onClose={onClose}
       children={
-        <FormikProvider value={formik}>
-          <Form formik={formik} />
-        </FormikProvider>
+        <Form />
       }
       footer={
-        <DetailFormFooter
-          onSubmit={() => {
-            formik.handleSubmit();
-          }}
-          onClose={onClose}
-        />
+        <Box sx={{
+          width:          '100%',
+          margin:         '20px 0',
+          display:        'flex',
+          justifyContent: 'center',
+          alignItems:     'center',
+        }}>
+          <Button
+            sx={{
+              marginRight: '10px',
+            }}
+            onClick={() => {
+              formik.handleSubmit();
+            }}>
+            저장
+          </Button>
+          <Button shape="basic3" onClick={onClose}>
+            취소
+          </Button>
+        </Box>
       }
     />
   );

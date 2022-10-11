@@ -6,7 +6,6 @@ import {
   take
 } from 'redux-saga/effects';
 import { projectEstimateAction } from 'project_estimate/action';
-import { ProjectId } from 'project/domain';
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateVO,
@@ -19,16 +18,15 @@ import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchProjectId() {
   while (true) {
-    const { payload: projectId } = yield  take(projectEstimateAction.setProjectId);
+    const { payload: projectId } = yield take(projectEstimateAction.setProjectId);
     if (projectId) {
-      yield call(getList, projectId);
+      const list: ProjectEstimateVO[] = yield call(projectEstimateApi.getList, projectId);
+      yield put(projectEstimateAction.setList(list));
+    }
+    else {
+      yield put(projectEstimateAction.setList(undefined));
     }
   }
-}
-
-function* getList(id: ProjectId) {
-  const list: ProjectEstimateVO[] = yield call(projectEstimateApi.getList, id);
-  yield put(projectEstimateAction.setList(list));
 }
 
 function* watchAddCustom() {
@@ -38,16 +36,11 @@ function* watchAddCustom() {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
       yield put(projectEstimateAction.requestAddCustom(ApiStatus.REQUEST));
       yield call(projectEstimateApi.addCustom, projectId, params);
+      yield put(projectEstimateAction.requestAddCustom(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestAddCustom(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestAddCustom(ApiStatus.FAIL));
     }
   }
 }
@@ -55,12 +48,12 @@ function* watchAddCustom() {
 function* watchCustomDetailModal() {
   while (true) {
     const { payload: id } = yield take(projectEstimateAction.setCustomDetailModal);
-    if (typeof id === 'undefined') {
-      yield put(projectEstimateAction.setCustomDetail(undefined));
-    }
-    else {
+    if (id) {
       const detail: ProjectCustomEstimateVO = yield call(projectEstimateApi.getCustomDetail, id);
       yield put(projectEstimateAction.setCustomDetail(detail));
+    }
+    else {
+      yield put(projectEstimateAction.setCustomDetail(undefined));
     }
   }
 }
@@ -71,16 +64,11 @@ function* watchChangeCustom() {
     try {
       yield put(projectEstimateAction.requestChangeCustom(ApiStatus.REQUEST));
       yield call(projectEstimateApi.changeCustom, params);
+      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.FAIL));
     }
   }
 }
@@ -91,16 +79,11 @@ function* watchExtensionCustom() {
     try {
       yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.REQUEST));
       yield call(projectEstimateApi.extensionCustom, params);
+      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.FAIL));
     }
   }
 }
@@ -181,6 +164,38 @@ function* watchFinal() {
   }
 }
 
+function* watchDeleteCustom() {
+  while (true) {
+    yield take(projectEstimateAction.deleteCustom);
+    try {
+      const { customDetail } = yield select((root: RootState) => root.projectEstimate);
+      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.REQUEST));
+      yield call(projectEstimateApi.deleteCustom, customDetail.id);
+      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchDeleteSystem() {
+  while (true) {
+    yield take(projectEstimateAction.deleteSystem);
+    try {
+      const { systemDetail } = yield select((root: RootState) => root.projectEstimate);
+      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.REQUEST));
+      yield call(projectEstimateApi.deleteSystem, systemDetail.id);
+      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.FAIL));
+    }
+  }
+}
+
 export default function* projectEstimateSaga() {
   yield fork(watchProjectId);
   yield fork(watchAddCustom);
@@ -191,4 +206,6 @@ export default function* projectEstimateSaga() {
   yield fork(watchAddSystem);
   yield fork(watchChangeSystem);
   yield fork(watchFinal);
+  yield fork(watchDeleteCustom);
+  yield fork(watchDeleteSystem);
 }

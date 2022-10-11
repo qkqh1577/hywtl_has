@@ -66,6 +66,16 @@ class ProjectEstimateApi {
     const { data } = await apiClient.post(`/project/sales/${projectId}/confirmed`, { estimateId: id });
     return data;
   }
+
+  async deleteCustom(id: ProjectEstimateId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/custom-estimate/${id}`);
+    return data;
+  }
+
+  async deleteSystem(id: ProjectEstimateId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/system-estimate/${id}`);
+    return data;
+  }
 }
 
 export const projectEstimateApi = new ProjectEstimateApi();

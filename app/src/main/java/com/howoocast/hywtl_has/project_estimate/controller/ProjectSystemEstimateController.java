@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,6 +50,13 @@ public class ProjectSystemEstimateController {
         @Valid @RequestBody ProjectSystemEstimateParameter parameter
     ) {
         service.change(id, parameter);
+    }
+
+    @DeleteMapping("/project/sales/system-estimate/{id}")
+    public void delete(
+        @PathVariable Long id
+    ) {
+        service.delete(id);
     }
 
 }

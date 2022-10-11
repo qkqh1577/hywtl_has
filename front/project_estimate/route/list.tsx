@@ -26,9 +26,7 @@ export default function ProjectEstimateListRoute() {
   const openDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
 
   useEffect(() => {
-    if (id) {
-      dispatch(projectEstimateAction.setProjectId(ProjectId(id)));
-    }
+    dispatch(projectEstimateAction.setProjectId(id ? ProjectId(id) : undefined));
   }, [id]);
 
   return (

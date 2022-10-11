@@ -23,6 +23,8 @@ export interface ProjectEstimateState {
   requestChangeSystem: ApiStatus;
   requestExtensionCustom: ApiStatus;
   requestSetFinal: ApiStatus;
+  requestDeleteCustom: ApiStatus;
+  requestDeleteSystem: ApiStatus;
   systemDetail?: ProjectSystemEstimateVO;
   systemModal?: ProjectEstimateId | null;
 }
@@ -35,6 +37,8 @@ const initial: ProjectEstimateState = {
   requestChangeSystem:    ApiStatus.IDLE,
   requestExtensionCustom: ApiStatus.IDLE,
   requestSetFinal:        ApiStatus.IDLE,
+  requestDeleteCustom:    ApiStatus.IDLE,
+  requestDeleteSystem:    ApiStatus.IDLE,
 };
 
 export const projectEstimateReducer = createReducer(initial, {
@@ -123,4 +127,16 @@ export const projectEstimateReducer = createReducer(initial, {
     ...state,
     finalModal: action.payload,
   }),
+  [ProjectEstimateActionType.requestDeleteCustom]:    (state,
+                                                       action
+                                                      ) => ({
+    ...state,
+    requestDeleteCustom: action.payload,
+  }),
+  [ProjectEstimateActionType.requestDeleteSystem]:    (state,
+                                                       action
+                                                      ) => ({
+    ...state,
+    requestDeleteSystem: action.payload,
+  })
 });

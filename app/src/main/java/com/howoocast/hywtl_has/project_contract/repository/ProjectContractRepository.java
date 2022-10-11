@@ -12,6 +12,8 @@ public interface ProjectContractRepository extends CustomRepository<ProjectContr
 
     Optional<ProjectContract> findByProject_IdAndConfirmed(Long projectId, Boolean confirmed);
 
+    List<ProjectContract> findByEstimate_Id(Long estimateId);
+
     @Query(
         value = "select count(*) + 1 from "
             + ProjectContract.KEY
