@@ -67,11 +67,11 @@ export default function RivalEstimateListSection(props: Props) {
               alignItems:     'center'
             }}>
             <Box sx={{
-              width:    '280px',
+              width:    '200px',
               display:  'flex',
               flexWrap: 'unwrap',
             }}>
-              <DataFieldWithLabel labelWidth={60} label="타 업체">
+              <DataFieldWithLabel label="타 업체">
                 <BusinessSelector
                   value={item.business?.id ?? ''}
                   onChange={(value) => {
@@ -91,7 +91,7 @@ export default function RivalEstimateListSection(props: Props) {
               display:  'flex',
               flexWrap: 'unwrap',
             }}>
-              <DataFieldWithLabel labelWidth={60} label="풍동 금액">
+              <DataFieldWithLabel label="풍동 금액">
                 <Input
                   type="number"
                   defaultValue={item.testAmount ?? ''}
@@ -113,7 +113,7 @@ export default function RivalEstimateListSection(props: Props) {
               display:  'flex',
               flexWrap: 'unwrap',
             }}>
-              <DataFieldWithLabel labelWidth={25} label="구검">
+              <DataFieldWithLabel label="구검">
                 <Input
                   type="number"
                   defaultValue={item.reviewAmount ?? ''}
