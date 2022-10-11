@@ -85,7 +85,6 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-
             <Box sx={{
               width:    '175px',
               display:  'flex',

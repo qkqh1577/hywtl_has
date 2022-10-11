@@ -184,7 +184,7 @@ export function BusinessSelectorModalRoute() {
 
   return (
     <ModalLayout
-      width="30vw"
+      width="40vw"
       open={open}
       title="업체 선택"
       onClose={onClose}

@@ -6,35 +6,37 @@ import {
   take
 } from 'redux-saga/effects';
 import { projectBidAction } from 'project_bid/action';
-import { ProjectId } from 'project/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { projectBidApi } from 'project_bid/api';
 import { RootState } from 'services/reducer';
+import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchProjectId() {
   while (true) {
     const { payload: projectId } = yield take(projectBidAction.setProjectId);
-    yield call(getDetail, projectId);
+    if (projectId) {
+      const detail: ProjectBidVO = yield call(projectBidApi.get, projectId);
+      yield put(projectBidAction.setDetail(detail));
+    }
+    else {
+      yield put(projectBidAction.setDetail(undefined));
+    }
   }
 }
 
-function* getDetail(projectId: ProjectId) {
-  const detail: ProjectBidVO = yield call(projectBidApi.get, projectId);
-  yield put(projectBidAction.setDetail(detail));
-}
 
 function* update() {
   while (true) {
     const { payload: params } = yield take(projectBidAction.update);
     try {
       const { projectId } = yield select((root: RootState) => root.projectBid);
-      yield put(projectBidAction.requestUpdate('request'));
+      yield put(projectBidAction.requestUpdate(ApiStatus.REQUEST));
       yield call(projectBidApi.update, projectId, params);
-      yield put(projectBidAction.requestUpdate('done'));
+      yield put(projectBidAction.requestUpdate(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(projectBidAction.requestUpdate('fail'));
+      yield put(projectBidAction.requestUpdate(ApiStatus.FAIL));
     }
   }
 }

@@ -1,11 +1,11 @@
 import { BusinessId, } from 'business/domain';
 
 export interface ProjectBidParameter {
-  beginDate?: Date;
-  closeDate?: Date;
+  beginDate?: string;
+  closeDate?: string;
   winId?: BusinessId;
   bidOrganization?: string;
-  bidDate?: Date;
+  bidDate?: string;
   testAmount?: number;
   reviewAmount?: number;
   totalAmount?: number;
