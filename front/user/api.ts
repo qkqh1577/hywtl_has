@@ -25,7 +25,7 @@ class UserApi {
 
   async change(parameter: UserChangeParameter): Promise<void> {
     const { id, ...rest } = parameter;
-    const { data } = await apiClient.patch(`/admin/user/${id}`, rest);
+    const { data } = await apiClient.put(`/admin/user/${id}`, rest);
     return data;
   }
 
