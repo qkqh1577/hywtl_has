@@ -1,50 +1,20 @@
-import React, {
-  useContext,
-  useEffect
-} from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   MenuItem
 } from '@mui/material';
 import DepartmentSelector from 'components/DepartmentSelector';
 import {
+  DepartmentCategory,
   departmentCategoryList,
   departmentCategoryName,
-  DepartmentVO
 } from 'department/domain';
-import {
-  FormikContext,
-  FormikContextType
-} from 'formik';
-import { FieldStatus } from 'components/DataFieldProps';
+import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import Input from 'layouts/Input';
 import Select from 'layouts/Select';
-
-
-function DepartmentParentSelector() {
-  const formikContext: FormikContextType<DepartmentVO> = useContext(FormikContext);
-  const status = formikContext?.values.category === 'COMPANY' ? FieldStatus.Disabled : undefined;
-  const required = formikContext?.values.category !== 'COMPANY';
-  const values = formikContext?.values ?? {};
-
-  useEffect(() => {
-    if (values.category === 'COMPANY') {
-      formikContext.setFieldValue('parentId', '');
-    }
-  }, [values.category]);
-
-  return (
-    <DepartmentSelector
-      name="parentId"
-      label="상위 조직"
-      status={status}
-      required={required}
-    />
-  );
-}
 
 export default function () {
 
@@ -116,6 +86,9 @@ export default function () {
                   const value = e.target.value || undefined;
                   if (formik.values.category !== value) {
                     formik.setFieldValue('category', value);
+                    if (value === DepartmentCategory.COMPANY) {
+                      formik.setFieldValue('parentId', '');
+                    }
                   }
                 }}>
                 {departmentCategoryList.map((category) => (
@@ -130,7 +103,19 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DepartmentParentSelector />
+            <DataFieldWithLabel required={edit && formik.values.category !== DepartmentCategory.COMPANY} label="상위 조직">
+              <DepartmentSelector
+                disabled={!edit || !DepartmentCategory.COMPANY}
+                value={formik.values.parentId ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.parentId !== value) {
+                    formik.setFieldValue('parentId', value);
+                  }
+                }}
+              />
+            </DataFieldWithLabel>
+
           </Box>
           <Box sx={{
             display:      'flex',

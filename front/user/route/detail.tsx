@@ -4,7 +4,10 @@ import React, {
 } from 'react';
 import useId from 'services/useId';
 import useDialog from 'components/Dialog';
-import { UserId } from 'user/domain';
+import {
+  UserId,
+  UserVO
+} from 'user/domain';
 import UserDetail from 'user/view/Detail';
 import { AppRoute } from 'services/routes';
 import {
@@ -33,7 +36,13 @@ function Element() {
   const formik = useFormik<UserChangeParameter>({
     initialValues: initialUserParameter,
     onSubmit:      (values) => {
-      change(values);
+      change({
+        id:           values.id,
+        name:         values.name,
+        email:        values.email,
+        role:         values.role,
+        departmentId: values.departmentId ?? (values as unknown as UserVO).department.id,
+      });
     }
   });
 

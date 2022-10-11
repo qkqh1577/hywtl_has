@@ -1,7 +1,9 @@
 import apiClient, { toFormData } from 'services/api';
-import { LoginParameter } from 'user/parameter';
 import { LoginVO } from 'login/domain';
-import { LoginChangeParameter } from 'login/parameter';
+import {
+  LoginChangeParameter,
+  LoginParameter,
+} from 'login/parameter';
 
 class LoginApi {
   async login(parameter: LoginParameter): Promise<void> {

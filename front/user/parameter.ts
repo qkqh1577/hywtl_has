@@ -1,18 +1,15 @@
 import { UserVO } from 'user/domain';
-import { FileItemParameter } from 'file-item';
-
-export interface LoginParameter {
-  username: string;
-  password: string;
-}
+import { DepartmentId } from 'department/domain';
 
 export interface UserChangeParameter
   extends Omit<UserVO,
+    | 'department'
     | 'createdAt'
     | 'loginAt'
     | 'passwordChangedAt'
+    | 'username'
     | 'profile'> {
-  profile?: FileItemParameter;
+  departmentId: DepartmentId;
 }
 
 export const initialUserParameter = {

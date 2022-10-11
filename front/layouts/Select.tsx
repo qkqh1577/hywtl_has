@@ -1,16 +1,16 @@
 import {
   Select as MuiSelect,
-  SelectProps
+  SelectProps as MuiSelectProps,
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
 
-interface Props
-  extends Omit<SelectProps, | 'fullWidth' | 'sx' | 'MenuProps'> {
-  MenuProps?: Omit<SelectProps['MenuProps'], |'sx'>;
+export interface SelectProps
+  extends Omit<MuiSelectProps, | 'fullWidth' | 'sx' | 'MenuProps'> {
+  MenuProps?: Omit<MuiSelectProps['MenuProps'], |'sx'>;
 }
 
-export default function Select(props: Props) {
+export default function Select(props: SelectProps) {
 
   if (props.variant === 'outlined') {
     return (
@@ -96,7 +96,7 @@ export function OutlinedSelect(props: SelectProps) {
   );
 }
 
-export function StandardSelect(props: Props) {
+export function StandardSelect(props: SelectProps) {
 
   return (
     <MuiSelect

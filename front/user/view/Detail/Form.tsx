@@ -58,7 +58,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="아이디">
+            <DataFieldWithLabel label="아이디">
               <Input
                 disabled
                 value={formik.values.username ?? ''}
@@ -134,10 +134,14 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="소속 조직">
               <DepartmentSelector
-                required
-                disableLabel
-                name="departmentId"
-                label="소속 조직"
+                disabled={!edit}
+                value={formik.values.departmentId ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.departmentId !== value) {
+                    formik.setFieldValue('departmentId', value);
+                  }
+                }}
               />
             </DataFieldWithLabel>
           </Box>
