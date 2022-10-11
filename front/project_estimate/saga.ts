@@ -13,7 +13,6 @@ import {
 } from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
 import { RootState } from 'services/reducer';
-import { dialogActions } from 'components/Dialog';
 import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchProjectId() {
@@ -108,16 +107,11 @@ function* watchAddSystem() {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
       yield put(projectEstimateAction.requestAddSystem(ApiStatus.REQUEST));
       yield call(projectEstimateApi.addSystem, projectId, params);
+      yield put(projectEstimateAction.requestAddSystem(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestAddSystem(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestAddSystem(ApiStatus.FAIL));
     }
   }
 }
@@ -129,16 +123,11 @@ function* watchChangeSystem() {
       const { systemDetail } = yield select((root: RootState) => root.projectEstimate);
       yield put(projectEstimateAction.requestChangeSystem(ApiStatus.REQUEST));
       yield call(projectEstimateApi.changeSystem, systemDetail!.id, params);
+      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.FAIL));
     }
   }
 }
@@ -150,16 +139,11 @@ function* watchFinal() {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
       yield put(projectEstimateAction.requestSetFinal(ApiStatus.REQUEST));
       yield call(projectEstimateApi.setFinal, projectId, estimateId);
+      yield put(projectEstimateAction.requestSetFinal(ApiStatus.DONE));
     }
     catch (e) {
       console.error(e);
-      yield put(dialogActions.openAlert({
-        status:   'error',
-        children: '저장에 실패하였습니다.'
-      }));
-    }
-    finally {
-      yield put(projectEstimateAction.requestSetFinal(ApiStatus.RESPONSE));
+      yield put(projectEstimateAction.requestSetFinal(ApiStatus.FAIL));
     }
   }
 }

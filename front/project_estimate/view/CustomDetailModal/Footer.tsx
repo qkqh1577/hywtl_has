@@ -47,12 +47,12 @@ export default function (props: Props) {
     }}>
       <Button shape="basic3" onClick={props.onDelete}>삭제</Button>
       <Box>
-        <Button onClick={() => {formik.setFieldValue('edit', true);}}>수정</Button>
+        <Button sx={{ marginRight: '10px' }} onClick={() => {formik.setFieldValue('edit', true);}}>수정</Button>
         <Button shape="basic2" onClick={props.onClose}>닫기</Button>
       </Box>
       <Box>
-        <Button onClick={props.onExtend}>실험정보 입력</Button>
-        <Button onClick={props.onContract}>계약서 등록</Button>
+        <Button onClick={props.onExtend} sx={{ marginRight: '10px' }}>실험정보 입력</Button>
+        <Button shape="basic4" onClick={props.onContract}>계약서 등록</Button>
       </Box>
     </Box>
   );

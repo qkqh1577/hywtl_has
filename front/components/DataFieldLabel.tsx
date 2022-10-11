@@ -42,12 +42,13 @@ export default function DataFieldWithLabel(props: Props) {
       }}>
         <Typography sx={{
           ...labelSX,
-          fontSize:    '13px',
-          color:       ColorPalette._9b9ea4,
-          wordBreak:   'keep-all',
-          whiteSpace:  'nowrap',
-          marginRight: '20px',
-          width:       useMemo(() => labelPosition === 'top' ? '100%' : (labelWidth ? `${labelWidth}px` : 'auto'), [labelPosition, labelWidth]),
+          fontSize:       '13px',
+          color:          ColorPalette._9b9ea4,
+          wordBreak:      'keep-all',
+          whiteSpace:     'nowrap',
+          justifyContent: 'space-between',
+          marginRight:    '20px',
+          width:          useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth}px`, [labelPosition, labelWidth]),
         }}>
           <RequiredMark required={required} text={label} />
         </Typography>
@@ -56,7 +57,7 @@ export default function DataFieldWithLabel(props: Props) {
         display:  'flex',
         height:   useMemo(() => labelPosition === 'top' ? 'auto' : '100%', [labelPosition]),
         flexWrap: 'nowrap',
-        width:    useMemo(() => labelPosition === 'top' ? '100%' : (labelWidth ? `calc(100% - ${labelWidth}px)` : 'auto'), [labelPosition, labelWidth]),
+        width:    useMemo(() => labelPosition === 'top' ? '100%' : `calc(100% - ${labelWidth}px)`, [labelPosition, labelWidth]),
       }}>
         {children}
       </Box>

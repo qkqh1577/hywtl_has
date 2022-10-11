@@ -29,6 +29,7 @@ export const ColorPalette = {
   '_0047d3':     '#0047d3',
   '_eb4c4c':     '#eb4c4c',
   '_f4f4f4':     '#f4f4f4',
+  '_a7abb2':     '#a7abb2',
   'transparent': 'transparent',
 };
 

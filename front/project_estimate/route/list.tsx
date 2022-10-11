@@ -22,8 +22,10 @@ export default function ProjectEstimateListRoute() {
   const dispatch = useDispatch();
   const id = useId();
   const { list } = useSelector((root: RootState) => root.projectEstimate);
-  const openAddModal = useCallback((type: ProjectEstimateType) => dispatch(projectEstimateAction.setCustomAddModal(type)), [dispatch]);
-  const openDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
+  const openCustomAddModal = useCallback((type: ProjectEstimateType) => dispatch(projectEstimateAction.setCustomAddModal(type)), [dispatch]);
+  const openCustomDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
+  const openSystemAddModal = useCallback(() => dispatch(projectEstimateAction.setSystemModal(null)), [dispatch]);
+  const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
 
   useEffect(() => {
     dispatch(projectEstimateAction.setProjectId(id ? ProjectId(id) : undefined));
@@ -32,8 +34,10 @@ export default function ProjectEstimateListRoute() {
   return (
     <ProjectEstimateListSection
       list={list}
-      openAddModal={openAddModal}
-      openDetailModal={openDetailModal}
+      openCustomAddModal={openCustomAddModal}
+      openCustomDetailModal={openCustomDetailModal}
+      openSystemAddModal={openSystemAddModal}
+      openSystemDetailModal={openSystemDetailModal}
     />
   );
 }

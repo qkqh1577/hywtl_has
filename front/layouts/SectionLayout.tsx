@@ -13,6 +13,7 @@ import TextBox from 'layouts/Text';
 export interface SectionLayoutProps {
   title?: string;
   disableFold?: boolean;
+  titleLeftComponent?: React.ReactNode;
   titleRightComponent?: React.ReactNode;
   modals?: JSX.Element | JSX.Element[];
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export default function SectionLayout(props: SectionLayoutProps) {
   const {
           title,
           disableFold,
+          titleLeftComponent,
           titleRightComponent,
           modifiedAt,
           modals
@@ -75,6 +77,12 @@ export default function SectionLayout(props: SectionLayoutProps) {
                 }}
               />
             )}
+            <Box sx={{
+              display:  'flex',
+              flexWrap: 'nowrap',
+            }}>
+              {titleLeftComponent}
+            </Box>
           </Box>
           <Box sx={{
             display:        'flex',

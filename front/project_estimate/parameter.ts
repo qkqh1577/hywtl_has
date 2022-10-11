@@ -44,8 +44,8 @@ export interface ProjectSystemEstimateParameter {
 }
 
 export interface ProjectEstimatePlanParameter {
-  estimateDate: Date;
-  expectedServiceDate: Date;
+  estimateDate: string;
+  expectedServiceDate: string;
   expectedTestDeadline: number;
   expectedFinalReportDeadline: number;
   testAmount: number;
