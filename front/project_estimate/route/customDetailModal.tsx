@@ -19,7 +19,7 @@ import useDialog from 'components/Dialog';
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, customDetail, requestChangeCustom } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, customDetail, requestChangeCustom, requestDeleteCustom } = useSelector((root: RootState) => root.projectEstimate);
   const { alert, error, rollback, confirm } = useDialog();
   const onClose = useCallback(() => dispatch(projectEstimateAction.setCustomDetailModal(undefined)), [dispatch]);
   const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
@@ -64,6 +64,20 @@ export default function ProjectCustomEstimateDetailModalRoute() {
       formik.setSubmitting(false);
     }
   }, [requestChangeCustom]);
+
+  useEffect(() => {
+    if (requestDeleteCustom === ApiStatus.DONE) {
+      alert('삭제하였습니다.');
+      dispatch(projectEstimateAction.setProjectId(projectId!));
+      dispatch(projectEstimateAction.setCustomDetailModal(undefined));
+      dispatch(projectEstimateAction.requestDeleteCustom(ApiStatus.IDLE));
+    }
+    else if (requestDeleteCustom === ApiStatus.FAIL) {
+      error('삭제에 실패하였습니다.');
+      dispatch(projectEstimateAction.requestDeleteCustom(ApiStatus.IDLE));
+    }
+
+  }, [requestDeleteCustom]);
 
   return (
     <FormikProvider value={formik}>
