@@ -21,12 +21,18 @@ import ProjectComplexBuildingFileModal from 'project_complex/view/BuildingFileMo
 import { ProjectComplexBuildingId } from 'project_complex/domain';
 import { projectComplexAction } from 'project_complex/action';
 import { projectDocumentAction } from 'project_document/action';
+import { estimateTemplateAction } from 'admin/estimate/template/action';
+import { initialEstimateTemplateQuery } from 'admin/estimate/template/query';
+import { estimateContentAction } from 'admin/estimate/content/action';
+import { initialEstimateContentQuery } from 'admin/estimate/content/query';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
   const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
+  const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
+  const { list: contentList } = useSelector((root: RootState) => root.estimateContent);
   const { alert, error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
   const closeBuildingFileModal = () => {
@@ -40,6 +46,8 @@ export default function ProjectSystemEstimateModalRoute() {
     initialValues: {
                      siteList:     [{}],
                      buildingList: [{}],
+                     templateList: [],
+                     contentList:  [],
                      edit:         true,
                    } as unknown as ProjectSystemEstimateParameter,
     onSubmit:      (values) => {
@@ -61,9 +69,13 @@ export default function ProjectSystemEstimateModalRoute() {
     }
     if (systemModal === null) {
       dispatch(projectComplexAction.setId(projectId));
+      dispatch(estimateTemplateAction.setFilter(initialEstimateTemplateQuery));
+      dispatch(estimateContentAction.setFilter(initialEstimateContentQuery));
       formik.setValues({
         siteList:     [{}],
         buildingList: [{}],
+        templateList: [],
+        contentList:  [],
         edit:         true,
       } as unknown as ProjectSystemEstimateParameter);
     }
@@ -73,11 +85,14 @@ export default function ProjectSystemEstimateModalRoute() {
     if (systemModal && systemDetail) {
       formik.setValues({
         ...systemDetail,
-        edit: false,
+        siteList:     systemDetail.siteList ?? [],
+        buildingList: systemDetail.buildingList ?? [],
+        templateList: systemDetail.templateList ?? [],
+        contentList:  systemDetail.contentList ?? [],
+        edit:         false,
       } as unknown as ProjectSystemEstimateParameter);
     }
   }, [systemModal, systemDetail]);
-
 
   useEffect(() => {
     if (systemModal === null) {
@@ -107,6 +122,24 @@ export default function ProjectSystemEstimateModalRoute() {
       }) ?? [{}]);
     }
   }, [buildingList]);
+
+  useEffect(() => {
+    if (systemModal === null) {
+      formik.setFieldValue('templateList', templateList ?? []);
+    }
+  }, [templateList]);
+
+  useEffect(() => {
+    if (systemModal === null) {
+      formik.setFieldValue('contentList',
+        (!contentList || contentList.length === 0)
+          ? []
+          : contentList.map(content => content.detailList)
+                       .reduce((a,
+                                b
+                       ) => [...a, ...b], []));
+    }
+  }, [contentList]);
 
   useEffect(() => {
     if (requestAddSystem === ApiStatus.DONE) {
