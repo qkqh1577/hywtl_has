@@ -17,7 +17,6 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import { ProjectEstimateVO } from 'project_contract/domain';
 import DateFormat from 'components/DateFormat';
 import { projectContractApi } from 'project_contract/api';
 import useId from 'services/useId';
@@ -30,6 +29,10 @@ import {
   TestType,
   testTypeList
 } from 'type/TestType';
+import {
+  projectEstimateTypeName,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 
 export default function (props: {
   formik: FormikContextType<any>,
@@ -59,110 +62,110 @@ export default function (props: {
         <Button onClick={openSelectEstimateModal}>견적서 선택</Button>
       </div>
       {estimateDetail &&
-        <Grid container>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="견적일자" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan.estimateDate} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="착수가능일" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan.expectedServiceDate} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan.expectedTestDeadline} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="최종보고서 납품 가능 주" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan.expectedFinalReportDeadline} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={5}>
-            <DataFieldWithLabel label="풍동 금액" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan?.testAmount && estimateDetail.plan.testAmount.toLocaleString()} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={5}>
-            <DataFieldWithLabel label="구검" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.plan?.reviewAmount && estimateDetail.plan.reviewAmount.toLocaleString()} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={2}>
-            <DataFieldWithLabel label="LH 여부" labelPosition="top" required={false}>
-              <Input value={'N'} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-        </Grid>}
+      <Grid container>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="견적일자" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.estimateDate} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="착수가능일" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.expectedServiceDate} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.expectedTestDeadline} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="최종보고서 납품 가능 주" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.expectedFinalReportDeadline} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={5}>
+          <DataFieldWithLabel label="풍동 금액" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.testAmount && estimateDetail.plan.testAmount.toLocaleString()} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={5}>
+          <DataFieldWithLabel label="구검" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.plan?.reviewAmount && estimateDetail.plan.reviewAmount.toLocaleString()} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={2}>
+          <DataFieldWithLabel label="LH 여부" labelPosition="top" required={false}>
+            <Input value={'N'} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+      </Grid>}
     </Box>
     {estimateDetail &&
-      <Box sx={{
-        border:       `1px solid ${ColorPalette._e4e9f2}`,
-        padding:      '10px',
-        marginBottom: '15px',
-        width:        '100%',
-      }}>
-        <div>합계(부가세 별도): {estimateDetail?.plan?.totalAmount && `${toAmountKor(estimateDetail?.plan.totalAmount)}(￦ ${estimateDetail?.plan.totalAmount.toLocaleString()})`}</div>
-      </Box>
+    <Box sx={{
+      border:       `1px solid ${ColorPalette._e4e9f2}`,
+      padding:      '10px',
+      marginBottom: '15px',
+      width:        '100%',
+    }}>
+      <div>합계(부가세 별도): {estimateDetail?.plan?.totalAmount && `${toAmountKor(estimateDetail?.plan.totalAmount)}(￦ ${estimateDetail?.plan.totalAmount.toLocaleString()})`}</div>
+    </Box>
     }
     {estimateDetail &&
-      <Box sx={{
-        border:       `1px solid ${ColorPalette._e4e9f2}`,
-        padding:      '10px',
-        marginBottom: '15px',
-        width:        '100%',
-      }}>
-        <Grid container>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="대지모형 수" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.siteList?.length} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={6}>
-            <DataFieldWithLabel label="실험대상 동수" labelPosition="top" required={false}>
-              <Input value={estimateDetail?.buildingList?.length} readOnly />
-            </DataFieldWithLabel>
-          </Grid>
-          <Grid item xs={12}>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {testTypeList.map((testType) => <Th key={testType}>{testType}</Th>)}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={-1}>
+    <Box sx={{
+      border:       `1px solid ${ColorPalette._e4e9f2}`,
+      padding:      '10px',
+      marginBottom: '15px',
+      width:        '100%',
+    }}>
+      <Grid container>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="대지모형 수" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.siteList?.length} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={6}>
+          <DataFieldWithLabel label="실험대상 동수" labelPosition="top" required={false}>
+            <Input value={estimateDetail?.buildingList?.length} readOnly />
+          </DataFieldWithLabel>
+        </Grid>
+        <Grid item xs={12}>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {testTypeList.map((testType) => <Th key={testType}>{testType}</Th>)}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow key={-1}>
+                  {testTypeList.map((testType) => {
+                      if (!estimateDetail?.buildingList) {
+                        return <Td key={testType}>0</Td>;
+                      }
+                      const buildings = estimateDetail?.buildingList.filter((building) => building?.testTypeList?.includes(testType));
+                      const count = buildings ? buildings.length : 0;
+                      return <Td key={testType}>{count}</Td>;
+                    }
+                  )}
+                </TableRow>
+                {estimateDetail?.buildingList?.map((item) => (
+                  <TableRow key={item.id}>
                     {testTypeList.map((testType) => {
-                        if (!estimateDetail?.buildingList) {
-                          return <Td key={testType}>0</Td>;
+                        if (testType === TestType.E) {
+                          return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.site?.name}</Td>;
                         }
-                        const buildings = estimateDetail?.buildingList.filter((building) => building?.testTypeList?.includes(testType));
-                        const count = buildings ? buildings.length : 0;
-                        return <Td key={testType}>{count}</Td>;
+                        return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.name}</Td>;
                       }
                     )}
-                  </TableRow>
-                  {estimateDetail?.buildingList?.map((item) => (
-                    <TableRow key={item.id}>
-                      {testTypeList.map((testType) => {
-                          if (testType === TestType.E) {
-                            return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.site?.name}</Td>;
-                          }
-                          return <Td key={testType}>{item.testTypeList && item.testTypeList.includes(testType) && item.name}</Td>;
-                        }
-                      )}
 
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
-      </Box>
+      </Grid>
+    </Box>
     }
   </>;
 }
@@ -226,11 +229,11 @@ function SelectEstimateModal(props) {
                       />
                     </Td>
                     <Td>{item.code}</Td>
-                    <Td>{item.typeName}</Td>
+                    <Td>{projectEstimateTypeName(item.type)}</Td>
                     <Td>{item.business.name}</Td>
                     <Td><DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" /></Td>
                     <Td>{item.createdBy.name}</Td>
-                    <Td>{item.isSentYn}</Td>
+                    <Td>{item.isSent ? 'Y' : 'N'}</Td>
                   </TableRow>
                 ))}
               </TableBody>

@@ -69,6 +69,7 @@ export default function ProjectEstimateListSection(props: Props) {
         <ButtonSection
           openCustomAddModal={props.openCustomAddModal}
           openSystemAddModal={props.openSystemAddModal}
+          openFinalModal={props.openFinalModal}
         />
       }>
       <Box sx={{ width: '100%' }}>

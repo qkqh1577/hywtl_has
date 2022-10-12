@@ -4,11 +4,13 @@ import {
   ProjectContractId,
   ProjectContractShort,
   ProjectContractVO,
-  ProjectEstimateId,
-  ProjectEstimateVO
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 
 class ProjectContractApi {
 
@@ -54,13 +56,13 @@ class ProjectContractApi {
   /** 견적서 목록 조회*/
   async getEstimateList(id: ProjectId): Promise<ProjectEstimateVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/estimate`);
-    return data.map((item: any) => new ProjectEstimateVO(item));
+    return data;
   }
 
   /** 견적서 조회*/
   async getEstimateDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
     const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
-    return new ProjectEstimateVO(data);
+    return data;
   }
 
   /** 계약서 기본 정보 조회*/

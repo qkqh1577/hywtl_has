@@ -1,4 +1,4 @@
-import { ProjectEstimateId } from 'project_contract/domain';
+import { ProjectEstimateId } from 'project_estimate/domain';
 
 export interface ProjectContractParameter {
   estimateId: ProjectEstimateId;

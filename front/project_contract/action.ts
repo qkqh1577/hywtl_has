@@ -6,10 +6,10 @@ import {
   ProjectContractConditionVO,
   ProjectContractId,
   ProjectContractVO,
-  ProjectEstimateVO,
 } from 'project_contract/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
 import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
+import { ProjectEstimateVO } from 'project_estimate/domain';
 
 export enum ProjectContractActionType {
   setProjectId             = 'project/sales/contract/project-id/set',

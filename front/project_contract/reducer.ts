@@ -6,11 +6,11 @@ import {
   ProjectContractId,
   ProjectContractShort,
   ProjectContractVO,
-  ProjectEstimateVO,
 } from 'project_contract/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectContractActionType } from 'project_contract/action';
 import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
+import { ProjectEstimateVO } from 'project_estimate/domain';
 
 export interface ProjectContractState {
   projectId?: ProjectId;
@@ -94,17 +94,17 @@ export const projectContractReducer = createReducer(initial, {
     basic: action.payload,
   }),
 
-  [ProjectContractActionType.setContractCollection]: (
-                                                       state,
-                                                       action
-                                                     ) => ({
+  [ProjectContractActionType.setContractCollection]:    (
+                                                          state,
+                                                          action
+                                                        ) => ({
     ...state,
     collection: action.payload
   }),
-  [ProjectContractActionType.setContractConditionList]:  (
-                                                           state,
-                                                           action
-                                                         ) => ({
+  [ProjectContractActionType.setContractConditionList]: (
+                                                          state,
+                                                          action
+                                                        ) => ({
     ...state,
     condition: action.payload
   })

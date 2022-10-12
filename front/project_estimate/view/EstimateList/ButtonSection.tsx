@@ -7,6 +7,7 @@ import { DefaultFunction } from 'type/Function';
 export interface ProjectEstimateListButtonProps {
   openCustomAddModal: (type: ProjectEstimateType) => void;
   openSystemAddModal: DefaultFunction;
+  openFinalModal: DefaultFunction;
 }
 
 export default function (props: ProjectEstimateListButtonProps) {
@@ -19,7 +20,7 @@ export default function (props: ProjectEstimateListButtonProps) {
         marginRight: '10px',
       }
     }}>
-      <Button shape="small" sx={{ width: 'auto' }}>최종 선택</Button>
+      <Button shape="small" sx={{ width: 'auto' }} onClick={props.openFinalModal}>최종 선택</Button>
       <Button shape="small" onClick={() => {
         props.openCustomAddModal(ProjectEstimateType.COMPARISON);
       }}>
