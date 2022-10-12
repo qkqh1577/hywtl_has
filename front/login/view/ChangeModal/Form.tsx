@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import { sexCategoryList } from 'user/domain';
+import { fileToView } from 'file-item';
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -62,10 +63,16 @@ export default function () {
         <DataFieldWithLabel label="프로필 사진" labelPosition="top">
           <UploadField
             preview
-            disableLabel
-            name="profile"
-            label="프로필 사진"
+            disableDownload
             accept="image/*"
+            value={formik.values.profile}
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('profile', undefined);
+                return;
+              }
+              formik.setFieldValue('profile', fileToView(e.target.files![0]));
+            }}
           />
         </DataFieldWithLabel>
       </FieldBox>

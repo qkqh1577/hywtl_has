@@ -33,8 +33,6 @@ export default function ProjectContractDetailModal(props: Props) {
 
   const { detailModal, estimateDetail, variableList } = useSelector((root: RootState) => root.projectContract);
 
-  const onSubmit = () => {formik.handleSubmit();};
-  console.log(estimateDetail)
   return (
     <ModalLayout
       title="계약서 상세"

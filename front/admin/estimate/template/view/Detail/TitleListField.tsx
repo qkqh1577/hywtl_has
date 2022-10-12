@@ -1,7 +1,7 @@
 import { Box, } from '@mui/material';
 import React, { useContext } from 'react';
 import TextBox from 'layouts/Text';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';

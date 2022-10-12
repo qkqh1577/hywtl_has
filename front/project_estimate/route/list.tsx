@@ -26,6 +26,7 @@ export default function ProjectEstimateListRoute() {
   const openCustomDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
   const openSystemAddModal = useCallback(() => dispatch(projectEstimateAction.setSystemModal(null)), [dispatch]);
   const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
+  const openFinalModal = useCallback(() => dispatch(projectEstimateAction.setFinalModal(true)), [dispatch]);
 
   useEffect(() => {
     dispatch(projectEstimateAction.setProjectId(id ? ProjectId(id) : undefined));
@@ -38,6 +39,7 @@ export default function ProjectEstimateListRoute() {
       openCustomDetailModal={openCustomDetailModal}
       openSystemAddModal={openSystemAddModal}
       openSystemDetailModal={openSystemDetailModal}
+      openFinalModal={openFinalModal}
     />
   );
 }

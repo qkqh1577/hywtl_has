@@ -9,6 +9,7 @@ import { FormikContext } from 'formik';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
+import { fileToView } from 'file-item';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -90,10 +91,15 @@ export default function () {
       <Box sx={{ width: '90%' }}>
         <DataFieldWithLabel required label="파일" labelPosition="top">
           <UploadField
-            required
-            disableLabel
-            name="file"
-            label="파일"
+            disableDownload
+            value={formik.values.file}
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('file', undefined);
+                return;
+              }
+              formik.setFieldValue('file', fileToView(e.target.files![0]));
+            }}
           />
         </DataFieldWithLabel>
       </Box>

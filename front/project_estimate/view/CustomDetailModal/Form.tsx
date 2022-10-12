@@ -8,9 +8,9 @@ import { projectEstimateTypeName } from 'project_estimate/domain';
 import Select from 'layouts/Select';
 import BusinessSelector from 'components/BusinessSelector';
 import UploadField from 'components/UploadField';
-import { FieldStatus } from 'components/DataFieldProps';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
+import { fileToView } from 'file-item';
 
 export default function () {
 
@@ -116,13 +116,18 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '90%' }}>
-        <DataFieldWithLabel label="파일" labelPosition="top">
+        <DataFieldWithLabel required={edit} label="파일" labelPosition="top">
           <UploadField
-            required
-            disableLabel
-            status={edit ? undefined : FieldStatus.ReadOnly}
-            name="file"
-            label="파일"
+            disableSelect
+            disableDownload={edit}
+            value={formik.values.file}
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('file', undefined);
+                return;
+              }
+              formik.setFieldValue('file', fileToView(e.target.files![0]));
+            }}
           />
         </DataFieldWithLabel>
       </Box>

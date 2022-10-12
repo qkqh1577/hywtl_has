@@ -1,10 +1,11 @@
 import { Box } from '@mui/material';
 import Button from 'layouts/Button';
 import React from 'react';
+import { DefaultFunction } from 'type/Function';
 
 export interface ProjectContractListButtonProps {
-  openConfirmModal: () => void;
-  openAddModal: () => void;
+  openFinalModal: DefaultFunction;
+  openAddModal: DefaultFunction;
 }
 
 export default function (props: ProjectContractListButtonProps) {
@@ -17,8 +18,8 @@ export default function (props: ProjectContractListButtonProps) {
         marginRight: '10px',
       }
     }}>
-      <Button onClick={() => props.openConfirmModal()}>최종 선택</Button>
-      <Button onClick={() => props.openAddModal()}>
+      <Button shape="small" onClick={props.openFinalModal}>최종 선택</Button>
+      <Button shape="small" onClick={props.openAddModal}>
         + 등록
       </Button>
     </Box>

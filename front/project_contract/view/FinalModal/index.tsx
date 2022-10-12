@@ -1,29 +1,28 @@
-import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
 import { DefaultFunction } from 'type/Function';
-import Form from './Form';
+import React, { useContext } from 'react';
+import { FormikContext } from 'formik';
 import { Box } from '@mui/material';
 import Button from 'layouts/Button';
-import { FormikContext } from 'formik';
+import { ProjectContractShortVO } from 'project_contract/domain';
+import ProjectContractFinalModalForm from 'project_contract/view/FinalModal/Form';
 
 interface Props {
-  onClose: DefaultFunction;
   open: boolean;
+  onClose: DefaultFunction;
+  list: ProjectContractShortVO[] | undefined;
 }
 
-export default function ProjectStatusFailReasonAddModal(props: Props) {
-  const { onClose, open } = props;
+export default function ProjectContractFinalModal(props: Props) {
+
   const formik = useContext(FormikContext);
 
   return (
     <ModalLayout
-      width="30vw"
-      open={open}
-      title="수주실패 원인 입력"
-      onClose={onClose}
-      children={
-        <Form />
-      }
+      title="계약서 최종 선택"
+      open={props.open}
+      onClose={props.onClose}
+      children={<ProjectContractFinalModalForm list={props.list} />}
       footer={
         <Box sx={{
           width:          '100%',
@@ -33,6 +32,7 @@ export default function ProjectStatusFailReasonAddModal(props: Props) {
           alignItems:     'center',
         }}>
           <Button
+            disabled={!formik.values.id || !props.list || props.list.length === 0}
             sx={{
               marginRight: '10px',
             }}
@@ -41,7 +41,7 @@ export default function ProjectStatusFailReasonAddModal(props: Props) {
             }}>
             저장
           </Button>
-          <Button shape="basic2" onClick={onClose}>
+          <Button shape="basic2" onClick={props.onClose}>
             취소
           </Button>
         </Box>

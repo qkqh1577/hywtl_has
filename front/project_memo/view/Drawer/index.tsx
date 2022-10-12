@@ -1,7 +1,7 @@
 import Drawer from 'layouts/Drawer';
 import React from 'react';
 import { Box, } from '@mui/material';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { ArrowLeft as LeftIcon } from '@mui/icons-material';
 import Fade from 'components/Fade';
 import { ColorPalette } from 'app/view/App/theme';

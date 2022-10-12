@@ -17,21 +17,17 @@ import {
   ProjectVO
 } from 'project/domain';
 import { projectContractApi } from 'project_contract/api';
-
-import {
-  ProjectEstimateId,
-  ProjectEstimateVO
-} from 'project_contract/domain';
 import { projectApi } from 'project/api';
-import {
-  ContractCollectionVO,
-  ExpectedDateType
-} from 'admin/contract/collection/domain';
+import { ContractCollectionVO, } from 'admin/contract/collection/domain';
 import { contractCollectionApi } from 'admin/contract/collection/api';
 import { ContractConditionListVO } from 'admin/contract/condition/domain';
 import { contractConditionApi } from 'admin/contract/condition/api';
 import { contractBasicApi } from 'admin/contract/basic/api';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 
 export default function ProjectContractAddModalRoute() {
   const dispatch = useDispatch();
@@ -43,7 +39,6 @@ export default function ProjectContractAddModalRoute() {
       dispatch(projectContractAction.setProjectId(ProjectId(projectId)));
       (async () => {
         let values = await getInitialValues(projectId);
-        console.debug(values);
         await formik.setValues(values);
       })();
     }
@@ -57,7 +52,6 @@ export default function ProjectContractAddModalRoute() {
     const basic: ContractBasicVO = await contractBasicApi.getOne();
     const collection: ContractCollectionVO = await contractCollectionApi.getOne();
     const conditionList: ContractConditionListVO = await contractConditionApi.getOne();
-    //const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getContractCondition, projectId, ProjectEstimateId(1));
     const initialValues = {
       estimateId:    undefined,
       isSent:        'N',
@@ -126,12 +120,12 @@ export default function ProjectContractAddModalRoute() {
     projectContractApi.getEstimateDetail(ProjectEstimateId(estimateId))
                       .then((estimateDetail) => {
                         dispatch(projectContractAction.setEstimateDetail(estimateDetail));
-                        const totalAmount = Math.floor(estimateDetail?.plan.totalAmount * 1.1);
+                        const totalAmount = Math.floor((estimateDetail?.plan?.totalAmount ?? 0) * 1.1);
                         formik.setValues({
                           ...formik.values,
                           basic:      {
                             ...formik.values.basic,
-                            serviceDurationWeekNumber: `구조설계용 풍하중은 ${estimateDetail?.plan.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan.expectedFinalReportDeadline}주차`
+                            serviceDurationWeekNumber: `구조설계용 풍하중은 ${estimateDetail?.plan?.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan?.expectedFinalReportDeadline}주차`
                           },
                           collection: {
                             ...formik.values.collection,

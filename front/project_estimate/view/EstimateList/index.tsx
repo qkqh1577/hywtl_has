@@ -23,7 +23,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
 import TextLink from 'components/TextLink';
@@ -69,6 +69,7 @@ export default function ProjectEstimateListSection(props: Props) {
         <ButtonSection
           openCustomAddModal={props.openCustomAddModal}
           openSystemAddModal={props.openSystemAddModal}
+          openFinalModal={props.openFinalModal}
         />
       }>
       <Box sx={{ width: '100%' }}>

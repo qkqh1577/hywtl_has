@@ -10,17 +10,8 @@ import { projectContractAction } from 'project_contract/action';
 import { ProjectId } from 'project/domain';
 import useId from 'services/useId';
 import ProjectContractListSection from 'project_contract/view/ContractList';
-import {
-  ProjectContractId,
-  ProjectContractShort,
-} from 'project_contract/domain';
-import { projectEstimateAction } from 'project_estimate/action';
+import { ProjectContractId, } from 'project_contract/domain';
 import { RootState } from 'services/reducer';
-/*import {
-  ProjectEstimateId,
-  ProjectEstimateType
-} from 'project_estimate/domain';*/
-
 
 export default function ProjectContractListRoute() {
 
@@ -28,23 +19,8 @@ export default function ProjectContractListRoute() {
   const id = useId();
   const { list } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
-  const openDetailModal = useCallback((id: ProjectContractId) => {
-    console.log('openDetailModal',id);
-    dispatch(projectContractAction.setDetailModal(id));
-  }, [dispatch]);
-  const getVariableList = useCallback(() => dispatch(projectContractAction.getVariableList()), [dispatch]);
-  /*const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
-    return {
-      id:           i,
-      confirmed:    i === 7,
-      code:         'code' + i,
-      estimateCode: 'estimateCode' + i,
-      createdBy:    { name: 'name' + i },
-      modifiedAt:   new Date(),
-      createdAt:    new Date(),
-      note:         'note' + i,
-    } as ProjectContractShort;
-  });*/
+  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setDetailModal(id)), [dispatch]);
+  const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -56,9 +32,8 @@ export default function ProjectContractListRoute() {
     <ProjectContractListSection
       list={list}
       openAddModal={openAddModal}
-      getVariableList={getVariableList}
       openDetailModal={openDetailModal}
-      openConfirmModal={() => {}}
+      openFinalModal={openFinalModal}
     />
   );
 }

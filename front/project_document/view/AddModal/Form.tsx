@@ -5,11 +5,10 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import Input from 'layouts/Input';
-import FieldLabel from 'layouts/FieldLabel';
 import { FormikContext } from 'formik';
-import FileInput from 'layouts/FileInput';
-import FieldBox from 'project_document/view/FieldBox';
-
+import UploadField from 'components/UploadField';
+import { fileToView } from 'file-item';
+import DataFieldWithLabel from 'components/DataFieldLabel';
 
 export default function Form() {
   const formik = useContext(FormikContext);
@@ -20,13 +19,13 @@ export default function Form() {
       flexWrap:     'wrap',
       alignContent: 'flex-start',
     }}>
-      <FieldBox
-        label={
-          <FieldLabel required>
-            수신처
-          </FieldLabel>
-        }
-        children={
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="수신처" required>
           <Input
             required
             onBlur={(e) => {
@@ -39,25 +38,29 @@ export default function Form() {
               }
             }}
           />
-        }
-      />
-      <FieldBox
-        label={
-          <FieldLabel required>
-            파일
-          </FieldLabel>
-        }
-        children={
-          <FileInput
-            mode="edit"
+        </DataFieldWithLabel>
+      </Box>
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="파일" required>
+          <UploadField
+            disableDownload
             accept="image/*,.zip"
             value={formik.values.file}
-            onChange={(file) => {
-              formik.setFieldValue('file', file);
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('file', undefined);
+                return;
+              }
+              formik.setFieldValue('file', fileToView(e.target.files![0]));
             }}
           />
-        }
-      />
+        </DataFieldWithLabel>
+      </Box>
       <Box sx={{
         backgroundColor: ColorPalette._f1f5fc,
         border:          `1px solid ${ColorPalette._e4e9f2}`,
@@ -80,23 +83,27 @@ export default function Form() {
           &#183; 등록 가능한 파일양식: jpg, jpeg, webp, png, gif, bmp, pdf, zip
         </Typography>
       </Box>
-      <FieldBox
-        label={
-          <FieldLabel>
-            메일 자료
-          </FieldLabel>
-        }
-        children={
-          <FileInput
-            mode="edit"
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="메일 자료">
+          <UploadField
+            disableDownload
             accept=".eml"
             value={formik.values.mailFile}
-            onChange={(file) => {
-              formik.setFieldValue('mailFile', file);
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('mailFile', undefined);
+                return;
+              }
+              formik.setFieldValue('mailFile', fileToView(e.target.files![0]));
             }}
           />
-        }
-      />
+        </DataFieldWithLabel>
+      </Box>
       <Box sx={{
         backgroundColor: ColorPalette._f1f5fc,
         border:          `1px solid ${ColorPalette._e4e9f2}`,
@@ -119,13 +126,14 @@ export default function Form() {
           &#183; 등록 가능한 파일양식: eml
         </Typography>
       </Box>
-      <FieldBox
-        label={
-          <FieldLabel>
-            비고
-          </FieldLabel>
-        }
-        children={
+
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="비고">
           <Input
             onBlur={(e) => {
               formik.setFieldValue('note', e.target.value || undefined);
@@ -137,8 +145,8 @@ export default function Form() {
               }
             }}
           />
-        }
-      />
+        </DataFieldWithLabel>
+      </Box>
     </Box>
   );
 };

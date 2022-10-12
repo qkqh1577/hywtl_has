@@ -8,6 +8,12 @@ import { UserId } from 'user/domain';
 import { TestType } from 'type/TestType';
 import { ProjectDocumentId } from 'project_document/domain';
 
+export interface ProjectEstimateFinalParameter {
+  id: ProjectEstimateId;
+}
+
+export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;
+
 export interface ProjectCustomEstimateAddParameter {
   isSent: boolean;
   businessId: BusinessId;

@@ -1,5 +1,5 @@
 import { Box, } from '@mui/material';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'app/view/App/theme';

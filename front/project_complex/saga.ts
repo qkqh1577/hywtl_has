@@ -20,9 +20,11 @@ import { ApiStatus } from 'components/DataFieldProps';
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(projectComplexAction.setId);
-    yield call(getSiteList, id);
-    yield call(getBuildList, id);
-    yield call(getTestDetail, id);
+    if (id) {
+      yield call(getSiteList, id);
+      yield call(getBuildList, id);
+      yield call(getTestDetail, id);
+    }
   }
 }
 

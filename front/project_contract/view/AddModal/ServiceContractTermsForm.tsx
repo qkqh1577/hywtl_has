@@ -14,7 +14,7 @@ import {
 } from 'layouts/Table';
 import TextField from 'components/TextField';
 import Tooltip from 'components/Tooltip';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
 import AddRow from 'admin/contract/condition/view/AddRow';

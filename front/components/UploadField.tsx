@@ -1,88 +1,40 @@
-import {
-  FieldStatus,
-  getValue,
-  LabelProps
-} from 'components/DataFieldProps';
 import React, {
   ChangeEvent,
-  useContext,
   useEffect,
   useMemo,
   useRef,
   useState
 } from 'react';
-import { FormikContext } from 'formik';
 import {
   FileItemView,
-  fileToView
+  toView
 } from 'file-item';
-import { Box } from '@mui/material';
-import TextField from 'components/TextField';
+import {
+  Box,
+  InputAdornment
+} from '@mui/material';
 import Button from 'layouts/Button';
-import useDialog from 'components/Dialog';
 import { ColorPalette } from 'app/view/App/theme';
+import Input, { InputProps } from 'layouts/Input';
 
 interface UploadFieldProps
-  extends LabelProps {
+  extends Omit<InputProps, |'onChange'> {
   accept?: string;
-  name: string;
-  status?: FieldStatus;
   preview?: boolean;
-  required?: boolean;
+  disableDownload?: boolean;
+  disableSelect?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function UploadField(props: UploadFieldProps) {
-  const { accept, name, label, status } = props;
-  const { error } = useDialog();
-  const formikContext = useContext(FormikContext);
+export default function UploadField({ accept, name, disableDownload, disableSelect, onChange, ...props }: UploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target || !e.target.files || e.target.files.length === 0) {
-      console.error('no file');
-      return;
-    }
-    const file = fileToView(e.target.files![0]);
-    formikContext?.setFieldValue(name, file);
-  };
 
-  const file = getValue<FileItemView>(formikContext?.values, name);
-  const isView = status === FieldStatus.ReadOnly || status === FieldStatus.View;
-  const isDisabled = status === FieldStatus.Disabled;
-  const endAdornment = useMemo(() => {
-    if (isDisabled) {
-      return undefined;
-    }
-    if (isView) {
-      if (file) {
-        return (
-          <Button shape="small" onClick={() => {
-            if (file) {
-              window.open(`/file-items/${file.id}`, '_blank');
-            }
-            else {
-              error('파일을 찾을 수 없습니다.');
-            }
-          }}>
-            다운로드
-          </Button>
-        );
-      }
-      return undefined;
-    }
-    else {
-      return (
-        <Button onClick={() => {
-          inputRef.current?.click();
-        }}>
-          파일선택
-        </Button>
-      );
-    }
-  }, [isView, isDisabled, file]);
-
+  const file = useMemo(() => props.value ? toView(props.value as File | FileItemView) : undefined, [props.value]);
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
+
+    console.log(file);
     if (!file) {
       setImageUrl(undefined);
       return;
@@ -125,14 +77,29 @@ export default function UploadField(props: UploadFieldProps) {
           />
         </Box>
       )}
-      <TextField
-        disableLabel={props.disableLabel}
-        required={props.required}
-        labelPosition={props.labelPosition}
-        name={`${name}.filename`}
-        label={label}
-        status={FieldStatus.ReadOnly}
-        endAdornment={endAdornment}
+      <Input
+        {...props}
+        value={file?.filename ?? ''}
+        readOnly
+        endAdornment={!props.disabled && (
+          <InputAdornment position="end">
+            {file && !disableDownload && (
+              <Button shape="small" onClick={() => {
+                window.open(`/file-items/${file.id}`, '_blank');
+              }}>
+                다운로드
+              </Button>
+            )}
+            {!disableSelect && (
+              <Button onClick={() => {
+                inputRef.current?.click();
+              }}>
+                파일선택
+              </Button>
+            )}
+          </InputAdornment>
+        )
+        }
       />
       <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />
     </Box>

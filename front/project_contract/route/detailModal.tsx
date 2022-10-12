@@ -12,12 +12,12 @@ import { projectContractAction } from 'project_contract/action';
 import useDialog from 'components/Dialog';
 import { projectContractApi } from 'project_contract/api';
 
+import { ProjectContractId, } from 'project_contract/domain';
+import ProjectContractDetailModal from 'project_contract/view/DetailModal';
 import {
-  ProjectContractId,
   ProjectEstimateId,
   ProjectEstimateVO
-} from 'project_contract/domain';
-import ProjectContractDetailModal from 'project_contract/view/DetailModal';
+} from 'project_estimate/domain';
 
 export default function ProjectContractDetailModalRoute() {
   const dispatch = useDispatch();
@@ -96,12 +96,12 @@ export default function ProjectContractDetailModalRoute() {
     projectContractApi.getEstimateDetail(ProjectEstimateId(estimateId))
                       .then((estimateDetail) => {
                         dispatch(projectContractAction.setEstimateDetail(estimateDetail));
-                        const totalAmount = Math.floor(estimateDetail?.plan.totalAmount * 1.1);
+                        const totalAmount = Math.floor((estimateDetail?.plan?.totalAmount ?? 0) * 1.1);
                         formik.setValues({
                           ...formik.values,
                           basic:      {
                             ...formik.values.basic,
-                            serviceDurationWeekNumber: `구조설계용 풍하중은 ${estimateDetail?.plan.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan.expectedFinalReportDeadline}주차`
+                            serviceDurationWeekNumber: `구조설계용 풍하중은 ${estimateDetail?.plan?.expectedTestDeadline}주차, 최종결과보고서는 ${estimateDetail?.plan?.expectedFinalReportDeadline}주차`
                           },
                           collection: {
                             ...formik.values.collection,

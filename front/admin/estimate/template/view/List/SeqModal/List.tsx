@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { EstimateTemplateShort } from 'admin/estimate/template/domain';
 import { testTypeName } from 'type/TestType';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import {
   Table,
   Td,
