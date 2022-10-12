@@ -23,7 +23,7 @@ import {
   useSelector
 } from 'react-redux';
 import { loginAction } from 'login/action';
-import { LoginParameter } from 'user/parameter';
+import { LoginParameter } from 'login/parameter';
 import { RootState } from 'services/reducer';
 import { ApiStatus } from 'components/DataFieldProps';
 import useDialog from 'components/Dialog';

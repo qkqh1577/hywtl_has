@@ -21,7 +21,7 @@ export default function (props: Props) {
         }}>
         저장
       </Button>
-      <Button shape="basic3" onClick={props.onClose}>
+      <Button shape="basic2" onClick={props.onClose}>
         취소
       </Button>
     </Box>

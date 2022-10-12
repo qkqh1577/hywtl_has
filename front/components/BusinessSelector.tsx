@@ -20,20 +20,15 @@ import {
 import { businessApi } from 'business/api';
 import {
   BusinessQuery,
+  initialBusinessQuery,
   keywordTypeList
 } from 'business/query';
-import TextField, { TextFieldProps } from 'components/TextField';
 import React, {
   useCallback,
-  useContext,
   useEffect,
+  useState,
 } from 'react';
-import {
-  FormikContext,
-  FormikContextType,
-  useFormik
-} from 'formik';
-import { FieldStatus } from 'components/DataFieldProps';
+import { useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ModalLayout from 'layouts/ModalLayout';
 import { ColorPalette } from 'app/view/App/theme';
@@ -41,6 +36,7 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  MenuItem,
   Radio,
   RadioGroup,
   TableBody,
@@ -48,37 +44,41 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import SelectField from 'components/SelectField';
 import Button from 'layouts/Button';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
-import { DefaultFunction } from 'type/Function';
+import Input, { InputProps } from 'layouts/Input';
+import Select from 'layouts/Select';
 
 enum BusinessSelectorActionType {
-  setModal      = 'system/business-selector/modal/set',
-  requestUpdate = 'system/business-selector/update/request',
-  setList       = 'system/business-selector/list/set',
-  setFilter     = 'system/business-selector/filter/set',
+  setModal  = 'system/business-selector/modal/set',
+  setList   = 'system/business-selector/list/set',
+  setFilter = 'system/business-selector/filter/set',
+  setId     = 'system/business-selector/id/set',
+  setDetail = 'system/business-selector/detail/set',
 }
 
 interface ModalProps {
   id?: BusinessId;
   allowMyBusiness?: boolean;
+  afterConfirm: (id: BusinessId | undefined) => void;
 }
 
 const businessSelectorAction = {
-  setModal:      createAction(BusinessSelectorActionType.setModal)<ModalProps | undefined>(),
-  requestUpdate: createAction(BusinessSelectorActionType.requestUpdate)<BusinessId | undefined>(),
-  setFilter:     createAction(BusinessSelectorActionType.setFilter)<BusinessQuery>(),
-  setList:       createAction(BusinessSelectorActionType.setList)<BusinessVO[]>(),
+  setModal:  createAction(BusinessSelectorActionType.setModal)<ModalProps | undefined>(),
+  setFilter: createAction(BusinessSelectorActionType.setFilter)<BusinessQuery>(),
+  setId:     createAction(BusinessSelectorActionType.setId)<BusinessId | undefined>(),
+  setList:   createAction(BusinessSelectorActionType.setList)<BusinessVO[]>(),
+  setDetail: createAction(BusinessSelectorActionType.setDetail)<BusinessVO | undefined>(),
 };
 
 export interface BusinessSelectorState {
   modal?: ModalProps;
-  updateId?: BusinessId;
+  id?: BusinessId;
+  detail?: BusinessVO;
   list: BusinessVO[];
   filter: BusinessQuery;
 }
@@ -89,30 +89,36 @@ const initialState: BusinessSelectorState = {
 };
 
 export const businessSelectorReducer = createReducer(initialState, {
-  [BusinessSelectorActionType.setModal]:      (state,
-                                               action
-                                              ) => ({
+  [BusinessSelectorActionType.setModal]:  (state,
+                                           action
+                                          ) => ({
     ...state,
     modal: action.payload,
   }),
-  [BusinessSelectorActionType.requestUpdate]: (state,
-                                               action
-                                              ) => ({
-    ...state,
-    updateId: action.payload,
-  }),
-  [BusinessSelectorActionType.setFilter]:     (state,
-                                               action
-                                              ) => ({
+  [BusinessSelectorActionType.setFilter]: (state,
+                                           action
+                                          ) => ({
     ...state,
     filter: action.payload,
   }),
-  [BusinessSelectorActionType.setList]:       (state,
-                                               action
-                                              ) => ({
+  [BusinessSelectorActionType.setList]:   (state,
+                                           action
+                                          ) => ({
     ...state,
     list: action.payload,
   }),
+  [BusinessSelectorActionType.setId]:     (state,
+                                           action
+                                          ) => ({
+    ...state,
+    id: action.payload
+  }),
+  [BusinessSelectorActionType.setDetail]: (state,
+                                           action
+                                          ) => ({
+    ...state,
+    detail: action.payload,
+  })
 });
 
 function* watchFilter() {
@@ -123,66 +129,63 @@ function* watchFilter() {
   }
 }
 
-export function* businessSelectorSaga() {
-  yield fork(watchFilter);
+function* watchId() {
+  while (true) {
+    const { payload: id } = yield take(businessSelectorAction.setId);
+    if (id) {
+      const detail: BusinessVO = yield call(businessApi.getOne, id);
+      yield put(businessSelectorAction.setDetail(detail));
+    }
+    else {
+      yield put(businessSelectorAction.setDetail(undefined));
+    }
+  }
 }
 
-interface ModalFormProps {
-  selectedId?: BusinessId;
-  keywordType: string;
-  keyword?: string;
+export function* businessSelectorSaga() {
+  yield fork(watchFilter);
+  yield fork(watchId);
 }
 
 export function BusinessSelectorModalRoute() {
 
   const dispatch = useDispatch();
   const { modal, list } = useSelector((root: RootState) => root.businessSelector);
-
-  const initialValues: ModalFormProps = {
-    selectedId:  modal?.id,
-    keywordType: 'by_name'
-  };
+  const open = !!modal;
+  const [id, setId] = useState<BusinessId>();
 
   const onClose = useCallback(() => {
     dispatch(businessSelectorAction.setModal(undefined));
   }, [dispatch]);
 
-  const setFilter = useCallback((formik: FormikContextType<ModalFormProps>) => {
-    const filter = {
-      keywordType: formik.values.keywordType,
-      keyword:     formik.values.keyword || undefined,
-    };
-    dispatch(businessSelectorAction.setFilter(filter));
-  }, [dispatch]);
+  const setFilter = useCallback((query: BusinessQuery) => dispatch(businessSelectorAction.setFilter(query)), [dispatch]);
 
-  const requestUpdate = useCallback((id: BusinessId | undefined) => dispatch(businessSelectorAction.requestUpdate(id)), [dispatch]);
-
-  const formik = useFormik<ModalFormProps>({
-    enableReinitialize: true,
-    initialValues,
-    onSubmit:           (values) => {
+  const formik = useFormik<BusinessQuery>({
+    initialValues: initialBusinessQuery,
+    onSubmit:      (values) => {
       if (!modal) {
         return;
       }
-      if (values.selectedId === modal.id) {
-        onClose();
-        return;
-      }
-      requestUpdate(values.selectedId);
+      setFilter(values);
     }
   });
 
   useEffect(() => {
-    if (modal) {
-      setFilter(formik);
-      formik.setValues(initialValues);
+    if (open) {
+      setFilter(initialBusinessQuery);
+      formik.setValues(initialBusinessQuery);
+      setId(modal.id);
     }
-  }, [modal]);
+  }, [open]);
+
+  useEffect(() => {
+    formik.setSubmitting(false);
+  }, [list]);
 
   return (
     <ModalLayout
-      width="30vw"
-      open={typeof modal !== 'undefined'}
+      width="40vw"
+      open={open}
       title="업체 선택"
       onClose={onClose}
       children={
@@ -208,9 +211,11 @@ export function BusinessSelectorModalRoute() {
                     control={
                       <Radio
                         value="mine"
-                        checked={formik.values.selectedId === 1}
+                        checked={id === 1}
                         onChange={() => {
-                          formik.setFieldValue('selectedId', 1);
+                          if (modal?.allowMyBusiness && id !== 1) {
+                            setId(BusinessId(1));
+                          }
                         }}
                       />
                     }
@@ -220,9 +225,9 @@ export function BusinessSelectorModalRoute() {
                     control={
                       <Radio
                         value="other"
-                        checked={formik.values.selectedId !== 1}
+                        checked={id !== 1}
                         onChange={() => {
-                          formik.setFieldValue('selectedId', undefined);
+                          setId(undefined);
                         }}
                       />
                     }
@@ -241,32 +246,40 @@ export function BusinessSelectorModalRoute() {
             justifyContent: 'space-around',
           }}>
             <Box sx={{ width: '15%', display: 'flex' }}>
-              <SelectField
-                disableLabel
-                formik={formik}
-                status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+              <Select
+                value={formik.values.keywordType ?? ''}
                 variant="outlined"
-                name="keywordType"
-                label="검색어 구분"
-                options={keywordTypeList}
-              />
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.keywordType !== value) {
+                    formik.setFieldValue('keywordType', value);
+                  }
+                }}>
+                <MenuItem value="">전체</MenuItem>
+                {keywordTypeList.map(item => (
+                  <MenuItem key={item.key} value={item.key}>{item.text}</MenuItem>
+                ))}
+              </Select>
             </Box>
             <Box sx={{ width: '60%', display: 'flex' }}>
-              <TextField
-                disableLabel
-                formik={formik}
-                status={modal?.allowMyBusiness && formik.values.selectedId === 1 ? FieldStatus.Disabled : undefined}
+              <Input
                 variant="outlined"
-                name="keyword"
-                label="검색어"
+                value={formik.values.keyword ?? ''}
                 placeholder="검색어를 입력하세요"
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.keyword !== value) {
+                    formik.setFieldValue('keyword', value);
+                  }
+                }
+                }
               />
             </Box>
             <Box sx={{ width: '10%', display: 'flex' }}>
               <Button
-                disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
+                disabled={modal?.allowMyBusiness && id === 1 || formik.isSubmitting}
                 onClick={() => {
-                  setFilter(formik);
+                  formik.handleSubmit();
                 }}>
                 검색
               </Button>
@@ -292,11 +305,11 @@ export function BusinessSelectorModalRoute() {
                     <TableRow key={item.id}>
                       <Td>
                         <Radio
-                          disabled={modal?.allowMyBusiness && formik.values.selectedId === 1}
+                          disabled={modal?.allowMyBusiness && id === 1}
                           value={item.id}
-                          checked={item.id === formik.values.selectedId}
+                          checked={item.id === id}
                           onClick={() => {
-                            formik.setFieldValue('selectedId', item.id);
+                            setId(item.id);
                           }}
                         />
                       </Td>
@@ -313,8 +326,10 @@ export function BusinessSelectorModalRoute() {
       footer={
         <Box sx={{ width: '100%', display: 'flex', flexWrap: 'nowrap', justifyContent: 'center' }}>
           <Button
+            disabled={!modal}
             onClick={() => {
-              formik.handleSubmit();
+              onClose();
+              modal?.afterConfirm(id);
             }}
             sx={{
               marginRight: '10px'
@@ -329,61 +344,52 @@ export function BusinessSelectorModalRoute() {
 }
 
 interface FieldProps
-  extends Omit<TextFieldProps,
-    | 'status'
+  extends Omit<InputProps,
     | 'endAdornment'
-    | 'startAdornment'> {
+    | 'startAdornment'
+    | 'onChange'
+    | 'onClick'> {
   allowMyBusiness?: boolean;
-  afterChange?: DefaultFunction;
+  onChange: (id: BusinessId | undefined) => void;
 }
 
 export default function BusinessSelector(props: FieldProps) {
   const {
           allowMyBusiness,
-          afterChange,
+          onChange,
+          value,
           ...restProps
         } = props;
   const dispatch = useDispatch();
-  const { updateId } = useSelector((root: RootState) => root.businessSelector);
-  const formik = useContext(FormikContext);
-  const name = props.name.endsWith('.id') ? props.name.substring(0, props.name.length - 3) : props.name;
-  const business: BusinessVO | '' | undefined = formik?.values[name];
-  const id: BusinessId | '' | undefined = !business ? undefined : business.id;
+  const [detail, setDetail] = useState<BusinessVO>();
 
-  const onClick = useCallback((id: BusinessId | undefined) =>
-    dispatch(businessSelectorAction.setModal({
-      id,
-      allowMyBusiness,
-    })), [dispatch, allowMyBusiness]);
+  const onClick = useCallback((modalProps: ModalProps) => dispatch(businessSelectorAction.setModal(modalProps)), [dispatch]);
 
   useEffect(() => {
-    if (id) {
+    if (value) {
       businessApi
-      .getOne(id)
-      .then((detail) => {
-        formik.setFieldValue(name, detail);
+      .getOne(value as BusinessId)
+      .then(setDetail)
+      .catch(() => {
+        setDetail(undefined);
       });
     }
-  }, [id]);
-
-  useEffect(() => {
-    if (updateId) {
-      formik.setFieldValue(name, { id: updateId });
-      if (props.afterChange) {
-        props.afterChange();
-      }
-      dispatch(businessSelectorAction.requestUpdate(undefined));
-      dispatch(businessSelectorAction.setModal(undefined));
-    }
-  }, [updateId]);
+  }, [value]);
 
   return (
-    <TextField
+    <Input
       {...restProps}
-      name={`${name}.name`}
-      status={FieldStatus.ReadOnly}
+      readOnly
+      value={detail?.name ?? ''}
       onClick={() => {
-        onClick(id || undefined);
+        if (restProps.disabled || restProps.readOnly) {
+          return;
+        }
+        onClick({
+          id:           detail?.id,
+          allowMyBusiness,
+          afterConfirm: onChange
+        });
       }}
       endAdornment={
         <FontAwesomeIcon

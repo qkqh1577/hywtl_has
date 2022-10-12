@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.user.parameter;
 
-import com.howoocast.hywtl_has.department.parameter.DepartmentIdParameter;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +19,7 @@ public class UserChangeParameter {
     @NotNull(message = "user.role.not_null")
     private UserRole role;
 
-    @NotNull(message = "user.department.not_null")
-    private DepartmentIdParameter department;
+    @NotNull(message = "user.department_id.not_null")
+    private Long departmentId;
 
 }

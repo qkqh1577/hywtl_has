@@ -36,6 +36,10 @@ export enum ProjectEstimateActionType {
   setProjectId           = 'project/sales/estimate/project-id/set',
   setSystemDetail        = 'project/sales/system-estimate/set',
   setSystemModal         = 'project/sales/system-estimate/modal',
+  deleteCustom           = 'project/sales/custom-estimate/delete',
+  requestDeleteCustom    = 'project/sales/custom-estimate/delete/request',
+  deleteSystem           = 'project/sales/system-estimate/delete',
+  requestDeleteSystem    = 'project/sales/system-estimate/delete/request',
 }
 
 export const projectEstimateAction = {
@@ -59,4 +63,9 @@ export const projectEstimateAction = {
   setProjectId:           createAction(ProjectEstimateActionType.setProjectId)<ProjectId | undefined>(),
   setSystemDetail:        createAction(ProjectEstimateActionType.setSystemDetail)<ProjectSystemEstimateVO | undefined>(),
   setSystemModal:         createAction(ProjectEstimateActionType.setSystemModal)<ProjectEstimateId | null | undefined>(),
+  deleteCustom:           createAction(ProjectEstimateActionType.deleteCustom)(),
+  requestDeleteCustom:    createAction(ProjectEstimateActionType.requestDeleteCustom)<ApiStatus>(),
+  deleteSystem:           createAction(ProjectEstimateActionType.deleteSystem)(),
+  requestDeleteSystem:    createAction(ProjectEstimateActionType.requestDeleteSystem)<ApiStatus>(),
+
 };

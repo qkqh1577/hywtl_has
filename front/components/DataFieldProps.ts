@@ -157,8 +157,8 @@ export function equals<T = unknown>(a: T,
     return true;
   }
   if (typeof a === 'object' && typeof b === 'object') {
-    const compressedA = compress(a);
-    const compressedB = compress(b);
+    const compressedA = compress(a as Values);
+    const compressedB = compress(b as Values);
     const keys = Object.keys(compressedA);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];

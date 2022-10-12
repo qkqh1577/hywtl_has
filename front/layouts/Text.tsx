@@ -26,6 +26,11 @@ export type TextVariant =
   | 'body12'
   | 'body13'
   | 'body14'
+  | 'body15'
+  | 'body16'
+  | 'body17'
+  | 'body18'
+  | 'body19'
   | 'menu'
 
 interface Props
@@ -164,6 +169,41 @@ function makeStyle(variant: TextVariant): SxProps<Theme> {
         fontSize:   '12px',
         lineHeight: '18px',
         color:      ColorPalette._ffffff,
+      };
+    case 'body15':
+      return {
+        fontWeight: 'normal',
+        fontSize:   '18px',
+        lineHeight: '26px',
+        color:      ColorPalette._252627,
+      };
+    case 'body16':
+      return {
+        fontWeight: 'bold',
+        fontSize:   '14px',
+        lineHeight: '22px',
+        color:      ColorPalette._a7abb2,
+      };
+    case 'body17':
+      return {
+        fontWeight: 'bolder',
+        fontSize:   '13px',
+        lineHeight: '20px',
+        color:      ColorPalette._ffffff,
+      };
+    case 'body18':
+      return {
+        fontWeight: 'bolder',
+        fontSize:   '13px',
+        lineHeight: '20px',
+        color:      ColorPalette._386dd6,
+      };
+    case 'body19':
+      return {
+        fontWeight: 'bolder',
+        fontSize:   '11px',
+        lineHeight: '16px',
+        color:      ColorPalette._386dd6,
       };
     case 'menu':
       return {

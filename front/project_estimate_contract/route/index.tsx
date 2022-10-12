@@ -1,6 +1,7 @@
 import ProjectContainerRoute from 'project/route/container';
 import { AppRoute } from 'services/routes';
 import React from 'react';
+import { Box } from '@mui/material';
 import ProjectCustomEstimateAddModalRoute from 'project_estimate/route/customAddModal';
 import ProjectEstimateListRoute from 'project_estimate/route/list';
 import ProjectContractListRoute from 'project_contract/route/list';
@@ -9,7 +10,7 @@ import ProjectBidRoute from 'project_bid/route';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
 import ProjectContractAddModalRoute from 'project_contract/route/addModal';
 import ProjectContractDetailModalRoute from 'project_contract/route/detailModal';
-import { Box } from '@mui/material';
+import ProjectSystemEstimateModalRoute from 'project_estimate/route/systemModal';
 
 function Element() {
 
@@ -24,6 +25,7 @@ function Element() {
         <ProjectCustomEstimateDetailModalRoute />
         <ProjectContractAddModalRoute />
         <ProjectContractDetailModalRoute />
+        <ProjectSystemEstimateModalRoute />
       </Box>
     </ProjectContainerRoute>
   );

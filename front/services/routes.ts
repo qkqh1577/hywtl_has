@@ -1,6 +1,5 @@
 import {
   RouteObject,
-  RouteProps,
   useRoutes
 } from 'react-router-dom';
 
@@ -15,9 +14,10 @@ import contractBasicTemplateRoute from 'admin/contract/basic/route';
 import contractCollectionTemplateRoute from 'admin/contract/collection/route';
 import { contractConditionTemplateRoute } from 'admin/contract/condition/route';
 import personnelRoutes from 'personnel/route';
+import { PathRouteProps } from 'react-router/dist/lib/components';
 
 export interface AppRoute
-  extends RouteProps {
+  extends PathRouteProps {
   // extension wrapper
 }
 

@@ -49,7 +49,7 @@ export default function (props: Props) {
           }}>
           저장
         </Button>
-        <Button shape="basic3" onClick={props.onCancel}>
+        <Button shape="basic2" onClick={props.onCancel}>
           취소
         </Button>
       </Box>

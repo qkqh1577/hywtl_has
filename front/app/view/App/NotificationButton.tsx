@@ -16,7 +16,7 @@ export default function (props: Props) {
 
   return (
     <Tooltip title="알림" placement="bottom">
-      <IconButton color="warning" onClick={props.onClick}>
+      <IconButton onClick={props.onClick}>
         <NotificationsIcon />
         <Typography color="white" children={props.count} />
       </IconButton>

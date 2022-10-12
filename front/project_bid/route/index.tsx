@@ -12,43 +12,36 @@ import { RootState } from 'services/reducer';
 import { projectBidAction } from 'project_bid/action';
 import { ProjectId } from 'project/domain';
 import { ProjectBidParameter } from 'project_bid/parameter';
-import {
-  FormikProvider,
-  useFormik
-} from 'formik';
-import { ProjectBidVO } from 'project_bid/domain';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 export default function ProjectBidRoute() {
 
   const dispatch = useDispatch();
   const id = useId();
-  const { projectId, detail } = useSelector((root: RootState) => root.projectBid);
-  const update = useCallback((params: ProjectBidParameter) => dispatch(projectBidAction.update(params)), [dispatch]);
+  const { error } = useDialog();
+  const { detail, requestUpdate } = useSelector((root: RootState) => root.projectBid);
+  const onUpdate = useCallback((params: ProjectBidParameter) => dispatch(projectBidAction.update(params)), [dispatch]);
 
   useEffect(() => {
-    if (id && id !== projectId) {
-      dispatch(projectBidAction.setProjectId(ProjectId(id)));
-    }
+    dispatch(projectBidAction.setProjectId(id ? ProjectId(id) : undefined));
   }, [id]);
 
-  const formik = useFormik<ProjectBidVO>({
-    enableReinitialize: true,
-    initialValues:      detail ?? {},
-    onSubmit:           (values) => {
-      update({
-        ...values,
-        winId: values.win?.id || undefined,
-      });
+  useEffect(() => {
+    if (requestUpdate === ApiStatus.DONE) {
+      dispatch(projectBidAction.setProjectId(id ? ProjectId(id) : undefined));
+      dispatch(projectBidAction.requestUpdate(ApiStatus.IDLE));
     }
-  });
+    else if (requestUpdate === ApiStatus.FAIL) {
+      error('변경에 실패하였습니다.');
+      dispatch(projectBidAction.requestUpdate(ApiStatus.IDLE));
+    }
+  }, [requestUpdate]);
 
   return (
-    <FormikProvider value={formik}>
-      <ProjectBidSection
-        onChange={() => {
-          formik.handleSubmit();
-        }}
-      />
-    </FormikProvider>
+    <ProjectBidSection
+      detail={detail}
+      onUpdate={onUpdate}
+    />
   );
 }

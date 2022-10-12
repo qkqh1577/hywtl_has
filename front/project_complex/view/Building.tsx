@@ -492,7 +492,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
               {list?.map(item => (
                 <Td key={item.id}>
                   <Button
-                    shape="basic2"
+                    shape="basic3"
                     onClick={() => {
                       props.onDelete(item.id);
                     }}>

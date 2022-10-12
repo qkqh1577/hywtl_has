@@ -45,7 +45,7 @@ export default function ProjectDocumentAddModal(props: Props) {
             }}>
             저장
           </Button>
-          <Button shape="basic3" onClick={onClose}>
+          <Button shape="basic2" onClick={onClose}>
             취소
           </Button>
         </Box>

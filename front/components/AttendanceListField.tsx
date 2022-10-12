@@ -192,7 +192,6 @@ export function AttendanceSelectModal(props: ModalProps) {
           justifyContent: 'center',
         }}>
           <Button
-            shape="basic1"
             sx={{
               marginRight: '10px'
             }}

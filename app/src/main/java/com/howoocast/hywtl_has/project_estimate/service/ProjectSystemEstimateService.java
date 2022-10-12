@@ -3,8 +3,10 @@ package com.howoocast.hywtl_has.project_estimate.service;
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplateDetail;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateType;
@@ -31,6 +33,8 @@ public class ProjectSystemEstimateService {
     private final ProjectEstimateService estimateService;
 
     private final BusinessRepository businessRepository;
+
+    private final ProjectContractRepository contractRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -82,6 +86,26 @@ public class ProjectSystemEstimateService {
         estimateService.changePlan(instance, parameter.getPlan());
         estimateService.changeSiteList(instance, parameter.getSiteList());
         estimateService.changeBuildingList(instance, parameter.getBuildingList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        ProjectSystemEstimate instance = this.load(id);
+        if (instance.getConfirmed()) {
+            throw new IllegalRequestException(ProjectSystemEstimate.KEY + ".confirmed.violation",
+                "최종 견적서는 삭제할 수 없습니다.");
+        }
+        if (!contractRepository.findByEstimate_Id(id).isEmpty()) {
+            throw new IllegalRequestException(ProjectSystemEstimate.KEY + ".contract.is_empty",
+                "계약서로 선택된 견적서는 삭제할 수 없습니다.");
+        }
+        instance.delete();
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "시스템 견적서 삭제",
+            instance.getCode(),
+            null
+        ));
     }
 
     private List<ProjectEstimateTemplate> toTemplateList(List<ProjectEstimateTemplateParameter> templateList) {

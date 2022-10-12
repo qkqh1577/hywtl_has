@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import {
   BrowserRouter as Router,
   Route,
@@ -11,7 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import App from 'app/route/app';
 import store from 'services/store';
 import 'dayjs/locale/ko';
-import { ThemeProvider } from '@mui/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from 'app/view/App/theme';
 import {
   Alert,
@@ -33,6 +33,7 @@ import {
   faAnglesLeft,
   faAnglesRight,
   faAngleUp,
+  faArrowRightFromBracket,
   faBuilding,
   faChartGantt,
   faCheck,
@@ -62,6 +63,7 @@ library.add(
   faAngleUp,
   faAnglesLeft,
   faAnglesRight,
+  faArrowRightFromBracket,
   faBuilding,
   faChartGantt,
   faCheck,
@@ -84,13 +86,14 @@ library.add(
 
 const render = () => {
 
-  ReactDOM.render(
+  const root = ReactDOM.createRoot(document.getElementById('root')!);
+  root.render(
     <React.StrictMode>
       <Router>
         <Routes>
           <Route path="*" element={
             <Provider store={store}>
-              <LocalizationProvider dateAdapter={AdapterDayjs} locale="ko">
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                 <ThemeProvider theme={mainTheme}>
                   <CssBaseline />
                   <Box sx={{
@@ -111,8 +114,7 @@ const render = () => {
           />
         </Routes>
       </Router>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
   );
 };
 

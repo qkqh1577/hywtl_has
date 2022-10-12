@@ -1,6 +1,6 @@
 import { UserVO } from 'user/domain';
 import { ProjectDocumentShort, } from 'project_document/domain';
-import { TestType } from 'admin/estimate/content/domain';
+import { TestType } from 'type/TestType';
 
 export type Difficulty = '상' | '중상' | '중' | '중하' | '하';
 export const difficultyList: Difficulty[] = ['상', '중상', '중', '중하', '하'];

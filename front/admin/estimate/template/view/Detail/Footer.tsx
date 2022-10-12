@@ -84,7 +84,7 @@ export default function (props: Props) {
           flexWrap:       'nowrap',
         }}>
           <Button
-            shape="basic2"
+            shape="basic3"
             children="삭제"
             onClick={props.onDelete}
             sx={{

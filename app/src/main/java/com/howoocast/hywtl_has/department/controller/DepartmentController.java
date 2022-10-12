@@ -37,8 +37,8 @@ public class DepartmentController {
 
     @GetMapping("/department")
     public Page<DepartmentShortView> page(
-        @RequestParam(required = false, name = "parentId[]") List<Long> parentIdList,
-        @RequestParam(required = false, name = "category[]") List<DepartmentCategory> categoryList,
+        @RequestParam(required = false, name = "parentId") List<Long> parentIdList,
+        @RequestParam(required = false, name = "category") List<DepartmentCategory> categoryList,
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
         @SortDefault.SortDefaults({

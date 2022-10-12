@@ -2,6 +2,7 @@ import SectionLayout from 'layouts/SectionLayout';
 import ButtonSection, { ProjectEstimateListButtonProps } from 'project_estimate/view/EstimateList/ButtonSection';
 import {
   ProjectEstimateId,
+  ProjectEstimateType,
   projectEstimateTypeName,
   ProjectEstimateVO
 } from 'project_estimate/domain';
@@ -26,18 +27,21 @@ import IconButton from 'components/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
 import TextLink from 'components/TextLink';
+import { DefaultFunction } from 'type/Function';
 
 interface Props
   extends ProjectEstimateListButtonProps {
   list?: ProjectEstimateVO[];
-  openDetailModal: (id: ProjectEstimateId) => void;
+  openCustomDetailModal: DefaultFunction<ProjectEstimateId>;
+  openSystemDetailModal: DefaultFunction<ProjectEstimateId>;
 }
 
 export default function ProjectEstimateListSection(props: Props) {
 
   const {
           list,
-          openDetailModal
+          openCustomDetailModal,
+          openSystemDetailModal,
         } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
@@ -62,7 +66,10 @@ export default function ProjectEstimateListSection(props: Props) {
       title="견적서"
       modifiedAt={modifiedAt}
       titleRightComponent={
-        <ButtonSection openAddModal={props.openAddModal} />
+        <ButtonSection
+          openCustomAddModal={props.openCustomAddModal}
+          openSystemAddModal={props.openSystemAddModal}
+        />
       }>
       <Box sx={{ width: '100%' }}>
         <TableContainer>
@@ -93,12 +100,17 @@ export default function ProjectEstimateListSection(props: Props) {
                       width:          '100%',
                       display:        'flex',
                       flexWrap:       'nowrap',
-                      justifyContent: 'center',
+                      justifyContent: 'space-between',
                       alignItems:     'center',
                     }}>
                       <TextLink
                         onClick={() => {
-                          openDetailModal(item.id);
+                          if (item.type === ProjectEstimateType.SYSTEM) {
+                            openSystemDetailModal(item.id);
+                          }
+                          else {
+                            openCustomDetailModal(item.id);
+                          }
                         }}>
                         {item.code}
                       </TextLink>

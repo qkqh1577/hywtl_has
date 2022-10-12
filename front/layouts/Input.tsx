@@ -95,6 +95,8 @@ export function StandardInput(props: Omit<InputProps, |'variant'>) {
           borderRadius:    0,
           backgroundColor: ColorPalette._ffffff,
           boxSizing:       'border-box',
+          cursor:          props.readOnly || props.disabled ? 'default' : 'text',
+          textAlign:       props.type === 'number' ? 'right' : (props.multiline ? 'left' : props.readOnly ? 'center' : 'left'),
         },
       }}
     />

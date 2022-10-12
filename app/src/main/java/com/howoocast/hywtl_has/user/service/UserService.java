@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.user.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.login.parameter.UserPasswordChangeParameter;
@@ -106,8 +107,7 @@ public class UserService {
             parameter.getName(),
             parameter.getEmail(),
             parameter.getRole(),
-            departmentRepository.findById(parameter.getDepartment().getId())
-                .orElseThrow(() -> new NotFoundException(Department.KEY, parameter.getDepartment().getId()))
+            new CustomFinder<>(departmentRepository, Department.class).byId(parameter.getDepartmentId())
         );
         this.checkEmailUsed(instance);
     }

@@ -100,7 +100,6 @@ export default function SearchBox() {
             justifyContent: 'space-between',
           }}>
             <DatePicker
-              allowSameDateSelection
               value={formik.values.startDate ? dayjs(formik.values.startDate)
               .format('YYYY-MM-DD') : null}
               inputFormat="YYYY-MM-DD"
@@ -133,7 +132,6 @@ export default function SearchBox() {
               ~
             </TextBox>
             <DatePicker
-              allowSameDateSelection
               value={formik.values.endDate ? dayjs(formik.values.endDate)
               .format('YYYY-MM-DD') : null}
               inputFormat="YYYY-MM-DD"

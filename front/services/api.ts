@@ -1,5 +1,4 @@
 import axios from 'axios';
-import queryString from 'qs';
 
 const isFormData = (parameter: FormData | any | undefined): parameter is FormData => {
   return parameter && (parameter as FormData).append !== undefined;
@@ -47,11 +46,9 @@ export class HttpClient {
 
   constructor() {
     this.client = axios.create({
-      paramsSerializer: (parameter: any) =>
-                          queryString.stringify(parameter, {
-                            arrayFormat: 'brackets',
-                            encode:      true,
-                          })
+      paramsSerializer: {
+        indexes: null,
+      }
     });
   }
 

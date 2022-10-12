@@ -1,8 +1,10 @@
 import { createAction } from 'typesafe-actions';
 import { ApiStatus } from 'components/DataFieldProps';
 import { LoginVO } from 'login/domain';
-import { LoginChangeParameter } from 'login/parameter';
-import { LoginParameter } from 'user/parameter';
+import {
+  LoginChangeParameter,
+  LoginParameter
+} from 'login/parameter';
 
 export enum LoginActionType {
   login         = 'login',
@@ -13,7 +15,7 @@ export enum LoginActionType {
   setDetail     = 'login/detail/set',
   change        = 'login/change',
   requestChange = 'login/change/request',
-  changeModal = 'login/change-modal'
+  changeModal   = 'login/change-modal'
 }
 
 export const loginAction = {

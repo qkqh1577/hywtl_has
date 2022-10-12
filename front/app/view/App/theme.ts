@@ -1,10 +1,24 @@
-import { createTheme, } from '@mui/material/styles';
-import Bold from 'assets/font/noto_sans_kr/NotoSansKR-Bold.otf';
-import Black from 'assets/font/noto_sans_kr/NotoSansKR-Black.otf';
-import Light from 'assets/font/noto_sans_kr/NotoSansKR-Light.otf';
-import Medium from 'assets/font/noto_sans_kr/NotoSansKR-Medium.otf';
-import Thin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.otf';
-import Regular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.otf';
+import { createTheme } from '@mui/material/styles';
+import OTFBold from 'assets/font/noto_sans_kr/NotoSansKR-Bold.otf';
+import OTFBlack from 'assets/font/noto_sans_kr/NotoSansKR-Black.otf';
+import OTFLight from 'assets/font/noto_sans_kr/NotoSansKR-Light.otf';
+import OTFMedium from 'assets/font/noto_sans_kr/NotoSansKR-Medium.otf';
+import OTFThin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.otf';
+import OTFRegular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.otf';
+
+import WOFFBold from 'assets/font/noto_sans_kr/NotoSansKR-Bold.woff';
+import WOFFBlack from 'assets/font/noto_sans_kr/NotoSansKR-Black.woff';
+import WOFFLight from 'assets/font/noto_sans_kr/NotoSansKR-Light.woff';
+import WOFFMedium from 'assets/font/noto_sans_kr/NotoSansKR-Medium.woff';
+import WOFFThin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.woff';
+import WOFFRegular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.woff';
+
+import WOFF2Bold from 'assets/font/noto_sans_kr/NotoSansKR-Bold.woff2';
+import WOFF2Black from 'assets/font/noto_sans_kr/NotoSansKR-Black.woff2';
+import WOFF2Light from 'assets/font/noto_sans_kr/NotoSansKR-Light.woff2';
+import WOFF2Medium from 'assets/font/noto_sans_kr/NotoSansKR-Medium.woff2';
+import WOFF2Thin from 'assets/font/noto_sans_kr/NotoSansKR-Thin.woff2';
+import WOFF2Regular from 'assets/font/noto_sans_kr/NotoSansKR-Regular.woff2';
 
 export const ColorPalette = {
   '_ffffff':     '#ffffff',
@@ -29,6 +43,7 @@ export const ColorPalette = {
   '_0047d3':     '#0047d3',
   '_eb4c4c':     '#eb4c4c',
   '_f4f4f4':     '#f4f4f4',
+  '_a7abb2':     '#a7abb2',
   'transparent': 'transparent',
 };
 
@@ -67,53 +82,53 @@ const mainTheme = createTheme({
           font-family: 'Noto Sans KR';
           font-style: normal;
           font-weight: 100;
-          src: url(NotoSansKR-Thin.woff2) format('woff2'),
-               url(NotoSansKR-Thin.woff) format('woff'),
-               url(${Thin}) format('opentype');
+          src: url(${WOFF2Thin}) format('woff2'),
+               url(${WOFFThin}) format('woff'),
+               url(${OTFThin}) format('opentype');
         }
         @font-face {
           font-family: 'Noto Sans KR';
           font-style: normal;
           font-weight: 300;
-          src: url(NotoSansKR-Light.woff2) format('woff2'),
-               url(NotoSansKR-Light.woff) format('woff'),
-               url(${Light}) format('opentype');
+          src: url${WOFF2Light}) format('woff2'),
+               url(${WOFFLight}) format('woff'),
+               url(${OTFLight}) format('opentype');
         }
         @font-face {
            font-family: 'Noto Sans KR';
            font-style: normal;
            font-weight: 400;
-           src: url(NotoSansKR-Regular.woff2) format('woff2'),
-                url(NotoSansKR-Regular.woff) format('woff'),
-                url(${Regular}) format('opentype');
+           src: url(${WOFF2Regular}) format('woff2'),
+                url(${WOFFRegular}) format('woff'),
+                url(${OTFRegular}) format('opentype');
          }
         @font-face {
            font-family: 'Noto Sans KR';
            font-style: normal;
            font-weight: 500;
-           src: url(NotoSansKR-Medium.woff2) format('woff2'),
-                url(NotoSansKR-Medium.woff) format('woff'),
-                url(${Medium}) format('opentype');
+           src: url(${WOFF2Medium}) format('woff2'),
+                url(${WOFFMedium}) format('woff'),
+                url(${OTFMedium}) format('opentype');
          }
         @font-face {
            font-family: 'Noto Sans KR';
            font-style: normal;
            font-weight: 700;
-           src: url(NotoSansKR-Bold.woff2) format('woff2'),
-                url(NotoSansKR-Bold.woff) format('woff'),
-                url(${Bold}) format('opentype');
+           src: url(${WOFF2Bold}) format('woff2'),
+                url(${WOFFBold}) format('woff'),
+                url(${OTFBold}) format('opentype');
          }
         @font-face {
            font-family: 'Noto Sans KR';
            font-style: normal;
            font-weight: 900;
-           src: url(NotoSansKR-Black.woff2) format('woff2'),
-                url(NotoSansKR-Black.woff) format('woff'),
-                url(${Black}) format('opentype');
+           src: url(${WOFF2Black}) format('woff2'),
+                url(${WOFFBlack}) format('woff'),
+                url(${OTFBlack}) format('opentype');
          }
       `
     },
-    MuiTypography: {
+    MuiTypography:  {
       defaultProps:   {
         fontFamily: 'Noto Sans KR',
       },
@@ -123,19 +138,19 @@ const mainTheme = createTheme({
         }
       }
     },
-    MuiLink:       {
+    MuiLink:        {
       styleOverrides: {
         root: {
           cursor: 'pointer'
         }
       }
     },
-    MuiIconButton: {
+    MuiIconButton:  {
       defaultProps: {
         color: 'primary',
       }
     },
-    MuiButton:     {
+    MuiButton:      {
       defaultProps: {
         color:   'primary',
         variant: 'contained',

@@ -29,7 +29,7 @@ interface Props {
   openConfirmModal: () => void;
   openAddModal: () => void;
   openDetailModal: (id: ProjectContractId) => void;
-  getVariableList: () => void
+  getVariableList: () => void;
 }
 
 export default function ProjectContractListSection(props: Props) {
@@ -58,7 +58,7 @@ export default function ProjectContractListSection(props: Props) {
       title="계약서"
       modifiedAt={modifiedAt}
       titleRightComponent={
-        <ButtonSection openConfirmModal={openConfirmModal} openAddModal={ () => {
+        <ButtonSection openConfirmModal={openConfirmModal} openAddModal={() => {
           openAddModal();
           getVariableList();
         }} />
@@ -93,14 +93,15 @@ export default function ProjectContractListSection(props: Props) {
                       width:          '100%',
                       display:        'flex',
                       flexWrap:       'nowrap',
-                      justifyContent: 'center',
+                      justifyContent: 'space-between',
                       alignItems:     'center',
                     }}>
                       <TextLink
                         onClick={() => {
-                          console.log(item.id);
                           openDetailModal(item.id);
-                        }}>{item.code}</TextLink>
+                        }}>
+                        {item.code}
+                      </TextLink>
                     </Box>
                   </Td>
                   <Td>{item.confirmed ? 'Y' : 'N'}</Td>

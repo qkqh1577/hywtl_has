@@ -26,7 +26,7 @@ interface DataProps<T> {
   value: T | undefined;
   disabled: boolean;
   readOnly: boolean;
-  label: string | undefined;
+  label: React.ReactNode | undefined;
   required?: boolean;
   helperText?: React.ReactNode;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement>) => void;
@@ -65,7 +65,7 @@ export function useDataProps<T = DataFieldValue, E = HTMLInputElement | HTMLText
   const [waiting, setWaiting] = useState<NodeJS.Timeout>();
 
   const label = useMemo(() => disableLabel ? undefined : propsLabel, [propsLabel, disableLabel]);
-  const helperText = useMemo(() => error ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : propsHelperText, [propsLabel, propsHelperText]);
+  const helperText = useMemo(() => error ? (typeof propsLabel === 'string' ? `${propsLabel}${getAuxiliaryPostPosition(propsLabel)} 필수 항목입니다.` : '필수 항목입니다.') : propsHelperText, [propsLabel, propsHelperText]);
 
   const disabled = useMemo(() => status === FieldStatus.Disabled, [status]);
   const readOnly = useMemo(() => status === FieldStatus.ReadOnly || !edit, [status, edit]);

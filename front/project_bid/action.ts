@@ -2,6 +2,7 @@ import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { ProjectBidParameter } from 'project_bid/parameter';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export enum ProjectBidActionType {
   setProjectId  = 'project/bid/project-id/set',
@@ -14,6 +15,6 @@ export enum ProjectBidActionType {
 export const projectBidAction = {
   setProjectId:  createAction(ProjectBidActionType.setProjectId)<ProjectId | undefined>(),
   setDetail:     createAction(ProjectBidActionType.setDetail)<ProjectBidVO | undefined>(),
-  requestUpdate: createAction(ProjectBidActionType.requestUpdate)<string>(),
+  requestUpdate: createAction(ProjectBidActionType.requestUpdate)<ApiStatus>(),
   update:        createAction(ProjectBidActionType.update)<ProjectBidParameter>(),
 };

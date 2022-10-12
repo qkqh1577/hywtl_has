@@ -40,8 +40,11 @@ export default function AppBar(props: Props) {
             {props.projectAppBar}
           </Box>
           <Box sx={{
-            display: 'flex',
-            height:  '100%',
+            display:     'flex',
+            height:      '100%',
+            flexWrap:    'nowrap',
+            alignItems:  'center',
+            marginRight: '10px',
           }}>
             <SearchBar />
             {props.notificationButton}

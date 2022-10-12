@@ -2,13 +2,17 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import {
-  departmentApi
-} from 'department/api';
-import SelectField, { SelectFieldProps } from 'components/SelectField';
+import { departmentApi } from 'department/api';
 import { DepartmentVO } from 'department/domain';
+import Select, { SelectProps } from 'layouts/Select';
+import { MenuItem } from '@mui/material';
 
-const DepartmentSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
+interface Props
+  extends Omit<SelectProps, |'children'> {
+}
+
+export default function DepartmentSelector(props: Props) {
+
   const [list, setList] = useState<DepartmentVO[]>([]);
   useEffect(() => {
     departmentApi.getList()
@@ -16,48 +20,18 @@ const DepartmentSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
                  .catch(() => setList([]));
   }, []);
 
-  // TODO: remove ancestor
-  // options={[
-  //   {
-  //     key:  'root',
-  //     text: '최상위'
-  //   }, ...(
-  //     detail ? list
-  //     .filter((department) => department.id !== detail.id)
-  //     .filter((department) => {
-  //       if (!department.parentId) {
-  //         return true;
-  //       }
-  //       const getAncestorIdList = (sourceId: number,
-  //                                  temp: number[]
-  //       ): number[] => {
-  //         const target: DepartmentShort | undefined = list.find(item => item.id === sourceId);
-  //         if (target) {
-  //           if (target.parentId) {
-  //             return [target.id, ...getAncestorIdList(target.parentId, temp)];
-  //           }
-  //           return [target.id, ...temp];
-  //         }
-  //         return temp;
-  //       };
-  //
-  //       const ancestorIdList = getAncestorIdList(department.parentId, []);
-  //       return !ancestorIdList.includes(detail.id);
-  //     }) : list).map((department) => ({
-  //     key:  department.id,
-  //     text: department.name
-  //   }))
-  // ]}
-
   return (
-    <SelectField
-      options={list.map((item) => ({
-        key:  item.id as number,
-        text: item.name,
-      }))}
+    <Select
       {...props}
-    />
+    >
+      {props.displayEmpty && (
+        <MenuItem value="">선택</MenuItem>
+      )}
+      {list.map(item => (
+        <MenuItem key={item.id} value={item.id}>
+          {item.name}
+        </MenuItem>
+      ))}
+    </Select>
   );
 };
-
-export default DepartmentSelector;

@@ -49,7 +49,7 @@ export default function ButtonBlock({
       justifyContent: 'center',
     }}>
       <Button
-        shape="basic2"
+        shape="basic3"
         onClick={onDelete}
         sx={{
           marginRight: '10px',
@@ -63,7 +63,7 @@ export default function ButtonBlock({
         }}>
         수정
       </Button>
-      <Button shape="basic3" onClick={onClose}>
+      <Button shape="basic2" onClick={onClose}>
         닫기
       </Button>
     </Box>

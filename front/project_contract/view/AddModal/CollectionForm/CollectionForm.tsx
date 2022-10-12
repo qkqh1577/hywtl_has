@@ -144,8 +144,7 @@ export default function CollectionForm(props: Props) {
                       </Td>
                       <Td>
                         <Button
-                          shape="basic2"
-                          color="warning"
+                          shape="basic3"
                           disabled={collection.stageList.length <= 1}
                           onClick={() => {
                             if (collection.stageList.length === 1) {

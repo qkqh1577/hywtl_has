@@ -61,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST,
                 "/user-verification/user-invitation",
                 "/user-verification/password-reset",
-                "/user/invite",
+                "/user",
                 "/user/password-validate"
             )
             .permitAll()

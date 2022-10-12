@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class UserController {
 
     @GetMapping("/admin/user")
     public Page<UserShortView> page(
-        @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
+        @RequestParam(required = false, name = "role") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
         Pageable pageable
@@ -67,24 +68,24 @@ public class UserController {
         return userService.get(id);
     }
 
-    @PostMapping("/admin/user/invite")
+    @PostMapping("/user")
     public void add(@Valid @RequestBody UserAddParameter parameter) {
         userService.add(parameter);
     }
 
 
-    @PostMapping("/user/{id}/reset-password")
+    @PostMapping("/admin/user/{id}/reset-password")
     public void resetPassword(@PathVariable Long id) {
         userService.resetPassword(id);
     }
 
 
-    @PatchMapping("/admin/user/{id}")
+    @PutMapping("/admin/user/{id}")
     public void change(@PathVariable Long id, @Valid @RequestBody UserChangeParameter parameter) {
         userService.change(id, parameter);
     }
 
-    @PatchMapping("/user/{id}/password")
+    @PatchMapping("/admin/user/{id}/password")
     public void changePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordChangeParameter parameter) {
         userService.changePassword(id, parameter);
     }
