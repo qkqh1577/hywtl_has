@@ -72,7 +72,6 @@ export default function () {
           >
             <DatePicker
               readOnly={!edit}
-              allowSameDateSelection
               value={formik.values.startTime ? dayjs(formik.values.startTime)
               .format('YYYY-MM-DD HH:mm') : null}
               inputFormat="YYYY-MM-DD"
@@ -185,7 +184,6 @@ export default function () {
           >
             <DatePicker
               readOnly={!edit}
-              allowSameDateSelection
               value={formik.values.endTime ? dayjs(formik.values.endTime)
               .format('YYYY-MM-DD HH:mm') : null}
               inputFormat="YYYY-MM-DD"

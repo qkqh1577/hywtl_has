@@ -61,7 +61,6 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel label="입찰 공고 기간">
               <DatePicker
-                allowSameDateSelection
                 value={detail?.beginDate ? dayjs(detail?.beginDate)
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"
@@ -89,7 +88,6 @@ export default function ProjectBidSection(props: Props) {
               />
               <TextBox variant="body4" sx={{ margin: '10px 10px 0 15px' }}>~</TextBox>
               <DatePicker
-                allowSameDateSelection
                 value={detail?.closeDate ? dayjs(detail?.closeDate)
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"
@@ -176,7 +174,6 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel label="입찰 일자">
               <DatePicker
-                allowSameDateSelection
                 value={detail?.bidDate ? dayjs(detail?.bidDate)
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"

@@ -47,11 +47,13 @@ export class HttpClient {
 
   constructor() {
     this.client = axios.create({
-      paramsSerializer: (parameter: any) =>
-                          queryString.stringify(parameter, {
-                            arrayFormat: 'brackets',
-                            encode:      true,
-                          })
+      paramsSerializer: {
+        encode: (parameter: any) =>
+                  queryString.stringify(parameter, {
+                    arrayFormat: 'brackets',
+                    encode:      true,
+                  })
+      }
     });
   }
 

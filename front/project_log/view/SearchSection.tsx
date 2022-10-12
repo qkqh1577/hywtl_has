@@ -2,13 +2,15 @@ import React, { useContext } from 'react';
 import {
   Box,
   Button,
+  MenuItem,
   Typography,
 } from '@mui/material';
-import TextField from 'components/TextField';
-import DateField from 'components/DateField';
-import SelectField from 'components/SelectField';
 import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
+import Select from 'layouts/Select';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import Input from 'layouts/Input';
 
 interface Props {
   totalElements: number;
@@ -34,6 +36,17 @@ function SubmitButton() {
 }
 
 export default function ({ totalElements }: Props) {
+  const formik = useContext(FormikContext);
+
+  const tabNameList = [
+    '기본 정보',
+    '단지 정보',
+    '견적/계약',
+    '진행 정보',
+    '자료',
+    '일정',
+    '이력'
+  ];
 
   return (
 
@@ -54,42 +67,62 @@ export default function ({ totalElements }: Props) {
       <Box sx={{
         marginRight: '10px'
       }}>
-        <SelectField
-          disableLabel
-          name="tabName"
-          label="탭명 검색"
+        <Select
+          value={formik.values.tabName ?? ''}
           variant="outlined"
-          options={[
-            '기본 정보',
-            '단지 정보',
-            '견적/계약',
-            '진행 정보',
-            '자료',
-            '일정',
-            '이력'
-          ]}
-        />
+          onChange={(e) => {
+            const value = e.target.value || undefined;
+            if (formik.values.tabName !== value) {
+              formik.setFieldValue('tabName', value);
+            }
+          }}>
+          {tabNameList.map(item => (
+            <MenuItem key={item} value={item}>{item}</MenuItem>
+          ))}
+        </Select>
       </Box>
       <Box sx={{
         marginRight: '10px'
       }}>
-        <DateField
-          disableLabel
-          variant="outlined"
-          name="createdAt"
-          label="날짜"
+        <DatePicker
+          value={formik.values.createdAt ? dayjs(formik.values.createdAt)
+          .format('YYYY-MM-DD') : null}
+          inputFormat="YYYY-MM-DD"
+          mask="____-__-__"
+          openTo="day"
+          onChange={(e) => {
+            if (e === null) {
+              formik.setFieldValue('createdAt', undefined);
+            }
+            else {
+              formik.setFieldValue('createdAt', dayjs(e)
+              .format('YYYY-MM-DD'));
+            }
+          }}
+          renderInput={(parameter) => (
+            <Input
+              {...parameter.InputProps}
+              inputRef={parameter.inputRef}
+              variant="outlined"
+              value={parameter.value}
+              inputProps={parameter.inputProps}
+            />
+          )}
         />
       </Box>
       <Box sx={{
         width:       '40%',
         marginRight: '10px'
       }}>
-        <TextField
-          disableLabel
-          name="keyword"
-          label="검색어"
+        <Input
+          value={formik.values.keyword ?? ''}
           placeholder="ID 검색"
-          variant="outlined"
+          onChange={(e) => {
+            const value = e.target.value || undefined;
+            if (formik.values.keyword !== value) {
+              formik.setFieldValue('keyword', value);
+            }
+          }}
         />
       </Box>
       <SubmitButton />

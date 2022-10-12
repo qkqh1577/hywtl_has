@@ -14,6 +14,7 @@ import {
 } from 'layouts/Table';
 import TextLink from 'components/TextLink';
 import TableLayout from 'layouts/TableLayout';
+import DateFormat from 'components/DateFormat';
 
 export interface ListProps {
   page: Page<PersonnelShortVO> | undefined;
@@ -69,7 +70,7 @@ export default function List(props: ListProps) {
                     {item.basic?.sex}
                   </Td>
                   <Td>
-                    {item.basic?.birthDate}
+                    <DateFormat date={item.basic?.birthDate} />
                   </Td>
                   <Td>
                     {item.department?.name}
@@ -78,7 +79,7 @@ export default function List(props: ListProps) {
                     {item.company?.hiredType}
                   </Td>
                   <Td>
-                    {item.company?.hiredDate}
+                    <DateFormat date={item.company?.hiredDate} />
                   </Td>
                   <Td>
                     {item.userStatus}
