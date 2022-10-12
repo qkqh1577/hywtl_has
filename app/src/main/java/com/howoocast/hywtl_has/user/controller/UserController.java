@@ -36,7 +36,7 @@ public class UserController {
 
     @GetMapping("/admin/user")
     public Page<UserShortView> page(
-        @RequestParam(required = false, name = "role[]") List<UserRole> roleList,
+        @RequestParam(required = false, name = "role") List<UserRole> roleList,
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
         Pageable pageable

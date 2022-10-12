@@ -33,7 +33,7 @@ public class EstimateContentController {
     public List<EstimateContentShortView> list(
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String keywordType,
-        @RequestParam(required = false, name = "testType[]") List<TestType> testTypeList
+        @RequestParam(required = false, name = "testType") List<TestType> testTypeList
     ) {
         return EstimateContentMapper.toShort(
             service.list(

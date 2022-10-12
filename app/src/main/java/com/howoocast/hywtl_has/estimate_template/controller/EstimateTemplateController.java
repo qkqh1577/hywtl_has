@@ -35,7 +35,7 @@ public class EstimateTemplateController {
     public List<EstimateTemplateShortView> getList(
         @RequestParam(required = false) String keywordType,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false, name = "testType[]") List<TestType> testTypeList
+        @RequestParam(required = false, name = "testType") List<TestType> testTypeList
     ) {
         return service.getList(
                 new EstimateTemplatePredicateBuilder()
@@ -50,7 +50,7 @@ public class EstimateTemplateController {
     @GetMapping(value = "/admin/estimate-template", params = "type")
     public List<EstimateTemplateView> getFullList(
         @SuppressWarnings("unused") @RequestParam String type,
-        @RequestParam(required = false, name = "testType[]") List<TestType> testTypeList
+        @RequestParam(required = false, name = "testType") List<TestType> testTypeList
     ) {
         return service.getList(
                 new EstimateTemplatePredicateBuilder()
