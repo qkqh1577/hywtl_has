@@ -19,11 +19,8 @@ export default function ProjectContractListRoute() {
   const id = useId();
   const { list } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
-  const openDetailModal = useCallback((id: ProjectContractId) => {
-    console.log('openDetailModal',id);
-    dispatch(projectContractAction.setDetailModal(id));
-  }, [dispatch]);
-  const getVariableList = useCallback(() => dispatch(projectContractAction.getVariableList()), [dispatch]);
+  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setDetailModal(id)), [dispatch]);
+  const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
 
   useEffect(() => {
     if (id) {
@@ -35,9 +32,8 @@ export default function ProjectContractListRoute() {
     <ProjectContractListSection
       list={list}
       openAddModal={openAddModal}
-      getVariableList={getVariableList}
       openDetailModal={openDetailModal}
-      openConfirmModal={() => {}}
+      openFinalModal={openFinalModal}
     />
   );
 }

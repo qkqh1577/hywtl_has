@@ -61,6 +61,7 @@ export default function ProjectEstimateFinalModalRoute() {
       dispatch(projectEstimateAction.requestSetFinal(ApiStatus.IDLE));
     }
   }, [requestSetFinal]);
+
   return (
     <FormikProvider value={formik}>
       <ProjectEstimateFinalModal

@@ -4,17 +4,18 @@ import {
   ProjectContractCollectionVO,
   ProjectContractConditionVO,
   ProjectContractId,
-  ProjectContractShort,
+  ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectContractActionType } from 'project_contract/action';
 import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectContractState {
   projectId?: ProjectId;
-  list?: ProjectContractShort[];
+  list?: ProjectContractShortVO[];
   detail?: ProjectContractVO;
   addModal?: boolean;
   confirmModal?: ProjectContractId;
@@ -25,9 +26,15 @@ export interface ProjectContractState {
   basic?: ProjectContractBasicVO;
   collection?: ProjectContractCollectionVO;
   condition?: ProjectContractConditionVO;
+
+  requestSetFinal: ApiStatus;
+  finalModal: boolean;
 }
 
-const initial: ProjectContractState = {};
+const initial: ProjectContractState = {
+  requestSetFinal: ApiStatus.IDLE,
+  finalModal:      false,
+};
 
 export const projectContractReducer = createReducer(initial, {
   [ProjectContractActionType.setProjectId]:      (state,
@@ -107,5 +114,18 @@ export const projectContractReducer = createReducer(initial, {
                                                         ) => ({
     ...state,
     condition: action.payload
+  }),
+
+  [ProjectContractActionType.requestSetFinal]: (state,
+                                                action
+                                               ) => ({
+    ...state,
+    requestSetFinal: action.payload,
+  }),
+  [ProjectContractActionType.setFinalModal]:   (state,
+                                                action
+                                               ) => ({
+    ...state,
+    finalModal: action.payload,
   })
 });

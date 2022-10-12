@@ -2,7 +2,7 @@ import apiClient, { toFormData } from 'services/api';
 import {
   ProjectContractBasicVO,
   ProjectContractId,
-  ProjectContractShort,
+  ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
@@ -14,20 +14,13 @@ import {
 
 class ProjectContractApi {
 
-  async getList(id: ProjectId): Promise<ProjectContractShort[]> {
-    const { data } = await apiClient.get(`/project/sales/${id}/contract`, {});
+  async getList(id: ProjectId): Promise<ProjectContractShortVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${id}/contract`);
     return data;
   }
 
   async getOne(id: number): Promise<ProjectContractVO> {
     const { data } = await apiClient.get(`/project/sales/contract/${id}`);
-    return data;
-  }
-
-  async getProjectContractCollection(projectId: number,
-                                     estimateId: number
-  ): Promise<ProjectContractVO> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/collection`, { params: { estimateId } });
     return data;
   }
 
@@ -71,19 +64,12 @@ class ProjectContractApi {
     return data;
   }
 
-  /*async getContractCollection(projectId: ProjectId,
-                              estimateId: ProjectEstimateId
-  ): Promise<ProjectContractCollectionVO> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/collection?estimateId=${estimateId ? estimateId : ''}`);
+  async setFinal(projectId: ProjectId,
+                 contractId: ProjectContractId
+  ): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${projectId}/contract/confirmed`, { contractId });
     return data;
-  }*/
-
-  /*async getContractCondition(projectId: ProjectId,
-                             estimateId: ProjectEstimateId
-  ): Promise<ProjectContractConditionVO[]> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition?estimateId=${estimateId ? estimateId : ''}`);
-    return data;
-  }*/
+  }
 }
 
 export const projectContractApi = new ProjectContractApi();

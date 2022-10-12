@@ -5,11 +5,13 @@ import {
   ProjectContractCollectionVO,
   ProjectContractConditionVO,
   ProjectContractId,
+  ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
 import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
+import { ApiStatus } from 'components/DataFieldProps';
 
 export enum ProjectContractActionType {
   setProjectId             = 'project/sales/contract/project-id/set',
@@ -29,11 +31,15 @@ export enum ProjectContractActionType {
   setContractCollection    = 'project/sales/contract/collection/set',
   getContractConditionList = 'project/sales/contract/condition/get',
   setContractConditionList = 'project/sales/contract/condition/set',
+
+  setFinalModal            = 'project/sales/contract/final-modal',
+  setFinal                 = 'project/sales/contract/final',
+  requestSetFinal          = 'project/sales/contract/final/request',
 }
 
 export const projectContractAction = {
   setProjectId:             createAction(ProjectContractActionType.setProjectId)<ProjectId | undefined>(),
-  setList:                  createAction(ProjectContractActionType.setList)<ProjectContractVO[] | undefined>(),
+  setList:                  createAction(ProjectContractActionType.setList)<ProjectContractShortVO[] | undefined>(),
   setDetail:                createAction(ProjectContractActionType.setDetail)<ProjectContractVO | undefined>(),
   setAddModal:              createAction(ProjectContractActionType.setAddModal)<boolean | undefined>(),
   setConfirmModal:          createAction(ProjectContractActionType.setConfirmModal)<ProjectContractId | undefined>(),
@@ -49,5 +55,9 @@ export const projectContractAction = {
   setContractCollection:    createAction(ProjectContractActionType.setContractCollection)<ProjectContractCollectionVO | undefined>(),
   getContractConditionList: createAction(ProjectContractActionType.getContractConditionList)(),
   setContractConditionList: createAction(ProjectContractActionType.setContractConditionList)<ProjectContractConditionVO[] | undefined>(),
+
+  setFinalModal:   createAction(ProjectContractActionType.setFinalModal)<boolean>(),
+  setFinal:        createAction(ProjectContractActionType.setFinal)<ProjectContractId>(),
+  requestSetFinal: createAction(ProjectContractActionType.requestSetFinal)<ApiStatus>(),
 
 };

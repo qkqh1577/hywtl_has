@@ -9,14 +9,29 @@ export function ProjectContractId(id: number) {
   return id as ProjectContractId;
 }
 
-export interface ProjectContractVO {
+export interface ProjectContractShortVO {
   id: ProjectContractId;
-  /** 계약번호: C + 프로젝트코드 + 연번 2자리 */
-  estimate: ProjectEstimateVO;
+  code: string;
   isSent: boolean;
-  recipient: string;
+  confirmed: boolean;
+  estimateCode: string;
+  pdfFile?: FileItemView;
   note?: string;
-  pdfFile?: string; // 최종 pdf 파일이 있는 경우만
+  createdBy: UserShortVO;
+  createdAt: Date;
+  modifiedAt?: Date;
+  contractDate?: Date; // 계약 날짜
+}
+
+export interface ProjectContractVO
+  extends Omit<ProjectContractShortVO,
+    | 'estimateCode'
+    | 'contractDate'
+    | 'createdAt'
+    | 'modifiedAt'
+    | 'createdBy'> {
+  estimate: ProjectEstimateVO;
+  recipient: string;
   basic?: ProjectBasicVO;
   collection?: ProjectContractCollectionVO;
   conditionList?: ProjectContractConditionVO[];
@@ -35,26 +50,6 @@ export interface ProjectBasicVO {
   contractorAddress: string; // 수급자 소재
   contractorCompanyName: string; // 수급자 상호
   contractorCeoName: string; // 수급자 대표명
-}
-
-export interface ProjectContractShort {
-  id: ProjectContractId;
-  /** 계약번호: C + 프로젝트코드 + 연번 2자리 */
-  code: string;
-  /** 최종 여부 true=Y / false= N */
-  confirmed: boolean;
-  /** 견적 번호 */
-  estimateCode: string;
-  /** 날인본 파일 */
-  pdfFile?: FileItemView;
-  /** 등록자 */
-  createdBy: UserShortVO;
-  /** 비고 */
-  note?: string;
-  /** 등록일시 */
-  createdAt?: Date;
-  /** 수정일시 */
-  modifiedAt?: Date;
 }
 
 export interface ContractCollectionStageWithAmount {
