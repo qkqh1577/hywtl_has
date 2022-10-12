@@ -12,15 +12,23 @@ import {
 import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import { projectEstimateAction } from 'project_estimate/action';
 import { ApiStatus } from 'components/DataFieldProps';
+import ProjectComplexBuildingFileModal from 'project_complex/view/BuildingFileModal';
+import { ProjectComplexBuildingId } from 'project_complex/domain';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
   const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
+  const { buildingList } = useSelector((root: RootState) => root.projectDocument);
   const { alert, error, rollback } = useDialog();
+  const [buildingSeq, setBuildingSeq] = useState<number>();
+  const closeBuildingFileModal = () => {
+    setBuildingSeq(undefined);
+  };
   const onAdd = useCallback((params: ProjectSystemEstimateParameter) => dispatch(projectEstimateAction.addSystem(params)), [dispatch]);
   const onChange = useCallback((params: ProjectSystemEstimateParameter) => dispatch(projectEstimateAction.changeSystem(params)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectEstimateAction.setSystemModal(undefined)), [dispatch]);
@@ -120,6 +128,23 @@ export default function ProjectSystemEstimateModalRoute() {
           });
         }}
         onDelete={onDelete}
+        openDocumentModal={(id: number) => {
+          setBuildingSeq(id);
+        }}
+      />
+      <ProjectComplexBuildingFileModal
+        buildingId={buildingSeq ? ProjectComplexBuildingId(buildingSeq) : undefined}
+        fileId={typeof buildingSeq === 'number'
+        && Array.isArray(formik.values.buildingList)
+        && typeof formik.values.buildingList[buildingSeq] === 'object'
+          ? formik.values.buildingList[buildingSeq].buildingDocumentId
+          : undefined
+        }
+        fileList={buildingList}
+        onClose={closeBuildingFileModal}
+        onUpdate={({ buildingDocumentId }) => {
+          formik.setFieldValue(`buildingList.${buildingSeq}.buildingDocumentId`, buildingDocumentId);
+        }}
       />
     </FormikProvider>
   );

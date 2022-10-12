@@ -1,4 +1,4 @@
-import { DataFieldValue } from 'components';
+import { DataFieldValue } from 'components/DataFieldProps';
 
 export const toAmount = (localeString: DataFieldValue): number | '' => {
   if (localeString === null || typeof localeString === 'number' || localeString === '') {

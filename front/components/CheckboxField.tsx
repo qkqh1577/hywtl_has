@@ -264,7 +264,13 @@ export default function CheckboxField(props: CheckboxFieldProps) {
         {checkbox}
       </FormGroup>
       <FormHelperText error={error}>
-        {error ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.` : helperText}
+        {
+          error
+            ? typeof label === 'string'
+              ? `${label}${getAuxiliaryPostPosition(label)} 필수 항목입니다.`
+              : '필수 항목입니다.'
+            : helperText
+        }
       </FormHelperText>
     </FormControl>
   );

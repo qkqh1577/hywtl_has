@@ -94,10 +94,10 @@ export const projectContractReducer = createReducer(initial, {
     basic: action.payload,
   }),
 
-  [ProjectContractActionType.setContractCollectionList]: (
-                                                           state,
-                                                           action
-                                                         ) => ({
+  [ProjectContractActionType.setContractCollection]: (
+                                                       state,
+                                                       action
+                                                     ) => ({
     ...state,
     collection: action.payload
   }),

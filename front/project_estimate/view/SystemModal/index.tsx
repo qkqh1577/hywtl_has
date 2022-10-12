@@ -9,6 +9,7 @@ interface Props {
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  openDocumentModal: DefaultFunction<number>;
 }
 
 export default function ProjectSystemEstimateModal(props: Props) {
@@ -21,11 +22,14 @@ export default function ProjectSystemEstimateModal(props: Props) {
       open={props.open}
       title={formik.values.id ? (edit ? '시스템 견적서 수정' : '시스템 견적서 상세') : '시스템 견적서 등록'}
       onClose={props.onClose}
-      children={<ProjectSystemEstimateModalForm
-        onClose={props.onClose}
-        onCancel={props.onCancel}
-        onDelete={props.onDelete}
-      />}
+      children={
+        <ProjectSystemEstimateModalForm
+          onClose={props.onClose}
+          onCancel={props.onCancel}
+          onDelete={props.onDelete}
+          openDocumentModal={props.openDocumentModal}
+        />
+      }
     />
   );
 

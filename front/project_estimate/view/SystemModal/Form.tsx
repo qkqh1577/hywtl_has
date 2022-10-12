@@ -25,7 +25,6 @@ import Checkbox from 'layouts/Checkbox';
 import {
   Difficulty,
   difficultyList,
-  ProjectComplexSiteId
 } from 'project_complex/domain';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -34,18 +33,21 @@ import {
   testTypeList,
   testTypeName
 } from 'type/TestType';
+import { getRatio } from 'project_complex/util';
 
 interface Props {
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  openDocumentModal: DefaultFunction<number>;
 }
 
 export default function ProjectSystemEstimateModalForm(props: Props) {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  const list = formik.values.list ?? [];
+  const siteList = formik.values.siteList;
+  const buildingList = formik.values.buildingList;
 
   return (
     <Box sx={{
@@ -246,9 +248,9 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                   title="대지 모형"
                   titleLeftComponent={
                     <Button shape="small" onClick={() => {
-
+                      formik.setFieldValue('siteList', [...siteList, {}]);
                     }}>
-                      +추가
+                      + 추가
                     </Button>
                   }>
                   <Table>
@@ -263,13 +265,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {(!list || list.length === 0) && (
-                        <TableRow>
-                          <Td colSpan={6}>조회 결과가 없습니다.</Td>
-                        </TableRow>
-                      )}
-                      {list && list.map((item) => (
-                        <TableRow key={item.id}>
+                      {siteList.map((item,
+                                     i
+                      ) => (
+                        <TableRow key={i}>
                           <Td>
                             <Input
                               type="text"
@@ -278,14 +277,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onBlur={(e) => {
                                 const value = e.target.value || undefined;
                                 if (value !== item.name) {
-                                  // props.onUpdate({ id: item.id, name: value });
+                                  formik.setFieldValue(`siteList.${i}.name`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = (e.target as HTMLInputElement).value || undefined;
                                   if (value !== item.name) {
-                                    // props.onUpdate({ id: item.id, name: value });
+                                    formik.setFieldValue(`siteList.${i}.name`, value);
                                   }
                                 }
                               }}
@@ -295,7 +294,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                             <Checkbox
                               checked={item.withEnvironmentTest}
                               onChange={() => {
-                                // props.onUpdate({ id: item.id, withEnvironmentTest: !item.withEnvironmentTest });
+                                formik.setFieldValue(`siteList.${i}.withEnvironmentTest`, !item.withEnvironmentTest);
                               }}
                             />
                           </Td>
@@ -306,7 +305,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
                                 if (item.estimateFigureDifficulty !== value) {
-                                  // props.onUpdate({ id: item.id, estimateFigureDifficulty: value });
+                                  formik.setFieldValue(`siteList.${i}.estimateFigureDifficulty`, value);
                                 }
                               }}>
                               {difficultyList.map(item => (
@@ -321,7 +320,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
                                 if (item.figureDifficulty !== value) {
-                                  // props.onUpdate({ id: item.id, figureDifficulty: value });
+                                  formik.setFieldValue(`siteList.${i}.figureDifficulty`, value);
                                 }
                               }}>
                               {difficultyList.map(item => (
@@ -333,7 +332,13 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                             담당자
                           </Td>
                           <Td>
-                            <Button shape="basic3" onClick={() => {/* props.onDelete(item.id); */}}>삭제</Button>
+                            <Button shape="basic3" onClick={() => {
+                              formik.setFieldValue('siteList', siteList.filter((site,
+                                                                                j
+                              ) => j !== i));
+                            }}>
+                              삭제
+                            </Button>
                           </Td>
                         </TableRow>
                       ))}
@@ -349,14 +354,20 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                   disableFold
                   title="동"
                   titleLeftComponent={
-                    <Button shape="small">+추가</Button>
+                    <Button shape="small" onClick={() => {
+                      formik.setFieldValue('buildingList', [...buildingList, {}]);
+                    }}>
+                      + 추가
+                    </Button>
                   }>
                   <Table variant="left">
                     <TableBody>
                       <TableRow>
                         <Th>동명</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               variant="outlined"
                               type="text"
@@ -364,14 +375,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onBlur={(e) => {
                                 const value = e.target.value || undefined;
                                 if (value !== item.name) {
-                                  // props.onUpdate({ id: item.id, name: value });
+                                  formik.setFieldValue(`buildingList.${i}.name`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = (e.target as HTMLInputElement).value ?? undefined;
                                   if (value !== item.name) {
-                                    // props.onUpdate({ id: item.id, name: value });
+                                    formik.setFieldValue(`buildingList.${i}.name`, value);
                                   }
                                 }
                               }}
@@ -381,25 +392,29 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>대지 모형</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               displayEmpty
                               variant="outlined"
-                              value={props.siteList && item.site ? item.site.id : ''}
+                              value={item.siteId ?? ''}
                               renderValue={(raw) => {
-                                const value = props.siteList?.find((site) => site.id === raw);
+                                const value = siteList.find((site) => site.id === raw);
                                 return value?.name ?? '선택';
                               }}
                               onChange={(e) => {
-                                const value = (e.target.value || undefined) as ProjectComplexSiteId | undefined;
-                                if (item.site?.id !== value) {
-                                  props.onUpdate({ id: item.id, siteId: value ?? ProjectComplexSiteId(-1) });
+                                const value = e.target.value || undefined;
+                                if (item.siteId !== value) {
+                                  formik.setFieldValue(`buildingList.${i}.siteId`, value);
                                 }
                               }}>
-                              {props.siteList?.map((item) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                  {item.name}
+                              {siteList.map((site,
+                                             j
+                              ) => (
+                                <MenuItem key={j} value={j}>
+                                  {site.name}
                                 </MenuItem>
                               ))}
                             </Select>
@@ -408,8 +423,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>평면 형상</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               variant="outlined"
                               type="text"
@@ -417,14 +434,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onBlur={(e) => {
                                 const value = e.target.value || undefined;
                                 if (value !== item.shape) {
-                                  props.onUpdate({ id: item.id, shape: value });
+                                  formik.setFieldValue(`buildingList.${i}.shape`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = (e.target as HTMLInputElement).value ?? undefined;
                                   if (value !== item.shape) {
-                                    props.onUpdate({ id: item.id, shape: value });
+                                    formik.setFieldValue(`buildingList.${i}.shape`, value);
                                   }
                                 }
                               }}
@@ -434,8 +451,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>층 수</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               variant="outlined"
                               type="number"
@@ -443,14 +462,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onBlur={(e) => {
                                 const value = +e.target.value ?? undefined;
                                 if (value !== item.floorCount) {
-                                  props.onUpdate({ id: item.id, floorCount: value });
+                                  formik.setFieldValue(`buildingList.${i}.floorCount`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = +(e.target as HTMLInputElement).value ?? undefined;
                                   if (value !== item.floorCount) {
-                                    props.onUpdate({ id: item.id, floorCount: value });
+                                    formik.setFieldValue(`buildingList.${i}.floorCount`, value);
                                   }
                                 }
                               }}
@@ -460,8 +479,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>건축 높이</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               variant="outlined"
                               type="number"
@@ -469,14 +490,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onBlur={(e) => {
                                 const value = +e.target.value ?? undefined;
                                 if (value !== item.height) {
-                                  props.onUpdate({ id: item.id, height: value });
+                                  formik.setFieldValue(`buildingList.${i}.height`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = +(e.target as HTMLInputElement).value ?? undefined;
                                   if (value !== item.height) {
-                                    props.onUpdate({ id: item.id, height: value });
+                                    formik.setFieldValue(`buildingList.${i}.height`, value);
                                   }
                                 }
                               }}
@@ -486,8 +507,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>기준층 바닥 면적</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               variant="outlined"
                               type="number"
@@ -495,14 +518,14 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               onChange={(e) => {
                                 const value = +e.target.value ?? undefined;
                                 if (value !== item.baseArea) {
-                                  props.onUpdate({ id: item.id, baseArea: value });
+                                  formik.setFieldValue(`buildingList.${i}.baseArea`, value);
                                 }
                               }}
                               onKeyDown={(e) => {
                                 if (e.key.toLowerCase() === 'enter') {
                                   const value = +(e.target as HTMLInputElement).value ?? undefined;
                                   if (value !== item.baseArea) {
-                                    props.onUpdate({ id: item.id, baseArea: value });
+                                    formik.setFieldValue(`buildingList.${i}.baseArea`, value);
                                   }
                                 }
                               }}
@@ -512,21 +535,25 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>형상비</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               readOnly
                               variant="outlined"
                               type="number"
-                              value={item.ratio?.toFixed(4) ?? ''}
+                              value={getRatio(item.height, item.baseArea)}
                             />
                           </Td>
                         ))}
                       </TableRow>
                       <TableRow>
                         <Th>형상비 검토 파일 ID</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Input
                               readOnly
                               variant="outlined"
@@ -541,7 +568,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                                       cursor:   'pointer',
                                     }}
                                     onClick={() => {
-                                      props.openDocumentModal(item.id);
+                                      props.openDocumentModal(i);
                                     }}
                                   />
                                 </InputAdornment>
@@ -552,8 +579,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>특별 풍하중 조건</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               multiple
                               displayEmpty
@@ -570,7 +599,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                                 const value = (e.target.value as string[]).sort((a,
                                                                                  b
                                 ) => a.localeCompare(b));
-                                props.onUpdate({ id: item.id, conditionList: value });
+                                formik.setFieldValue(`buildingList.${i}.conditionList`, value);
                               }}>
                               {['2', '3', '4', '5'].map((value) => (
                                 <MenuItem key={value} value={value}>
@@ -595,8 +624,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>실험 대상 여부</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Box sx={{
                               display:        'flex',
                               flexWrap:       'nowrap',
@@ -608,7 +639,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               <Checkbox
                                 defaultChecked={item.inTest}
                                 onChange={() => {
-                                  props.onUpdate({ id: item.id, inTest: !item.inTest });
+                                  formik.setFieldValue(`buildingList.${i}.inTest`, !item.inTest);
                                 }}
                               />
                               <Box sx={{
@@ -625,8 +656,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>실험 종류</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               multiple
                               displayEmpty
@@ -643,7 +676,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                                 const value = (e.target.value as TestType[]).sort((a,
                                                                                    b
                                 ) => testTypeList.indexOf(a) - testTypeList.indexOf(b));
-                                props.onUpdate({ id: item.id, testTypeList: value });
+                                formik.setFieldValue(`buildingList.${i}.testTypeList`, value);
                               }}>
                               {buildingTestTypeList.map((value) => (
                                 <MenuItem key={value} value={value}>
@@ -668,8 +701,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>견적 제작 난이도</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               displayEmpty
                               variant="outlined"
@@ -677,7 +712,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               value={item.estimateFigureDifficulty ?? ''}
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
-                                props.onUpdate({ id: item.id, estimateFigureDifficulty: value });
+                                formik.setFieldValue(`buildingList.${i}.estimateFigureDifficulty`, value);
                               }}>
                               {difficultyList.map(item => (
                                 <MenuItem key={item} value={item}>{item}</MenuItem>
@@ -688,8 +723,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>견적 실험 난이도</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               displayEmpty
                               variant="outlined"
@@ -697,7 +734,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               value={item.estimateTestDifficulty ?? ''}
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
-                                props.onUpdate({ id: item.id, estimateTestDifficulty: value });
+                                formik.setFieldValue(`buildingList.${i}.estimateTestDifficulty`, value);
                               }}>
                               {difficultyList.map(item => (
                                 <MenuItem key={item} value={item}>{item}</MenuItem>
@@ -708,8 +745,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>견적 평가 난이도</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               displayEmpty
                               variant="outlined"
@@ -717,7 +756,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               value={item.estimateEvaluationDifficulty ?? ''}
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
-                                props.onUpdate({ id: item.id, estimateEvaluationDifficulty: value });
+                                formik.setFieldValue(`buildingList.${i}.estimateEvaluationDifficulty`, value);
                               }}>
                               {difficultyList.map(item => (
                                 <MenuItem key={item} value={item}>{item}</MenuItem>
@@ -728,8 +767,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>견적 보고서 난이도</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Select
                               displayEmpty
                               variant="outlined"
@@ -737,7 +778,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               value={item.estimateReportDifficulty ?? ''}
                               onChange={(e) => {
                                 const value = (e.target.value as Difficulty) || undefined;
-                                props.onUpdate({ id: item.id, estimateReportDifficulty: value });
+                                formik.setFieldValue(`buildingList.${i}.estimateReportDifficulty`, value);
                               }}>
                               {difficultyList.map(item => (
                                 <MenuItem key={item} value={item}>{item}</MenuItem>
@@ -748,12 +789,16 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                       </TableRow>
                       <TableRow>
                         <Th>삭제</Th>
-                        {list?.map(item => (
-                          <Td key={item.id}>
+                        {buildingList.map((item,
+                                           i
+                        ) => (
+                          <Td key={i}>
                             <Button
                               shape="basic3"
                               onClick={() => {
-                                props.onDelete(item.id);
+                                formik.setFieldValue('buildingList', buildingList.filter((building,
+                                                                                          j
+                                ) => i !== j));
                               }}>
                               삭제
                             </Button>
