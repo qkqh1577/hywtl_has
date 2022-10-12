@@ -25,7 +25,7 @@ import React, {
   useState
 } from 'react';
 import { ProjectComplexBuildingId } from 'project_complex/domain';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
 import useDialog from 'components/Dialog';

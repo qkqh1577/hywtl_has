@@ -23,7 +23,7 @@ import {
 } from 'layouts/Table';
 import RequiredMark from 'components/RequiredMark';
 import Button from 'layouts/Button';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';

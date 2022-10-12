@@ -8,13 +8,17 @@ import {
   Paper,
   Typography
 } from '@mui/material';
-import { TitleProps } from 'components/Title';
 import {
   FormikContextType,
   FormikProvider,
 } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import { useLocation } from 'react-router-dom';
+
+interface TitleProps {
+  title?: React.ReactNode;
+  titleRightComponent?: React.ReactNode;
+}
 
 export interface PageLayoutProps
   extends TitleProps {
@@ -28,7 +32,6 @@ export interface SearchPageLayoutProps
   extends PageLayoutProps {
   filter: React.ReactNode;
 }
-
 
 export interface FormikLayoutProps<T> {
   formik: FormikContextType<T>;

@@ -7,13 +7,13 @@ import {
 } from '@mui/material';
 import UploadField from 'components/UploadField';
 import { FormikContext } from 'formik';
-import { FieldStatus } from 'components/DataFieldProps';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';
 import { sexCategoryList } from 'user/domain';
+import { fileToView } from 'file-item';
 
 export default function BasicForm() {
   const formik = useContext(FormikContext);
@@ -242,13 +242,21 @@ export default function BasicForm() {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <UploadField
-            preview
-            name="basic.image"
-            label="프로필 사진"
-            accept="image/*"
-            status={edit ? FieldStatus.Idle : FieldStatus.Disabled}
-          />
+          <DataFieldWithLabel label="프로필 사진">
+            <UploadField
+              preview
+              accept="image/*"
+              disableDownload
+              value={values.image}
+              onChange={(e) => {
+                if (!e.target || !e.target.files || e.target.files.length === 0) {
+                  formik.setFieldValue('basic.image', undefined);
+                  return;
+                }
+                formik.setFieldValue('basic.image', fileToView(e.target.files![0]));
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
       </Box>
     </Box>

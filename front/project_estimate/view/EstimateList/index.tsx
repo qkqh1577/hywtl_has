@@ -23,7 +23,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
 import TextLink from 'components/TextLink';

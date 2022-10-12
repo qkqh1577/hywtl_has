@@ -21,7 +21,7 @@ import {
 import Input from 'layouts/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 
 export default function () {
   const { error } = useDialog();

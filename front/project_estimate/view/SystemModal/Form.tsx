@@ -292,7 +292,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                           </Td>
                           <Td>
                             <Checkbox
-                              checked={item.withEnvironmentTest}
+                              checked={!!item.withEnvironmentTest}
                               onChange={() => {
                                 formik.setFieldValue(`siteList.${i}.withEnvironmentTest`, !item.withEnvironmentTest);
                               }}
@@ -367,7 +367,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.name}`}>
                             <Input
                               variant="outlined"
                               type="text"
@@ -395,7 +395,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.siteId}`}>
                             <Select
                               displayEmpty
                               variant="outlined"
@@ -426,7 +426,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.shape}`}>
                             <Input
                               variant="outlined"
                               type="text"
@@ -454,7 +454,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.floorCount}`}>
                             <Input
                               variant="outlined"
                               type="number"
@@ -482,7 +482,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.height}`}>
                             <Input
                               variant="outlined"
                               type="number"
@@ -510,12 +510,12 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.baseArea}`}>
                             <Input
                               variant="outlined"
                               type="number"
                               defaultValue={item.baseArea ?? ''}
-                              onChange={(e) => {
+                              onBlur={(e) => {
                                 const value = +e.target.value ?? undefined;
                                 if (value !== item.baseArea) {
                                   formik.setFieldValue(`buildingList.${i}.baseArea`, value);
@@ -537,27 +537,29 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                         <Th>형상비</Th>
                         {buildingList.map((item,
                                            i
-                        ) => (
-                          <Td key={i}>
-                            <Input
-                              readOnly
-                              variant="outlined"
-                              type="number"
-                              value={getRatio(item.height, item.baseArea)}
-                            />
-                          </Td>
-                        ))}
+                        ) => {
+                          const ratio = getRatio(item.height, item.baseArea);
+                          return (
+                            <Td key={`${i}_${ratio}`}>
+                              <Input
+                                readOnly
+                                variant="outlined"
+                                value={ratio}
+                              />
+                            </Td>
+                          );
+                        })}
                       </TableRow>
                       <TableRow>
                         <Th>형상비 검토 파일 ID</Th>
                         {buildingList.map((item,
                                            i
                         ) => (
-                          <Td key={i}>
+                          <Td key={`${i}_${item.buildingDocument?.id}`}>
                             <Input
                               readOnly
                               variant="outlined"
-                              value={item.buildingDocument?.code || '-'}
+                              defaultValue={item.buildingDocument?.code || '-'}
                               endAdornment={
                                 <InputAdornment position="end">
                                   <FontAwesomeIcon
@@ -587,7 +589,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               multiple
                               displayEmpty
                               variant="outlined"
-                              value={item.conditionList}
+                              value={item.conditionList ?? []}
                               renderValue={value => {
                                 if (!Array.isArray(value) || value.length === 0) {
                                   return '선택';
@@ -605,7 +607,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                                 <MenuItem key={value} value={value}>
                                   <Checkbox
                                     readOnly
-                                    checked={item.conditionList?.includes(value)}
+                                    checked={!!item.conditionList?.includes(value)}
                                     value={value}
                                   />
                                   <Box sx={{
@@ -637,7 +639,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               alignItems:     'center',
                             }}>
                               <Checkbox
-                                defaultChecked={item.inTest}
+                                checked={!!item.inTest}
                                 onChange={() => {
                                   formik.setFieldValue(`buildingList.${i}.inTest`, !item.inTest);
                                 }}
@@ -664,7 +666,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                               multiple
                               displayEmpty
                               variant="outlined"
-                              value={item.testTypeList}
+                              value={item.testTypeList ?? []}
                               renderValue={value => {
                                 if (!Array.isArray(value) || value.length === 0) {
                                   return '선택';
@@ -682,7 +684,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
                                 <MenuItem key={value} value={value}>
                                   <Checkbox
                                     readOnly
-                                    checked={item.testTypeList?.includes(value)}
+                                    checked={!!item.testTypeList?.includes(value)}
                                     value={value}
                                   />
                                   <Box sx={{

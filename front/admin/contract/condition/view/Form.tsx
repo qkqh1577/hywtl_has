@@ -19,7 +19,7 @@ import {
 } from 'admin/contract/condition/domain';
 import AddRow from 'admin/contract/condition/view/AddRow';
 import VariableList from 'admin/contract/condition/view/VariableList';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Input from 'layouts/Input';
 import { initialContractConditionParameter } from 'admin/contract/condition/parameter';

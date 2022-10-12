@@ -4,7 +4,7 @@ import {
   BoxProps
 } from '@mui/material';
 import TextField from 'components/TextField';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SelectField from 'components/SelectField';
 

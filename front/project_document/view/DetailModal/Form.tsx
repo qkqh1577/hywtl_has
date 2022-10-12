@@ -5,10 +5,10 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import { FormikContext } from 'formik';
-import FieldBox from 'project_document/view/FieldBox';
 import Input from 'layouts/Input';
-import FieldLabel from 'layouts/FieldLabel';
-import FileInput from 'layouts/FileInput';
+import UploadField from 'components/UploadField';
+import { fileToView } from 'file-item';
+import DataFieldWithLabel from 'components/DataFieldLabel';
 
 export default function ProjectDocumentDetailModalForm() {
   const formik = useContext(FormikContext);
@@ -32,48 +32,48 @@ export default function ProjectDocumentDetailModalForm() {
             display:  'flex',
             flexWrap: 'nowrap',
           }}>
-            <FieldBox
-              label={
-                <FieldLabel>
-                  자료 번호
-                </FieldLabel>
-              }
-              children={
+            <Box sx={{
+              width:        '100%',
+              display:      'flex',
+              flexWrap:     'wrap',
+              marginBottom: '15px',
+            }}>
+              <DataFieldWithLabel label="자료 번호">
                 <Input
                   readOnly
-                  defaultValue={formik.values.code ?? ''}
+                  value={formik.values.code ?? ''}
                 />
-              }
-            />
+              </DataFieldWithLabel>
+            </Box>
           </Box>
           <Box sx={{
             width:    '45%',
             display:  'flex',
             flexWrap: 'nowrap',
           }}>
-            <FieldBox
-              label={
-                <FieldLabel>
-                  등록자
-                </FieldLabel>
-              }
-              children={
+            <Box sx={{
+              width:        '100%',
+              display:      'flex',
+              flexWrap:     'wrap',
+              marginBottom: '15px',
+            }}>
+              <DataFieldWithLabel label="등록자">
                 <Input
                   readOnly
-                  defaultValue={formik.values.createdBy?.name ?? ''}
+                  value={formik.values.createdBy?.name ?? ''}
                 />
-              }
-            />
+              </DataFieldWithLabel>
+            </Box>
           </Box>
         </Box>
       )}
-      <FieldBox
-        label={
-          <FieldLabel required={edit}>
-            수신처
-          </FieldLabel>
-        }
-        children={
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel required={edit} label="수신처">
           <Input
             required
             value={formik.values.recipient ?? ''}
@@ -82,42 +82,51 @@ export default function ProjectDocumentDetailModalForm() {
               formik.setFieldValue('recipient', e.target.value || undefined);
             }}
           />
-        }
-      />
-      <FieldBox
-        label={
-          <FieldLabel>
-            파일
-          </FieldLabel>
-        }
-        children={
-          <FileInput
-            mode="view"
+        </DataFieldWithLabel>
+      </Box>
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="파일">
+          <UploadField
+            disableSelect
             disableDownload={edit}
             value={formik.values.file}
-            onChange={(file) => {
-              formik.setFieldValue('file', file);
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('file', undefined);
+                return;
+              }
+              formik.setFieldValue('file', fileToView(e.target.files![0]));
             }}
           />
-        }
-      />
-      <FieldBox
-        label={
-          <FieldLabel>
-            메일 자료
-          </FieldLabel>
-        }
-        children={
-          <FileInput
-            mode={edit ? 'edit' : 'view'}
+        </DataFieldWithLabel>
+      </Box>
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="메일 자료">
+          <UploadField
+            disableSelect={!edit}
+            disableDownload={edit}
             accept=".eml"
             value={formik.values.mailFile}
-            onChange={(file) => {
-              formik.setFieldValue('mailFile', file);
+            onChange={(e) => {
+              if (!e.target || !e.target.files || e.target.files.length === 0) {
+                formik.setFieldValue('mailFile', undefined);
+                return;
+              }
+              formik.setFieldValue('mailFile', fileToView(e.target.files![0]));
             }}
           />
-        }
-      />
+        </DataFieldWithLabel>
+      </Box>
       <Box sx={{
         backgroundColor: ColorPalette._f1f5fc,
         border:          `1px solid ${ColorPalette._e4e9f2}`,
@@ -140,13 +149,13 @@ export default function ProjectDocumentDetailModalForm() {
           &#183; 등록 가능한 파일양식: eml
         </Typography>
       </Box>
-      <FieldBox
-        label={
-          <FieldLabel>
-            비고
-          </FieldLabel>
-        }
-        children={
+      <Box sx={{
+        width:        '100%',
+        display:      'flex',
+        flexWrap:     'wrap',
+        marginBottom: '15px',
+      }}>
+        <DataFieldWithLabel label="비고">
           <Input
             readOnly={!edit}
             value={formik.values.note ?? ''}
@@ -154,8 +163,8 @@ export default function ProjectDocumentDetailModalForm() {
               formik.setFieldValue('note', e.target.value || undefined);
             }}
           />
-        }
-      />
+        </DataFieldWithLabel>
+      </Box>
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import logo from 'assets/logo.png';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';

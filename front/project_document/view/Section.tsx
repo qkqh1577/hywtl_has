@@ -18,7 +18,7 @@ import {
   OnDetailModalOpen
 } from 'project_document/route/document';
 import { toReadableSize } from 'file-item';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import SectionLayout from 'layouts/SectionLayout';
 import {
   Table,

@@ -11,7 +11,7 @@ import {
   pageSizeList,
   Pagination
 } from 'type/Page';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import {
   FormikContext,
   FormikContextType

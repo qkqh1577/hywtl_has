@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'components/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
-import IconButton from 'components/IconButton';
+import IconButton from 'layouts/IconButton';
 import TextBox from 'layouts/Text';
 
 export interface SectionLayoutProps {

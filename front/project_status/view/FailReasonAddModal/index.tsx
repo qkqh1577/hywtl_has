@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
-import DetailFormFooter from 'layouts/DetailFormFooter';
-import { FormikLayoutProps } from 'layouts/PageLayout';
-import { FormikProvider } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import Form from './Form';
+import { Box } from '@mui/material';
+import Button from 'layouts/Button';
+import { FormikContext } from 'formik';
 
-interface Props
-  extends FormikLayoutProps<any> {
+interface Props {
   onClose: DefaultFunction;
   open: boolean;
 }
 
 export default function ProjectStatusFailReasonAddModal(props: Props) {
-  const { formik, onClose, open } = props;
+  const { onClose, open } = props;
+  const formik = useContext(FormikContext);
 
   return (
     <ModalLayout
@@ -22,17 +22,29 @@ export default function ProjectStatusFailReasonAddModal(props: Props) {
       title="수주실패 원인 입력"
       onClose={onClose}
       children={
-        <FormikProvider value={formik}>
-          <Form />
-        </FormikProvider>
+        <Form />
       }
       footer={
-        <DetailFormFooter
-          onSubmit={() => {
-            formik.handleSubmit();
-          }}
-          onClose={onClose}
-        />
+        <Box sx={{
+          width:          '100%',
+          margin:         '20px 0',
+          display:        'flex',
+          justifyContent: 'center',
+          alignItems:     'center',
+        }}>
+          <Button
+            sx={{
+              marginRight: '10px',
+            }}
+            onClick={() => {
+              formik.handleSubmit();
+            }}>
+            저장
+          </Button>
+          <Button shape="basic2" onClick={onClose}>
+            취소
+          </Button>
+        </Box>
       }
     />
   );
