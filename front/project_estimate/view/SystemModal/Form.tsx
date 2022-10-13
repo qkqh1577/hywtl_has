@@ -31,8 +31,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
         flexWrap: 'nowrap',
       }}>
         <LeftForm openDocumentModal={props.openDocumentModal} />
-        <RightForm
-        />
+        <RightForm />
       </Box>
     </Box>
   );

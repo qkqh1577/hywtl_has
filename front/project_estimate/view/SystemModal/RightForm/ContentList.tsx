@@ -74,6 +74,7 @@ export default function () {
               )}
               <Td>
                 <Input
+                  key={content}
                   readOnly={!edit}
                   defaultValue={content ?? ''}
                   variant="outlined"
@@ -101,12 +102,15 @@ export default function () {
                       shape="square"
                       disabled={i === 0}
                       onClick={() => {
+                        const prevList = contentList.filter((c,
+                                                             j
+                        ) => j !== i);
                         const result: (string | undefined)[] = [];
-                        for (let j = 0; j < contentList.length; j++) {
+                        for (let j = 0; j < prevList.length; j++) {
                           if (result.length === i - 1) {
-                            result.push(contentList[j]);
+                            result.push(content);
                           }
-                          result.push(content);
+                          result.push(prevList[j]);
                         }
                         formik.setFieldValue('contentList', result);
                       }}>
@@ -116,9 +120,12 @@ export default function () {
                       shape="square"
                       disabled={i === contentList.length - 1}
                       onClick={() => {
+                        const prevList = contentList.filter((c,
+                                                             j
+                        ) => j !== i);
                         const result: (string | undefined)[] = [];
-                        for (let j = 0; j < contentList.length; j++) {
-                          result.push(contentList[j]);
+                        for (let j = 0; j < prevList.length; j++) {
+                          result.push(prevList[j]);
                           if (result.length === i + 1) {
                             result.push(content);
                           }
@@ -136,9 +143,10 @@ export default function () {
             <TableRow>
               <Td colSpan={2}>
                 <Input
-                  value={tempContent ?? ''}
+                  key={tempContent}
+                  defaultValue={tempContent ?? ''}
                   variant="outlined"
-                  onChange={(e) => {
+                  onBlur={(e) => {
                     const value = e.target.value || undefined;
                     if (tempContent !== value) {
                       setTempContent(value);

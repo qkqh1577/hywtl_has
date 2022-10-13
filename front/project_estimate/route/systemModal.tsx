@@ -9,7 +9,10 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
+import {
+  initialProjectSystemEstimateParameter,
+  ProjectSystemEstimateParameter
+} from 'project_estimate/parameter';
 import React, {
   useCallback,
   useEffect,
@@ -43,13 +46,7 @@ export default function ProjectSystemEstimateModalRoute() {
   const onClose = useCallback(() => dispatch(projectEstimateAction.setSystemModal(undefined)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteSystem()), [dispatch]);
   const formik = useFormik<ProjectSystemEstimateParameter>({
-    initialValues: {
-                     siteList:     [{}],
-                     buildingList: [{}],
-                     templateList: [],
-                     contentList:  [],
-                     edit:         true,
-                   } as unknown as ProjectSystemEstimateParameter,
+    initialValues: initialProjectSystemEstimateParameter,
     onSubmit:      (values) => {
       if (systemModal) {
         onChange(values);
@@ -66,18 +63,13 @@ export default function ProjectSystemEstimateModalRoute() {
   useEffect(() => {
     if (typeof systemModal !== 'undefined') {
       dispatch(projectDocumentAction.setProjectId(projectId));
+      formik.setValues(initialProjectSystemEstimateParameter);
     }
     if (systemModal === null) {
       dispatch(projectComplexAction.setId(projectId));
       dispatch(estimateTemplateAction.setFilter(initialEstimateTemplateQuery));
       dispatch(estimateContentAction.setFilter(initialEstimateContentQuery));
-      formik.setValues({
-        siteList:     [{}],
-        buildingList: [{}],
-        templateList: [],
-        contentList:  [],
-        edit:         true,
-      } as unknown as ProjectSystemEstimateParameter);
+      formik.setValues(initialProjectSystemEstimateParameter);
     }
   }, [systemModal]);
 
@@ -117,7 +109,7 @@ export default function ProjectSystemEstimateModalRoute() {
                                     .filter(siteSeq => typeof siteSeq === 'number');
         return {
           ...building,
-          siteId: Array.isArray(siteSeqList) && siteSeqList.length === 1 ? siteSeqList[0] : undefined,
+          siteSeq: Array.isArray(siteSeqList) && siteSeqList.length === 1 ? siteSeqList[0] : undefined,
         };
       }) ?? [{}]);
     }
@@ -192,15 +184,17 @@ export default function ProjectSystemEstimateModalRoute() {
         onCancel={() => {
           rollback(() => {
             if (systemModal === null) {
-              formik.setValues({
-                edit: true
-              } as unknown as ProjectSystemEstimateParameter);
+              formik.setValues(initialProjectSystemEstimateParameter);
               dispatch(projectEstimateAction.setSystemModal(undefined));
             }
             else {
               formik.setValues({
                 ...systemDetail,
-                edit: false,
+                siteList:     systemDetail?.siteList ?? [],
+                buildingList: systemDetail?.buildingList ?? [],
+                templateList: systemDetail?.templateList ?? [],
+                contentList:  systemDetail?.contentList ?? [],
+                edit:         false,
               } as unknown as ProjectSystemEstimateParameter);
             }
           });

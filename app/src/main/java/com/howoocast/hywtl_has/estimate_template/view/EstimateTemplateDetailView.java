@@ -17,6 +17,7 @@ public class EstimateTemplateDetailView {
     private Long unitAmount;
 
     private Boolean inUse;
+
     private String note;
 
 

@@ -129,7 +129,6 @@ public class ProjectEstimateService {
                     plan.getDiscountAmount(),
                     plan.getTotalAmount()))
                 .orElse(null));
-        repository.save(instance);
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
     }

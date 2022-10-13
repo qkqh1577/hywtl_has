@@ -55,8 +55,6 @@ public class ProjectEstimateTemplateDetail extends CustomEntity {
     /**
      * 총액
      */
-    @NotNull
-    @Column(nullable = false)
     private Long totalAmount;
 
     /**

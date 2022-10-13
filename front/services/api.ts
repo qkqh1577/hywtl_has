@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { compress } from 'components/DataFieldProps';
 
 const isFormData = (parameter: FormData | any | undefined): parameter is FormData => {
   return parameter && (parameter as FormData).append !== undefined;
@@ -57,7 +58,7 @@ export class HttpClient {
                config?: any
   ) => {
     return await this.client.get(url, {
-      params: parameter,
+      params: typeof parameter === 'object' ? compress(parameter) : parameter,
       ...config,
     });
   };
@@ -74,7 +75,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.post(url, parameter, {
+    return await this.client.post(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };
@@ -91,7 +92,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.put(url, parameter, {
+    return await this.client.put(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };
@@ -108,7 +109,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.patch(url, parameter, {
+    return await this.client.patch(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };
@@ -118,7 +119,7 @@ export class HttpClient {
                   config?: any
   ) => {
     return await this.client.delete(url, {
-      params: parameter,
+      params: typeof parameter === 'object' ? compress(parameter) : parameter,
       ...config,
     });
   };

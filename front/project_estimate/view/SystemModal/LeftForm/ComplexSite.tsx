@@ -61,6 +61,7 @@ export default function () {
               <TableRow key={i}>
                 <Td>
                   <Input
+                    key={item.name}
                     readOnly={!edit}
                     type="text"
                     variant="outlined"

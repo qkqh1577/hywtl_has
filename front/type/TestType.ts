@@ -17,6 +17,7 @@ export enum TestType {
   /** 구검(건축구조설계사 검토), Architectural Structures Engineer Review */
   REVIEW = 'REVIEW'
 }
+// TODO: Test type B 빌딩풍 시뮬레이션 이 견적에 포함되는 요건
 
 export function testTypeName(testType: TestType | '') {
   switch (testType) {

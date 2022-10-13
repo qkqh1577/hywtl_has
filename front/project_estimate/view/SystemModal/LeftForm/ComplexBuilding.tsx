@@ -93,20 +93,20 @@ export default function (props: Props) {
               {buildingList.map((item,
                                  i
               ) => (
-                <Td key={`${i}_${item.siteId}`}>
+                <Td key={`${i}_${item.siteSeq}`}>
                   <Select
                     displayEmpty
                     readOnly={!edit}
                     variant="outlined"
-                    value={item.siteId ?? ''}
+                    value={item.siteSeq ?? ''}
                     renderValue={(raw) => {
                       const value = siteList.find((site) => site.id === raw);
                       return value?.name ?? '선택';
                     }}
                     onChange={(e) => {
                       const value = e.target.value || undefined;
-                      if (item.siteId !== value) {
-                        formik.setFieldValue(`buildingList.${i}.siteId`, value);
+                      if (item.siteSeq !== value) {
+                        formik.setFieldValue(`buildingList.${i}.siteSeq`, value);
                       }
                     }}>
                     {siteList.map((site,

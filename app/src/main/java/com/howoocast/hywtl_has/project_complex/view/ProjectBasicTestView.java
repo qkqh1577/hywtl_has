@@ -27,7 +27,8 @@ public class ProjectBasicTestView {
             .map(test -> String.format("%d%s", test.getBuildingCount(), test.getTestType().toString()))
             .reduce("", (a, b) -> a + b);
 
-        long eTestCount = siteList.stream().filter(ProjectComplexSite::getWithEnvironmentTest).count();
+        long eTestCount = siteList.stream().filter((site -> Boolean.TRUE.equals(site.getWithEnvironmentTest())))
+            .count();
         if (eTestCount > 0) {
             targetTest += String.format("%dE", eTestCount);
         }

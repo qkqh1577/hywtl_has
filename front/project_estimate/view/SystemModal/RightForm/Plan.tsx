@@ -1,9 +1,5 @@
-import React, {
-  useContext,
-  useState
-} from 'react';
+import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
-import { ProjectEstimatePlanParameter } from 'project_estimate/parameter';
 import {
   Box,
   InputAdornment
@@ -19,7 +15,7 @@ export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  const [plan, setPlan] = useState<Partial<ProjectEstimatePlanParameter>>({});
+  const plan = formik.values.plan;
 
   return (
     <Box sx={{
@@ -42,12 +38,27 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="견적 일자" labelPosition="top" required={edit}>
           <DatePicker
-            value={plan?.estimateDate ? dayjs(plan?.estimateDate)
+            key={plan.estimateDate}
+            value={plan.estimateDate ? dayjs(plan.estimateDate)
             .format('YYYY-MM-DD') : null}
             inputFormat="YYYY-MM-DD"
             mask="____-__-__"
-            openTo="month"
-            onChange={(e) => {
+            openTo="year"
+            onChange={(e,
+                       r
+            ) => {
+              const date = dayjs(e);
+              if (plan.estimateDate !== r) {
+
+                if (date.isValid() && date.format('YYYY-MM-DD') === r) {
+                  formik.setFieldValue('plan.estimateDate', r);
+                }
+                else {
+                  formik.setFieldValue('plan.estimateDate', undefined);
+                }
+              }
+            }}
+            onAccept={(e) => {
               if (e === null) {
                 formik.setFieldValue('plan.estimateDate', undefined);
               }
@@ -60,8 +71,10 @@ export default function () {
               <Input
                 {...parameter.InputProps}
                 inputRef={parameter.inputRef}
-                value={parameter.value}
                 inputProps={parameter.inputProps}
+                defaultValue={parameter.value}
+                onChange={undefined}
+                onBlur={parameter.onChange}
               />
             )}
           />
@@ -70,12 +83,26 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="착수 가능일" labelPosition="top" required={edit}>
           <DatePicker
-            value={plan?.expectedServiceDate ? dayjs(plan?.expectedServiceDate)
+            value={plan.expectedServiceDate ? dayjs(plan.expectedServiceDate)
             .format('YYYY-MM-DD') : null}
             inputFormat="YYYY-MM-DD"
             mask="____-__-__"
-            openTo="month"
-            onChange={(e) => {
+            openTo="year"
+            onChange={(e,
+                       r
+            ) => {
+              const date = dayjs(e);
+              if (plan.expectedServiceDate !== r) {
+
+                if (date.isValid() && date.format('YYYY-MM-DD') === r) {
+                  formik.setFieldValue('plan.expectedServiceDate', r);
+                }
+                else {
+                  formik.setFieldValue('plan.expectedServiceDate', undefined);
+                }
+              }
+            }}
+            onAccept={(e) => {
               if (e === null) {
                 formik.setFieldValue('plan.expectedServiceDate', undefined);
               }
@@ -88,8 +115,10 @@ export default function () {
               <Input
                 {...parameter.InputProps}
                 inputRef={parameter.inputRef}
-                value={parameter.value}
                 inputProps={parameter.inputProps}
+                defaultValue={parameter.value}
+                onChange={undefined}
+                onBlur={parameter.onChange}
               />
             )}
           />
@@ -108,17 +137,15 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top" required={edit}>
           <Input
+            key={plan.expectedTestDeadline}
             type="number"
             disabled={!edit}
-            value={plan.expectedTestDeadline ?? ''}
-            onChange={(e) => {
+            defaultValue={plan.expectedTestDeadline ?? ''}
+            onBlur={(e) => {
               const value = +(e.target.value) || undefined;
               if (plan.expectedTestDeadline !== value) {
-                setPlan({ ...formik.values.plan, expectedTestDeadline: value });
+                formik.setFieldValue('plan.expectedTestDeadline', value);
               }
-            }}
-            onBlur={() => {
-              formik.setFieldValue('plan', plan);
             }}
             endAdornment={
               <InputAdornment position="end">
@@ -131,17 +158,15 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top" required={edit}>
           <Input
+            key={plan.expectedFinalReportDeadline}
             type="number"
             disabled={!edit}
-            value={plan.expectedFinalReportDeadline ?? ''}
-            onChange={(e) => {
+            defaultValue={plan.expectedFinalReportDeadline ?? ''}
+            onBlur={(e) => {
               const value = +(e.target.value) || undefined;
               if (plan.expectedFinalReportDeadline !== value) {
-                setPlan({ ...formik.values.plan, expectedFinalReportDeadline: value });
+                formik.setFieldValue('plan.expectedFinalReportDeadline', value);
               }
-            }}
-            onBlur={() => {
-              formik.setFieldValue('plan', plan);
             }}
             endAdornment={
               <InputAdornment position="end">
