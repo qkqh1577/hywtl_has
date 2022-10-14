@@ -1,12 +1,15 @@
-import { Box } from '@mui/material';
+import {
+  Box,
+  MenuItem
+} from '@mui/material';
 import React from 'react';
-import SelectField from 'components/SelectField';
-import { Formik } from 'formik';
 import {
   BusinessInvolvedType,
   businessInvolvedTypeList,
   businessInvolvedTypeName
 } from 'business/domain';
+import Select from 'layouts/Select';
+import DataFieldWithLabel from 'components/DataFieldLabel';
 
 interface Props {
   initInvolvedType?: BusinessInvolvedType;
@@ -17,21 +20,18 @@ interface Props {
 export default function ProjectBasicInvolvedTypeSelectorComponent({ initInvolvedType, handleChangeInvolvedType, hidden }: Props) {
   return (
     <Box sx={{ width: '33%', visibility: hidden ? 'hidden' : '' }}>
-      <Formik
-        initialValues={{
-          involvedType: initInvolvedType || '',
-        }}
-        onSubmit={() => {}}>
-        <SelectField
-          name="involvedType"
-          label="관계사 구분"
-          options={businessInvolvedTypeList.map((item) => ({
-            key:  item as string,
-            text: businessInvolvedTypeName(item),
-          }))}
-          onChange={handleChangeInvolvedType}
-        />
-      </Formik>
+      <DataFieldWithLabel label="관계사 구분">
+        <Select
+          variant="outlined"
+          value={initInvolvedType ?? ''}
+          onChange={handleChangeInvolvedType}>
+          {businessInvolvedTypeList.map(item => (
+            <MenuItem key={item} value={item}>
+              {businessInvolvedTypeName(item)}
+            </MenuItem>
+          ))}
+        </Select>
+      </DataFieldWithLabel>
     </Box>
   );
 }

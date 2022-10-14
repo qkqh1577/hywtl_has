@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import SearchForm, { SearchFormField } from 'layouts/SearchForm';
-import SelectField from 'components/SelectField';
-import TextField from 'components/TextField';
 import {
   accountStateTypeList,
   dateTypeList,
@@ -10,14 +8,17 @@ import {
 } from 'personnel/query';
 import CheckboxField from 'components/CheckboxField';
 import DepartmentCheckboxField from 'components/DepartmentCheckboxField';
-import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
-import { Box } from '@mui/material';
+import {
+  Box,
+  MenuItem
+} from '@mui/material';
 import { sexCategoryList } from 'user/domain';
+import Select from 'layouts/Select';
 
 export default function SearchBox() {
   const formik = useContext(FormikContext);
@@ -61,36 +62,54 @@ export default function SearchBox() {
       />
       <SearchFormField
         label={
-          <SelectField
-            disableLabel
-            variant="outlined"
-            border="none"
-            backgroundColor={ColorPalette.transparent}
-            name="keywordType"
-            label="검색 대상"
-            options={keywordTypeList}
-          />
+          <Select
+            variant="transparent"
+            value={formik.values.keywordType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keywordType !== value) {
+                formik.setFieldValue('keywordType', value);
+              }
+            }}>
+            {keywordTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         }
         children={
-          <TextField
-            disableLabel
+          <Input
             variant="outlined"
-            name="keyword"
-            label="검색어"
+            placeholder="검색어를 입력하세요"
+            key={formik.values.keyword}
+            defaultValue={formik.values.keyword ?? ''}
+            onBlur={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
+            }}
           />
         }
       />
       <SearchFormField
         label={
-          <SelectField
-            disableLabel
-            variant="outlined"
-            border="none"
-            backgroundColor={ColorPalette.transparent}
-            name="dateType"
-            label="검색 대상"
-            options={dateTypeList}
-          />
+          <Select
+            variant="transparent"
+            value={formik.values.dateType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.dateType !== value) {
+                formik.setFieldValue('dateType', value);
+              }
+            }}>
+            {dateTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         }
         children={
           <Box sx={{

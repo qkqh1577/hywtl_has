@@ -1,7 +1,5 @@
 import SearchForm, { SearchFormField } from 'layouts/SearchForm';
-import SelectField from 'components/SelectField';
-import TextField from 'components/TextField';
-import React from 'react';
+import React, { useContext } from 'react';
 import { keywordTypeList } from 'admin/estimate/content/query';
 import CheckboxField from 'components/CheckboxField';
 import {
@@ -9,9 +7,13 @@ import {
   testTypeList,
   testTypeName
 } from 'type/TestType';
-import { ColorPalette } from 'app/view/App/theme';
+import Select from 'layouts/Select';
+import { MenuItem } from '@mui/material';
+import { FormikContext } from 'formik';
+import Input from 'layouts/Input';
 
 export default function () {
+  const formik = useContext(FormikContext);
   return (
     <SearchForm>
       <SearchFormField
@@ -31,22 +33,35 @@ export default function () {
       />
       <SearchFormField
         label={
-          <SelectField
-            disableLabel
-            variant="outlined"
-            border="none"
-            backgroundColor={ColorPalette.transparent}
-            name="keywordType"
-            label="검색 대상"
-            options={keywordTypeList}
-          />
+          <Select
+            displayEmpty
+            variant="transparent"
+            value={formik.values.keywordType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keywordType !== value) {
+                formik.setFieldValue('keywordType', value);
+              }
+            }}>
+            <MenuItem value="">선택</MenuItem>
+            {keywordTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         }
         children={
-          <TextField
-            disableLabel
+          <Input
+            key={formik.values.keyword}
             variant="outlined"
-            name="keyword"
-            label="검색어"
+            defaultValue={formik.values.keyword ?? ''}
+            onBlur={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
+            }}
           />
         }
       />

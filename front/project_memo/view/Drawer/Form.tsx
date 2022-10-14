@@ -1,11 +1,11 @@
 import {
   Box,
+  MenuItem,
   Typography
 } from '@mui/material';
 import { ArrowRight as RightIcon, } from '@mui/icons-material';
 import React, { useContext } from 'react';
 import IconButton from 'layouts/IconButton';
-import SelectField from 'components/SelectField';
 import {
   projectMemoCategoryList,
   projectMemoCategoryName
@@ -15,6 +15,7 @@ import Button from 'layouts/Button';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
 import AttendanceListField from 'components/AttendanceListField';
+import Select from 'layouts/Select';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
@@ -106,17 +107,22 @@ export default function ProjectMemoForm({ setOpen }: ProjectMemoFormProps) {
             width:       '120px',
             marginRight: '10px',
           }}>
-            <SelectField
+            <Select
               required
-              disableLabel
               variant="outlined"
-              name="category"
-              label="카테고리"
-              options={projectMemoCategoryList.map(item => ({
-                key:  item as string,
-                text: projectMemoCategoryName(item),
-              }))}
-            />
+              value={formik.values.category ?? ''}
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.category !== value) {
+                  formik.setFieldValue('category', value);
+                }
+              }}>
+              {projectMemoCategoryList.map(item => (
+                <MenuItem key={item} value={item}>
+                  {projectMemoCategoryName(item)}
+                </MenuItem>
+              ))}
+            </Select>
           </Box>
           <Button fullWidth onClick={onSubmit}>
             작성 완료

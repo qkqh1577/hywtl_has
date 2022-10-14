@@ -30,7 +30,7 @@ export default function ProjectMemoDrawerFilterRoute() {
   const formik = useFormik<ProjectMemoQuery>({
     initialValues: initialProjectMemoQuery,
     onSubmit:      (values) => {
-      setFilter(values);
+      setFilter({ ...values, page: 0 });
     }
   });
 
@@ -42,18 +42,7 @@ export default function ProjectMemoDrawerFilterRoute() {
 
   return (
     <FormikProvider value={formik}>
-      <ProjectMemoDrawerFilter
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            const keyword: string = e.target['value'] ?? '';
-            setFilter({
-              keyword,
-              category: formik.values.category,
-              page:     0,
-            });
-          }
-        }}
-      />
+      <ProjectMemoDrawerFilter />
     </FormikProvider>
 
   );

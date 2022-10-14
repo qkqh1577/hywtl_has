@@ -2,14 +2,12 @@ import { ColorPalette } from 'app/view/App/theme';
 import {
   Box,
   FormLabel,
+  MenuItem,
   Radio,
   TableBody,
-  TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
-import SelectField from 'components/SelectField';
-import TextField from 'components/TextField';
 import Button from 'layouts/Button';
 import React from 'react';
 import {
@@ -22,6 +20,8 @@ import {
   BusinessId,
   BusinessVO
 } from 'business/domain';
+import Select from 'layouts/Select';
+import Input from 'layouts/Input';
 
 const keywordTypeList = [
   {
@@ -72,23 +72,34 @@ export default function ProjectBasicBusinessSelectorComponent({ initBusinessList
         justifyContent: 'space-around',
       }}>
         <Box sx={{ width: '15%', display: 'flex' }}>
-          <SelectField
-            disableLabel
-            formik={formik}
+          <Select
             variant="outlined"
-            name="keywordType"
-            label="검색어 구분"
-            options={keywordTypeList}
-          />
+            value={formik.values.keywordType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keywordType !== value) {
+                formik.setFieldValue('keywordType', value);
+              }
+            }}>
+            {keywordTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
         <Box sx={{ width: '60%', display: 'flex' }}>
-          <TextField
-            disableLabel
-            formik={formik}
+          <Input
             variant="outlined"
-            name="keyword"
-            label="검색어"
             placeholder="검색어를 입력하세요"
+            key={formik.values.keyword}
+            defaultValue={formik.values.keyword ?? ''}
+            onBlur={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
+            }}
           />
         </Box>
         <Box sx={{ width: '10%', display: 'flex' }}>
@@ -104,39 +115,37 @@ export default function ProjectBasicBusinessSelectorComponent({ initBusinessList
         </Box>
       </Box>
       <Box sx={{ width: '100%' }}>
-        <TableContainer>
-          <Table>
-            <TableHead>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <Th>선택</Th>
+              <Th>업체명</Th>
+              <Th>대표명</Th>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {initBusinessList.length === 0 && (
               <TableRow>
-                <Th>선택</Th>
-                <Th>업체명</Th>
-                <Th>대표명</Th>
+                <Td colSpan={3}>조회 결과가 없습니다.</Td>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {initBusinessList.length === 0 && (
-                <TableRow>
-                  <Td colSpan={3}>조회 결과가 없습니다.</Td>
-                </TableRow>
-              )}
-              {initBusinessList.map((item) => (
-                <TableRow key={item.id}>
-                  <Td>
-                    <Radio
-                      value={item.id}
-                      checked={item.id === selectedBusinessId}
-                      onClick={() => {
-                        handleSelectBusinessId(item.id);
-                      }}
-                    />
-                  </Td>
-                  <Td>{item.name}</Td>
-                  <Td>{item.ceoName}</Td>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            )}
+            {initBusinessList.map((item) => (
+              <TableRow key={item.id}>
+                <Td>
+                  <Radio
+                    value={item.id}
+                    checked={item.id === selectedBusinessId}
+                    onClick={() => {
+                      handleSelectBusinessId(item.id);
+                    }}
+                  />
+                </Td>
+                <Td>{item.name}</Td>
+                <Td>{item.ceoName}</Td>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Box>
     </>
   );

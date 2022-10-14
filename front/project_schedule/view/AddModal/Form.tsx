@@ -30,16 +30,13 @@ export default function () {
         flexWrap:     'nowrap',
         marginBottom: '10px',
       }}>
-        <DataFieldWithLabel
-          required
-          label="일정명"
-          labelPosition="top"
-        >
+        <DataFieldWithLabel required label="일정명" labelPosition="top">
           <Input
             variant="standard"
             placeholder="입력"
-            value={formik.values.title ?? ''}
-            onChange={(e) => {
+            key={formik.values.title}
+            defaultValue={formik.values.title ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (value !== formik.values.title) {
                 formik.setFieldValue('title', value);
@@ -61,11 +58,7 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required
-            label="시작일"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required label="시작일" labelPosition="top">
             <DatePicker
               value={formik.values.startTime ? dayjs(formik.values.startTime)
               .format('YYYY-MM-DD HH:mm') : null}
@@ -102,11 +95,7 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required={!formik.values.allDay}
-            label="시작 시간"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required={!formik.values.allDay} label="시작 시간" labelPosition="top">
             <TimePicker
               ampm={false}
               mask="__:__"
@@ -144,10 +133,7 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            label="종일 여부"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel label="종일 여부" labelPosition="top">
             <Checkbox
               checked={formik.values.allDay}
               onChange={() => {
@@ -170,11 +156,7 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required
-            label="종료일"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required label="종료일" labelPosition="top">
             <DatePicker
               value={formik.values.endTime ? dayjs(formik.values.endTime)
               .format('YYYY-MM-DD HH:mm') : null}
@@ -211,11 +193,7 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required={!formik.values.allDay}
-            label="종료 시간"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required={!formik.values.allDay} label="종료 시간" labelPosition="top">
             <TimePicker
               ampm={false}
               mask="__:__"
@@ -261,10 +239,7 @@ export default function () {
           alignItems:  'center',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            label="미리 알림 사용"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel label="미리 알림 사용" labelPosition="top">
             <Box sx={{
               display:    'flex',
               width:      '100%',
@@ -282,10 +257,11 @@ export default function () {
                 }}
               />
               <Input
+                key={formik.values.alertBefore}
                 variant="standard"
                 type="number"
                 placeholder="입력"
-                value={formik.values.alertBefore ?? ''}
+                defaultValue={formik.values.alertBefore ?? ''}
                 endAdornment={
                   <InputAdornment position="end">
                     <TextBox variant="body12">
@@ -293,7 +269,7 @@ export default function () {
                     </TextBox>
                   </InputAdornment>
                 }
-                onChange={(e) => {
+                onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
                   if (value !== formik.values.alertBefore) {
                     formik.setFieldValue('alertBefore', value);
@@ -309,19 +285,19 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required
-            label="담당자"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required label="담당자" labelPosition="top">
             <UserSelector
-              disableLabel
               name="managerId"
-              label="담당자"
+              value={formik.values.managerId ?? ''}
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (value !== formik.values.managerId) {
+                  formik.setFieldValue('managerId', value);
+                }
+              }}
             />
           </DataFieldWithLabel>
         </Box>
-
       </Box>
       <Box sx={{
         display:      'flex',
@@ -329,10 +305,7 @@ export default function () {
         flexWrap:     'nowrap',
         marginBottom: '10px',
       }}>
-        <DataFieldWithLabel
-          label="일정 공유 대상"
-          labelPosition="top"
-        >
+        <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
           <AttendanceListField
             list={formik.values.attendanceList}
             afterSubmit={(list) => {

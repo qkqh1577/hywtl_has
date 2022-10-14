@@ -4,13 +4,16 @@ import {
   testTypeList,
   testTypeName
 } from 'type/TestType';
-import SelectField from 'components/SelectField';
-import TextField from 'components/TextField';
 import { keywordTypeList } from 'admin/estimate/template/query';
-import React from 'react';
-import { ColorPalette } from 'app/view/App/theme';
+import React, { useContext } from 'react';
+import Select from 'layouts/Select';
+import { FormikContext } from 'formik';
+import { MenuItem } from '@mui/material';
+import Input from 'layouts/Input';
 
 export default function () {
+
+  const formik = useContext(FormikContext);
 
   return (
     <SearchForm>
@@ -30,22 +33,35 @@ export default function () {
       />
       <SearchFormField
         label={
-          <SelectField
-            disableLabel
-            variant="outlined"
-            border="none"
-            backgroundColor={ColorPalette.transparent}
-            name="keywordType"
-            label="검색 대상"
-            options={keywordTypeList}
-          />
+          <Select
+            displayEmpty
+            variant="transparent"
+            value={formik.values.keywordType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keywordType !== value) {
+                formik.setFieldValue('keywordType', value);
+              }
+            }}>
+            <MenuItem value="">선택</MenuItem>
+            {keywordTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         }
         children={
-          <TextField
-            disableLabel
+          <Input
+            key={formik.values.keyword}
+            defaultValue={formik.values.keyword ?? ''}
             variant="outlined"
-            name="keyword"
-            label="검색어"
+            onBlur={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
+            }}
           />
         }
       />

@@ -21,9 +21,7 @@ export default function DepartmentSelector(props: Props) {
   }, []);
 
   return (
-    <Select
-      {...props}
-    >
+    <Select {...props}>
       {props.displayEmpty && (
         <MenuItem value="">선택</MenuItem>
       )}

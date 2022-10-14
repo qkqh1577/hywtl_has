@@ -1,4 +1,7 @@
-import { Box, } from '@mui/material';
+import {
+  Box,
+  MenuItem
+} from '@mui/material';
 import React, {
   useContext,
   useEffect,
@@ -6,7 +9,6 @@ import React, {
   useState
 } from 'react';
 import TextBox from 'layouts/Text';
-import SelectField from 'components/SelectField';
 import {
   pageSizeList,
   Pagination
@@ -18,6 +20,7 @@ import {
 } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextLink from 'components/TextLink';
+import Select from 'layouts/Select';
 
 interface Props {
   children: React.ReactNode;
@@ -41,7 +44,6 @@ export default function TableLayout(props: Props) {
   const tableHeight = tableRef.current?.offsetHeight ?? 0;
   const size = formik.values[sizeFieldName];
   const [maxTableHeight, setMaxTableHeight] = useState<number>();
-  const [nowSize, setNowSize] = useState<number>();
 
   useEffect(() => {
     if (!maxTableHeight || tableHeight > maxTableHeight) {
@@ -50,10 +52,8 @@ export default function TableLayout(props: Props) {
   }, [tableHeight]);
 
   useEffect(() => {
-    if (nowSize !== size) {
-      setMaxTableHeight(undefined);
-      setNowSize(size);
-    }
+    setMaxTableHeight(undefined);
+    formik.handleSubmit();
   }, [size]);
 
   return (
@@ -87,17 +87,19 @@ export default function TableLayout(props: Props) {
                 marginRight: '20px',
                 alignItems:  'center',
               }}>
-                <SelectField
-                  disableLabel
-                  autoSubmit
+                <Select
                   variant="outlined"
-                  name={sizeFieldName}
-                  label="페이지 당 노출 수"
-                  options={(props.sizeOptions ?? pageSizeList).map((key) => ({
-                    key:  key,
-                    text: `${key}개씩 보기`
-                  }))}
-                />
+                  value={formik.values[sizeFieldName] ?? ''}
+                  onChange={(e) => {
+                    const value = +(e.target.value as string) || undefined;
+                    if (formik.values[sizeFieldName] !== value) {
+                      formik.setFieldValue(sizeFieldName, value);
+                    }
+                  }}>
+                  {(props.sizeOptions ?? pageSizeList).map(item => (
+                    <MenuItem key={item} value={item}>{item}개씩 보기</MenuItem>
+                  ))}
+                </Select>
               </Box>
             )}
           </Box>
@@ -132,7 +134,7 @@ export default function TableLayout(props: Props) {
         }}>
           <IconButton
             shape="square"
-            disabled={formik.values[pageFieldName] === 0}
+            disabled={props.pagination.totalPages === 0 || formik.values[pageFieldName] === 0}
             children={
               <FontAwesomeIcon icon="angles-left" />
             }
@@ -146,7 +148,7 @@ export default function TableLayout(props: Props) {
           />
           <IconButton
             shape="square"
-            disabled={formik.values.page === 0}
+            disabled={props.pagination.totalPages === 0 || formik.values.page === 0}
             children={
               <FontAwesomeIcon icon="angle-left" />
             }
@@ -204,7 +206,7 @@ export default function TableLayout(props: Props) {
           )}
           <IconButton
             shape="square"
-            disabled={!formik.values[pageFieldName] || formik.values[pageFieldName] + 1 === props.pagination.totalPages}
+            disabled={props.pagination.totalPages === 0 || (+formik.values[pageFieldName] || 0) + 1 === props.pagination.totalPages}
             children={
               <FontAwesomeIcon icon="angle-right" />
             }
@@ -218,7 +220,7 @@ export default function TableLayout(props: Props) {
           />
           <IconButton
             shape="square"
-            disabled={!formik.values[pageFieldName] || formik.values[pageFieldName] + 1 === props.pagination.totalPages}
+            disabled={props.pagination.totalPages === 0 || (+formik.values[pageFieldName] || 0) + 1 === props.pagination.totalPages}
             children={
               <FontAwesomeIcon icon="angles-right" />
             }

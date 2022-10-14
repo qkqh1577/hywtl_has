@@ -22,7 +22,6 @@ export default function (props: Props) {
     : [];
   const [description, setDescription] = useState<string>();
 
-
   const onAdd = () => {
     formik.setFieldValue(`contractConditionList.${props.index}.descriptionList`, [...descriptionList, description]);
     setDescription(undefined);
@@ -33,9 +32,10 @@ export default function (props: Props) {
       {descriptionList.length === 0 && <Th>내용</Th>}
       <Td>
         <Input
+          key={description}
+          defaultValue={description ?? ''}
           variant="outlined"
-          value={description ?? ''}
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = e.target.value as string;
             if (description !== value) {
               setDescription(value);

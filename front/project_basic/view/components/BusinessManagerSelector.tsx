@@ -1,16 +1,14 @@
 import {
   Box,
   FormLabel,
+  MenuItem,
   Radio,
   TableBody,
-  TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
-import SelectField from 'components/SelectField';
-import TextField from 'components/TextField';
 import Button from 'layouts/Button';
 import {
   Table,
@@ -22,6 +20,8 @@ import {
   BusinessManagerVO
 } from 'business/domain';
 import { useFormik } from 'formik';
+import Select from 'layouts/Select';
+import Input from 'layouts/Input';
 
 const keywordTypeList = [
   {
@@ -71,23 +71,34 @@ export default function ProjectBasicBusinessManagerSelectorComponent({ initBusin
         justifyContent: 'space-around',
       }}>
         <Box sx={{ width: '15%', display: 'flex' }}>
-          <SelectField
-            disableLabel
-            formik={formik}
+          <Select
             variant="outlined"
-            name="keywordType"
-            label="검색어 구분"
-            options={keywordTypeList}
-          />
+            value={formik.values.keywordType ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keywordType !== value) {
+                formik.setFieldValue('keywordType', value);
+              }
+            }}>
+            {keywordTypeList.map(item => (
+              <MenuItem key={item.key} value={item.key}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
         <Box sx={{ width: '60%', display: 'flex' }}>
-          <TextField
-            disableLabel
-            formik={formik}
+          <Input
             variant="outlined"
-            name="keyword"
-            label="검색어"
             placeholder="검색어를 입력하세요"
+            key={formik.values.keyword}
+            defaultValue={formik.values.keyword ?? ''}
+            onBlur={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
+            }}
           />
         </Box>
         <Box sx={{ width: '10%', display: 'flex' }}>
@@ -103,48 +114,46 @@ export default function ProjectBasicBusinessManagerSelectorComponent({ initBusin
         </Box>
       </Box>
       <Box sx={{ width: '100%' }}>
-        <TableContainer>
-          <Table>
-            <TableHead>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <Th>선택</Th>
+              <Th>소속1</Th>
+              <Th>이름</Th>
+              <Th>직위</Th>
+              <Th>핸드폰번호</Th>
+              <Th>이메일주소</Th>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {initBusinessManagerList.length === 0 && (
               <TableRow>
-                <Th>선택</Th>
-                <Th>소속1</Th>
-                <Th>이름</Th>
-                <Th>직위</Th>
-                <Th>핸드폰번호</Th>
-                <Th>이메일주소</Th>
+                <Td colSpan={6}>조회 결과가 없습니다.</Td>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {initBusinessManagerList.length === 0 && (
-                <TableRow>
-                  <Td colSpan={6}>조회 결과가 없습니다.</Td>
-                </TableRow>
-              )}
-              {initBusinessManagerList.map((item) => (
-                <TableRow key={item.id}>
-                  <Td>
-                    <Radio
-                      value={item.id}
-                      checked={item.id === selectedBusinessManagerId}
-                      onClick={() => {
-                        if (!item.id) {
-                          return;
-                        }
-                        handleSelectBusinessManagerId(item.id);
-                      }}
-                    />
-                  </Td>
-                  <Td>{item.department}</Td>
-                  <Td>{item.name}</Td>
-                  <Td>{item.jobTitle}</Td>
-                  <Td>{item.mobilePhone}</Td>
-                  <Td>{item.email}</Td>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            )}
+            {initBusinessManagerList.map((item) => (
+              <TableRow key={item.id}>
+                <Td>
+                  <Radio
+                    value={item.id}
+                    checked={item.id === selectedBusinessManagerId}
+                    onClick={() => {
+                      if (!item.id) {
+                        return;
+                      }
+                      handleSelectBusinessManagerId(item.id);
+                    }}
+                  />
+                </Td>
+                <Td>{item.department}</Td>
+                <Td>{item.name}</Td>
+                <Td>{item.jobTitle}</Td>
+                <Td>{item.mobilePhone}</Td>
+                <Td>{item.email}</Td>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Box>
     </>
   );

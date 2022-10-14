@@ -5,7 +5,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 import UserSelector from 'components/UserSelector';
-import { FieldStatus, } from 'components/DataFieldProps';
 import { FormikContext } from 'formik';
 import DataFieldWithLabel from 'components/DataFieldLabel';
 import Input from 'layouts/Input';
@@ -33,17 +32,14 @@ export default function () {
         flexWrap:     'nowrap',
         marginBottom: '10px',
       }}>
-        <DataFieldWithLabel
-          required={!edit}
-          label="일정명"
-          labelPosition="top"
-        >
+        <DataFieldWithLabel required={!edit} label="일정명" labelPosition="top">
           <Input
             readOnly={!edit}
             variant="standard"
             placeholder="입력"
-            value={formik.values.title ?? ''}
-            onChange={(e) => {
+            key={formik.values.title}
+            defaultValue={formik.values.title ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (value !== formik.values.title) {
                 formik.setFieldValue('title', value);
@@ -270,10 +266,7 @@ export default function () {
           alignItems:  'center',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            label="미리 알림 사용"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel label="미리 알림 사용" labelPosition="top">
             <Box sx={{
               display:    'flex',
               width:      '100%',
@@ -296,7 +289,8 @@ export default function () {
                 variant="standard"
                 type="number"
                 placeholder="입력"
-                value={formik.values.alertBefore ?? ''}
+                key={formik.values.alertBefore}
+                defaultValue={formik.values.alertBefore ?? ''}
                 endAdornment={
                   <InputAdornment position="end">
                     <TextBox variant="body12">
@@ -304,7 +298,7 @@ export default function () {
                     </TextBox>
                   </InputAdornment>
                 }
-                onChange={(e) => {
+                onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
                   if (value !== formik.values.alertBefore) {
                     formik.setFieldValue('alertBefore', value);
@@ -320,29 +314,28 @@ export default function () {
           flexWrap:    'nowrap',
           marginRight: '10px',
         }}>
-          <DataFieldWithLabel
-            required={edit}
-            label="담당자"
-            labelPosition="top"
-          >
+          <DataFieldWithLabel required={edit} label="담당자" labelPosition="top">
             {!edit && (
               <Input
                 readOnly
                 variant="standard"
+                key={formik.values.manager}
                 defaultValue={formik.values.manager.name}
               />
             )}
             {edit && (
               <UserSelector
-                status={edit ? undefined : FieldStatus.ReadOnly}
-                disableLabel
-                name="managerId"
-                label="담당자"
+                value={formik.values.managerId ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.managerId !== value) {
+                    formik.setFieldValue('managerId', value);
+                  }
+                }}
               />
             )}
           </DataFieldWithLabel>
         </Box>
-
       </Box>
       <Box sx={{
         display:      'flex',
@@ -350,10 +343,7 @@ export default function () {
         flexWrap:     'nowrap',
         marginBottom: '10px',
       }}>
-        <DataFieldWithLabel
-          label="일정 공유 대상"
-          labelPosition="top"
-        >
+        <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
           <AttendanceListField
             readOnly={!edit}
             list={formik.values.attendanceList}

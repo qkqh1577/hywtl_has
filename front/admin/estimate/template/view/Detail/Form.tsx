@@ -1,7 +1,8 @@
-import { Box, } from '@mui/material';
+import {
+  Box,
+  MenuItem,
+} from '@mui/material';
 import React, { useContext } from 'react';
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 import {
   testTypeList,
   testTypeName
@@ -11,7 +12,9 @@ import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
 import { FormikContext } from 'formik';
-import { FieldStatus } from 'components/DataFieldProps';
+import Select from 'layouts/Select';
+import DataFieldWithLabel from 'components/DataFieldLabel';
+import Input from 'layouts/Input';
 
 export default function () {
 
@@ -55,12 +58,19 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <TextField
-              required={edit}
-              name="title"
-              label="용역 항목"
-              status={edit ? undefined : FieldStatus.ReadOnly}
-            />
+            <DataFieldWithLabel label="용역 항목" required={edit}>
+              <Input
+                readOnly={!edit}
+                key={formik.values.title}
+                defaultValue={formik.values.title ?? ''}
+                onBlur={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.title !== value) {
+                    formik.setFieldValue('title', value);
+                  }
+                }}
+              />
+            </DataFieldWithLabel>
           </Box>
           <Box sx={{
             display:      'flex',
@@ -68,16 +78,21 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <SelectField
-              required={edit}
-              status={edit ? undefined : FieldStatus.ReadOnly}
-              name="testType"
-              label="실험 타입"
-              options={testTypeList.map((item) => ({
-                key:  item as string,
-                text: testTypeName(item)
-              }))}
-            />
+            <DataFieldWithLabel label="실험 타입" required={edit}>
+              <Select
+                readOnly={!edit}
+                value={formik.values.testType ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value || undefined;
+                  if (formik.values.testType !== value) {
+                    formik.setFieldValue('testType', value);
+                  }
+                }}>
+                {testTypeList.map(item => (
+                  <MenuItem key={item} value={item}>{testTypeName(item)}</MenuItem>
+                ))}
+              </Select>
+            </DataFieldWithLabel>
           </Box>
         </Box>
       </Box>

@@ -2,10 +2,7 @@ import { ProjectBidVO } from 'project_bid/domain';
 import SectionLayout from 'layouts/SectionLayout';
 import { Box } from '@mui/material';
 import BusinessSelector from 'components/BusinessSelector';
-import React, {
-  useEffect,
-  useState
-} from 'react';
+import React from 'react';
 import { DefaultFunction } from 'type/Function';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'components/DataFieldLabel';
@@ -20,21 +17,7 @@ interface Props {
 }
 
 export default function ProjectBidSection(props: Props) {
-
-  const [detail, setDetail] = useState<ProjectBidParameter>();
-
-  useEffect(() => {
-    setDetail({
-      ...props.detail,
-      beginDate: props.detail?.beginDate ? dayjs(props.detail.beginDate)
-      .format('YYYY-MM-DD') : undefined,
-      closeDate: props.detail?.closeDate ? dayjs(props.detail.closeDate)
-      .format('YYYY-MM-DD') : undefined,
-      bidDate:   props.detail?.bidDate ? dayjs(props.detail.bidDate)
-      .format('YYYY-MM-DD') : undefined,
-      winId:     props.detail?.win?.id,
-    });
-  }, [props.detail]);
+  const { detail } = props;
 
   return (
     <SectionLayout title="입찰 정보" modifiedAt={props.detail?.modifiedAt}>
@@ -123,9 +106,9 @@ export default function ProjectBidSection(props: Props) {
             <DataFieldWithLabel label="낙찰 업체">
               <BusinessSelector
                 allowMyBusiness
-                value={detail?.winId ?? ''}
+                value={detail?.win?.id ?? ''}
                 onChange={(value) => {
-                  if (detail?.winId !== value) {
+                  if (detail?.win?.id !== value) {
                     props.onUpdate({ winId: value });
                   }
                 }}
@@ -139,19 +122,11 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel label="입찰 기관">
               <Input
-                value={detail?.bidOrganization ?? ''}
-                onChange={(e) => {
+                key={detail?.bidOrganization}
+                defaultValue={detail?.bidOrganization ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (detail?.bidOrganization !== value) {
-                    setDetail((prev) => ({
-                      ...prev,
-                      bidOrganization: value,
-                    }));
-                  }
-                }}
-                onBlur={() => {
-                  const value = detail?.bidOrganization || undefined;
-                  if (props.detail?.bidOrganization !== value) {
                     props.onUpdate({ bidOrganization: value });
                   }
                 }}
@@ -208,20 +183,12 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel label="풍동 금액">
               <Input
-                type="number"
-                value={detail?.testAmount ?? ''}
-                onChange={(e) => {
+                isAmount
+                key={detail?.testAmount}
+                defaultValue={detail?.testAmount ?? ''}
+                onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
                   if (detail?.testAmount !== value) {
-                    setDetail((prev) => ({
-                      ...prev,
-                      testAmount: value,
-                    }));
-                  }
-                }}
-                onBlur={() => {
-                  const value = detail?.testAmount || undefined;
-                  if (props.detail?.testAmount !== value) {
                     props.onUpdate({ testAmount: value });
                   }
                 }}
@@ -235,20 +202,12 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel label="구검">
               <Input
-                type="number"
-                value={detail?.reviewAmount ?? ''}
-                onChange={(e) => {
+                isAmount
+                key={detail?.reviewAmount}
+                defaultValue={detail?.reviewAmount ?? ''}
+                onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
                   if (detail?.reviewAmount !== value) {
-                    setDetail((prev) => ({
-                      ...prev,
-                      reviewAmount: value,
-                    }));
-                  }
-                }}
-                onBlur={() => {
-                  const value = detail?.reviewAmount || undefined;
-                  if (props.detail?.reviewAmount !== value) {
                     props.onUpdate({ reviewAmount: value });
                   }
                 }}
@@ -262,20 +221,12 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel labelWidth={25} label="총액">
               <Input
-                type="number"
-                value={detail?.totalAmount ?? ''}
-                onChange={(e) => {
+                isAmount
+                key={detail?.totalAmount}
+                defaultValue={detail?.totalAmount ?? ''}
+                onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
                   if (detail?.totalAmount !== value) {
-                    setDetail((prev) => ({
-                      ...prev,
-                      totalAmount: value,
-                    }));
-                  }
-                }}
-                onBlur={() => {
-                  const value = detail?.totalAmount || undefined;
-                  if (props.detail?.totalAmount !== value) {
                     props.onUpdate({ totalAmount: value });
                   }
                 }}
@@ -289,19 +240,11 @@ export default function ProjectBidSection(props: Props) {
           }}>
             <DataFieldWithLabel labelWidth={25} label="일정">
               <Input
-                value={detail?.expectedDuration ?? ''}
-                onChange={(e) => {
+                key={detail?.expectedDuration}
+                defaultValue={detail?.expectedDuration ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (detail?.expectedDuration !== value) {
-                    setDetail((prev) => ({
-                      ...prev,
-                      expectedDuration: value,
-                    }));
-                  }
-                }}
-                onBlur={() => {
-                  const value = detail?.expectedDuration || undefined;
-                  if (props.detail?.expectedDuration !== value) {
                     props.onUpdate({ expectedDuration: value });
                   }
                 }}

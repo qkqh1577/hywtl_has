@@ -26,8 +26,7 @@ function Element() {
   const dispatch = useDispatch();
   const { alert, error, rollback } = useDialog();
   const { template, requestUpsert } = useSelector((root: RootState) => root.contractBasic);
-  const upsert = useCallback((formikProps: ContractBasicParameter) =>
-    dispatch(contractBasicAction.upsert(formikProps)), [dispatch]);
+  const upsert = useCallback((formikProps: ContractBasicParameter) => dispatch(contractBasicAction.upsert(formikProps)), [dispatch]);
 
   const formik = useFormik<ContractBasicVO>({
       initialValues: template,
@@ -61,11 +60,12 @@ function Element() {
 
   return (
     <FormikProvider value={formik}>
-      <ContractBasicTemplate onCancel={() => {
-        rollback(() => {
-          formik.setValues(template ? { ...template } : initialContractBasicParameter);
-        });
-      }} />
+      <ContractBasicTemplate
+        onCancel={() => {
+          rollback(() => {
+            formik.setValues(template ? { ...template } : initialContractBasicParameter);
+          });
+        }} />
     </FormikProvider>
   );
 }

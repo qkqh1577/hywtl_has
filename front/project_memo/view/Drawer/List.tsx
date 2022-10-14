@@ -6,6 +6,7 @@ import {
 } from 'project_memo/domain';
 import {
   Box,
+  MenuItem,
   Tooltip,
   Typography
 } from '@mui/material';
@@ -16,12 +17,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
 import TextBox from 'layouts/Text';
 import UserIcon from 'layouts/UserIcon';
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
 import { FormikProvider } from 'formik';
 import { LoginVO } from 'login/domain';
 import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectMemoChangeParameter } from 'project_memo/parameter';
+import Select from 'layouts/Select';
+import Input from 'layouts/Input';
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
@@ -184,30 +185,39 @@ export default function ProjectMemoList({
                   display: 'flex',
                   width:   '50%',
                 }}>
-                  <SelectField
-                    required
-                    disableLabel
+                  <Select
                     variant="outlined"
-                    name="category"
-                    label="카테고리"
-                    options={projectMemoCategoryList.map(item => ({
-                      key:  item as string,
-                      text: projectMemoCategoryName(item),
-                    }))}
-                  />
+                    value={formik.values.category ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.category !== value) {
+                        formik.setFieldValue('category', value);
+                      }
+                    }}>
+                    {projectMemoCategoryList.map(item => (
+                      <MenuItem key={item} value={item}>
+                        {projectMemoCategoryName(item)}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Box>
                 <Box sx={{
                   display: 'flex',
                   width:   '100%',
                 }}>
-                  <TextField
+                  <Input
                     required
-                    disableLabel
-                    variant="outlined"
-                    name="description"
-                    label="본문"
-                    placeholder="메모 입력"
                     multiline
+                    variant="outlined"
+                    placeholder="메모 입력"
+                    key={formik.values.description}
+                    defaultValue={formik.values.description ?? ''}
+                    onBlur={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.description !== value) {
+                        formik.setFieldValue('description', value);
+                      }
+                    }}
                   />
                 </Box>
               </FormikProvider>

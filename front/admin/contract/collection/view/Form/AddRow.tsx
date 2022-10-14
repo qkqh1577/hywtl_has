@@ -41,9 +41,10 @@ export default function () {
     <TableRow>
       <Td>
         <Input
-          value={item.name ?? ''}
+          key={item.name}
+          defaultValue={item.name ?? ''}
           variant="outlined"
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = e.target.value || undefined;
             if (item.name !== value) {
               setItem((prevState => ({ ...prevState, name: value })));
@@ -53,10 +54,11 @@ export default function () {
       </Td>
       <Td>
         <Input
+          key={item.ratio}
           type="number"
-          value={item.ratio ?? ''}
+          defaultValue={item.ratio ?? ''}
           variant="outlined"
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = +(e.target.value) || undefined;
             if (item.ratio !== value) {
               setItem((prevState => ({ ...prevState, ratio: value })));
@@ -69,9 +71,10 @@ export default function () {
       </Td>
       <Td>
         <Input
-          value={item.note ?? ''}
+          key={item.note}
+          defaultValue={item.note ?? ''}
           variant="outlined"
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = e.target.value || undefined;
             if (item.note !== value) {
               setItem((prevState => ({ ...prevState, note: value })));

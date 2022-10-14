@@ -5,10 +5,11 @@ import React, {
 import {
   userApi
 } from 'user/api';
-import SelectField, { SelectFieldProps } from 'components/SelectField';
 import { UserVO } from 'user/domain';
+import Select, { SelectProps } from 'layouts/Select';
+import { MenuItem } from '@mui/material';
 
-const UserSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
+const UserSelector = (props: Omit<SelectProps, | 'children'>) => {
   const [list, setList] = useState<UserVO[]>([]);
   useEffect(() => {
     userApi.getList()
@@ -17,13 +18,16 @@ const UserSelector = (props: Omit<SelectFieldProps, | 'options'>) => {
   }, []);
 
   return (
-    <SelectField
-      options={list.map((item) => ({
-        key:  item.id as number,
-        text: item.name,
-      }))}
-      {...props}
-    />
+    <Select {...props}>
+      {props.displayEmpty && (
+        <MenuItem value="">선택</MenuItem>
+      )}
+      {list.map(item => (
+        <MenuItem key={item.id} value={item.id}>
+          {item.name}
+        </MenuItem>
+      ))}
+    </Select>
   );
 };
 

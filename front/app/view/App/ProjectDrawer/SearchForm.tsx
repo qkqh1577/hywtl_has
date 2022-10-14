@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
-  BoxProps
+  BoxProps,
+  MenuItem
 } from '@mui/material';
-import TextField from 'components/TextField';
 import IconButton from 'layouts/IconButton';
+import Input from 'layouts/Input';
+import Select from 'layouts/Select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SelectField from 'components/SelectField';
+import { FormikContext } from 'formik';
 
 export interface SearchFormProps {
   openFilter: boolean;
@@ -33,6 +35,8 @@ function ItemBox(props: BoxProps) {
 
 export default function (props: SearchFormProps) {
 
+  const formik = useContext(FormikContext);
+
   return (
     <Box
       ref={props.searchFormRef}
@@ -45,12 +49,17 @@ export default function (props: SearchFormProps) {
         alignItems: 'center',
       }}>
       <ItemBox>
-        <TextField
-          disableLabel
+        <Input
+          key={formik.values.keyword}
+          defaultValue={formik.values.keyword ?? ''}
           variant="outlined"
-          name="keyword"
-          label="프로젝트명 검색"
           placeholder="프로젝트명, 단지 명, ..."
+          onBlur={(e) => {
+            const value = e.target.value || undefined;
+            if (formik.values.keyword !== value) {
+              formik.setFieldValue('keyword', value);
+            }
+          }}
         />
         <IconButton
           onClick={props.toggleFilter}
@@ -65,20 +74,38 @@ export default function (props: SearchFormProps) {
         />
       </ItemBox>
       <ItemBox>
-        <SelectField
-          disableLabel
-          variant="outlined"
-          name="test"
-          label="조건문"
-          options={['진행현황', '견적분류']}
-        />
-        <SelectField
-          disableLabel
-          variant="outlined"
-          name="test2"
-          label="진행현황"
-          options={['Y', 'N']}
-        />
+        <Box sx={{ width: '45%' }}>
+          <Select
+            variant="outlined"
+            value={formik.values.test ?? ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (formik.values.test !== value) {
+                formik.setFieldValue('test', value);
+              }
+            }}
+          >
+            <MenuItem value="진행현황">진행 현황</MenuItem>
+            <MenuItem value="견적분류">견적 분류</MenuItem>
+          </Select>
+        </Box>
+        <Box sx={{ width: '45%' }}>
+          <Select
+            variant="outlined"
+            value={formik.values.test2 ? 'Y' : 'N'}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (value === 'Y') {
+                formik.setFieldValue('test2', true);
+              }
+              else {
+                formik.setFieldValue('test2', false);
+              }
+            }}>
+            <MenuItem value="Y">Y</MenuItem>
+            <MenuItem value="N">N</MenuItem>
+          </Select>
+        </Box>
       </ItemBox>
 
     </Box>

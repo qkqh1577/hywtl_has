@@ -210,14 +210,14 @@ export function Table({
                         hasFoot,
                         ...props
                       }: TableProps & StyleProps) {
-
+  const width = props.sx && (props.sx as any).width ? (props.sx as any).width : (variant === 'left' ? 'unset' : '100%');
   return (
     <MuiTable
       {...props}
       stickyHeader={!disableSticky}
       aria-label={disableSticky ? undefined : 'sticky table'}
       sx={{
-        width:           (props.sx as any)?.width ?? variant === 'left' ? 'unset' : '100%',
+        width,
         backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
         '& td, & th':    {
