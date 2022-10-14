@@ -9,6 +9,7 @@ import { FormikContext } from 'formik';
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
+  openDocumentModal: DefaultFunction<number>;
 }
 
 export default function ProjectCustomEstimateExtensionModal(props: Props) {
@@ -20,7 +21,7 @@ export default function ProjectCustomEstimateExtensionModal(props: Props) {
       title=""
       open={props.open}
       onClose={props.onClose}
-      children={<Form />}
+      children={<Form openDocumentModal={props.openDocumentModal} />}
       footer={
         <Box sx={{
           width:          '100%',

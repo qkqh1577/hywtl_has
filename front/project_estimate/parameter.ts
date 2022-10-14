@@ -43,6 +43,12 @@ export interface ProjectCustomEstimateExtensionParameter {
   buildingList: ProjectEstimateComplexBuildingParameter[];
 }
 
+export const initialProjectCustomEstimateExtensionParameter = {
+  plan:         {},
+  siteList:     [],
+  buildingList: [],
+  edit: true,
+} as unknown as ProjectCustomEstimateExtensionParameter;
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
