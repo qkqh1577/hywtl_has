@@ -32,20 +32,16 @@ export default function () {
         <DataFieldWithLabel required label="송부 여부" labelPosition="top">
           <Select
             displayEmpty
-            defaultValue=""
+            value={typeof formik.values.isSent === 'boolean' ? (formik.values.isSent ? 'Y' : 'N') : ''}
             onChange={(e) => {
               const value = e.target.value || undefined;
               if (value === 'Y') {
                 formik.setFieldValue('isSent', true);
               }
-              else if (value === 'N') {
+              else {
                 formik.setFieldValue('isSent', false);
               }
-              else {
-                formik.setFieldValue('isSent', undefined);
-              }
             }}>
-            <MenuItem value="">선택</MenuItem>
             <MenuItem value="Y">Y</MenuItem>
             <MenuItem value="N">N</MenuItem>
           </Select>
@@ -54,8 +50,9 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel required label="송신처" labelPosition="top">
           <Input
-            defaultValue=""
-            onChange={(e) => {
+            key={formik.values.recipient}
+            defaultValue={formik.values.recipient ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.recipient !== value) {
                 formik.setFieldValue('recipient', value);
@@ -78,8 +75,9 @@ export default function () {
       <Box sx={{ width: '90%' }}>
         <DataFieldWithLabel label="비고" labelPosition="top">
           <Input
-            defaultValue=""
-            onChange={(e) => {
+            key={formik.values.note}
+            defaultValue={formik.values.note ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.note !== value) {
                 formik.setFieldValue('note', value);
