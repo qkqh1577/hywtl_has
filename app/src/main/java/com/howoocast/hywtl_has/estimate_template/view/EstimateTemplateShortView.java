@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplate;
 import com.howoocast.hywtl_has.estimate_template.domain.EstimateTemplateDetail;
 import com.howoocast.hywtl_has.estimate_template.domain.TestType;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -18,7 +19,7 @@ public class EstimateTemplateShortView {
 
     private Integer detailCount;
 
-    private Long totalAmount;
+    private List<EstimateTemplateDetailView> detailList;
 
 
     public static EstimateTemplateShortView assemble(EstimateTemplate source) {
@@ -26,13 +27,13 @@ public class EstimateTemplateShortView {
         target.id = source.getId();
         target.testType = source.getTestType();
         target.title = source.getTitle();
+        target.detailList = source.getDetailList().stream()
+            .map(EstimateTemplateDetailView::assemble)
+            .collect(Collectors.toList());
         target.detailCount = source.getDetailList().stream()
             .map(EstimateTemplateDetail::getTitleList)
             .map(List::size)
             .reduce(0, Integer::sum);
-        target.totalAmount = source.getDetailList().stream()
-            .map(EstimateTemplateDetail::getUnitAmount)
-            .reduce(0L, Long::sum);
         return target;
     }
 }

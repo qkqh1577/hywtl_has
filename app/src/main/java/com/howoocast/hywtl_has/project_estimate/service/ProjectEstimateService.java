@@ -129,7 +129,6 @@ public class ProjectEstimateService {
                     plan.getDiscountAmount(),
                     plan.getTotalAmount()))
                 .orElse(null));
-        repository.save(instance);
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
     }
@@ -163,7 +162,8 @@ public class ProjectEstimateService {
                 .map(list -> list.stream()
                     .map(item -> ProjectEstimateComplexBuilding.of(
                         item.getName(),
-                        instance.getSiteList().get(item.getSiteSeq()),
+                        Optional.ofNullable(item.getSiteSeq()).map(seq -> instance.getSiteList().get(item.getSiteSeq()))
+                            .orElse(null),
                         item.getShape(),
                         item.getFloorCount(),
                         item.getHeight(),

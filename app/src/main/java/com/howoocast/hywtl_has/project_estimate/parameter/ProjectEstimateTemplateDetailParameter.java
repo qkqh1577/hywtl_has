@@ -20,7 +20,6 @@ public class ProjectEstimateTemplateDetailParameter {
     private Long testCount;
     @NotNull(message = ProjectEstimateTemplateDetail.KEY + ".unit_amount.not_null")
     private Long unitAmount;
-    @NotNull(message = ProjectEstimateTemplateDetail.KEY + ".total_amount.not_null")
     private Long totalAmount;
     @NotNull(message = ProjectEstimateTemplateDetail.KEY + ".in_use.not_null")
     private Boolean inUse;

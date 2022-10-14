@@ -71,7 +71,7 @@ export default function () {
               .format('YYYY-MM-DD HH:mm') : null}
               inputFormat="YYYY-MM-DD"
               mask="____-__-__"
-              openTo="month"
+              openTo="year"
               onChange={(e) => {
                 if (e === null) {
                   formik.setFieldValue('startTime', undefined);
@@ -180,7 +180,7 @@ export default function () {
               .format('YYYY-MM-DD HH:mm') : null}
               inputFormat="YYYY-MM-DD"
               mask="____-__-__"
-              openTo="month"
+              openTo="year"
               onChange={(e) => {
                 if (e === null) {
                   formik.setFieldValue('endTime', undefined);

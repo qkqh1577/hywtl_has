@@ -248,35 +248,6 @@ export default function Form(props: Props) {
                       }
                     }}
                   />
-                  <FormControlLabel
-                    label={testTypeName(TestType.B)}
-                    control={
-                      <Checkbox
-                        disabled={!edit}
-                        defaultValue={TestType.B}
-                        checked={testTypeList.includes(TestType.B)}
-                        onChange={() => {
-                          if (testTypeList.includes(TestType.B)) {
-                            formik.setFieldValue('testTypeList', testTypeList.filter(t => t !== TestType.B));
-                          }
-                          else {
-                            formik.setFieldValue('testTypeList', [...testTypeList, TestType.B]);
-                          }
-                        }}
-                      />
-                    }
-                    sx={{
-                      marginRight:                   '20px',
-                      alignItems:                    'center',
-                      '& > span.MuiTypography-root': {
-                        marginLeft: '6px',
-                        fontWeight: 'normal',
-                        fontSize:   '13px',
-                        lineHeight: '20px',
-                        color:      ColorPalette._252627,
-                      }
-                    }}
-                  />
                 </FormGroup>
               </DataFieldWithLabel>
             </Box>

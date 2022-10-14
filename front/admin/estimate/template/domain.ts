@@ -25,6 +25,6 @@ export interface EstimateTemplateVO {
 }
 
 export interface EstimateTemplateShort
-  extends Omit<EstimateTemplateVO, |'detailList'> {
+  extends EstimateTemplateVO {
   detailCount: number;
 }

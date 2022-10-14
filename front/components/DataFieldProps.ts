@@ -137,8 +137,16 @@ export function isEmpty(value: unknown): boolean {
   return typeof value === 'number' && !value && value !== 0;
 }
 
-export function compress(values: Values): Values {
+export function compress<T = unknown>(values: T): T {
+  if (!values || typeof values !== 'object') {
+    return values;
+  }
+  if (Array.isArray(values)) {
+    return values.map(compress) as unknown as T;
+  }
+
   const result: Values = {};
+
   const keys = Object.keys(values);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
@@ -147,7 +155,7 @@ export function compress(values: Values): Values {
       result[key] = typeof value === 'object' ? compress(value) : value;
     }
   }
-  return result;
+  return result as T;
 }
 
 export function equals<T = unknown>(a: T,

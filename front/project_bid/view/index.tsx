@@ -65,7 +65,7 @@ export default function ProjectBidSection(props: Props) {
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"
                 mask="____-__-__"
-                openTo="month"
+                openTo="year"
                 onChange={(e) => {
                   if (e === null) {
                     props.onUpdate({ beginDate: undefined });
@@ -92,7 +92,7 @@ export default function ProjectBidSection(props: Props) {
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"
                 mask="____-__-__"
-                openTo="month"
+                openTo="year"
                 onChange={(e) => {
                   if (e === null) {
                     props.onUpdate({ closeDate: undefined });
@@ -178,7 +178,7 @@ export default function ProjectBidSection(props: Props) {
                 .format('YYYY-MM-DD') : null}
                 inputFormat="YYYY-MM-DD"
                 mask="____-__-__"
-                openTo="month"
+                openTo="year"
                 onChange={(e) => {
                   if (e === null) {
                     props.onUpdate({ bidDate: undefined });

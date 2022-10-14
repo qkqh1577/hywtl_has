@@ -188,9 +188,23 @@ export default function TableLayout(props: Props) {
                 )}
             </Box>
           ))}
+          {props.pagination.totalPages === 0 && (
+            <Box
+              sx={{
+                width:          '22px',
+                height:         '22px',
+                fontSize:       '13px',
+                display:        'flex',
+                justifyContent: 'center',
+                alignItems:     'center',
+                margin:         '5px',
+              }}>
+              <TextBox variant="body7">1</TextBox>
+            </Box>
+          )}
           <IconButton
             shape="square"
-            disabled={formik.values[pageFieldName] + 1 === props.pagination.totalPages}
+            disabled={!formik.values[pageFieldName] || formik.values[pageFieldName] + 1 === props.pagination.totalPages}
             children={
               <FontAwesomeIcon icon="angle-right" />
             }
@@ -204,7 +218,7 @@ export default function TableLayout(props: Props) {
           />
           <IconButton
             shape="square"
-            disabled={formik.values[pageFieldName] + 1 === props.pagination.totalPages}
+            disabled={!formik.values[pageFieldName] || formik.values[pageFieldName] + 1 === props.pagination.totalPages}
             children={
               <FontAwesomeIcon icon="angles-right" />
             }

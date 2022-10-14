@@ -23,22 +23,16 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
       justifyContent: 'space-between',
       alignContent:   'flex-start'
     }}>
-      <TopForm
-        onCancel={props.onCancel}
-        onDelete={props.onDelete}
-      />
+      <TopForm onCancel={props.onCancel} onDelete={props.onDelete} />
       <Box sx={{
         width:    '100%',
         display:  'flex',
         height:   'calc(100% - 40px)',
         flexWrap: 'nowrap',
       }}>
-        <LeftForm
-          openDocumentModal={props.openDocumentModal}
-        />
-        <RightForm
-        />
-
+        <LeftForm openDocumentModal={props.openDocumentModal} />
+        <RightForm />
       </Box>
-    </Box>);
+    </Box>
+  );
 }

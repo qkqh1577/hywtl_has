@@ -5,7 +5,10 @@ import {
 } from 'project_estimate/domain';
 import { BusinessId } from 'business/domain';
 import { UserId } from 'user/domain';
-import { TestType } from 'type/TestType';
+import {
+  TestType,
+  TestUnit
+} from 'type/TestType';
 import { ProjectDocumentId } from 'project_document/domain';
 
 export interface ProjectEstimateFinalParameter {
@@ -14,21 +17,23 @@ export interface ProjectEstimateFinalParameter {
 
 export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;
 
-export interface ProjectCustomEstimateAddParameter {
+export interface ProjectEstimateBasicParameter {
   isSent: boolean;
-  businessId: BusinessId;
   recipient: string;
   note?: string;
+}
+
+export interface ProjectCustomEstimateAddParameter
+  extends ProjectEstimateBasicParameter {
+  businessId: BusinessId;
   file: FileItemParameter;
   type: ProjectEstimateType;
 }
 
-export interface ProjectCustomEstimateChangeParameter {
+export interface ProjectCustomEstimateChangeParameter
+  extends ProjectEstimateBasicParameter {
   id: ProjectEstimateId;
-  isSent: boolean;
   businessId: BusinessId;
-  recipient: string;
-  note?: string;
 }
 
 export interface ProjectCustomEstimateExtensionParameter {
@@ -38,16 +43,25 @@ export interface ProjectCustomEstimateExtensionParameter {
   buildingList: ProjectEstimateComplexBuildingParameter[];
 }
 
-export interface ProjectSystemEstimateParameter {
-  isSent: boolean;
-  recipient: string;
-  note?: string;
+
+export interface ProjectSystemEstimateParameter
+  extends ProjectEstimateBasicParameter {
   plan: ProjectEstimatePlanParameter;
   siteList: ProjectEstimateComplexSiteParameter[];
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
   contentList: string[];
 }
+
+export const initialProjectSystemEstimateParameter = {
+  isSent:       false,
+  plan:         {},
+  siteList:     [{}],
+  buildingList: [{}],
+  templateList: [],
+  contentList:  [],
+  edit:         true,
+} as unknown as ProjectSystemEstimateParameter;
 
 export interface ProjectEstimatePlanParameter {
   estimateDate: string;
@@ -69,7 +83,6 @@ export interface ProjectEstimateComplexSiteParameter {
 }
 
 export interface ProjectEstimateComplexBuildingParameter {
-
   name: string;
   siteId?: number;
   shape?: string;
@@ -95,7 +108,7 @@ export interface ProjectEstimateTemplateParameter {
 
 export interface ProjectEstimateTemplateDetailParameter {
   titleList: string[];
-  unit: string;
+  unit: TestUnit;
   testCount: number;
   unitAmount: number;
   totalAmount: number;

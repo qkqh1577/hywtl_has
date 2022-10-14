@@ -58,6 +58,7 @@ export function Td(props: TdProps) {
 interface StyleProps {
   variant?: 'top' | 'left' | 'cross';
   hasFoot?: boolean;
+  disableSticky?: boolean;
 }
 
 function getStyle(props: StyleProps) {
@@ -138,6 +139,9 @@ function getStyle(props: StyleProps) {
   };
   const topStyle = {
     '& > thead': {
+      '& > tr > th':          {
+        backgroundColor: ColorPalette._ffffff,
+      },
       '& > tr:first-of-type': {
         '& > th:first-of-type': {
           borderTopLeftRadius: '5px',
@@ -200,23 +204,27 @@ function getStyle(props: StyleProps) {
   return topStyle;
 }
 
-export function Table(props: TableProps & StyleProps) {
-
+export function Table({
+                        disableSticky,
+                        variant,
+                        hasFoot,
+                        ...props
+                      }: TableProps & StyleProps) {
 
   return (
     <MuiTable
-      stickyHeader
-      aria-label="sticky table"
       {...props}
+      stickyHeader={!disableSticky}
+      aria-label={disableSticky ? undefined : 'sticky table'}
       sx={{
-        width:           (props.sx as any)?.width ?? props.variant === 'left' ? 'unset' : '100%',
+        width:           (props.sx as any)?.width ?? variant === 'left' ? 'unset' : '100%',
         backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
         '& td, & th':    {
           borderLeft: `1px solid ${ColorPalette._e4e9f2}`,
           borderTop:  `1px solid ${ColorPalette._e4e9f2}`,
         },
-        ...getStyle(props),
+        ...getStyle({ variant, hasFoot }),
       }}
     />
   );
