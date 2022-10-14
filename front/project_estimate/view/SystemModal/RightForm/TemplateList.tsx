@@ -56,10 +56,40 @@ function TotalAmountCell(props: TotalAmountCellProps) {
   }, [detail, testCount]);
 
   useEffect(() => {
+    formik.setFieldValue(`${fieldName}.testCount`, testCount);
+  }, [testCount]);
+
+  useEffect(() => {
     if (detail && typeof detail.totalAmount === 'undefined' && typeof totalAmount === 'number') {
       formik.setFieldValue(`${fieldName}.totalAmount`, totalAmount);
     }
   }, [detail, totalAmount]);
+
+  if (!edit && !detail.inUse) {
+    return (
+      <Box sx={{
+        width:          '100%',
+        display:        'flex',
+        flexWrap:       'wrap',
+        justifyContent: 'center',
+        alignItems:     'center',
+      }}>
+        미사용
+      </Box>
+    );
+  }
+
+  if (!edit) {
+    return (
+      <Input
+        isAmount
+        disabled
+        key={detail.totalAmount}
+        variant="outlined"
+        defaultValue={detail.totalAmount?.toLocaleString() ?? ''}
+      />
+    );
+  }
 
   return (
     <Box sx={{
@@ -70,7 +100,7 @@ function TotalAmountCell(props: TotalAmountCellProps) {
       padding:        '10px 0'
     }}>
       <Box sx={{ width: '80%', marginBottom: '10px' }}>
-        {!edit && !detail.inUse && '미사용'}
+
         {edit && (
           <Toggle
             onText="사용"
@@ -121,7 +151,7 @@ export default function () {
   const templateList = formik.values.templateList;
 
   const totalTestAmount = useMemo((): number => {
-    if (!templateList || !Array.isArray(templateList)) {
+    if (!Array.isArray(templateList)) {
       return 0;
     }
     const withoutReview = templateList.filter(template => template.testType !== TestType.REVIEW);
@@ -162,17 +192,6 @@ export default function () {
       return siteList.length;
     }
     if (testType === TestType.REVIEW
-      && unit === TestUnit.BUILDING) {
-
-      return buildingList.length;
-    }
-
-    if (testType === TestType.B
-      && unit === TestUnit.SITE) {
-
-      return siteList.length;
-    }
-    if (testType === TestType.B
       && unit === TestUnit.BUILDING) {
 
       return buildingList.length;
@@ -228,30 +247,34 @@ export default function () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {templateList && templateList.map((template,
-                                             i
+          {Array.isArray(templateList) && templateList.map((template,
+                                                            i
           ) => {
             if (!template) {
               return null;
             }
-            return template.detailList && template.detailList.map((detail,
-                                                                   j
+            const detailCount = template.detailCount || template.detailList?.map(detail => detail?.titleList?.length ?? 0)
+                                                                .reduce((a,
+                                                                         b
+                                                                ) => a + b, 0) || 1;
+            return Array.isArray(template.detailList) && template.detailList.map((detail,
+                                                                                  j
             ) => {
               if (!detail) {
                 return null;
               }
 
-              return detail.titleList && detail.titleList.map((title,
-                                                               k
+              return Array.isArray(detail.titleList) && detail.titleList.map((title,
+                                                                              k
               ) => (
                 <TableRow key={`${i}_${j}_${k}`}>
                   {j === 0 && k === 0 && (
-                    <Td rowSpan={template.detailCount}>
+                    <Td rowSpan={detailCount}>
                       {i + 1}
                     </Td>
                   )}
                   {j === 0 && k === 0 && (
-                    <Td rowSpan={template.detailCount}>
+                    <Td rowSpan={detailCount}>
                       {template.title}
                     </Td>
                   )}

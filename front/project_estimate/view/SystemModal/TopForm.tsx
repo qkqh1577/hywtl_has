@@ -16,6 +16,7 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+  const isDetail = !edit && formik.values.id;
 
   return (
     <Box
@@ -23,12 +24,12 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         width:          '100%',
         display:        'flex',
         flexWrap:       'nowrap',
-        justifyContent: edit ? 'space-between' : 'flex-end',
+        justifyContent: isDetail ? 'space-between' : 'flex-end',
         height:         '50px',
         paddingBottom:  '10px',
         borderBottom:   `1px solid ${ColorPalette._e4e9f2}`
       }}>
-      {!edit && (
+      {isDetail && (
         <Box sx={{
           display:        'flex',
           flexWrap:       'nowrap',
@@ -80,18 +81,20 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         {edit && (
           <Button shape="basic2" onClick={props.onCancel}>취소</Button>
         )}
-        {!edit && (
+        {isDetail && (
           <Button shape="basic3" onClick={props.onDelete}>삭제</Button>
         )}
-        {!edit && (
+        {isDetail && (
           <Button shape="basic3" onClick={() => {
             formik.setFieldValue('edit', true);
-          }}>수정</Button>
+          }}>
+            수정
+          </Button>
         )}
-        {!edit && (
+        {isDetail && (
           <Button>PDF 다운로드</Button>
         )}
-        {!edit && (
+        {isDetail && (
           <Button shape="basic4">계약서 등록</Button>
         )}
       </Box>

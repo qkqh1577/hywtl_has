@@ -142,7 +142,7 @@ export function compress<T = unknown>(values: T): T {
     return values;
   }
   if (Array.isArray(values)) {
-    return values.map(compress) as T;
+    return values.map(compress) as unknown as T;
   }
 
   const result: Values = {};

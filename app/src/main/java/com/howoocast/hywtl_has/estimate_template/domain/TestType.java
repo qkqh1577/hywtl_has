@@ -26,10 +26,11 @@ public enum TestType {
      * 풍환경 실험, Wind Environment Test
      */
     E("E"),
-    /**
-     * 빌딩풍 시뮬레이션, Building Wind Simulation Test
-     */
-    B("B"),
+    // NOTE: 기획에서 제외됨
+//    /**
+//     * 빌딩풍 시뮬레이션, Building Wind Simulation Test
+//     */
+//    B("B"),
     /**
      * 구검(건축구조설계사 검토), Architectural Structures Engineer Review
      */

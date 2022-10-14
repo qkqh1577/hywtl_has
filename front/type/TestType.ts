@@ -12,12 +12,12 @@ export enum TestType {
   A      = 'A',
   /** 풍환경 실험, Wind Environment Test */
   E      = 'E',
-  /** 빌딩풍 시뮬레이션, Building Wind Simulation Test */
-  B      = 'B',
+  // NOTE: 기획에서 제외됨
+  // /** 빌딩풍 시뮬레이션, Building Wind Simulation Test */
+  // B      = 'B',
   /** 구검(건축구조설계사 검토), Architectural Structures Engineer Review */
   REVIEW = 'REVIEW'
 }
-// TODO: Test type B 빌딩풍 시뮬레이션 이 견적에 포함되는 요건
 
 export function testTypeName(testType: TestType | '') {
   switch (testType) {
@@ -31,8 +31,8 @@ export function testTypeName(testType: TestType | '') {
       return 'A';
     case TestType.E:
       return 'E';
-    case TestType.B:
-      return 'B';
+    // case TestType.B:
+    //   return 'B';
     case TestType.REVIEW:
       return '구검';
     default:
@@ -47,7 +47,7 @@ export const testTypeList: TestType[] = [
   TestType.P,
   TestType.A,
   TestType.E,
-  TestType.B
+  // TestType.B
 ];
 
 export const buildingTestTypeList: TestType[] = [
