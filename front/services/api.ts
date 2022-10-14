@@ -58,7 +58,7 @@ export class HttpClient {
                config?: any
   ) => {
     return await this.client.get(url, {
-      params: typeof parameter === 'object' ? compress(parameter) : parameter,
+      params: !isFormData(parameter) && typeof parameter === 'object' ? compress(parameter) : parameter,
       ...config,
     });
   };
@@ -75,7 +75,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.post(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
+    return await this.client.post(url, !isFormData(parameter) && typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };
@@ -92,7 +92,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.put(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
+    return await this.client.put(url, !isFormData(parameter) && typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };
@@ -109,7 +109,7 @@ export class HttpClient {
         'Content-Type': 'multipart/form-data',
       },
     } : config;
-    return await this.client.patch(url, typeof parameter === 'object' ? compress(parameter) : parameter, {
+    return await this.client.patch(url, !isFormData(parameter) && typeof parameter === 'object' ? compress(parameter) : parameter, {
       ...c,
     });
   };

@@ -38,6 +38,7 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="견적 일자" labelPosition="top" required={edit}>
           <DatePicker
+            readOnly={!edit}
             key={plan.estimateDate}
             value={plan.estimateDate ? dayjs(plan.estimateDate)
             .format('YYYY-MM-DD') : null}
@@ -83,6 +84,7 @@ export default function () {
       <Box>
         <DataFieldWithLabel label="착수 가능일" labelPosition="top" required={edit}>
           <DatePicker
+            readOnly={!edit}
             value={plan.expectedServiceDate ? dayjs(plan.expectedServiceDate)
             .format('YYYY-MM-DD') : null}
             inputFormat="YYYY-MM-DD"
@@ -139,7 +141,7 @@ export default function () {
           <Input
             key={plan.expectedTestDeadline}
             type="number"
-            disabled={!edit}
+            readOnly={!edit}
             defaultValue={plan.expectedTestDeadline ?? ''}
             onBlur={(e) => {
               const value = +(e.target.value) || undefined;
@@ -160,7 +162,7 @@ export default function () {
           <Input
             key={plan.expectedFinalReportDeadline}
             type="number"
-            disabled={!edit}
+            readOnly={!edit}
             defaultValue={plan.expectedFinalReportDeadline ?? ''}
             onBlur={(e) => {
               const value = +(e.target.value) || undefined;

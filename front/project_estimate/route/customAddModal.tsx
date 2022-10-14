@@ -41,6 +41,14 @@ export default function ProjectCustomEstimateAddModalRoute() {
         file:       values.file,
         type:       customAddModal,
       });
+      console.log({
+        isSent:     values.isSent,
+        businessId: values.businessId,
+        recipient:  values.recipient,
+        note:       values.note,
+        file:       values.file,
+        type:       customAddModal,
+      });
     }
   });
 

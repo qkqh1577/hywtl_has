@@ -16,6 +16,7 @@ import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectCustomEstimateChangeParameter } from 'project_estimate/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 import useDialog from 'components/Dialog';
+import { ProjectEstimateId } from 'project_estimate/domain';
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
   const onClose = useCallback(() => dispatch(projectEstimateAction.setCustomDetailModal(undefined)), [dispatch]);
   const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteCustom()), [dispatch]);
+  const onExtend = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomExtensionModal(id)), [dispatch]);
   const formik = useFormik<ProjectCustomEstimateChangeParameter>({
     initialValues: { edit: false } as unknown as ProjectCustomEstimateChangeParameter,
     onSubmit:      (values) => {
@@ -54,7 +56,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
     if (requestChangeCustom === ApiStatus.DONE) {
       alert('변경하었습니다.');
       dispatch(projectEstimateAction.setProjectId(projectId!));
-      dispatch(projectEstimateAction.setCustomDetailModal(undefined));
+      dispatch(projectEstimateAction.setCustomDetailModal(customDetail!.id));
       dispatch(projectEstimateAction.requestChangeCustom(ApiStatus.IDLE));
       formik.setSubmitting(false);
     }
@@ -112,7 +114,11 @@ export default function ProjectCustomEstimateDetailModalRoute() {
           });
         }}
         onExtend={() => {
-
+          if (!customDetail) {
+            error('견적서가 선택되지 않았습니다.');
+            return;
+          }
+          onExtend(customDetail.id);
         }}
         onContract={() => {
 
