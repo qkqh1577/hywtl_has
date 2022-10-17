@@ -12,14 +12,15 @@ import useId from 'services/useId';
 import ProjectContractListSection from 'project_contract/view/ContractList';
 import { ProjectContractId, } from 'project_contract/domain';
 import { RootState } from 'services/reducer';
+import { initialProjectContractParameter } from 'project_contract/parameter';
 
 export default function ProjectContractListRoute() {
 
   const dispatch = useDispatch();
   const id = useId();
   const { list } = useSelector((root: RootState) => root.projectContract);
-  const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
-  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setDetailModal(id)), [dispatch]);
+  const openAddModal = useCallback(() => dispatch(projectContractAction.setModal(initialProjectContractParameter)), [dispatch]);
+  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setId(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
 
   useEffect(() => {

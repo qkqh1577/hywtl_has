@@ -19,7 +19,7 @@ export interface ProjectContractShortVO {
   createdBy: UserShortVO;
   createdAt: Date;
   modifiedAt?: Date;
-  contractDate?: Date; // 계약 날짜
+  contractDate?: Date;
 }
 
 export interface ProjectContractVO
@@ -31,26 +31,10 @@ export interface ProjectContractVO
     | 'createdBy'> {
   estimate: ProjectEstimateVO;
   recipient: string;
-  basic?: ProjectBasicVO;
-  collection?: ProjectContractCollectionVO;
-  conditionList?: ProjectContractConditionVO[];
+  basic: ProjectContractBasicVO;
+  collection: ProjectContractCollectionVO;
+  conditionList: ProjectContractConditionVO[];
 }
-
-export interface ProjectBasicVO {
-  serviceName: string; // 용역명
-  serviceDuration: string; // 용역 기간
-  serviceDurationWeekNumber: string; // 용역 기간 마감 주차
-  outcome: string; // 성과품
-  description?: string; // 추가 사항
-  contractDate: Date; // 계약 날짜
-  ordererAddress: string; // 발주자 소재
-  ordererCompanyName: string; // 발주자 상호
-  ordererCeoName: string; // 발주자 대표명
-  contractorAddress: string; // 수급자 소재
-  contractorCompanyName: string; // 수급자 상호
-  contractorCeoName: string; // 수급자 대표명
-}
-
 
 export interface ProjectContractBasicVO {
   serviceName: string; // 용역명
