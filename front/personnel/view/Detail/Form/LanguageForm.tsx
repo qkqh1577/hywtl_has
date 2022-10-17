@@ -6,7 +6,7 @@ import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
 import { initialPersonnelLanguageParameter } from 'personnel/parameter';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';

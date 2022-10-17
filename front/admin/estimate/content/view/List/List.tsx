@@ -15,7 +15,7 @@ import {
 } from 'layouts/Table';
 import TableLayout from 'layouts/TableLayout';
 import Button from 'layouts/Button';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 
 function AddButton() {
   const navigate = useNavigate();

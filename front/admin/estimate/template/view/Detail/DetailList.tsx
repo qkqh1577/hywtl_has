@@ -21,7 +21,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import RequiredMark from 'components/RequiredMark';
+import RequiredMark from 'layouts/RequiredMark';
 import Button from 'layouts/Button';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

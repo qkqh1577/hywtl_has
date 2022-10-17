@@ -18,7 +18,7 @@ import {
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
 
 export interface AddModalProps {

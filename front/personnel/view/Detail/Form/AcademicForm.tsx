@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
 import { initialPersonnelAcademicParameter } from 'personnel/parameter';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 

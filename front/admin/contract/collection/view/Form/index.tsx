@@ -26,7 +26,7 @@ import useDialog from 'components/Dialog';
 import Button from 'layouts/Button';
 import AddRow from 'admin/contract/collection/view/Form/AddRow';
 import Input from 'layouts/Input';
-import RequiredMark from 'components/RequiredMark';
+import RequiredMark from 'layouts/RequiredMark';
 import Select from 'layouts/Select';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'layouts/IconButton';

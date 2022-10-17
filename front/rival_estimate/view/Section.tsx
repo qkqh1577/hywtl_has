@@ -10,7 +10,7 @@ import {
 } from 'rival_estimate/domain';
 import { RivalEstimateParameter } from 'rival_estimate/parameter';
 import dayjs from 'dayjs';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import BusinessSelector from 'components/BusinessSelector';
 import Input from 'layouts/Input';
 

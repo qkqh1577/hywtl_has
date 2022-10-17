@@ -6,10 +6,10 @@ import {
   UserNotificationVO,
 } from 'user_notification/domain';
 import { ColorPalette } from 'app/view/App/theme';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import { useNavigate } from 'react-router-dom';
 import TextBox from 'layouts/Text';
 

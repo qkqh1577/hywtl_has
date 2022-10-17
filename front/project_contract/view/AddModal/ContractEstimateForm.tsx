@@ -17,12 +17,12 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import { projectContractApi } from 'project_contract/api';
 import useId from 'services/useId';
 import { ProjectId } from 'project/domain';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { toAmountKor } from 'util/NumberUtil';
 import { FormikContextType } from 'formik';
 import {

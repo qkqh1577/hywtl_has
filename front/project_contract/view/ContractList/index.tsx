@@ -20,7 +20,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
 

@@ -13,7 +13,7 @@ import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
 import { FormikContext } from 'formik';
 import Select from 'layouts/Select';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 
 export default function () {

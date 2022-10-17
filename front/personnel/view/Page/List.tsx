@@ -12,9 +12,9 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import TableLayout from 'layouts/TableLayout';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 
 export interface ListProps {
   page: Page<PersonnelShortVO> | undefined;

@@ -1,6 +1,5 @@
 import { UserShortVO } from 'user/domain';
 import { FileItemView } from 'file-item';
-import { ExpectedDateType } from 'admin/contract/collection/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 
 export type ProjectContractId = number & { readonly _brand: symbol }
@@ -52,13 +51,6 @@ export interface ProjectBasicVO {
   contractorCeoName: string; // 수급자 대표명
 }
 
-export interface ContractCollectionStageWithAmount {
-  name?: string;
-  ratio?: number;
-  note?: string;
-  expectedDate?: ExpectedDateType;
-  amount?: number,
-}
 
 export interface ProjectContractBasicVO {
   serviceName: string; // 용역명

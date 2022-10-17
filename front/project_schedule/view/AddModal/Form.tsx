@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import dayjs from 'dayjs';
 import {
   DatePicker,

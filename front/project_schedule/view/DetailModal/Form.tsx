@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import UserSelector from 'components/UserSelector';
 import { FormikContext } from 'formik';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import {
   DatePicker,

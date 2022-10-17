@@ -2,7 +2,7 @@ import {
   Box,
   MenuItem
 } from '@mui/material';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { projectEstimateTypeName } from 'project_estimate/domain';
 import Select from 'layouts/Select';

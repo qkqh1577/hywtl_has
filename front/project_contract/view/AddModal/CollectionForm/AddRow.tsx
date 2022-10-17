@@ -1,95 +1,148 @@
-import React from 'react';
+import React, {
+  useContext,
+  useState
+} from 'react';
 import { TableRow } from '@mui/material';
 import { Td } from 'layouts/Table';
-import TextField from 'components/TextField';
-import SelectField from 'components/SelectField';
-import {
-  ContractCollectionStage,
-  ExpectedDateType,
-  expectedDateTypeList,
-  expectedDateTypeName
-} from 'admin/contract/collection/domain';
 import Button from 'layouts/Button';
-import { ContractCollectionStageWithAmount } from 'project_contract/domain';
+import Input from 'layouts/Input';
+import { FormikContext } from 'formik';
+import {
+  initialProjectContractCollectionStageParameter,
+  ProjectContractCollectionStageParameter
+} from 'project_contract/parameter';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
-interface Props {
-  newName?: string;
-  newRatio?: number;
-  newNote?: string;
-  newExpectedDate?: ExpectedDateType;
-  newAmount?: number;
-}
 
-export default function AddRow({ formik }) {
+export default function AddRow() {
+
+  const formik = useContext(FormikContext);
+  const [stage, setStage] = useState<ProjectContractCollectionStageParameter>(initialProjectContractCollectionStageParameter);
+  const totalAmount = formik.values.estimate?.plan?.totalAmount ?? 0;
 
   const onAdd = () => {
-    const values = formik.values as Props;
-    const stage: ContractCollectionStageWithAmount = {
-      name:         values.newName,
-      ratio:        +(values.newRatio || 0),
-      note:         values.newNote,
-      expectedDate: values.newExpectedDate,
-      amount:       values.newAmount,
+    formik.setFieldValue('stageList', [...formik.values.stageList, stage]);
+    setStage(initialProjectContractCollectionStageParameter);
 
-    };
-    const stageList: ContractCollectionStage[] = formik.values.stageList ?? [];
-    formik.setFieldValue('stageList', [...stageList, stage]);
-    formik.setFieldValue('newName', '');
-    formik.setFieldValue('newRatio', '');
-    formik.setFieldValue('newNote', '');
-    formik.setFieldValue('newExpectedDate', '');
-    formik.setFieldValue('newAmount', 0);
   };
 
   return (
     <TableRow>
       <Td>
-        <TextField
-          name="newName"
-          label="단계"
-          disableLabel
+        <Input
+          key={stage.name}
           variant="outlined"
+          defaultValue={stage.name ?? ''}
           placeholder="입력"
+          onBlur={(e) => {
+            const value = e.target.value || undefined;
+            if (stage.name !== value) {
+              setStage((prev) => ({
+                ...prev,
+                name: value,
+              }) as ProjectContractCollectionStageParameter);
+            }
+          }}
         />
       </Td>
       <Td>
-        <TextField
+        <Input
+          key={stage.ratio}
           type="number"
-          name="newRatio"
-          label="비율"
-          disableLabel
           variant="outlined"
+          defaultValue={stage.ratio ?? ''}
           placeholder="입력"
-        />
-      </Td>
-      <Td align="right">
-        <TextField
-          name={`newAmount`}
-          label="용역금액 × 비율"
-          disableLabel
-          variant="outlined"
+          onBlur={(e) => {
+            const value = +(e.target.value) || undefined;
+            if (stage.ratio !== value) {
+              setStage((prev) => ({
+                ...prev,
+                ratio: value,
+              }) as ProjectContractCollectionStageParameter);
+            }
+          }}
         />
       </Td>
       <Td>
-        <TextField
-          name="newNote"
-          label="시기"
-          disableLabel
+        <Input
+          isAmount
+          readOnly
+          key={stage.ratio}
           variant="outlined"
-          placeholder="입력"
+          defaultValue={stage.ratio ? stage.ratio * totalAmount : 0}
         />
       </Td>
       <Td>
-        <SelectField
-          disableLabel
-          options={expectedDateTypeList.map(
-            (item) => ({
-              key:  item as string,
-              text: expectedDateTypeName(item)
-            })
+        <Input
+          key={stage.note}
+          variant="outlined"
+          defaultValue={stage.note ?? ''}
+          placeholder="입력"
+          onBlur={(e) => {
+            const value = e.target.value || undefined;
+            if (stage.note !== value) {
+              setStage((prev) => ({
+                ...prev,
+                note: value,
+              }) as ProjectContractCollectionStageParameter);
+            }
+          }}
+        />
+      </Td>
+      <Td>
+        <DatePicker
+          key={stage.expectedDate}
+          value={stage.expectedDate ? dayjs(stage.expectedDate)
+          .format('YYYY-MM-DD') : null}
+          inputFormat="YYYY-MM-DD"
+          mask="____-__-__"
+          openTo="year"
+          onChange={(e,
+                     r
+          ) => {
+            const date = dayjs(e);
+            if (stage.expectedDate !== r) {
+
+              if (date.isValid() && date.format('YYYY-MM-DD') === r) {
+                setStage((prev) => ({
+                  ...prev,
+                  expectedDate: r,
+                }) as ProjectContractCollectionStageParameter);
+              }
+              else {
+                setStage((prev) => ({
+                  ...prev,
+                  expectedDate: undefined,
+                }) as unknown as ProjectContractCollectionStageParameter);
+              }
+            }
+          }}
+          onAccept={(e) => {
+            if (e === null) {
+              setStage((prev) => ({
+                ...prev,
+                expectedDate: undefined,
+              }) as unknown as ProjectContractCollectionStageParameter);
+            }
+            else {
+              setStage((prev) => ({
+                ...prev,
+                expectedDate: dayjs(e)
+                              .format('YYYY-MM-DD'),
+              }) as ProjectContractCollectionStageParameter);
+            }
+          }}
+          renderInput={(parameter) => (
+            <Input
+              {...parameter.InputProps}
+              inputRef={parameter.inputRef}
+              inputProps={parameter.inputProps}
+              defaultValue={parameter.value}
+              onChange={undefined}
+              onBlur={parameter.onChange}
+            />
           )}
-          name="newExpectedDate"
-          label="예정일 선택"
         />
       </Td>
       <Td colSpan={2}>

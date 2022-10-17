@@ -15,7 +15,7 @@ import {
 } from 'layouts/Table';
 import TableLayout from 'layouts/TableLayout';
 import { DefaultFunction } from 'type/Function';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import Button from 'layouts/Button';
 
 function OrderModalButton({

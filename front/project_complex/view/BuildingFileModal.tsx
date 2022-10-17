@@ -19,7 +19,7 @@ import {
   Th
 } from 'layouts/Table';
 import { toReadableSize } from 'file-item';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import React, {
   useEffect,
   useState

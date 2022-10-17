@@ -20,7 +20,7 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import Button from 'layouts/Button';
 
 interface Props {

@@ -5,7 +5,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import {
   Table,
   Td,

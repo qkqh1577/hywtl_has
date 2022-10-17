@@ -15,7 +15,7 @@ import useDialog from 'components/Dialog';
 import TextBox from 'layouts/Text';
 import Button from 'layouts/Button';
 import { initialBusinessManagerParameter } from 'business/parameter';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
 

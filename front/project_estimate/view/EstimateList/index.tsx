@@ -25,8 +25,8 @@ import {
 } from 'layouts/Table';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DateFormat from 'components/DateFormat';
-import TextLink from 'components/TextLink';
+import DateFormat from 'layouts/DateFormat';
+import TextLink from 'layouts/TextLink';
 import { DefaultFunction } from 'type/Function';
 
 interface Props

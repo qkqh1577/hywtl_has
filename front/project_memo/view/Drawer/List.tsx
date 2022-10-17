@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';

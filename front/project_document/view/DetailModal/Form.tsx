@@ -8,7 +8,7 @@ import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import UploadField from 'components/UploadField';
 import { fileToView } from 'file-item';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 
 export default function ProjectDocumentDetailModalForm() {
   const formik = useContext(FormikContext);

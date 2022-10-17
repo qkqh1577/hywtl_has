@@ -4,7 +4,7 @@ import {
   Typography
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
-import RequiredMark from 'components/RequiredMark';
+import RequiredMark from 'layouts/RequiredMark';
 import { LabelProps } from 'components/DataFieldProps';
 
 interface Props

@@ -17,7 +17,7 @@ import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Checkbox from 'layouts/Checkbox';
 import { initialEstimateContentParameter } from 'admin/estimate/content/parameter';
 

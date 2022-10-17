@@ -9,7 +9,7 @@ import {
   businessInvolvedTypeName
 } from 'business/domain';
 import Select from 'layouts/Select';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 
 interface Props {
   initInvolvedType?: BusinessInvolvedType;

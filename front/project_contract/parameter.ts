@@ -7,6 +7,17 @@ export interface ProjectContractFinalParameter {
 
 export const initialProjectContractFinalParameter = {} as ProjectContractFinalParameter;
 
+export interface ProjectContractCollectionStageParameter {
+  name: string;
+  ratio: number;
+  note?: string;
+  expectedDate: string;
+  amount: number;
+}
+
+export const initialProjectContractCollectionStageParameter = {} as ProjectContractCollectionStageParameter;
+
+
 export interface ProjectContractParameter {
   estimateId: ProjectEstimateId;
   isSent: boolean;

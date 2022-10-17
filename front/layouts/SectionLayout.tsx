@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import { ColorPalette } from 'app/view/App/theme';
 import IconButton from 'layouts/IconButton';
 import TextBox from 'layouts/Text';

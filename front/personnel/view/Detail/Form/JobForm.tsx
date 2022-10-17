@@ -15,8 +15,8 @@ import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import { DepartmentShort } from 'department/domain';
 import { initialPersonnelJobParameter } from 'personnel/parameter';
-import RequiredMark from 'components/RequiredMark';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import RequiredMark from 'layouts/RequiredMark';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 

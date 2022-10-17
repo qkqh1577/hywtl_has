@@ -6,7 +6,7 @@ import {
   projectBasicBidTypeList,
   projectBasicBidTypeName
 } from 'project_status/domain';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasic } from 'project_basic/domain';
 import { ExtensionInput } from 'project_basic/view/components/ExtensionInput';

@@ -12,7 +12,7 @@ import {
 import { FormikContext } from 'formik';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Select from 'layouts/Select';
 

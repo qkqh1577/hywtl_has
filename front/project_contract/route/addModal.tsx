@@ -83,15 +83,12 @@ export default function ProjectContractAddModalRoute() {
   const addContract = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.addContract(params)), [dispatch]);
   const formik = useFormik<any>({
     enableReinitialize: true,
-    initialValues:      {
-                          estimateId:    undefined,
-                          isSent:        'N',
-                          recipient:     '',
-                          note:          '',
-                          basic:         {},
-                          collection:    { stageList: [] },
-                          conditionList: [],
-                        } as any,
+    initialValues: {
+                     basic:         {},
+                     collection:    { stageList: [] },
+                     conditionList: [],
+                     edit:          true,
+                   } as any,
     onSubmit:           (values) => {
       if (!projectId || !addModal) {
         error('프로젝트가 선택되지 않았습니다.');

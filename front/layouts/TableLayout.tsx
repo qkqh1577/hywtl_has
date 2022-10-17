@@ -19,7 +19,7 @@ import {
   FormikContextType
 } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import Select from 'layouts/Select';
 
 interface Props {

@@ -5,7 +5,7 @@ import BusinessSelector from 'components/BusinessSelector';
 import React from 'react';
 import { DefaultFunction } from 'type/Function';
 import TextBox from 'layouts/Text';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { ProjectBidParameter } from 'project_bid/parameter';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';

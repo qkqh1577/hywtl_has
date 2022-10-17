@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import BusinessSelector from 'components/BusinessSelector';
 import UploadField from 'components/UploadField';
 import { FormikContext } from 'formik';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import { fileToView } from 'file-item';

@@ -3,7 +3,7 @@ import {
   MenuItem
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import React, { useContext } from 'react';
