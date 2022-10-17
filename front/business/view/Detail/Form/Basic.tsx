@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import TextField from 'components/TextField';
 import TextBox from 'layouts/Text';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
+import { FormikContext } from 'formik';
+import Input from 'layouts/Input';
 
 interface Props {
   checkButton: React.ReactNode;
 }
 
 export default function BusinessBasicSection(props: Props) {
+  const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
   return (
     <Box sx={{
       display:  'flex',
@@ -38,11 +42,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '80%',
           marginBottom: '15px',
         }}>
-          <TextField
-            required
-            name="name"
-            label="업체명"
-          />
+          <DataFieldWithLabel required={edit} label="업체명">
+            <Input
+              readOnly={!edit}
+              key={formik.values.name}
+              defaultValue={formik.values.name ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.name !== value) {
+                  formik.setFieldValue('name', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -50,10 +62,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="ceoName"
-            label="대표명"
-          />
+          <DataFieldWithLabel label="대표명">
+            <Input
+              readOnly={!edit}
+              key={formik.values.ceoName}
+              defaultValue={formik.values.ceoName ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.name !== value) {
+                  formik.setFieldValue('ceoName', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -61,12 +82,20 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            required
-            name="registrationNumber"
-            label="사업자번호"
-            endAdornment={props.checkButton}
-          />
+          <DataFieldWithLabel required={edit} label="사업자번호">
+            <Input
+              readOnly={!edit}
+              key={formik.values.registrationNumber}
+              defaultValue={formik.values.registrationNumber ?? ''}
+              endAdornment={props.checkButton}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.name !== value) {
+                  formik.setFieldValue('registrationNumber', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -74,10 +103,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="officePhone"
-            label="대표 전화번호"
-          />
+          <DataFieldWithLabel label="대표 전화번호">
+            <Input
+              readOnly={!edit}
+              key={formik.values.officePhone}
+              defaultValue={formik.values.officePhone ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.name !== value) {
+                  formik.setFieldValue('officePhone', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -85,10 +123,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="fax"
-            label="팩스번호"
-          />
+          <DataFieldWithLabel label="팩스 번호">
+            <Input
+              readOnly={!edit}
+              key={formik.values.fax}
+              defaultValue={formik.values.fax ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.fax !== value) {
+                  formik.setFieldValue('fax', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -96,10 +143,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="address"
-            label="주소"
-          />
+          <DataFieldWithLabel label="주소">
+            <Input
+              readOnly={!edit}
+              key={formik.values.address}
+              defaultValue={formik.values.address ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.address !== value) {
+                  formik.setFieldValue('address', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -107,10 +163,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="zipCode"
-            label="우편번호"
-          />
+          <DataFieldWithLabel label="우편 번호">
+            <Input
+              readOnly={!edit}
+              key={formik.values.zipCode}
+              defaultValue={formik.values.zipCode ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.zipCode !== value) {
+                  formik.setFieldValue('zipCode', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
@@ -118,10 +183,19 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <TextField
-            name="note"
-            label="비고"
-          />
+          <DataFieldWithLabel label="우편 번호">
+            <Input
+              readOnly={!edit}
+              key={formik.values.note}
+              defaultValue={formik.values.note ?? ''}
+              onBlur={(e) => {
+                const value = e.target.value || undefined;
+                if (formik.values.note !== value) {
+                  formik.setFieldValue('note', value);
+                }
+              }}
+            />
+          </DataFieldWithLabel>
         </Box>
       </Box>
     </Box>

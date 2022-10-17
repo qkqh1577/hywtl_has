@@ -2,9 +2,7 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import {
-  userApi
-} from 'user/api';
+import { userApi } from 'user/api';
 import { UserVO } from 'user/domain';
 import Select, { SelectProps } from 'layouts/Select';
 import { MenuItem } from '@mui/material';
@@ -18,7 +16,7 @@ const UserSelector = (props: Omit<SelectProps, | 'children'>) => {
   }, []);
 
   return (
-    <Select {...props}>
+    <Select {...props} value={list.length > 0 ? props.value : ''}>
       {props.displayEmpty && (
         <MenuItem value="">선택</MenuItem>
       )}

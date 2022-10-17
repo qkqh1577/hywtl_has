@@ -40,18 +40,26 @@ export default function DataFieldWithLabel(props: Props) {
         alignItems:   'center',
         flexWrap:     'nowrap',
       }}>
-        <Typography sx={{
-          ...labelSX,
-          fontSize:       '13px',
-          color:          ColorPalette._9b9ea4,
-          wordBreak:      'keep-all',
-          whiteSpace:     'nowrap',
-          justifyContent: 'space-between',
-          marginRight:    '20px',
-          width:          useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth}px`, [labelPosition, labelWidth]),
+        <Box sx={{
+          marginRight: '20px',
+          width:       useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth}px`, [labelPosition, labelWidth]),
         }}>
-          <RequiredMark required={required} text={label} />
-        </Typography>
+          {typeof label === 'string' && (
+            <Typography sx={{
+              ...labelSX,
+              fontSize:       '13px',
+              color:          ColorPalette._9b9ea4,
+              wordBreak:      'keep-all',
+              whiteSpace:     'nowrap',
+              justifyContent: 'space-between',
+              width:          '100%',
+            }}>
+              <RequiredMark required={required} text={label} />
+            </Typography>
+          )}
+          {typeof label !== 'string' && label}
+        </Box>
+
       </Box>
       <Box sx={{
         display:  'flex',

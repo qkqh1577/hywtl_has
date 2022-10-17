@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useState
 } from 'react';
@@ -8,19 +9,13 @@ import {
   UserId,
   UserVO
 } from 'user/domain';
-import {
-  Box,
-  Checkbox,
-} from '@mui/material';
+import { Box, } from '@mui/material';
 import Button from 'layouts/Button';
-import {
-  FormikProvider,
-  useFormik
-} from 'formik';
 import { userApi } from 'user/api';
-import TextField from 'components/TextField';
 import UserIcon from 'layouts/UserIcon';
 import TextBox from 'layouts/Text';
+import Input from 'layouts/Input';
+import Checkbox from 'layouts/Checkbox';
 
 interface Props {
   open: boolean;
@@ -30,26 +25,15 @@ interface Props {
   idList?: UserId[];
 }
 
-interface FormikProps {
-  keyword?: string;
-}
-
 export default function UserSelectModal(props: Props) {
 
   const [idList, setIdList] = useState<UserId[]>(props.idList ?? []);
   const [userList, setUserList] = useState<UserVO[]>([]);
-  const formik = useFormik<FormikProps>({
-    initialValues: {},
-    onSubmit:      (values,
-                    helpers
-                   ) => {
-      userApi.getList(values?.keyword)
-             .then(setUserList)
-             .finally(() => {
-               helpers.setSubmitting(false);
-             });
-    }
-  });
+  const [keyword, setKeyword] = useState<string>();
+  const onSearch = useCallback((keyword?: string) => {
+    userApi.getList(keyword)
+           .then(setUserList);
+  }, []);
   useEffect(() => {
     if (props.open) {
       userApi.getList()
@@ -82,26 +66,32 @@ export default function UserSelectModal(props: Props) {
               width:       '70%',
               marginRight: '10px',
             }}>
-              <FormikProvider value={formik}>
-                <TextField
-                  label="검색어"
-                  name="keyword"
-                />
-              </FormikProvider>
+              <Input
+                key={keyword}
+                defaultValue={keyword ?? ''}
+                onBlur={(e) => {
+                  const value = e.target.value || undefined;
+                  if (keyword !== value) {
+                    setKeyword(value);
+                  }
+                }}
+              />
             </Box>
             <Box sx={{
               display:  'flex',
               flexWrap: 'nowrap',
               width:    'calc(30% - 10px)',
             }}>
-              <Button sx={{ marginRight: '10px' }} onClick={() => {
-                formik.handleSubmit();
-              }}>
+              <Button
+                sx={{ marginRight: '10px' }}
+                onClick={() => {
+                  onSearch(keyword);
+                }}>
                 검색
               </Button>
               <Button shape="basic2" onClick={() => {
-                formik.setValues({});
-                formik.handleSubmit();
+                setKeyword(undefined);
+                onSearch();
               }}>
                 초기화
               </Button>

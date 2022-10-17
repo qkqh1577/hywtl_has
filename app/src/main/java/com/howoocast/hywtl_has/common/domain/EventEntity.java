@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.common.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexSite;
@@ -80,6 +81,18 @@ public class EventEntity {
             itemName,
             Optional.ofNullable(before).map(Business::getName).orElse(null),
             Optional.ofNullable(after).map(Business::getName).orElse(null)
+        );
+    }
+
+    public static EventEntity of(
+        String itemName,
+        @Nullable BusinessManager before,
+        @Nullable BusinessManager after
+    ) {
+        return new EventEntity(
+            itemName,
+            Optional.ofNullable(before).map(BusinessManager::getName).orElse(null),
+            Optional.ofNullable(after).map(BusinessManager::getName).orElse(null)
         );
     }
 

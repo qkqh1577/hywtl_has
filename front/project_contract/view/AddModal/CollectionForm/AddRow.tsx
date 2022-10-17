@@ -70,7 +70,7 @@ export default function AddRow() {
           readOnly
           key={stage.ratio}
           variant="outlined"
-          defaultValue={stage.ratio ? stage.ratio * totalAmount : 0}
+          defaultValue={stage.ratio ? (stage.ratio * totalAmount).toLocaleString() : 0}
         />
       </Td>
       <Td>

@@ -101,7 +101,7 @@ export default function CollectionForm() {
                   readOnly
                   key={stage.ratio}
                   variant="outlined"
-                  defaultValue={stage.ratio ? stage.ratio * totalAmount : 0}
+                  defaultValue={stage.ratio ? (stage.ratio * totalAmount).toLocaleString() : 0}
                 />
               </Td>
               <Td>
@@ -261,7 +261,8 @@ export default function CollectionForm() {
                                        .map(ratio => ratio * totalAmount)
                                        .reduce((a,
                                                 b
-                                       ) => a + b, 0)}
+                                       ) => a + b, 0)
+                                       .toLocaleString()}
               />
             </Td>
             <Td colSpan={edit ? 4 : 2}>

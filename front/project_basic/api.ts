@@ -11,7 +11,11 @@ import {
   RivalBidVO
 } from 'project_basic/domain';
 import apiClient from 'services/api';
-import { ProjectBasicBusinessParameter } from 'project_basic/parameter';
+import {
+  ProjectBasicBusinessParameter,
+  ProjectBasicDesignParameter,
+  ProjectBasicParameter
+} from 'project_basic/parameter';
 
 class ProjectBasicApi {
   async getOne(id: ProjectId): Promise<ProjectBasic> {
@@ -24,15 +28,27 @@ class ProjectBasicApi {
     return data;
   }
 
-  async getBusiness(id: ProjectBasicBusinessId): Promise<ProjectBasicBusiness> {
-    const { data } = await apiClient.get(`/project/sales/basic/business/${id}`);
+  async getDesign(id: ProjectId): Promise<ProjectBasicDesign> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/design`);
     return data;
   }
 
-  async pushBusiness(id: ProjectId,
-                     params: ProjectBasicBusinessParameter
+  async updateBasic(id: ProjectId,
+                    params: ProjectBasicParameter
   ): Promise<void> {
-    const { data } = await apiClient.post(`/project/sales/${id}/basic/business`, params);
+    const { data } = await apiClient.patch(`/project/sales/${id}/basic`, params);
+    return data;
+  }
+
+  async addBusiness(id: ProjectId,
+                    params: ProjectBasicBusinessParameter
+  ): Promise<void> {
+    const { data } = await apiClient.put(`/project/sales/${id}/basic/business`, params);
+    return data;
+  }
+
+  async changeBusiness(params: ProjectBasicBusinessParameter): Promise<void> {
+    const { data } = await apiClient.put(`/project/sales/basic/business/${params.id}`, params);
     return data;
   }
 
@@ -41,8 +57,10 @@ class ProjectBasicApi {
     return data;
   }
 
-  async getDesign(id: ProjectId): Promise<ProjectBasicDesign> {
-    const { data } = await apiClient.get(`/project/sales/${id}/basic/design`);
+  async updateDesign(id: ProjectId,
+                     params: ProjectBasicDesignParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${id}/basic/design`, params);
     return data;
   }
 

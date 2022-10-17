@@ -1,38 +1,38 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import ProjectBasicDesignSection from 'project_basic/view/DesignSection';
 import {
-  FormikProvider,
-  useFormik
-} from 'formik';
-import { useSelector } from 'react-redux';
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/reducer';
+import { ProjectBasicDesignParameter } from 'project_basic/parameter';
+import { projectBasicAction } from 'project_basic/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 export default function ProjectBasicDesignRoute() {
-  const { design } = useSelector((root: RootState) => root.projectBasic);
+  const dispatch = useDispatch();
+  const { error } = useDialog();
+  const { id, design, requestUpdateDesign } = useSelector((root: RootState) => root.projectBasic);
+  const onUpdate = useCallback((params: ProjectBasicDesignParameter) => dispatch(projectBasicAction.updateDesign(params)), [dispatch]);
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues:      {
-      city:               design?.city || '',
-      address:            design?.address || '',
-      complexCount:       design?.complexCount?.toString() || '',
-      purpose1:           design?.purpose1 || '',
-      purpose2:           design?.purpose2 || '',
-      lotArea:            design?.lotArea?.toString() || '',
-      totalArea:          design?.totalArea?.toString() || '',
-      totalBuildingCount: design?.totalBuildingCount?.toString() || '',
-      householdCount:     design?.householdCount?.toString() || '',
-      maximumFloor:       design?.maximumFloor?.toString() || '',
-      maximumHeight:      design?.maximumHeight?.toString() || '',
-    },
-    onSubmit:           (values) => {
-      console.log(values);
+  useEffect(() => {
+    if (requestUpdateDesign === ApiStatus.DONE) {
+      dispatch(projectBasicAction.getDesign(id));
+      dispatch(projectBasicAction.requestUpdateDesign(ApiStatus.IDLE));
     }
-  });
-
+    else if (requestUpdateDesign === ApiStatus.FAIL) {
+      error('저장에 실패하였습니다.');
+      dispatch(projectBasicAction.requestUpdateDesign(ApiStatus.IDLE));
+    }
+  }, [requestUpdateDesign]);
   return (
-    <FormikProvider value={formik}>
-      <ProjectBasicDesignSection />
-    </FormikProvider>
+    <ProjectBasicDesignSection
+      detail={design ?? {}}
+      onUpdate={onUpdate}
+    />
   );
 }

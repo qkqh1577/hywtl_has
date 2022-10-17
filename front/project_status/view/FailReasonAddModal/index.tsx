@@ -21,9 +21,7 @@ export default function ProjectStatusFailReasonAddModal(props: Props) {
       open={open}
       title="수주실패 원인 입력"
       onClose={onClose}
-      children={
-        <Form />
-      }
+      children={<Form />}
       footer={
         <Box sx={{
           width:          '100%',

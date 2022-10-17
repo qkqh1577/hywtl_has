@@ -10,6 +10,7 @@ import { ProjectBidParameter } from 'project_bid/parameter';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';
+import { toAmount } from 'util/NumberUtil';
 
 interface Props {
   detail: ProjectBidVO | undefined;
@@ -185,9 +186,9 @@ export default function ProjectBidSection(props: Props) {
               <Input
                 isAmount
                 key={detail?.testAmount}
-                defaultValue={detail?.testAmount ?? ''}
+                defaultValue={detail?.testAmount?.toLocaleString() ?? ''}
                 onBlur={(e) => {
-                  const value = +(e.target.value) || undefined;
+                  const value = toAmount(e.target.value) || undefined;
                   if (detail?.testAmount !== value) {
                     props.onUpdate({ testAmount: value });
                   }
@@ -204,9 +205,9 @@ export default function ProjectBidSection(props: Props) {
               <Input
                 isAmount
                 key={detail?.reviewAmount}
-                defaultValue={detail?.reviewAmount ?? ''}
+                defaultValue={detail?.reviewAmount?.toLocaleString() ?? ''}
                 onBlur={(e) => {
-                  const value = +(e.target.value) || undefined;
+                  const value = toAmount(e.target.value) || undefined;
                   if (detail?.reviewAmount !== value) {
                     props.onUpdate({ reviewAmount: value });
                   }
@@ -223,9 +224,9 @@ export default function ProjectBidSection(props: Props) {
               <Input
                 isAmount
                 key={detail?.totalAmount}
-                defaultValue={detail?.totalAmount ?? ''}
+                defaultValue={detail?.totalAmount?.toLocaleString() ?? ''}
                 onBlur={(e) => {
-                  const value = +(e.target.value) || undefined;
+                  const value = toAmount(e.target.value) || undefined;
                   if (detail?.totalAmount !== value) {
                     props.onUpdate({ totalAmount: value });
                   }

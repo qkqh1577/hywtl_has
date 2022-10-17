@@ -1,184 +1,101 @@
 import { ProjectId } from 'project/domain';
 import {
   ProjectBasic,
-  ProjectBasicBid,
   ProjectBasicBusiness,
-  ProjectBasicBusinessId,
-  ProjectBasicContract,
   ProjectBasicDesign,
-  ProjectBasicEstimate,
-  ProjectBasicFailReason,
-  ProjectBasicTest
 } from 'project_basic/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
-import { ProjectBasicBidType } from 'project_status/domain';
-import {
-  BusinessId,
-  BusinessInvolvedType,
-  BusinessManagerId,
-  BusinessManagerVO,
-  BusinessVO
-} from 'business/domain';
-
-type filterCondition = { keywordType: string, keyword: string };
-
-export type BusinessAddModal = {
-  open: boolean,
-  isSubmitting: boolean,
-  selected?: {
-    involvedType?: BusinessInvolvedType;
-    businessId?: BusinessId;
-    businessManagerId?: BusinessManagerId;
-  },
-  values?: {
-    businessList: BusinessVO[];
-    businessFilterCondition?: filterCondition;
-    businessManagerList: BusinessManagerVO[];
-    businessManagerFilterCondition?: filterCondition;
-  }
-};
-
-export type BusinessDetailModal = {
-  open: boolean,
-  isSubmitting: boolean,
-  id?: ProjectBasicBusinessId,
-  values?: {
-    involvedType: BusinessInvolvedType;
-    business: BusinessVO;
-    businessManager: BusinessManagerVO;
-  }
-};
-
-export type BusinessUpdateModal = {
-  open: boolean,
-  isSubmitting: boolean,
-  id?: ProjectBasicBusinessId,
-  selected?: {
-    involvedType?: BusinessInvolvedType;
-    businessId?: BusinessId;
-    businessManagerId?: BusinessManagerId;
-  },
-  values?: {
-    businessList: BusinessVO[];
-    businessFilterCondition?: filterCondition;
-    businessManagerList: BusinessManagerVO[];
-    businessManagerFilterCondition?: filterCondition;
-  }
-};
+import { ApiStatus } from 'components/DataFieldProps';
+import { ProjectComplexTestVO } from 'project_complex/domain';
 
 export interface ProjectBasicState {
   id?: ProjectId;
   basic?: ProjectBasic;
-  bidType?: ProjectBasicBidType;
   businessList?: ProjectBasicBusiness[];
-  businessAddModal: BusinessAddModal;
-  businessDetailModal: BusinessDetailModal;
-  businessUpdateModal: BusinessUpdateModal;
+  businessModal?: ProjectBasicBusiness;
   design?: ProjectBasicDesign;
-  test?: ProjectBasicTest;
-  estimate?: ProjectBasicEstimate;
-  bid?: ProjectBasicBid;
-  contract?: ProjectBasicContract;
-  failReason?: ProjectBasicFailReason;
-  lossEstimateExpectation: boolean;
+  test?: ProjectComplexTestVO;
+  requestUpdateBasic: ApiStatus;
+  requestAddBusiness: ApiStatus;
+  requestChangeBusiness: ApiStatus;
+  requestDeleteBusiness: ApiStatus;
+  requestUpdateDesign: ApiStatus;
 }
 
 const initial: ProjectBasicState = {
-  businessAddModal:        { open: false, isSubmitting: false },
-  businessDetailModal:     { open: false, isSubmitting: false },
-  businessUpdateModal:     { open: false, isSubmitting: false },
-  lossEstimateExpectation: false,
+  requestUpdateBasic:    ApiStatus.IDLE,
+  requestAddBusiness:    ApiStatus.IDLE,
+  requestChangeBusiness: ApiStatus.IDLE,
+  requestDeleteBusiness: ApiStatus.IDLE,
+  requestUpdateDesign:   ApiStatus.IDLE,
 };
 
 export const projectBasicReducer = createReducer(initial, {
-  [ProjectBasicActionType.setId]:                      (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.setId]:                 (state,
+                                                   action
+                                                  ) => ({
     ...state,
     id: action.payload,
   }),
-  [ProjectBasicActionType.setBasic]:                   (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.setBasic]:              (state,
+                                                   action
+                                                  ) => ({
     ...state,
-    basic:   action.payload,
-    bidType: action.payload.bidType,
+    basic: action.payload,
   }),
-  [ProjectBasicActionType.setBidType]:                 (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    basic:   {
-      ...state.basic,
-      bidType: action.payload,
-    },
-    bidType: action.payload,
-  } as ProjectBasicState),
-  [ProjectBasicActionType.setBusinessList]:            (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.setBusinessList]:       (state,
+                                                   action
+                                                  ) => ({
     ...state,
     businessList: action.payload,
   }),
-  [ProjectBasicActionType.setBusinessAddModal]:        (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.setBusinessModal]:      (state,
+                                                   action
+                                                  ) => ({
     ...state,
-    businessAddModal: action.payload,
+    businessModal: action.payload,
   }),
-  [ProjectBasicActionType.setBusinessDetailModal]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.requestUpdateBasic]:    (state,
+                                                   action
+                                                  ) => ({
     ...state,
-    businessDetailModal: action.payload,
+    requestUpdateBasic: action.payload,
   }),
-  [ProjectBasicActionType.setBusinessUpdateModal]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.requestAddBusiness]:    (state,
+                                                   action
+                                                  ) => ({
     ...state,
-    businessUpdateModal: action.payload,
+    requestAddBusiness: action.payload,
   }),
-  [ProjectBasicActionType.setDesign]:                  (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.requestChangeBusiness]: (state,
+                                                   action
+                                                  ) => ({
+    ...state,
+    requestChangeBusiness: action.payload,
+  }),
+  [ProjectBasicActionType.requestDeleteBusiness]: (state,
+                                                   action
+                                                  ) => ({
+    ...state,
+    requestDeleteBusiness: action.payload,
+  }),
+  [ProjectBasicActionType.setDesign]:             (state,
+                                                   action
+                                                  ) => ({
     ...state,
     design: action.payload,
   }),
-  [ProjectBasicActionType.setTest]:                    (state,
-                                                        action
-                                                       ) => ({
+  [ProjectBasicActionType.requestUpdateDesign]:   (state,
+                                                   action
+                                                  ) => ({
+    ...state,
+    requestUpdateDesign: action.payload,
+  }),
+  [ProjectBasicActionType.setTest]:               (state,
+                                                   action
+                                                  ) => ({
     ...state,
     test: action.payload,
-  }),
-  [ProjectBasicActionType.setEstimate]:                (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    estimate: action.payload,
-  }),
-  [ProjectBasicActionType.setBid]:                     (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    bid: action.payload,
-  }),
-  [ProjectBasicActionType.setContract]:                (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    contract: action.payload,
-  }),
-  [ProjectBasicActionType.setFailReason]:              (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    failReason: action.payload,
-  }),
-  [ProjectBasicActionType.setLossEstimateExpectation]: (state,
-                                                        action
-                                                       ) => ({
-    ...state,
-    lossEstimateExpectation: action.payload,
-  }),
+  })
 });

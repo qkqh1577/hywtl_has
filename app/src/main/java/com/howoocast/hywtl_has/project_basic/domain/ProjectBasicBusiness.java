@@ -4,7 +4,10 @@ import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.ProjectInvolvedType;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -54,6 +57,33 @@ public class ProjectBasicBusiness extends CustomEntity {
         instance.business = business;
         instance.businessManager = businessManager;
         return instance;
+    }
+
+    public List<EventEntity> change(
+        ProjectInvolvedType involvedType,
+        Business business,
+        BusinessManager businessManager
+    ) {
+        List<EventEntity> eventList = new ArrayList<>();
+        eventList.add(EventEntity.of(
+            "관계사 구분 변경",
+            this.involvedType.getName(),
+            involvedType.getName()
+        ));
+        this.involvedType = involvedType;
+        eventList.add(EventEntity.of(
+            "관계사 변경",
+            this.business,
+            business
+        ));
+        this.business = business;
+        eventList.add(EventEntity.of(
+            "관계사 담당자 변경",
+            this.businessManager,
+            businessManager
+        ));
+        this.businessManager = businessManager;
+        return eventList;
     }
 
 }

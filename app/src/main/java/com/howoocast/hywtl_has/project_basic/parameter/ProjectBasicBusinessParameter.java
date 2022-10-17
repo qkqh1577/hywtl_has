@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectBasicBusinessAddParameter {
+public class ProjectBasicBusinessParameter {
 
     @NotNull(message = ProjectBasicBusiness.KEY + ".business_id.not_null")
     private Long businessId;

@@ -38,6 +38,7 @@ export default function ProjectMemoDrawerFilter() {
       }}>
         <Select
           variant="outlined"
+          value={formik.values.category ?? ''}
           onChange={(e) => {
             const value = e.target.value || undefined;
             if (formik.values.category !== value) {
