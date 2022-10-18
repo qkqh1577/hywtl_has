@@ -98,8 +98,8 @@ export default function ProjectComplexSiteSection(props: Props) {
                 <TableRow key={item.id}>
                   <Td>
                     <Input
-                      type="text"
                       variant="outlined"
+                      key={item.name}
                       defaultValue={item.name ?? ''}
                       onBlur={(e) => {
                         const value = e.target.value || undefined;

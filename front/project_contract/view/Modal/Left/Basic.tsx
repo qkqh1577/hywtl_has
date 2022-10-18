@@ -28,7 +28,7 @@ export default function () {
       <Box sx={{ width: '45%', marginRight: '55%', marginBottom: '15px' }}>
         <DataFieldWithLabel required={edit} labelWidth={60} label="송부 여부">
           <Select
-            disabled={!edit}
+            readOnly={!edit}
             value={formik.values.isSent ? 'Y' : 'N'}
             onChange={(e) => {
               const value = e.target.value || undefined;
@@ -48,7 +48,7 @@ export default function () {
         <DataFieldWithLabel required={edit} labelWidth={60} label="송신처">
           <Input
             key={formik.values.recipient}
-            disabled={!edit}
+            readOnly={!edit}
             defaultValue={formik.values.recipient ?? ''}
             onBlur={(e) => {
               const value = e.target.value || undefined;
@@ -63,7 +63,7 @@ export default function () {
         <DataFieldWithLabel labelWidth={60} label="비고">
           <Input
             key={formik.values.note}
-            disabled={!edit}
+            readOnly={!edit}
             defaultValue={formik.values.note ?? ''}
             onBlur={(e) => {
               const value = e.target.value || undefined;

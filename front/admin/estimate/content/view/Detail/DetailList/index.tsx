@@ -56,8 +56,9 @@ export default function () {
                   <Input
                     variant="outlined"
                     readOnly={!edit}
-                    value={detail ?? ''}
-                    onChange={(e) => {
+                    key={detail}
+                    defaultValue={detail ?? ''}
+                    onBlur={(e) => {
                       const value: string | undefined = e.target.value || undefined;
                       if (detail !== value) {
                         const result: string[] = [];

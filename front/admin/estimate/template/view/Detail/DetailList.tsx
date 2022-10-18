@@ -101,8 +101,9 @@ export default function () {
                   readOnly={!edit}
                   variant="outlined"
                   type="number"
-                  value={detail.unitAmount ?? ''}
-                  onChange={(e) => {
+                  key={detail.unitAmount}
+                  defaultValue={detail.unitAmount ?? ''}
+                  onBlur={(e) => {
                     const value = +e.target.value ?? undefined;
                     if (detail.unitAmount !== value) {
                       formik.setFieldValue(`detailList.${i}.unitAmount`, value);
@@ -130,8 +131,9 @@ export default function () {
                   multiline
                   readOnly={!edit}
                   variant="outlined"
-                  value={detail.note ?? ''}
-                  onChange={(e) => {
+                  key={detail.note}
+                  defaultValue={detail.note ?? ''}
+                  onBlur={(e) => {
                     const value = e.target.value || undefined;
                     if (detail.note !== value) {
                       formik.setFieldValue(`detailList.${i}.note`, value);

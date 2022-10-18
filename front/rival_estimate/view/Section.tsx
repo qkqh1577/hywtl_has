@@ -93,6 +93,7 @@ export default function RivalEstimateListSection(props: Props) {
               <DataFieldWithLabel label="풍동 금액">
                 <Input
                   type="number"
+                  key={item.testAmount}
                   defaultValue={item.testAmount ?? ''}
                   onBlur={(e) => {
                     const value = +(e.target.value) || undefined;
@@ -115,6 +116,7 @@ export default function RivalEstimateListSection(props: Props) {
               <DataFieldWithLabel label="구검">
                 <Input
                   type="number"
+                  key={item.reviewAmount}
                   defaultValue={item.reviewAmount ?? ''}
                   onBlur={(e) => {
                     const value = +(e.target.value) || undefined;
@@ -136,6 +138,7 @@ export default function RivalEstimateListSection(props: Props) {
               <DataFieldWithLabel labelWidth={25} label="총액">
                 <Input
                   type="number"
+                  key={item.totalAmount}
                   defaultValue={item.totalAmount ?? ''}
                   onBlur={(e) => {
                     const value = +(e.target.value) || undefined;
@@ -156,6 +159,7 @@ export default function RivalEstimateListSection(props: Props) {
             }}>
               <DataFieldWithLabel labelWidth={25} label="일정">
                 <Input
+                  key={item.expectedDuration}
                   defaultValue={item.expectedDuration ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;

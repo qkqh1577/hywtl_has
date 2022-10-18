@@ -28,6 +28,8 @@ export default function Form() {
         <DataFieldWithLabel label="수신처" required>
           <Input
             required
+            key={formik.values.recipient}
+            defaultValue={formik.values.recipient ?? ''}
             onBlur={(e) => {
               formik.setFieldValue('recipient', e.target.value || undefined);
             }}
@@ -135,6 +137,8 @@ export default function Form() {
       }}>
         <DataFieldWithLabel label="비고">
           <Input
+            key={formik.values.note}
+            defaultValue={formik.values.note ?? ''}
             onBlur={(e) => {
               formik.setFieldValue('note', e.target.value || undefined);
             }}

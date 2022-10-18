@@ -60,8 +60,9 @@ export default function () {
           }}>
             <DataFieldWithLabel label="아이디">
               <Input
-                disabled
-                value={formik.values.username ?? ''}
+                readOnly
+                key={formik.values.username}
+                defaultValue={formik.values.username ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -73,9 +74,10 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="이름">
               <Input
-                disabled={!edit}
-                value={formik.values.name ?? ''}
-                onChange={(e) => {
+                readOnly={!edit}
+                key={formik.values.name}
+                defaultValue={formik.values.name ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (formik.values.name !== value) {
                     formik.setFieldValue('name', value);
@@ -92,9 +94,10 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="이메일">
               <Input
-                disabled={!edit}
-                value={formik.values.email ?? ''}
-                onChange={(e) => {
+                readOnly={!edit}
+                key={formik.values.email}
+                defaultValue={formik.values.email ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (formik.values.email !== value) {
                     formik.setFieldValue('email', value);
@@ -111,7 +114,7 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="권한">
               <Select
-                disabled={!edit}
+                readOnly={!edit}
                 value={formik.values.role ?? ''}
                 onChange={(e) => {
                   const value = e.target.value || undefined;
@@ -134,7 +137,7 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="소속 조직">
               <DepartmentSelector
-                disabled={!edit}
+                readOnly={!edit}
                 value={formik.values.departmentId ?? ''}
                 onChange={(e) => {
                   const value = e.target.value || undefined;

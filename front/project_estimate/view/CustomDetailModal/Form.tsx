@@ -32,23 +32,25 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 구분" labelPosition="top">
           <Input
-            disabled={edit}
-            value={formik.values.type ? projectEstimateTypeName(formik.values.type) : ''}
+            readOnly={edit}
+            key={formik.values.type}
+            defaultValue={formik.values.type ? projectEstimateTypeName(formik.values.type) : ''}
           />
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 번호" labelPosition="top">
           <Input
-            disabled={edit}
-            value={formik.values.code ?? ''}
+            readOnly={edit}
+            key={formik.values.code}
+            defaultValue={formik.values.code ?? ''}
           />
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel required={edit} label="송부 여부" labelPosition="top">
           <Select
-            disabled={!edit}
+            readOnly={!edit}
             value={formik.values.isSent ? 'Y' : 'N'}
             onChange={(e) => {
               const value = e.target.value || undefined;
@@ -70,17 +72,19 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="최종 여부" labelPosition="top">
           <Input
-            disabled={edit}
-            value={formik.values.isFinal ? 'Y' : 'N'}
+            readOnly={edit}
+            key={formik.values.isFinal}
+            defaultValue={formik.values.isFinal ? 'Y' : 'N'}
           />
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel required={edit} label="송신처" labelPosition="top">
           <Input
-            disabled={!edit}
-            value={formik.values.recipient ?? ''}
-            onChange={(e) => {
+            readOnly={!edit}
+            key={formik.values.recipient}
+            defaultValue={formik.values.recipient ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.recipient !== value) {
                 formik.setFieldValue('recipient', value);
@@ -93,7 +97,7 @@ export default function () {
         <DataFieldWithLabel required={edit} label="견적 업체" labelPosition="top">
           <BusinessSelector
             allowMyBusiness
-            disabled={!edit}
+            readOnly={!edit}
             value={formik.values.businessId ?? formik.values.business?.id}
             onChange={(id) => {
               formik.setFieldValue('businessId', id);
@@ -124,9 +128,10 @@ export default function () {
       <Box sx={{ width: '90%' }}>
         <DataFieldWithLabel label="비고" labelPosition="top">
           <Input
-            disabled={!edit}
-            value={formik.values.note ?? ''}
-            onChange={(e) => {
+            readOnly={!edit}
+            key={formik.values.note}
+            defaultValue={formik.values.note ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.note !== value) {
                 formik.setFieldValue('note', value);

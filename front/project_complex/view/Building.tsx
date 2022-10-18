@@ -100,7 +100,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 <Td key={item.id}>
                   <Input
                     variant="outlined"
-                    type="text"
+                    key={item.name}
                     defaultValue={item.name ?? ''}
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
@@ -153,7 +153,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 <Td key={item.id}>
                   <Input
                     variant="outlined"
-                    type="text"
+                    key={item.shape}
                     defaultValue={item.shape ?? ''}
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
@@ -180,6 +180,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                   <Input
                     variant="outlined"
                     type="number"
+                    key={item.floorCount}
                     defaultValue={item.floorCount ?? ''}
                     onBlur={(e) => {
                       const value = +e.target.value ?? undefined;
@@ -206,6 +207,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                   <Input
                     variant="outlined"
                     type="number"
+                    key={item.height}
                     defaultValue={item.height ?? ''}
                     onBlur={(e) => {
                       const value = +e.target.value ?? undefined;
@@ -232,8 +234,9 @@ export default function ProjectComplexBuildingSection(props: Props) {
                   <Input
                     variant="outlined"
                     type="number"
+                    key={item.baseArea}
                     defaultValue={item.baseArea ?? ''}
-                    onChange={(e) => {
+                    onBlur={(e) => {
                       const value = +e.target.value ?? undefined;
                       if (value !== item.baseArea) {
                         props.onUpdate({ id: item.id, baseArea: value });
@@ -259,7 +262,8 @@ export default function ProjectComplexBuildingSection(props: Props) {
                     readOnly
                     variant="outlined"
                     type="number"
-                    value={item.ratio?.toFixed(4) ?? ''}
+                    key={item.ratio}
+                    defaultValue={item.ratio?.toFixed(4) ?? ''}
                   />
                 </Td>
               ))}
@@ -271,7 +275,8 @@ export default function ProjectComplexBuildingSection(props: Props) {
                   <Input
                     readOnly
                     variant="outlined"
-                    value={item.buildingDocument?.code || '-'}
+                    key={item.buildingDocument?.code}
+                    defaultValue={item.buildingDocument?.code || '-'}
                     endAdornment={
                       <InputAdornment position="end">
                         <FontAwesomeIcon

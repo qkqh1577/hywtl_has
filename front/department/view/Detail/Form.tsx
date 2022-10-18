@@ -61,9 +61,10 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="조직명">
               <Input
-                disabled={!edit}
-                value={formik.values.name ?? ''}
-                onChange={(e) => {
+                readOnly={!edit}
+                key={formik.values.name}
+                defaultValue={formik.values.name ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (formik.values.name !== value) {
                     formik.setFieldValue('name', value);
@@ -80,7 +81,7 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit} label="조직 유형">
               <Select
-                disabled={!edit}
+                readOnly={!edit}
                 value={formik.values.category ?? ''}
                 onChange={(e) => {
                   const value = e.target.value || undefined;
@@ -105,7 +106,8 @@ export default function () {
           }}>
             <DataFieldWithLabel required={edit && formik.values.category !== DepartmentCategory.COMPANY} label="상위 조직">
               <DepartmentSelector
-                disabled={!edit || !DepartmentCategory.COMPANY}
+                readOnly={!edit}
+                disabled={!DepartmentCategory.COMPANY}
                 value={formik.values.parentId ?? ''}
                 onChange={(e) => {
                   const value = e.target.value || undefined;
@@ -125,9 +127,10 @@ export default function () {
           }}>
             <DataFieldWithLabel label="설명">
               <Input
-                disabled={!edit}
-                value={formik.values.note ?? ''}
-                onChange={(e) => {
+                readOnly={!edit}
+                key={formik.values.note}
+                defaultValue={formik.values.note ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (formik.values.note !== value) {
                     formik.setFieldValue('note', value);

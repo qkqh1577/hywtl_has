@@ -151,7 +151,7 @@ export default function () {
             labelPosition="top"
           >
             <Checkbox
-              disabled={!edit}
+              readOnly={!edit}
               checked={formik.values.allDay}
               onChange={() => {
                 formik.setFieldValue('allDay', !formik.values.allDay);
@@ -273,7 +273,7 @@ export default function () {
               alignItems: 'center',
             }}>
               <Checkbox
-                disabled={!edit}
+                readOnly={!edit}
                 checked={typeof formik.values.alertBefore === 'number' && formik.values.alertBefore >= 0}
                 onChange={() => {
                   if (typeof formik.values.alertBefore === 'number') {

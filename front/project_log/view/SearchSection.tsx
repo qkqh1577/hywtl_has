@@ -115,9 +115,10 @@ export default function ({ totalElements }: Props) {
         marginRight: '10px'
       }}>
         <Input
-          value={formik.values.keyword ?? ''}
+          key={formik.values.keyword}
+          defaultValue={formik.values.keyword ?? ''}
           placeholder="ID 검색"
-          onChange={(e) => {
+          onBlur={(e) => {
             const value = e.target.value || undefined;
             if (formik.values.keyword !== value) {
               formik.setFieldValue('keyword', value);

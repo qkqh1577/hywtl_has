@@ -104,7 +104,7 @@ export default function JobForm(props: Props) {
                 )}
                 <FormGroup row>
                   <Radio
-                    disabled={!edit}
+                    readOnly={!edit}
                     name="representativeJob"
                     value={values.department?.id}
                     checked={values.isRepresentative}
@@ -130,7 +130,7 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Select
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.departmentId ?? ''}
                   onChange={(e) => {
                     const value = e.target.value || undefined;
@@ -154,7 +154,8 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.jobTitle}
                   defaultValue={values.jobTitle ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -175,7 +176,8 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.jobType}
                   defaultValue={values.jobType ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -196,7 +198,8 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.jobPosition}
                   defaultValue={values.jobPosition ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -216,7 +219,8 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.jobClass}
                   defaultValue={values.jobClass ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -236,7 +240,8 @@ export default function JobForm(props: Props) {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.jobDuty}
                   defaultValue={values.jobDuty ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;

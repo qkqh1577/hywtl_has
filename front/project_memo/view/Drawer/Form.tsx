@@ -68,10 +68,11 @@ export default function ProjectMemoForm({ setOpen }: ProjectMemoFormProps) {
           <Input
             required
             multiline
-            value={formik.values.description ?? ''}
+            key={formik.values.description}
+            defaultValue={formik.values.description ?? ''}
             variant="outlined"
             placeholder="메모 입력"
-            onChange={(e) => {
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (value !== formik.values.description) {
                 formik.setFieldValue('description', value);

@@ -51,7 +51,7 @@ export default function CompanyForm() {
               openTo="year"
               inputFormat="YYYY-MM-DD"
               mask="____-__-__"
-              disabled={!edit}
+              readOnly={!edit}
               value={values.hiredDate ? dayjs(values.hiredDate)
               .format('YYYY-MM-DD') : null}
               onChange={(e) => {
@@ -83,7 +83,7 @@ export default function CompanyForm() {
         }}>
           <DataFieldWithLabel required={edit} label="입사 구분">
             <Select
-              disabled={!edit}
+              readOnly={!edit}
               value={values.hiredType ?? ''}
               onChange={(e) => {
                 const value = e.target.value || undefined;
@@ -106,7 +106,8 @@ export default function CompanyForm() {
         }}>
           <DataFieldWithLabel label="추천자">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.recommender}
               defaultValue={values.recommender ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;

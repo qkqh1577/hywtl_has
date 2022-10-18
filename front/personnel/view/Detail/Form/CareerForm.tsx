@@ -80,7 +80,8 @@ export default function CareerForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.companyName}
                   defaultValue={values.companyName ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -101,7 +102,8 @@ export default function CareerForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.majorJob}
                   defaultValue={values.majorJob ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -125,7 +127,7 @@ export default function CareerForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.startDate ? dayjs(values.startDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
@@ -162,7 +164,7 @@ export default function CareerForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.endDate ? dayjs(values.endDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
