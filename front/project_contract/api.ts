@@ -1,16 +1,11 @@
 import apiClient, { toFormData } from 'services/api';
 import {
-  ProjectContractBasicVO,
   ProjectContractId,
   ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
-import {
-  ProjectEstimateId,
-  ProjectEstimateVO
-} from 'project_estimate/domain';
 
 class ProjectContractApi {
 
@@ -41,26 +36,8 @@ class ProjectContractApi {
   }
 
   /** 계약서 삭제 */
-  async delete(id: ProjectContractId): Promise<void> {
+  async deleteOne(id: ProjectContractId): Promise<void> {
     const { data } = await apiClient.delete(`/project/sales/contract/${id}`);
-    return data;
-  }
-
-  /** 견적서 목록 조회*/
-  async getEstimateList(id: ProjectId): Promise<ProjectEstimateVO[]> {
-    const { data } = await apiClient.get(`/project/sales/${id}/estimate`);
-    return data;
-  }
-
-  /** 견적서 조회*/
-  async getEstimateDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
-    const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
-    return data;
-  }
-
-  /** 계약서 기본 정보 조회*/
-  async getContractBasic(projectId: ProjectId): Promise<ProjectContractBasicVO> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/basic`);
     return data;
   }
 

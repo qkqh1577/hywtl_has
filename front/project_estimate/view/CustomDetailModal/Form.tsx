@@ -101,6 +101,26 @@ export default function () {
           />
         </DataFieldWithLabel>
       </Box>
+      <Box sx={{ width: '45%' }}>
+        <DataFieldWithLabel required={edit} label="LH 여부" labelPosition="top">
+          <Select
+            displayEmpty
+            readOnly={!edit}
+            value={typeof formik.values.isLh === 'boolean' ? (formik.values.isLh ? 'Y' : 'N') : ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (value === 'Y') {
+                formik.setFieldValue('isLh', true);
+              }
+              else {
+                formik.setFieldValue('isLh', false);
+              }
+            }}>
+            <MenuItem value="Y">Y</MenuItem>
+            <MenuItem value="N">N</MenuItem>
+          </Select>
+        </DataFieldWithLabel>
+      </Box>
       <Box sx={{ width: '90%' }}>
         <DataFieldWithLabel label="비고" labelPosition="top">
           <Input

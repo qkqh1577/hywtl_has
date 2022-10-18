@@ -19,6 +19,11 @@ class ProjectEstimateApi {
     return data;
   }
 
+  async getDetail(id: ProjectEstimateId): Promise<ProjectEstimateVO> {
+    const { data } = await apiClient.get(`/project/sales/estimate/${id}`);
+    return data;
+  }
+
   async getCustomDetail(id: ProjectEstimateId): Promise<ProjectCustomEstimateVO> {
     const { data } = await apiClient.get(`/project/sales/custom-estimate/${id}`);
     return data;

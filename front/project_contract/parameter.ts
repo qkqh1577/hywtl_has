@@ -69,5 +69,6 @@ export interface ProjectContractParameter {
 export const initialProjectContractParameter = {
   basic:         initialProjectContractBasicParameter,
   collection:    initialProjectContractCollectionParameter,
-  conditionList: [initialProjectContractConditionParameter]
-} as ProjectContractParameter;
+  conditionList: [initialProjectContractConditionParameter],
+  edit:          true,
+} as unknown as ProjectContractParameter;

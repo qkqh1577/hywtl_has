@@ -35,6 +35,8 @@ public class ProjectEstimateView {
     private List<ProjectEstimateComplexBuildingView> buildingList;
     private BusinessShortView business;
 
+    private ProjectEstimateTestView test;
+
     protected ProjectEstimateView(
         ProjectEstimate source
     ) {
@@ -60,6 +62,10 @@ public class ProjectEstimateView {
                 .collect(
                     Collectors.toList());
         }
+        this.test = ProjectEstimateTestView.assemble(
+            source.getSiteList(),
+            source.getBuildingList()
+        );
         this.business = BusinessShortView.assemble(source.getBusiness());
     }
 

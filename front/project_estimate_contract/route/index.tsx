@@ -8,12 +8,11 @@ import ProjectContractListRoute from 'project_contract/route/list';
 import RivalEstimateListRoute from 'rival_estimate/route/section';
 import ProjectBidRoute from 'project_bid/route';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
-import ProjectContractAddModalRoute from 'project_contract/route/addModal';
-import ProjectContractDetailModalRoute from 'project_contract/route/detailModal';
 import ProjectSystemEstimateModalRoute from 'project_estimate/route/systemModal';
 import ProjectEstimateFinalModalRoute from 'project_estimate/route/finalModal';
 import ProjectContractFinalModalRoute from 'project_contract/route/finalModal';
 import ProjectCustomEstimateExtensionModalRoute from 'project_estimate/route/customExtensionModal';
+import ProjectContractModalRoute from 'project_contract/route/modal';
 
 function Element() {
 
@@ -28,9 +27,8 @@ function Element() {
         <ProjectCustomEstimateDetailModalRoute />
         <ProjectCustomEstimateExtensionModalRoute />
         <ProjectSystemEstimateModalRoute />
-        <ProjectContractAddModalRoute />
-        <ProjectContractDetailModalRoute />
         <ProjectEstimateFinalModalRoute />
+        <ProjectContractModalRoute />
         <ProjectContractFinalModalRoute />
       </Box>
     </ProjectContainerRoute>
