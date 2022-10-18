@@ -1,9 +1,11 @@
 import { Box } from '@mui/material';
 import React, { useContext } from 'react';
-import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
+import Plan from './Plan';
+import Amount from './Amount';
+import Test from './Test';
 
 export default function ProjectContractModalLeftEstimateForm() {
 
@@ -12,24 +14,20 @@ export default function ProjectContractModalLeftEstimateForm() {
 
   return (
     <Box sx={{
-      display:      'flex',
-      flexWrap:     'wrap',
-      width:        '100%',
-      border:       `1px solid ${ColorPalette._e4e9f2}`,
-      borderRadius: '5px',
-      height:       '200px',
-      margin:       '10px 0px',
-      padding:      '10px',
+      display:  'flex',
+      flexWrap: 'wrap',
+      width:    '100%',
     }}>
       <Box sx={{
         display:        'flex',
         flexWrap:       'nowrap',
         width:          '100%',
         justifyContent: 'space-between',
+        margin:         '10px 0px',
       }}>
         <Box sx={{ width: '80%' }}>
           {formik.values.estimate && (
-            <TextBox variant="body4">
+            <TextBox variant="body1">
               [{formik.values.estimate.code}]
             </TextBox>
           )}
@@ -46,16 +44,9 @@ export default function ProjectContractModalLeftEstimateForm() {
           )}
         </Box>
       </Box>
-
-      <Box>
-        견적 일자
-      </Box>
-      <Box>
-        합계
-      </Box>
-      <Box>
-        test
-      </Box>
+      <Plan />
+      <Amount />
+      <Test />
     </Box>
   );
 }

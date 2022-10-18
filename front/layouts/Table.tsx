@@ -44,12 +44,12 @@ export function Td(props: TdProps) {
       variant={props.variant ?? 'body'}
       align={props.align ?? 'center'}
       sx={{
-        ...props.sx,
         backgroundColor: 'transparent',
         color:           ColorPalette._252627,
         fontSize:        '13px',
         height:          '40px',
         padding:         '0 10px',
+        ...props.sx,
       }}
     />
   );
