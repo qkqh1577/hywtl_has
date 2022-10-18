@@ -17,6 +17,7 @@ import { FormikContext } from 'formik';
 import TextBox from 'layouts/Text';
 import Input from 'layouts/Input';
 import { toAmountKor } from 'util/NumberUtil';
+import Collection from './Collection';
 
 export default function () {
 
@@ -103,7 +104,7 @@ export default function () {
               key={totalAmount}
               variant="outlined"
               defaultValue={totalAmount > 0 ?
-                `${toAmountKor(totalAmount)} (${totalAmount.toLocaleString()}), 부가세 ${isLh ? '면세' : '포함'}`
+                `${toAmountKor(totalAmount)} (￦${totalAmount.toLocaleString()}), 부가세 ${isLh ? '면세' : '포함'}`
                 : ''
               }
             />
@@ -112,7 +113,19 @@ export default function () {
         <TableRow>
           <Th>기성 단계</Th>
           <Td align="left">
-            <TextBox variant="body11">{basic.collectionStageNote}</TextBox>
+            <Box sx={{
+              width:        '100%',
+              display:      'flex',
+              flexWrap:     'wrap',
+              alignContent: 'flex-start',
+            }}>
+              <Box sx={{ width: '100%' }}>
+                <TextBox variant="body11">{basic.collectionStageNote}</TextBox>
+              </Box>
+              <Box sx={{ width: '100%' }}>
+                <Collection />
+              </Box>
+            </Box>
           </Td>
         </TableRow>
         <TableRow>
