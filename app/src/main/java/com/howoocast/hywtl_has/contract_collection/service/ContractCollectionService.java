@@ -38,7 +38,7 @@ public class ContractCollectionService {
                     stage.getName(),
                     stage.getRatio(),
                     stage.getNote(),
-                    stage.getExpectedDateType()
+                    stage.getExpectedDate()
                 )))
                 .map(stream -> stream.collect(Collectors.toList()))
                 .orElse(Collections.emptyList());

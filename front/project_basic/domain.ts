@@ -5,7 +5,6 @@ import {
 } from 'business/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
-import { ProjectComplexTestVO } from 'project_complex/domain';
 import { ProjectBasicBidType } from 'project_status/domain';
 import { UserVO } from 'user/domain';
 import { ProjectId } from 'project/domain';
@@ -36,6 +35,7 @@ export interface ProjectBasicBusiness {
   business: BusinessShort;
   businessManager: BusinessManagerVO;
   involvedType: BusinessInvolvedType;
+  modifiedAt: Date;
 }
 
 export interface ProjectBasicDesign {
@@ -51,10 +51,6 @@ export interface ProjectBasicDesign {
   maximumFloor?: number; // 최고 층 수
   maximumHeight?: number; // 최고 높이
   modifiedAt?: Date; // 최종수정일시
-}
-
-export interface ProjectBasicTest
-  extends ProjectComplexTestVO {
 }
 
 export interface ProjectBasicEstimate {

@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
 import com.howoocast.hywtl_has.business.domain.ProjectInvolvedType;
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.contract_basic.domain.ContractBasic;
 import com.howoocast.hywtl_has.contract_basic.repository.ContractBasicRepository;
@@ -22,7 +21,6 @@ import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCondition;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -60,10 +58,7 @@ public class ProjectContractTemplateService {
             .stream()
             .filter(business -> business.getInvolvedType() == ProjectInvolvedType.ORDERER)
             .findFirst()
-            .orElseThrow(() -> {
-                throw new NotFoundException(ProjectBasicBusiness.KEY, "involvedType",
-                    ProjectInvolvedType.ORDERER.name());
-            });
+            .orElse(null);
 
         ContractBasic template = basicRepository.findTop1By().orElse(ContractBasic.of());
 
@@ -73,12 +68,12 @@ public class ProjectContractTemplateService {
             template.getOutcome(),
             template.getDescription(),
             LocalDate.now(),
-            orderer.getBusiness().getAddress(),
-            orderer.getBusiness().getName(),
-            orderer.getBusiness().getCeoName(),
-            template.getContractor().getAddress(),
-            template.getContractor().getCompanyName(),
-            template.getContractor().getCeoName()
+            Objects.nonNull(orderer) ? orderer.getBusiness().getAddress() : null,
+            Objects.nonNull(orderer) ? orderer.getBusiness().getName() : null,
+            Objects.nonNull(orderer) ? orderer.getBusiness().getCeoName() : null,
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getAddress() : null,
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getCompanyName() : null,
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getCeoName() : null
         );
     }
 
@@ -115,7 +110,11 @@ public class ProjectContractTemplateService {
         ProjectEstimate estimate = new CustomFinder<>(estimateRepository, ProjectEstimate.class)
             .byIdIfExists(estimateId);
 
-        return Collections.emptyList();
+        return templateList.stream().map(template -> ProjectContractCondition.of(
+                template.getTitle(),
+                template.getDescriptionList()
+            ))
+            .collect(Collectors.toList());
     }
 
     private Long getAmount(@Nullable ProjectEstimate estimate, Double ratio) {

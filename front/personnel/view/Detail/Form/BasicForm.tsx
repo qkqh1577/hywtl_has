@@ -8,7 +8,7 @@ import {
 import UploadField from 'components/UploadField';
 import { FormikContext } from 'formik';
 import TextBox from 'layouts/Text';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';

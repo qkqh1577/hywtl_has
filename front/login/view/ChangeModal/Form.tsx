@@ -10,7 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { FormikContext } from 'formik';
 import dayjs from 'dayjs';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { sexCategoryList } from 'user/domain';
 import { fileToView } from 'file-item';
 

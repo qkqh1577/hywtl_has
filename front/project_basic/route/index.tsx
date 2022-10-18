@@ -10,34 +10,25 @@ import ProjectBasicBidRoute from 'project_basic/route/bid';
 import ProjectBasicContractRoute from 'project_basic/route/contract';
 import ProjectBasicFailReasonRoute from 'project_basic/route/failReason';
 import { projectBasicAction } from 'project_basic/action';
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux';
-import { RootState } from 'services/reducer';
+import { useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
-import ProjectBasicBusinessAddModalRoute from 'project_basic/route/businessAddModal';
-import ProjectBasicBusinessDetailModalRoute from 'project_basic/route/businessDetailModal';
-import ProjectBasicBusinessUpdateModalRoute from 'project_basic/route/businessUpdateModal';
+import useId from 'services/useId';
+import { ProjectId } from 'project/domain';
+import ProjectBasicBusinessModalRoute from 'project_basic/route/businessModal';
 
 function Element() {
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.project);
-  const { id } = useSelector((root: RootState) => root.projectBasic);
+  const id = useId();
 
   useEffect(() => {
-    if (detail && detail.id !== id) {
-      dispatch(projectBasicAction.setId(detail.id));
-    }
-  }, [detail]);
+    dispatch(projectBasicAction.setId(id ? ProjectId(id) : undefined));
+  }, [id]);
 
   return (
     <Box sx={{ width: '100%' }}>
       <ProjectBasicBasicRoute />
       <ProjectBasicBusinessRoute />
-      <ProjectBasicBusinessAddModalRoute />
-      <ProjectBasicBusinessDetailModalRoute />
-      <ProjectBasicBusinessUpdateModalRoute />
+      <ProjectBasicBusinessModalRoute />
       <ProjectBasicDesignRoute />
       <ProjectBasicTestRoute />
       <ProjectBasicEstimateRoute />

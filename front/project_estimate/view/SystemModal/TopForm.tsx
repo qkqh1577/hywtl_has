@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Button from 'layouts/Button';
 import React, { useContext } from 'react';

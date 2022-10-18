@@ -44,12 +44,12 @@ export function Td(props: TdProps) {
       variant={props.variant ?? 'body'}
       align={props.align ?? 'center'}
       sx={{
-        ...props.sx,
         backgroundColor: 'transparent',
         color:           ColorPalette._252627,
         fontSize:        '13px',
         height:          '40px',
         padding:         '0 10px',
+        ...props.sx,
       }}
     />
   );
@@ -210,14 +210,14 @@ export function Table({
                         hasFoot,
                         ...props
                       }: TableProps & StyleProps) {
-
+  const width = props.sx && (props.sx as any).width ? (props.sx as any).width : (variant === 'left' ? 'unset' : '100%');
   return (
     <MuiTable
       {...props}
       stickyHeader={!disableSticky}
       aria-label={disableSticky ? undefined : 'sticky table'}
       sx={{
-        width:           (props.sx as any)?.width ?? variant === 'left' ? 'unset' : '100%',
+        width,
         backgroundColor: ColorPalette._ffffff,
         borderRadius:    '5px',
         '& td, & th':    {

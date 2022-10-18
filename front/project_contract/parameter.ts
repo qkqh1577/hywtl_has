@@ -1,5 +1,6 @@
 import { ProjectEstimateId } from 'project_estimate/domain';
 import { ProjectContractId } from 'project_contract/domain';
+import { FileItemParameter } from 'file-item';
 
 export interface ProjectContractFinalParameter {
   id: ProjectContractId;
@@ -7,40 +8,65 @@ export interface ProjectContractFinalParameter {
 
 export const initialProjectContractFinalParameter = {} as ProjectContractFinalParameter;
 
+export interface ProjectContractBasicParameter {
+  serviceName: string;
+  serviceDuration: string;
+  outcome: string;
+  description?: string;
+  contractDate: string;
+  ordererAddress: string;
+  ordererCompanyName: string;
+  ordererCeoName: string;
+  contractorAddress: string;
+  contractorCompanyName: string;
+  contractorCeoName: string;
+}
+
+export const initialProjectContractBasicParameter = {} as ProjectContractBasicParameter;
+
+export interface ProjectContractCollectionStageParameter {
+  name: string;
+  ratio: number;
+  amount: number;
+  note?: string;
+  expectedDate: string;
+}
+
+export interface ProjectContractCollectionParameter {
+  stageNote: string;
+  stageList: ProjectContractCollectionStageParameter[];
+  totalAmountNote?: string;
+  totalAmount: number;
+}
+
+export const initialProjectContractCollectionParameter = {
+  stageList: []
+} as unknown as ProjectContractCollectionParameter;
+
+export interface ProjectContractConditionParameter {
+  title: string;
+  descriptionList: string[];
+}
+
+export const initialProjectContractConditionParameter = {
+  descriptionList: ['']
+} as ProjectContractConditionParameter;
+
 export interface ProjectContractParameter {
+  id?: ProjectContractId;
   estimateId: ProjectEstimateId;
   isSent: boolean;
   recipient: string;
   note?: string;
-  pdfFile?: string; // 최종 pdf 파일이 있는 경우만
-  basic?: {
-    serviceName: string; // 용역명
-    serviceDuration: string; // 용역 기간
-    serviceDurationWeekNumber: string; // 용역 기간 마감 주차
-    outcome: string; // 성과품
-    description?: string; // 추가 사항
-    contractDate: Date; // 계약 날짜
-    ordererAddress: string; // 발주자 소재
-    ordererCompanyName: string; // 발주자 상호
-    ordererCeoName: string; // 발주자 대표명
-    contractorAddress: string; // 수급자 소재
-    contractorCompanyName: string; // 수급자 상호
-    contractorCeoName: string; // 수급자 대표명
-  };
-  collection?: {
-    stageNote: string;
-    stageList: {
-      name: string;
-      ratio: number;
-      amount: number;
-      note?: string;
-      expectedDate: Date;
-    }[],
-    totalAmountNote?: string;
-    totalAmount: number;
-  };
-  conditionList?: {
-    title: string;
-    descriptionList: string[];
-  }[];
+  pdfFile?: FileItemParameter; // 최종 pdf 파일이 있는 경우만
+  basic: ProjectContractBasicParameter;
+  collection: ProjectContractCollectionParameter;
+  conditionList: ProjectContractConditionParameter[];
 }
+
+export const initialProjectContractParameter = {
+  basic:         initialProjectContractBasicParameter,
+  collection:    initialProjectContractCollectionParameter,
+  conditionList: [initialProjectContractConditionParameter],
+  edit:          true,
+} as unknown as ProjectContractParameter;

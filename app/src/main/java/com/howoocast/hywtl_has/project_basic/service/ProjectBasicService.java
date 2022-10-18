@@ -13,7 +13,7 @@ import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicBusiness;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicDesign;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicFailReason;
-import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessAddParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicDesignParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonParameter;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
@@ -67,7 +67,7 @@ public class ProjectBasicService {
     }
 
     @Transactional
-    public void pushBusiness(Long projectId, ProjectBasicBusinessAddParameter parameter) {
+    public void addBusiness(Long projectId, ProjectBasicBusinessParameter parameter) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         Business business = new CustomFinder<>(businessRepository, Business.class).byId(parameter.getBusinessId());
         BusinessManager businessManager = new CustomFinder<>(businessManagerRepository, BusinessManager.class).byId(
@@ -84,6 +84,22 @@ public class ProjectBasicService {
             project,
             "관계사 행 추가"
         ));
+    }
+
+    @Transactional
+    public void changeBusiness(Long id, ProjectBasicBusinessParameter parameter) {
+        ProjectBasicBusiness instance = this.loadBusiness(id);
+        Business business = new CustomFinder<>(businessRepository, Business.class).byId(parameter.getBusinessId());
+        BusinessManager businessManager = new CustomFinder<>(businessManagerRepository, BusinessManager.class).byId(
+            parameter.getBusinessManagerId());
+
+        List<EventEntity> eventList = instance.change(
+            parameter.getInvolvedType(),
+            business,
+            businessManager
+        );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     @Transactional

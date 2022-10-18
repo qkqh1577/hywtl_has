@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import SectionLayout from 'layouts/SectionLayout';
 import Button from 'layouts/Button';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import {
   Table,
   Td,

@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import RequiredMark from 'components/RequiredMark';
+import RequiredMark from 'layouts/RequiredMark';
 import {
   Table,
   Td,

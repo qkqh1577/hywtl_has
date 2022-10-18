@@ -32,11 +32,24 @@ export function projectEstimateTypeName(type: ProjectEstimateType) {
   }
 }
 
+export interface ProjectEstimateTestDetailVO {
+  testType: TestType;
+  buildingCount: number;
+  buildingNameList: string[];
+}
+
+export interface ProjectEstimateTestVO {
+  siteCount?: number;
+  targetTest?: string;
+  testList?: ProjectEstimateTestDetailVO[];
+}
+
 export interface ProjectEstimateVO {
   id: ProjectEstimateId;
   code: string;
   type: ProjectEstimateType;
   isSent: boolean;
+  isLh: boolean;
   confirmed: boolean;
   recipient: string;
   note?: string;
@@ -47,6 +60,7 @@ export interface ProjectEstimateVO {
   siteList?: ProjectEstimateComplexSiteVO[];
   buildingList?: ProjectEstimateComplexBuildingVO[];
   business: BusinessShort;
+  test?: ProjectEstimateTestVO;
 }
 
 export interface ProjectEstimatePlanVO {

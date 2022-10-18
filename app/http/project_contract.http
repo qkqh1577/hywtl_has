@@ -42,7 +42,7 @@ Content-Type: application/json
       "name": "단계명3",
       "ratio": 30,
       "note": "시기",
-      "expectedDate": "DAY_TO_DELiVER_FOE_FINAL_REPORT"
+      "expectedDate": "DAY_TO_DELIVER_FOE_FINAL_REPORT"
     }
   ],
   "totalAmountNote": "금액에 대한 설명"

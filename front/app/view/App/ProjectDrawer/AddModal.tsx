@@ -3,11 +3,10 @@ import ModalLayout from 'layouts/ModalLayout';
 import {
   Box,
   Button,
-  Grid
+  Grid,
+  MenuItem
 } from '@mui/material';
-import TextField from 'components/TextField';
 import UserSelector from 'components/UserSelector';
-import SelectField from 'components/SelectField';
 import { ColorPalette } from 'app/view/App/theme';
 import { memoLabelList } from 'app/route/projectAddModal';
 import {
@@ -18,19 +17,17 @@ import {
 } from 'project_status/domain';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
+import Input from 'layouts/Input';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
+import Select from 'layouts/Select';
 
 export interface AddModalProps {
   open: boolean;
   onClose: DefaultFunction;
 }
 
-
 export default function ProjectAddModal({ open, onClose }: AddModalProps) {
   const formik = useContext(FormikContext);
-
-  const onSubmit = () => {
-    formik.handleSubmit();
-  };
 
   return (
     <ModalLayout
@@ -53,55 +50,88 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
           }}>
             <Grid container spacing={2}>
               <Grid item sm={12}>
-                <TextField
-                  required
-                  labelPosition="top"
-                  name="name"
-                  label="프로젝트 풀네임"
-                />
+                <DataFieldWithLabel required label="프로젝트 풀네임" labelPosition="top">
+                  <Input
+                    key={formik.values.name}
+                    defaultValue={formik.values.name ?? ''}
+                    onBlur={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.name !== value) {
+                        formik.setFieldValue('name', value);
+                      }
+                    }}
+                  />
+                </DataFieldWithLabel>
               </Grid>
               <Grid item sm={6}>
-                <TextField
-                  required
-                  labelPosition="top"
-                  name="alias"
-                  label="프로젝트 닉네임"
-                />
+                <DataFieldWithLabel required label="프로젝트 닉네임" labelPosition="top">
+                  <Input
+                    key={formik.values.alias}
+                    defaultValue={formik.values.alias ?? ''}
+                    onBlur={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.alias !== value) {
+                        formik.setFieldValue('alias', value);
+                      }
+                    }}
+                  />
+                </DataFieldWithLabel>
               </Grid>
               <Grid item sm={6}>
-                <UserSelector
-                  required
-                  labelPosition="top"
-                  name="receptionManagerId"
-                  label="문의 접수자"
-                />
+                <DataFieldWithLabel required label="문의 접수자" labelPosition="top">
+                  <UserSelector
+                    value={formik.values.receptionManagerId ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.receptionManagerId !== value) {
+                        formik.setFieldValue('receptionManagerId', value);
+                      }
+                    }}
+                  />
+                </DataFieldWithLabel>
               </Grid>
               <Grid item sm={6}>
-                <SelectField
-                  required
-                  labelPosition="top"
-                  name="progressStatus"
-                  label="진행 현황"
-                  options={[{
-                    key:  ProjectProgressStatus.TEMPORARY as string,
-                    text: projectProgressStatusName(ProjectProgressStatus.TEMPORARY),
-                  }, {
-                    key:  ProjectProgressStatus.UNDER_CONTRACT as string,
-                    text: projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)
-                  }]}
-                />
+                <DataFieldWithLabel required label="진행 현황" labelPosition="top">
+                  <Select
+                    value={formik.values.progressStatus ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.progressStatus !== value) {
+                        formik.setFieldValue('progressStatus', value);
+                      }
+                    }}>
+                    <MenuItem value={ProjectProgressStatus.TEMPORARY}>
+                      {projectProgressStatusName(ProjectProgressStatus.TEMPORARY)}
+                    </MenuItem>
+                    <MenuItem value={ProjectProgressStatus.UNDER_CONTRACT}>
+                      {projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)}
+                    </MenuItem>
+                  </Select>
+                </DataFieldWithLabel>
               </Grid>
               <Grid item sm={6}>
-                <SelectField
-                  required
-                  labelPosition="top"
-                  name="bidType"
-                  label="견적 구분"
-                  options={projectBasicBidTypeList.map((item) => ({
-                    key:  item as string,
-                    text: projectBasicBidTypeName(item),
-                  }))}
-                />
+                <DataFieldWithLabel required label="견적 구분" labelPosition="top">
+                  <Select
+                    value={formik.values.bidType ?? ''}
+                    onChange={(e) => {
+                      const value = e.target.value || undefined;
+                      if (formik.values.bidType !== value) {
+                        formik.setFieldValue('bidType', value);
+                      }
+                    }}>
+                    {projectBasicBidTypeList.map(item => (
+                      <MenuItem key={item} value={item}>
+                        {projectBasicBidTypeName(item)}
+                      </MenuItem>
+                    ))}
+                    <MenuItem value={ProjectProgressStatus.TEMPORARY}>
+                      {projectProgressStatusName(ProjectProgressStatus.TEMPORARY)}
+                    </MenuItem>
+                    <MenuItem value={ProjectProgressStatus.UNDER_CONTRACT}>
+                      {projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)}
+                    </MenuItem>
+                  </Select>
+                </DataFieldWithLabel>
               </Grid>
             </Grid>
           </Box>
@@ -116,11 +146,18 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
                                   i
               ) => (
                 <Grid key={label} item sm={12}>
-                  <TextField
-                    labelPosition="top"
-                    name={`memo_${i}`}
-                    label={label}
-                  />
+                  <DataFieldWithLabel label={label} labelPosition="top">
+                    <Input
+                      key={formik.values[`memo_${i}`]}
+                      defaultValue={formik.values[`memo_${i}`] ?? ''}
+                      onBlur={(e) => {
+                        const value = e.target.value || undefined;
+                        if (formik.values[`memo_${i}`] !== value) {
+                          formik.setFieldValue(`memo_${i}`, value);
+                        }
+                      }}
+                    />
+                  </DataFieldWithLabel>
                 </Grid>
               ))}
             </Grid>
@@ -135,10 +172,16 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
         </Box>
       }
       footer={
-        <>
+        <Box sx={{
+          display:        'flex',
+          width:          '100%',
+          justifyContent: 'center'
+        }}>
           <Button
             children="등록"
-            onClick={onSubmit}
+            onClick={() => {
+              formik.handleSubmit();
+            }}
             sx={{
               marginRight: '20px',
             }}
@@ -146,7 +189,7 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
           <Button onClick={onClose}>
             취소
           </Button>
-        </>
+        </Box>
       }
     />
   );

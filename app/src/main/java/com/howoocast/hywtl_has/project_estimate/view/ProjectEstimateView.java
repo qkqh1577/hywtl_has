@@ -23,9 +23,9 @@ public class ProjectEstimateView {
     private String code;
     private String type;
     private Boolean isSent;
+    private Boolean isLh;
     private Boolean confirmed;
     private String recipient;
-
     private String note;
     private UserShortView createdBy;
     private LocalDateTime createdAt;
@@ -35,6 +35,8 @@ public class ProjectEstimateView {
     private List<ProjectEstimateComplexBuildingView> buildingList;
     private BusinessShortView business;
 
+    private ProjectEstimateTestView test;
+
     protected ProjectEstimateView(
         ProjectEstimate source
     ) {
@@ -42,6 +44,7 @@ public class ProjectEstimateView {
         this.code = source.getCode();
         this.type = source.getType();
         this.isSent = source.getIsSent();
+        this.isLh = source.getIsLh();
         this.confirmed = source.getConfirmed();
         this.recipient = source.getRecipient();
         this.note = source.getNote();
@@ -60,6 +63,10 @@ public class ProjectEstimateView {
                 .collect(
                     Collectors.toList());
         }
+        this.test = ProjectEstimateTestView.assemble(
+            source.getSiteList(),
+            source.getBuildingList()
+        );
         this.business = BusinessShortView.assemble(source.getBusiness());
     }
 

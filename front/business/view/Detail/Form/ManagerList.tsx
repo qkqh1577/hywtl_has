@@ -9,13 +9,12 @@ import {
   businessManagerStatusList,
   businessManagerStatusName,
 } from 'business/domain';
-import TextField from 'components/TextField';
 import { FormikContext } from 'formik';
 import useDialog from 'components/Dialog';
 import TextBox from 'layouts/Text';
 import Button from 'layouts/Button';
 import { initialBusinessManagerParameter } from 'business/parameter';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
 
@@ -98,72 +97,140 @@ export default function BusinessManagerListSection() {
               marginRight:  '30px',
               marginBottom: '15px',
             }}>
-              <TextField
-                required
-                name={`managerList.${i}.name`}
-                label="담당자명"
-              />
+              <DataFieldWithLabel required={edit} label="담당자명">
+                <Input
+                  readOnly={!edit}
+                  key={manager.name}
+                  defaultValue={manager.name ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.name !== value) {
+                      formik.setFieldValue(`managerList.${i}.name`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
             }}>
-              <TextField
-                name={`managerList.${i}.department`}
-                label="소속"
-              />
+              <DataFieldWithLabel label="소속">
+                <Input
+                  readOnly={!edit}
+                  key={manager.department}
+                  defaultValue={manager.department ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.department !== value) {
+                      formik.setFieldValue(`managerList.${i}.department`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
             }}>
-              <TextField
-                name={`managerList.${i}.jobTitle`}
-                label="직위"
-              />
+              <DataFieldWithLabel label="직위">
+                <Input
+                  readOnly={!edit}
+                  key={manager.jobTitle}
+                  defaultValue={manager.jobTitle ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.jobTitle !== value) {
+                      formik.setFieldValue(`managerList.${i}.jobTitle`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
             }}>
-              <TextField
-                name={`managerList.${i}.mobilePhone`}
-                label="핸드폰"
-              />
+              <DataFieldWithLabel label="핸드폰 번호">
+                <Input
+                  readOnly={!edit}
+                  key={manager.mobilePhone}
+                  defaultValue={manager.mobilePhone ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.mobilePhone !== value) {
+                      formik.setFieldValue(`managerList.${i}.mobilePhone`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
+            <Box sx={{
+              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight:  '30px',
+              marginBottom: '15px',
+            }}>
+              <DataFieldWithLabel label="전화번호">
+                <Input
+                  readOnly={!edit}
+                  key={manager.officePhone}
+                  defaultValue={manager.officePhone ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.officePhone !== value) {
+                      formik.setFieldValue(`managerList.${i}.officePhone`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{
+              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight:  '30px',
+              marginBottom: '15px',
+            }}>
+              <DataFieldWithLabel label="메타">
+                <Input
+                  readOnly={!edit}
+                  key={manager.meta}
+                  defaultValue={Array.isArray(manager.meta) ? manager.meta.join(', ') : ''}
+                  onBlur={(e) => {
+                    const formikValue = Array.isArray(manager.meta) ? manager.meta.join(', ') : undefined;
+                    const value = e.target.value || undefined;
 
-            <Box sx={{
-              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
-              marginRight:  '30px',
-              marginBottom: '15px',
-            }}>
-              <TextField
-                name={`managerList.${i}.officePhone`}
-                label="전화번호"
-              />
+                    if (formikValue !== value) {
+                      const result: string[] | undefined = value
+                        ? value.split(',')
+                               .map(v => v.trim())
+                               .filter(v => v !== '')
+                        : undefined;
+                      formik.setFieldValue(`managerList.${i}.meta`, result);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
             }}>
-              <TextField
-                name={`managerList.${i}.meta`}
-                label="메타"
-              />
-            </Box>
-            <Box sx={{
-              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
-              marginRight:  '30px',
-              marginBottom: '15px',
-            }}>
-              <TextField
-                name={`managerList.${i}.email`}
-                label="이메일"
-              />
+              <DataFieldWithLabel label="이메일">
+                <Input
+                  readOnly={!edit}
+                  key={manager.email}
+                  defaultValue={manager.email ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (manager.email !== value) {
+                      formik.setFieldValue(`managerList.${i}.email`, value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,

@@ -42,9 +42,10 @@ export default function BasicContractForm() {
           </Th>
           <Td>
             <Input
-              value={formik.values.serviceDuration ?? ''}
+              key={formik.values.serviceDuration}
+              defaultValue={formik.values.serviceDuration ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (formik.values.serviceDuration !== value) {
                   formik.setFieldValue('serviceDuration', value);
@@ -76,9 +77,10 @@ export default function BasicContractForm() {
           </Th>
           <Td>
             <Input
-              value={formik.values.collectionStageNote ?? ''}
+              key={formik.values.collectionStageNote}
+              defaultValue={formik.values.collectionStageNote ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (formik.values.collectionStageNote !== value) {
                   formik.setFieldValue('collectionStageNote', value);
@@ -100,9 +102,10 @@ export default function BasicContractForm() {
           </Th>
           <Td>
             <Input
-              value={formik.values.outcome ?? ''}
+              key={formik.values.outcome}
+              defaultValue={formik.values.outcome ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (formik.values.outcome !== value) {
                   formik.setFieldValue('outcome', value);

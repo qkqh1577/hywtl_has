@@ -114,8 +114,7 @@ public class ProjectContract extends CustomEntity {
         String note,
         ProjectContractBasic basic,
         ProjectContractCollection collection,
-        List<ProjectContractCondition> conditionList,
-        @Nullable FileItem pdfFile
+        List<ProjectContractCondition> conditionList
     ) {
         List<EventEntity> eventList = new ArrayList<>();
         eventList.add(EventEntity.of(
@@ -157,13 +156,20 @@ public class ProjectContract extends CustomEntity {
             "복합 내용은 일시 정보만 기록함"
         ));
         this.conditionList = conditionList;
+
+        return eventList;
+    }
+
+    public List<EventEntity> changePdfFile(
+        @Nullable FileItem pdfFile
+    ) {
+        List<EventEntity> eventList = new ArrayList<>();
         eventList.add(EventEntity.of(
             "최종 날인본 변경",
             this.pdfFile,
             pdfFile
         ));
         this.pdfFile = pdfFile;
-
         return eventList;
     }
 

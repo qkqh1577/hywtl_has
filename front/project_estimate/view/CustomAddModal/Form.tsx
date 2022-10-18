@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import BusinessSelector from 'components/BusinessSelector';
 import UploadField from 'components/UploadField';
 import { FormikContext } from 'formik';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import { fileToView } from 'file-item';
@@ -70,6 +70,25 @@ export default function () {
               formik.setFieldValue('businessId', id);
             }}
           />
+        </DataFieldWithLabel>
+      </Box>
+      <Box sx={{ width: '45%' }}>
+        <DataFieldWithLabel required label="LH 여부" labelPosition="top">
+          <Select
+            displayEmpty
+            value={typeof formik.values.isLh === 'boolean' ? (formik.values.isLh ? 'Y' : 'N') : ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (value === 'Y') {
+                formik.setFieldValue('isLh', true);
+              }
+              else {
+                formik.setFieldValue('isLh', false);
+              }
+            }}>
+            <MenuItem value="Y">Y</MenuItem>
+            <MenuItem value="N">N</MenuItem>
+          </Select>
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '90%' }}>

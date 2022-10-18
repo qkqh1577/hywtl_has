@@ -11,5 +11,5 @@ public class ContractCollectionStageParameter {
     private String name;
     private Double ratio;
     private String note;
-    private ContractCollectionStageExpectedDateType expectedDateType;
+    private ContractCollectionStageExpectedDateType expectedDate;
 }

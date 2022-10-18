@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import {
   Box,
@@ -6,91 +9,48 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material';
 import Button from 'layouts/Button';
-import {
-  ProjectBasicBusiness,
-  ProjectBasicBusinessId
-} from 'project_basic/domain';
-import { ColorPalette } from 'app/view/App/theme';
-import { businessInvolvedTypeName } from 'business/domain';
+import { ProjectBasicBusiness, } from 'project_basic/domain';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
-
-function Label(props: { children: string }) {
-  return (
-    <Box sx={{
-      display:        'flex',
-      width:          '100%',
-      height:         '100%',
-      justifyContent: 'center',
-      alignItems:     'center',
-    }}>
-      <Typography sx={{
-        fontSize:  '13px',
-        color:     ColorPalette._9b9ea4,
-        wordBreak: 'keep-all',
-        width:     '110px'
-      }}>
-        {props.children}
-      </Typography>
-    </Box>
-  );
-}
+import { DefaultFunction } from 'type/Function';
+import dayjs from 'dayjs';
+import { businessInvolvedTypeName } from 'business/domain';
+import TextLink from 'layouts/TextLink';
 
 interface Props {
-  projectBasicBusinessList: ProjectBasicBusiness[];
-  handleAddBusiness: () => void;
-  handleDetailBusiness: (id: ProjectBasicBusinessId) => void;
+  businessList: ProjectBasicBusiness[] | undefined;
+  openAddModal: DefaultFunction;
+  openChangeModal: (item: ProjectBasicBusiness) => void;
 }
 
-export default function ProjectBasicBusinessSection({ projectBasicBusinessList, handleAddBusiness, handleDetailBusiness }: Props) {
-  const getTableRows = () => {
-    if (projectBasicBusinessList.length === 0) {
-      return (
-        <TableRow>
-          <Td colSpan={6}>등록된 관계사가 없습니다.</Td>
-        </TableRow>
-      );
-    }
+export default function ProjectBasicBusinessSection(props: Props) {
 
-    return projectBasicBusinessList.map((item) => (
-      <TableRow
-        key={item.id}
-        onClick={() => {
-          handleDetailBusiness(item.id);
-        }}>
-        <Td>
-          <Label>{businessInvolvedTypeName(item.involvedType)}</Label>
-        </Td>
-        <Td>
-          {item.business.name}
-        </Td>
-        <Td>
-          {item.businessManager.department}
-        </Td>
-        <Td>
-          {item.businessManager.name}
-        </Td>
-        <Td>
-          {item.businessManager.jobTitle}
-        </Td>
-        <Td>
-          {item.businessManager.mobilePhone}
-        </Td>
-      </TableRow>
-    ));
-  };
+  const [modifiedAt, setModifiedAt] = useState<Date>();
+
+  useEffect(() => {
+    if (!Array.isArray(props.businessList) || props.businessList.length === 0) {
+      setModifiedAt(undefined);
+    }
+    else {
+      setModifiedAt(props.businessList.map(item => dayjs(item.modifiedAt))
+                         .reduce((a,
+                                  b
+                         ) => a.isAfter(b) ? a : b)
+                         .toDate());
+    }
+  }, [props.businessList]);
 
   return (
     <SectionLayout
       title="관계사"
+      modifiedAt={modifiedAt}
       titleRightComponent={
-        <Button onClick={() => handleAddBusiness()}>
+        <Button shape="small" onClick={props.openAddModal}>
           + 등록
         </Button>
       }>
@@ -108,16 +68,48 @@ export default function ProjectBasicBusinessSection({ projectBasicBusinessList, 
             <Table>
               <TableHead>
                 <TableRow>
-                  <Th><Label> </Label></Th>
-                  <Th><Label>업체명</Label></Th>
-                  <Th><Label>소속</Label></Th>
-                  <Th><Label>이름</Label></Th>
-                  <Th><Label>직위</Label></Th>
-                  <Th><Label>핸드폰번호</Label></Th>
+                  <Th />
+                  <Th>업체명</Th>
+                  <Th>소속</Th>
+                  <Th>이름</Th>
+                  <Th>직위</Th>
+                  <Th>핸드폰번호</Th>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {getTableRows()}
+                {(!Array.isArray(props.businessList) || props.businessList.length === 0) && (
+                  <TableRow>
+                    <Td colSpan={6}>
+                      조회 결과가 없습니다.
+                    </Td>
+                  </TableRow>
+                )}
+                {Array.isArray(props.businessList) && props.businessList.map(item => (
+                  <TableRow key={item.id}>
+                    <Td>
+                      {businessInvolvedTypeName(item.involvedType)}
+                    </Td>
+                    <Td>
+                      <TextLink onClick={() => {
+                        props.openChangeModal(item);
+                      }}>
+                        {item.business?.name}
+                      </TextLink>
+                    </Td>
+                    <Td>
+                      {item.businessManager?.department}
+                    </Td>
+                    <Td>
+                      {item.businessManager?.name}
+                    </Td>
+                    <Td>
+                      {item.businessManager?.jobTitle}
+                    </Td>
+                    <Td>
+                      {item.businessManager?.mobilePhone}
+                    </Td>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

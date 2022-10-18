@@ -18,8 +18,8 @@ export default function ProjectContractListRoute() {
   const dispatch = useDispatch();
   const id = useId();
   const { list } = useSelector((root: RootState) => root.projectContract);
-  const openAddModal = useCallback(() => dispatch(projectContractAction.setAddModal(true)), [dispatch]);
-  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setDetailModal(id)), [dispatch]);
+  const openAddModal = useCallback(() => dispatch(projectContractAction.setModal(null)), [dispatch]);
+  const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
 
   useEffect(() => {

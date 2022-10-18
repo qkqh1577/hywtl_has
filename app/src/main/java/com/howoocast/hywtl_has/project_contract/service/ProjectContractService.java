@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -105,7 +106,6 @@ public class ProjectContractService {
         ProjectContract instance = this.load(id);
         ProjectEstimate estimate = new CustomFinder<>(estimateRepository, ProjectEstimate.class).byId(
             parameter.getEstimateId());
-        FileItem pdfFile = fileItemService.build(parameter.getPdfFile());
 
         List<EventEntity> eventList = instance.change(
             estimate,
@@ -114,9 +114,20 @@ public class ProjectContractService {
             parameter.getNote(),
             toBasic(parameter.getBasic()),
             toCollection(parameter.getCollection()),
-            toConditionList(parameter.getConditionList()),
-            pdfFile
+            toConditionList(parameter.getConditionList())
         );
+        eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
+    }
+
+    @Transactional
+    public void changePdfFile(
+        Long id,
+        FileItemParameter parameter
+    ) {
+        ProjectContract instance = this.load(id);
+        FileItem pdfFile = fileItemService.build(parameter);
+        List<EventEntity> eventList = instance.changePdfFile(pdfFile);
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
     }

@@ -173,6 +173,29 @@ export default function () {
                   ) => a + b);
   }, [templateList]);
 
+  const totalReviewAmount = useMemo((): number | undefined => {
+    if (!Array.isArray(templateList)) {
+      return undefined;
+    }
+    const withReview = templateList.filter(template => template.testType === TestType.REVIEW);
+    if (withReview.length === 0) {
+      return undefined;
+    }
+    const onlyUse = withReview.map(template => template.detailList)
+                              .reduce((a,
+                                       b
+                              ) => [...a, ...b])
+                              .filter(detail => detail.inUse);
+
+    if (!Array.isArray(onlyUse) || onlyUse.length === 0) {
+      return 0;
+    }
+    return onlyUse.map(detail => detail.totalAmount ?? 0)
+                  .reduce((a,
+                           b
+                  ) => a + b);
+  }, [templateList]);
+
   const getTestCount: getTestCount = useCallback((testType,
                                                   unit
   ) => {
@@ -222,6 +245,14 @@ export default function () {
     return 0;
 
   }, [siteList, buildingList]);
+
+  useEffect(() => {
+    formik.setFieldValue('plan.testAmount', totalTestAmount);
+  }, [totalTestAmount]);
+
+  useEffect(() => {
+    formik.setFieldValue('plan.reviewAmount', totalReviewAmount);
+  }, [totalReviewAmount]);
 
   return (
     <Box sx={{

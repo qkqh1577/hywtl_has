@@ -29,9 +29,8 @@ public class ProjectContractTemplateController {
         );
     }
 
-    @GetMapping("/project/sales/{projectId}/contract/collection")
+    @GetMapping("/project/sales/contract/collection")
     public ProjectContractCollectionView collection(
-        @SuppressWarnings("unused") @PathVariable Long projectId,
         @RequestParam(required = false) Long estimateId
     ) {
         return ProjectContractCollectionView.assemble(

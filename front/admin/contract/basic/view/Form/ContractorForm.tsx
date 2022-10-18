@@ -32,9 +32,10 @@ export default function ContractorForm() {
           </Th>
           <Td>
             <Input
-              value={contractor.address ?? ''}
+              key={contractor.address}
+              defaultValue={contractor.address ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (contractor.address !== value) {
                   formik.setFieldValue('contractor.address', value);
@@ -49,9 +50,10 @@ export default function ContractorForm() {
           </Th>
           <Td>
             <Input
-              value={contractor.companyName ?? ''}
+              key={contractor.companyName}
+              defaultValue={contractor.companyName ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (contractor.companyName !== value) {
                   formik.setFieldValue('contractor.companyName', value);
@@ -66,9 +68,10 @@ export default function ContractorForm() {
           </Th>
           <Td>
             <Input
-              value={contractor.ceoName ?? ''}
+              key={contractor.ceoName}
+              defaultValue={contractor.ceoName ?? ''}
               variant="outlined"
-              onChange={(e) => {
+              onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (contractor.ceoName !== value) {
                   formik.setFieldValue('contractor.ceoName', value);

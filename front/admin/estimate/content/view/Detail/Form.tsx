@@ -4,22 +4,22 @@ import {
   FormControlLabel,
   FormGroup,
 } from '@mui/material';
-import TextField from 'components/TextField';
 import {
   TestType,
   testTypeList,
   testTypeName
 } from 'type/TestType';
 import DetailList from 'admin/estimate/content/view/Detail/DetailList';
-import { FormikContext, } from 'formik';
+import { FormikContext } from 'formik';
 import VariableList from 'admin/estimate/content/view/Detail/VariableList';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 import { ColorPalette } from 'app/view/App/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Checkbox from 'layouts/Checkbox';
 import { initialEstimateContentParameter } from 'admin/estimate/content/parameter';
+import Input from 'layouts/Input';
 
 interface Props {
   variableList: EstimateContentVariableVO[] | undefined;
@@ -75,11 +75,18 @@ export default function Form(props: Props) {
               width:        '100%',
               marginBottom: '15px',
             }}>
-              <TextField
-                required
-                name="name"
-                label="이름"
-              />
+              <DataFieldWithLabel required label="이름">
+                <Input
+                  key={formik.values.name}
+                  defaultValue={formik.values.name ?? ''}
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (formik.values.name !== value) {
+                      formik.setFieldValue('name', value);
+                    }
+                  }}
+                />
+              </DataFieldWithLabel>
             </Box>
             <Box sx={{
               display:      'flex',
@@ -111,7 +118,6 @@ export default function Form(props: Props) {
                     }}
                   />
                   <FormControlLabel
-
                     label={testTypeName(TestType.REVIEW)}
                     control={
                       <Checkbox

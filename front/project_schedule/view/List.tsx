@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import dayjs from 'dayjs';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import { ProjectScheduleProps } from 'project_schedule/view/index';
 
 export default function List(props: Pick<ProjectScheduleProps, | 'list' | 'onDetailModalOpen'>) {

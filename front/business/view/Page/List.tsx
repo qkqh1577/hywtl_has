@@ -13,7 +13,7 @@ import {
   Th
 } from 'layouts/Table';
 import Button from 'layouts/Button';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 import TableLayout from 'layouts/TableLayout';
 import { useNavigate } from 'react-router-dom';
 

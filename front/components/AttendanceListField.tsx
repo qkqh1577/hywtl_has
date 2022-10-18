@@ -17,7 +17,7 @@ import { userApi } from 'user/api';
 import UserIcon from 'layouts/UserIcon';
 import TextBox from 'layouts/Text';
 import Input from 'layouts/Input';
-import DataFieldWithLabel from 'components/DataFieldLabel';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import useDialog from 'components/Dialog';
 
 interface Props {

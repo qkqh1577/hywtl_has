@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  Table,
   TableBody,
   TableRow,
 } from '@mui/material';
 import {
+  Table,
   Td,
-  Th,
+  Th
 } from 'layouts/Table';
 import Button from 'layouts/Button';
 import Tooltip from 'components/Tooltip';
@@ -45,10 +45,7 @@ export default function Form({ variableList }: Props) {
       width:          '100%',
       justifyContent: 'space-between',
     }}>
-      <Box sx={{
-        width: '66%',
-
-      }}>
+      <Box sx={{ width: '66%' }}>
         {Array.isArray(list) && list.map((condition,
                                           i
         ) => (
@@ -63,47 +60,10 @@ export default function Form({ variableList }: Props) {
               marginBottom: '15px',
             }}>
             <Table
-              stickyHeader
-              aria-label="sticky table"
+              disableSticky
+              variant="left"
               sx={{
-                width:           '100%',
-                backgroundColor: ColorPalette._ffffff,
-                border:          'none',
-                borderRadius:    '5px',
-                '& td, & th':    {
-                  borderLeft: `1px solid ${ColorPalette._e4e9f2}`,
-                  borderTop:  `1px solid ${ColorPalette._e4e9f2}`,
-                },
-                '& > tbody':     {
-                  '& > tr:first-of-type':  {
-                    '& > td:first-of-type': {
-                      borderRight:         `5px solid ${ColorPalette._e4e9f2}`,
-                      borderTopLeftRadius: '5px',
-                    },
-                    '& > td:last-child':    {
-                      borderTopRightRadius: '5px',
-                    },
-                  },
-                  '& > tr':                {
-                    '& > td:last-child': {
-                      borderRight: `1px solid ${ColorPalette._e4e9f2}`,
-                    },
-                  },
-                  '& > tr:nth-of-type(2)': {
-                    '& > td:first-of-type': {
-                      borderRight:            `5px solid ${ColorPalette._e4e9f2}`,
-                      borderBottomLeftRadius: '5px',
-                    },
-                  },
-                  '& > tr:last-child':     {
-                    '& > td':            {
-                      borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
-                    },
-                    '& > td:last-child': {
-                      borderBottomRightRadius: '5px',
-                    },
-                  },
-                }
+                width: '100%'
               }}>
               <TableBody>
                 <TableRow>
@@ -113,8 +73,9 @@ export default function Form({ variableList }: Props) {
                   <Td colSpan={(!condition.descriptionList || condition.descriptionList.length === 0) ? 2 : 3}>
                     <Input
                       variant="outlined"
-                      value={condition.title ?? ''}
-                      onChange={(e) => {
+                      key={condition.title}
+                      defaultValue={condition.title ?? ''}
+                      onBlur={(e) => {
                         const value = e.target.value || undefined;
                         if (condition.title !== value) {
                           formik.setFieldValue(`contractConditionList.${i}.title`, value);
@@ -135,8 +96,9 @@ export default function Form({ variableList }: Props) {
                       <Td>
                         <Input
                           variant="outlined"
-                          value={description ?? ''}
-                          onChange={(e) => {
+                          key={description}
+                          defaultValue={description ?? ''}
+                          onBlur={(e) => {
                             const value = e.target.value as string;
                             if (description !== value) {
                               const result: string[] = [];

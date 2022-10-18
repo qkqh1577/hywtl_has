@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import DateFormat from 'components/DateFormat';
+import DateFormat from 'layouts/DateFormat';
 import dayjs from 'dayjs';
 import {
   OnAddModalOpen,
@@ -28,7 +28,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'layouts/Button';
 import TextBox from 'layouts/Text';
-import TextLink from 'components/TextLink';
+import TextLink from 'layouts/TextLink';
 
 interface Props {
   type: ProjectDocumentType;

@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.project_basic.controller;
 
-import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessAddParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicDesignParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonParameter;
 import com.howoocast.hywtl_has.project_basic.service.ProjectBasicService;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,13 +61,22 @@ public class ProjectBasicController {
         return ProjectBasicFailReasonView.assemble(service.getFailReason(id));
     }
 
-    @PostMapping("/project/sales/{id}/basic/business")
+    @PutMapping("/project/sales/{id}/basic/business")
     public void addBusiness(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectBasicBusinessAddParameter parameter
+        @Valid @RequestBody ProjectBasicBusinessParameter parameter
     ) {
-        service.pushBusiness(id, parameter);
+        service.addBusiness(id, parameter);
     }
+
+    @PutMapping("/project/sales/basic/business/{id}")
+    public void changeBusiness(
+        @PathVariable Long id,
+        @Valid @RequestBody ProjectBasicBusinessParameter parameter
+    ) {
+        service.changeBusiness(id, parameter);
+    }
+
 
     @PostMapping("/project/sales/{id}/basic/fail-reason")
     public void addFailReason(

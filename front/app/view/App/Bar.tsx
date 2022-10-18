@@ -2,9 +2,9 @@ import {
   AppBar as MuiAppBar,
   Box
 } from '@mui/material';
-import SearchBar from 'app/view/App/SearchBar';
 import React from 'react';
 import { ColorPalette } from 'app/view/App/theme';
+import Input from 'layouts/Input';
 
 interface Props {
   projectAppBar: React.ReactNode;
@@ -46,7 +46,18 @@ export default function AppBar(props: Props) {
             alignItems:  'center',
             marginRight: '10px',
           }}>
-            <SearchBar />
+            <Input
+              variant="outlined"
+              placeholder="통합 검색"
+              sx={{
+                width:        '240px',
+                paddingLeft:  '10px',
+                paddingRight: '10px',
+                border:       '1px solid #44527b',
+                borderRadius: '8px',
+                color:        '#fff',
+              }}
+            />
             {props.notificationButton}
             {props.accountButton}
             {props.logoutButton}

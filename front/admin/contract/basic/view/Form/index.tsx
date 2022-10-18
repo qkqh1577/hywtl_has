@@ -6,10 +6,7 @@ import { Box } from '@mui/material';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
 
-export interface Props {
-}
-
-export default function (props: Props) {
+export default function () {
   const formik = useContext(FormikContext);
 
   return (
@@ -18,7 +15,7 @@ export default function (props: Props) {
       display:  'flex',
       flexWrap: 'wrap',
     }}>
-      <BasicContractForm {...props} />
+      <BasicContractForm />
       <Box sx={{
         display: 'flex',
         width:   '100%',
@@ -26,9 +23,10 @@ export default function (props: Props) {
       }}>
         <Input
           multiline
+          key={formik.values.description}
           variant="outlined"
-          value={formik.values.description ?? ''}
-          onChange={(e) => {
+          defaultValue={formik.values.description ?? ''}
+          onBlur={(e) => {
             const value = e.target.value || undefined;
             if (formik.values.description !== value) {
               formik.setFieldValue('description', value);
@@ -36,7 +34,7 @@ export default function (props: Props) {
           }}
         />
       </Box>
-      <ContractorForm {...props} />
+      <ContractorForm />
     </Box>
   );
 };

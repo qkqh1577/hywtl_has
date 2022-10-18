@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProjectEstimateController {
 
     private final ProjectEstimateService service;
+
     @GetMapping("/project/sales/estimate/{id}")
     public ProjectEstimateView get(
         @PathVariable Long id
     ) {
         return ProjectEstimateView.assemble(service.get(id));
     }
+
     @GetMapping("/project/sales/{projectId}/estimate")
     public List<ProjectEstimateShortView> list(
         @PathVariable Long projectId
