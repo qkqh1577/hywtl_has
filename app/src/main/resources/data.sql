@@ -58,6 +58,10 @@ INSERT INTO hywtl_has_api.business_manager_list (business_id, manager_list_id) V
 INSERT INTO hywtl_has_api.business_manager_list (business_id, manager_list_id) VALUES (9, 9);
 INSERT INTO hywtl_has_api.business_manager_meta (business_manager_id, meta) VALUES (1, '김기업 차장');
 INSERT INTO hywtl_has_api.business_manager_meta (business_manager_id, meta) VALUES (1, '김차장');
+INSERT INTO hywtl_has_api.contract_collection (id, created_at, created_by, deleted_at, deleted_by, modified_at, modified_by, total_amount_note) VALUES (1, '2022-10-18 16:13:46.899878', 1, null, null, null, 1, null);
+INSERT INTO hywtl_has_api.contract_collection_stage_list (contract_collection_id, expected_date, name, note, ratio) VALUES (1, 0, '시작금', '계약 시작 시', 31);
+INSERT INTO hywtl_has_api.contract_collection_stage_list (contract_collection_id, expected_date, name, note, ratio) VALUES (1, 1, '중간금', '설풍 보고 시', 33);
+INSERT INTO hywtl_has_api.contract_collection_stage_list (contract_collection_id, expected_date, name, note, ratio) VALUES (1, 2, '잔금', '최종 보고 시', 36);
 INSERT INTO hywtl_has_api.department (id, category, created_at, created_by, note, name, deleted_at, deleted_by, seq, parent_id) VALUES (1, 'COMPANY', '2022-04-12 15:13:04.655439', 0, null, '한양풍동실험연구소', null, null, 1, null);
 INSERT INTO hywtl_has_api.department (id, category, created_at, created_by, note, name, deleted_at, deleted_by, seq, parent_id) VALUES (2, 'HQ', '2022-04-12 15:13:04.740280', 0, null, '기술본부', null, null, 1, 1);
 INSERT INTO hywtl_has_api.department (id, category, created_at, created_by, note, name, deleted_at, deleted_by, seq, parent_id) VALUES (3, 'TEAM', '2022-04-12 15:13:04.799615', 0, null, '기술팀', null, null, 1, 2);

@@ -18,6 +18,8 @@ import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import Button from 'layouts/Button';
 import { ColorPalette } from 'app/view/App/theme';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 export default function () {
 
@@ -117,7 +119,32 @@ export default function () {
               />
             </Td>
             <Td>
-              TBD
+              <DatePicker
+                openTo="year"
+                inputFormat="YYYY-MM-DD"
+                mask="____-__-__"
+                disabled={!edit}
+                value={stage.expectedDate ? dayjs(stage.expectedDate)
+                .format('YYYY-MM-DD') : null}
+                onChange={(e) => {
+                  const value = e ? dayjs(e)
+                  .format('YYYY-MM-DD') : undefined;
+                  const formikValue = stage.expectedDate ? dayjs(stage.expectedDate)
+                  .format('YYYY-MM-DD') : undefined;
+                  if (formikValue !== value) {
+                    formik.setFieldValue(`collection.stageList.${i}.expectedDate`, value);
+                  }
+                }}
+                renderInput={(parameter) => (
+                  <Input
+                    {...parameter.InputProps}
+                    inputRef={parameter.inputRef}
+                    variant="outlined"
+                    value={parameter.value}
+                    inputProps={parameter.inputProps}
+                  />
+                )}
+              />
             </Td>
             {edit && (
               <Td> U D</Td>

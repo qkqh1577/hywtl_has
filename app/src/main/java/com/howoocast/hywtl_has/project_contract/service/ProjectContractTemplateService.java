@@ -71,9 +71,9 @@ public class ProjectContractTemplateService {
             Objects.nonNull(orderer) ? orderer.getBusiness().getAddress() : null,
             Objects.nonNull(orderer) ? orderer.getBusiness().getName() : null,
             Objects.nonNull(orderer) ? orderer.getBusiness().getCeoName() : null,
-            template.getContractor().getAddress(),
-            template.getContractor().getCompanyName(),
-            template.getContractor().getCeoName()
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getAddress() : null,
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getCompanyName() : null,
+            Objects.nonNull(template.getContractor()) ? template.getContractor().getCeoName() : null
         );
     }
 
