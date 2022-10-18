@@ -10,6 +10,7 @@ import {
 import { ProjectId } from 'project/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
 import { ProjectEstimateId } from 'project_estimate/domain';
+import { FileItemParameter } from 'file-item';
 
 class ProjectContractApi {
 
@@ -50,8 +51,14 @@ class ProjectContractApi {
   async change(projectContractId: ProjectContractId,
                params: ProjectContractParameter
   ): Promise<void> {
-    const formData = toFormData(params);
-    const { data } = await apiClient.put(`/project/sales/contract/${projectContractId}`, formData);
+    const { data } = await apiClient.put(`/project/sales/contract/${projectContractId}`, params);
+    return data;
+  }
+
+  async changePdf(projectContractId: ProjectContractId,
+                  params: FileItemParameter
+  ): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/contract/${projectContractId}/pdf`, toFormData(params));
     return data;
   }
 

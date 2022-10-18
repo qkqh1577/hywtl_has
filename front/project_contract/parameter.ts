@@ -32,8 +32,6 @@ export interface ProjectContractCollectionStageParameter {
   expectedDate: string;
 }
 
-export const initialProjectContractCollectionStageParameter = {} as ProjectContractCollectionStageParameter;
-
 export interface ProjectContractCollectionParameter {
   stageNote: string;
   stageList: ProjectContractCollectionStageParameter[];
@@ -42,8 +40,8 @@ export interface ProjectContractCollectionParameter {
 }
 
 export const initialProjectContractCollectionParameter = {
-  stageList: [initialProjectContractCollectionStageParameter]
-} as ProjectContractCollectionParameter;
+  stageList: []
+} as unknown as ProjectContractCollectionParameter;
 
 export interface ProjectContractConditionParameter {
   title: string;

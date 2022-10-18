@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_contract.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractConfirmedParameter;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractParameter;
 import com.howoocast.hywtl_has.project_contract.service.ProjectContractService;
@@ -79,8 +80,16 @@ public class ProjectContractController {
     @PutMapping("/project/sales/contract/{id}")
     public void change(
         @PathVariable Long id,
-        @Valid @ModelAttribute ProjectContractParameter parameter
+        @Valid @RequestBody ProjectContractParameter parameter
     ) {
         service.change(id, parameter);
+    }
+
+    @PostMapping("/project/sales/contract/{id}/pdf")
+    public void changePdf(
+        @PathVariable Long id,
+        @Valid @ModelAttribute FileItemParameter parameter
+    ) {
+        service.changePdfFile(id, parameter);
     }
 }

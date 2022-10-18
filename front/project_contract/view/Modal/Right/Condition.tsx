@@ -23,6 +23,7 @@ import useDialog from 'components/Dialog';
 
 export default function () {
   const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
   const conditionList = formik.values.conditionList ?? [];
   const { error } = useDialog();
 
@@ -40,19 +41,22 @@ export default function () {
         flexWrap:       'nowrap',
         justifyContent: 'space-between',
         alignItems:     'center',
+        marginBottom:   '10px',
       }}>
         <Box sx={{ width: 'calc(100% - 90px)', paddingLeft: '90px', textAlign: 'center' }}>
           <TextBox variant="heading3">용역 계약 조건</TextBox>
         </Box>
-        <Box sx={{ width: '80px' }}>
-          <Button shape="small" onClick={() => {
-            formik.setFieldValue('conditionList', [...conditionList, {
-              descriptionList: []
-            }]);
-          }}>
-            조건 추가
-          </Button>
-        </Box>
+        {edit && (
+          <Box sx={{ width: '80px' }}>
+            <Button shape="small" onClick={() => {
+              formik.setFieldValue('conditionList', [...conditionList, {
+                descriptionList: []
+              }]);
+            }}>
+              조건 추가
+            </Button>
+          </Box>
+        )}
       </Box>
       {conditionList.map((condition,
                           i
@@ -78,11 +82,13 @@ export default function () {
                 <Th sx={{ width: '140px' }}>
                   제목
                 </Th>
-                <Td colSpan={(!condition.descriptionList || condition.descriptionList.length === 0) ? 2 : 3}>
+                <Td colSpan={!edit ? 1 : (!condition.descriptionList || condition.descriptionList.length === 0) ? 2 : 3}>
                   <Input
                     variant="outlined"
-                    value={condition.title ?? ''}
-                    onChange={(e) => {
+                    readOnly={!edit}
+                    key={condition.title}
+                    defaultValue={condition.title ?? ''}
+                    onBlur={(e) => {
                       const value = e.target.value || undefined;
                       if (condition.title !== value) {
                         formik.setFieldValue(`conditionList.${i}.title`, value);
@@ -103,8 +109,10 @@ export default function () {
                     <Td>
                       <Input
                         variant="outlined"
-                        value={description ?? ''}
-                        onChange={(e) => {
+                        key={description}
+                        defaultValue={description ?? ''}
+                        readOnly={!edit}
+                        onBlur={(e) => {
                           const value = e.target.value as string;
                           if (description !== value) {
                             const result: string[] = [];
@@ -116,148 +124,155 @@ export default function () {
                         }}
                       />
                     </Td>
-                    <Td sx={{ width: '100px' }}>
-                      <Box sx={{
-                        display:        'flex',
-                        width:          '100%',
-                        justifyContent: 'space-around',
-                      }}>
-                        <Tooltip title="순서 올리기">
-                          <IconButton
-                            shape="square"
-                            disabled={j === 0}
-                            children={<FontAwesomeIcon icon="angle-up" />}
-                            onClick={() => {
-                              const prevList = condition.descriptionList.filter((t,
-                                                                                 k
-                              ) => k !== j);
-                              const result: string[] = [];
-                              for (let k = 0; k < prevList.length; k++) {
-                                if (result.length === j - 1) {
-                                  result.push(description);
-                                }
-                                result.push(prevList[k]);
-                              }
-                              console.log({ prevList, result });
-                              formik.setFieldValue(`conditionList.${i}.descriptionList`, result);
-                            }}
-                          />
-                        </Tooltip>
-                        <Tooltip title="순서 내리기">
-                          <IconButton
-                            shape="square"
-                            disabled={j === condition.descriptionList.length - 1}
-                            children={<FontAwesomeIcon icon="angle-down" />}
-                            onClick={() => {
-                              const prevList = condition.descriptionList.filter((t,
-                                                                                 k
-                              ) => k !== j);
-                              const result: string[] = [];
-                              for (let k = 0; k < prevList.length; k++) {
-                                result.push(prevList[k]);
-                                if (result.length === j + 1) {
-                                  result.push(description);
-                                }
-                              }
-                              formik.setFieldValue(`conditionList.${i}.descriptionList`, result);
-                            }}
-                          />
-                        </Tooltip>
-                      </Box>
-                    </Td>
-                    <Td sx={{ width: '100px' }}>
-                      <Button
-                        shape="basic3"
-                        disabled={condition.descriptionList.length <= 1}
-                        onClick={() => {
-                          if (condition.descriptionList.length === 1) {
-                            error('최소 하나 이상의 세부 항목이 필요합니다.');
-                            return;
-                          }
-                          formik.setFieldValue(`conditionList.${i}.descriptionList`, condition.descriptionList.filter((detail,
-                                                                                                                       k
-                          ) => k !== j));
+                    {edit && (
+                      <Td sx={{ width: '90px' }}>
+                        <Box sx={{
+                          display:        'flex',
+                          width:          '100%',
+                          justifyContent: 'space-around',
                         }}>
-                        삭제
-                      </Button>
-                    </Td>
+                          <Tooltip title="순서 올리기">
+                            <IconButton
+                              shape="square"
+                              disabled={j === 0}
+                              children={<FontAwesomeIcon icon="angle-up" />}
+                              onClick={() => {
+                                const prevList = condition.descriptionList.filter((t,
+                                                                                   k
+                                ) => k !== j);
+                                const result: string[] = [];
+                                for (let k = 0; k < prevList.length; k++) {
+                                  if (result.length === j - 1) {
+                                    result.push(description);
+                                  }
+                                  result.push(prevList[k]);
+                                }
+                                console.log({ prevList, result });
+                                formik.setFieldValue(`conditionList.${i}.descriptionList`, result);
+                              }}
+                            />
+                          </Tooltip>
+                          <Tooltip title="순서 내리기">
+                            <IconButton
+                              shape="square"
+                              disabled={j === condition.descriptionList.length - 1}
+                              children={<FontAwesomeIcon icon="angle-down" />}
+                              onClick={() => {
+                                const prevList = condition.descriptionList.filter((t,
+                                                                                   k
+                                ) => k !== j);
+                                const result: string[] = [];
+                                for (let k = 0; k < prevList.length; k++) {
+                                  result.push(prevList[k]);
+                                  if (result.length === j + 1) {
+                                    result.push(description);
+                                  }
+                                }
+                                formik.setFieldValue(`conditionList.${i}.descriptionList`, result);
+                              }}
+                            />
+                          </Tooltip>
+                        </Box>
+                      </Td>
+                    )}
+                    {edit && (
+                      <Td sx={{ width: '90px' }}>
+                        <Button
+                          shape="basic3"
+                          disabled={condition.descriptionList.length <= 1}
+                          onClick={() => {
+                            if (condition.descriptionList.length === 1) {
+                              error('최소 하나 이상의 세부 항목이 필요합니다.');
+                              return;
+                            }
+                            formik.setFieldValue(`conditionList.${i}.descriptionList`, condition.descriptionList.filter((detail,
+                                                                                                                         k
+                            ) => k !== j));
+                          }}>
+                          삭제
+                        </Button>
+                      </Td>
+                    )}
                   </TableRow>
                 )
               )}
-              <AddRow index={i} />
+              {edit && (<AddRow index={i} />)}
             </TableBody>
           </Table>
-          <Box sx={{
-            display:        'flex',
-            width:          '100%',
-            justifyContent: 'center',
-            alignItems:     'center',
-            margin:         '15px 0'
-          }}>
-            <Tooltip title="순서 올리기">
-              <IconButton
-                shape="square"
-                disabled={i === 0}
-                children={<FontAwesomeIcon icon="angle-up" />}
-                onClick={() => {
-                  const prevList = conditionList.filter((t,
-                                                         k
-                  ) => k !== i);
-                  const result: ContractConditionVO[] = [];
-                  for (let k = 0; k < prevList.length; k++) {
-                    if (result.length === i - 1) {
-                      result.push(condition);
+          {edit && (
+
+            <Box sx={{
+              display:        'flex',
+              width:          '100%',
+              justifyContent: 'center',
+              alignItems:     'center',
+              margin:         '15px 0'
+            }}>
+              <Tooltip title="순서 올리기">
+                <IconButton
+                  shape="square"
+                  disabled={i === 0}
+                  children={<FontAwesomeIcon icon="angle-up" />}
+                  onClick={() => {
+                    const prevList = conditionList.filter((t,
+                                                           k
+                    ) => k !== i);
+                    const result: ContractConditionVO[] = [];
+                    for (let k = 0; k < prevList.length; k++) {
+                      if (result.length === i - 1) {
+                        result.push(condition);
+                      }
+                      result.push(prevList[k]);
                     }
-                    result.push(prevList[k]);
+                    formik.setFieldValue('conditionList', result);
+                  }}
+                  sx={{
+                    margin: '0 5px'
+                  }}
+                />
+              </Tooltip>
+              <Tooltip title="순서 내리기">
+                <IconButton
+                  shape="square"
+                  disabled={i === conditionList.length - 1}
+                  children={<FontAwesomeIcon icon="angle-down" />}
+                  onClick={() => {
+                    const prevList = conditionList.filter((t,
+                                                           k
+                    ) => k !== i);
+                    const result: ContractConditionVO[] = [];
+                    for (let k = 0; k < prevList.length; k++) {
+                      result.push(prevList[k]);
+                      if (result.length === i + 1) {
+                        result.push(condition);
+                      }
+                    }
+                    formik.setFieldValue('conditionList', result);
+                  }}
+                  sx={{
+                    margin: '0 5px'
+                  }}
+                />
+              </Tooltip>
+              <Button
+                shape="basic3"
+                disabled={conditionList.length <= 1}
+                onClick={() => {
+                  if (conditionList.length === 1) {
+                    error('최소 하나 이상의 세부 항목이 필요합니다.');
+                    return;
                   }
-                  formik.setFieldValue('conditionList', result);
+                  formik.setFieldValue('conditionList', conditionList.filter((detail,
+                                                                              k
+                  ) => k !== i));
                 }}
                 sx={{
                   margin: '0 5px'
-                }}
-              />
-            </Tooltip>
-            <Tooltip title="순서 내리기">
-              <IconButton
-                shape="square"
-                disabled={i === conditionList.length - 1}
-                children={<FontAwesomeIcon icon="angle-down" />}
-                onClick={() => {
-                  const prevList = conditionList.filter((t,
-                                                         k
-                  ) => k !== i);
-                  const result: ContractConditionVO[] = [];
-                  for (let k = 0; k < prevList.length; k++) {
-                    result.push(prevList[k]);
-                    if (result.length === i + 1) {
-                      result.push(condition);
-                    }
-                  }
-                  formik.setFieldValue('conditionList', result);
-                }}
-                sx={{
-                  margin: '0 5px'
-                }}
-              />
-            </Tooltip>
-            <Button
-              shape="basic3"
-              disabled={conditionList.length <= 1}
-              onClick={() => {
-                if (conditionList.length === 1) {
-                  error('최소 하나 이상의 세부 항목이 필요합니다.');
-                  return;
-                }
-                formik.setFieldValue('conditionList', conditionList.filter((detail,
-                                                                            k
-                ) => k !== i));
-              }}
-              sx={{
-                margin: '0 5px'
-              }}>
-              삭제
-            </Button>
-          </Box>
+                }}>
+                삭제
+              </Button>
+            </Box>
+          )}
         </Box>
       ))}
     </Box>

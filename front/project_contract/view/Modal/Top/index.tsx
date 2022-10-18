@@ -34,11 +34,8 @@ export default function ProjectContractModalTopForm(props: Props) {
           display:        'flex',
           justifyContent: 'space-between',
           alignItems:     'center',
-          '& > div':      {
-            width: '30%'
-          }
         }}>
-          <Box>
+          <Box sx={{ width: '20%' }}>
             <DataFieldWithLabel label="계약 번호">
               <Input
                 readOnly
@@ -47,7 +44,7 @@ export default function ProjectContractModalTopForm(props: Props) {
               />
             </DataFieldWithLabel>
           </Box>
-          <Box>
+          <Box sx={{ width: '20%' }}>
             <DataFieldWithLabel label="최종 여부">
               <Input
                 readOnly
@@ -56,12 +53,12 @@ export default function ProjectContractModalTopForm(props: Props) {
               />
             </DataFieldWithLabel>
           </Box>
-          <Box>
+          <Box sx={{ width: '60%' }}>
             <DataFieldWithLabel label="날인본 PDF">
               <UploadField
+                disableSelect={!edit}
                 readOnly={!edit}
                 disableDownload={edit}
-                disableSelect={!edit}
                 accept=".pdf"
                 value={formik.values.pdfFile}
                 onChange={(e) => {

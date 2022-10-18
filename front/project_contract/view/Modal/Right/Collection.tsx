@@ -20,9 +20,14 @@ import Button from 'layouts/Button';
 import { ColorPalette } from 'app/view/App/theme';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import AddRow from './CollectionAddRow';
+import IconButton from 'layouts/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ContractCollectionStage } from 'admin/contract/collection/domain';
+import useDialog from 'components/Dialog';
 
 export default function () {
-
+  const { error } = useDialog();
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const collection = formik.values.collection ?? {};
@@ -78,6 +83,7 @@ export default function () {
               <Input
                 key={stage.name}
                 variant="outlined"
+                readOnly={!edit}
                 defaultValue={stage.name ?? ''}
                 onBlur={(e) => {
                   const value = e.target.value || undefined;
@@ -92,6 +98,7 @@ export default function () {
                 key={stage.ratio}
                 type="number"
                 variant="outlined"
+                readOnly={!edit}
                 defaultValue={stage.ratio ?? ''}
                 onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
@@ -109,6 +116,7 @@ export default function () {
               <Input
                 key={stage.note}
                 variant="outlined"
+                readOnly={!edit}
                 defaultValue={stage.note ?? ''}
                 onBlur={(e) => {
                   const value = +(e.target.value) || undefined;
@@ -123,7 +131,7 @@ export default function () {
                 openTo="year"
                 inputFormat="YYYY-MM-DD"
                 mask="____-__-__"
-                disabled={!edit}
+                readOnly={!edit}
                 value={stage.expectedDate ? dayjs(stage.expectedDate)
                 .format('YYYY-MM-DD') : null}
                 onChange={(e) => {
@@ -147,15 +155,77 @@ export default function () {
               />
             </Td>
             {edit && (
-              <Td> U D</Td>
+              <Td>
+                <Box sx={{
+                  display:        'flex',
+                  width:          '100%',
+                  justifyContent: 'space-between',
+                }}>
+                  <IconButton
+                    shape="square"
+                    tooltip="순서 올리기"
+                    disabled={i === 0}
+                    children={<FontAwesomeIcon icon="angle-up" />}
+                    onClick={() => {
+                      const prevList = stageList.filter((t,
+                                                         k
+                      ) => k !== i);
+                      const result: ContractCollectionStage[] = [];
+                      for (let k = 0; k < prevList.length; k++) {
+                        if (result.length === i - 1) {
+                          result.push(stage);
+                        }
+                        result.push(prevList[k]);
+                      }
+                      formik.setFieldValue('collection.stageList', result);
+                    }}
+                    sx={{
+                      marginRight: '10px',
+                    }}
+                  />
+                  <IconButton
+                    shape="square"
+                    tooltip="순서 내리기"
+                    disabled={i === stageList.length - 1}
+                    children={<FontAwesomeIcon icon="angle-down" />}
+                    onClick={() => {
+                      const prevList = stageList.filter((t,
+                                                         k
+                      ) => k !== i);
+                      const result: ContractCollectionStage[] = [];
+                      for (let k = 0; k < prevList.length; k++) {
+                        result.push(prevList[k]);
+                        if (result.length === i + 1) {
+                          result.push(stage);
+                        }
+                      }
+                      formik.setFieldValue('collection.stageList', result);
+                    }}
+                  />
+                </Box>
+              </Td>
             )}
             {edit && (
               <Td>
-                <Button shape="basic2">삭제</Button>
+                <Button
+                  shape="basic3"
+                  disabled={stageList.length <= 1}
+                  onClick={() => {
+                    if (stageList.length === 1) {
+                      error('최소 하나 이상의 세부 항목이 필요합니다.');
+                      return;
+                    }
+                    formik.setFieldValue('collection.stageList', stageList.filter((detail,
+                                                                                   k
+                    ) => k !== i));
+                  }}>
+                  삭제
+                </Button>
               </Td>
             )}
           </TableRow>
         ))}
+        {edit && (<AddRow stageList={stageList} totalAmount={totalAmount} />)}
         <TableRow>
           <Td>합계</Td>
           <Td sx={{
@@ -175,6 +245,7 @@ export default function () {
             <Input
               key={collection.totalAmountNote}
               variant="outlined"
+              readOnly={!edit}
               defaultValue={collection.totalAmountNote ?? ''}
               onBlur={(e) => {
                 const value = +(e.target.value) || undefined;

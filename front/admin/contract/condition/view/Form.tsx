@@ -5,9 +5,9 @@ import {
   TableRow,
 } from '@mui/material';
 import {
+  Table,
   Td,
-  Th,
-  Table
+  Th
 } from 'layouts/Table';
 import Button from 'layouts/Button';
 import Tooltip from 'components/Tooltip';
@@ -73,8 +73,9 @@ export default function Form({ variableList }: Props) {
                   <Td colSpan={(!condition.descriptionList || condition.descriptionList.length === 0) ? 2 : 3}>
                     <Input
                       variant="outlined"
-                      value={condition.title ?? ''}
-                      onChange={(e) => {
+                      key={condition.title}
+                      defaultValue={condition.title ?? ''}
+                      onBlur={(e) => {
                         const value = e.target.value || undefined;
                         if (condition.title !== value) {
                           formik.setFieldValue(`contractConditionList.${i}.title`, value);
@@ -95,8 +96,9 @@ export default function Form({ variableList }: Props) {
                       <Td>
                         <Input
                           variant="outlined"
-                          value={description ?? ''}
-                          onChange={(e) => {
+                          key={description}
+                          defaultValue={description ?? ''}
+                          onBlur={(e) => {
                             const value = e.target.value as string;
                             if (description !== value) {
                               const result: string[] = [];
