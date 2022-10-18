@@ -83,14 +83,17 @@ export default function () {
             </TableRow>
             {rowList.map(i => (
               <TableRow key={i}>
-                {test.testList.map(item => (
-                  <Td key={item.type}>
-                    {Array.isArray(item.buildingNameList) ? item.buildingNameList[i] : ''}
-                  </Td>
-                ))}
+                {test.testList.map(item => {
+                  const buildingNameList = item.buildingNameList;
+                  const name = Array.isArray(buildingNameList) ? buildingNameList[i] : '';
+                  return (
+                    <Td key={item.testType}>
+                      {name}
+                    </Td>
+                  );
+                })}
               </TableRow>
             ))}
-
           </TableBody>
         </Table>
       )}

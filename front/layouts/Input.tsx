@@ -71,7 +71,7 @@ export function OutlinedInput({ isAmount, fullHeight, ...props }: Omit<InputProp
           backgroundColor: 'transparent',
           boxSizing:       'border-box',
           cursor:          props.readOnly || props.disabled ? 'default' : 'text',
-          textAlign:       isAmount || props.type === 'number' ? 'right' : (props.multiline ? 'left' : props.readOnly ? 'center' : 'left'),
+          textAlign:       isAmount || props.type === 'number' ? 'right' : 'left',
         },
       }}
     />
@@ -111,7 +111,7 @@ export function StandardInput({ isAmount, fullHeight, ...props }: Omit<InputProp
           borderRadius:    0,
           boxSizing:       'border-box',
           cursor:          props.readOnly || props.disabled ? 'default' : 'text',
-          textAlign:       isAmount || props.type === 'number' ? 'right' : (props.multiline ? 'left' : props.readOnly ? 'center' : 'left'),
+          textAlign:       isAmount || props.type === 'number' ? 'right' : 'left',
         },
       }}
     />

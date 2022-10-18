@@ -1,11 +1,15 @@
 import apiClient, { toFormData } from 'services/api';
 import {
+  ProjectContractBasicVO,
+  ProjectContractCollectionVO,
+  ProjectContractConditionVO,
   ProjectContractId,
   ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
 import { ProjectContractParameter } from 'project_contract/parameter';
+import { ProjectEstimateId } from 'project_estimate/domain';
 
 class ProjectContractApi {
 
@@ -19,11 +23,27 @@ class ProjectContractApi {
     return data;
   }
 
+  async getBasic(projectId: ProjectId): Promise<ProjectContractBasicVO> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/basic`);
+    return data;
+  }
+
+  async getCollection(estimateId: ProjectEstimateId | undefined): Promise<ProjectContractCollectionVO> {
+    const { data } = await apiClient.get('/project/sales/contract/collection', { estimateId });
+    return data;
+  }
+
+  async getConditionList(projectId: ProjectId,
+                         estimateId: ProjectEstimateId | undefined
+  ): Promise<ProjectContractConditionVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition`, { estimateId });
+    return data;
+  }
+
   async add(projectId: number,
             params: ProjectContractParameter
   ): Promise<void> {
-    const formData = toFormData(params);
-    const { data } = await apiClient.post(`/project/sales/${projectId}/contract`, formData);
+    const { data } = await apiClient.put(`/project/sales/${projectId}/contract`, params);
     return data;
   }
 
@@ -35,7 +55,6 @@ class ProjectContractApi {
     return data;
   }
 
-  /** 계약서 삭제 */
   async deleteOne(id: ProjectContractId): Promise<void> {
     const { data } = await apiClient.delete(`/project/sales/contract/${id}`);
     return data;

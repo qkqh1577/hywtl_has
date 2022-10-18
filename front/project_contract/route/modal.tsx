@@ -26,7 +26,7 @@ export default function ProjectContractModalRoute() {
 
   const dispatch = useDispatch();
   const { error, rollback, alert, confirm } = useDialog();
-  const { modal, detail, estimate } = useSelector((root: RootState) => root.projectContract);
+  const { modal, detail, estimate, basic, collection, conditionList } = useSelector((root: RootState) => root.projectContract);
   const { list: estimateList } = useSelector((root: RootState) => root.projectEstimate);
   const onClose = useCallback(() => dispatch(projectContractAction.setModal(undefined)), [dispatch]);
   const onDelete = useCallback((id: ProjectContractId) => dispatch(projectContractAction.deleteOne(id)), [dispatch]);
@@ -50,6 +50,18 @@ export default function ProjectContractModalRoute() {
       formik.setValues(initialProjectContractParameter);
     }
   }, [modal]);
+
+  useEffect(() => {
+    formik.setFieldValue('basic', basic);
+  }, [basic]);
+
+  useEffect(() => {
+    formik.setFieldValue('collection', collection);
+  }, [collection]);
+
+  useEffect(() => {
+    formik.setFieldValue('conditionList', conditionList);
+  }, [conditionList]);
 
   useEffect(() => {
     formik.setFieldValue('estimate', estimate);

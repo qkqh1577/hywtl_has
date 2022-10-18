@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -75,17 +76,17 @@ public class ProjectContractBasic extends CustomEntity {
     private String contractorCeoName;
 
     public static ProjectContractBasic of(
-        String serviceName,
-        String serviceDuration,
-        String outcome,
-        String description,
-        LocalDate contractDate,
-        String ordererAddress,
-        String ordererCompanyName,
-        String ordererCeoName,
-        String contractorAddress,
-        String contractorCompanyName,
-        String contractorCeoName
+        @Nullable String serviceName,
+        @Nullable String serviceDuration,
+        @Nullable String outcome,
+        @Nullable String description,
+        @Nullable LocalDate contractDate,
+        @Nullable String ordererAddress,
+        @Nullable String ordererCompanyName,
+        @Nullable String ordererCeoName,
+        @Nullable String contractorAddress,
+        @Nullable String contractorCompanyName,
+        @Nullable String contractorCeoName
     ) {
         ProjectContractBasic instance = new ProjectContractBasic();
         instance.serviceName = serviceName;

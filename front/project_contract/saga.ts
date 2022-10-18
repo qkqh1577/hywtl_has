@@ -7,6 +7,9 @@ import {
 } from 'redux-saga/effects';
 import { projectContractAction } from 'project_contract/action';
 import {
+  ProjectContractBasicVO,
+  ProjectContractCollectionVO,
+  ProjectContractConditionVO,
   ProjectContractShortVO,
   ProjectContractVO,
 } from 'project_contract/domain';
@@ -115,6 +118,31 @@ function* watchEstimate() {
     }
     else {
       yield put(projectContractAction.setEstimate(undefined));
+    }
+    const { projectId } = yield select((root: RootState) => root.projectContract);
+    try {
+      const basic: ProjectContractBasicVO = yield call(projectContractApi.getBasic, projectId);
+      yield put(projectContractAction.setBasic(basic));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectContractAction.setBasic(undefined));
+    }
+    try {
+      const collection: ProjectContractCollectionVO = yield call(projectContractApi.getCollection, estimateId);
+      yield put(projectContractAction.setCollection(collection));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectContractAction.setCollection(undefined));
+    }
+    try {
+      const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getConditionList, projectId, estimateId);
+      yield put(projectContractAction.setConditionList(conditionList));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectContractAction.setConditionList(undefined));
     }
   }
 }

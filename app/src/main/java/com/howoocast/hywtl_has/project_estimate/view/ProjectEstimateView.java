@@ -23,9 +23,9 @@ public class ProjectEstimateView {
     private String code;
     private String type;
     private Boolean isSent;
+    private Boolean isLh;
     private Boolean confirmed;
     private String recipient;
-
     private String note;
     private UserShortView createdBy;
     private LocalDateTime createdAt;
@@ -44,6 +44,7 @@ public class ProjectEstimateView {
         this.code = source.getCode();
         this.type = source.getType();
         this.isSent = source.getIsSent();
+        this.isLh = source.getIsLh();
         this.confirmed = source.getConfirmed();
         this.recipient = source.getRecipient();
         this.note = source.getNote();

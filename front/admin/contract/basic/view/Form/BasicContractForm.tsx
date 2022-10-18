@@ -78,7 +78,7 @@ export default function BasicContractForm() {
           <Td>
             <Input
               key={formik.values.collectionStageNote}
-              value={formik.values.collectionStageNote ?? ''}
+              defaultValue={formik.values.collectionStageNote ?? ''}
               variant="outlined"
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -103,7 +103,7 @@ export default function BasicContractForm() {
           <Td>
             <Input
               key={formik.values.outcome}
-              value={formik.values.outcome ?? ''}
+              defaultValue={formik.values.outcome ?? ''}
               variant="outlined"
               onBlur={(e) => {
                 const value = e.target.value || undefined;

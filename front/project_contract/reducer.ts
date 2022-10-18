@@ -1,5 +1,8 @@
 import { ProjectId } from 'project/domain';
 import {
+  ProjectContractBasicVO,
+  ProjectContractCollectionVO,
+  ProjectContractConditionVO,
   ProjectContractId,
   ProjectContractShortVO,
   ProjectContractVO,
@@ -16,6 +19,9 @@ export interface ProjectContractState {
   modal?: ProjectContractId | null;
   estimate?: ProjectEstimateVO;
   projectId?: ProjectId;
+  basic?: ProjectContractBasicVO;
+  collection?: ProjectContractCollectionVO;
+  conditionList?: ProjectContractConditionVO[];
   requestAdd: ApiStatus;
   requestChange: ApiStatus;
   requestDelete: ApiStatus;
@@ -31,64 +37,82 @@ const initial: ProjectContractState = {
 };
 
 export const projectContractReducer = createReducer(initial, {
-  [ProjectContractActionType.setProjectId]:    (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setProjectId]:     (state,
+                                                 action
+                                                ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectContractActionType.setList]:         (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setList]:          (state,
+                                                 action
+                                                ) => ({
     ...state,
     list: action.payload,
   }),
-  [ProjectContractActionType.setDetail]:       (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setDetail]:        (state,
+                                                 action
+                                                ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectContractActionType.setModal]:        (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setModal]:         (state,
+                                                 action
+                                                ) => ({
     ...state,
     modal: action.payload,
   }),
-  [ProjectContractActionType.requestSetFinal]: (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.requestSetFinal]:  (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestSetFinal: action.payload,
   }),
-  [ProjectContractActionType.setFinalModal]:   (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setFinalModal]:    (state,
+                                                 action
+                                                ) => ({
     ...state,
     finalModal: action.payload,
   }),
-  [ProjectContractActionType.requestAdd]:      (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.requestAdd]:       (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestAdd: action.payload,
   }),
-  [ProjectContractActionType.requestChange]:   (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.requestChange]:    (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestChange: action.payload,
   }),
-  [ProjectContractActionType.requestDelete]:   (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.requestDelete]:    (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestDelete: action.payload,
   }),
-  [ProjectContractActionType.setEstimate]:     (state,
-                                                action
-                                               ) => ({
+  [ProjectContractActionType.setEstimate]:      (state,
+                                                 action
+                                                ) => ({
     ...state,
     estimate: action.payload,
+  }),
+  [ProjectContractActionType.setBasic]:         (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    basic: action.payload,
+  }),
+  [ProjectContractActionType.setCollection]:    (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    collection: action.payload,
+  }),
+  [ProjectContractActionType.setConditionList]: (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    conditionList: action.payload,
   })
 });

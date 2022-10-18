@@ -1,21 +1,22 @@
 import React, { useContext } from 'react';
-import {
-  TableBody,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import { FormikContext } from 'formik';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
+import {
+  TableBody,
+  TableHead,
+  TableRow
+} from '@mui/material';
 import Input from 'layouts/Input';
-import { FormikContext } from 'formik';
-import { initialContractorParameter } from 'admin/contract/basic/parameter';
 
-export default function ContractorForm() {
+export default function () {
   const formik = useContext(FormikContext);
-  const contractor = formik.values.contractor ?? initialContractorParameter;
+  const edit = formik.values.edit;
+  const basic = formik.values.basic ?? {};
+
   return (
     <Table variant="cross">
       <TableHead>
@@ -27,54 +28,51 @@ export default function ContractorForm() {
       </TableHead>
       <TableBody>
         <TableRow>
-          <Th sx={{ width: '140px' }}>
-            소재
-          </Th>
+          <Th sx={{ width: '140px' }}>소재</Th>
           <Td>
             <Input
-              key={contractor.address}
-              defaultValue={contractor.address ?? ''}
+              readOnly={!edit}
               variant="outlined"
+              key={basic.contractorAddress}
+              defaultValue={basic.contractorAddress ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
-                if (contractor.address !== value) {
-                  formik.setFieldValue('contractor.address', value);
+                if (basic.contractorAddress !== value) {
+                  formik.setFieldValue('basic.contractorAddress', value);
                 }
               }}
             />
           </Td>
         </TableRow>
         <TableRow>
-          <Th>
-            "을" 상호
-          </Th>
+          <Th sx={{ width: '140px' }}>"을" 상호</Th>
           <Td>
             <Input
-              key={contractor.companyName}
-              defaultValue={contractor.companyName ?? ''}
+              readOnly={!edit}
               variant="outlined"
+              key={basic.contractorCompanyName}
+              defaultValue={basic.contractorCompanyName ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
-                if (contractor.companyName !== value) {
-                  formik.setFieldValue('contractor.companyName', value);
+                if (basic.contractorCompanyName !== value) {
+                  formik.setFieldValue('basic.contractorCompanyName', value);
                 }
               }}
             />
           </Td>
         </TableRow>
         <TableRow>
-          <Th>
-            대표자
-          </Th>
+          <Th sx={{ width: '140px' }}>대표자</Th>
           <Td>
             <Input
-              key={contractor.ceoName}
-              defaultValue={contractor.ceoName ?? ''}
+              readOnly={!edit}
               variant="outlined"
+              key={basic.contractorCeoName}
+              defaultValue={basic.contractorCeoName ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
-                if (contractor.ceoName !== value) {
-                  formik.setFieldValue('contractor.ceoName', value);
+                if (basic.contractorCeoName !== value) {
+                  formik.setFieldValue('basic.contractorCeoName', value);
                 }
               }}
             />
@@ -83,4 +81,5 @@ export default function ContractorForm() {
       </TableBody>
     </Table>
   );
+
 }

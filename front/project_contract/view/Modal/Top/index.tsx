@@ -117,9 +117,13 @@ export default function ProjectContractModalTopForm(props: Props) {
           </Button>
         )}
         {edit && (
-          <Button onClick={() => {
-            formik.handleSubmit();
-          }}>
+          <Button
+            sx={{
+              marginRight: '10px',
+            }}
+            onClick={() => {
+              formik.handleSubmit();
+            }}>
             저장
           </Button>
         )}

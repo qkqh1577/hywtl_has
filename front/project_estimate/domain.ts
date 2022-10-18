@@ -49,6 +49,7 @@ export interface ProjectEstimateVO {
   code: string;
   type: ProjectEstimateType;
   isSent: boolean;
+  isLh: boolean;
   confirmed: boolean;
   recipient: string;
   note?: string;

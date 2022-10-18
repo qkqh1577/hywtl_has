@@ -1,29 +1,29 @@
 import { Box } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
 import React from 'react';
+import Basic from './Basic';
+import Description from './Description';
+import ContractDate from './ContractDate';
+import Orderer from './Orderer';
+import Contractor from './Contractor';
+import Condition from './Condition';
 
 export default function ProjectContractModalRightForm() {
 
   return (
     <Box sx={{
-      width:                        '60%',
-      display:                      'flex',
-      flexWrap:                     'wrap',
-      alignContent:                 'flex-start',
-      height:                       '100%',
-      padding:                      '10px',
-      overflowY:                    'scroll',
-      overflowX:                    'hidden',
-      '&::-webkit-scrollbar':       {
-        width:           '10px',
-        height:          '10px',
-        backgroundColor: ColorPalette._e4e9f2,
-      },
-      '&::-webkit-scrollbar-thumb': {
-        backgroundColor: ColorPalette._697183,
-      }
+      width:        '60%',
+      display:      'flex',
+      flexWrap:     'wrap',
+      alignContent: 'flex-start',
+      padding:      '10px',
+      overflowX:    'hidden',
     }}>
-
+      <Basic />
+      <Description />
+      <ContractDate />
+      <Orderer />
+      <Contractor />
+      <Condition />
     </Box>
   );
 }
