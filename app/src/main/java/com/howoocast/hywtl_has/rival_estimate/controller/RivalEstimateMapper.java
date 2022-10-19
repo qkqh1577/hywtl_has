@@ -1,7 +1,7 @@
-package com.howoocast.hywtl_has.project_estimate.controller;
+package com.howoocast.hywtl_has.rival_estimate.controller;
 
-import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
-import com.howoocast.hywtl_has.project_estimate.view.RivalEstimateView;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.view.RivalEstimateView;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,7 +1,7 @@
-package com.howoocast.hywtl_has.project_estimate.view;
+package com.howoocast.hywtl_has.rival_estimate.view;
 
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
-import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;

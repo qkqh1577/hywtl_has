@@ -1,134 +1,128 @@
 import SectionLayout from 'layouts/SectionLayout';
 import {
-  Grid,
+  Box,
   TableBody,
-  TableContainer,
   TableHead,
   TableRow
 } from '@mui/material';
 import React from 'react';
-import TextField from 'components/TextField';
-import { FieldStatus } from 'components/DataFieldProps';
 import {
   Table,
   Td,
   Th
 } from 'layouts/Table';
+import { ProjectContractVO } from 'project_contract/domain';
+import DateFormat from 'layouts/DateFormat';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
+import Input from 'layouts/Input';
+import dayjs from 'dayjs';
+import { ProjectEstimateVO } from 'project_estimate/domain';
 
 interface Props {
-  projectContractCollectionStageList: {
-    name: string; // 단계명
-    ratio: number; // 비율
-    condition: string; // 조건
-    note?: string; // 비고
-  }[];
+  detail: ProjectContractVO | undefined;
 }
 
-export default function ProjectBasicContractSection({ projectContractCollectionStageList }: Props) {
-  const getTableRows = () => {
-    if (projectContractCollectionStageList.length === 0) {
-      return (
-        <TableRow>
-          <Td colSpan={4}>조회 결과가 없습니다.</Td>
-        </TableRow>
-      );
-    }
-
-    return projectContractCollectionStageList.map((e) =>
-      <TableRow key={e.name}>
-        <Td>{e.name}</Td>
-        <Td>{e.ratio}</Td>
-        <Td>{e.condition}</Td>
-        <Td>{e.note || '-'}</Td>
-      </TableRow>
-    );
-  };
+export default function ProjectBasicContractSection({ detail }: Props) {
+  const estimate = detail?.estimate ?? {} as ProjectEstimateVO;
 
   return (
     <SectionLayout title="최종 계약 정보">
-      <Grid container spacing={2}>
-        <Grid item sm={4}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="orderer1"
-            label="발주처"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="testAmount"
-            label="풍동금액"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="reviewAmount"
-            label="구검"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="totalAmount"
-            label="총액"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="expectedDuration"
-            label="일정"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={4}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="orderer2"
-            label="발주처2"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={4}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="orderer3"
-            label="발주처3"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={4}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="orderer4"
-            label="발주처4"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={12}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <Th>기성</Th>
-                  <Th>기성비율 (%)</Th>
-                  <Th>기성조건</Th>
-                  <Th>비고</Th>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {getTableRows()}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-      </Grid>
+      <Box sx={{
+        width:    '100%',
+        display:  'flex',
+        flexWrap: 'wrap',
+      }}>
+        <Box sx={{
+          width:        '100%',
+          display:      'flex',
+          flexWrap:     'nowrap',
+          alignItems:   'center',
+          marginBottom: '10px',
+        }}>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="계약 일자">
+              <Input
+                readOnly
+                key={detail?.basic?.contractDate?.toDateString()}
+                defaultValue={detail?.basic?.contractDate ? dayjs(detail?.basic?.contractDate)
+                .format('YYYY-MM-DD') : ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="계약 번호">
+              <Input
+                readOnly
+                key={detail?.code}
+                defaultValue={detail?.code ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="풍동 금액">
+              <Input
+                readOnly
+                isAmount
+                key={estimate?.plan?.testAmount}
+                defaultValue={estimate?.plan?.testAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="구검">
+              <Input
+                readOnly
+                isAmount
+                key={estimate?.plan?.reviewAmount}
+                defaultValue={estimate?.plan?.reviewAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="총액">
+              <Input
+                readOnly
+                isAmount
+                key={estimate?.plan?.totalAmount}
+                defaultValue={estimate?.plan?.totalAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="일정">
+              <Input
+                readOnly
+                key={`${estimate?.plan?.expectedTestDeadline ?? '-'}주/${estimate?.plan?.expectedFinalReportDeadline ?? '-'}주`}
+                defaultValue={`${estimate?.plan?.expectedTestDeadline ?? '-'}주/${estimate?.plan?.expectedFinalReportDeadline ?? '-'}주`}
+              />
+            </DataFieldWithLabel>
+          </Box>
+        </Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <Th>기성</Th>
+              <Th>기성비율(%)</Th>
+              <Th>기성조건</Th>
+              <Th>일자</Th>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {detail?.collection?.stageList?.map((item,
+                                                 i
+            ) => (
+              <TableRow key={i}>
+                <Td>{item.name}</Td>
+                <Td>{item.ratio}</Td>
+                <Td>{item.note}</Td>
+                <Td>
+                  <DateFormat date={item.expectedDate} />
+                </Td>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
     </SectionLayout>
   );
 }

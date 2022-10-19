@@ -1,26 +1,29 @@
-import {
-  ProjectId,
-  ProjectVO
-} from 'project/domain';
+import { ProjectId } from 'project/domain';
 import {
   ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
   ProjectBasicDesign,
   ProjectBasicFailReason,
-  RivalBidVO
 } from 'project_basic/domain';
 import apiClient from 'services/api';
 import {
   ProjectBasicBusinessParameter,
   ProjectBasicDesignParameter,
+  ProjectBasicFailReasonParameter,
   ProjectBasicParameter
 } from 'project_basic/parameter';
+import { ProjectComplexTestVO } from 'project_complex/domain';
+import { ProjectEstimateVO } from 'project_estimate/domain';
+import { RivalEstimateVO } from 'rival_estimate/domain';
+import { ProjectBidVO } from 'project_bid/domain';
+import { RivalBidVO } from 'rival_bid/domain';
+import { ProjectContractVO } from 'project_contract/domain';
 
 class ProjectBasicApi {
   async getOne(id: ProjectId): Promise<ProjectBasic> {
-    const { data } = await apiClient.get(`/project/sales/${id}`) as { data: ProjectVO };
-    return { ...data };
+    const { data } = await apiClient.get(`/project/sales/${id}`);
+    return data;
   }
 
   async getBusinessList(id: ProjectId): Promise<ProjectBasicBusiness[]> {
@@ -64,14 +67,48 @@ class ProjectBasicApi {
     return data;
   }
 
+  async getTest(id: ProjectId): Promise<ProjectComplexTestVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/test`);
+    return data;
+  }
+
+  async getEstimate(id: ProjectId): Promise<ProjectEstimateVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/estimate`);
+    return data;
+  }
+
+  async getRivalEstimateList(id: ProjectId): Promise<RivalEstimateVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${id}/rival-estimate`);
+    return data;
+  }
+
+  async getBid(id: ProjectId): Promise<ProjectBidVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/bid`);
+    return data;
+  }
+
+  async getRivalBidList(id: ProjectId): Promise<RivalBidVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${id}/rival-bid`);
+    return data;
+  }
+
+  async getContract(id: ProjectId): Promise<ProjectContractVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/contract`);
+    return data;
+  }
+
   async getFailReason(id: ProjectId): Promise<ProjectBasicFailReason> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/fail-reason`);
     return data;
   }
 
-  async getRivalBidList(id: ProjectId): Promise<RivalBidVO> {
-    return new Promise(() => []);
+  async updateFailReason(id: ProjectId,
+                         params: ProjectBasicFailReasonParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${id}/basic/fail-reason`, params);
+    return data;
   }
+
 }
 
 export const projectBasicApi = new ProjectBasicApi();

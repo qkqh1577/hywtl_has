@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.project_estimate.service;
+package com.howoocast.hywtl_has.rival_estimate.service;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
@@ -7,10 +7,10 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
-import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
-import com.howoocast.hywtl_has.project_estimate.parameter.RivalEstimateParameter;
-import com.howoocast.hywtl_has.project_estimate.repository.RivalEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.parameter.RivalEstimateParameter;
+import com.howoocast.hywtl_has.rival_estimate.repository.RivalEstimateRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

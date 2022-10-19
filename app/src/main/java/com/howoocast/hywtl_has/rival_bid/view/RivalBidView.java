@@ -1,7 +1,7 @@
-package com.howoocast.hywtl_has.project_bid.view;
+package com.howoocast.hywtl_has.rival_bid.view;
 
 import com.howoocast.hywtl_has.business.view.BusinessView;
-import com.howoocast.hywtl_has.project_bid.domain.RivalBid;
+import com.howoocast.hywtl_has.rival_bid.domain.RivalBid;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;

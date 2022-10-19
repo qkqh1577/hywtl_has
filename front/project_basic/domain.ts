@@ -73,24 +73,6 @@ export interface ProjectBasicEstimateVO {
 
 export interface ProjectBasicBid {
   bid?: ProjectBidVO;
-  rivalBidList?: RivalBidVO[];
-}
-
-// TODO: 현재 구현부가 없음으로 임시로 정의 및 사용
-export type RivalBidId = number & { readonly _brand: unique symbol; }
-
-export function RivalBidId(id: number) {
-  return id as RivalBidId;
-}
-
-export interface RivalBidVO {
-  id: RivalBidId;
-  business?: BusinessShort;
-  testAmount?: number;
-  reviewAmount?: number;
-  totalAmount?: number;
-  expectedDuration?: string;
-  modifiedAt: Date;
 }
 
 // TODO: 협의 중이므로 임시로 정의 및 사용

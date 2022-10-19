@@ -1,44 +1,57 @@
-import React, { useMemo } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import Button from 'layouts/Button';
-import { Box } from '@mui/material';
-import TextBox from 'layouts/Text';
 import { DefaultFunction } from 'type/Function';
+import { RivalBidParameter } from 'rival_bid/parameter';
 import {
-  RivalEstimateId,
-  RivalEstimateVO
-} from 'rival_estimate/domain';
-import { RivalEstimateParameter } from 'rival_estimate/parameter';
+  RivalBidId,
+  RivalBidVO
+} from 'rival_bid/domain';
 import dayjs from 'dayjs';
+import { Box } from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import BusinessSelector from 'components/BusinessSelector';
 import Input from 'layouts/Input';
+import TextBox from 'layouts/Text';
 import { toAmount } from 'util/NumberUtil';
 
 interface Props {
-  list: RivalEstimateVO[] | undefined;
-  onAdd: DefaultFunction;
-  onUpdate: DefaultFunction<RivalEstimateParameter>;
-  onDelete: DefaultFunction<RivalEstimateId>;
+  list: RivalBidVO[] | undefined;
+  onPush: DefaultFunction;
+  onUpdate: DefaultFunction<RivalBidParameter>;
+  onDelete: DefaultFunction<RivalBidId>;
 }
 
-export default function RivalEstimateListSection(props: Props) {
+export default function ProjectRivalBidList(props: Props) {
+
+  const [modifiedAt, setModifiedAt] = useState<Date>();
+
+  useEffect(() => {
+    if (!props.list || props.list.length === 0) {
+      setModifiedAt(undefined);
+      return;
+    }
+
+    setModifiedAt(props.list.map(item => item.modifiedAt)
+                       .filter(date => typeof date !== 'undefined')
+                       .map(date => dayjs(date))
+                       .reduce((a,
+                                b
+                       ) => a.isAfter(b) ? a : b)
+                       .toDate());
+  }, [props.list]);
 
   return (
     <SectionLayout
-      title="경쟁 업체 견적 정보"
-      modifiedAt={useMemo(() => {
-        if (!props.list || props.list.length === 0) {
-          return undefined;
-        }
-        return props.list.map(item => dayjs(item.modifiedAt))
-                    .reduce((a,
-                             b
-                    ) => a.isAfter(b) ? a : b)
-                    ?.toDate();
-      }, [props.list])}
+      title="경쟁 업체 입찰 정보"
+      modifiedAt={modifiedAt}
       titleRightComponent={
-        <Button shape="small" onClick={props.onAdd}>+ 등록</Button>
+        <Button shape="small" onClick={props.onPush}>
+          +등록
+        </Button>
       }>
       <Box sx={{
         width:     '100%',
@@ -67,19 +80,14 @@ export default function RivalEstimateListSection(props: Props) {
             </TextBox>
           </Box>
         )}
-        {props.list && props.list.map(item => (
+        {props.list?.map(item => (
           <Box key={item.id}>
             <Box sx={{ width: '220px' }}>
               <DataFieldWithLabel label="타 업체">
                 <BusinessSelector
-                  value={item.business?.id ?? ''}
+                  value={item.business?.id}
                   onChange={(value) => {
-                    if (item.business?.id !== value) {
-                      props.onUpdate({
-                        id:         item.id,
-                        businessId: value,
-                      });
-                    }
+                    props.onUpdate({ id: item.id, businessId: value });
                   }}
                 />
               </DataFieldWithLabel>
@@ -115,7 +123,7 @@ export default function RivalEstimateListSection(props: Props) {
               </DataFieldWithLabel>
             </Box>
             <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
-              <DataFieldWithLabel labelWidth={25} label="총액">
+              <DataFieldWithLabel label="총액">
                 <Input
                   isAmount
                   key={item.totalAmount}
@@ -130,7 +138,7 @@ export default function RivalEstimateListSection(props: Props) {
               </DataFieldWithLabel>
             </Box>
             <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
-              <DataFieldWithLabel labelWidth={25} label="일정">
+              <DataFieldWithLabel label="일정">
                 <Input
                   key={item.expectedDuration}
                   defaultValue={item.expectedDuration ?? ''}

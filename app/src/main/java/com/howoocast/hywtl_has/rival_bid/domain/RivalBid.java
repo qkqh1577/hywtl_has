@@ -1,6 +1,7 @@
-package com.howoocast.hywtl_has.project_bid.domain;
+package com.howoocast.hywtl_has.rival_bid.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.BidDTO;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import java.util.List;

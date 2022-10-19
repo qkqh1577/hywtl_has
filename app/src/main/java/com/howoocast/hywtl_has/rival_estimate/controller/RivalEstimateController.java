@@ -1,10 +1,9 @@
-package com.howoocast.hywtl_has.project_bid.controller;
+package com.howoocast.hywtl_has.rival_estimate.controller;
 
-import com.howoocast.hywtl_has.project_bid.parameter.RivalBidParameter;
-import com.howoocast.hywtl_has.project_bid.service.RivalBidService;
-import com.howoocast.hywtl_has.project_bid.view.RivalBidView;
+import com.howoocast.hywtl_has.rival_estimate.parameter.RivalEstimateParameter;
+import com.howoocast.hywtl_has.rival_estimate.service.RivalEstimateService;
+import com.howoocast.hywtl_has.rival_estimate.view.RivalEstimateView;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,33 +20,34 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-public class RivalBidController {
+public class RivalEstimateController {
 
-    private final RivalBidService service;
 
-    @GetMapping("/project/sales/{projectId}/rival-bid")
-    public List<RivalBidView> getList(
+    private final RivalEstimateService service;
+
+    @GetMapping("/project/sales/{projectId}/rival-estimate")
+    public List<RivalEstimateView> getList(
         @PathVariable Long projectId
     ) {
-        return service.getList(projectId).stream().map(RivalBidView::assemble).collect(Collectors.toList());
+        return RivalEstimateMapper.toView(service.getList(projectId));
     }
 
-    @PostMapping("/project/sales/{projectId}/rival-bid")
+    @PostMapping("/project/sales/{projectId}/rival-estimate")
     public void push(
         @PathVariable Long projectId
     ) {
         service.push(projectId);
     }
 
-    @PatchMapping("/project/sales/rival-bid/{id}")
+    @PatchMapping("/project/sales/rival-estimate/{id}")
     public void update(
         @PathVariable Long id,
-        @Valid @RequestBody RivalBidParameter parameter
+        @Valid @RequestBody RivalEstimateParameter parameter
     ) {
         service.update(id, parameter);
     }
 
-    @DeleteMapping("/project/sales/rival-bid/{id}")
+    @DeleteMapping("/project/sales/rival-estimate/{id}")
     public void delete(
         @PathVariable Long id
     ) {

@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.business.view;
 
 import com.howoocast.hywtl_has.project_bid.domain.ProjectBid;
-import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
 import java.time.LocalDate;
 import java.util.Objects;
 import lombok.Getter;

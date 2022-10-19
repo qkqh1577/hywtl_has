@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.project_bid.parameter;
+package com.howoocast.hywtl_has.rival_bid.parameter;
 
 import lombok.Getter;
 import lombok.Setter;

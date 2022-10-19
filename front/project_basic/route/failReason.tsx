@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
 
 export default function ProjectBasicFailReasonRoute() {
-  const { lossEstimateExpectation, failReason } = useSelector((root: RootState) => root.projectBasic);
+  const { failReason } = useSelector((root: RootState) => root.projectBasic);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -27,12 +27,9 @@ export default function ProjectBasicFailReasonRoute() {
 
   return (
     <>
-      {
-        lossEstimateExpectation &&
-        <FormikProvider value={formik}>
-          <ProjectBasicFailReasonSection />
-        </FormikProvider>
-      }
+      <FormikProvider value={formik}>
+        <ProjectBasicFailReasonSection />
+      </FormikProvider>
     </>
   );
 }

@@ -1,7 +1,7 @@
-package com.howoocast.hywtl_has.project_bid.repository;
+package com.howoocast.hywtl_has.rival_bid.repository;
 
 import com.howoocast.hywtl_has.common.repository.CustomRepository;
-import com.howoocast.hywtl_has.project_bid.domain.RivalBid;
+import com.howoocast.hywtl_has.rival_bid.domain.RivalBid;
 import java.util.List;
 
 public interface RivalBidRepository extends CustomRepository<RivalBid> {

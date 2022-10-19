@@ -1,6 +1,6 @@
-package com.howoocast.hywtl_has.project_estimate.parameter;
+package com.howoocast.hywtl_has.rival_estimate.parameter;
 
-import com.howoocast.hywtl_has.project_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
 import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;

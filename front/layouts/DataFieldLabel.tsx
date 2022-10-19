@@ -42,7 +42,7 @@ export default function DataFieldWithLabel(props: Props) {
       }}>
         <Box sx={{
           marginRight: '20px',
-          width:       useMemo(() => labelPosition === 'top' ? '100%' : `${labelWidth}px`, [labelPosition, labelWidth]),
+          width:       useMemo(() => labelPosition === 'top' ? '100%' : labelWidth ? `${labelWidth}px` : 'auto', [labelPosition, labelWidth]),
         }}>
           {typeof label === 'string' && (
             <Typography sx={{
@@ -59,13 +59,12 @@ export default function DataFieldWithLabel(props: Props) {
           )}
           {typeof label !== 'string' && label}
         </Box>
-
       </Box>
       <Box sx={{
         display:  'flex',
         height:   useMemo(() => labelPosition === 'top' ? 'auto' : '100%', [labelPosition]),
         flexWrap: 'nowrap',
-        width:    useMemo(() => labelPosition === 'top' ? '100%' : `calc(100% - ${labelWidth}px)`, [labelPosition, labelWidth]),
+        width:    useMemo(() => labelPosition === 'top' ? '100%' : labelWidth ? `calc(100% - 20px - ${labelWidth}px)` : '100%', [labelPosition, labelWidth]),
       }}>
         {children}
       </Box>

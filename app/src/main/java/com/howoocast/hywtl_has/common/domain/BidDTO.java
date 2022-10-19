@@ -1,7 +1,5 @@
-package com.howoocast.hywtl_has.project_bid.domain;
+package com.howoocast.hywtl_has.common.domain;
 
-import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import com.howoocast.hywtl_has.common.domain.EventEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
