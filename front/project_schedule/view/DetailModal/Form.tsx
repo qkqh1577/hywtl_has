@@ -292,7 +292,7 @@ export default function () {
                 key={formik.values.alertBefore}
                 defaultValue={formik.values.alertBefore ?? ''}
                 endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                     <TextBox variant="body12">
                       일 전
                     </TextBox>

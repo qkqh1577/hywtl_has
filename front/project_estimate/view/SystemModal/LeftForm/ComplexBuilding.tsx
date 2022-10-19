@@ -264,7 +264,7 @@ export default function (props: Props) {
                     variant="outlined"
                     defaultValue={item.buildingDocument?.code || '-'}
                     endAdornment={edit && (
-                      <InputAdornment position="end">
+                      <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                         <FontAwesomeIcon
                           icon="link"
                           style={{

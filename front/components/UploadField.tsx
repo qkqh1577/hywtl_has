@@ -82,7 +82,7 @@ export default function UploadField({ accept, name, disableDownload, disableSele
         value={file?.filename ?? ''}
         readOnly
         endAdornment={!props.disabled && (
-          <InputAdornment position="end">
+          <InputAdornment position="end" sx={{ marginRight: '10px' }}>
             {file && !disableDownload && (
               <Button shape="small" onClick={() => {
                 window.open(`/file-items/${file.id}`, '_blank');

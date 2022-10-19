@@ -164,7 +164,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
                 }
               }}
               endAdornment={
-                <InputAdornment position="end">
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                   <TextBox variant="body12">주</TextBox>
                 </InputAdornment>
               }
@@ -184,7 +184,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
                 }
               }}
               endAdornment={
-                <InputAdornment position="end">
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                   <TextBox variant="body12">주</TextBox>
                 </InputAdornment>
               }

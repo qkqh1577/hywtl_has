@@ -278,7 +278,7 @@ export default function ProjectComplexBuildingSection(props: Props) {
                     key={item.buildingDocument?.code}
                     defaultValue={item.buildingDocument?.code || '-'}
                     endAdornment={
-                      <InputAdornment position="end">
+                      <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                         <FontAwesomeIcon
                           icon="link"
                           style={{

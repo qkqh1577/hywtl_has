@@ -36,6 +36,7 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  InputAdornment,
   MenuItem,
   Radio,
   RadioGroup,
@@ -392,14 +393,16 @@ export default function BusinessSelector(props: FieldProps) {
         });
       }}
       endAdornment={
-        <FontAwesomeIcon
-          icon="building"
-          style={{
-            fontSize: '16px',
-            color:    ColorPalette._386dd6,
-            cursor:   'pointer'
-          }}
-        />
+        <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+          <FontAwesomeIcon
+            icon="building"
+            style={{
+              fontSize: '16px',
+              color:    ColorPalette._386dd6,
+              cursor:   'pointer'
+            }}
+          />
+        </InputAdornment>
       }
     />
   );
