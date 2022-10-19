@@ -38,12 +38,11 @@ public class ProjectContractTemplateController {
         );
     }
 
-    @GetMapping("/project/sales/{projectId}/contract/condition")
+    @GetMapping("/project/sales/contract/condition")
     public List<ProjectContractConditionView> conditionList(
-        @PathVariable Long projectId,
         @RequestParam(required = false) Long estimateId
     ) {
-        return service.conditionList(projectId, estimateId).stream()
+        return service.conditionList(estimateId).stream()
             .map(ProjectContractConditionView::assemble)
             .collect(Collectors.toList());
     }

@@ -34,10 +34,8 @@ class ProjectContractApi {
     return data;
   }
 
-  async getConditionList(projectId: ProjectId,
-                         estimateId: ProjectEstimateId | undefined
-  ): Promise<ProjectContractConditionVO[]> {
-    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/condition`, { estimateId });
+  async getConditionList(estimateId: ProjectEstimateId | undefined): Promise<ProjectContractConditionVO[]> {
+    const { data } = await apiClient.get(`/project/sales/contract/condition`, { estimateId });
     return data;
   }
 

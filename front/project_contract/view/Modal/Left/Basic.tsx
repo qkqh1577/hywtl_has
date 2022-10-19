@@ -28,15 +28,19 @@ export default function () {
       <Box sx={{ width: '45%', marginRight: '55%', marginBottom: '15px' }}>
         <DataFieldWithLabel required={edit} labelWidth={60} label="송부 여부">
           <Select
+            key={formik.values.isSent}
             readOnly={!edit}
-            value={formik.values.isSent ? 'Y' : 'N'}
+            value={typeof formik.values.isSent !== 'undefined' ? (formik.values.isSent ? 'Y' : 'N') : ''}
             onChange={(e) => {
               const value = e.target.value || undefined;
               if (value === 'Y') {
                 formik.setFieldValue('isSent', true);
               }
-              else {
+              else if (value === 'N') {
                 formik.setFieldValue('isSent', false);
+              }
+              else {
+                formik.setFieldValue('isSent', undefined);
               }
             }}>
             <MenuItem value="Y">Y</MenuItem>
