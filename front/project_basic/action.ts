@@ -114,7 +114,7 @@ export const projectBasicAction = {
 
   getFailReason:           createAction(ProjectBasicActionType.getFailReason)<ProjectId | undefined>(),
   setFailReason:           createAction(ProjectBasicActionType.setFailReason)<ProjectBasicFailReason | undefined>(),
-  updateFailReason:        createAction(ProjectBasicActionType.updateFailReason)<ProjectBasicFailReasonParameter>(),
+  updateFailReason:        createAction(ProjectBasicActionType.updateFailReason)<Partial<ProjectBasicFailReasonParameter>>(),
   requestUpdateFailReason: createAction(ProjectBasicActionType.requestUpdateFailReason)<ApiStatus>(),
 };
 

@@ -1,4 +1,3 @@
-import { ProjectQuery } from 'project/query';
 import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
 import { ProjectActionType } from 'project/action';
@@ -8,6 +7,7 @@ import {
   ProjectVO
 } from 'project/domain';
 import { ApiStatus } from 'components/DataFieldProps';
+import { ProjectQuery } from 'project/parameter';
 
 export interface ProjectState {
   filter?: ProjectQuery;
@@ -15,49 +15,74 @@ export interface ProjectState {
   page?: Page<ProjectShortVO>;
   detail?: ProjectVO;
   requestAdd: ApiStatus;
+  requestUpdateStatus: ApiStatus;
+  requestAddFailReason: ApiStatus;
   addModal: boolean;
+  failReasonModal: boolean;
 }
 
 const initial: ProjectState = {
-  requestAdd: ApiStatus.IDLE,
-  addModal:   false,
+  requestAdd:           ApiStatus.IDLE,
+  requestUpdateStatus:  ApiStatus.IDLE,
+  requestAddFailReason: ApiStatus.IDLE,
+  addModal:             false,
+  failReasonModal:      false,
 };
 
 export const projectReducer = createReducer(initial, {
-  [ProjectActionType.setFilter]:   (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.setFilter]:            (state,
+                                             action
+                                            ) => ({
     ...state,
     filter: action.payload,
   }),
-  [ProjectActionType.setPage]:     (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.setPage]:              (state,
+                                             action
+                                            ) => ({
     ...state,
     page: action.payload,
   }),
-  [ProjectActionType.setId]:       (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.setId]:                (state,
+                                             action
+                                            ) => ({
     ...state,
     id: action.payload,
   }),
-  [ProjectActionType.setOne]:      (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.setOne]:               (state,
+                                             action
+                                            ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectActionType.requestAdd]:  (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.requestAdd]:           (state,
+                                             action
+                                            ) => ({
     ...state,
     requestAdd: action.payload,
   }),
-  [ProjectActionType.setAddModal]: (state,
-                                    action
-                                   ) => ({
+  [ProjectActionType.setAddModal]:          (state,
+                                             action
+                                            ) => ({
     ...state,
     addModal: action.payload
   }),
+  [ProjectActionType.requestUpdateStatus]:  (state,
+                                             action
+                                            ) => ({
+    ...state,
+    requestUpdateStatus: action.payload,
+  }),
+  [ProjectActionType.requestAddFailReason]: (state,
+                                             action
+                                            ) => ({
+    ...state,
+    requestAddFailReason: action.payload,
+  }),
+  [ProjectActionType.setFailReasonModal]:   (state,
+                                             action
+                                            ) => ({
+    ...state,
+    failReasonModal: action.payload,
+  })
 });
+

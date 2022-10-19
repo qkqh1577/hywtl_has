@@ -103,7 +103,7 @@ class ProjectBasicApi {
   }
 
   async updateFailReason(id: ProjectId,
-                         params: ProjectBasicFailReasonParameter
+                         params: Partial<ProjectBasicFailReasonParameter>
   ): Promise<void> {
     const { data } = await apiClient.patch(`/project/sales/${id}/basic/fail-reason`, params);
     return data;

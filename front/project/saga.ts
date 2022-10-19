@@ -2,6 +2,7 @@ import {
   call,
   fork,
   put,
+  select,
   take
 } from 'redux-saga/effects';
 import { projectAction } from 'project/action';
@@ -12,6 +13,7 @@ import {
   ProjectVO
 } from 'project/domain';
 import { ApiStatus } from 'components/DataFieldProps';
+import { RootState } from 'services/reducer';
 
 function* watchFilter() {
   while (true) {
@@ -49,8 +51,42 @@ function* watchAdd() {
   }
 }
 
+function* watchUpdateStatus() {
+  while (true) {
+    const { payload: params } = yield take(projectAction.updateStatus);
+    try {
+      const { id } = yield select((root: RootState) => root.project);
+      yield put(projectAction.requestUpdateStatus(ApiStatus.REQUEST));
+      yield call(projectApi.updateStatus, id, params);
+      yield put(projectAction.requestUpdateStatus(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectAction.requestUpdateStatus(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchAddFailReason() {
+  while (true) {
+    const { payload: params } = yield take(projectAction.addFailReason);
+    try {
+      const { id } = yield select((root: RootState) => root.project);
+      yield put(projectAction.requestAddFailReason(ApiStatus.REQUEST));
+      yield call(projectApi.addFailReason, id, params);
+      yield put(projectAction.requestAddFailReason(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectAction.requestAddFailReason(ApiStatus.FAIL));
+    }
+  }
+}
+
 export default function* projectSaga() {
   yield fork(watchFilter);
   yield fork(watchId);
   yield fork(watchAdd);
+  yield fork(watchUpdateStatus);
+  yield fork(watchAddFailReason);
 }

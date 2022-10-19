@@ -18,8 +18,6 @@ import {
 import { projectBasicApi } from 'project_basic/api';
 import { RootState } from 'services/reducer';
 import { ApiStatus } from 'components/DataFieldProps';
-import { BusinessVO } from 'business/domain';
-import { businessApi } from 'business/api';
 import { ProjectComplexTestVO } from 'project_complex/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
@@ -65,19 +63,6 @@ function* watchBusinessList() {
     }
     else {
       yield put(projectBasicAction.setBusinessList(undefined));
-    }
-  }
-}
-
-function* watchBusiness() {
-  while (true) {
-    const { payload: id } = yield take(projectBasicAction.getBusiness);
-    if (id) {
-      const detail: BusinessVO = yield call(businessApi.getOne, id);
-      yield put(projectBasicAction.setBusiness(detail));
-    }
-    else {
-      yield put(projectBasicAction.setBusiness(undefined));
     }
   }
 }
@@ -284,7 +269,6 @@ export default function* projectBasicSaga() {
   yield fork(watchId);
   yield fork(watchBasic);
   yield fork(watchBusinessList);
-  yield fork(watchBusiness);
   yield fork(watchDesign);
   yield fork(watchTest);
   yield fork(watchEstimate);

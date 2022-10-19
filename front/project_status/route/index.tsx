@@ -1,26 +1,35 @@
-import {
-  useDispatch,
-  useSelector
-} from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
-import React, { useEffect } from 'react';
-import { projectStatusAction } from 'project_status/action';
-import ProjectStatusStatusRoute from 'project_status/route/status';
-import ProjectStatusFailReasonAddModalRoute from 'project_status/route/failReasonAddModal';
+import ProjectStatusLeftBar from 'project_status/view/StatusBar/Left';
+import ProjectStatusRightBar from 'project_status/view/StatusBar/Right';
+import { Box } from '@mui/material';
+import { ProjectStatus } from 'project/domain';
 
-export function ProjectStatusRoute() {
-  const dispatch = useDispatch();
+export default function ProjectStatusRoute() {
+
+  const { test, contract } = useSelector((root: RootState) => root.projectBasic);
   const { detail } = useSelector((root: RootState) => root.project);
-  const { projectId } = useSelector((root: RootState) => root.projectStatus);
 
-  useEffect(() => {
-    if (detail && detail.id !== projectId) {
-      dispatch(projectStatusAction.setProjectId(detail.id));
-    }
-  }, [detail, projectId]);
+  return (
+    <Box sx={{
+      display:        'flex',
+      width:          '100%',
+      flexWrap:       'nowrap',
+      padding:        '0 20px 20px 20px',
+      justifyContent: 'space-between',
+    }}>
+      <ProjectStatusLeftBar
+        status={{ ...detail }}
+        onChange={(status: ProjectStatus) => {
 
-  return <>
-    <ProjectStatusStatusRoute />
-    <ProjectStatusFailReasonAddModalRoute />
-  </>;
+        }}
+      />
+      <ProjectStatusRightBar
+        targetTest={test?.targetTest}
+        testAmount={contract?.estimate?.plan?.testAmount}
+        reviewAmount={contract?.estimate?.plan?.reviewAmount}
+      />
+    </Box>
+  );
 }

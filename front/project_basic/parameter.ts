@@ -8,7 +8,7 @@ import {
   ProjectBasicFailReason
 } from 'project_basic/domain';
 import { UserId } from 'user/domain';
-import { ProjectBasicBidType } from 'project_status/domain';
+import { ProjectBasicBidType } from 'project/domain';
 
 export interface ProjectBasicParameter {
   name?: string;

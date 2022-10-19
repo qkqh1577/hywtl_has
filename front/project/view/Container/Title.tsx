@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Typography
-} from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { Box } from '@mui/material';
+import TextBox from 'layouts/Text';
 
 interface Props {
   code?: string;
@@ -11,35 +8,20 @@ interface Props {
 }
 
 export default function ProjectContainerTitle({ name, code }: Props) {
-
-  if (!name) {
-    return null;
-  }
   return (
     <Box sx={{
       display: 'flex',
       width:   '100%',
       height:  '100%'
     }}>
-      <Typography sx={{
-        fontSize:   '18px',
-        lineHeight: '26px',
-        color:      ColorPalette._252627,
-        fontWeight: 'bold'
-      }}>
+      <TextBox variant="heading1">
         {name && '['}
         {name && !code ? '가등록' : code}
         {name && ']'}
-      </Typography>
-      <Typography sx={{
-        fontSize:   '18px',
-        lineHeight: '26px',
-        color:      ColorPalette._252627,
-        fontWeight: 'bold'
-      }}>
+      </TextBox>
+      <TextBox variant="heading1">
         {name}
-      </Typography>
-
+      </TextBox>
     </Box>
   );
 }

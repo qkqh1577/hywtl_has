@@ -8,7 +8,7 @@ import {
   ProjectBasicBidType,
   projectBasicBidTypeList,
   projectBasicBidTypeName
-} from 'project_status/domain';
+} from 'project/domain';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicParameter } from 'project_basic/parameter';

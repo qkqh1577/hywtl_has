@@ -25,7 +25,6 @@ import projectLogSaga from 'project_log/saga';
 import projectMemoSaga from 'project_memo/saga';
 import projectSaga from 'project/saga';
 import projectScheduleSaga from 'project_schedule/saga';
-import projectStatusSaga from 'project_status/saga';
 import rivalBidSaga from 'rival_bid/saga';
 import rivalEstimateSaga from 'rival_estimate/saga';
 import userNotificationSaga from 'user_notification/saga';
@@ -56,7 +55,6 @@ function* saga() {
     projectMemoSaga(),
     projectSaga(),
     projectScheduleSaga(),
-    projectStatusSaga(),
     rivalBidSaga(),
     rivalEstimateSaga(),
     userNotificationSaga(),

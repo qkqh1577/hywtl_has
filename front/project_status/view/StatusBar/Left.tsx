@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box,
   MenuItem,
-  Typography
 } from '@mui/material';
 import { ColorPalette } from 'app/view/App/theme';
 import {
@@ -19,43 +18,16 @@ import {
   projectProgressStatusList,
   projectProgressStatusName,
   ProjectStatus
-} from 'project_status/domain';
+} from 'project/domain';
 import Select from 'layouts/Select';
-
-interface DataBoxProps {
-  title: string;
-  width: number;
-  children: React.ReactNode;
-  backgroundColor: string;
-}
-
-function DataBox(props: DataBoxProps) {
-  return (
-    <Box sx={{
-      display:         'flex',
-      flexWrap:        'wrap',
-      flexDirection:   'column',
-      alignContent:    'stretch',
-      alignItems:      'center',
-      backgroundColor: props.backgroundColor,
-      padding:         '10px',
-      borderRadius:    '5px',
-      flex:            1,
-    }}>
-      <Typography sx={{ fontSize: '12px', textAlign: 'center' }}>
-        {props.title}
-      </Typography>
-      {props.children}
-    </Box>
-  );
-}
+import DataBox from 'project_status/view/StatusBar/DataBox';
 
 interface Props {
   status: ProjectStatus | undefined;
-  onChange: (status: Partial<ProjectStatus>) => void;
+  onChange: (status: ProjectStatus) => void;
 }
 
-export default function ProjectContainerStatusBar({ status, onChange }: Props) {
+export default function ProjectStatusLeftBar({ status, onChange }: Props) {
 
   return (
     <Box sx={{
@@ -74,12 +46,10 @@ export default function ProjectContainerStatusBar({ status, onChange }: Props) {
         children={
           <Select
             variant="outlined"
-            value={status?.progressStatus || '선택'}
+            value={status?.progressStatus ?? ''}
             onChange={(e) => {
               onChange({ progressStatus: e.target.value as ProjectProgressStatus });
-            }}
-          >
-            {!status?.progressStatus && <MenuItem key="" value="선택">선택</MenuItem>}
+            }}>
             {projectProgressStatusList.map((item) => (
               <MenuItem key={item} value={item}>{projectProgressStatusName(item)}</MenuItem>
             ))}

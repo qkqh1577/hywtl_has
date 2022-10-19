@@ -101,10 +101,6 @@ import {
   UserNotificationState
 } from 'user_notification/reducer';
 import {
-  projectStatusReducer,
-  ProjectStatusState
-} from 'project_status/reducer';
-import {
   loginReducer,
   LoginState
 } from 'login/reducer';
@@ -137,7 +133,6 @@ export interface RootState {
   projectLog: ProjectLogState;
   projectMemo: ProjectMemoState;
   projectSchedule: ProjectScheduleState;
-  projectStatus: ProjectStatusState;
   rivalBid: RivalBidState;
   rivalEstimate: RivalEstimateState;
   user: UserState;
@@ -168,7 +163,6 @@ const reducer = combineReducers<RootState>({
   projectLog:        projectLogReducer,
   projectMemo:       projectMemoReducer,
   projectSchedule:   projectScheduleReducer,
-  projectStatus:     projectStatusReducer,
   rivalBid:          rivalBidReducer,
   rivalEstimate:     rivalEstimateReducer,
   user:              userReducer,
