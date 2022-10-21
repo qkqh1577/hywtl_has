@@ -1,6 +1,5 @@
 import { ProjectId } from 'project/domain';
 import {
-  ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
   ProjectBasicDesign,
@@ -21,10 +20,6 @@ import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
 
 class ProjectBasicApi {
-  async getOne(id: ProjectId): Promise<ProjectBasic> {
-    const { data } = await apiClient.get(`/project/sales/${id}`);
-    return data;
-  }
 
   async getBusinessList(id: ProjectId): Promise<ProjectBasicBusiness[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/business`);

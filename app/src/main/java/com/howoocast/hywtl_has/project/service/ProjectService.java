@@ -7,7 +7,10 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
+import com.howoocast.hywtl_has.project.domain.ProjectBidStatus;
+import com.howoocast.hywtl_has.project.domain.ProjectContractStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
+import com.howoocast.hywtl_has.project.domain.ProjectEstimateStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
@@ -148,8 +151,9 @@ public class ProjectService {
             eventPublisher.publishEvent(ProjectLogEvent.of(
                 instance,
                 "프로젝트 진행 현황 변경",
-                instance.getStatus().getProgressStatus().getName(),
-                parameter.getProgressStatus().getName()
+                Optional.ofNullable(instance.getStatus().getProgressStatus()).map(ProjectProgressStatus::getName)
+                    .orElse(null),
+                Optional.ofNullable(parameter.getProgressStatus()).map(ProjectProgressStatus::getName).orElse(null)
             ));
             instance.getStatus().setProgressStatus(parameter.getProgressStatus());
 
@@ -159,31 +163,68 @@ public class ProjectService {
             eventPublisher.publishEvent(ProjectLogEvent.of(
                 instance,
                 "프로젝트 견적 분류 변경",
-                Optional.ofNullable(instance.getStatus().getEstimateExpectation()).orElse(ProjectEstimateExpectation.AVERAGE).getName(),
-                parameter.getEstimateExpectation().getName()
+                Optional.ofNullable(instance.getStatus().getEstimateExpectation())
+                    .map(ProjectEstimateExpectation::getName)
+                    .orElse(null),
+                Optional.ofNullable(parameter.getEstimateExpectation())
+                    .map(ProjectEstimateExpectation::getName)
+                    .orElse(null)
             ));
             instance.getStatus().setEstimateExpectation(parameter.getEstimateExpectation());
         }
 
         if (Objects.nonNull(parameter.getEstimateStatus())) {
-            if (instance.getBasic().getBidType() == ProjectBasicBidType.DEFAULT) {
+            if (instance.getBasic().getBidType() != ProjectBasicBidType.DEFAULT) {
                 // 견적 구분이 일반일 때만 업데이트 가능
-                eventPublisher.publishEvent(ProjectLogEvent.of(
-                    instance,
-                    "프로젝트 견적 상태 변경",
-                    instance.getStatus().getEstimateStatus().getName(),
-                    parameter.getEstimateStatus().getName()
-                ));
-                instance.getStatus().setEstimateStatus(parameter.getEstimateStatus());
+                throw new IllegalRequestException(
+                    Project.KEY + ".estimate_status.illegal_request",
+                    "견적 구분이 일반일 때만 견적 상태를 변경할 수 있습니다."
+                );
             }
+            eventPublisher.publishEvent(ProjectLogEvent.of(
+                instance,
+                "프로젝트 견적 상태 변경",
+                Optional.ofNullable(instance.getStatus().getEstimateStatus())
+                    .map(ProjectEstimateStatus::getName)
+                    .orElse(null),
+                Optional.ofNullable(parameter.getEstimateStatus())
+                    .map(ProjectEstimateStatus::getName)
+                    .orElse(null)
+            ));
+            instance.getStatus().setEstimateStatus(parameter.getEstimateStatus());
+        }
+        if (Objects.nonNull(parameter.getBidStatus())) {
+            if (instance.getBasic().getBidType() != ProjectBasicBidType.COMPANY
+                && instance.getBasic().getBidType() != ProjectBasicBidType.G2B) {
+                // 견적 구분이 기업 또는 나라장터일 때만 업데이트 가능
+                throw new IllegalRequestException(
+                    Project.KEY + ".estimate_status.illegal_request",
+                    "견적 구분이 기업 또는 나라장터일 때만 입찰 상태를 변경할 수 있습니다."
+                );
+            }
+            eventPublisher.publishEvent(ProjectLogEvent.of(
+                instance,
+                "프로젝트 입찰 상태 변경",
+                Optional.ofNullable(instance.getStatus().getBidStatus())
+                    .map(ProjectBidStatus::getName)
+                    .orElse(null),
+                Optional.ofNullable(parameter.getBidStatus())
+                    .map(ProjectBidStatus::getName)
+                    .orElse(null)
+            ));
+            instance.getStatus().setBidStatus(parameter.getBidStatus());
         }
 
         if (Objects.nonNull(parameter.getContractStatus())) {
             eventPublisher.publishEvent(ProjectLogEvent.of(
                 instance,
                 "프로젝트 계약 상태 변경",
-                instance.getStatus().getContractStatus().getName(),
-                parameter.getContractStatus().getName()
+                Optional.ofNullable(instance.getStatus().getContractStatus())
+                    .map(ProjectContractStatus::getName)
+                    .orElse(null),
+                Optional.ofNullable(parameter.getContractStatus())
+                    .map(ProjectContractStatus::getName)
+                    .orElse(null)
             ));
             instance.getStatus().setContractStatus(parameter.getContractStatus());
         }

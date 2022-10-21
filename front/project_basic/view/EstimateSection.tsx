@@ -138,7 +138,7 @@ export default function ProjectBasicEstimateSection({ detail, rivalList }: Props
                 <Input
                   readOnly
                   key={item.expectedDuration}
-                  defaultValue={item.expectedDuration?.toLocaleString() ?? ''}
+                  defaultValue={item.expectedDuration ?? ''}
                 />
               </DataFieldWithLabel>
             </Box>

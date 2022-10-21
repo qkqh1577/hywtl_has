@@ -1,7 +1,6 @@
 import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import {
-  ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
   ProjectBasicDesign,
@@ -25,8 +24,6 @@ import { ProjectContractVO } from 'project_contract/domain';
 export enum ProjectBasicActionType {
   setId                   = 'project/basic/id/set',
 
-  getBasic                = 'project/basic/get',
-  setBasic                = 'project/basic/basic/set',
   updateBasic             = 'project/basic/update',
   requestUpdateBasic      = 'project/basic/update/request',
 
@@ -73,8 +70,6 @@ export enum ProjectBasicActionType {
 export const projectBasicAction = {
   setId: createAction(ProjectBasicActionType.setId)<ProjectId | undefined>(),
 
-  getBasic:           createAction(ProjectBasicActionType.getBasic)<ProjectId | undefined>(),
-  setBasic:           createAction(ProjectBasicActionType.setBasic)<ProjectBasic | undefined>(),
   updateBasic:        createAction(ProjectBasicActionType.updateBasic)<ProjectBasicParameter>(),
   requestUpdateBasic: createAction(ProjectBasicActionType.requestUpdateBasic)<ApiStatus>(),
 

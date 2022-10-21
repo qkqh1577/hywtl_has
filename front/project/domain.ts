@@ -1,4 +1,4 @@
-import { ProjectBasic } from 'project_basic/domain';
+import { UserVO } from 'user/domain';
 
 export type ProjectId = number & { readonly _brand: unique symbol; }
 
@@ -7,8 +7,19 @@ export function ProjectId(id: number) {
 }
 
 export interface ProjectVO
-  extends ProjectBasic,
-          ProjectStatus {
+  extends ProjectStatus {
+  id: ProjectId;
+  code?: string;
+  name: string;
+  alias: string;
+  bidType: ProjectBasicBidType;
+  receptionManager: UserVO;
+  salesManager?: UserVO;
+  projectManager?: UserVO;
+  expectedMonth?: Date;
+  requestedMonth?: Date;
+  isLh?: boolean;
+  modifiedAt?: Date;
 }
 
 export interface ProjectShortVO {
@@ -114,7 +125,7 @@ export enum ProjectEstimateExpectation {
   LOSE    = 'LOSE'
 }
 
-export function projectEstimateExpectationName(status: ProjectEstimateExpectation | '') {
+export function projectEstimateExpectationName(status: ProjectEstimateExpectation) {
   switch (status) {
     case ProjectEstimateExpectation.LOW:
       return '가능성 낮음';
@@ -209,9 +220,69 @@ export const projectContractStatusList: ProjectContractStatus[] = [
   ProjectContractStatus.CHANGE,
 ];
 
+
+/**
+ * 입찰 상태
+ */
+export enum ProjectBidStatus {
+  /**
+   * 대기
+   */
+  WAITING  = 'WAITING',
+  /**
+   * 입찰
+   */
+  BID      = 'BID',
+  /**
+   * 미입찰
+   */
+  HOLD     = 'HOLD',
+  /**
+   * 낙찰 성공
+   */
+  WIN      = 'WIN',
+  /**
+   * 낙찰 실패
+   */
+  LOSE     = 'LOSE',
+  /**
+   * 대비 입찰
+   */
+  CONTRAST = 'CONTRAST',
+}
+
+export function projectBidStatusName(status: ProjectBidStatus) {
+  switch (status) {
+    case ProjectBidStatus.WAITING:
+      return '대기';
+    case ProjectBidStatus.BID:
+      return '입찰';
+    case ProjectBidStatus.HOLD:
+      return '미입찰';
+    case ProjectBidStatus.WIN:
+      return '낙찰 성공';
+    case ProjectBidStatus.LOSE:
+      return '낙찰 실패';
+    case ProjectBidStatus.CONTRAST:
+      return '대비 입찰';
+    default:
+      return '-';
+  }
+}
+
+export const projectBidStatusList: ProjectBidStatus[] = [
+  ProjectBidStatus.WAITING,
+  ProjectBidStatus.BID,
+  ProjectBidStatus.HOLD,
+  ProjectBidStatus.WIN,
+  ProjectBidStatus.LOSE,
+  ProjectBidStatus.CONTRAST
+];
+
 export interface ProjectStatus {
   progressStatus?: ProjectProgressStatus;
   estimateExpectation?: ProjectEstimateExpectation;
+  bidStatus?: ProjectBidStatus;
   estimateStatus?: ProjectEstimateStatus;
   contractStatus?: ProjectContractStatus;
 }

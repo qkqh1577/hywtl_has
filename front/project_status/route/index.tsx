@@ -1,15 +1,44 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/reducer';
 import ProjectStatusLeftBar from 'project_status/view/StatusBar/Left';
 import ProjectStatusRightBar from 'project_status/view/StatusBar/Right';
 import { Box } from '@mui/material';
-import { ProjectStatus } from 'project/domain';
+import {
+  ProjectEstimateExpectation,
+  ProjectStatus
+} from 'project/domain';
+import { projectAction } from 'project/action';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
+import ProjectBasicFailReasonModalRoute from 'project_status/route/failReasonModal';
 
 export default function ProjectStatusRoute() {
 
+  const dispatch = useDispatch();
+  const { error } = useDialog();
   const { test, contract } = useSelector((root: RootState) => root.projectBasic);
-  const { detail } = useSelector((root: RootState) => root.project);
+  const { id, detail, requestUpdateStatus } = useSelector((root: RootState) => root.project);
+
+  const onUpdate = useCallback((params: ProjectStatus) => dispatch(projectAction.updateStatus(params)), [dispatch]);
+  const openFailReasonModal = useCallback(() => dispatch(projectAction.setFailReasonModal(true)), [dispatch]);
+
+  useEffect(() => {
+    if (requestUpdateStatus === ApiStatus.DONE) {
+      dispatch(projectAction.setId(id));
+      dispatch(projectAction.requestUpdateStatus(ApiStatus.IDLE));
+    }
+    else if (requestUpdateStatus === ApiStatus.FAIL) {
+      error('변경에 실패하였습니다.');
+      dispatch(projectAction.requestUpdateStatus(ApiStatus.IDLE));
+    }
+  }, [requestUpdateStatus]);
 
   return (
     <Box sx={{
@@ -20,9 +49,19 @@ export default function ProjectStatusRoute() {
       justifyContent: 'space-between',
     }}>
       <ProjectStatusLeftBar
-        status={{ ...detail }}
-        onChange={(status: ProjectStatus) => {
-
+        bidType={detail?.bidType}
+        progressStatus={detail?.progressStatus}
+        estimateExpectation={detail?.estimateExpectation}
+        estimateStatus={detail?.estimateStatus}
+        contractStatus={detail?.contractStatus}
+        bidStatus={detail?.bidStatus}
+        onUpdate={(status: ProjectStatus) => {
+          if (status.estimateExpectation && status.estimateExpectation === ProjectEstimateExpectation.LOSE) {
+            openFailReasonModal();
+          }
+          else {
+            onUpdate(status);
+          }
         }}
       />
       <ProjectStatusRightBar
@@ -30,6 +69,7 @@ export default function ProjectStatusRoute() {
         testAmount={contract?.estimate?.plan?.testAmount}
         reviewAmount={contract?.estimate?.plan?.reviewAmount}
       />
+      <ProjectBasicFailReasonModalRoute />
     </Box>
   );
 }

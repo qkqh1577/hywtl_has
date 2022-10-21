@@ -351,7 +351,7 @@ interface FieldProps
     | 'onChange'
     | 'onClick'> {
   allowMyBusiness?: boolean;
-  onChange: (id: BusinessId | undefined) => void;
+  onChange?: (id: BusinessId | undefined) => void;
 }
 
 export default function BusinessSelector(props: FieldProps) {
@@ -363,6 +363,7 @@ export default function BusinessSelector(props: FieldProps) {
         } = props;
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<BusinessVO>();
+
 
   const onClick = useCallback((modalProps: ModalProps) => dispatch(businessSelectorAction.setModal(modalProps)), [dispatch]);
 
@@ -389,7 +390,11 @@ export default function BusinessSelector(props: FieldProps) {
         onClick({
           id:           detail?.id,
           allowMyBusiness,
-          afterConfirm: onChange
+          afterConfirm: (id) => {
+            if (onChange) {
+              onChange(id);
+            }
+          }
         });
       }}
       endAdornment={

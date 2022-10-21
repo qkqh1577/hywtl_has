@@ -1,6 +1,5 @@
 import { ProjectId } from 'project/domain';
 import {
-  ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicDesign,
   ProjectBasicFailReason,
@@ -17,7 +16,6 @@ import { ProjectContractVO } from 'project_contract/domain';
 
 export interface ProjectBasicState {
   id?: ProjectId;
-  basic?: ProjectBasic;
   businessList?: ProjectBasicBusiness[];
   business?: ProjectBasicBusiness;
   design?: ProjectBasicDesign;
@@ -52,12 +50,6 @@ export const projectBasicReducer = createReducer(initial, {
                                                     ) => ({
     ...state,
     id: action.payload,
-  }),
-  [ProjectBasicActionType.setBasic]:                (state,
-                                                     action
-                                                    ) => ({
-    ...state,
-    basic: action.payload,
   }),
   [ProjectBasicActionType.requestUpdateBasic]:      (state,
                                                      action

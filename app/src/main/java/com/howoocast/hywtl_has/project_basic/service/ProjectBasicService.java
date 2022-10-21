@@ -15,7 +15,8 @@ import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicDesign;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicFailReason;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicDesignParameter;
-import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonAddParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonUpdateParameter;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicDesignRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicFailReasonRepository;
@@ -128,9 +129,43 @@ public class ProjectBasicService {
     }
 
     @Transactional
-    public void upsertFailReason(
+    public void addFailReason(
         Long projectId,
-        ProjectBasicFailReasonParameter parameter
+        ProjectBasicFailReasonAddParameter parameter
+    ) {
+        Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
+        ProjectBasicFailReason instance = ProjectBasicFailReason.of(project);
+        Business win = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(parameter.getWinId());
+        log.debug("[add fail reason] test amount: {}", parameter.getTestAmount());
+        log.debug("[add fail reason] review amount: {}", parameter.getReviewAmount());
+        log.debug("[add fail reason] expected duration: {}", parameter.getExpectedDuration());
+        log.debug("[add fail reason] reason: {}", parameter.getReason());
+        log.debug("[add fail reason] win id: {}", parameter.getWinId());
+        List<EventEntity> eventList = instance.update(
+            win,
+            parameter.getTestAmount(),
+            parameter.getReviewAmount(),
+            parameter.getTotalAmount(),
+            parameter.getExpectedDuration(),
+            parameter.getReason()
+        );
+        projectBasicFailReasonRepository.save(instance);
+        log.debug("[add fail reason] id: {}", instance.getId());
+
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            project,
+            "프로젝트 견적 분류 변경",
+            project.getStatus().getEstimateExpectation().getName(),
+            ProjectEstimateExpectation.LOSE.getName()
+        ));
+        project.getStatus().setEstimateExpectation(ProjectEstimateExpectation.LOSE);
+        eventList.stream().map(event -> ProjectLogEvent.of(project, event)).forEach(eventPublisher::publishEvent);
+    }
+
+    @Transactional
+    public void updateFailReason(
+        Long projectId,
+        ProjectBasicFailReasonUpdateParameter parameter
     ) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         ProjectBasicFailReason instance = projectBasicFailReasonRepository.findByProject_Id(projectId)
@@ -145,18 +180,8 @@ public class ProjectBasicService {
             parameter.getExpectedDuration(),
             parameter.getReason()
         );
-        if (Objects.isNull(instance.getId())) {
-            projectBasicFailReasonRepository.save(instance);
-        }
         eventList.stream().map(event -> ProjectLogEvent.of(project, event)).forEach(eventPublisher::publishEvent);
 
-        eventPublisher.publishEvent(ProjectLogEvent.of(
-            project,
-            "프로젝트 견적 분류 변경",
-            project.getStatus().getEstimateExpectation().getName(),
-            ProjectEstimateExpectation.LOSE.getName()
-        ));
-        project.getStatus().setEstimateExpectation(ProjectEstimateExpectation.LOSE);
     }
 
     @Transactional

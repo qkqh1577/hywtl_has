@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectBasicFailReasonParameter {
+public class ProjectBasicFailReasonAddParameter {
 
     @NotNull(message = ProjectBasicFailReason.KEY + ".win_id.not_null")
     private Long winId;

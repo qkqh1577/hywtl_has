@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,6 @@ public class ProjectBasicFailReason extends BidDTO {
     @ManyToOne
     private Business win;
 
-    @NotBlank
     @Column(nullable = false)
     private String reason;
 

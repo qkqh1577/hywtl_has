@@ -3,26 +3,6 @@ import {
   BusinessManagerVO,
   BusinessShort
 } from 'business/domain';
-import { UserVO } from 'user/domain';
-import {
-  ProjectBasicBidType,
-  ProjectId
-} from 'project/domain';
-
-export interface ProjectBasic {
-  id: ProjectId;
-  code?: string;
-  name: string;
-  alias: string;
-  bidType: ProjectBasicBidType;
-  receptionManager: UserVO;
-  salesManager?: UserVO;
-  projectManager?: UserVO;
-  expectedMonth?: Date;
-  requestedMonth?: Date;
-  isLh?: boolean;
-  modifiedAt?: Date;
-}
 
 export type ProjectBasicBusinessId = number & { readonly _brand: unique symbol; }
 

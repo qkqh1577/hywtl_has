@@ -3,6 +3,8 @@ drop table if exists business;
 drop table if exists business_manager;
 drop table if exists business_manager_list;
 drop table if exists business_manager_meta;
+drop table if exists business_trip;
+drop table if exists business_trip_accompany;
 drop table if exists contract_basic;
 drop table if exists contract_collection;
 drop table if exists contract_collection_stage_list;

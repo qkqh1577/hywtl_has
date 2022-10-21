@@ -10,7 +10,6 @@ import {
   ProjectBasicActionType
 } from 'project_basic/action';
 import {
-  ProjectBasic,
   ProjectBasicBusiness,
   ProjectBasicDesign,
   ProjectBasicFailReason,
@@ -28,7 +27,6 @@ import { ProjectContractVO } from 'project_contract/domain';
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
-    yield put(projectBasicAction.getBasic(id));
     yield put(projectBasicAction.getBusinessList(id));
     yield put(projectBasicAction.getDesign(id));
     yield put(projectBasicAction.getTest(id));
@@ -38,19 +36,6 @@ function* watchId() {
     yield put(projectBasicAction.getRivalBidList(id));
     yield put(projectBasicAction.getContract(id));
     yield put(projectBasicAction.getFailReason(id));
-  }
-}
-
-function* watchBasic() {
-  while (true) {
-    const { payload: id } = yield take(projectBasicAction.getBasic);
-    if (id) {
-      const basic: ProjectBasic = yield call(projectBasicApi.getOne, id);
-      yield put(projectBasicAction.setBasic(basic));
-    }
-    else {
-      yield put(projectBasicAction.setBasic(undefined));
-    }
   }
 }
 
@@ -267,7 +252,6 @@ function* watchUpdateFailReason() {
 
 export default function* projectBasicSaga() {
   yield fork(watchId);
-  yield fork(watchBasic);
   yield fork(watchBusinessList);
   yield fork(watchDesign);
   yield fork(watchTest);

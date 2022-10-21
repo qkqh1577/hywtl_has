@@ -38,7 +38,7 @@ class ProjectApi {
   async addFailReason(id: ProjectId,
                       params: ProjectBasicFailReasonParameter
   ): Promise<void> {
-    const { data } = await apiClient.post(`/project/sales/${id}/fail-reason`, params);
+    const { data } = await apiClient.post(`/project/sales/${id}/basic/fail-reason`, params);
     return data;
   }
 

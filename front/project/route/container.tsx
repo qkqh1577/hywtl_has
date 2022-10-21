@@ -11,7 +11,6 @@ import { ProjectId } from 'project/domain';
 import { projectAction } from 'project/action';
 import PageLayout from 'layouts/PageLayout';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
-import ProjectStatusFailReasonAddModalRoute from 'project_status/route/failReasonAddModal';
 import { Box } from '@mui/material';
 import ProjectContainerTab from 'project/view/Container/Tab';
 
@@ -53,7 +52,6 @@ export default function ProjectContainerRoute(props: Props) {
         </Box>
       }
       body={props.children}
-      modals={<ProjectStatusFailReasonAddModalRoute />}
     />
   );
 }

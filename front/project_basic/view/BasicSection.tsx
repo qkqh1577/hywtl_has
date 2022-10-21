@@ -7,19 +7,19 @@ import {
 import {
   ProjectBasicBidType,
   projectBasicBidTypeList,
-  projectBasicBidTypeName
+  projectBasicBidTypeName,
+  ProjectVO
 } from 'project/domain';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicParameter } from 'project_basic/parameter';
 import Select from 'layouts/Select';
 import UserSelector from 'components/UserSelector';
-import { ProjectBasic } from 'project_basic/domain';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 interface Props {
-  basic?: ProjectBasic;
+  basic?: ProjectVO;
   onUpdate: (params: ProjectBasicParameter) => void;
 }
 

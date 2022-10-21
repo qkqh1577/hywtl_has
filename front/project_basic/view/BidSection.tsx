@@ -78,7 +78,7 @@ export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
               <Input
                 readOnly
                 key={detail?.expectedDuration}
-                defaultValue={detail?.expectedDuration?.toLocaleString() ?? ''}
+                defaultValue={detail?.expectedDuration ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -90,7 +90,6 @@ export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
                 <BusinessSelector
                   readOnly
                   value={item.business?.id}
-                  onChange={() => {}}
                 />
               </DataFieldWithLabel>
             </Box>
@@ -129,7 +128,7 @@ export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
                 <Input
                   readOnly
                   key={item.expectedDuration}
-                  defaultValue={item.expectedDuration?.toLocaleString() ?? ''}
+                  defaultValue={item.expectedDuration ?? ''}
                 />
               </DataFieldWithLabel>
             </Box>

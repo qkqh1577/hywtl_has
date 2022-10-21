@@ -39,6 +39,8 @@ export interface ProjectBasicFailReasonParameter
   winId: BusinessId;
 }
 
+export const initialProjectBasicFailReasonParameter = {} as ProjectBasicFailReasonParameter;
+
 export interface ProjectBasicDesignParameter {
   city?: string;
   address?: string;
