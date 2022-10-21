@@ -41,7 +41,8 @@ export default function ProjectDocumentDetailModalForm() {
               <DataFieldWithLabel label="자료 번호">
                 <Input
                   readOnly
-                  value={formik.values.code ?? ''}
+                  key={formik.values.code}
+                  defaultValue={formik.values.code ?? ''}
                 />
               </DataFieldWithLabel>
             </Box>
@@ -60,7 +61,8 @@ export default function ProjectDocumentDetailModalForm() {
               <DataFieldWithLabel label="등록자">
                 <Input
                   readOnly
-                  value={formik.values.createdBy?.name ?? ''}
+                  key={formik.values.createdBy?.name}
+                  defaultValue={formik.values.createdBy?.name ?? ''}
                 />
               </DataFieldWithLabel>
             </Box>
@@ -76,9 +78,10 @@ export default function ProjectDocumentDetailModalForm() {
         <DataFieldWithLabel required={edit} label="수신처">
           <Input
             required
-            value={formik.values.recipient ?? ''}
+            key={formik.values.recipient}
+            defaultValue={formik.values.recipient ?? ''}
             readOnly={!edit}
-            onChange={(e) => {
+            onBlur={(e) => {
               formik.setFieldValue('recipient', e.target.value || undefined);
             }}
           />
@@ -157,9 +160,10 @@ export default function ProjectDocumentDetailModalForm() {
       }}>
         <DataFieldWithLabel label="비고">
           <Input
+            key={formik.values.note}
             readOnly={!edit}
-            value={formik.values.note ?? ''}
-            onChange={(e) => {
+            defaultValue={formik.values.note ?? ''}
+            onBlur={(e) => {
               formik.setFieldValue('note', e.target.value || undefined);
             }}
           />

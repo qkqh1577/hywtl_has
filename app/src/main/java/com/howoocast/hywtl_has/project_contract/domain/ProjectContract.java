@@ -104,6 +104,7 @@ public class ProjectContract extends CustomEntity {
         instance.collection = collection;
         instance.conditionList = conditionList;
         instance.writer = writer;
+        instance.confirmed = Boolean.FALSE;
         return instance;
     }
 

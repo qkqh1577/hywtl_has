@@ -305,6 +305,7 @@ export default function BusinessManagerListSection() {
                 <DataFieldWithLabel label="담당 프로젝트">
                   <Input
                     disabled
+                    key={manager.projectCount}
                     defaultValue={manager.projectCount ?? '-'}
                   />
                 </DataFieldWithLabel>

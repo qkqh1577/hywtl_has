@@ -27,7 +27,11 @@ export function OutlinedInput({ isAmount, fullHeight, ...props }: Omit<InputProp
     <MuiInput
       {...props}
       fullWidth
-      startAdornment={isAmount ? <TextBox variant="body11">￦</TextBox> : props.startAdornment}
+      startAdornment={isAmount ?
+        <InputAdornment position="start" sx={{ marginLeft: '10px' }}>
+          <TextBox variant="body11">￦</TextBox>
+        </InputAdornment>
+        : props.startAdornment}
       sx={props.multiline ? {
         ...props.sx,
         height:                        fullHeight ? '100%' : 'auto',
@@ -83,7 +87,11 @@ export function StandardInput({ isAmount, fullHeight, ...props }: Omit<InputProp
   return (
     <MuiInput
       {...props}
-      startAdornment={isAmount ? <InputAdornment position="start">￦</InputAdornment> : props.startAdornment}
+      startAdornment={isAmount ?
+        <InputAdornment position="start" sx={{ marginLeft: '10px' }}>
+          <TextBox variant="body11">￦</TextBox>
+        </InputAdornment>
+        : props.startAdornment}
       fullWidth
       sx={props.multiline ? {
         ...props.sx,

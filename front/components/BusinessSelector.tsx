@@ -36,6 +36,7 @@ import {
   Box,
   FormControl,
   FormControlLabel,
+  InputAdornment,
   MenuItem,
   Radio,
   RadioGroup,
@@ -350,7 +351,7 @@ interface FieldProps
     | 'onChange'
     | 'onClick'> {
   allowMyBusiness?: boolean;
-  onChange: (id: BusinessId | undefined) => void;
+  onChange?: (id: BusinessId | undefined) => void;
 }
 
 export default function BusinessSelector(props: FieldProps) {
@@ -362,6 +363,7 @@ export default function BusinessSelector(props: FieldProps) {
         } = props;
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<BusinessVO>();
+
 
   const onClick = useCallback((modalProps: ModalProps) => dispatch(businessSelectorAction.setModal(modalProps)), [dispatch]);
 
@@ -388,18 +390,24 @@ export default function BusinessSelector(props: FieldProps) {
         onClick({
           id:           detail?.id,
           allowMyBusiness,
-          afterConfirm: onChange
+          afterConfirm: (id) => {
+            if (onChange) {
+              onChange(id);
+            }
+          }
         });
       }}
       endAdornment={
-        <FontAwesomeIcon
-          icon="building"
-          style={{
-            fontSize: '16px',
-            color:    ColorPalette._386dd6,
-            cursor:   'pointer'
-          }}
-        />
+        <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+          <FontAwesomeIcon
+            icon="building"
+            style={{
+              fontSize: '16px',
+              color:    ColorPalette._386dd6,
+              cursor:   'pointer'
+            }}
+          />
+        </InputAdornment>
       }
     />
   );

@@ -43,6 +43,10 @@ public class ProjectStatus {
     @Enumerated(EnumType.STRING)
     private ProjectContractStatus contractStatus;
 
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private ProjectBidStatus bidStatus;
+
     public static ProjectStatus of(
         ProjectProgressStatus progressStatus
     ) {

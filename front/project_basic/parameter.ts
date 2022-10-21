@@ -8,7 +8,7 @@ import {
   ProjectBasicFailReason
 } from 'project_basic/domain';
 import { UserId } from 'user/domain';
-import { ProjectBasicBidType } from 'project_status/domain';
+import { ProjectBasicBidType } from 'project/domain';
 
 export interface ProjectBasicParameter {
   name?: string;
@@ -38,6 +38,8 @@ export interface ProjectBasicFailReasonParameter
   extends Omit<ProjectBasicFailReason, 'modifiedAt' | 'win'> {
   winId: BusinessId;
 }
+
+export const initialProjectBasicFailReasonParameter = {} as ProjectBasicFailReasonParameter;
 
 export interface ProjectBasicDesignParameter {
   city?: string;

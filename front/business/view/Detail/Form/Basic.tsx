@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
-import { Box } from '@mui/material';
+import {
+  Box,
+  InputAdornment
+} from '@mui/material';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { FormikContext } from 'formik';
@@ -87,7 +90,11 @@ export default function BusinessBasicSection(props: Props) {
               readOnly={!edit}
               key={formik.values.registrationNumber}
               defaultValue={formik.values.registrationNumber ?? ''}
-              endAdornment={props.checkButton}
+              endAdornment={
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                  {props.checkButton}
+                </InputAdornment>
+              }
               onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (formik.values.name !== value) {

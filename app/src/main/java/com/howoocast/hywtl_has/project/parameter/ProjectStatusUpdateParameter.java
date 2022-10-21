@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.parameter;
 
+import com.howoocast.hywtl_has.project.domain.ProjectBidStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectContractStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateStatus;
@@ -19,5 +20,7 @@ public class ProjectStatusUpdateParameter {
     private ProjectEstimateStatus estimateStatus;
 
     private ProjectContractStatus contractStatus;
+
+    private ProjectBidStatus bidStatus;
 
 }

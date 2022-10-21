@@ -40,8 +40,9 @@ export default function AccountForm() {
         }}>
           <DataFieldWithLabel label="이름">
             <Input
-              disabled
-              value={values.name ?? ''}
+              readOnly
+              key={values.name}
+              defaultValue={values.name ?? ''}
             />
           </DataFieldWithLabel>
         </Box>
@@ -53,8 +54,9 @@ export default function AccountForm() {
         }}>
           <DataFieldWithLabel label="이메일">
             <Input
-              disabled
-              value={values.email ?? ''}
+              readOnly
+              key={values.email}
+              defaultValue={values.email ?? ''}
             />
           </DataFieldWithLabel>
         </Box>
@@ -65,8 +67,9 @@ export default function AccountForm() {
         }}>
           <DataFieldWithLabel label="상태">
             <Input
-              disabled
-              value={values.userStatus ?? ''}
+              readOnly
+              key={values.userStatus}
+              defaultValue={values.userStatus ?? ''}
             />
           </DataFieldWithLabel>
         </Box>

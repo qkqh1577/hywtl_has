@@ -1,38 +1,46 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import ProjectBasicFailReasonSection from 'project_basic/view/FailReasonSection';
 import {
-  FormikProvider,
-  useFormik
-} from 'formik';
-import { useSelector } from 'react-redux';
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { RootState } from 'services/reducer';
+import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
+import { projectBasicAction } from 'project_basic/action';
+import { ProjectEstimateExpectation } from 'project/domain';
+import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'components/Dialog';
 
 export default function ProjectBasicFailReasonRoute() {
-  const { lossEstimateExpectation, failReason } = useSelector((root: RootState) => root.projectBasic);
+  const dispatch = useDispatch();
+  const { error } = useDialog();
+  const { detail } = useSelector((root: RootState) => root.project);
+  const { id, failReason, requestUpdateFailReason } = useSelector((root: RootState) => root.projectBasic);
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues:      {
-      win:              failReason?.win || {},
-      testAmount:       failReason?.testAmount?.toString() || '',
-      reviewAmount:     failReason?.reviewAmount?.toString() || '',
-      totalAmount:      failReason?.totalAmount?.toString() || '',
-      expectedDuration: failReason?.expectedDuration || '',
-      reason:           failReason?.reason || '',
-    },
-    onSubmit:           (values) => {
-      console.log(values);
+  const onUpdate = useCallback((params: Partial<ProjectBasicFailReasonParameter>) => dispatch(projectBasicAction.updateFailReason(params)), [dispatch]);
+
+  useEffect(() => {
+    if (requestUpdateFailReason === ApiStatus.DONE) {
+      dispatch(projectBasicAction.getFailReason(id));
+      dispatch(projectBasicAction.requestUpdateFailReason(ApiStatus.IDLE));
     }
-  });
+    else if (requestUpdateFailReason === ApiStatus.FAIL) {
+      error('변경에 실패하였습니다.');
+      dispatch(projectBasicAction.requestUpdateFailReason(ApiStatus.IDLE));
+    }
+  }, [requestUpdateFailReason]);
 
-  return (
-    <>
-      {
-        lossEstimateExpectation &&
-        <FormikProvider value={formik}>
-          <ProjectBasicFailReasonSection />
-        </FormikProvider>
-      }
-    </>
-  );
+  if (detail?.estimateExpectation === ProjectEstimateExpectation.LOSE) {
+
+    return (
+      <ProjectBasicFailReasonSection
+        detail={failReason}
+        onUpdate={onUpdate}
+      />
+    );
+  }
+  return null;
 }

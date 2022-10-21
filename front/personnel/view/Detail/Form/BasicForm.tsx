@@ -51,7 +51,8 @@ export default function BasicForm() {
         }}>
           <DataFieldWithLabel required={edit} label="영문명">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.engName}
               defaultValue={values.engName ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -73,7 +74,7 @@ export default function BasicForm() {
               openTo="year"
               inputFormat="YYYY-MM-DD"
               mask="____-__-__"
-              disabled={!edit}
+              readOnly={!edit}
               value={values.birthDate ? dayjs(values.birthDate)
               .format('YYYY-MM-DD') : null}
               onChange={(e) => {
@@ -107,8 +108,9 @@ export default function BasicForm() {
           <DataFieldWithLabel required={edit} label="성별">
             {!edit && (
               <Input
-                disabled
-                value={values.sex ?? '-'}
+                readOnly
+                key={values.sex}
+                defaultValue={values.sex ?? '-'}
               />
             )}
             {edit && (
@@ -143,7 +145,8 @@ export default function BasicForm() {
         }}>
           <DataFieldWithLabel label="핸드폰">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.phone}
               defaultValue={values.phone ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -162,7 +165,8 @@ export default function BasicForm() {
         }}>
           <DataFieldWithLabel label="개인 이메일">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.personalEmail}
               defaultValue={values.personalEmail ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -181,7 +185,8 @@ export default function BasicForm() {
         }}>
           <DataFieldWithLabel label="비상 연락처">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.emergencyPhone}
               defaultValue={values.emergencyPhone ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -206,7 +211,8 @@ export default function BasicForm() {
             </>
           }>
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.relationship}
               defaultValue={values.relationship ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;
@@ -225,7 +231,8 @@ export default function BasicForm() {
         }}>
           <DataFieldWithLabel label="거주지 주소">
             <Input
-              disabled={!edit}
+              readOnly={!edit}
+              key={values.address}
               defaultValue={values.address ?? ''}
               onBlur={(e) => {
                 const value = e.target.value || undefined;

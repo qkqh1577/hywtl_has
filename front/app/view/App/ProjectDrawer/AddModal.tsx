@@ -9,17 +9,17 @@ import {
 import UserSelector from 'components/UserSelector';
 import { ColorPalette } from 'app/view/App/theme';
 import { memoLabelList } from 'app/route/projectAddModal';
-import {
-  projectBasicBidTypeList,
-  projectBasicBidTypeName,
-  ProjectProgressStatus,
-  projectProgressStatusName
-} from 'project_status/domain';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import Input from 'layouts/Input';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Select from 'layouts/Select';
+import {
+  projectBasicBidTypeList,
+  projectBasicBidTypeName,
+  ProjectProgressStatus,
+  projectProgressStatusName
+} from 'project/domain';
 
 export interface AddModalProps {
   open: boolean;

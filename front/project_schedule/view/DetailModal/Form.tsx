@@ -151,7 +151,7 @@ export default function () {
             labelPosition="top"
           >
             <Checkbox
-              disabled={!edit}
+              readOnly={!edit}
               checked={formik.values.allDay}
               onChange={() => {
                 formik.setFieldValue('allDay', !formik.values.allDay);
@@ -273,7 +273,7 @@ export default function () {
               alignItems: 'center',
             }}>
               <Checkbox
-                disabled={!edit}
+                readOnly={!edit}
                 checked={typeof formik.values.alertBefore === 'number' && formik.values.alertBefore >= 0}
                 onChange={() => {
                   if (typeof formik.values.alertBefore === 'number') {
@@ -292,7 +292,7 @@ export default function () {
                 key={formik.values.alertBefore}
                 defaultValue={formik.values.alertBefore ?? ''}
                 endAdornment={
-                  <InputAdornment position="end">
+                  <InputAdornment position="end" sx={{ marginRight: '10px' }}>
                     <TextBox variant="body12">
                       일 전
                     </TextBox>

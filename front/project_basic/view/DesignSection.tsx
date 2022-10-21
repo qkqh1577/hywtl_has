@@ -15,17 +15,21 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
   return (
     <SectionLayout title="설계 개요" modifiedAt={detail.modifiedAt}>
       <Box sx={{
-        width:          '100%',
-        display:        'flex',
-        flexWrap:       'wrap',
-        justifyContent: 'space-between',
-        alignItems:     'center',
+        width:                 '100%',
+        display:               'flex',
+        flexWrap:              'wrap',
+        '& > div':             {
+          marginBottom: '10px',
+          marginRight:  '10px',
+        },
+        '& > div:not(.large)': {
+          width: 'calc(24% - 10px)',
+        },
+        '& > div.large':       {
+          width: 'calc(48% - 10px)',
+        }
       }}>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="시/도">
             <Input
               key={detail.city}
@@ -39,11 +43,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5 * 2)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box className="large">
           <DataFieldWithLabel label="주소">
             <Input
               key={detail.address}
@@ -57,11 +57,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="단지 수">
             <Input
               type="number"
@@ -76,11 +72,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="건물용도1">
             <Input
               key={detail.purpose1}
@@ -94,11 +86,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="건물용도2">
             <Input
               key={detail.purpose2}
@@ -112,11 +100,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="대지면적(㎡)">
             <Input
               type="number"
@@ -131,11 +115,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="연면적(㎡)">
             <Input
               type="number"
@@ -150,11 +130,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="총 동 수">
             <Input
               type="number"
@@ -169,11 +145,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="세대 수">
             <Input
               type="number"
@@ -188,11 +160,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="최고 층 수">
             <Input
               type="number"
@@ -207,11 +175,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box sx={{
-          width:    'calc(100% / 5)',
-          display:  'flex',
-          flexWrap: 'nowrap',
-        }}>
+        <Box>
           <DataFieldWithLabel label="최고 높이(m)">
             <Input
               type="number"

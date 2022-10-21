@@ -40,7 +40,6 @@ public class UserInvitation extends CustomEntity {
     @Column(nullable = false, updatable = false)
     private String name; // 이름
 
-    @NotNull
     @ManyToOne
     private Department department; // 소속 조직
 

@@ -6,7 +6,7 @@ import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicBusiness;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
 import com.howoocast.hywtl_has.project_bid.domain.ProjectBid;
 import com.howoocast.hywtl_has.project_bid.repository.ProjectBidRepository;
-import com.howoocast.hywtl_has.project_estimate.repository.RivalEstimateRepository;
+import com.howoocast.hywtl_has.rival_estimate.repository.RivalEstimateRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

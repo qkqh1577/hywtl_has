@@ -19,7 +19,7 @@ import { useFormik } from 'formik';
 import {
   initialProjectQuery,
   ProjectQuery
-} from 'project/query';
+} from 'project/parameter';
 import { projectAction } from 'project/action';
 import { projectDrawerAction } from 'app/domain/action';
 

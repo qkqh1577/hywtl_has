@@ -22,8 +22,8 @@ export default function ProjectBasicBusinessRoute() {
   const { alert, error } = useDialog();
   const { id, businessList, requestAddBusiness, requestChangeBusiness, requestDeleteBusiness } = useSelector((root: RootState) => root.projectBasic);
 
-  const openAddModal = useCallback(() => dispatch(projectBasicAction.setBusinessModal(initialProjectBasicBusinessParameter)), [dispatch]);
-  const openChangeModal = useCallback((item: ProjectBasicBusiness) => dispatch(projectBasicAction.setBusinessModal({
+  const openAddModal = useCallback(() => dispatch(projectBasicAction.setBusiness(initialProjectBasicBusinessParameter)), [dispatch]);
+  const openChangeModal = useCallback((item: ProjectBasicBusiness) => dispatch(projectBasicAction.setBusiness({
     id:                item.id,
     business:          item.business,
     businessManager:   item.businessManager,
@@ -39,7 +39,7 @@ export default function ProjectBasicBusinessRoute() {
       alert('등록하였습니다.');
       dispatch(projectBasicAction.getBusinessList(id));
       dispatch(projectBasicAction.requestAddBusiness(ApiStatus.IDLE));
-      dispatch(projectBasicAction.setBusinessModal(undefined));
+      dispatch(projectBasicAction.setBusiness(undefined));
     }
     else if (requestAddBusiness === ApiStatus.FAIL) {
       error('등록에 실패하였습니다.');
@@ -54,7 +54,7 @@ export default function ProjectBasicBusinessRoute() {
       alert('변경하였습니다.');
       dispatch(projectBasicAction.getBusinessList(id));
       dispatch(projectBasicAction.requestChangeBusiness(ApiStatus.IDLE));
-      dispatch(projectBasicAction.setBusinessModal(undefined));
+      dispatch(projectBasicAction.setBusiness(undefined));
     }
     else if (requestChangeBusiness === ApiStatus.FAIL) {
       error('변경에 실패하였습니다.');
@@ -68,7 +68,7 @@ export default function ProjectBasicBusinessRoute() {
       alert('삭제하였습니다.');
       dispatch(projectBasicAction.getBusinessList(id));
       dispatch(projectBasicAction.requestDeleteBusiness(ApiStatus.IDLE));
-      dispatch(projectBasicAction.setBusinessModal(undefined));
+      dispatch(projectBasicAction.setBusiness(undefined));
     }
     else if (requestDeleteBusiness === ApiStatus.FAIL) {
       error('삭제에 실패하였습니다.');

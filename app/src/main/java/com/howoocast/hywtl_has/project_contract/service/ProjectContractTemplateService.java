@@ -19,8 +19,10 @@ import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollectionStage;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCondition;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,13 +46,12 @@ public class ProjectContractTemplateService {
     private final ProjectRepository projectRepository;
 
     private final ProjectEstimateRepository estimateRepository;
+
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
 
 
     @Transactional(readOnly = true)
-    public ProjectContractBasic basic(
-        Long projectId
-    ) {
+    public ProjectContractBasic basic(Long projectId) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         // 발주처
         ProjectBasicBusiness orderer = projectBasicBusinessRepository
@@ -102,18 +103,71 @@ public class ProjectContractTemplateService {
 
     @Transactional(readOnly = true)
     public List<ProjectContractCondition> conditionList(
-        Long projectId,
         @Nullable Long estimateId
     ) {
-        List<ContractConditionVariable> variableList = ContractConditionVariable.list();
+
         List<ContractCondition> templateList = conditionRepository.findAll();
         ProjectEstimate estimate = new CustomFinder<>(estimateRepository, ProjectEstimate.class)
             .byIdIfExists(estimateId);
 
-        return templateList.stream().map(template -> ProjectContractCondition.of(
-                template.getTitle(),
-                template.getDescriptionList()
-            ))
+        // TODO: additional a test building?
+        Integer aBuildingCount = 0;
+        // TODO: additional a test type amount?
+        Long aTestAmount = 0L;
+        // TODO: additional a test type week?
+        Integer aTestWeek = 0;
+
+        int totalSiteCount = 0;
+        int totalBuildingCount = 0;
+        Long reviewAmount = 0L;
+        Long totalAmount = 0L;
+        Integer testReportWeek = 0;
+        Integer finalReportWeek = 0;
+
+        if (Objects.nonNull(estimate)) {
+            if (Objects.nonNull(estimate.getSiteList())) {
+                totalSiteCount = estimate.getSiteList().size();
+            }
+            if (Objects.nonNull(estimate.getBuildingList())) {
+                List<ProjectEstimateComplexBuilding> buildingList = estimate.getBuildingList();
+                totalBuildingCount = buildingList.size();
+            }
+            if (Objects.nonNull(estimate.getPlan())) {
+                reviewAmount = estimate.getPlan().getReviewAmount();
+                totalAmount = estimate.getPlan().getTotalAmount();
+                testReportWeek = estimate.getPlan().getExpectedTestDeadline();
+                finalReportWeek = estimate.getPlan().getExpectedFinalReportDeadline();
+            }
+        }
+        List<ContractConditionVariable> variableList = ContractConditionVariable.list(
+            totalSiteCount,
+            totalBuildingCount,
+            aBuildingCount,
+            aTestAmount,
+            aTestWeek,
+            reviewAmount,
+            totalAmount,
+            testReportWeek,
+            finalReportWeek
+        );
+        return templateList.stream().map(template -> {
+
+                List<String> descriptionList = new ArrayList<>();
+                for (String raw : template.getDescriptionList()) {
+                    String description = raw;
+                    for (ContractConditionVariable variable : variableList) {
+                        log.debug("[Variable] description: {}, variable.name: {}, variable.value: {}", description,
+                            variable.getName(), variable.getValue());
+                        description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
+                    }
+                    descriptionList.add(description);
+                }
+
+                return ProjectContractCondition.of(
+                    template.getTitle(),
+                    descriptionList
+                );
+            })
             .collect(Collectors.toList());
     }
 

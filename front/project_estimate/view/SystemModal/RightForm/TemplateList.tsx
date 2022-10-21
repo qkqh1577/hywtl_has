@@ -319,7 +319,7 @@ export default function () {
                   {k === 0 && (
                     <Td rowSpan={detail.titleList.length}>
                       <Select
-                        disabled={!edit}
+                        readOnly={!edit}
                         variant="outlined"
                         value={detail.unit ?? ''}
                         onChange={(e) => {
@@ -344,7 +344,7 @@ export default function () {
                       <Input
                         isAmount
                         key={detail.unitAmount}
-                        disabled={!edit}
+                        readOnly={!edit}
                         variant="outlined"
                         defaultValue={detail.unitAmount?.toLocaleString() ?? ''}
                         onBlur={(e) => {
@@ -378,7 +378,7 @@ export default function () {
                           multiline
                           fullHeight
                           key={detail.note}
-                          disabled={!edit}
+                          readOnly={!edit}
                           variant="outlined"
                           defaultValue={detail.note ?? ''}
                           onBlur={(e) => {
@@ -421,7 +421,7 @@ export default function () {
               <Input
                 isAmount
                 key={formik.values.plan?.discountAmount}
-                disabled={!edit}
+                readOnly={!edit}
                 variant="outlined"
                 defaultValue={formik.values.plan?.discountAmount?.toLocaleString() ?? 0}
                 onBlur={(e) => {

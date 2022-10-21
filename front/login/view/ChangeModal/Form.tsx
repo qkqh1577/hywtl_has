@@ -38,23 +38,26 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="아이디" labelPosition="top">
           <Input
-            disabled
-            value={formik.values.username ?? ''}
+            readOnly
+            key={formik.values.username}
+            defaultValue={formik.values.username ?? ''}
           />
         </DataFieldWithLabel>
       </FieldBox>
       <FieldBox>
         <DataFieldWithLabel label="이름" labelPosition="top">
           <Input
-            disabled
-            value={formik.values.name ?? ''}
+            readOnly
+            key={formik.values.name}
+            defaultValue={formik.values.name ?? ''}
           />
         </DataFieldWithLabel>
       </FieldBox>
       <FieldBox>
         <DataFieldWithLabel label="이메일" labelPosition="top">
           <Input
-            disabled
+            readOnly
+            key={formik.values.email}
             value={formik.values.email ?? ''}
           />
         </DataFieldWithLabel>
@@ -79,8 +82,9 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="영문명" labelPosition="top">
           <Input
-            value={formik.values.englishName ?? ''}
-            onChange={(e) => {
+            key={formik.values.englishName}
+            defaultValue={formik.values.englishName ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.englishName !== value) {
                 formik.setFieldValue('englishName', value);
@@ -146,8 +150,9 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="핸드폰" labelPosition="top">
           <Input
-            value={formik.values.mobilePhone ?? ''}
-            onChange={(e) => {
+            key={formik.values.mobilePhone}
+            defaultValue={formik.values.mobilePhone ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.mobilePhone !== value) {
                 formik.setFieldValue('mobilePhone', value);
@@ -159,8 +164,9 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="개인 이메일" labelPosition="top">
           <Input
-            value={formik.values.privateEmail ?? ''}
-            onChange={(e) => {
+            key={formik.values.privateEmail}
+            defaultValue={formik.values.privateEmail ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.privateEmail !== value) {
                 formik.setFieldValue('privateEmail', value);
@@ -172,8 +178,9 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="비상 연락처" labelPosition="top">
           <Input
-            value={formik.values.emergencyPhone ?? ''}
-            onChange={(e) => {
+            key={formik.values.emergencyPhone}
+            defaultValue={formik.values.emergencyPhone ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.emergencyPhone !== value) {
                 formik.setFieldValue('emergencyPhone', value);
@@ -193,8 +200,9 @@ export default function () {
             </>
           }>
           <Input
-            value={formik.values.relationship ?? ''}
-            onChange={(e) => {
+            key={formik.values.relationship}
+            defaultValue={formik.values.relationship ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.relationship !== value) {
                 formik.setFieldValue('relationship', value);
@@ -206,8 +214,9 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="거주지 주소" labelPosition="top">
           <Input
-            value={formik.values.address ?? ''}
-            onChange={(e) => {
+            key={formik.values.address}
+            defaultValue={formik.values.address ?? ''}
+            onBlur={(e) => {
               const value = e.target.value || undefined;
               if (formik.values.address !== value) {
                 formik.setFieldValue('address', value);

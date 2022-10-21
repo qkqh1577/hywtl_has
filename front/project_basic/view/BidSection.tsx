@@ -1,104 +1,140 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
-import { Grid } from '@mui/material';
-import TextField from 'components/TextField';
-import { FieldStatus } from 'components/DataFieldProps';
-import { RivalBidVO } from 'project_basic/domain';
+import { Box } from '@mui/material';
+import DataFieldWithLabel from 'layouts/DataFieldLabel';
+import Input from 'layouts/Input';
+import { RivalBidVO } from 'rival_bid/domain';
+import { ProjectBidVO } from 'project_bid/domain';
+import dayjs from 'dayjs';
+import BusinessSelector from 'components/BusinessSelector';
 
 interface Props {
-  rivalBidList: RivalBidVO[];
+  detail: ProjectBidVO | undefined;
+  rivalList: RivalBidVO[] | undefined;
 }
 
-export default function ProjectBasicBidSection({ rivalBidList }: Props) {
+export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
 
   return (
     <SectionLayout title="최종 입찰 정보">
-      <Grid container spacing={2}>
-        <Grid item sm={4}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="bid.bidDate"
-            label="입찰일자"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="bid.testAmount"
-            label="풍동금액"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="bid.reviewAmount"
-            label="구검"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="bid.totalAmount"
-            label="총액"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        <Grid item sm={2}>
-          <TextField
-            status={FieldStatus.Disabled}
-            name="bid.expectedDuration"
-            label="일정"
-            labelWidth={7 * 6}
-          />
-        </Grid>
-        {rivalBidList.map((e,
-                           i
-        ) => <React.Fragment key={e.id}>
-          <Grid item sm={4}>
-            <TextField
-              status={FieldStatus.Disabled}
-              name={`rivalBidList.${i}.business`}
-              label="타업체"
-              labelWidth={7 * 6}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <TextField
-              status={FieldStatus.Disabled}
-              name={`rivalBidList.${i}.testAmount`}
-              label="풍동금액"
-              labelWidth={7 * 6}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <TextField
-              status={FieldStatus.Disabled}
-              name={`rivalBidList.${i}.reviewAmount`}
-              label="구검"
-              labelWidth={7 * 6}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <TextField
-              status={FieldStatus.Disabled}
-              name={`rivalBidList.${i}.totalAmount`}
-              label="총액"
-              labelWidth={7 * 6}
-            />
-          </Grid>
-          <Grid item sm={2}>
-            <TextField
-              status={FieldStatus.Disabled}
-              name={`rivalBidList.${i}.expectedDuration`}
-              label="일정"
-              labelWidth={7 * 6}
-            />
-          </Grid>
-        </React.Fragment>)}
-      </Grid>
+      <Box sx={{
+        width:    '100%',
+        display:  'flex',
+        flexWrap: 'wrap',
+        '&> div': {
+          width:        '100%',
+          display:      'flex',
+          flexWrap:     'nowrap',
+          alignItems:   'center',
+          marginBottom: '10px',
+          '& > div':    {
+            marginRight: '10px',
+          }
+        }
+      }}>
+        <Box>
+          <Box sx={{ width: '220px' }}>
+            <DataFieldWithLabel label="입찰 일자">
+              <Input
+                readOnly
+                key={detail?.bidDate?.toDateString()}
+                defaultValue={detail?.bidDate ? dayjs(detail.bidDate)
+                .format('YYYY-MM-DD') : ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="풍동 금액">
+              <Input
+                readOnly
+                isAmount
+                key={detail?.testAmount}
+                defaultValue={detail?.testAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="구검">
+              <Input
+                readOnly
+                isAmount
+                key={detail?.reviewAmount}
+                defaultValue={detail?.reviewAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="총액">
+              <Input
+                readOnly
+                isAmount
+                key={detail?.totalAmount}
+                defaultValue={detail?.totalAmount?.toLocaleString() ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+          <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <DataFieldWithLabel label="일정">
+              <Input
+                readOnly
+                key={detail?.expectedDuration}
+                defaultValue={detail?.expectedDuration ?? ''}
+              />
+            </DataFieldWithLabel>
+          </Box>
+        </Box>
+        {rivalList?.map(item => (
+          <Box key={item.id}>
+            <Box sx={{ width: '220px' }}>
+              <DataFieldWithLabel label="타 업체">
+                <BusinessSelector
+                  readOnly
+                  value={item.business?.id}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+              <DataFieldWithLabel label="풍동 금액">
+                <Input
+                  readOnly
+                  isAmount
+                  key={item.testAmount}
+                  defaultValue={item.testAmount?.toLocaleString() ?? ''}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+              <DataFieldWithLabel label="구검">
+                <Input
+                  readOnly
+                  isAmount
+                  key={item.reviewAmount}
+                  defaultValue={item.reviewAmount?.toLocaleString() ?? ''}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+              <DataFieldWithLabel label="총액">
+                <Input
+                  readOnly
+                  isAmount
+                  key={item.totalAmount}
+                  defaultValue={item.totalAmount?.toLocaleString() ?? ''}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+              <DataFieldWithLabel label="일정">
+                <Input
+                  readOnly
+                  key={item.expectedDuration}
+                  defaultValue={item.expectedDuration ?? ''}
+                />
+              </DataFieldWithLabel>
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </SectionLayout>
   );
 }

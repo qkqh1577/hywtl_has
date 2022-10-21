@@ -141,7 +141,7 @@ const mainTheme = createTheme({
     MuiLink:        {
       styleOverrides: {
         root: {
-          cursor: 'pointer'
+          cursor: 'pointer',
         }
       }
     },

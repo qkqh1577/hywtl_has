@@ -25,6 +25,7 @@ export default function () {
   const edit = formik.values.edit;
   const plan = formik.values.estimate?.plan ?? {};
   const basic = formik.values.basic ?? {};
+  const collection = formik.values.collection ?? {};
   const isLh = formik.values.isLh;
   const totalAmount = useMemo(() => {
     const amount: number = plan.totalAmount || 0;
@@ -119,8 +120,8 @@ export default function () {
               flexWrap:     'wrap',
               alignContent: 'flex-start',
             }}>
-              <Box sx={{ width: '100%' }}>
-                <TextBox variant="body11">{basic.collectionStageNote}</TextBox>
+              <Box sx={{ width: '100%', padding: '10px 0' }}>
+                <TextBox variant="body11">{collection.stageNote}</TextBox>
               </Box>
               <Box sx={{ width: '100%' }}>
                 <Collection />

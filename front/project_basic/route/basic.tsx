@@ -12,16 +12,18 @@ import { projectBasicAction } from 'project_basic/action';
 import { ProjectBasicParameter } from 'project_basic/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 import useDialog from 'components/Dialog';
+import { projectAction } from 'project/action';
 
 export default function ProjectBasicBasicRoute() {
   const dispatch = useDispatch();
   const { error } = useDialog();
-  const { id, basic, requestUpdateBasic } = useSelector((root: RootState) => root.projectBasic);
+  const { detail } = useSelector((root: RootState) => root.project);
+  const { id, requestUpdateBasic } = useSelector((root: RootState) => root.projectBasic);
   const onUpdate = useCallback((params: ProjectBasicParameter) => dispatch(projectBasicAction.updateBasic(params)), [dispatch]);
 
   useEffect(() => {
     if (requestUpdateBasic === ApiStatus.DONE) {
-      dispatch(projectBasicAction.getBasic(id));
+      dispatch(projectAction.setId(id));
       dispatch(projectBasicAction.requestUpdateBasic(ApiStatus.IDLE));
     }
     else if (requestUpdateBasic === ApiStatus.FAIL) {
@@ -32,7 +34,7 @@ export default function ProjectBasicBasicRoute() {
 
   return (
     <ProjectBasicBasicSection
-      basic={basic}
+      basic={detail}
       onUpdate={onUpdate}
     />
   );

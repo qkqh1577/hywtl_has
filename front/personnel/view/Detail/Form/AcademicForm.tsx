@@ -81,7 +81,8 @@ export default function AcademicForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.academyName}
                   defaultValue={values.academyName ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -102,7 +103,8 @@ export default function AcademicForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.major}
                   defaultValue={values.major ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -122,7 +124,8 @@ export default function AcademicForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.degree}
                   defaultValue={values.degree ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -142,7 +145,8 @@ export default function AcademicForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.state}
                   defaultValue={values.state ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -162,7 +166,8 @@ export default function AcademicForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.grade}
                   defaultValue={values.grade ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -186,7 +191,7 @@ export default function AcademicForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.startDate ? dayjs(values.startDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
@@ -223,7 +228,7 @@ export default function AcademicForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.endDate ? dayjs(values.endDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {

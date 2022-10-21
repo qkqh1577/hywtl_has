@@ -70,8 +70,9 @@ export default function ({ index, list }: Props) {
             }}>
               <Input
                 variant="outlined"
-                value={title ?? ''}
-                onChange={(e) => {
+                key={title}
+                defaultValue={title ?? ''}
+                onBlur={(e) => {
                   const value = e.target.value || undefined;
                   if (title !== value) {
                     formik.setFieldValue(name, value);

@@ -2,7 +2,8 @@ package com.howoocast.hywtl_has.project_basic.controller;
 
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicBusinessParameter;
 import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicDesignParameter;
-import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonAddParameter;
+import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonUpdateParameter;
 import com.howoocast.hywtl_has.project_basic.service.ProjectBasicService;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicBusinessView;
 import com.howoocast.hywtl_has.project_basic.view.ProjectBasicDesignView;
@@ -77,13 +78,12 @@ public class ProjectBasicController {
         service.changeBusiness(id, parameter);
     }
 
-
     @PostMapping("/project/sales/{id}/basic/fail-reason")
     public void addFailReason(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectBasicFailReasonParameter parameter
+        @Valid @RequestBody ProjectBasicFailReasonAddParameter parameter
     ) {
-        service.upsertFailReason(id, parameter);
+        service.addFailReason(id, parameter);
     }
 
     @PatchMapping("/project/sales/{id}/basic/design")
@@ -97,9 +97,9 @@ public class ProjectBasicController {
     @PatchMapping("/project/sales/{id}/basic/fail-reason")
     public void updateFailReason(
         @PathVariable Long id,
-        @RequestBody ProjectBasicFailReasonParameter parameter
+        @RequestBody ProjectBasicFailReasonUpdateParameter parameter
     ) {
-        service.upsertFailReason(id, parameter);
+        service.updateFailReason(id, parameter);
     }
 
 

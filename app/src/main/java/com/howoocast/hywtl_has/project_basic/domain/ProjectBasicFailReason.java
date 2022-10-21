@@ -1,9 +1,9 @@
 package com.howoocast.hywtl_has.project_basic.domain;
 
 import com.howoocast.hywtl_has.business.domain.Business;
+import com.howoocast.hywtl_has.common.domain.BidDTO;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project_bid.domain.BidDTO;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,6 @@ public class ProjectBasicFailReason extends BidDTO {
     @ManyToOne
     private Business win;
 
-    @NotBlank
     @Column(nullable = false)
     private String reason;
 

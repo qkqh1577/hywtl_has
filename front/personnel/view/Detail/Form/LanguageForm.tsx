@@ -82,7 +82,8 @@ export default function LanguageForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.name}
                   defaultValue={values.name ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -103,7 +104,8 @@ export default function LanguageForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.type}
                   defaultValue={values.type ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -124,7 +126,8 @@ export default function LanguageForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.grade}
                   value={values.grade ?? ''}
                   onChange={(e) => {
                     const value = e.target.value || undefined;
@@ -145,7 +148,8 @@ export default function LanguageForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.organizationName}
                   defaultValue={values.organizationName ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -169,7 +173,7 @@ export default function LanguageForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.certifiedDate ? dayjs(values.certifiedDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
@@ -202,9 +206,10 @@ export default function LanguageForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
-                  value={values.expiryPeriod ?? ''}
-                  onChange={(e) => {
+                  readOnly={!edit}
+                  key={values.expiryPeriod}
+                  defaultValue={values.expiryPeriod ?? ''}
+                  onBlur={(e) => {
                     const value = e.target.value || undefined;
                     if (values.expiryPeriod !== value) {
                       formik.setFieldValue(`languageList.${i}.expiryPeriod`, value);

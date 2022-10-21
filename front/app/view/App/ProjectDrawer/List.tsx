@@ -8,8 +8,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { ColorPalette } from 'app/view/App/theme';
-import { projectProgressStatusName } from 'project_status/domain';
-import { ProjectShortVO } from 'project/domain';
+import {
+  projectProgressStatusName,
+  ProjectShortVO
+} from 'project/domain';
 
 export interface ListProps {
   list: ProjectShortVO[];
@@ -42,10 +44,10 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
         stickyHeader
         aria-label="sticky table"
         sx={{
-          maxWidth:        '280px',
-          backgroundColor: ColorPalette._ffffff,
-          borderRadius:    '5px',
-          '& th, & td':    {
+          maxWidth:             '280px',
+          backgroundColor:      ColorPalette._ffffff,
+          borderRadius:         '5px',
+          '& th, & td':         {
             textAlign:       'center',
             fontSize:        '12px',
             height:          '36px',
@@ -55,19 +57,19 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
             borderBottom:    'none',
             color:           ColorPalette._252627,
           },
-          '& td':          {
+          '& td':               {
             padding: '0 10px',
           },
-          '& th':          {
+          '& th':               {
             fontWeight:      'bold',
             borderBottom:    `5px solid ${ColorPalette._e4e9f2}`,
             backgroundColor: ColorPalette._ffffff,
             padding:         0,
           },
-          '& th:first-of-type':                          {
+          '& th:first-of-type': {
             borderTopLeftRadius: '5px',
           },
-          '& th:last-child':                             {
+          '& th:last-child':    {
             borderRight:          `1px solid ${ColorPalette._e4e9f2}`,
             borderTopRightRadius: '5px',
           },

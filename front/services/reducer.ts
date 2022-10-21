@@ -101,13 +101,13 @@ import {
   UserNotificationState
 } from 'user_notification/reducer';
 import {
-  projectStatusReducer,
-  ProjectStatusState
-} from 'project_status/reducer';
-import {
   loginReducer,
   LoginState
 } from 'login/reducer';
+import {
+  rivalBidReducer,
+  RivalBidState
+} from 'rival_bid/reducer';
 
 export interface RootState {
   business: BusinessState;
@@ -133,7 +133,7 @@ export interface RootState {
   projectLog: ProjectLogState;
   projectMemo: ProjectMemoState;
   projectSchedule: ProjectScheduleState;
-  projectStatus: ProjectStatusState;
+  rivalBid: RivalBidState;
   rivalEstimate: RivalEstimateState;
   user: UserState;
   userNotification: UserNotificationState;
@@ -144,29 +144,29 @@ const reducer = combineReducers<RootState>({
   businessSelector:   businessSelectorReducer,
   contractBasic:      contractBasicReducer,
   contractCollection: contractCollectionReducer,
-  contractCondition:  contractConditionReducer,
-  department:         departmentReducer,
-  dialog:             dialogReducer,
-  estimateContent:    estimateContentReducer,
-  estimateTemplate:   estimateTemplateReducer,
-  login:              loginReducer,
-  menu:               menuReducer,
-  personnel:          personnelReducer,
-  project:            projectReducer,
-  projectBasic:       projectBasicReducer,
-  projectBid:         projectBidReducer,
-  projectComplex:     projectComplexReducer,
-  projectContract:    projectContractReducer,
-  projectDocument:    projectDocumentReducer,
-  projectDrawer:      projectDrawerReducer,
-  projectEstimate:    projectEstimateReducer,
-  projectLog:         projectLogReducer,
-  projectMemo:        projectMemoReducer,
-  projectSchedule:    projectScheduleReducer,
-  projectStatus:      projectStatusReducer,
-  rivalEstimate:      rivalEstimateReducer,
-  user:               userReducer,
-  userNotification:   userNotificationReducer,
+  contractCondition: contractConditionReducer,
+  department:        departmentReducer,
+  dialog:            dialogReducer,
+  estimateContent:   estimateContentReducer,
+  estimateTemplate:  estimateTemplateReducer,
+  login:             loginReducer,
+  menu:              menuReducer,
+  personnel:         personnelReducer,
+  project:           projectReducer,
+  projectBasic:      projectBasicReducer,
+  projectBid:        projectBidReducer,
+  projectComplex:    projectComplexReducer,
+  projectContract:   projectContractReducer,
+  projectDocument:   projectDocumentReducer,
+  projectDrawer:     projectDrawerReducer,
+  projectEstimate:   projectEstimateReducer,
+  projectLog:        projectLogReducer,
+  projectMemo:       projectMemoReducer,
+  projectSchedule:   projectScheduleReducer,
+  rivalBid:          rivalBidReducer,
+  rivalEstimate:     rivalEstimateReducer,
+  user:              userReducer,
+  userNotification:  userNotificationReducer,
 });
 
 const rootReducer: Reducer = (state,

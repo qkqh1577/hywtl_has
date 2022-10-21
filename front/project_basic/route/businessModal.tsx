@@ -26,7 +26,7 @@ interface SearchProps {
 
 export default function ProjectBasicBusinessModalRoute() {
   const dispatch = useDispatch();
-  const { businessModal } = useSelector((root: RootState) => root.projectBasic);
+  const { business } = useSelector((root: RootState) => root.projectBasic);
   const [businessList, setBusinessList] = useState<BusinessShort[]>();
   const onSearch = (query: SearchProps) => {
     businessApi.getListAll(query)
@@ -36,7 +36,7 @@ export default function ProjectBasicBusinessModalRoute() {
                  setBusinessList(undefined);
                });
   };
-  const onClose = useCallback(() => dispatch(projectBasicAction.setBusinessModal(undefined)), [dispatch]);
+  const onClose = useCallback(() => dispatch(projectBasicAction.setBusiness(undefined)), [dispatch]);
   const onAdd = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.addBusiness(params)), [dispatch]);
   const onChange = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.changeBusiness(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectBasicBusinessId) => dispatch(projectBasicAction.deleteBusiness(id)), [dispatch]);
@@ -62,22 +62,22 @@ export default function ProjectBasicBusinessModalRoute() {
   });
 
   useEffect(() => {
-    if (businessModal) {
+    if (business) {
       formik.setValues({
         keywordType: 'by_name',
-        ...businessModal,
-        businessId:        businessModal.business?.id,
-        businessManagerId: businessModal.businessManager?.id,
-        edit:              !businessModal.id,
+        ...business,
+        businessId:        business.business?.id,
+        businessManagerId: business.businessManager?.id,
+        edit:              !business.id,
       } as ProjectBasicBusinessParameter);
       onSearch({});
     }
-  }, [businessModal]);
+  }, [business]);
 
   return (
     <FormikProvider value={formik}>
       <ProjectBasicBusinessModal
-        open={typeof businessModal !== 'undefined'}
+        open={typeof business !== 'undefined'}
         onClose={onClose}
         onDelete={onDelete}
         onSearch={() => {

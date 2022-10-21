@@ -1,4 +1,3 @@
-import { ProjectQuery } from 'project/query';
 import Page from 'type/Page';
 import {
   ProjectId,
@@ -6,7 +5,12 @@ import {
   ProjectVO
 } from 'project/domain';
 import apiClient from 'services/api';
-import { ProjectAddParameter } from 'project/parameter';
+import {
+  ProjectAddParameter,
+  ProjectQuery,
+  ProjectStatusParameter
+} from 'project/parameter';
+import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 
 class ProjectApi {
   async getPage(query: ProjectQuery): Promise<Page<ProjectShortVO>> {
@@ -21,6 +25,20 @@ class ProjectApi {
 
   async add(params: ProjectAddParameter): Promise<void> {
     const { data } = await apiClient.post('/project/sales', params);
+    return data;
+  }
+
+  async updateStatus(id: ProjectId,
+                     params: ProjectStatusParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${id}/status`, params);
+    return data;
+  }
+
+  async addFailReason(id: ProjectId,
+                      params: ProjectBasicFailReasonParameter
+  ): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${id}/basic/fail-reason`, params);
     return data;
   }
 

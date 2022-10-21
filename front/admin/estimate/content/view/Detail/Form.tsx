@@ -142,7 +142,7 @@ export default function Form(props: Props) {
                     label={testTypeName(TestType.F)}
                     control={
                       <Checkbox
-                        disabled={!edit}
+                        readOnly={!edit}
                         defaultValue={TestType.F}
                         checked={testTypeList.includes(TestType.F)}
                         onChange={() => {
@@ -171,7 +171,7 @@ export default function Form(props: Props) {
                     label={testTypeName(TestType.P)}
                     control={
                       <Checkbox
-                        disabled={!edit}
+                        readOnly={!edit}
                         defaultValue={TestType.P}
                         checked={testTypeList.includes(TestType.P)}
                         onChange={() => {
@@ -200,7 +200,7 @@ export default function Form(props: Props) {
                     label={testTypeName(TestType.A)}
                     control={
                       <Checkbox
-                        disabled={!edit}
+                        readOnly={!edit}
                         defaultValue={TestType.A}
                         checked={testTypeList.includes(TestType.A)}
                         onChange={() => {
@@ -229,7 +229,7 @@ export default function Form(props: Props) {
                     label={testTypeName(TestType.E)}
                     control={
                       <Checkbox
-                        disabled={!edit}
+                        readOnly={!edit}
                         defaultValue={TestType.E}
                         checked={testTypeList.includes(TestType.E)}
                         onChange={() => {

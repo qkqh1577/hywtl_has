@@ -4,7 +4,10 @@ import React, {
 } from 'react';
 import ProjectAddModal from 'app/view/App/ProjectDrawer/AddModal';
 import { projectAction } from 'project/action';
-import { ProjectAddParameter } from 'project/parameter';
+import {
+  initialProjectQuery,
+  ProjectAddParameter
+} from 'project/parameter';
 import {
   useDispatch,
   useSelector,
@@ -14,7 +17,6 @@ import {
   useFormik
 } from 'formik';
 import { RootState } from 'services/reducer';
-import { initialProjectQuery } from 'project/query';
 import { ApiStatus } from 'components/DataFieldProps';
 import useDialog from 'components/Dialog';
 

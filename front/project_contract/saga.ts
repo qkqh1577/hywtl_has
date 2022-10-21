@@ -137,7 +137,7 @@ function* watchEstimate() {
       yield put(projectContractAction.setCollection(undefined));
     }
     try {
-      const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getConditionList, projectId, estimateId);
+      const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getConditionList, estimateId);
       yield put(projectContractAction.setConditionList(conditionList));
     }
     catch (e) {

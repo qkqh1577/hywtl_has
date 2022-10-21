@@ -82,7 +82,8 @@ export default function LicenseForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.name}
                   defaultValue={values.name ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -102,7 +103,8 @@ export default function LicenseForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.type}
                   defaultValue={values.type ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -123,7 +125,8 @@ export default function LicenseForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.organizationName}
                   defaultValue={values.organizationName ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -144,7 +147,8 @@ export default function LicenseForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.qualifiedNumber}
                   defaultValue={values.qualifiedNumber ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -164,7 +168,8 @@ export default function LicenseForm() {
                 labelPosition="top"
               >
                 <Input
-                  disabled={!edit}
+                  readOnly={!edit}
+                  key={values.note}
                   defaultValue={values.note ?? ''}
                   onBlur={(e) => {
                     const value = e.target.value || undefined;
@@ -188,7 +193,7 @@ export default function LicenseForm() {
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
-                  disabled={!edit}
+                  readOnly={!edit}
                   value={values.qualifiedDate ? dayjs(values.qualifiedDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {

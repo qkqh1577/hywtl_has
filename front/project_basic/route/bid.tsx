@@ -1,50 +1,22 @@
 import React from 'react';
 import ProjectBasicBidSection from 'project_basic/view/BidSection';
-import {
-  FormikProvider,
-  useFormik
-} from 'formik';
 import { useSelector } from 'react-redux';
 import { RootState } from 'services/reducer';
-import { ProjectBasicBidType } from 'project_status/domain';
+import { ProjectBasicBidType } from 'project/domain';
 
 export default function ProjectBasicBidRoute() {
-  const { bidType, bid } = useSelector((root: RootState) => root.projectBasic);
+  const { detail } = useSelector((root: RootState) => root.project);
+  const { bid, rivalBidList } = useSelector((root: RootState) => root.projectBasic);
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues:      {
-      bid:          {
-        bidDate:          bid?.bid?.bidDate?.toISOString()
-                             .slice(0, 10) || '',
-        testAmount:       bid?.bid?.testAmount?.toString() || '',
-        reviewAmount:     bid?.bid?.reviewAmount?.toString() || '',
-        totalAmount:      bid?.bid?.totalAmount?.toString() || '',
-        expectedDuration: bid?.bid?.expectedDuration || '',
-      },
-      rivalBidList: bid?.rivalBidList?.map(e => ({
-        id:               e.id,
-        business:         e.business?.name || '',
-        testAmount:       e.testAmount?.toString() || '',
-        reviewAmount:     e.reviewAmount?.toString() || '',
-        totalAmount:      e.totalAmount?.toString() || '',
-        expectedDuration: e.expectedDuration || ''
-      }))
-    },
-    onSubmit:           (values) => {
-      console.log(values);
-    }
-  });
+  if (detail?.bidType === ProjectBasicBidType.COMPANY || detail?.bidType === ProjectBasicBidType.G2B) {
 
-  return (
-    <>
-      {
-        (bidType === ProjectBasicBidType.G2B ||
-          bidType === ProjectBasicBidType.COMPANY) &&
-        <FormikProvider value={formik}>
-          <ProjectBasicBidSection rivalBidList={bid?.rivalBidList || []} />
-        </FormikProvider>
-      }
-    </>
-  );
+    return (
+      <ProjectBasicBidSection
+        detail={bid}
+        rivalList={rivalBidList}
+      />
+    );
+  }
+
+  return null;
 }
