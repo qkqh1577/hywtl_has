@@ -1,0 +1,26 @@
+package com.howoocast.hywtl_has.project_db.service;
+
+
+import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
+import com.howoocast.hywtl_has.project_db.repository.ProjectDbRepository;
+import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class ProjectDbService {
+
+    private final ProjectDbRepository projectDbRepository;
+
+    @Transactional(readOnly = true)
+    public List<ProjectDbView> find(ProjectDbParameter projectDbParameter) {
+        return projectDbRepository.findByDynamicJoin(projectDbParameter);
+    }
+
+}
