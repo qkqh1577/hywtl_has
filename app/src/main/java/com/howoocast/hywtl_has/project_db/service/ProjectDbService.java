@@ -1,8 +1,10 @@
 package com.howoocast.hywtl_has.project_db.service;
 
 
+import com.howoocast.hywtl_has.project_db.configuration.ProjectDbInformationSchema;
 import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
 import com.howoocast.hywtl_has.project_db.repository.ProjectDbRepository;
+import com.howoocast.hywtl_has.project_db.view.ProjectDbSchemaView;
 import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +19,15 @@ import java.util.List;
 public class ProjectDbService {
 
     private final ProjectDbRepository projectDbRepository;
+    private final ProjectDbInformationSchema schema;
 
     @Transactional(readOnly = true)
     public List<ProjectDbView> find(ProjectDbParameter projectDbParameter) {
         return projectDbRepository.findByDynamicJoin(projectDbParameter);
+    }
+
+    public ProjectDbSchemaView getInformationSchema() {
+        return ProjectDbSchemaView.assemble(schema);
     }
 
 }

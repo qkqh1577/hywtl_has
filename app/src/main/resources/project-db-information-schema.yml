@@ -1,0 +1,126 @@
+project-db:
+  entities:
+    estimate:
+      type: ProjectEstimateView
+      description: 견적정보
+      attributes:
+        id:
+          type: Long
+          description: 아이디
+        code:
+          type: String
+          description: 코드
+        type:
+          type: String
+          description: 유형
+        isSent:
+          type: Boolean
+          description: 제출여부
+        confirmed:
+          type: Boolean
+          description: 확정여부
+        recipient:
+          type: String
+          description: 수신인
+        note:
+          type: String
+          description: 노트
+        createdBy:
+          type: UserShortView
+          description: 작성자
+        createdAt:
+          type: LocalDateTime
+          description: 최초작성일시
+        modifiedAt:
+          type: LocalDateTime
+          description: 최종수정일시
+        plan:
+          type: ProjectEstimatePlanView
+          description: 견적정보
+        siteList:
+          type: List<ProjectEstimateComplexSiteView>
+          description: 현장정보
+        buildingList:
+          type: List<ProjectEstimateComplexBuildingView>
+          description: 동정보
+    complex-site:
+      type: ProjectComplexSiteView
+      description: 동정보
+      attributes:
+        id:
+          type: Long
+          description: 아이디
+        name:
+          type: String
+          description: 이름
+        withEnvironmentTest:
+          type: Boolean
+          description: 환경실험여부
+        estimateFigureDifficulty:
+          type: String
+          description: 난이도
+        manager:
+          type: UserShortView
+          description: 담당자
+        modifiedAt:
+          type: LocalDateTime
+          description: 수정일시
+    memo:
+      type: ProjectMemoView
+      description: 메모
+      attributes:
+        id:
+          type: Long
+          description: 아이디
+        writer:
+          type: UserShortView
+          description: 작성자
+        category:
+          type: ProjectMemoCategory
+          description: 구분
+        description:
+          type: String
+          description: 본문
+        createdAt:
+          type: LocalDateTime
+          description: 작성일시
+        modifiedAt:
+          type: LocalDateTime
+          description: 수정일시
+        attendanceList:
+          type: List<Long>
+          description: 알림대상자ID
+    bid:
+      type: ProjectBidView
+      description: 입찰정보
+      attributes:
+        beginDate:
+          type: LocalDateTime
+          description: 입찰개시일시
+        closeDate:
+          type: LocalDateTime
+          description: 입찰종요일시
+        win:
+          type: BusinessView
+          description: N/A
+        bidOrganization:
+          type: String
+          description: 입찰기관
+        bidDate:
+          type: LocalDate
+          description: 입찰일
+        testAmount:
+          type: Long
+          description: 실험비용
+        reviewAmount:
+          type: Long
+          description: 분석비용
+        totalAmount:
+          type: Long
+          description: 전체금액
+        expectedDuration:
+          type: String
+          description: 예상기간
+        modifiedAt:
+          type: LocalDateTime
+          description: 수정일시

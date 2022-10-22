@@ -2,6 +2,8 @@ package com.howoocast.hywtl_has.project_db.view;
 
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.view.ProjectView;
+import com.howoocast.hywtl_has.project_bid.domain.ProjectBid;
+import com.howoocast.hywtl_has.project_bid.view.ProjectBidView;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexSite;
 import com.howoocast.hywtl_has.project_complex.view.ProjectComplexSiteView;
 import com.howoocast.hywtl_has.project_db.repository.NoMappedEntityFoundException;
@@ -18,6 +20,7 @@ public class ProjectDbView {
     private ProjectEstimateView projectEstimate;
     private ProjectComplexSiteView projectComplexSite;
     private ProjectMemoView projectMemo;
+    private ProjectBidView projectBid;
 
     public ProjectDbView(Object[] lists) {
 
@@ -32,6 +35,8 @@ public class ProjectDbView {
                 this.projectComplexSite = ProjectComplexSiteView.assemble((ProjectComplexSite) entity);
             } else if (entity instanceof ProjectMemo) {
                 this.projectMemo = ProjectMemoView.assemble((ProjectMemo) entity);
+            } else if (entity instanceof ProjectBid) {
+                this.projectBid = ProjectBidView.assemble((ProjectBid) entity);
             } else {
                 throw new NoMappedEntityFoundException(
                         String.format("No member found for the requested type of %s", entity)

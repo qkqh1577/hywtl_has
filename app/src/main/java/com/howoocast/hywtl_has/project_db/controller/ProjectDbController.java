@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.project_db.controller;
 
+import com.howoocast.hywtl_has.project_db.configuration.ProjectDbInformationSchema;
 import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
 import com.howoocast.hywtl_has.project_db.service.ProjectDbService;
+import com.howoocast.hywtl_has.project_db.view.ProjectDbSchemaView;
 import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,11 @@ public class ProjectDbController {
     public List<ProjectDbView> getList(ProjectDbParameter parameter) {
         log.debug(parameter.toString());
         return projectDbService.find(parameter);
+    }
+
+    @GetMapping("/project/db/schema")
+    public ProjectDbSchemaView getSchema(ProjectDbParameter parameter) {
+        return projectDbService.getInformationSchema();
     }
 
 }

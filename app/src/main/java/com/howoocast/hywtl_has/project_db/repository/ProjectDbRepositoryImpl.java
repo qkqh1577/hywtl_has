@@ -32,20 +32,20 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
 
         ArrayList<Expression> classes = new ArrayList<>() {{
             add(project);
-            if (parameter.getEstimate()) add(projectEstimate);
-            if (parameter.getComplexSite()) add(projectComplexSite);
-            if (parameter.getBid()) add(projectBid);
-            if (parameter.getMemo()) add(projectMemo);
+            if (parameter.getProjectEstimate()) add(projectEstimate);
+            if (parameter.getProjectComplexSite()) add(projectComplexSite);
+            if (parameter.getProjectBid()) add(projectBid);
+            if (parameter.getProjectMemo()) add(projectMemo);
         }};
 
         JPAQuery<Tuple> query = jpaQueryFactory.select(classes.toArray(new Expression[classes.size()])).from(project);
-        if (parameter.getEstimate())
+        if (parameter.getProjectEstimate())
             query = query.leftJoin(projectEstimate).on(project.id.eq(projectEstimate.project.id));
-        if (parameter.getComplexSite())
+        if (parameter.getProjectComplexSite())
             query = query.leftJoin(projectComplexSite).on(project.id.eq(projectComplexSite.project.id));
-        if (parameter.getBid())
+        if (parameter.getProjectBid())
             query = query.leftJoin(projectBid).on(project.id.eq(projectBid.project.id));
-        if (parameter.getMemo())
+        if (parameter.getProjectMemo())
             query = query.leftJoin(projectMemo).on(project.id.eq(projectMemo.project.id));
 
         return query.distinct().fetch().stream().map(tuple -> {

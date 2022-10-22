@@ -28,7 +28,7 @@ public class ProjectDbViewTest {
 
         List<ProjectDbView> projects = projectDbRepository.findByDynamicJoin(param);
         for (ProjectDbView project : projects) {
-            System.out.println(">>> Project code = " + project.getProject().getBasic().getCode());
+            System.out.println(">>> Project code = " + project.getProject().getCode());
 
             if (project.getProjectEstimate() == null) {
                 System.out.println("\tNO ESTIMATION ATTACHED.");
