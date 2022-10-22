@@ -1,19 +1,23 @@
 package com.howoocast.hywtl_has.project_db.view;
 
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.view.ProjectView;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexSite;
+import com.howoocast.hywtl_has.project_complex.view.ProjectComplexSiteView;
 import com.howoocast.hywtl_has.project_db.repository.NoMappedEntityFoundException;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
+import com.howoocast.hywtl_has.project_memo.view.ProjectMemoView;
 import lombok.Getter;
 
 @Getter
 //@AllArgsConstructor
 public class ProjectDbView {
-    private Project project;
-    private ProjectEstimate projectEstimate;
-    private ProjectComplexSite projectComplexSite;
-    private ProjectMemo projectMemo;
+    private ProjectView project;
+    private ProjectEstimateView projectEstimate;
+    private ProjectComplexSiteView projectComplexSite;
+    private ProjectMemoView projectMemo;
 
     public ProjectDbView(Object[] lists) {
 
@@ -21,13 +25,13 @@ public class ProjectDbView {
             if (entity == null) continue;
 
             if (entity instanceof Project) {
-                this.project = (Project) entity;
+                this.project = ProjectView.assemble((Project) entity);
             } else if (entity instanceof ProjectEstimate) {
-                this.projectEstimate = (ProjectEstimate) entity;
+                this.projectEstimate = ProjectEstimateView.assemble((ProjectEstimate) entity);
             } else if (entity instanceof ProjectComplexSite) {
-                this.projectComplexSite = (ProjectComplexSite) entity;
+                this.projectComplexSite = ProjectComplexSiteView.assemble((ProjectComplexSite) entity);
             } else if (entity instanceof ProjectMemo) {
-                this.projectMemo = (ProjectMemo) entity;
+                this.projectMemo = ProjectMemoView.assemble((ProjectMemo) entity);
             } else {
                 throw new NoMappedEntityFoundException(
                         String.format("No member found for the requested type of %s", entity)
