@@ -6,18 +6,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProjectDbParameter {
-    private Boolean estimate = Boolean.FALSE;
-    private Boolean complexSite = Boolean.FALSE;
-    private Boolean bid = Boolean.FALSE;
-    private Boolean memo = Boolean.FALSE;
+    private Boolean projectEstimate = Boolean.FALSE;
+    private Boolean projectComplexSite = Boolean.FALSE;
+    private Boolean projectMemo = Boolean.FALSE;
+    private Boolean projectBid = Boolean.FALSE;
 
     @Override
     public String toString() {
         return "ProjectDbParameter{" +
-                "estimate=" + estimate +
-                ", complexSite=" + complexSite +
-                ", bid=" + bid +
-                ", memo=" + memo +
+                "estimate=" + projectEstimate +
+                ", complexSite=" + projectComplexSite +
+                ", bid=" + projectBid +
+                ", memo=" + projectMemo +
                 '}';
     }
 }
