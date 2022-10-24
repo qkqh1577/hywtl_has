@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import DateFormat from 'layouts/DateFormat';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
 import TextBox from 'layouts/Text';

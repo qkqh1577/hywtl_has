@@ -31,7 +31,7 @@ import React, {
 import { useFormik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ModalLayout from 'layouts/ModalLayout';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import {
   Box,
   FormControl,

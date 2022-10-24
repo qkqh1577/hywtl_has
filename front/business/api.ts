@@ -2,7 +2,7 @@ import {
   BusinessId,
   BusinessInvolvedProjectVO,
   BusinessInvolvedType,
-  BusinessShort,
+  BusinessShortVO,
   BusinessVO,
   RivalProjectVO
 } from './domain';
@@ -12,17 +12,17 @@ import Page from 'type/Page';
 import { BusinessParameter } from 'business/parameter';
 
 class BusinessApi {
-  async getList(registrationNumber: string): Promise<BusinessShort[]> {
+  async getList(registrationNumber: string): Promise<BusinessShortVO[]> {
     const { data } = await apiClient.get('/business', { registrationNumber });
     return data;
   }
 
-  async getListAll(query: BusinessQuery): Promise<BusinessShort[]> {
+  async getListAll(query: BusinessQuery): Promise<BusinessShortVO[]> {
     const { data } = await apiClient.get('/business/all', query);
     return data;
   }
 
-  async getPage(query: BusinessQuery): Promise<Page<BusinessShort>> {
+  async getPage(query: BusinessQuery): Promise<Page<BusinessShortVO>> {
     const { data } = await apiClient.get('/business', query);
     return data;
   }

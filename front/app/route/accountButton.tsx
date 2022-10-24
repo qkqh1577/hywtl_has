@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import AccountButton from 'app/view/App/AccountButton';
+import AccountButton from 'app/view/AccountButton';
 import { useDispatch } from 'react-redux';
 import { loginAction } from 'login/action';
 

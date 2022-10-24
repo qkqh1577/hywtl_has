@@ -1,6 +1,6 @@
 import { UserShortVO, } from 'user/domain';
-import { BusinessShort, } from 'business/domain';
-import { ProjectDocumentShort } from 'project_document/domain';
+import { BusinessShortVO } from 'business/domain';
+import { ProjectDocumentShortVO } from 'project_document/domain';
 import { TestType } from 'type/TestType';
 import { FileItemView } from 'file-item';
 
@@ -59,7 +59,7 @@ export interface ProjectEstimateVO {
   plan?: ProjectEstimatePlanVO;
   siteList?: ProjectEstimateComplexSiteVO[];
   buildingList?: ProjectEstimateComplexBuildingVO[];
-  business: BusinessShort;
+  business: BusinessShortVO;
   test?: ProjectEstimateTestVO;
 }
 
@@ -72,6 +72,8 @@ export interface ProjectEstimatePlanVO {
   reviewAmount: number;
   discountAmount: number;
   totalAmount: number;
+  manager1?: UserShortVO;
+  manager2?: UserShortVO;
 }
 
 export interface ProjectEstimateComplexSiteVO {
@@ -92,7 +94,7 @@ export interface ProjectEstimateComplexBuildingVO {
   height?: number;
   baseArea?: number;
   ratio?: number;
-  buildingDocument?: ProjectDocumentShort;
+  buildingDocument?: ProjectDocumentShortVO;
   conditionList?: string[];
   inTest?: boolean;
   testTypeList?: TestType[];

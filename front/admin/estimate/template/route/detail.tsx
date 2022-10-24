@@ -20,7 +20,6 @@ import {
   EstimateTemplateParameter,
   initialEstimateTemplateParameter
 } from 'admin/estimate/template/parameter';
-import { FormikEditable } from 'type/Form';
 import { EstimateTemplateId } from 'admin/estimate/template/domain';
 import { useNavigate } from 'react-router-dom';
 import { ApiStatus } from 'components/DataFieldProps';
@@ -36,9 +35,9 @@ function Element() {
   const formik = useFormik<EstimateTemplateParameter>({
     enableReinitialize: true,
     initialValues:      initialEstimateTemplateParameter,
-    onSubmit:           (formikValues) => {
-      const values = formikValues as FormikEditable<EstimateTemplateParameter>;
-      if (id && !values.edit) {
+    onSubmit:           (values) => {
+      if (id && !(values as any).edit) {
+
         error('수정 상태가 아닙니다.');
         return;
       }

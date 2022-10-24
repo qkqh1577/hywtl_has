@@ -10,12 +10,12 @@ import {
   projectMemoCategoryList,
   projectMemoCategoryName
 } from 'project_memo/domain';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import Button from 'layouts/Button';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
-import AttendanceListField from 'components/AttendanceListField';
 import Select from 'layouts/Select';
+import MultiUserSelector from 'components/MultipleUserSelector';
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
@@ -87,10 +87,10 @@ export default function ProjectMemoForm({ setOpen }: ProjectMemoFormProps) {
           justifyContent: 'flex-start',
           padding:        '10px',
         }}>
-          <AttendanceListField
-            list={formik.values.attendanceList}
-            afterSubmit={(list) => {
-              formik.setFieldValue('attendanceList', list);
+          <MultiUserSelector
+            value={formik.values.attendanceList}
+            onChange={(value) => {
+              formik.setFieldValue('attendanceList', value);
             }}
           />
         </Box>

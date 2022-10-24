@@ -28,7 +28,7 @@ import AddRow from 'admin/contract/collection/view/Form/AddRow';
 import Input from 'layouts/Input';
 import RequiredMark from 'layouts/RequiredMark';
 import Select from 'layouts/Select';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

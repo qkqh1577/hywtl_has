@@ -5,7 +5,7 @@ import {
   UserNotificationId,
   UserNotificationVO,
 } from 'user_notification/domain';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextLink from 'layouts/TextLink';
 import RemoveButton from 'user_notification/view/Button/RemoveButton';
 import ReadButton from 'user_notification/view/Button/ReadButton';

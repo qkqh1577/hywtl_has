@@ -103,9 +103,8 @@ export default function ProjectBasicBasicSection({ basic, onUpdate }: Props) {
         <Box>
           <DataFieldWithLabel label="문의 접수자">
             <UserSelector
-              value={basic?.receptionManager?.id ?? ''}
-              onChange={(e) => {
-                const value = e.target.value || undefined;
+              value={basic?.receptionManager?.id}
+              onChange={(value) => {
                 if (basic?.receptionManager?.id !== value) {
                   onUpdate({ receptionManagerId: value } as ProjectBasicParameter);
                 }
@@ -116,9 +115,8 @@ export default function ProjectBasicBasicSection({ basic, onUpdate }: Props) {
         <Box>
           <DataFieldWithLabel label="영업 담당자">
             <UserSelector
-              value={basic?.salesManager?.id ?? ''}
-              onChange={(e) => {
-                const value = e.target.value || undefined;
+              value={basic?.salesManager?.id}
+              onChange={(value) => {
                 if (basic?.salesManager?.id !== value) {
                   onUpdate({ salesManagerId: value } as ProjectBasicParameter);
                 }
@@ -129,9 +127,8 @@ export default function ProjectBasicBasicSection({ basic, onUpdate }: Props) {
         <Box>
           <DataFieldWithLabel label="담당 PM">
             <UserSelector
-              value={basic?.projectManager?.id ?? ''}
-              onChange={(e) => {
-                const value = e.target.value || undefined;
+              value={basic?.projectManager?.id}
+              onChange={(value) => {
                 if (basic?.projectManager?.id !== value) {
                   onUpdate({ projectManagerId: value } as ProjectBasicParameter);
                 }

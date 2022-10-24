@@ -13,7 +13,7 @@ export interface EstimateContentVO {
   detailList: string[];
 }
 
-export interface EstimateContentShort
+export interface EstimateContentShortVO
   extends EstimateContentVO {
   detailCount: number;
 }

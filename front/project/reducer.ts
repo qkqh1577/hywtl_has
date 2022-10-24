@@ -1,6 +1,9 @@
 import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
-import { ProjectActionType } from 'project/action';
+import {
+  ProjectActionType,
+  ProjectFilterStatus
+} from 'project/action';
 import {
   ProjectId,
   ProjectShortVO,
@@ -19,6 +22,9 @@ export interface ProjectState {
   requestAddFailReason: ApiStatus;
   addModal: boolean;
   failReasonModal: boolean;
+  drawerOpen: boolean;
+  filterOpen: boolean;
+  filterStatus: ProjectFilterStatus;
 }
 
 const initial: ProjectState = {
@@ -27,6 +33,9 @@ const initial: ProjectState = {
   requestAddFailReason: ApiStatus.IDLE,
   addModal:             false,
   failReasonModal:      false,
+  drawerOpen:           true,
+  filterOpen:           false,
+  filterStatus:         ProjectFilterStatus.IDLE,
 };
 
 export const projectReducer = createReducer(initial, {
@@ -83,6 +92,22 @@ export const projectReducer = createReducer(initial, {
                                             ) => ({
     ...state,
     failReasonModal: action.payload,
+  }),
+  [ProjectActionType.toggleDrawer]:         (state,
+                                            ) => ({
+    ...state,
+    drawerOpen: !state.drawerOpen,
+  }),
+  [ProjectActionType.toggleFilter]:         (state,
+                                            ) => ({
+    ...state,
+    filterOpen: !state.filterOpen,
+  }),
+  [ProjectActionType.setFilterStatus]:      (state,
+                                             action
+                                            ) => ({
+    ...state,
+    filterStatus: action.payload,
   })
 });
 

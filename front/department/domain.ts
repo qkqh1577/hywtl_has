@@ -64,7 +64,7 @@ export interface DepartmentVO {
   userList?: UserVO[];
 }
 
-export interface DepartmentShort
+export interface DepartmentShortVO
   extends DepartmentVO {
   userCount: number;
   childrenCount: number;

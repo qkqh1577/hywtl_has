@@ -1,5 +1,5 @@
 import React from 'react';
-import { EstimateContentShort } from 'admin/estimate/content/domain';
+import { EstimateContentShortVO } from 'admin/estimate/content/domain';
 import { testTypeName } from 'type/TestType';
 import {
   TableBody,
@@ -31,7 +31,7 @@ function AddButton() {
 }
 
 export interface ListProps {
-  list: EstimateContentShort[] | undefined;
+  list: EstimateContentShortVO[] | undefined;
 }
 
 export default function ({ list }: ListProps) {

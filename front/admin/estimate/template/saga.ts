@@ -6,7 +6,7 @@ import {
   take
 } from 'redux-saga/effects';
 import {
-  EstimateTemplateShort,
+  EstimateTemplateShortVO,
   EstimateTemplateVO
 } from 'admin/estimate/template/domain';
 import { estimateTemplateApi } from 'admin/estimate/template/api';
@@ -17,7 +17,7 @@ import { RootState } from 'services/reducer';
 function* watchFilter() {
   while (true) {
     const { payload: query } = yield take(estimateTemplateAction.setFilter);
-    const list: EstimateTemplateShort[] = yield  call(estimateTemplateApi.getList, query);
+    const list: EstimateTemplateShortVO[] = yield  call(estimateTemplateApi.getList, query);
     yield put(estimateTemplateAction.setList(list));
   }
 }

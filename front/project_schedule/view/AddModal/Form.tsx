@@ -12,9 +12,9 @@ import {
   DatePicker,
   TimePicker
 } from '@mui/x-date-pickers';
-import AttendanceListField from 'components/AttendanceListField';
 import UserSelector from 'components/UserSelector';
 import TextBox from 'layouts/Text';
+import MultiUserSelector from 'components/MultipleUserSelector';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -287,10 +287,8 @@ export default function () {
         }}>
           <DataFieldWithLabel required label="담당자" labelPosition="top">
             <UserSelector
-              name="managerId"
-              value={formik.values.managerId ?? ''}
-              onChange={(e) => {
-                const value = e.target.value || undefined;
+              value={formik.values.managerId}
+              onChange={(value) => {
                 if (value !== formik.values.managerId) {
                   formik.setFieldValue('managerId', value);
                 }
@@ -306,9 +304,9 @@ export default function () {
         marginBottom: '10px',
       }}>
         <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
-          <AttendanceListField
-            list={formik.values.attendanceList}
-            afterSubmit={(list) => {
+          <MultiUserSelector
+            value={formik.values.attendanceList}
+            onChange={(list) => {
               formik.setFieldValue('attendanceList', list);
             }}
           />

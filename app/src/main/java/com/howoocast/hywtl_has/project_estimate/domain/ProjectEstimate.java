@@ -241,6 +241,18 @@ public abstract class ProjectEstimate extends CustomEntity {
             Optional.ofNullable(plan).map(ProjectEstimatePlan::getTotalAmount).orElse(null)
         ));
 
+        eventList.add(EventEntity.of(
+            "견적 담당자1 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getManager1).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getManager1).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "견적 담당자2 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getManager2).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getManager2).orElse(null)
+        ));
+
         this.plan = plan;
         return eventList;
     }

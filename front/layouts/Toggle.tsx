@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from '@mui/material';
 import { SwitchProps } from '@mui/material/Switch/Switch';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 
 interface Props

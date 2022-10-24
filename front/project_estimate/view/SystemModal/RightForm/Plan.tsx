@@ -4,12 +4,13 @@ import {
   Box,
   InputAdornment
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import TextBox from 'layouts/Text';
+import UserSelector from 'components/UserSelector';
 
 export default function () {
 
@@ -128,12 +129,30 @@ export default function () {
       </Box>
       <Box>
         <DataFieldWithLabel label="견적 담당자1" labelPosition="top" required={edit}>
-          TBD
+          <UserSelector
+            readOnly={!edit}
+            value={plan.manager1Id ?? plan.manager1?.id}
+            onChange={(value) => {
+              const prevValue = plan.manager1Id ?? plan.manager1?.id;
+              if (prevValue !== value) {
+                formik.setFieldValue('plan.manager1Id', value);
+              }
+            }}
+          />
         </DataFieldWithLabel>
       </Box>
       <Box>
         <DataFieldWithLabel label="견적 담당자2" labelPosition="top" required={edit}>
-          TBD
+          <UserSelector
+            readOnly={!edit}
+            value={plan.manager2Id ?? plan.manager2?.id}
+            onChange={(value) => {
+              const prevValue = plan.manager2Id ?? plan.manager2?.id;
+              if (prevValue !== value) {
+                formik.setFieldValue('plan.manager2Id', value);
+              }
+            }}
+          />
         </DataFieldWithLabel>
       </Box>
       <Box>

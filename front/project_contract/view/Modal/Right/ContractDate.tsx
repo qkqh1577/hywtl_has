@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import dayjs from 'dayjs';
 import TextBox from 'layouts/Text';
 

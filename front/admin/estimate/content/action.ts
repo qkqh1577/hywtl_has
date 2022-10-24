@@ -2,14 +2,14 @@ import { createAction } from 'typesafe-actions';
 import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentId,
-  EstimateContentShort,
+  EstimateContentShortVO,
   EstimateContentVariableVO,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
 import { EstimateContentParameter } from 'admin/estimate/content/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
-export enum EstimateContentAction {
+export enum EstimateContentActionType {
   setFilter           = 'admin/estimate/content/filter/set',
   setList             = 'admin/estimate/content/list/set',
   setId               = 'admin/estimate/content/id/set',
@@ -23,14 +23,14 @@ export enum EstimateContentAction {
 }
 
 export const estimateContentAction = {
-  setFilter:           createAction(EstimateContentAction.setFilter)<EstimateContentQuery>(),
-  setList:             createAction(EstimateContentAction.setList)<EstimateContentShort[]>(),
-  setId:               createAction(EstimateContentAction.setId)<EstimateContentId | undefined>(),
-  setOne:              createAction(EstimateContentAction.setOne)<EstimateContentVO | undefined>(),
-  upsert:              createAction(EstimateContentAction.upsert)<EstimateContentParameter>(),
-  requestUpsert:       createAction(EstimateContentAction.requestUpsert)<ApiStatus>(),
-  deleteOne:           createAction(EstimateContentAction.deleteOne)(),
-  requestDelete:       createAction(EstimateContentAction.requestDelete)<ApiStatus>(),
-  setVariableList:     createAction(EstimateContentAction.setVariableList)<EstimateContentVariableVO[]>(),
-  requestVariableList: createAction(EstimateContentAction.requestVariableList)(),
+  setFilter:           createAction(EstimateContentActionType.setFilter)<EstimateContentQuery>(),
+  setList:             createAction(EstimateContentActionType.setList)<EstimateContentShortVO[]>(),
+  setId:               createAction(EstimateContentActionType.setId)<EstimateContentId | undefined>(),
+  setOne:              createAction(EstimateContentActionType.setOne)<EstimateContentVO | undefined>(),
+  upsert:              createAction(EstimateContentActionType.upsert)<EstimateContentParameter>(),
+  requestUpsert:       createAction(EstimateContentActionType.requestUpsert)<ApiStatus>(),
+  deleteOne:           createAction(EstimateContentActionType.deleteOne)(),
+  requestDelete:       createAction(EstimateContentActionType.requestDelete)<ApiStatus>(),
+  setVariableList:     createAction(EstimateContentActionType.setVariableList)<EstimateContentVariableVO[]>(),
+  requestVariableList: createAction(EstimateContentActionType.requestVariableList)(),
 };

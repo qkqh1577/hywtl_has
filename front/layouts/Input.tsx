@@ -4,7 +4,7 @@ import {
   InputAdornment,
   InputProps as MuiInputProps,
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 
 export interface InputProps
@@ -28,14 +28,14 @@ export function OutlinedInput({ isAmount, fullHeight, ...props }: Omit<InputProp
       {...props}
       fullWidth
       startAdornment={isAmount ?
-        <InputAdornment position="start" sx={{ marginLeft: '10px' }}>
+        <InputAdornment position="start">
           <TextBox variant="body11">￦</TextBox>
         </InputAdornment>
         : props.startAdornment}
       sx={props.multiline ? {
         ...props.sx,
         height:                        fullHeight ? '100%' : 'auto',
-        padding:                       `10px`,
+        padding:                       '10px',
         borderRadius:                  '5px',
         backgroundColor:               props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
         '& > .MuiInputBase-multiline': {
@@ -69,7 +69,7 @@ export function OutlinedInput({ isAmount, fullHeight, ...props }: Omit<InputProp
         style: {
           fontFamily:      'Noto Sans KR',
           height:          fullHeight ? '100%' : props.multiline ? '80px' : (props.size === 'small' ? '24px' : '32px'),
-          fontSize:        props.size === 'small' ? '13px' : '11px',
+          fontSize:        props.size === 'small' ? '11px' : '13px',
           color:           ColorPalette._252627,
           border:          'none',
           backgroundColor: 'transparent',
@@ -88,13 +88,14 @@ export function StandardInput({ isAmount, fullHeight, ...props }: Omit<InputProp
     <MuiInput
       {...props}
       startAdornment={isAmount ?
-        <InputAdornment position="start" sx={{ marginLeft: '10px' }}>
+        <InputAdornment position="start">
           <TextBox variant="body11">￦</TextBox>
         </InputAdornment>
         : props.startAdornment}
       fullWidth
       sx={props.multiline ? {
         ...props.sx,
+        padding:                       '10px',
         height:                        fullHeight ? '100%' : 'auto',
         backgroundColor:               props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
         '& > .MuiInputBase-multiline': {
@@ -102,6 +103,7 @@ export function StandardInput({ isAmount, fullHeight, ...props }: Omit<InputProp
         }
       } : {
         ...props.sx,
+        padding:         '0 10px',
         height:          fullHeight ? '100%' : 'auto',
         backgroundColor: props.readOnly || props.disabled ? ColorPalette._f4f4f4 : ColorPalette._ffffff,
       }}
@@ -109,9 +111,8 @@ export function StandardInput({ isAmount, fullHeight, ...props }: Omit<InputProp
         ...props.inputProps,
         style: {
           fontFamily:      'Noto Sans KR',
-          padding:         `${props.multiline ? 10 : 0}px 10px`,
-          height:          fullHeight ? '100%' : props.multiline ? '80px' : '40px',
-          fontSize:        '13px',
+          height:          fullHeight ? '100%' : props.multiline ? '80px' : (props.size === 'small' ? '32px' : '40px'),
+          fontSize:        props.size === 'small' ? '11px' : '13px',
           color:           ColorPalette._252627,
           border:          'none',
           borderBottom:    `1px solid ${ColorPalette._e4e9f2}`,

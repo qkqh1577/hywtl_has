@@ -37,7 +37,7 @@ public class ProjectSchedule extends CustomEntity {
     private Project project;
 
     @NotBlank
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String type;
 
     @NotNull

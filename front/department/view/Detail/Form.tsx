@@ -10,7 +10,7 @@ import {
   departmentCategoryName,
 } from 'department/domain';
 import { FormikContext } from 'formik';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';

@@ -43,7 +43,8 @@ export default function ProjectBasicContractSection({ detail }: Props) {
             <DataFieldWithLabel label="계약 일자">
               <Input
                 readOnly
-                key={detail?.basic?.contractDate?.toDateString()}
+                key={detail?.basic?.contractDate ? dayjs(detail.basic.contractDate)
+                .format('YYYY-MM-DD') : undefined}
                 defaultValue={detail?.basic?.contractDate ? dayjs(detail?.basic?.contractDate)
                 .format('YYYY-MM-DD') : ''}
               />

@@ -2,19 +2,19 @@ import { BusinessQuery, } from 'business/query';
 import {
   BusinessId,
   BusinessInvolvedProjectVO,
-  BusinessShort,
+  BusinessShortVO,
   BusinessVO,
   RivalProjectVO
 } from 'business/domain';
 import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
-import { BusinessAction } from 'business/action';
+import { BusinessActionType } from 'business/action';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export interface BusinessState {
   filter?: BusinessQuery;
-  page?: Page<BusinessShort>;
-  list?: BusinessShort[];
+  page?: Page<BusinessShortVO>;
+  list?: BusinessShortVO[];
   detail?: BusinessVO;
   involvedProjectList?: BusinessInvolvedProjectVO[];
   rivalProjectList?: RivalProjectVO[];
@@ -29,57 +29,57 @@ const initialState: BusinessState = {
 };
 
 export const businessReducer = createReducer(initialState, {
-  [BusinessAction.setFilter]:              (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setFilter]:              (state,
+                                                action
+                                               ) => ({
     ...state,
     filter: action.payload.values
   }),
-  [BusinessAction.setRegistrationNumber]:  (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setRegistrationNumber]:  (state,
+                                                action
+                                               ) => ({
     ...state,
     filter: action.payload.values
   }),
-  [BusinessAction.setId]:                  (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setId]:                  (state,
+                                                action
+                                               ) => ({
     ...state,
     id: action.payload,
   }),
-  [BusinessAction.setPage]:                (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setPage]:                (state,
+                                                action
+                                               ) => ({
     ...state,
     page: action.payload
   }),
-  [BusinessAction.setInvolvedProjectList]: (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setInvolvedProjectList]: (state,
+                                                action
+                                               ) => ({
     ...state,
     involvedProjectList: action.payload
   }),
-  [BusinessAction.setRivalProjectList]:    (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setRivalProjectList]:    (state,
+                                                action
+                                               ) => ({
     ...state,
     rivalProjectList: action.payload
   }),
-  [BusinessAction.setOne]:                 (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.setOne]:                 (state,
+                                                action
+                                               ) => ({
     ...state,
     detail: action.payload
   }),
-  [BusinessAction.requestUpsert]:          (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.requestUpsert]:          (state,
+                                                action
+                                               ) => ({
     ...state,
     requestUpsert: action.payload
   }),
-  [BusinessAction.requestDelete]:          (state,
-                                            action
-                                           ) => ({
+  [BusinessActionType.requestDelete]:          (state,
+                                                action
+                                               ) => ({
     ...state,
     requestDelete: action.payload
   })

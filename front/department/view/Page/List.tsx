@@ -1,7 +1,7 @@
 import Page from 'type/Page';
 import {
   departmentCategoryName,
-  DepartmentShort
+  DepartmentShortVO
 } from 'department/domain';
 import {
   TableBody,
@@ -35,7 +35,7 @@ function AddButton() {
 }
 
 export interface ListProps {
-  page: Page<DepartmentShort> | undefined;
+  page: Page<DepartmentShortVO> | undefined;
 }
 
 export default function ({ page }: ListProps) {

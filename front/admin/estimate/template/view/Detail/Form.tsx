@@ -8,7 +8,7 @@ import {
   testTypeName
 } from 'type/TestType';
 import DetailList from './DetailList';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
 import { FormikContext } from 'formik';

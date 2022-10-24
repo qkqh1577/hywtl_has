@@ -1,71 +1,71 @@
 import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentId,
-  EstimateContentShort,
+  EstimateContentShortVO,
   EstimateContentVariableVO,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
 import { createReducer } from 'typesafe-actions';
-import { EstimateContentAction } from 'admin/estimate/content/action';
+import { EstimateContentActionType } from 'admin/estimate/content/action';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export interface EstimateContentState {
   filter?: EstimateContentQuery;
   id?: EstimateContentId;
-  list?: EstimateContentShort[];
+  list?: EstimateContentShortVO[];
   detail?: EstimateContentVO;
   variableList?: EstimateContentVariableVO[];
   requestUpsert: ApiStatus;
   requestDelete: ApiStatus;
 }
 
-const initialEstimateContentState: EstimateContentState = {
+const initial: EstimateContentState = {
   requestDelete: ApiStatus.IDLE,
   requestUpsert: ApiStatus.IDLE,
 };
 
-export const estimateContentReducer = createReducer(initialEstimateContentState, {
-  [EstimateContentAction.setFilter]: (state,
-                                      action
-                                     ) => ({
+export const estimateContentReducer = createReducer(initial, {
+  [EstimateContentActionType.setFilter]: (state,
+                                          action
+                                         ) => ({
       ...state,
       filter: action.payload,
     }
   ),
-  [EstimateContentAction.setId]:     (state,
-                                      action
-                                     ) => ({
+  [EstimateContentActionType.setId]:     (state,
+                                          action
+                                         ) => ({
     ...state,
     id: action.payload,
   }),
-  [EstimateContentAction.setList]:   (state,
-                                      action
-                                     ) => ({
+  [EstimateContentActionType.setList]:   (state,
+                                          action
+                                         ) => ({
     ...state,
     list: action.payload,
   }),
-  [EstimateContentAction.setOne]:    (state,
-                                      action
-                                     ) => ({
+  [EstimateContentActionType.setOne]:    (state,
+                                          action
+                                         ) => ({
     ...state,
     detail: action.payload,
   }),
 
-  [EstimateContentAction.setVariableList]: (state,
-                                            action
-                                           ) => ({
+  [EstimateContentActionType.setVariableList]: (state,
+                                                action
+                                               ) => ({
     ...state,
     variableList: action.payload,
   }),
-  [EstimateContentAction.requestUpsert]:   (state,
-                                            action
-                                           ) => ({
+  [EstimateContentActionType.requestUpsert]:   (state,
+                                                action
+                                               ) => ({
     ...state,
     requestUpsert: action.payload,
   }),
-  [EstimateContentAction.requestDelete]:   (state,
-                                            action
-                                           ) => ({
+  [EstimateContentActionType.requestDelete]:   (state,
+                                                action
+                                               ) => ({
     ...state,
     requestDelete: action.payload,
   })

@@ -1,5 +1,5 @@
 import { UserVO } from 'user/domain';
-import { ProjectDocumentShort, } from 'project_document/domain';
+import { ProjectDocumentShortVO } from 'project_document/domain';
 import { TestType } from 'type/TestType';
 
 export type Difficulty = '상' | '중상' | '중' | '중하' | '하';
@@ -36,7 +36,7 @@ export interface ProjectComplexBuildingVO {
   height?: number;
   baseArea?: number;
   ratio?: number;
-  buildingDocument?: ProjectDocumentShort;
+  buildingDocument?: ProjectDocumentShortVO;
   conditionList?: string[];
   inTest?: boolean;
   testTypeList?: TestType[];

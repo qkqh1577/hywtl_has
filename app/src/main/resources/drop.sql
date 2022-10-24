@@ -31,6 +31,7 @@ drop table if exists personnel_language_list;
 drop table if exists personnel_license_list;
 drop table if exists project;
 drop table if exists project_basic_business;
+drop table if exists project_basic_contributor;
 drop table if exists project_basic_design;
 drop table if exists project_basic_fail_reason;
 drop table if exists project_bid;

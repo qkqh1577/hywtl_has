@@ -1,4 +1,4 @@
-import { projectDocumentAction, } from 'project_document/action';
+import { projectDocumentAction } from 'project_document/action';
 import {
   call,
   fork,
@@ -7,7 +7,7 @@ import {
   take
 } from 'redux-saga/effects';
 import {
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
   ProjectDocumentType,
   ProjectDocumentVO
 } from 'project_document/domain';
@@ -27,17 +27,17 @@ function* watchProjectId() {
 }
 
 function* getSentList(id: ProjectId) {
-  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getSentList, id);
+  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getSentList, id);
   yield put(projectDocumentAction.setSentList(list));
 }
 
 function* getReceivedList(id: ProjectId) {
-  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getReceivedList, id);
+  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getReceivedList, id);
   yield put(projectDocumentAction.setReceivedList(list));
 }
 
 function* getBuildingList(id: ProjectId) {
-  const list: ProjectDocumentShort[] = yield call(projectDocumentApi.getBuildingList, id);
+  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getBuildingList, id);
   yield put(projectDocumentAction.setBuildingList(list));
 }
 

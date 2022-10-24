@@ -2,19 +2,19 @@ import apiClient from 'services/api';
 import { DepartmentQuery } from 'department/query';
 import {
   DepartmentId,
-  DepartmentShort,
+  DepartmentShortVO,
   DepartmentVO
 } from 'department/domain';
 import Page from 'type/Page';
 import { DepartmentParameter } from 'department/parameter';
 
 class DepartmentApi {
-  async getList(): Promise<DepartmentShort[]> {
+  async getList(): Promise<DepartmentShortVO[]> {
     const { data } = await apiClient.get('/department/all');
     return data;
   }
 
-  async getPage(query: DepartmentQuery): Promise<Page<DepartmentShort>> {
+  async getPage(query: DepartmentQuery): Promise<Page<DepartmentShortVO>> {
     const { data } = await apiClient.get('/department', query);
     return data;
   }

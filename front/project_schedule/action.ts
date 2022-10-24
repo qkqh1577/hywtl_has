@@ -2,14 +2,14 @@ import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import {
   ProjectScheduleId,
-  ProjectScheduleShort,
+  ProjectScheduleShortVO,
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import { ProjectScheduleQuery } from 'project_schedule/query';
 import { ProjectScheduleParameter } from 'project_schedule/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
-export enum ProjectScheduleAction {
+export enum ProjectScheduleActionType {
   setProjectId  = 'project/sales/schedule/projectId/set',
   setId         = 'project/sales/schedule/id/set',
   setOne        = 'project/sales/schedule/one/set',
@@ -25,16 +25,16 @@ export enum ProjectScheduleAction {
 }
 
 export const projectScheduleAction = {
-  setProjectId:  createAction(ProjectScheduleAction.setProjectId)<ProjectId | undefined>(),
-  setOne:        createAction(ProjectScheduleAction.setOne)<ProjectScheduleVO | undefined>(),
-  setId:         createAction(ProjectScheduleAction.setId)<ProjectScheduleId | undefined>(),
-  setFilter:     createAction(ProjectScheduleAction.setFilter)<ProjectScheduleQuery>(),
-  setList:       createAction(ProjectScheduleAction.setList)<ProjectScheduleShort[] | undefined>(),
-  addModal:      createAction(ProjectScheduleAction.addModal)<boolean>(),
-  add:           createAction(ProjectScheduleAction.add)<ProjectScheduleParameter>(),
-  update:        createAction(ProjectScheduleAction.update)<ProjectScheduleParameter>(),
-  deleteOne:     createAction(ProjectScheduleAction.deleteOne)<number>(),
-  requestAdd:    createAction(ProjectScheduleAction.requestAdd)<ApiStatus>(),
-  requestUpdate: createAction(ProjectScheduleAction.requestUpdate)<ApiStatus>(),
-  requestDelete: createAction(ProjectScheduleAction.requestDelete)<ApiStatus>(),
+  setProjectId:  createAction(ProjectScheduleActionType.setProjectId)<ProjectId | undefined>(),
+  setOne:        createAction(ProjectScheduleActionType.setOne)<ProjectScheduleVO | undefined>(),
+  setId:         createAction(ProjectScheduleActionType.setId)<ProjectScheduleId | undefined>(),
+  setFilter:     createAction(ProjectScheduleActionType.setFilter)<ProjectScheduleQuery>(),
+  setList:       createAction(ProjectScheduleActionType.setList)<ProjectScheduleShortVO[] | undefined>(),
+  addModal:      createAction(ProjectScheduleActionType.addModal)<boolean>(),
+  add:           createAction(ProjectScheduleActionType.add)<ProjectScheduleParameter>(),
+  update:        createAction(ProjectScheduleActionType.update)<ProjectScheduleParameter>(),
+  deleteOne:     createAction(ProjectScheduleActionType.deleteOne)<number>(),
+  requestAdd:    createAction(ProjectScheduleActionType.requestAdd)<ApiStatus>(),
+  requestUpdate: createAction(ProjectScheduleActionType.requestUpdate)<ApiStatus>(),
+  requestDelete: createAction(ProjectScheduleActionType.requestDelete)<ApiStatus>(),
 };

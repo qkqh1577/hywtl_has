@@ -1,10 +1,13 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
+import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 /**
  * 작업 목표 및 담당자 정보
@@ -54,6 +57,12 @@ public class ProjectEstimatePlan {
      */
     private Long totalAmount;
 
+    @ManyToOne
+    private User manager1;
+
+    @ManyToOne
+    private User manager2;
+
     public static ProjectEstimatePlan of(
         LocalDate estimateDate,
         LocalDate expectedServiceDate,
@@ -73,6 +82,32 @@ public class ProjectEstimatePlan {
         instance.reviewAmount = reviewAmount;
         instance.discountAmount = discountAmount;
         instance.totalAmount = totalAmount;
+        return instance;
+    }
+
+    public static ProjectEstimatePlan of(
+        LocalDate estimateDate,
+        LocalDate expectedServiceDate,
+        Integer expectedTestDeadline,
+        Integer expectedFinalReportDeadline,
+        Long testAmount,
+        Long reviewAmount,
+        Long discountAmount,
+        Long totalAmount,
+        @Nullable User manager1,
+        @Nullable User manager2
+    ) {
+        ProjectEstimatePlan instance = new ProjectEstimatePlan();
+        instance.estimateDate = estimateDate;
+        instance.expectedServiceDate = expectedServiceDate;
+        instance.expectedTestDeadline = expectedTestDeadline;
+        instance.expectedFinalReportDeadline = expectedFinalReportDeadline;
+        instance.testAmount = testAmount;
+        instance.reviewAmount = reviewAmount;
+        instance.discountAmount = discountAmount;
+        instance.totalAmount = totalAmount;
+        instance.manager1 = manager1;
+        instance.manager2 = manager2;
         return instance;
     }
 }

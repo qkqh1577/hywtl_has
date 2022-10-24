@@ -13,6 +13,12 @@ import {
 import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 
+export enum ProjectFilterStatus {
+  IDLE  = 'idle',
+  OPEN  = 'open',
+  CLOSE = 'close'
+}
+
 export enum ProjectActionType {
   setFilter            = 'project/sales/filter/set',
   setPage              = 'project/sales/page/set',
@@ -26,6 +32,9 @@ export enum ProjectActionType {
   addFailReason        = 'project/sales/fail-reason/add',
   requestAddFailReason = 'project/sales/fail-reason/add/request',
   setFailReasonModal   = 'project/sales/fail-reason-modal/set',
+  toggleDrawer         = 'project/sales/drawer/toggle',
+  toggleFilter         = 'project/sales/filter/toggle',
+  setFilterStatus      = 'project/sales/filter/status/set',
 }
 
 export const projectAction = {
@@ -41,4 +50,7 @@ export const projectAction = {
   addFailReason:        createAction(ProjectActionType.addFailReason)<ProjectBasicFailReasonParameter>(),
   requestAddFailReason: createAction(ProjectActionType.requestAddFailReason)<ApiStatus>(),
   setFailReasonModal:   createAction(ProjectActionType.setFailReasonModal)<boolean>(),
+  toggleDrawer:         createAction(ProjectActionType.toggleDrawer)(),
+  toggleFilter:         createAction(ProjectActionType.toggleFilter)(),
+  setFilterStatus:      createAction(ProjectActionType.setFilterStatus)<ProjectFilterStatus>(),
 };

@@ -11,7 +11,7 @@ import {
   BusinessId,
   BusinessInvolvedProjectVO,
   BusinessInvolvedType,
-  BusinessShort,
+  BusinessShortVO,
   BusinessVO,
   RivalProjectVO
 } from 'business/domain';
@@ -24,7 +24,7 @@ function* watchFilter() {
   while (true) {
     const { payload: query } = yield take(businessAction.setFilter);
     try {
-      const page: Page<BusinessShort> = yield call(businessApi.getPage, query);
+      const page: Page<BusinessShortVO> = yield call(businessApi.getPage, query);
       yield put(businessAction.setPage(page));
     }
     catch (e) {
@@ -36,7 +36,7 @@ function* watchFilter() {
 function* watchRegistrationNumber() {
   while (true) {
     const { payload: registrationNumber } = yield take(businessAction.setRegistrationNumber);
-    const list: BusinessShort[] = yield call(businessApi.getList, registrationNumber);
+    const list: BusinessShortVO[] = yield call(businessApi.getList, registrationNumber);
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id) {

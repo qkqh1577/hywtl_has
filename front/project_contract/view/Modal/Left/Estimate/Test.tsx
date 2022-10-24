@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import {
   Box,
   TableBody,

@@ -127,7 +127,9 @@ public class ProjectEstimateService {
                     plan.getTestAmount(),
                     plan.getReviewAmount(),
                     plan.getDiscountAmount(),
-                    plan.getTotalAmount()))
+                    plan.getTotalAmount(),
+                    new CustomFinder<>(userRepository, User.class).byIdIfExists(plan.getManager1Id()),
+                    new CustomFinder<>(userRepository, User.class).byIdIfExists(plan.getManager2Id())))
                 .orElse(null));
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);

@@ -14,7 +14,7 @@ import {
   useSelector
 } from 'react-redux';
 import { businessApi } from 'business/api';
-import { BusinessShort } from 'business/domain';
+import { BusinessShortVO } from 'business/domain';
 import { projectBasicAction } from 'project_basic/action';
 import { RootState } from 'services/reducer';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
@@ -27,7 +27,7 @@ interface SearchProps {
 export default function ProjectBasicBusinessModalRoute() {
   const dispatch = useDispatch();
   const { business } = useSelector((root: RootState) => root.projectBasic);
-  const [businessList, setBusinessList] = useState<BusinessShort[]>();
+  const [businessList, setBusinessList] = useState<BusinessShortVO[]>();
   const onSearch = (query: SearchProps) => {
     businessApi.getListAll(query)
                .then(setBusinessList)

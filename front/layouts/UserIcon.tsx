@@ -7,7 +7,7 @@ import {
   BoxProps,
   Tooltip
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   UserId,

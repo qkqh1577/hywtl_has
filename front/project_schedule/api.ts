@@ -2,7 +2,7 @@ import { ProjectId } from 'project/domain';
 import { ProjectScheduleQuery } from 'project_schedule/query';
 import {
   ProjectScheduleId,
-  ProjectScheduleShort,
+  ProjectScheduleShortVO,
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import apiClient from 'services/api';
@@ -11,7 +11,7 @@ import { ProjectScheduleParameter } from 'project_schedule/parameter';
 class ProjectScheduleApi {
   async getList(projectId: ProjectId,
                 query: ProjectScheduleQuery
-  ): Promise<ProjectScheduleShort[]> {
+  ): Promise<ProjectScheduleShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${projectId}/schedule`, query);
     return data;
   }

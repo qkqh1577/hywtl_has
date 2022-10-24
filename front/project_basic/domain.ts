@@ -1,8 +1,32 @@
 import {
   BusinessInvolvedType,
   BusinessManagerVO,
-  BusinessShort
+  BusinessShortVO
 } from 'business/domain';
+import { UserShortVO } from 'user/domain';
+
+export type ProjectBasicContributorId = number & { readonly _brand: unique symbol; };
+
+export function ProjectBasicContributorId(id: number) {
+  return id as ProjectBasicContributorId;
+}
+
+interface ProjectBasicContributorVO {
+  id: ProjectBasicContributorId;
+  rate?: number;
+  modifiedAt: Date;
+}
+
+export interface ProjectBasicInternalContributorVO
+  extends ProjectBasicContributorVO {
+  user?: UserShortVO;
+}
+
+export interface ProjectBasicExternalContributorVO
+  extends ProjectBasicContributorVO {
+  business?: BusinessShortVO;
+  businessManager?: BusinessManagerVO;
+}
 
 export type ProjectBasicBusinessId = number & { readonly _brand: unique symbol; }
 
@@ -12,13 +36,13 @@ export function ProjectBasicBusinessId(id: number) {
 
 export interface ProjectBasicBusiness {
   id: ProjectBasicBusinessId;
-  business: BusinessShort;
+  business: BusinessShortVO;
   businessManager: BusinessManagerVO;
   involvedType: BusinessInvolvedType;
   modifiedAt: Date;
 }
 
-export interface ProjectBasicDesign {
+export interface ProjectBasicDesignVO {
   city?: string; // 시/도
   address?: string; // 주소
   complexCount?: number; // 단지 수
@@ -34,8 +58,8 @@ export interface ProjectBasicDesign {
 }
 
 
-export interface ProjectBasicFailReason {
-  win: BusinessShort;
+export interface ProjectBasicFailReasonVO {
+  win: BusinessShortVO;
   testAmount: number;
   reviewAmount: number;
   totalAmount: number;

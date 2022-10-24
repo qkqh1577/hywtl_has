@@ -46,23 +46,23 @@ public class FileItem extends CustomEntity {
     public static final String KEY = "file_item";
 
     @NotBlank
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String filename;
 
     @NotBlank
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String path;
 
     @NotNull
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Long size;
 
     @NotBlank
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private String ext;
 
     @NotBlank
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false)
     private String fileKey;
 
     public static FileItem of(

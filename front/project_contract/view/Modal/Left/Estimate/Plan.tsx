@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import TextBox from 'layouts/Text';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 export default function () {
 

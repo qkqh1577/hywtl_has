@@ -14,6 +14,7 @@ import departmentSaga from 'department/saga';
 import estimateContentSaga from 'admin/estimate/content/saga';
 import estimateTemplateSaga from 'admin/estimate/template/saga';
 import loginSaga from 'login/saga';
+import menuSaga from 'menu/saga';
 import personnelSaga from 'personnel/saga';
 import projectBasicSaga from 'project_basic/saga';
 import projectBidSaga from 'project_bid/saga';
@@ -44,6 +45,7 @@ function* saga() {
     estimateContentSaga(),
     estimateTemplateSaga(),
     loginSaga(),
+    menuSaga(),
     personnelSaga(),
     projectBasicSaga(),
     projectBidSaga(),

@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { FormikContext, } from 'formik';
 import { getAuxiliaryPostPosition } from 'util/KoreanLetterUtil';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface CheckboxFieldProps

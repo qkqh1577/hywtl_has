@@ -3,7 +3,7 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import UploadField from 'components/UploadField';

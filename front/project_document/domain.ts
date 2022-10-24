@@ -17,7 +17,7 @@ export interface ProjectDocumentVO {
   note?: string; // 비고
 }
 
-export interface ProjectDocumentShort
+export interface ProjectDocumentShortVO
   extends ProjectDocumentVO {
   type: ProjectDocumentType;
   mailFileId?: number;

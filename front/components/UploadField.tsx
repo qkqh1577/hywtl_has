@@ -14,7 +14,7 @@ import {
   InputAdornment
 } from '@mui/material';
 import Button from 'layouts/Button';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import Input, { InputProps } from 'layouts/Input';
 
 interface UploadFieldProps

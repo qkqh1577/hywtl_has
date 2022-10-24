@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FormikContext } from 'formik';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import Select from 'layouts/Select';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';

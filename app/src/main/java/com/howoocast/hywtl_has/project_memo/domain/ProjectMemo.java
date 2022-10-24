@@ -12,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,8 +39,6 @@ public class ProjectMemo extends CustomEntity {
     @ManyToOne
     private User writer;
 
-    @NotNull
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProjectMemoCategory category;
 

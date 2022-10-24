@@ -31,10 +31,11 @@ export default function ProjectCustomEstimateDetailModalRoute() {
     onSubmit:      (values) => {
       onChange({
         id:         values.id,
-        isSent:     values.isSent,
+        isSent:     !!values.isSent,
         recipient:  values.recipient,
         note:       values.note,
         businessId: values.businessId,
+        isLh:       !!values.isLh,
       } as ProjectCustomEstimateChangeParameter);
     }
   });

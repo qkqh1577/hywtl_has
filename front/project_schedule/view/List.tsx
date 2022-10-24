@@ -3,7 +3,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import dayjs from 'dayjs';
 import TextLink from 'layouts/TextLink';
 import { ProjectScheduleProps } from 'project_schedule/view/index';

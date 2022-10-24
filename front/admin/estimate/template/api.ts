@@ -1,14 +1,14 @@
 import { EstimateTemplateQuery } from 'admin/estimate/template/query';
 import {
   EstimateTemplateId,
-  EstimateTemplateShort,
+  EstimateTemplateShortVO,
   EstimateTemplateVO
 } from 'admin/estimate/template/domain';
 import apiClient from 'services/api';
 import { EstimateTemplateParameter } from 'admin/estimate/template/parameter';
 
 class EstimateTemplateApi {
-  async getList(query: EstimateTemplateQuery): Promise<EstimateTemplateShort[]> {
+  async getList(query: EstimateTemplateQuery): Promise<EstimateTemplateShortVO[]> {
     const { data } = await apiClient.get('/admin/estimate-template', query);
     return data;
   }

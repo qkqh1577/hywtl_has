@@ -4,7 +4,7 @@ import {
   CheckboxProps
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface Props
   extends Omit<CheckboxProps, | 'checkedIcon'> {

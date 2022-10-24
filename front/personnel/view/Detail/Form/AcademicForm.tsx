@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Box } from '@mui/material';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
 import { initialPersonnelAcademicParameter } from 'personnel/parameter';

@@ -37,7 +37,8 @@ export default function ProjectBasicEstimateSection({ detail, rivalList }: Props
             <DataFieldWithLabel label="견적 일자">
               <Input
                 readOnly
-                key={detail?.plan?.estimateDate?.toDateString()}
+                key={detail?.plan?.estimateDate ? dayjs(detail.plan.estimateDate)
+                .format('YYYY-MM-DD') : undefined}
                 defaultValue={detail?.plan?.estimateDate ? dayjs(detail?.plan?.estimateDate)
                 .format('YYYY-MM-DD') : ''}
               />

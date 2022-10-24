@@ -3,7 +3,7 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import RequiredMark from 'layouts/RequiredMark';
 import { LabelProps } from 'components/DataFieldProps';
 

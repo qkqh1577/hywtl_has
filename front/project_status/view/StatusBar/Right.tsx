@@ -1,4 +1,4 @@
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { Box } from '@mui/material';
 import React from 'react';
 import DataBox from 'project_status/view/StatusBar/DataBox';

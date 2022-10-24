@@ -5,7 +5,7 @@ import {
   IconButton as MuiIconButton,
 } from '@mui/material';
 import Tooltip from 'components/Tooltip';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   onClick: ButtonProps['onClick'];
