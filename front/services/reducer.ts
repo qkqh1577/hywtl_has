@@ -108,6 +108,10 @@ import {
   loginReducer,
   LoginState
 } from 'login/reducer';
+import {
+  projectDbReducer,
+  ProjectDbState
+} from "../project_db/reducer";
 
 export interface RootState {
   business: BusinessState;
@@ -134,6 +138,7 @@ export interface RootState {
   projectMemo: ProjectMemoState;
   projectSchedule: ProjectScheduleState;
   projectStatus: ProjectStatusState;
+  projectDb: ProjectDbState;
   rivalEstimate: RivalEstimateState;
   user: UserState;
   userNotification: UserNotificationState;
@@ -164,6 +169,7 @@ const reducer = combineReducers<RootState>({
   projectMemo:        projectMemoReducer,
   projectSchedule:    projectScheduleReducer,
   projectStatus:      projectStatusReducer,
+  projectDb:          projectDbReducer,
   rivalEstimate:      rivalEstimateReducer,
   user:               userReducer,
   userNotification:   userNotificationReducer,

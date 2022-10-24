@@ -17,6 +17,7 @@ import projectBasicSaga from 'project_basic/saga';
 import projectDocumentSaga from 'project_document/saga';
 import projectComplexSaga from 'project_complex/saga';
 import projectEstimateSaga from 'project_estimate/saga';
+import projectDbSaga from 'project_db/saga';
 import { businessSelectorSaga } from 'components/BusinessSelector';
 import contractBasicSage from 'admin/contract/basic/saga';
 import contractCollectionSaga from 'admin/contract/collection/saga';
@@ -56,6 +57,7 @@ function* saga() {
     projectSaga(),
     projectScheduleSaga(),
     projectStatusSaga(),
+    projectDbSaga(),
     rivalEstimateSaga(),
     userNotificationSaga(),
     userSaga(),

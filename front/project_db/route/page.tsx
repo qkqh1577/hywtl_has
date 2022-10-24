@@ -1,0 +1,28 @@
+import React, {useEffect} from 'react';
+import {AppRoute} from "../../services/routes";
+import ProjectDbPage from "../view/Page";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../services/reducer";
+
+import {projectDbAction} from 'project_db/action';
+
+function Element() {
+
+    const dispatch = useDispatch();
+    const {list} = useSelector((root: RootState) => root.projectDb);
+
+    useEffect(() => {
+        dispatch(projectDbAction.requestList());
+    }, []);
+
+    return (
+        <ProjectDbPage list={list}/>
+    )
+}
+
+const salesDbPageRoute: AppRoute = {
+    path: '/sales-db-analysis',
+    element: <Element/>
+}
+
+export default salesDbPageRoute;

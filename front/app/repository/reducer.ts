@@ -27,6 +27,10 @@ export const initMenuState: MenuState = {
         path:  '/project/sales-management',
         icon:  'minus',
       }, {
+        title: '영업DB분석',
+        path:  '/sales-db-analysis',
+        icon:  'minus',
+      }, {
         title: '수금 관리',
         icon:  'minus',
       }, {
