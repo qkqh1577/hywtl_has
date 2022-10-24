@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +31,7 @@ public class ProjectBasicInternalContributor extends ProjectBasicContributor {
     /**
      * 내부 기여자
      */
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
     private User user;
 
     public static ProjectBasicInternalContributor of(
@@ -57,7 +55,7 @@ public class ProjectBasicInternalContributor extends ProjectBasicContributor {
             ));
             this.rate = rate;
         }
-        if (Objects.nonNull(rate)) {
+        if (Objects.nonNull(user)) {
             eventList.add(EventEntity.of(
                 "기여자 변경",
                 this.user,

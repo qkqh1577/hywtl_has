@@ -65,7 +65,7 @@ public class ProjectBasicExternalContributor extends ProjectBasicContributor {
             ));
             this.rate = rate;
         }
-        if (Objects.nonNull(rate)) {
+        if (Objects.nonNull(business)) {
             eventList.add(EventEntity.of(
                 "업체 변경",
                 this.business,
@@ -73,7 +73,7 @@ public class ProjectBasicExternalContributor extends ProjectBasicContributor {
             ));
             this.business = business;
         }
-        if (Objects.nonNull(rate)) {
+        if (Objects.nonNull(businessManager)) {
             eventList.add(EventEntity.of(
                 "기여자 변경",
                 this.businessManager,

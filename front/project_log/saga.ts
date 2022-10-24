@@ -10,6 +10,21 @@ import Page from 'type/Page';
 import { ProjectLogVO } from 'project_log/domain';
 import { projectLogApi } from 'project_log/api';
 import { RootState } from 'services/reducer';
+import { initialProjectLogQuery } from 'project_log/query';
+
+
+function* watchId() {
+  while (true) {
+    const { payload: id } = yield take(projectLogAction.setId);
+    try {
+      const page: Page<ProjectLogVO> = yield call(projectLogApi.getPage, id, initialProjectLogQuery);
+      yield put(projectLogAction.setPage(page));
+    }
+    catch (e) {
+      yield put(projectLogAction.setPage(undefined));
+    }
+  }
+}
 
 function* watchFilter() {
   while (true) {
@@ -26,5 +41,6 @@ function* watchFilter() {
 }
 
 export default function* projectLogSaga() {
+  yield fork(watchId);
   yield fork(watchFilter);
 };

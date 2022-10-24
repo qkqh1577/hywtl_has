@@ -142,6 +142,16 @@ public class ProjectLogService {
         if (requestUrl.equals(String.format(rootUrl + "/%d/basic", projectId))) {
             return "기본 정보";
         }
+        if (requestUrl.equals(String.format(rootUrl + "/%d/basic/contributor/internal", projectId))
+            || requestUrl.startsWith(rootUrl + "/basic/contributor/internal/")
+        ) {
+            return "수주 기여자 - 사내";
+        }
+        if (requestUrl.equals(String.format(rootUrl + "/%d/basic/contributor/external", projectId))
+            || requestUrl.startsWith(rootUrl + "/basic/contributor/external/")
+        ) {
+            return "수주 기여자 - 사외";
+        }
         if (requestUrl.equals(String.format(rootUrl + "/%d/basic/business", projectId))
             || requestUrl.startsWith(rootUrl + "/basic/business/")
         ) {

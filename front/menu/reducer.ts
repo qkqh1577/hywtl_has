@@ -13,13 +13,13 @@ const initial: MenuState = {
 };
 
 export const menuReducer = createReducer(initial, {
-  [MenuActionType.setMenu]:        (state,
-                                    action
-                                   ) => ({
+  [MenuActionType.setMenu]:    (state,
+                                action
+                               ) => ({
     ...state,
     list: action.payload,
   }),
-  [MenuActionType.toggleMenuOpen]: (state) => ({
+  [MenuActionType.toggleMenu]: (state) => ({
     ...state,
     open: !state.open
   })

@@ -15,6 +15,7 @@ import { Box } from '@mui/material';
 import useId from 'services/useId';
 import { ProjectId } from 'project/domain';
 import ProjectBasicBusinessModalRoute from 'project_basic/route/businessModal';
+import ProjectBasicContributorRoute from 'project_basic/route/contributor';
 
 function Element() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function Element() {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <ProjectBasicContributorRoute />
       <ProjectBasicBasicRoute />
       <ProjectBasicBusinessRoute />
       <ProjectBasicBusinessModalRoute />

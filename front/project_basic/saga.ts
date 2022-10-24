@@ -11,8 +11,10 @@ import {
 } from 'project_basic/action';
 import {
   ProjectBasicBusiness,
-  ProjectBasicDesign,
-  ProjectBasicFailReason,
+  ProjectBasicDesignVO,
+  ProjectBasicExternalContributorVO,
+  ProjectBasicFailReasonVO,
+  ProjectBasicInternalContributorVO,
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { RootState } from 'services/reducer';
@@ -27,6 +29,8 @@ import { ProjectContractVO } from 'project_contract/domain';
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(ProjectBasicActionType.setId);
+    yield put(projectBasicAction.getInternalList(id));
+    yield put(projectBasicAction.getExternalList(id));
     yield put(projectBasicAction.getBusinessList(id));
     yield put(projectBasicAction.getDesign(id));
     yield put(projectBasicAction.getTest(id));
@@ -36,6 +40,120 @@ function* watchId() {
     yield put(projectBasicAction.getRivalBidList(id));
     yield put(projectBasicAction.getContract(id));
     yield put(projectBasicAction.getFailReason(id));
+  }
+}
+
+function* watchInternalList() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.getInternalList);
+    if (id) {
+      const list: ProjectBasicInternalContributorVO[] = yield call(projectBasicApi.getInternalList, id);
+      yield put(projectBasicAction.setInternalList(list));
+    }
+    else {
+      yield put(projectBasicAction.setInternalList(undefined));
+    }
+  }
+}
+
+function* watchExternalList() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.getExternalList);
+    if (id) {
+      const list: ProjectBasicExternalContributorVO[] = yield call(projectBasicApi.getExternalList, id);
+      yield put(projectBasicAction.setExternalList(list));
+    }
+    else {
+      yield put(projectBasicAction.setExternalList(undefined));
+    }
+  }
+}
+
+function* watchAddInternal() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.addInternal);
+    try {
+      yield put(projectBasicAction.requestAddInternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.addInternal, id);
+      yield put(projectBasicAction.requestAddInternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectBasicAction.requestAddInternal(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchAddExternal() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.addExternal);
+    try {
+      yield put(projectBasicAction.requestAddExternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.addExternal, id);
+      yield put(projectBasicAction.requestAddExternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectBasicAction.requestAddExternal(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchUpdateInternal() {
+  while (true) {
+    const { payload: params } = yield take(projectBasicAction.updateInternal);
+    try {
+      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.updateInternal, params);
+      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchUpdateExternal() {
+  while (true) {
+    const { payload: params } = yield take(projectBasicAction.updateExternal);
+    try {
+      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.updateExternal, params);
+      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      console.error(e);
+      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchDeleteInternal() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.deleteInternal);
+    try {
+      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.deleteInternal, id);
+      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.FAIL));
+    }
+  }
+}
+
+function* watchDeleteExternal() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.deleteExternal);
+    try {
+      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.REQUEST));
+      yield call(projectBasicApi.deleteExternal, id);
+      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.DONE));
+    }
+    catch (e) {
+      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.FAIL));
+    }
   }
 }
 
@@ -56,7 +174,7 @@ function* watchDesign() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.getDesign);
     if (id) {
-      const detail: ProjectBasicDesign = yield call(projectBasicApi.getDesign, id);
+      const detail: ProjectBasicDesignVO = yield call(projectBasicApi.getDesign, id);
       yield put(projectBasicAction.setDesign(detail));
     }
     else {
@@ -147,7 +265,7 @@ function* watchFailReason() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.getFailReason);
     if (id) {
-      const detail: ProjectBasicFailReason = yield call(projectBasicApi.getFailReason, id);
+      const detail: ProjectBasicFailReasonVO = yield call(projectBasicApi.getFailReason, id);
       yield put(projectBasicAction.setFailReason(detail));
     }
     else {
@@ -252,6 +370,14 @@ function* watchUpdateFailReason() {
 
 export default function* projectBasicSaga() {
   yield fork(watchId);
+  yield fork(watchInternalList);
+  yield fork(watchAddInternal);
+  yield fork(watchUpdateInternal);
+  yield fork(watchDeleteInternal);
+  yield fork(watchExternalList);
+  yield fork(watchAddExternal);
+  yield fork(watchUpdateExternal);
+  yield fork(watchDeleteExternal);
   yield fork(watchBusinessList);
   yield fork(watchDesign);
   yield fork(watchTest);

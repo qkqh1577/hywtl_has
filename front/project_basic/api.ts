@@ -2,14 +2,19 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectBasicBusiness,
   ProjectBasicBusinessId,
-  ProjectBasicDesign,
-  ProjectBasicFailReason,
+  ProjectBasicContributorId,
+  ProjectBasicDesignVO,
+  ProjectBasicExternalContributorVO,
+  ProjectBasicFailReasonVO,
+  ProjectBasicInternalContributorVO,
 } from 'project_basic/domain';
 import apiClient from 'services/api';
 import {
   ProjectBasicBusinessParameter,
   ProjectBasicDesignParameter,
+  ProjectBasicExternalContributorParameter,
   ProjectBasicFailReasonParameter,
+  ProjectBasicInternalContributorParameter,
   ProjectBasicParameter
 } from 'project_basic/parameter';
 import { ProjectComplexTestVO } from 'project_complex/domain';
@@ -21,13 +26,53 @@ import { ProjectContractVO } from 'project_contract/domain';
 
 class ProjectBasicApi {
 
+  async getInternalList(id: ProjectId): Promise<ProjectBasicInternalContributorVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/contributor/internal`);
+    return data;
+  }
+
+  async getExternalList(id: ProjectId): Promise<ProjectBasicExternalContributorVO[]> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/contributor/external`);
+    return data;
+  }
+
   async getBusinessList(id: ProjectId): Promise<ProjectBasicBusiness[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/business`);
     return data;
   }
 
-  async getDesign(id: ProjectId): Promise<ProjectBasicDesign> {
+  async getDesign(id: ProjectId): Promise<ProjectBasicDesignVO> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/design`);
+    return data;
+  }
+
+  async addInternal(id: ProjectId): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${id}/basic/contributor/internal`);
+    return data;
+  }
+
+  async addExternal(id: ProjectId): Promise<void> {
+    const { data } = await apiClient.post(`/project/sales/${id}/basic/contributor/external`);
+    return data;
+  }
+
+  async updateInternal(params: ProjectBasicInternalContributorParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/basic/contributor/internal/${params.id}`, params);
+    return data;
+  }
+
+  async updateExternal(params: ProjectBasicExternalContributorParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/basic/contributor/external/${params.id}`, params);
+    return data;
+  }
+
+  async deleteInternal(id: ProjectBasicContributorId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/basic/contributor/internal/${id}`);
+    return data;
+  }
+
+  async deleteExternal(id: ProjectBasicContributorId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/basic/contributor/external/${id}`);
     return data;
   }
 
@@ -92,7 +137,7 @@ class ProjectBasicApi {
     return data;
   }
 
-  async getFailReason(id: ProjectId): Promise<ProjectBasicFailReason> {
+  async getFailReason(id: ProjectId): Promise<ProjectBasicFailReasonVO> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/fail-reason`);
     return data;
   }
