@@ -1,5 +1,5 @@
 import React from 'react';
-import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { EstimateTemplateShortVO } from 'admin/estimate/template/domain';
 import { testTypeName } from 'type/TestType';
 import {
   TableBody,
@@ -49,7 +49,7 @@ function AddButton() {
 }
 
 interface Props {
-  list: EstimateTemplateShort[] | undefined;
+  list: EstimateTemplateShortVO[] | undefined;
   openSeqModal: DefaultFunction;
 }
 

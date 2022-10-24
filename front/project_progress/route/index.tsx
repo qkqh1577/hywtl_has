@@ -22,7 +22,8 @@ function Element() {
   );
 }
 
-export const projectProgressRoute: AppRoute = {
+const projectProgressRoute: AppRoute = {
   path:    '/project/sales-management/:id/progress',
   element: <Element />
 };
+export default projectProgressRoute;

@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import { Box } from '@mui/material';
-import { ProjectBasicFailReason } from 'project_basic/domain';
+import { ProjectBasicFailReasonVO } from 'project_basic/domain';
 import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import BusinessSelector from 'components/BusinessSelector';
@@ -9,12 +9,12 @@ import Input from 'layouts/Input';
 import { toAmount } from 'util/NumberUtil';
 
 interface Props {
-  detail: ProjectBasicFailReason | undefined;
+  detail: ProjectBasicFailReasonVO | undefined;
   onUpdate: (params: Partial<ProjectBasicFailReasonParameter>) => void;
 }
 
 export default function ProjectBasicFailReasonSection(props: Props) {
-  const detail = props.detail ?? {} as ProjectBasicFailReason;
+  const detail = props.detail ?? {} as ProjectBasicFailReasonVO;
   return (
     <SectionLayout
       title="수주실패 정보"

@@ -13,7 +13,7 @@ import DetailList from 'admin/estimate/content/view/Detail/DetailList';
 import { FormikContext } from 'formik';
 import VariableList from 'admin/estimate/content/view/Detail/VariableList';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';

@@ -17,7 +17,7 @@ import TextBox from 'layouts/Text';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import Button from 'layouts/Button';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import AddRow from './CollectionAddRow';

@@ -31,7 +31,7 @@ import {
 import Input from 'layouts/Input';
 import Checkbox from 'layouts/Checkbox';
 import Select from 'layouts/Select';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import {
   buildingTestTypeList,
   TestType,

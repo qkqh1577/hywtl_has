@@ -7,7 +7,7 @@ import {
 } from 'redux-saga/effects';
 import Page from 'type/Page';
 import {
-  DepartmentShort,
+  DepartmentShortVO,
   DepartmentVO
 } from 'department/domain';
 import { departmentApi } from 'department/api';
@@ -17,7 +17,7 @@ function* watchFilter() {
   while (true) {
     const { payload: query } = yield take(departmentAction.setFilter);
     try {
-      const page: Page<DepartmentShort> = yield call(departmentApi.getPage, query);
+      const page: Page<DepartmentShortVO> = yield call(departmentApi.getPage, query);
       yield put(departmentAction.setPage(page));
     }
     catch (e) {
@@ -29,7 +29,7 @@ function* watchFilter() {
 function* watchList() {
   while (true) {
     yield take(departmentAction.requestList);
-    const list: DepartmentShort[] = yield call(departmentApi.getList);
+    const list: DepartmentShortVO[] = yield call(departmentApi.getList);
     yield put(departmentAction.setList(list));
   }
 }

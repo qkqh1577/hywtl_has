@@ -16,7 +16,7 @@ import Input from 'layouts/Input';
 import Select from 'layouts/Select';
 import { getRatio } from 'project_complex/util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import Checkbox from 'layouts/Checkbox';
 import {
   buildingTestTypeList,

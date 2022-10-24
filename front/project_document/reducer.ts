@@ -1,18 +1,18 @@
 import {
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
   ProjectDocumentType,
   ProjectDocumentVO
 } from 'project_document/domain';
 import { createReducer } from 'typesafe-actions';
-import { ProjectDocumentAction } from 'project_document/action';
+import { ProjectDocumentActionType } from 'project_document/action';
 import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectId } from 'project/domain';
 
 export interface ProjectDocumentState {
   projectId?: ProjectId;
-  receivedList?: ProjectDocumentShort[];
-  sentList?: ProjectDocumentShort[];
-  buildingList?: ProjectDocumentShort[];
+  receivedList?: ProjectDocumentShortVO[];
+  sentList?: ProjectDocumentShortVO[];
+  buildingList?: ProjectDocumentShortVO[];
   detail?: ProjectDocumentVO;
   addModal?: ProjectDocumentType;
   requestAdd: ApiStatus;
@@ -20,60 +20,60 @@ export interface ProjectDocumentState {
   detailModal?: ProjectDocumentVO;
 }
 
-const initialDocumentState: ProjectDocumentState = {
+const initial: ProjectDocumentState = {
   requestAdd:    ApiStatus.IDLE,
   requestChange: ApiStatus.IDLE,
 };
 
-export const projectDocumentReducer = createReducer(initialDocumentState, {
-  [ProjectDocumentAction.setProjectId]:    (state,
-                                            action
-                                           ) => ({
+export const projectDocumentReducer = createReducer(initial, {
+  [ProjectDocumentActionType.setProjectId]:    (state,
+                                                action
+                                               ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectDocumentAction.setReceivedList]: (state,
-                                            action
-                                           ) => ({
+  [ProjectDocumentActionType.setReceivedList]: (state,
+                                                action
+                                               ) => ({
     ...state,
     receivedList: action.payload
   }),
 
-  [ProjectDocumentAction.setSentList]: (state,
-                                        action
-                                       ) => ({
+  [ProjectDocumentActionType.setSentList]: (state,
+                                            action
+                                           ) => ({
     ...state,
     sentList: action.payload
   }),
 
-  [ProjectDocumentAction.setBuildingList]: (state,
-                                            action
-                                           ) => ({
+  [ProjectDocumentActionType.setBuildingList]: (state,
+                                                action
+                                               ) => ({
     ...state,
     buildingList: action.payload
   }),
 
-  [ProjectDocumentAction.setOne]:        (state,
-                                          action
-                                         ) => ({
+  [ProjectDocumentActionType.setOne]:        (state,
+                                              action
+                                             ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectDocumentAction.addModal]:      (state,
-                                          action
-                                         ) => ({
+  [ProjectDocumentActionType.addModal]:      (state,
+                                              action
+                                             ) => ({
     ...state,
     addModal: action.payload,
   }),
-  [ProjectDocumentAction.requestAdd]:    (state,
-                                          action
-                                         ) => ({
+  [ProjectDocumentActionType.requestAdd]:    (state,
+                                              action
+                                             ) => ({
     ...state,
     requestAdd: action.payload
   }),
-  [ProjectDocumentAction.requestChange]: (state,
-                                          action
-                                         ) => ({
+  [ProjectDocumentActionType.requestChange]: (state,
+                                              action
+                                             ) => ({
     ...state,
     requestChange: action.payload,
   })

@@ -19,7 +19,7 @@ import Select from 'layouts/Select';
 import {
   businessInvolvedTypeList,
   businessInvolvedTypeName,
-  BusinessShort,
+  BusinessShortVO,
 } from 'business/domain';
 import {
   Table,
@@ -36,14 +36,14 @@ interface Props {
   onClose: DefaultFunction;
   onDelete: DefaultFunction<ProjectBasicBusinessId>;
   onSearch: DefaultFunction;
-  businessList: BusinessShort[] | undefined;
+  businessList: BusinessShortVO[] | undefined;
 }
 
 export default function ProjectBasicBusinessModal(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const id = formik.values.id;
-  const [business, setBusiness] = useState<BusinessShort>();
+  const [business, setBusiness] = useState<BusinessShortVO>();
   const selectedBusinessId = formik.values.businessId;
 
   useEffect(() => {

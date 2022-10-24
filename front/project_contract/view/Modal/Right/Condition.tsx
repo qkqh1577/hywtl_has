@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import Button from 'layouts/Button';
 import TextBox from 'layouts/Text';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import {
   Table,
   Td,

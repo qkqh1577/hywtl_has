@@ -21,6 +21,7 @@ import {
 } from 'project_complex/domain';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
+import UserSelector from 'components/UserSelector';
 
 export default function () {
 
@@ -50,7 +51,7 @@ export default function () {
               <Th>실험 종류 E 여부</Th>
               <Th>견적 대지 모형 제작 난이도</Th>
               <Th>대지 모형 제작 난이도</Th>
-              <Th>담당자</Th>
+              <Th sx={{ width: '180px' }}>담당자</Th>
               {edit && (<Th>삭제</Th>)}
             </TableRow>
           </TableHead>
@@ -124,7 +125,17 @@ export default function () {
                   </Select>
                 </Td>
                 <Td>
-                  담당자
+                  <UserSelector
+                    readOnly={!edit}
+                    variant="outlined"
+                    value={item.managerId ?? item.manager?.id}
+                    onChange={(value) => {
+                      const prevValue = item.managerId ?? item.manager?.id;
+                      if (prevValue !== value) {
+                        formik.setFieldValue(`siteList.${i}.managerId`, value);
+                      }
+                    }}
+                  />
                 </Td>
                 {edit && (
                   <Td>

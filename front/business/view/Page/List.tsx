@@ -1,6 +1,6 @@
 import React from 'react';
 import Page from 'type/Page';
-import { BusinessShort } from 'business/domain';
+import { BusinessShortVO } from 'business/domain';
 import {
   TableBody,
   TableContainer,
@@ -18,7 +18,7 @@ import TableLayout from 'layouts/TableLayout';
 import { useNavigate } from 'react-router-dom';
 
 export interface ListProps {
-  page: Page<BusinessShort> | undefined;
+  page: Page<BusinessShortVO> | undefined;
 }
 
 function AddButton() {

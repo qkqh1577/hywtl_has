@@ -1,7 +1,7 @@
 import ModalLayout from 'layouts/ModalLayout';
 import {
   ProjectDocumentId,
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
 } from 'project_document/domain';
 import {
   Box,
@@ -32,7 +32,7 @@ import useDialog from 'components/Dialog';
 import TextBox from 'layouts/Text';
 
 interface Props {
-  fileList?: ProjectDocumentShort[];
+  fileList?: ProjectDocumentShortVO[];
   onClose: DefaultFunction;
   onUpdate: DefaultFunction<ProjectComplexBuildingParameter>;
   buildingId?: ProjectComplexBuildingId;
@@ -134,7 +134,7 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
         } = props;
   const open = isOpen(buildingId);
   const [edit, setEdit] = useState<boolean>(false);
-  const [file, setFile] = useState<ProjectDocumentShort>();
+  const [file, setFile] = useState<ProjectDocumentShortVO>();
 
   const isDetail = open && fileId && !edit;
 

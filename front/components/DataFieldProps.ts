@@ -1,8 +1,3 @@
-import {
-  FilledTextFieldProps,
-  OutlinedTextFieldProps,
-  StandardTextFieldProps
-} from '@mui/material/TextField/TextField';
 import { SxProps } from '@mui/system';
 import React from 'react';
 import { FormikContextType } from 'formik';
@@ -12,7 +7,6 @@ export enum ApiStatus {
   REQUEST  = 'request',
   DONE     = 'done',
   FAIL     = 'fail',
-  RESPONSE = 'response'
 }
 
 export type Values = {
@@ -26,13 +20,8 @@ export enum FieldStatus {
   Disabled,
   /** 읽기 모드, 드래그 가능, 편집 불가, 필드 제공 */
   ReadOnly,
-  /** 보기 모드, 드래그 가능, 편집 불가, 필드 미제공 */
-  View,
 }
 
-export const FILED_CLEAR = 'formik_field_clear';
-
-export type MuiTextFieldProps = StandardTextFieldProps | FilledTextFieldProps | OutlinedTextFieldProps;
 
 export type DataFieldValue = string | number;
 
@@ -59,29 +48,6 @@ export interface FieldProps
   backgroundColor?: string;
   border?: string;
 }
-
-export type FieldViewProps = | 'status'
-                             | 'startAdornment'
-                             | 'endAdornment'
-                             | 'label'
-                             | 'disableLabel'
-                             | 'labelPosition'
-                             | 'labelWidth'
-                             | 'labelSX'
-                             | 'formik'
-
-export type MuiViewProps = | 'onChange'
-                           | 'onBlur'
-                           | 'InputProps'
-                           | 'inputProps'
-                           | 'label'
-                           | 'error'
-                           | 'helperText'
-                           | 'value'
-                           | 'variant'
-                           | 'disabled'
-                           | 'required'
-
 
 export interface Option {
   key: DataFieldValue;

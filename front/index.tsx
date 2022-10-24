@@ -12,7 +12,7 @@ import App from 'app/route/app';
 import store from 'services/store';
 import 'dayjs/locale/ko';
 import { ThemeProvider } from '@mui/material/styles';
-import mainTheme from 'app/view/App/theme';
+import mainTheme from 'assets/theme';
 import {
   Alert,
   Confirm

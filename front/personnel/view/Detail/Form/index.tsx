@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import AccountForm from 'personnel/view/Detail/Form/AccountForm';
 import BasicForm from 'personnel/view/Detail/Form/BasicForm';
 import CompanyForm from 'personnel/view/Detail/Form/CompanyForm';
@@ -10,10 +10,10 @@ import CareerForm from 'personnel/view/Detail/Form/CareerForm';
 import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import Divider from 'layouts/Divider';
-import { DepartmentShort } from 'department/domain';
+import { DepartmentShortVO } from 'department/domain';
 
 interface Props {
-  departmentList: DepartmentShort[] | undefined;
+  departmentList: DepartmentShortVO[] | undefined;
 }
 
 export default function FormList(props: Props) {

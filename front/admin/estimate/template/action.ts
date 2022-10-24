@@ -1,14 +1,14 @@
 import { createAction } from 'typesafe-actions';
 import {
   EstimateTemplateId,
-  EstimateTemplateShort,
+  EstimateTemplateShortVO,
   EstimateTemplateVO
 } from 'admin/estimate/template/domain';
 import { EstimateTemplateQuery } from 'admin/estimate/template/query';
 import { EstimateTemplateParameter } from 'admin/estimate/template/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
-export enum EstimateTemplateAction {
+export enum EstimateTemplateActionType {
   setFilter        = 'admin/estimate/template/filter/set',
   setList          = 'admin/estimate/template/list/set',
   setId            = 'admin/estimate/template/id/set',
@@ -23,15 +23,15 @@ export enum EstimateTemplateAction {
 }
 
 export const estimateTemplateAction = {
-  setFilter:        createAction(EstimateTemplateAction.setFilter)<EstimateTemplateQuery>(),
-  setList:          createAction(EstimateTemplateAction.setList)<EstimateTemplateShort[]>(),
-  setId:            createAction(EstimateTemplateAction.setId)<EstimateTemplateId | undefined>(),
-  setOne:           createAction(EstimateTemplateAction.setOne)<EstimateTemplateVO | undefined>(),
-  upsert:           createAction(EstimateTemplateAction.upsert)<EstimateTemplateParameter>(),
-  requestUpsert:    createAction(EstimateTemplateAction.requestUpsert)<ApiStatus>(),
-  changeSeq:        createAction(EstimateTemplateAction.changeSeq)<EstimateTemplateId[]>(),
-  requestChangeSeq: createAction(EstimateTemplateAction.requestChangeSeq)<ApiStatus>(),
-  seqModal:         createAction(EstimateTemplateAction.seqModal)<boolean>(),
-  deleteOne:        createAction(EstimateTemplateAction.deleteOne)(),
-  requestDelete:    createAction(EstimateTemplateAction.requestDelete)<ApiStatus>(),
+  setFilter:        createAction(EstimateTemplateActionType.setFilter)<EstimateTemplateQuery>(),
+  setList:          createAction(EstimateTemplateActionType.setList)<EstimateTemplateShortVO[]>(),
+  setId:            createAction(EstimateTemplateActionType.setId)<EstimateTemplateId | undefined>(),
+  setOne:           createAction(EstimateTemplateActionType.setOne)<EstimateTemplateVO | undefined>(),
+  upsert:           createAction(EstimateTemplateActionType.upsert)<EstimateTemplateParameter>(),
+  requestUpsert:    createAction(EstimateTemplateActionType.requestUpsert)<ApiStatus>(),
+  changeSeq:        createAction(EstimateTemplateActionType.changeSeq)<EstimateTemplateId[]>(),
+  requestChangeSeq: createAction(EstimateTemplateActionType.requestChangeSeq)<ApiStatus>(),
+  seqModal:         createAction(EstimateTemplateActionType.seqModal)<boolean>(),
+  deleteOne:        createAction(EstimateTemplateActionType.deleteOne)(),
+  requestDelete:    createAction(EstimateTemplateActionType.requestDelete)<ApiStatus>(),
 };

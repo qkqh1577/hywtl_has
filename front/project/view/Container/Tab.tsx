@@ -5,7 +5,7 @@ import {
   useNavigate
 } from 'react-router-dom';
 import useId from 'services/useId';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface ButtonProps {
   children: string;

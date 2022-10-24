@@ -23,7 +23,7 @@ import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Input from 'layouts/Input';
 import { initialContractConditionParameter } from 'admin/contract/condition/parameter';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   variableList: ContractConditionVariableVO[] | undefined;

@@ -24,7 +24,7 @@ export interface EstimateTemplateVO {
   detailList: EstimateTemplateDetailVO[];
 }
 
-export interface EstimateTemplateShort
+export interface EstimateTemplateShortVO
   extends EstimateTemplateVO {
   detailCount: number;
 }

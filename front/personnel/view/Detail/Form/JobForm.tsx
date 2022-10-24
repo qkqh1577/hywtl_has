@@ -11,9 +11,9 @@ import {
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
-import { DepartmentShort } from 'department/domain';
+import { DepartmentShortVO } from 'department/domain';
 import { initialPersonnelJobParameter } from 'personnel/parameter';
 import RequiredMark from 'layouts/RequiredMark';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
@@ -21,7 +21,7 @@ import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 
 interface Props {
-  departmentList: DepartmentShort[] | undefined;
+  departmentList: DepartmentShortVO[] | undefined;
 }
 
 const spaceCount = 7;

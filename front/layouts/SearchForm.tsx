@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import Button from 'layouts/Button';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 export interface SearchFormProps {
   children: React.ReactNode;

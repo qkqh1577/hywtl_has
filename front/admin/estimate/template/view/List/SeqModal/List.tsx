@@ -6,7 +6,7 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { EstimateTemplateShortVO } from 'admin/estimate/template/domain';
 import { testTypeName } from 'type/TestType';
 import IconButton from 'layouts/IconButton';
 import {
@@ -18,8 +18,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
 
 export interface SeqModalListProps {
-  list: EstimateTemplateShort[];
-  setList: DefaultFunction<EstimateTemplateShort[]>;
+  list: EstimateTemplateShortVO[];
+  setList: DefaultFunction<EstimateTemplateShortVO[]>;
 }
 
 export default function EstimateTemplateSeqModalList(props: SeqModalListProps) {
@@ -59,7 +59,7 @@ export default function EstimateTemplateSeqModalList(props: SeqModalListProps) {
                     disabled={i === 0}
                     children={<FontAwesomeIcon icon="angle-up" />}
                     onClick={() => {
-                      const result: EstimateTemplateShort[] = [];
+                      const result: EstimateTemplateShortVO[] = [];
                       for (let j = 0; j < list.length; j++) {
                         if (i === j) {
                           continue;
@@ -78,7 +78,7 @@ export default function EstimateTemplateSeqModalList(props: SeqModalListProps) {
                     disabled={i === list.length - 1}
                     children={<FontAwesomeIcon icon="angle-down" />}
                     onClick={() => {
-                      const result: EstimateTemplateShort[] = [];
+                      const result: EstimateTemplateShortVO[] = [];
                       for (let j = 0; j < list.length; j++) {
                         if (i === j) {
                           continue;

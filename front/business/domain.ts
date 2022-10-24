@@ -65,7 +65,7 @@ export interface BusinessVO {
   managerList: BusinessManagerVO[];
 }
 
-export interface BusinessShort
+export interface BusinessShortVO
   extends BusinessVO {
   managerCount: number;
   projectCount: number;
@@ -90,7 +90,7 @@ export interface RivalProjectVO {
   name: string;
   bidBeginDate: Date;
   bidCloseDate: Date;
-  win: BusinessShort;
+  win: BusinessShortVO;
 }
 
 /** 관계사 유형 */

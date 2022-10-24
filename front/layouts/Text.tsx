@@ -3,7 +3,7 @@ import {
   Typography,
   TypographyProps
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 

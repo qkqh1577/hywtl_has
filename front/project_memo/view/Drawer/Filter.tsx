@@ -37,14 +37,17 @@ export default function ProjectMemoDrawerFilter() {
         marginRight: '10px',
       }}>
         <Select
+          displayEmpty
           variant="outlined"
-          value={formik.values.category ?? ''}
+          key={formik.values.category}
+          defaultValue={formik.values.category ?? ''}
           onChange={(e) => {
             const value = e.target.value || undefined;
             if (formik.values.category !== value) {
               formik.setFieldValue('category', value);
             }
           }}>
+          <MenuItem value="">선택</MenuItem>
           {projectMemoCategoryList.map(item => (
             <MenuItem key={item} value={item}>
               {projectMemoCategoryName(item)}

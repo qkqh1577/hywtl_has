@@ -79,7 +79,8 @@ function Element() {
   );
 }
 
-export const contractConditionTemplateRoute: AppRoute = {
+const contractConditionTemplateRoute: AppRoute = {
   path:    '/admin/contract-condition-management',
   element: <Element />
 };
+export default contractConditionTemplateRoute;

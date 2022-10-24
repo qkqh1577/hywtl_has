@@ -4,7 +4,7 @@ import { Box, } from '@mui/material';
 import IconButton from 'layouts/IconButton';
 import { ArrowLeft as LeftIcon } from '@mui/icons-material';
 import Fade from 'components/Fade';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   open: boolean;

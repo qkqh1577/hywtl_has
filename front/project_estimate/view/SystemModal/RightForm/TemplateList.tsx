@@ -1,4 +1,4 @@
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import {
   Box,
   MenuItem,

@@ -3,14 +3,14 @@ import { Box, } from '@mui/material';
 import SearchSection from 'project_schedule/view/SearchSection';
 import List from 'project_schedule/view/List';
 import Calendar from './Calendar';
-import { ProjectScheduleShort } from 'project_schedule/domain';
+import { ProjectScheduleShortVO } from 'project_schedule/domain';
 import {
   OnAddModalOpen,
   OnDetailModalOpen
 } from 'project_schedule/route/schedule';
 
 export interface ProjectScheduleProps {
-  list?: ProjectScheduleShort[];
+  list?: ProjectScheduleShortVO[];
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
   setDate: (startDate: string,

@@ -5,7 +5,7 @@ import {
   TableProps,
 } from '@mui/material';
 import React from 'react';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 interface ThProps
   extends Omit<TableCellProps, |'variant'> {

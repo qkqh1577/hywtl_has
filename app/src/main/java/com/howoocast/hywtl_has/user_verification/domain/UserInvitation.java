@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -44,6 +46,7 @@ public class UserInvitation extends CustomEntity {
     private Department department; // 소속 조직
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, updatable = false)
     private UserRole role;
 

@@ -4,10 +4,10 @@ import { Box } from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
-import { ProjectBasicDesign } from 'project_basic/domain';
+import { ProjectBasicDesignVO } from 'project_basic/domain';
 
 interface Props {
-  detail: ProjectBasicDesign;
+  detail: ProjectBasicDesignVO;
   onUpdate: (params: ProjectBasicDesignParameter) => void;
 }
 

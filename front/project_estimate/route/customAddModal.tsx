@@ -32,21 +32,13 @@ export default function ProjectCustomEstimateAddModalRoute() {
         error('프로젝트가 선택되지 않았습니다.');
         return;
       }
-
       addCustom({
-        isSent:     values.isSent,
+        isSent:     !!values.isSent,
         businessId: values.businessId,
         recipient:  values.recipient,
         note:       values.note,
         file:       values.file,
-        type:       customAddModal,
-      });
-      console.log({
-        isSent:     values.isSent,
-        businessId: values.businessId,
-        recipient:  values.recipient,
-        note:       values.note,
-        file:       values.file,
+        isLh:       !!values.isLh,
         type:       customAddModal,
       });
     }

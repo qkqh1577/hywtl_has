@@ -8,7 +8,7 @@ import {
 import { projectScheduleAction } from 'project_schedule/action';
 import { RootState } from 'services/reducer';
 import {
-  ProjectScheduleShort,
+  ProjectScheduleShortVO,
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
@@ -32,7 +32,7 @@ function* watchFilter() {
   while (true) {
     const { payload: filter } = yield take(projectScheduleAction.setFilter);
     try {
-      const list: ProjectScheduleShort[] = yield call(projectScheduleApi.getList, filter.projectId, filter);
+      const list: ProjectScheduleShortVO[] = yield call(projectScheduleApi.getList, filter.projectId, filter);
       yield put(projectScheduleAction.setList(list));
     }
     catch (e) {

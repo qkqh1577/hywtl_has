@@ -3,13 +3,13 @@ import PageLayout, { FormikLayoutProps } from 'layouts/PageLayout';
 import { EstimateTemplateQuery } from 'admin/estimate/template/query';
 import SearchForm from 'admin/estimate/template/view/List/SearchForm';
 import List from 'admin/estimate/template/view/List/List';
-import { EstimateTemplateShort } from 'admin/estimate/template/domain';
+import { EstimateTemplateShortVO } from 'admin/estimate/template/domain';
 import { DefaultFunction } from 'type/Function';
 
 interface Props
   extends FormikLayoutProps<EstimateTemplateQuery> {
   seqModal: JSX.Element;
-  list: EstimateTemplateShort[] | undefined;
+  list: EstimateTemplateShortVO[] | undefined;
   openSeqModal: DefaultFunction;
 }
 

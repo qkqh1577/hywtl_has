@@ -3,11 +3,11 @@ import PageLayout from 'layouts/PageLayout';
 import FormList from 'personnel/view/Detail/Form';
 import Footer from 'personnel/view/Detail/Footer';
 import { FormikContext } from 'formik';
-import { DepartmentShort } from 'department/domain';
+import { DepartmentShortVO } from 'department/domain';
 import { DefaultFunction } from 'type/Function';
 
 interface Props {
-  departmentList: DepartmentShort[] | undefined;
+  departmentList: DepartmentShortVO[] | undefined;
   onCancel: DefaultFunction;
 }
 

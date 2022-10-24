@@ -31,7 +31,8 @@ function Element() {
   );
 }
 
-export const projectScheduleRoute: AppRoute = {
+const projectScheduleRoute: AppRoute = {
   path:    '/project/sales-management/:id/schedule',
   element: <Element />
 };
+export default projectScheduleRoute;

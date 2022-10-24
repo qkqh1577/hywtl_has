@@ -12,7 +12,7 @@ import {
   FormikContextType,
   FormikProvider,
 } from 'formik';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { useLocation } from 'react-router-dom';
 
 interface TitleProps {

@@ -2,7 +2,7 @@ import {
   Select as MuiSelect,
   SelectProps as MuiSelectProps,
 } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import React from 'react';
 
 export interface SelectProps

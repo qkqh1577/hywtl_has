@@ -1,9 +1,6 @@
+import { estimateContentAction } from 'admin/estimate/content/action';
 import {
-  estimateContentAction,
-  EstimateContentAction
-} from 'admin/estimate/content/action';
-import {
-  EstimateContentShort,
+  EstimateContentShortVO,
   EstimateContentVariableVO,
   EstimateContentVO
 } from 'admin/estimate/content/domain';
@@ -20,15 +17,15 @@ import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
-    const { payload: query } = yield take(EstimateContentAction.setFilter);
-    const list: EstimateContentShort[] = yield call(estimateContentApi.getList, query);
+    const { payload: query } = yield take(estimateContentAction.setFilter);
+    const list: EstimateContentShortVO[] = yield call(estimateContentApi.getList, query);
     yield put(estimateContentAction.setList(list));
   }
 }
 
 function* watchId() {
   while (true) {
-    const { payload: id } = yield take(EstimateContentAction.setId);
+    const { payload: id } = yield take(estimateContentAction.setId);
     const detail: EstimateContentVO = yield call(estimateContentApi.getOne, id);
     yield put(estimateContentAction.setOne(detail));
   }
@@ -36,7 +33,7 @@ function* watchId() {
 
 function* watchUpsert() {
   while (true) {
-    const { payload: params } = yield take(EstimateContentAction.upsert);
+    const { payload: params } = yield take(estimateContentAction.upsert);
     try {
       yield put(estimateContentAction.requestUpsert(ApiStatus.REQUEST));
       yield call(estimateContentApi.upsert, params);
@@ -51,7 +48,7 @@ function* watchUpsert() {
 
 function* watchDelete() {
   while (true) {
-    yield take(EstimateContentAction.deleteOne);
+    yield take(estimateContentAction.deleteOne);
     try {
       const { id } = yield select((root: RootState) => root.estimateContent);
       yield put(estimateContentAction.requestDelete(ApiStatus.REQUEST));
@@ -67,7 +64,7 @@ function* watchDelete() {
 
 function* watchVariableList() {
   while (true) {
-    yield take(EstimateContentAction.requestVariableList);
+    yield take(estimateContentAction.requestVariableList);
     const list: EstimateContentVariableVO[] = yield call(estimateContentApi.getVariableList);
     yield put(estimateContentAction.setVariableList(list));
   }

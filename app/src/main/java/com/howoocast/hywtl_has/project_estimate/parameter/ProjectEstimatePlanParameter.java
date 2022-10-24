@@ -16,4 +16,6 @@ public class ProjectEstimatePlanParameter {
     private Long reviewAmount;
     private Long discountAmount;
     private Long totalAmount;
+    private Long manager1Id;
+    private Long manager2Id;
 }

@@ -30,6 +30,7 @@ import ProjectComplexTestSection from 'project_complex/view/TestSection';
 import Select from 'layouts/Select';
 import Checkbox from 'layouts/Checkbox';
 import Input from 'layouts/Input';
+import UserSelector from 'components/UserSelector';
 
 interface Props {
   list: ProjectComplexSiteVO[] | undefined;
@@ -84,7 +85,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                 <Th>실험 종류 E 여부</Th>
                 <Th>견적 대지 모형 제작 난이도</Th>
                 <Th>대지 모형 제작 난이도</Th>
-                <Th>담당자</Th>
+                <Th sx={{ width: '150px' }}>담당자</Th>
                 <Th>삭제</Th>
               </TableRow>
             </TableHead>
@@ -156,7 +157,15 @@ export default function ProjectComplexSiteSection(props: Props) {
                     </Select>
                   </Td>
                   <Td>
-                    담당자
+                    <UserSelector
+                      variant="outlined"
+                      value={item.manager?.id}
+                      onChange={(value) => {
+                        if (item.manager?.id !== value) {
+                          props.onUpdate({ id: item.id, managerId: value });
+                        }
+                      }}
+                    />
                   </Td>
                   <Td>
                     <Button shape="basic3" onClick={() => {props.onDelete(item.id);}}>삭제</Button>

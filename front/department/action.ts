@@ -3,13 +3,13 @@ import { DepartmentQuery } from 'department/query';
 import Page from 'type/Page';
 import {
   DepartmentId,
-  DepartmentShort,
+  DepartmentShortVO,
   DepartmentVO
 } from 'department/domain';
 import { DepartmentParameter } from 'department/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
-export enum DepartmentAction {
+export enum DepartmentActionType {
   setFilter     = 'department/filter/set',
   setPage       = 'department/page/set',
   setList       = 'department/list/set',
@@ -23,14 +23,14 @@ export enum DepartmentAction {
 }
 
 export const departmentAction = {
-  setFilter:     createAction(DepartmentAction.setFilter)<DepartmentQuery>(),
-  setPage:       createAction(DepartmentAction.setPage)<Page<DepartmentShort> | undefined>(),
-  setList:       createAction(DepartmentAction.setList)<DepartmentShort[]>(),
-  requestList:   createAction(DepartmentAction.requestList)(),
-  setId:         createAction(DepartmentAction.setId)<DepartmentId | undefined>(),
-  setOne:        createAction(DepartmentAction.setOne)<DepartmentVO | undefined>(),
-  upsert:        createAction(DepartmentAction.upsert)<DepartmentParameter>(),
-  requestUpsert: createAction(DepartmentAction.requestUpsert)<ApiStatus>(),
-  deleteOne:     createAction(DepartmentAction.deleteOne)<DepartmentId>(),
-  requestDelete: createAction(DepartmentAction.requestDelete)<ApiStatus>(),
+  setFilter:     createAction(DepartmentActionType.setFilter)<DepartmentQuery>(),
+  setPage:       createAction(DepartmentActionType.setPage)<Page<DepartmentShortVO> | undefined>(),
+  setList:       createAction(DepartmentActionType.setList)<DepartmentShortVO[]>(),
+  requestList:   createAction(DepartmentActionType.requestList)(),
+  setId:         createAction(DepartmentActionType.setId)<DepartmentId | undefined>(),
+  setOne:        createAction(DepartmentActionType.setOne)<DepartmentVO | undefined>(),
+  upsert:        createAction(DepartmentActionType.upsert)<DepartmentParameter>(),
+  requestUpsert: createAction(DepartmentActionType.requestUpsert)<ApiStatus>(),
+  deleteOne:     createAction(DepartmentActionType.deleteOne)<DepartmentId>(),
+  requestDelete: createAction(DepartmentActionType.requestDelete)<ApiStatus>(),
 };

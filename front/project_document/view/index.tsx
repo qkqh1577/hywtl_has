@@ -1,23 +1,21 @@
 import React from 'react';
+import { Box, } from '@mui/material';
 import {
-  Box,
-} from '@mui/material';
-import {
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
   ProjectDocumentType,
 } from 'project_document/domain';
 import ProjectDocumentSection from 'project_document/view/Section';
 import {
   OnAddModalOpen,
   OnDetailModalOpen
-} from 'project_document/route/document';
+} from 'project_document/route';
 
 interface Props {
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
-  receivedList: ProjectDocumentShort[] | undefined;
-  sentList: ProjectDocumentShort[] | undefined;
-  buildingList: ProjectDocumentShort[] | undefined;
+  receivedList: ProjectDocumentShortVO[] | undefined;
+  sentList: ProjectDocumentShortVO[] | undefined;
+  buildingList: ProjectDocumentShortVO[] | undefined;
 }
 
 export default function ProjectDocument(props: Props) {

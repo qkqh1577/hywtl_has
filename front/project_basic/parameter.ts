@@ -5,7 +5,8 @@ import {
 } from 'business/domain';
 import {
   ProjectBasicBusinessId,
-  ProjectBasicFailReason
+  ProjectBasicContributorId,
+  ProjectBasicFailReasonVO
 } from 'project_basic/domain';
 import { UserId } from 'user/domain';
 import { ProjectBasicBidType } from 'project/domain';
@@ -35,7 +36,7 @@ export const initialProjectBasicBusinessParameter = {
 } as unknown as ProjectBasicBusinessParameter;
 
 export interface ProjectBasicFailReasonParameter
-  extends Omit<ProjectBasicFailReason, 'modifiedAt' | 'win'> {
+  extends Omit<ProjectBasicFailReasonVO, 'modifiedAt' | 'win'> {
   winId: BusinessId;
 }
 
@@ -53,4 +54,17 @@ export interface ProjectBasicDesignParameter {
   householdCount?: number;
   maximumFloor?: number;
   maximumHeight?: number;
+}
+
+export interface ProjectBasicInternalContributorParameter {
+  id: ProjectBasicContributorId;
+  rate?: number;
+  userId?: UserId;
+}
+
+export interface ProjectBasicExternalContributorParameter {
+  id: ProjectBasicContributorId;
+  rate?: number;
+  businessId?: BusinessId;
+  businessManagerId?: BusinessManagerId;
 }

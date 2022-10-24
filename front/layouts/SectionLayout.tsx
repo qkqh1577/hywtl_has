@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateFormat from 'layouts/DateFormat';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import IconButton from 'layouts/IconButton';
 import TextBox from 'layouts/Text';
 

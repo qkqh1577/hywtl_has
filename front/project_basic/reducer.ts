@@ -1,8 +1,10 @@
 import { ProjectId } from 'project/domain';
 import {
   ProjectBasicBusiness,
-  ProjectBasicDesign,
-  ProjectBasicFailReason,
+  ProjectBasicDesignVO,
+  ProjectBasicExternalContributorVO,
+  ProjectBasicFailReasonVO,
+  ProjectBasicInternalContributorVO,
 } from 'project_basic/domain';
 import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
@@ -16,22 +18,30 @@ import { ProjectContractVO } from 'project_contract/domain';
 
 export interface ProjectBasicState {
   id?: ProjectId;
+  internalList?: ProjectBasicInternalContributorVO[];
+  externalList?: ProjectBasicExternalContributorVO[];
   businessList?: ProjectBasicBusiness[];
   business?: ProjectBasicBusiness;
-  design?: ProjectBasicDesign;
+  design?: ProjectBasicDesignVO;
   test?: ProjectComplexTestVO;
   estimate?: ProjectEstimateVO;
   rivalEstimateList?: RivalEstimateVO[];
   bid?: ProjectBidVO;
   rivalBidList?: RivalBidVO[];
   contract?: ProjectContractVO;
-  failReason?: ProjectBasicFailReason;
+  failReason?: ProjectBasicFailReasonVO;
   requestUpdateBasic: ApiStatus;
   requestAddBusiness: ApiStatus;
   requestChangeBusiness: ApiStatus;
   requestDeleteBusiness: ApiStatus;
   requestUpdateDesign: ApiStatus;
   requestUpdateFailReason: ApiStatus;
+  requestAddInternal: ApiStatus;
+  requestUpdateInternal: ApiStatus;
+  requestDeleteInternal: ApiStatus;
+  requestAddExternal: ApiStatus;
+  requestUpdateExternal: ApiStatus;
+  requestDeleteExternal: ApiStatus;
 }
 
 const initial: ProjectBasicState = {
@@ -41,7 +51,12 @@ const initial: ProjectBasicState = {
   requestDeleteBusiness:   ApiStatus.IDLE,
   requestUpdateDesign:     ApiStatus.IDLE,
   requestUpdateFailReason: ApiStatus.IDLE,
-
+  requestAddInternal:      ApiStatus.IDLE,
+  requestUpdateInternal:   ApiStatus.IDLE,
+  requestDeleteInternal:   ApiStatus.IDLE,
+  requestAddExternal:      ApiStatus.IDLE,
+  requestUpdateExternal:   ApiStatus.IDLE,
+  requestDeleteExternal:   ApiStatus.IDLE,
 };
 
 export const projectBasicReducer = createReducer(initial, {
@@ -50,6 +65,18 @@ export const projectBasicReducer = createReducer(initial, {
                                                     ) => ({
     ...state,
     id: action.payload,
+  }),
+  [ProjectBasicActionType.setInternalList]:         (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    internalList: action.payload,
+  }),
+  [ProjectBasicActionType.setExternalList]:         (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    externalList: action.payload,
   }),
   [ProjectBasicActionType.requestUpdateBasic]:      (state,
                                                      action
@@ -146,5 +173,41 @@ export const projectBasicReducer = createReducer(initial, {
                                                     ) => ({
     ...state,
     requestUpdateFailReason: action.payload,
-  })
+  }),
+  [ProjectBasicActionType.requestAddInternal]:      (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestAddInternal: action.payload,
+  }),
+  [ProjectBasicActionType.requestUpdateInternal]:   (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestUpdateInternal: action.payload,
+  }),
+  [ProjectBasicActionType.requestDeleteInternal]:   (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestDeleteInternal: action.payload,
+  }),
+  [ProjectBasicActionType.requestAddExternal]:      (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestAddExternal: action.payload,
+  }),
+  [ProjectBasicActionType.requestUpdateExternal]:   (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestUpdateExternal: action.payload,
+  }),
+  [ProjectBasicActionType.requestDeleteExternal]:   (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    requestDeleteExternal: action.payload,
+  }),
 });

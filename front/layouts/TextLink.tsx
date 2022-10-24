@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import { DefaultFunction } from 'type/Function';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';

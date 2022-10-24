@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import Plan from './Plan';
 import Amount from './Amount';
 import TemplateList from './TemplateList';

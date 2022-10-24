@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';

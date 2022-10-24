@@ -18,7 +18,8 @@ export interface ProjectEstimateFinalParameter {
 export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;
 
 export interface ProjectEstimateBasicParameter {
-  isSent: boolean;
+  isLh: boolean | undefined;
+  isSent: boolean | undefined;
   recipient: string;
   note?: string;
 }
@@ -47,7 +48,7 @@ export const initialProjectCustomEstimateExtensionParameter = {
   plan:         {},
   siteList:     [],
   buildingList: [],
-  edit: true,
+  edit:         true,
 } as unknown as ProjectCustomEstimateExtensionParameter;
 
 export interface ProjectSystemEstimateParameter
@@ -78,6 +79,8 @@ export interface ProjectEstimatePlanParameter {
   reviewAmount: number;
   discountAmount: number;
   totalAmount: number;
+  manager1Id: UserId;
+  manager2Id: UserId;
 }
 
 export interface ProjectEstimateComplexSiteParameter {

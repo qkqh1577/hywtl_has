@@ -2,7 +2,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react';
-import NotificationButton from 'app/view/App/NotificationButton';
+import NotificationButton from 'app/view/NotificationButton';
 import {
   useDispatch,
   useSelector

@@ -1,78 +1,78 @@
 import { ProjectId } from 'project/domain';
 import { ProjectScheduleQuery } from 'project_schedule/query';
 import {
-  ProjectScheduleShort,
+  ProjectScheduleShortVO,
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import { createReducer } from 'typesafe-actions';
-import { ProjectScheduleAction } from 'project_schedule/action';
+import { ProjectScheduleActionType } from 'project_schedule/action';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectScheduleState {
   projectId?: ProjectId;
   detail?: ProjectScheduleVO;
   filter?: ProjectScheduleQuery;
-  list?: ProjectScheduleShort[];
+  list?: ProjectScheduleShortVO[];
   addModal?: boolean;
   requestAdd: ApiStatus;
   requestUpdate: ApiStatus;
   requestDelete: ApiStatus;
 }
 
-const initialState: ProjectScheduleState = {
+const initial: ProjectScheduleState = {
   requestAdd:    ApiStatus.IDLE,
   requestUpdate: ApiStatus.IDLE,
   requestDelete: ApiStatus.IDLE,
 };
 
-export const projectScheduleReducer = createReducer(initialState, {
-  [ProjectScheduleAction.setProjectId]: (state,
-                                         action
-                                        ) => ({
+export const projectScheduleReducer = createReducer(initial, {
+  [ProjectScheduleActionType.setProjectId]: (state,
+                                             action
+                                            ) => ({
     ...state,
     projectId: action.payload,
   }),
-  [ProjectScheduleAction.setOne]:       (state,
-                                         action
-                                        ) => ({
+  [ProjectScheduleActionType.setOne]:       (state,
+                                             action
+                                            ) => ({
     ...state,
     detail: action.payload,
   }),
-  [ProjectScheduleAction.setFilter]:    (state,
-                                         action
-                                        ) => ({
+  [ProjectScheduleActionType.setFilter]:    (state,
+                                             action
+                                            ) => ({
     ...state,
     filter: action.payload,
   }),
 
-  [ProjectScheduleAction.setList]: (state,
-                                    action
-                                   ) => ({
+  [ProjectScheduleActionType.setList]: (state,
+                                        action
+                                       ) => ({
     ...state,
     list: action.payload
   }),
 
-  [ProjectScheduleAction.addModal]:      (state,
-                                          action
-                                         ) => ({
+  [ProjectScheduleActionType.addModal]:      (state,
+                                              action
+                                             ) => ({
     ...state,
     addModal: action.payload,
   }),
-  [ProjectScheduleAction.requestAdd]:    (state,
-                                          action
-                                         ) => ({
+  [ProjectScheduleActionType.requestAdd]:    (state,
+                                              action
+                                             ) => ({
     ...state,
     requestAdd: action.payload,
   }),
-  [ProjectScheduleAction.requestUpdate]: (state,
-                                          action
-                                         ) => ({
+  [ProjectScheduleActionType.requestUpdate]: (state,
+                                              action
+                                             ) => ({
     ...state,
     requestUpdate: action.payload,
   }),
-  [ProjectScheduleAction.requestDelete]: (state,
-                                          action
-                                         ) => ({
+  [ProjectScheduleActionType.requestDelete]: (state,
+                                              action
+                                             ) => ({
     ...state,
     requestDelete: action.payload,
   }),

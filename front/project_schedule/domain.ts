@@ -18,7 +18,7 @@ export interface ProjectScheduleVO {
   attendanceList?: UserVO[];
 }
 
-export interface ProjectScheduleShort {
+export interface ProjectScheduleShortVO {
   id: ProjectScheduleId;
   title: string;
   startTime: Date | undefined;

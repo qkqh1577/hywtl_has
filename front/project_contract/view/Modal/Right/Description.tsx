@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
-import { ColorPalette } from 'app/view/App/theme';
+import { ColorPalette } from 'assets/theme';
 
 export default function () {
 

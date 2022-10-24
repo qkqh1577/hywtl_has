@@ -1,7 +1,7 @@
 import { EstimateContentQuery } from 'admin/estimate/content/query';
 import {
   EstimateContentId,
-  EstimateContentShort,
+  EstimateContentShortVO,
   EstimateContentVariableVO,
   EstimateContentVO,
 } from 'admin/estimate/content/domain';
@@ -10,7 +10,7 @@ import { EstimateContentParameter } from 'admin/estimate/content/parameter';
 
 class EstimateContentApi {
 
-  async getList(query: EstimateContentQuery): Promise<EstimateContentShort[]> {
+  async getList(query: EstimateContentQuery): Promise<EstimateContentShortVO[]> {
     const { data } = await apiClient.get('/admin/estimate-content', query);
     return data;
   }

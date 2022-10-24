@@ -1,7 +1,7 @@
 import apiClient, { toFormData } from 'services/api';
 import {
   ProjectDocumentId,
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
   ProjectDocumentType,
   ProjectDocumentVO
 } from 'project_document/domain';
@@ -13,17 +13,17 @@ import {
 
 class ProjectDocumentApi {
 
-  async getReceivedList(id: ProjectId): Promise<ProjectDocumentShort[]> {
+  async getReceivedList(id: ProjectId): Promise<ProjectDocumentShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.RECEIVED });
     return data;
   }
 
-  async getSentList(id: ProjectId): Promise<ProjectDocumentShort[]> {
+  async getSentList(id: ProjectId): Promise<ProjectDocumentShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.SENT });
     return data;
   }
 
-  async getBuildingList(id: ProjectId): Promise<ProjectDocumentShort[]> {
+  async getBuildingList(id: ProjectId): Promise<ProjectDocumentShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/document`, { type: ProjectDocumentType.BUILDING });
     return data;
   }

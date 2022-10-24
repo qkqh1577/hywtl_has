@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ProjectDocumentShort,
+  ProjectDocumentShortVO,
   ProjectDocumentType,
   projectDocumentTypeName,
 } from 'project_document/domain';
@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 import {
   OnAddModalOpen,
   OnDetailModalOpen
-} from 'project_document/route/document';
+} from 'project_document/route';
 import { toReadableSize } from 'file-item';
 import IconButton from 'layouts/IconButton';
 import SectionLayout from 'layouts/SectionLayout';
@@ -32,7 +32,7 @@ import TextLink from 'layouts/TextLink';
 
 interface Props {
   type: ProjectDocumentType;
-  list?: ProjectDocumentShort[];
+  list?: ProjectDocumentShortVO[];
   onAddModalOpen: OnAddModalOpen;
   onDetailModalOpen: OnDetailModalOpen;
 }

@@ -8,13 +8,13 @@ import { Box, } from '@mui/material';
 import { DefaultFunction } from 'type/Function';
 import {
   EstimateTemplateId,
-  EstimateTemplateShort
+  EstimateTemplateShortVO
 } from 'admin/estimate/template/domain';
 import Button from 'layouts/Button';
 
 export interface EstimateTemplateSeqModalProps {
   open: boolean;
-  list?: EstimateTemplateShort[];
+  list?: EstimateTemplateShortVO[];
   onSubmit: DefaultFunction<EstimateTemplateId[]>;
   onClose: DefaultFunction;
 }
@@ -26,7 +26,7 @@ export default function EstimateTemplateSeqModal({
                                                    list: propsList,
                                                  }: EstimateTemplateSeqModalProps) {
 
-  const [list, setList] = useState<EstimateTemplateShort[]>(propsList ?? []);
+  const [list, setList] = useState<EstimateTemplateShortVO[]>(propsList ?? []);
 
   useEffect(() => {
     if (open) {
