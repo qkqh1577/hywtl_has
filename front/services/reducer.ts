@@ -106,6 +106,10 @@ import {
   menuReducer,
   MenuState
 } from 'menu/reducer';
+import {
+  projectCollectionReducer,
+  ProjectCollectionState
+} from 'project_collection/reducer';
 
 export interface RootState {
   business: BusinessState;
@@ -123,6 +127,7 @@ export interface RootState {
   project: ProjectState;
   projectBasic: ProjectBasicState;
   projectBid: ProjectBidState;
+  projectCollection: ProjectCollectionState;
   projectComplex: ProjectComplexState;
   projectContract: ProjectContractState;
   projectDocument: ProjectDocumentState;
@@ -152,6 +157,7 @@ const reducer = combineReducers<RootState>({
   project:            projectReducer,
   projectBasic:       projectBasicReducer,
   projectBid:         projectBidReducer,
+  projectCollection:  projectCollectionReducer,
   projectComplex:     projectComplexReducer,
   projectContract:    projectContractReducer,
   projectDocument:    projectDocumentReducer,

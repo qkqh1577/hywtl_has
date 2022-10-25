@@ -18,6 +18,7 @@ import menuSaga from 'menu/saga';
 import personnelSaga from 'personnel/saga';
 import projectBasicSaga from 'project_basic/saga';
 import projectBidSaga from 'project_bid/saga';
+import projectCollectionSaga from 'project_collection/saga';
 import projectComplexSaga from 'project_complex/saga';
 import projectContractSaga from 'project_contract/saga';
 import projectDocumentSaga from 'project_document/saga';
@@ -49,6 +50,7 @@ function* saga() {
     personnelSaga(),
     projectBasicSaga(),
     projectBidSaga(),
+    projectCollectionSaga(),
     projectComplexSaga(),
     projectContractSaga(),
     projectDocumentSaga(),

@@ -108,7 +108,9 @@ public class ProjectLogService {
             return "견적/계약";
         }
         if (requestUrl.startsWith(String.format(rootUrl + "/%d/progress", projectId))
-            || requestUrl.startsWith(rootUrl + "/progress/")) {
+            || requestUrl.startsWith(rootUrl + "/progress/")
+            || requestUrl.startsWith(String.format(rootUrl + "/%d/collection", projectId))
+            || requestUrl.startsWith(rootUrl + "/collection/")) {
             return "진행 정보";
         }
         if (requestUrl.startsWith(String.format(rootUrl + "/%d/document", projectId))
@@ -203,10 +205,13 @@ public class ProjectLogService {
         }
 
         // 진행 정보
-        // TODO: 진행 정보 작업 후 갱신
         if (requestUrl.startsWith(String.format(rootUrl + "/%d/progress", projectId))
             || requestUrl.startsWith(rootUrl + "/progress/")) {
             return "진행 정보";
+        }
+        if (requestUrl.startsWith(String.format(rootUrl + "/%d/collection", projectId))
+            || requestUrl.startsWith(rootUrl + "/collection/")) {
+            return "기성 정보";
         }
 
         // 자료

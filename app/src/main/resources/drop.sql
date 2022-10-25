@@ -35,6 +35,8 @@ drop table if exists project_basic_contributor;
 drop table if exists project_basic_design;
 drop table if exists project_basic_fail_reason;
 drop table if exists project_bid;
+drop table if exists project_collection;
+drop table if exists project_collection_stage;
 drop table if exists project_complex_building;
 drop table if exists project_complex_building_condition_list;
 drop table if exists project_complex_building_test_type_list;
