@@ -78,6 +78,9 @@ export default function () {
                 key={formik.values.name}
                 defaultValue={formik.values.name ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.name !== value) {
                     formik.setFieldValue('name', value);
@@ -98,6 +101,9 @@ export default function () {
                 key={formik.values.email}
                 defaultValue={formik.values.email ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.email !== value) {
                     formik.setFieldValue('email', value);
@@ -117,12 +123,14 @@ export default function () {
                 readOnly={!edit}
                 value={formik.values.role ?? ''}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.role !== value) {
                     formik.setFieldValue('role', value);
                   }
-                }}
-              >
+                }}>
                 {userRoleList.map(item => (
                   <MenuItem key={item} value={item}>{userRoleName(item)}</MenuItem>
                 ))}
@@ -140,6 +148,9 @@ export default function () {
                 readOnly={!edit}
                 value={formik.values.departmentId ?? ''}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.departmentId !== value) {
                     formik.setFieldValue('departmentId', value);

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProjectCollectionStageRepository extends CustomRepository<ProjectCollectionStage> {
 
     @Query(value = "select "
-        + " max(s.seq) + 1 "
+        + " ifnull(max(s.seq), 0) + 1 "
         + " from "
         + ProjectCollectionStage.KEY
         + " as s "

@@ -86,6 +86,9 @@ export default function LicenseForm() {
                   key={values.name}
                   defaultValue={values.name ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.name !== value) {
                       formik.setFieldValue(`licenseList.${i}.name`, value);
@@ -107,6 +110,9 @@ export default function LicenseForm() {
                   key={values.type}
                   defaultValue={values.type ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.type !== value) {
                       formik.setFieldValue(`licenseList.${i}.type`, value);
@@ -129,6 +135,9 @@ export default function LicenseForm() {
                   key={values.organizationName}
                   defaultValue={values.organizationName ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.organizationName !== value) {
                       formik.setFieldValue(`licenseList.${i}.organizationName`, value);
@@ -151,6 +160,9 @@ export default function LicenseForm() {
                   key={values.qualifiedNumber}
                   defaultValue={values.qualifiedNumber ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.qualifiedNumber !== value) {
                       formik.setFieldValue(`licenseList.${i}.qualifiedNumber`, value);
@@ -172,6 +184,9 @@ export default function LicenseForm() {
                   key={values.note}
                   defaultValue={values.note ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.note !== value) {
                       formik.setFieldValue(`licenseList.${i}.note`, value);
@@ -197,6 +212,9 @@ export default function LicenseForm() {
                   value={values.qualifiedDate ? dayjs(values.qualifiedDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.qualifiedDate ? dayjs(values.qualifiedDate)

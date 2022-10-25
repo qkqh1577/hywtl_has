@@ -84,6 +84,9 @@ export default function CareerForm() {
                   key={values.companyName}
                   defaultValue={values.companyName ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.companyName !== value) {
                       formik.setFieldValue(`careerList.${i}.companyName`, value);
@@ -106,6 +109,9 @@ export default function CareerForm() {
                   key={values.majorJob}
                   defaultValue={values.majorJob ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.majorJob !== value) {
                       formik.setFieldValue(`careerList.${i}.majorJob`, value);
@@ -131,6 +137,9 @@ export default function CareerForm() {
                   value={values.startDate ? dayjs(values.startDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.startDate ? dayjs(values.startDate)
@@ -168,6 +177,9 @@ export default function CareerForm() {
                   value={values.endDate ? dayjs(values.endDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.endDate ? dayjs(values.endDate)

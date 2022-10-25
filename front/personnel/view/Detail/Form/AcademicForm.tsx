@@ -75,16 +75,15 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="직책"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="직책" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.academyName}
                   defaultValue={values.academyName ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.academyName !== value) {
                       formik.setFieldValue(`academicList.${i}.academyName`, value);
@@ -97,16 +96,15 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="전공(과)"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="전공(과)" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.major}
                   defaultValue={values.major ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.major !== value) {
                       formik.setFieldValue(`academicList.${i}.major`, value);
@@ -119,15 +117,15 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                label="학위"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel label="학위" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.degree}
                   defaultValue={values.degree ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.degree !== value) {
                       formik.setFieldValue(`academicList.${i}.degree`, value);
@@ -140,15 +138,15 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                label="재적상태"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel label="재적상태" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.state}
                   defaultValue={values.state ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.state !== value) {
                       formik.setFieldValue(`academicList.${i}.state`, value);
@@ -161,15 +159,15 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                label="학점"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel label="학점" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.grade}
                   defaultValue={values.grade ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.grade !== value) {
                       formik.setFieldValue(`academicList.${i}.grade`, value);
@@ -182,11 +180,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="입학일"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="입학일" labelPosition="top">
                 <DatePicker
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
@@ -195,6 +189,9 @@ export default function AcademicForm() {
                   value={values.startDate ? dayjs(values.startDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.startDate ? dayjs(values.startDate)
@@ -232,6 +229,9 @@ export default function AcademicForm() {
                   value={values.endDate ? dayjs(values.endDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.endDate ? dayjs(values.endDate)

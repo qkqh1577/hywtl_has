@@ -1,0 +1,76 @@
+### get
+GET http://localhost:8080/project/sales/1/collection
+
+### get stage
+GET http://localhost:8080/project/sales/collection/stage/1
+
+### change stage seq
+POST http://localhost:8080/project/sales/1/collection/stage/seq
+Content-Type: application/json
+
+{
+  "idList": [
+    1,
+    2,
+    3
+  ]
+}
+
+### add stage
+PUT http://localhost:8080/project/sales/1/collection/stage
+Content-Type: application/json
+
+{
+  "name": "계약금",
+  "amount": 528000,
+  "rate": 30,
+  "note": "계약 체결 시",
+  "expectedDate": "2022-11-30"
+}
+
+### add stage
+PUT http://localhost:8080/project/sales/1/collection/stage
+Content-Type: application/json
+
+{
+  "name": "중도금",
+  "amount": 880000,
+  "rate": 50,
+  "note": "구조 설계용 풍하중 납품 시",
+  "expectedDate": "2023-01-11"
+}
+
+### add stage
+PUT http://localhost:8080/project/sales/1/collection/stage
+Content-Type: application/json
+
+{
+  "name": "잔금",
+  "amount": 352000,
+  "rate": 20,
+  "note": "최종 보고서 납품 시",
+  "expectedDate": "2023-02-22"
+}
+
+
+### change stage
+PUT http://localhost:8080/project/sales/collection/stage/1
+Content-Type: application/json
+
+{
+  "name": "계약금",
+  "amount": 528000,
+  "rate": 30,
+  "note": "계약 체결 시",
+  "expectedDate": "2022-12-01",
+  "reason": "계약일 정정"
+}
+
+
+### update manager
+PATCH http://localhost:8080/project/sales/1/collection/manager
+Content-Type: application/json
+
+{
+  "userId": 2
+}

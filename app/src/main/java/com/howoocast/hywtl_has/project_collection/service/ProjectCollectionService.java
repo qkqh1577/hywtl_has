@@ -13,6 +13,7 @@ import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -102,7 +103,20 @@ public class ProjectCollectionService {
         Long projectId,
         List<Long> idList
     ) {
-
+        ProjectCollection projectCollection = this.load(projectId);
+        for (int i = 0; i < idList.size(); i++) {
+            Long id = idList.get(i);
+            ProjectCollectionStage instance = projectCollection.getStageList().stream()
+                .filter(stage -> Objects.equals(id, stage.getId()))
+                .findFirst().orElseThrow(() -> {
+                    throw new NotFoundException(ProjectCollectionStage.KEY, id);
+                });
+            instance.changeSeq(i);
+        }
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            projectCollection.getProject(),
+            "기성행 순서 변경"
+        ));
     }
 
     @Transactional

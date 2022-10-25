@@ -104,6 +104,9 @@ export default function () {
                   key={detail.unitAmount}
                   defaultValue={detail.unitAmount ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = +e.target.value ?? undefined;
                     if (detail.unitAmount !== value) {
                       formik.setFieldValue(`detailList.${i}.unitAmount`, value);
@@ -134,6 +137,9 @@ export default function () {
                   key={detail.note}
                   defaultValue={detail.note ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (detail.note !== value) {
                       formik.setFieldValue(`detailList.${i}.note`, value);

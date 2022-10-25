@@ -65,6 +65,9 @@ export default function () {
                 key={formik.values.name}
                 defaultValue={formik.values.name ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.name !== value) {
                     formik.setFieldValue('name', value);
@@ -84,6 +87,9 @@ export default function () {
                 readOnly={!edit}
                 value={formik.values.category ?? ''}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.category !== value) {
                     formik.setFieldValue('category', value);
@@ -110,6 +116,9 @@ export default function () {
                 disabled={!DepartmentCategory.COMPANY}
                 value={formik.values.parentId ?? ''}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.parentId !== value) {
                     formik.setFieldValue('parentId', value);
@@ -131,6 +140,9 @@ export default function () {
                 key={formik.values.note}
                 defaultValue={formik.values.note ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.note !== value) {
                     formik.setFieldValue('note', value);

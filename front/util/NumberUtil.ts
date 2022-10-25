@@ -77,3 +77,18 @@ export const toAmountKor = (amount: number | ''): string | undefined => {
   }
   return releaseBuilder(result);
 };
+
+export function cut10000(amount: number | undefined): number {
+  if (!amount) {
+    return 0;
+  }
+  const value = amount / 10000;
+
+  if (Math.floor(value)
+          .toFixed(1) === Math.ceil(value)
+                              .toFixed(1)) {
+    return +value.toFixed(0);
+  }
+  return +value.toFixed(1);
+}
+

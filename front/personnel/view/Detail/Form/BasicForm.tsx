@@ -55,6 +55,9 @@ export default function BasicForm() {
               key={values.engName}
               defaultValue={values.engName ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.engName !== value) {
                   formik.setFieldValue('basic.engName', value);
@@ -78,6 +81,9 @@ export default function BasicForm() {
               value={values.birthDate ? dayjs(values.birthDate)
               .format('YYYY-MM-DD') : null}
               onChange={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e ? dayjs(e)
                 .format('YYYY-MM-DD') : undefined;
                 const formikValue = values.birthDate ? dayjs(values.birthDate)
@@ -149,6 +155,9 @@ export default function BasicForm() {
               key={values.phone}
               defaultValue={values.phone ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('basic.phone', value);
@@ -169,6 +178,9 @@ export default function BasicForm() {
               key={values.personalEmail}
               defaultValue={values.personalEmail ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('basic.personalEmail', value);
@@ -189,6 +201,9 @@ export default function BasicForm() {
               key={values.emergencyPhone}
               defaultValue={values.emergencyPhone ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('basic.emergencyPhone', value);
@@ -215,6 +230,9 @@ export default function BasicForm() {
               key={values.relationship}
               defaultValue={values.relationship ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('basic.relationship', value);
@@ -235,6 +253,9 @@ export default function BasicForm() {
               key={values.address}
               defaultValue={values.address ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('basic.address', value);

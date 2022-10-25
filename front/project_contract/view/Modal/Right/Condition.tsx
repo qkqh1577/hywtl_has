@@ -89,6 +89,9 @@ export default function () {
                     key={condition.title}
                     defaultValue={condition.title ?? ''}
                     onBlur={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       const value = e.target.value || undefined;
                       if (condition.title !== value) {
                         formik.setFieldValue(`conditionList.${i}.title`, value);
@@ -113,6 +116,9 @@ export default function () {
                         defaultValue={description ?? ''}
                         readOnly={!edit}
                         onBlur={(e) => {
+                          if (!edit) {
+                            return;
+                          }
                           const value = e.target.value as string;
                           if (description !== value) {
                             const result: string[] = [];

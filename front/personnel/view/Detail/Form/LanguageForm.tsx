@@ -86,6 +86,9 @@ export default function LanguageForm() {
                   key={values.name}
                   defaultValue={values.name ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.name !== value) {
                       formik.setFieldValue(`languageList.${i}.name`, value);
@@ -108,6 +111,9 @@ export default function LanguageForm() {
                   key={values.type}
                   defaultValue={values.type ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.type !== value) {
                       formik.setFieldValue(`languageList.${i}.type`, value);
@@ -130,6 +136,9 @@ export default function LanguageForm() {
                   key={values.grade}
                   value={values.grade ?? ''}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.grade !== value) {
                       formik.setFieldValue(`languageList.${i}.grade`, value);
@@ -152,6 +161,9 @@ export default function LanguageForm() {
                   key={values.organizationName}
                   defaultValue={values.organizationName ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.organizationName !== value) {
                       formik.setFieldValue(`languageList.${i}.organizationName`, value);
@@ -177,6 +189,9 @@ export default function LanguageForm() {
                   value={values.certifiedDate ? dayjs(values.certifiedDate)
                   .format('YYYY-MM-DD') : null}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e ? dayjs(e)
                     .format('YYYY-MM-DD') : undefined;
                     const formikValue = values.certifiedDate ? dayjs(values.certifiedDate)
@@ -210,6 +225,9 @@ export default function LanguageForm() {
                   key={values.expiryPeriod}
                   defaultValue={values.expiryPeriod ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.expiryPeriod !== value) {
                       formik.setFieldValue(`languageList.${i}.expiryPeriod`, value);

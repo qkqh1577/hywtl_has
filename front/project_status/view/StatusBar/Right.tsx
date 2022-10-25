@@ -3,14 +3,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import DataBox from 'project_status/view/StatusBar/DataBox';
 import Input from 'layouts/Input';
-
-function cut10000(amount: number | undefined): number {
-  if (!amount) {
-    return 0;
-  }
-  const result = Math.floor(amount / 10000);
-  return +result.toFixed(0);
-}
+import { cut10000 } from 'util/NumberUtil';
 
 interface Props {
   targetTest: string | undefined;

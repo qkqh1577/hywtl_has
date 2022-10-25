@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -36,7 +37,7 @@ public class ProjectCollection extends CustomEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "projectCollection")
+    @OneToMany(mappedBy = "projectCollection", fetch = FetchType.EAGER)
     private List<ProjectCollectionStage> stageList;
 
     public static ProjectCollection of(
