@@ -13,3 +13,7 @@ export interface ProjectCollectionChangeStageParameter
   id: ProjectCollectionStageId;
   reason: string;
 }
+
+export const initialProjectCollectionChangeStageParameter = {
+  edit: false
+} as unknown as ProjectCollectionChangeStageParameter;

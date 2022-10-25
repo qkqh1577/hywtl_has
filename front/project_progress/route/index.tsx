@@ -6,6 +6,7 @@ import SectionLayout from 'layouts/SectionLayout';
 import TextBox from 'layouts/Text';
 import ProjectCollectionListRoute from 'project_collection/route/list';
 import ProjectCollectionStageAddModalRoute from 'project_collection/route/addModal';
+import ProjectCollectionStageDetailModalRoute from 'project_collection/route/detailModal';
 
 
 function Element() {
@@ -25,6 +26,7 @@ function Element() {
         </SectionLayout>
       </Box>
       <ProjectCollectionStageAddModalRoute />
+      <ProjectCollectionStageDetailModalRoute />
     </ProjectContainer>
   );
 }
