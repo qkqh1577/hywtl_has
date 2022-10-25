@@ -5,6 +5,7 @@ import { AppRoute } from 'services/routes';
 import SectionLayout from 'layouts/SectionLayout';
 import TextBox from 'layouts/Text';
 import ProjectCollectionListRoute from 'project_collection/route/list';
+import ProjectCollectionStageAddModalRoute from 'project_collection/route/addModal';
 
 
 function Element() {
@@ -23,6 +24,7 @@ function Element() {
           <TextBox variant="body11">TBD</TextBox>
         </SectionLayout>
       </Box>
+      <ProjectCollectionStageAddModalRoute />
     </ProjectContainer>
   );
 }
