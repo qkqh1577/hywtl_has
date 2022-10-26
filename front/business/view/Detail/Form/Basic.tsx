@@ -51,6 +51,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.name}
               defaultValue={formik.values.name ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.name !== value) {
                   formik.setFieldValue('name', value);
@@ -71,6 +74,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.ceoName}
               defaultValue={formik.values.ceoName ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.name !== value) {
                   formik.setFieldValue('ceoName', value);
@@ -96,6 +102,9 @@ export default function BusinessBasicSection(props: Props) {
                 </InputAdornment>
               }
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.name !== value) {
                   formik.setFieldValue('registrationNumber', value);
@@ -116,6 +125,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.officePhone}
               defaultValue={formik.values.officePhone ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.name !== value) {
                   formik.setFieldValue('officePhone', value);
@@ -136,6 +148,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.fax}
               defaultValue={formik.values.fax ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.fax !== value) {
                   formik.setFieldValue('fax', value);
@@ -156,6 +171,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.address}
               defaultValue={formik.values.address ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.address !== value) {
                   formik.setFieldValue('address', value);
@@ -176,6 +194,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.zipCode}
               defaultValue={formik.values.zipCode ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.zipCode !== value) {
                   formik.setFieldValue('zipCode', value);
@@ -196,6 +217,9 @@ export default function BusinessBasicSection(props: Props) {
               key={formik.values.note}
               defaultValue={formik.values.note ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (formik.values.note !== value) {
                   formik.setFieldValue('note', value);

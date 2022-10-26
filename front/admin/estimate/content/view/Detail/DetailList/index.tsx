@@ -59,6 +59,9 @@ export default function () {
                     key={detail}
                     defaultValue={detail ?? ''}
                     onBlur={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       const value: string | undefined = e.target.value || undefined;
                       if (detail !== value) {
                         const result: string[] = [];

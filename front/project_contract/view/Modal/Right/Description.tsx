@@ -27,6 +27,9 @@ export default function () {
         readOnly={!edit}
         defaultValue={basic.description ?? ''}
         onBlur={(e) => {
+          if (!edit) {
+            return;
+          }
           const value = e.target.value || undefined;
           if (basic.description !== value) {
             formik.setFieldValue('basic.description', value);

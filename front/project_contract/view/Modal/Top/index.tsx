@@ -62,6 +62,9 @@ export default function ProjectContractModalTopForm(props: Props) {
                 accept=".pdf"
                 value={formik.values.pdfFile}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   if (!e.target || !e.target.files || e.target.files.length === 0) {
                     formik.setFieldValue('pdfFile', undefined);
                     return;

@@ -40,6 +40,9 @@ export default function () {
           readOnly={!edit}
           defaultValue={year ?? ''}
           onBlur={(e) => {
+            if (!edit) {
+              return;
+            }
             const value = +(e.target.value) || undefined;
             if (year !== value) {
               formik.setFieldValue('basic.contractDate', dayjs(`${value}-${month}-${day}`)
@@ -57,6 +60,9 @@ export default function () {
           readOnly={!edit}
           defaultValue={month ?? ''}
           onBlur={(e) => {
+            if (!edit) {
+              return;
+            }
             const value = +(e.target.value) || undefined;
             if (month !== value) {
               formik.setFieldValue('basic.contractDate', dayjs(`${year}-${value}-${day}`)
@@ -74,6 +80,9 @@ export default function () {
           readOnly={!edit}
           defaultValue={day ?? ''}
           onBlur={(e) => {
+            if (!edit) {
+              return;
+            }
             const value = +(e.target.value) || undefined;
             if (day !== value) {
               formik.setFieldValue('basic.contractDate', dayjs(`${year}-${month}-${value}`)

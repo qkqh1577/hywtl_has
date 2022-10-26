@@ -56,6 +56,9 @@ export default function () {
               variant="outlined"
               defaultValue={basic.serviceName ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (basic.serviceName !== value) {
                   formik.setFieldValue('basic.serviceName', value);
@@ -138,6 +141,9 @@ export default function () {
               key={basic.outcome}
               defaultValue={basic.outcome ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (basic.outcome !== value) {
                   formik.setFieldValue('basic.outcome', value);

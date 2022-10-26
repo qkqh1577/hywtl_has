@@ -32,6 +32,9 @@ export default function () {
             readOnly={!edit}
             value={typeof formik.values.isSent !== 'undefined' ? (formik.values.isSent ? 'Y' : 'N') : ''}
             onChange={(e) => {
+              if (!edit) {
+                return;
+              }
               const value = e.target.value || undefined;
               if (value === 'Y') {
                 formik.setFieldValue('isSent', true);
@@ -55,6 +58,9 @@ export default function () {
             readOnly={!edit}
             defaultValue={formik.values.recipient ?? ''}
             onBlur={(e) => {
+              if (!edit) {
+                return;
+              }
               const value = e.target.value || undefined;
               if (formik.values.recipient !== value) {
                 formik.setFieldValue('recipient', value);
@@ -70,6 +76,9 @@ export default function () {
             readOnly={!edit}
             defaultValue={formik.values.note ?? ''}
             onBlur={(e) => {
+              if (!edit) {
+                return;
+              }
               const value = e.target.value || undefined;
               if (formik.values.note !== value) {
                 formik.setFieldValue('note', value);

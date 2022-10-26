@@ -36,6 +36,9 @@ export default function () {
               key={basic.contractorAddress}
               defaultValue={basic.contractorAddress ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (basic.contractorAddress !== value) {
                   formik.setFieldValue('basic.contractorAddress', value);
@@ -53,6 +56,9 @@ export default function () {
               key={basic.contractorCompanyName}
               defaultValue={basic.contractorCompanyName ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (basic.contractorCompanyName !== value) {
                   formik.setFieldValue('basic.contractorCompanyName', value);
@@ -70,6 +76,9 @@ export default function () {
               key={basic.contractorCeoName}
               defaultValue={basic.contractorCeoName ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (basic.contractorCeoName !== value) {
                   formik.setFieldValue('basic.contractorCeoName', value);

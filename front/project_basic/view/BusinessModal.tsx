@@ -85,6 +85,9 @@ export default function ProjectBasicBusinessModal(props: Props) {
                   readOnly={!edit}
                   value={formik.values.involvedType ?? ''}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (formik.values.involvedType !== value) {
                       formik.setFieldValue('involvedType', value);

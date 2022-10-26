@@ -5,10 +5,7 @@ import {
   select,
   take
 } from 'redux-saga/effects';
-import {
-  projectBasicAction,
-  ProjectBasicActionType
-} from 'project_basic/action';
+import { projectBasicAction } from 'project_basic/action';
 import {
   ProjectBasicBusiness,
   ProjectBasicDesignVO,
@@ -28,7 +25,7 @@ import { ProjectContractVO } from 'project_contract/domain';
 
 function* watchId() {
   while (true) {
-    const { payload: id } = yield take(ProjectBasicActionType.setId);
+    const { payload: id } = yield take(projectBasicAction.setId);
     yield put(projectBasicAction.getInternalList(id));
     yield put(projectBasicAction.getExternalList(id));
     yield put(projectBasicAction.getBusinessList(id));

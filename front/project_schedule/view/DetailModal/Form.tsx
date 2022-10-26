@@ -40,6 +40,9 @@ export default function () {
             key={formik.values.title}
             defaultValue={formik.values.title ?? ''}
             onBlur={(e) => {
+              if (!edit) {
+                return;
+              }
               const value = e.target.value || undefined;
               if (value !== formik.values.title) {
                 formik.setFieldValue('title', value);
@@ -74,6 +77,9 @@ export default function () {
               mask="____-__-__"
               openTo="year"
               onChange={(e) => {
+                if (!edit) {
+                  return;
+                }
                 if (e === null) {
                   formik.setFieldValue('startTime', undefined);
                 }

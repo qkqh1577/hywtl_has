@@ -146,6 +146,9 @@ export default function Form(props: Props) {
                         defaultValue={TestType.F}
                         checked={testTypeList.includes(TestType.F)}
                         onChange={() => {
+                          if (!edit) {
+                            return;
+                          }
                           if (testTypeList.includes(TestType.F)) {
                             formik.setFieldValue('testTypeList', testTypeList.filter(t => t !== TestType.F));
                           }
@@ -175,6 +178,9 @@ export default function Form(props: Props) {
                         defaultValue={TestType.P}
                         checked={testTypeList.includes(TestType.P)}
                         onChange={() => {
+                          if (!edit) {
+                            return;
+                          }
                           if (testTypeList.includes(TestType.P)) {
                             formik.setFieldValue('testTypeList', testTypeList.filter(t => t !== TestType.P));
                           }
@@ -204,6 +210,9 @@ export default function Form(props: Props) {
                         defaultValue={TestType.A}
                         checked={testTypeList.includes(TestType.A)}
                         onChange={() => {
+                          if (!edit) {
+                            return;
+                          }
                           if (testTypeList.includes(TestType.A)) {
                             formik.setFieldValue('testTypeList', testTypeList.filter(t => t !== TestType.A));
                           }
@@ -233,6 +242,9 @@ export default function Form(props: Props) {
                         defaultValue={TestType.E}
                         checked={testTypeList.includes(TestType.E)}
                         onChange={() => {
+                          if (!edit) {
+                            return;
+                          }
                           if (testTypeList.includes(TestType.E)) {
                             formik.setFieldValue('testTypeList', testTypeList.filter(t => t !== TestType.E));
                           }

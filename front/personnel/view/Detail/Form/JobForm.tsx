@@ -109,6 +109,9 @@ export default function JobForm(props: Props) {
                     value={values.department?.id}
                     checked={values.isRepresentative}
                     onChange={() => {
+                      if (!edit) {
+                        return;
+                      }
                       formik.setFieldValue('jobList', jobList.map(((job,
                                                                     j
                       ) => ({
@@ -133,6 +136,9 @@ export default function JobForm(props: Props) {
                   readOnly={!edit}
                   value={values.departmentId ?? ''}
                   onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.departmentId !== value) {
                       formik.setFieldValue(`jobList.${i}.departmentId`, value);
@@ -158,6 +164,9 @@ export default function JobForm(props: Props) {
                   key={values.jobTitle}
                   defaultValue={values.jobTitle ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.jobTitle !== value) {
                       formik.setFieldValue(`jobList.${i}.jobTitle`, value);
@@ -180,6 +189,9 @@ export default function JobForm(props: Props) {
                   key={values.jobType}
                   defaultValue={values.jobType ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.jobType !== value) {
                       formik.setFieldValue(`jobList.${i}.jobType`, value);
@@ -202,6 +214,9 @@ export default function JobForm(props: Props) {
                   key={values.jobPosition}
                   defaultValue={values.jobPosition ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.jobPosition !== value) {
                       formik.setFieldValue(`jobList.${i}.jobPosition`, value);
@@ -223,6 +238,9 @@ export default function JobForm(props: Props) {
                   key={values.jobClass}
                   defaultValue={values.jobClass ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.jobClass !== value) {
                       formik.setFieldValue(`jobList.${i}.jobClass`, value);
@@ -244,6 +262,9 @@ export default function JobForm(props: Props) {
                   key={values.jobDuty}
                   defaultValue={values.jobDuty ?? ''}
                   onBlur={(e) => {
+                    if (!edit) {
+                      return;
+                    }
                     const value = e.target.value || undefined;
                     if (values.jobDuty !== value) {
                       formik.setFieldValue(`jobList.${i}.jobDuty`, value);

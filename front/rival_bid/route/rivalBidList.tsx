@@ -10,7 +10,6 @@ import {
 import { rivalBidAction } from 'rival_bid/action';
 import { RivalBidParameter } from 'rival_bid/parameter';
 import { RivalBidId } from 'rival_bid/domain';
-import useId from 'services/useId';
 import { ProjectId } from 'project/domain';
 import { RootState } from 'services/reducer';
 import { ApiStatus } from 'components/DataFieldProps';
@@ -18,21 +17,17 @@ import useDialog from 'components/Dialog';
 
 export default function ProjectRivalBidListRoute() {
 
-  const id = useId();
   const dispatch = useDispatch();
   const { error } = useDialog();
-  const { list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalBid);
+  const { projectId, list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalBid);
   const onPush = useCallback(() => dispatch(rivalBidAction.push()), [dispatch]);
   const onUpdate = useCallback((params: RivalBidParameter) => dispatch(rivalBidAction.update(params)), [dispatch]);
   const onDelete = useCallback((id: RivalBidId) => dispatch(rivalBidAction.deleteOne(id)), [dispatch]);
-
-  useEffect(() => {
-    dispatch(rivalBidAction.setProjectId(id ? ProjectId(id) : undefined));
-  }, [id]);
+  const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalBidAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
     if (requestPush === ApiStatus.DONE) {
-      dispatch(rivalBidAction.setProjectId(id ? ProjectId(id) : undefined));
+      reload(projectId);
       dispatch(rivalBidAction.requestPush(ApiStatus.IDLE));
     }
     else if (requestPush === ApiStatus.FAIL) {
@@ -43,7 +38,7 @@ export default function ProjectRivalBidListRoute() {
 
   useEffect(() => {
     if (requestUpdate === ApiStatus.DONE) {
-      dispatch(rivalBidAction.setProjectId(id ? ProjectId(id) : undefined));
+      reload(projectId);
       dispatch(rivalBidAction.requestUpdate(ApiStatus.IDLE));
     }
     else if (requestUpdate === ApiStatus.FAIL) {
@@ -55,7 +50,7 @@ export default function ProjectRivalBidListRoute() {
 
   useEffect(() => {
     if (requestDelete === ApiStatus.DONE) {
-      dispatch(rivalBidAction.setProjectId(id ? ProjectId(id) : undefined));
+      reload(projectId);
       dispatch(rivalBidAction.requestDelete(ApiStatus.IDLE));
     }
     else if (requestDelete === ApiStatus.FAIL) {

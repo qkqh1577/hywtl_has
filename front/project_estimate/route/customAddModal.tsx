@@ -22,7 +22,6 @@ export default function ProjectCustomEstimateAddModalRoute() {
   const dispatch = useDispatch();
   const { alert, error } = useDialog();
   const { projectId, customAddModal, requestAddCustom } = useSelector((root: RootState) => root.projectEstimate);
-
   const onClose = useCallback(() => dispatch(projectEstimateAction.setCustomAddModal(undefined)), [dispatch]);
   const addCustom = useCallback((params: ProjectCustomEstimateAddParameter) => dispatch(projectEstimateAction.addCustom(params)), [dispatch]);
   const formik = useFormik<ProjectCustomEstimateAddParameter>({

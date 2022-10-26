@@ -64,6 +64,9 @@ export default function () {
                 key={formik.values.title}
                 defaultValue={formik.values.title ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.title !== value) {
                     formik.setFieldValue('title', value);
@@ -83,6 +86,9 @@ export default function () {
                 readOnly={!edit}
                 value={formik.values.testType ?? ''}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (formik.values.testType !== value) {
                     formik.setFieldValue('testType', value);

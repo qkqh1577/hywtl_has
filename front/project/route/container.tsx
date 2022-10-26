@@ -13,6 +13,8 @@ import PageLayout from 'layouts/PageLayout';
 import ProjectContainerTitleButtonBar from 'project/view/Container/TitleButtonBar';
 import { Box } from '@mui/material';
 import ProjectContainerTab from 'project/view/Container/Tab';
+import { projectBasicAction } from 'project_basic/action';
+import { projectCollectionAction } from 'project_collection/action';
 
 export function Title() {
   const { detail } = useSelector((root: RootState) => root.project);
@@ -34,7 +36,10 @@ export default function ProjectContainerRoute(props: Props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(projectAction.setId(id ? ProjectId(id) : undefined));
+    const projectId = id ? ProjectId(id) : undefined;
+    dispatch(projectAction.setId(projectId));
+    dispatch(projectBasicAction.setId(projectId));
+    dispatch(projectCollectionAction.setProjectId(projectId));
   }, [id]);
 
   return (

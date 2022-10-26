@@ -86,6 +86,9 @@ export default function () {
                 readOnly={!edit}
                 defaultValue={stage.name ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e.target.value || undefined;
                   if (stage.name !== value) {
                     formik.setFieldValue(`collection.stageList.${i}.name`, value);
@@ -101,6 +104,9 @@ export default function () {
                 readOnly={!edit}
                 defaultValue={stage.ratio ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = +(e.target.value) || undefined;
                   if (stage.ratio !== value) {
                     formik.setFieldValue(`collection.stageList.${i}.ratio`, value);
@@ -119,6 +125,9 @@ export default function () {
                 readOnly={!edit}
                 defaultValue={stage.note ?? ''}
                 onBlur={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = +(e.target.value) || undefined;
                   if (stage.note !== value) {
                     formik.setFieldValue(`collection.stageList.${i}.note`, value);
@@ -135,6 +144,9 @@ export default function () {
                 value={stage.expectedDate ? dayjs(stage.expectedDate)
                 .format('YYYY-MM-DD') : null}
                 onChange={(e) => {
+                  if (!edit) {
+                    return;
+                  }
                   const value = e ? dayjs(e)
                   .format('YYYY-MM-DD') : undefined;
                   const formikValue = stage.expectedDate ? dayjs(stage.expectedDate)
@@ -248,6 +260,9 @@ export default function () {
               readOnly={!edit}
               defaultValue={collection.totalAmountNote ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = +(e.target.value) || undefined;
                 if (collection.totalAmountNote !== value) {
                   formik.setFieldValue('collection.totalAmountNote', value);

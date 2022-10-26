@@ -55,6 +55,9 @@ export default function CompanyForm() {
               value={values.hiredDate ? dayjs(values.hiredDate)
               .format('YYYY-MM-DD') : null}
               onChange={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e ? dayjs(e)
                 .format('YYYY-MM-DD') : undefined;
                 const formikValue = values.hiredDate ? dayjs(values.hiredDate)
@@ -86,6 +89,9 @@ export default function CompanyForm() {
               readOnly={!edit}
               value={values.hiredType ?? ''}
               onChange={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.hiredType !== value) {
                   formik.setFieldValue('company.hiredType', value);
@@ -110,6 +116,9 @@ export default function CompanyForm() {
               key={values.recommender}
               defaultValue={values.recommender ?? ''}
               onBlur={(e) => {
+                if (!edit) {
+                  return;
+                }
                 const value = e.target.value || undefined;
                 if (values.phone !== value) {
                   formik.setFieldValue('company.recommender', value);

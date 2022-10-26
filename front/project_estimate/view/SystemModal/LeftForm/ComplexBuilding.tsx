@@ -71,12 +71,18 @@ export default function (props: Props) {
                     type="text"
                     defaultValue={item.name ?? ''}
                     onBlur={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       const value = e.target.value || undefined;
                       if (value !== item.name) {
                         formik.setFieldValue(`buildingList.${i}.name`, value);
                       }
                     }}
                     onKeyDown={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       if (e.key.toLowerCase() === 'enter') {
                         const value = (e.target as HTMLInputElement).value ?? undefined;
                         if (value !== item.name) {
@@ -104,6 +110,9 @@ export default function (props: Props) {
                       return value?.name ?? '선택';
                     }}
                     onChange={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       const value = e.target.value || undefined;
                       if (item.siteSeq !== value) {
                         formik.setFieldValue(`buildingList.${i}.siteSeq`, value);
@@ -132,12 +141,18 @@ export default function (props: Props) {
                     type="text"
                     defaultValue={item.shape ?? ''}
                     onBlur={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       const value = e.target.value || undefined;
                       if (value !== item.shape) {
                         formik.setFieldValue(`buildingList.${i}.shape`, value);
                       }
                     }}
                     onKeyDown={(e) => {
+                      if (!edit) {
+                        return;
+                      }
                       if (e.key.toLowerCase() === 'enter') {
                         const value = (e.target as HTMLInputElement).value ?? undefined;
                         if (value !== item.shape) {
