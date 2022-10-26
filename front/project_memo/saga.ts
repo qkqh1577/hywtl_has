@@ -10,7 +10,7 @@ import Page from 'type/Page';
 import { ProjectMemoVO } from 'project_memo/domain';
 import { projectMemoApi } from 'project_memo/api';
 import { RootState } from 'services/reducer';
-import { dialogActions } from 'components/Dialog';
+import { dialogAction } from 'components/Dialog';
 import { ProjectId } from 'project/domain';
 import { ApiStatus } from 'components/DataFieldProps';
 
@@ -23,7 +23,7 @@ function* watchFilter() {
       yield put(projectMemoAction.setPage(page));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
+      yield put(dialogAction.openAlert({
         status:   'error',
         children: e as string,
       }));

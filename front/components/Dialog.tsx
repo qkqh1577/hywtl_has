@@ -44,7 +44,7 @@ enum DialogActionType {
   close       = 'system/dialog/close',
 }
 
-export const dialogActions = {
+export const dialogAction = {
   openAlert:   createAction(DialogActionType.openAlert)<AlertProps | string>(),
   openConfirm: createAction(DialogActionType.openConfirm)<ConfirmProps>(),
   close:       createAction(DialogActionType.close)(),
@@ -134,14 +134,14 @@ function useDialog() {
      afterClose?: (() => void) | string
     ) => {
       if (typeof props === 'string') {
-        return dispatch(dialogActions.openAlert({
+        return dispatch(dialogAction.openAlert({
           children:   props,
           afterClose: typeof afterClose === 'string' ? () => {
             navigate(afterClose);
           } : afterClose
         }));
       }
-      return dispatch(dialogActions.openAlert(props));
+      return dispatch(dialogAction.openAlert(props));
     },
     [dispatch]
   );
@@ -150,7 +150,7 @@ function useDialog() {
     (message: string,
      afterClose?: (() => void) | string
     ) =>
-      dispatch(dialogActions.openAlert({
+      dispatch(dialogAction.openAlert({
         children:   message,
         status:     'error',
         afterClose: typeof afterClose === 'string' ? () => {
@@ -162,13 +162,13 @@ function useDialog() {
 
   const confirm = useCallback(
     (props: ConfirmProps) =>
-      dispatch(dialogActions.openConfirm(props)),
+      dispatch(dialogAction.openConfirm(props)),
     [dispatch],
   );
 
   const rollback = useCallback(
     (afterConfirm: () => void) =>
-      dispatch(dialogActions.openConfirm({
+      dispatch(dialogAction.openConfirm({
         children:    '작업을 취소하겠습니까? 변경 사항은 사라집니다.',
         confirmText: '작업 취소',
         status:      'warn',
@@ -181,7 +181,7 @@ function useDialog() {
     (message: string,
      afterConfirm: () => void
     ) =>
-      dispatch(dialogActions.openConfirm({
+      dispatch(dialogAction.openConfirm({
         children:    message,
         confirmText: '삭제',
         status:      'error',
@@ -192,7 +192,7 @@ function useDialog() {
 
   const close = useCallback(
     () =>
-      dispatch(dialogActions.close()),
+      dispatch(dialogAction.close()),
     [dispatch],
   );
 

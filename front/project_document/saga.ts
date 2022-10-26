@@ -13,7 +13,7 @@ import {
 } from 'project_document/domain';
 import { projectDocumentApi } from 'project_document/api';
 import { ProjectId } from 'project/domain';
-import { dialogActions } from 'components/Dialog';
+import { dialogAction } from 'components/Dialog';
 import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
 
@@ -73,7 +73,7 @@ function* watchRequestAdd() {
   while (true) {
     const { payload: status } = yield take(projectDocumentAction.requestAdd);
     if (status === ApiStatus.DONE) {
-      yield put(dialogActions.openAlert('저장하였습니다.'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
       yield put(projectDocumentAction.requestAdd(ApiStatus.IDLE));
       const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
       if (addModal === ProjectDocumentType.RECEIVED) {
@@ -88,7 +88,7 @@ function* watchRequestAdd() {
       yield put(projectDocumentAction.addModal(undefined));
     }
     else if (status === ApiStatus.FAIL) {
-      yield put(dialogActions.openAlert({
+      yield put(dialogAction.openAlert({
         children: '저장에 실패하였습니다.',
         status:   'error',
       }));
@@ -116,7 +116,7 @@ function* watchRequestChange() {
   while (true) {
     const { payload: status } = yield take(projectDocumentAction.requestChange);
     if (status === ApiStatus.DONE) {
-      yield put(dialogActions.openAlert('저장하였습니다.'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
       yield put(projectDocumentAction.requestChange(ApiStatus.IDLE));
       const { projectId, detail } = yield select((root: RootState) => root.projectDocument);
       if (detail.type === ProjectDocumentType.RECEIVED) {
@@ -131,7 +131,7 @@ function* watchRequestChange() {
       yield put(projectDocumentAction.setId(undefined));
     }
     else if (status === ApiStatus.FAIL) {
-      yield put(dialogActions.openAlert({
+      yield put(dialogAction.openAlert({
         children: '저장에 실패하였습니다.',
         status:   'error',
       }));
@@ -145,7 +145,7 @@ function* watchDelete() {
     const { payload: id } = yield take(projectDocumentAction.delete);
     try {
       yield call(projectDocumentApi.delete, id);
-      yield put(dialogActions.openAlert('삭제 했습니다.'));
+      yield put(dialogAction.openAlert('삭제 했습니다.'));
       const { projectId } = yield select((root: RootState) => root.projectDocument);
       yield call(getSentList, projectId);
       yield call(getReceivedList, projectId);
@@ -154,7 +154,7 @@ function* watchDelete() {
     }
     catch (e) {
       //TODO: 삭제 정책 후 수정 필요
-      yield put(dialogActions.openAlert({
+      yield put(dialogAction.openAlert({
         children: '해당 자료는 동 정보에 연결되어 삭제할 수 없습니다. 자료를 삭제하려면, 동 정보 연결을 해제해 주세요.',
         status:   'error',
       }));

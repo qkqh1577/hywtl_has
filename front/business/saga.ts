@@ -16,7 +16,7 @@ import {
   RivalProjectVO
 } from 'business/domain';
 import { businessApi } from 'business/api';
-import { dialogActions } from 'components/Dialog';
+import { dialogAction } from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import { ApiStatus } from 'components/DataFieldProps';
 
@@ -40,14 +40,14 @@ function* watchRegistrationNumber() {
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id) {
-        yield put(dialogActions.openAlert({
+        yield put(dialogAction.openAlert({
           status:   'error',
           children: '이미 사용중인 사업자등록번호 입니다.'
         }));
         continue;
       }
     }
-    yield put(dialogActions.openAlert('사용 가능합니다.'));
+    yield put(dialogAction.openAlert('사용 가능합니다.'));
   }
 }
 
