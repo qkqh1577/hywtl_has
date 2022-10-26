@@ -23,8 +23,9 @@ export default function ProjectStatusRoute() {
 
   const dispatch = useDispatch();
   const { error } = useDialog();
-  const { test, contract } = useSelector((root: RootState) => root.projectBasic);
   const { id, detail, requestUpdateStatus } = useSelector((root: RootState) => root.project);
+  const { test, contract } = useSelector((root: RootState) => root.projectBasic);
+  const { detail: collection } = useSelector((root: RootState) => root.projectCollection);
 
   const onUpdate = useCallback((params: ProjectStatus) => dispatch(projectAction.updateStatus(params)), [dispatch]);
   const openFailReasonModal = useCallback(() => dispatch(projectAction.setFailReasonModal(true)), [dispatch]);
@@ -68,6 +69,7 @@ export default function ProjectStatusRoute() {
         targetTest={test?.targetTest}
         testAmount={contract?.estimate?.plan?.testAmount}
         reviewAmount={contract?.estimate?.plan?.reviewAmount}
+        stageList={collection?.stageList}
       />
       <ProjectBasicFailReasonModalRoute />
     </Box>

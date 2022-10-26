@@ -1,15 +1,124 @@
 import { ColorPalette } from 'assets/theme';
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import DataBox from 'project_status/view/StatusBar/DataBox';
 import Input from 'layouts/Input';
 import { cut10000 } from 'util/NumberUtil';
+import { ProjectCollectionStageShortVO } from 'project_collection/domain';
+import dayjs from 'dayjs';
 
-interface Props {
+interface CollectionBoxProps {
+  stageList: ProjectCollectionStageShortVO[] | undefined;
+}
+
+interface Props
+  extends CollectionBoxProps {
   targetTest: string | undefined;
   testAmount: number | undefined;
   reviewAmount: number | undefined;
+}
 
+
+function CollectionBox({ stageList }: CollectionBoxProps) {
+  const title = useMemo(() => {
+    if (!stageList || stageList.length === 0) {
+      return '최근 수금';
+    }
+
+    const collectedStageList = stageList.filter(item => item.collectedDate && item.collectedAmount);
+    if (collectedStageList.length === 0) {
+      return '최근 수금';
+    }
+
+    const totalCollectedAmount = collectedStageList.map(item => item.collectedAmount!)
+                                                   .reduce((a,
+                                                            b
+                                                   ) => a + b, 0);
+    return `최근 수금(${totalCollectedAmount.toLocaleString()})`;
+
+
+  }, [stageList]);
+  const latestStage = useMemo(() => {
+    if (!stageList || stageList.length === 0) {
+      return undefined;
+    }
+    const collectedStageList = stageList.filter(item => item.collectedDate && item.collectedAmount);
+    if (collectedStageList.length === 0) {
+      return undefined;
+    }
+
+    return collectedStageList.reduce((a,
+                                      b
+    ) => {
+      const aDate = dayjs(a.collectedDate);
+      const bDate = dayjs(b.collectedDate);
+      return aDate.isAfter(bDate) ? a : b;
+    });
+  }, [stageList]);
+
+  const collectedStageName = useMemo(() => {
+    if (!latestStage) {
+      return undefined;
+    }
+    const name = latestStage.name;
+    return name.length < 2 ? name : name.substring(0, 2);
+  }, [latestStage]);
+
+  const collectedDate = useMemo(() => {
+    if (!latestStage) {
+      return undefined;
+    }
+    return dayjs(latestStage.collectedDate)
+    .format('YYYY-MM-DD');
+  }, [latestStage]);
+
+  const collectedAmount = useMemo(() => {
+    if (!latestStage) {
+      return undefined;
+    }
+    return cut10000(latestStage.collectedAmount);
+  }, [latestStage]);
+
+  return (
+    <DataBox title={title} width="220px">
+      <Box sx={{
+        width:          '100%',
+        display:        'flex',
+        flexWrap:       'nowrap',
+        justifyContent: 'space-between',
+        alignItems:     'center',
+      }}>
+        <Box sx={{
+          width: '23%'
+        }}>
+          <Input
+            readOnly
+            variant="outlined"
+            key={collectedStageName}
+            defaultValue={collectedStageName ?? ''}
+          />
+        </Box>
+        <Box sx={{
+          width: '44%'
+        }}>
+          <Input
+            readOnly
+            variant="outlined"
+            key={collectedDate}
+            defaultValue={collectedDate ?? ''}
+          />
+        </Box>
+        <Box sx={{ width: '30%' }}>
+          <Input
+            readOnly
+            variant="outlined"
+            key={collectedAmount}
+            defaultValue={collectedAmount?.toLocaleString() ?? ''}
+          />
+        </Box>
+      </Box>
+    </DataBox>
+  );
 }
 
 export default function ProjectStatusRightBar(props: Props) {
@@ -19,56 +128,40 @@ export default function ProjectStatusRightBar(props: Props) {
   .toLocaleString()}`;
   return (
     <Box sx={{
-      display:                    'flex',
-      width:                      'calc(50% - 10px)',
-      flexWrap:                   'nowrap',
-      justifyContent:             'space-between',
-      '& > div:not(:last-child)': {
-        marginRight: '8px'
-      }
+      display:        'flex',
+      width:          'calc(50% - 10px)',
+      flexWrap:       'nowrap',
+      justifyContent: 'space-between',
+      '& > div':      {
+        backgroundColor: ColorPalette._cddaf5,
+      },
     }}>
-      <DataBox
-        title="실험 종류"
-        width={6}
-        backgroundColor={ColorPalette._cddaf5}
-        children={
+      <DataBox title="실험 종류" width="90px">
+        <Input
+          readOnly
+          variant="outlined"
+          key={props.targetTest}
+          defaultValue={props.targetTest ?? ''}
+        />
+      </DataBox>
+      <DataBox title="진행율" width="70px">
+        <Box>
           <Input
             readOnly
             variant="outlined"
-            key={props.targetTest}
-            defaultValue={props.targetTest ?? ''}
+            defaultValue="TBD"
           />
-        }
-      />
-      <DataBox
-        title="진행율"
-        width={6}
-        backgroundColor={ColorPalette._cddaf5}
-        children={
-          <Box>TBD</Box>
-        }
-      />
-      <DataBox
-        title="계약 금액"
-        width={10}
-        backgroundColor={ColorPalette._cddaf5}
-        children={
-          <Input
-            readOnly
-            variant="outlined"
-            key={amount}
-            defaultValue={amount}
-          />
-        }
-      />
-      <DataBox
-        title="최근 수금"
-        width={20}
-        backgroundColor={ColorPalette._cddaf5}
-        children={
-          <Box>TBD</Box>
-        }
-      />
+        </Box>
+      </DataBox>
+      <DataBox title="계약 금액" width="100px">
+        <Input
+          readOnly
+          variant="outlined"
+          key={amount}
+          defaultValue={amount}
+        />
+      </DataBox>
+      <CollectionBox stageList={props.stageList} />
     </Box>
   );
 }
