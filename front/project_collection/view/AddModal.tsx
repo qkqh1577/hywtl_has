@@ -3,7 +3,10 @@ import { DefaultFunction } from 'type/Function';
 import { Box } from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useMemo
+} from 'react';
 import { FormikContext } from 'formik';
 import Button from 'layouts/Button';
 import { toAmount } from 'util/NumberUtil';
@@ -13,11 +16,21 @@ import dayjs from 'dayjs';
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
+  totalAmount: number | undefined;
 }
 
 export default function ProjectCollectionStageAddModal(props: Props) {
 
   const formik = useContext(FormikContext);
+  const amount: number | undefined = formik.values.amount;
+  const totalAmount = props.totalAmount;
+
+  const rate = useMemo(() => {
+    if (!amount || !totalAmount) {
+      return undefined;
+    }
+    return amount / totalAmount * 100;
+  }, [amount, totalAmount]);
 
   return (
     <ModalLayout
@@ -69,11 +82,11 @@ export default function ProjectCollectionStageAddModal(props: Props) {
             <DataFieldWithLabel required label="금액" labelPosition="top">
               <Input
                 isAmount
-                key={formik.values.amount}
-                defaultValue={formik.values.amount?.toLocaleString() ?? ''}
+                key={amount}
+                defaultValue={amount?.toLocaleString() ?? ''}
                 onBlur={(e) => {
                   const value = toAmount(e.target.value) || undefined;
-                  if (formik.values.amount !== value) {
+                  if (amount !== value) {
                     formik.setFieldValue('amount', value);
                   }
                 }}
@@ -83,15 +96,10 @@ export default function ProjectCollectionStageAddModal(props: Props) {
           <Box>
             <DataFieldWithLabel required label="비율" labelPosition="top">
               <Input
+                readOnly
                 type="number"
-                key={formik.values.rate}
-                defaultValue={formik.values.rate ?? ''}
-                onBlur={(e) => {
-                  const value = +(e.target.value) || undefined;
-                  if (formik.values.rate !== value) {
-                    formik.setFieldValue('rate', value);
-                  }
-                }}
+                key={rate}
+                defaultValue={rate?.toFixed(1) ?? ''}
               />
             </DataFieldWithLabel>
           </Box>

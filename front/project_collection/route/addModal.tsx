@@ -12,7 +12,8 @@ import useDialog from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useMemo
 } from 'react';
 import { projectCollectionAction } from 'project_collection/action';
 import { ApiStatus } from 'components/DataFieldProps';
@@ -21,9 +22,20 @@ export default function ProjectCollectionStageAddModalRoute() {
 
   const dispatch = useDispatch();
   const { alert, error } = useDialog();
+  const { contract } = useSelector((root: RootState) => root.projectBasic);
   const { projectId, addModal, requestAddStage } = useSelector((root: RootState) => root.projectCollection);
   const onAdd = useCallback((params: ProjectCollectionAddStageParameter) => dispatch(projectCollectionAction.addStage(params)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectCollectionAction.stageAddModal(false)), [dispatch]);
+  const totalAmount = useMemo(() => {
+    if (!contract || !contract.estimate.plan?.totalAmount) {
+      return undefined;
+    }
+    const isLh = contract.estimate.isLh;
+
+    const value = contract.estimate.plan.totalAmount ?? 0;
+
+    return value * (isLh ? 1.0 : 1.1);
+  }, [contract]);
   const formik = useFormik<ProjectCollectionAddStageParameter>({
     initialValues: {} as ProjectCollectionAddStageParameter,
     onSubmit:      (values) => {
@@ -56,6 +68,7 @@ export default function ProjectCollectionStageAddModalRoute() {
   return (
     <FormikProvider value={formik}>
       <ProjectCollectionStageAddModal
+        totalAmount={totalAmount}
         open={addModal}
         onClose={onClose}
       />

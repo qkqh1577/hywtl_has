@@ -11,8 +11,6 @@ interface Props {
 }
 
 export default function (props: Props) {
-
-
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
 
@@ -36,9 +34,11 @@ export default function (props: Props) {
           display:        'flex',
           justifyContent: 'flex-end',
         }}>
-          <Button sx={{ marginRight: '10px' }} onClick={() => {
-            formik.setFieldValue('edit', true);
-          }}>
+          <Button
+            sx={{ marginRight: '10px' }}
+            onClick={() => {
+              formik.setFieldValue('edit', true);
+            }}>
             수정
           </Button>
           <Button shape="basic2" onClick={props.onClose}>닫기</Button>

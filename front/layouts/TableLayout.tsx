@@ -31,12 +31,14 @@ interface Props {
   disablePagination?: boolean;
   titleRightComponent?: React.ReactNode;
   formik?: FormikContextType<any>;
+  title?: string;
+  submitWhenSizeChanged?: boolean;
 }
 
 export default function TableLayout(props: Props) {
-  const hasTitle =
-          typeof props.titleRightComponent !== 'undefined'
-          || typeof props.sizeFieldName !== 'undefined';
+  const hasTitle = typeof props.title !== 'undefined'
+    || typeof props.titleRightComponent !== 'undefined'
+    || typeof props.sizeFieldName !== 'undefined';
   const formik = props.formik ?? useContext(FormikContext);
   const sizeFieldName = props.sizeFieldName ?? 'size';
   const pageFieldName = props.pageFieldName ?? 'page';
@@ -52,9 +54,11 @@ export default function TableLayout(props: Props) {
   }, [tableHeight]);
 
   useEffect(() => {
-    setMaxTableHeight(undefined);
-    formik.handleSubmit();
-  }, [size]);
+    if (props.submitWhenSizeChanged !== false) {
+      setMaxTableHeight(undefined);
+      formik.handleSubmit();
+    }
+  }, [size, props.submitWhenSizeChanged]);
 
   return (
     <Box sx={{
@@ -76,6 +80,9 @@ export default function TableLayout(props: Props) {
             flexWrap:   'nowrap',
             alignItems: 'center',
           }}>
+            {props.title && (
+              <TextBox variant="body7" sx={{ marginRight: '20px' }}>{props.title}</TextBox>
+            )}
             {props.pagination && (
               <TextBox variant="body7" sx={{ marginRight: '20px' }}>총 {props.pagination.totalElements}건</TextBox>
             )}

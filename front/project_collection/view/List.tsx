@@ -25,7 +25,8 @@ import TextLink from 'layouts/TextLink';
 import { cut10000 } from 'util/NumberUtil';
 
 interface Props {
-  detail?: ProjectCollectionVO;
+  totalAmount: number | undefined;
+  detail: ProjectCollectionVO | undefined;
   openAddModal: DefaultFunction;
   openDetailModal: DefaultFunction<ProjectCollectionStageId>;
   onUpdate: (userId: UserId | undefined) => void;
@@ -33,6 +34,7 @@ interface Props {
 
 export default function ProjectCollectionList(props: Props) {
   const stageList = props.detail?.stageList;
+  const totalAmount = props.totalAmount;
 
   return (
     <SectionLayout
@@ -85,27 +87,26 @@ export default function ProjectCollectionList(props: Props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!stageList && (
+              {(!stageList || !totalAmount) && (
                 <TableRow>
                   <Td colSpan={7}>최종 계약서가 필요합니다.</Td>
                 </TableRow>
               )}
-              {stageList && stageList.length === 0 && (
+              {totalAmount && stageList && stageList.length === 0 && (
                 <TableRow>
                   <Td colSpan={7}>조회 결과가 없습니다.</Td>
                 </TableRow>
               )}
-              {stageList?.map(item => (
+              {totalAmount && stageList?.map(item => (
                 <TableRow key={item.id}>
                   <Td>
-                    <TextLink
-                      onClick={() => {
-                        props.openDetailModal(item.id);
-                      }}>
+                    <TextLink onClick={() => {
+                      props.openDetailModal(item.id);
+                    }}>
                       {item.name}
                     </TextLink>
                   </Td>
-                  <Td>{item.rate.toFixed(1)}</Td>
+                  <Td>{(item.amount / totalAmount * 100).toFixed(1)}</Td>
                   <Td>{cut10000(item.amount)
                   .toLocaleString()}</Td>
                   <Td>
@@ -118,7 +119,7 @@ export default function ProjectCollectionList(props: Props) {
                     <DateFormat date={item.collectedDate} />
                   </Td>
                   <Td>
-                    {item.collectedAmount?.toFixed(2)}
+                    {item.collectedRate?.toFixed(2)}
                   </Td>
                 </TableRow>
               ))}

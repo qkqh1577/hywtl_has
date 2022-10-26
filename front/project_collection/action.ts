@@ -28,7 +28,7 @@ export enum ProjectCollectionActionType {
   requestAddStage       = 'project/sales/collection/stage/add/request',
 
   changeStage           = 'project/sales/collection/stage/change',
-  requestChangeStage    = 'project/sales/collection/change/request',
+  requestChangeStage    = 'project/sales/collection/stage/change/request',
 
   deleteStage           = 'project/sales/collection/stage/delete',
   requestDeleteStage    = 'project/sales/collection/stage/delete/request',

@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatus;
 import com.howoocast.hywtl_has.project_collection.parameter.ProjectCollectionAddStageParameter;
 import com.howoocast.hywtl_has.project_collection.parameter.ProjectCollectionChangeStageParameter;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
@@ -12,8 +13,11 @@ import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionSt
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +40,10 @@ public class ProjectCollectionService {
     @Transactional(readOnly = true)
     @Nullable
     public ProjectCollection get(Long projectId) {
-        return repository.findByProject_Id(projectId).orElse(null);
+        return repository.findByProject_Id(projectId).map(instance -> {
+            instance.setStageList(stageRepository.findByProjectCollection_Id(instance.getId()));
+            return instance;
+        }).orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +71,6 @@ public class ProjectCollectionService {
             projectCollection,
             parameter.getName(),
             parameter.getAmount(),
-            parameter.getRate(),
             parameter.getExpectedDate(),
             parameter.getNote(),
             this.getNextSeq(projectId)
@@ -85,13 +91,23 @@ public class ProjectCollectionService {
         ProjectCollectionChangeStageParameter parameter
     ) {
         ProjectCollectionStage instance = this.loadStage(id);
+        List<ProjectCollectionStageStatus> statusList = Optional.ofNullable(parameter.getStatusList())
+            .map(list -> list.stream()
+                .map(statusParameter -> ProjectCollectionStageStatus.of(
+                    statusParameter.getType(),
+                    statusParameter.getRequestedDate(),
+                    statusParameter.getAmount(),
+                    statusParameter.getNote()))
+                .collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
         List<EventEntity> eventList = instance.change(
+            parameter.getDirty(),
             parameter.getName(),
             parameter.getAmount(),
-            parameter.getRate(),
             parameter.getExpectedDate(),
             parameter.getNote(),
-            parameter.getReason()
+            parameter.getReason(),
+            statusList
         );
         eventList.stream()
             .map(event -> ProjectLogEvent.of(instance.getProjectCollection().getProject(), event))
@@ -104,9 +120,10 @@ public class ProjectCollectionService {
         List<Long> idList
     ) {
         ProjectCollection projectCollection = this.load(projectId);
+        List<ProjectCollectionStage> stageList = stageRepository.findByProjectCollection_Id(projectCollection.getId());
         for (int i = 0; i < idList.size(); i++) {
             Long id = idList.get(i);
-            ProjectCollectionStage instance = projectCollection.getStageList().stream()
+            ProjectCollectionStage instance = stageList.stream()
                 .filter(stage -> Objects.equals(id, stage.getId()))
                 .findFirst().orElseThrow(() -> {
                     throw new NotFoundException(ProjectCollectionStage.KEY, id);

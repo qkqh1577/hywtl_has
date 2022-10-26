@@ -1,18 +1,27 @@
 import { DefaultFunction } from 'type/Function';
 import ModalLayout from 'layouts/ModalLayout';
+import React, { useContext } from 'react';
+import { Box } from '@mui/material';
 import Footer from './Footer';
 import Form from './Form';
-import React from 'react';
-import { Box } from '@mui/material';
+import Version from './Version';
+import Status from './Status';
+import { FormikContext } from 'formik';
+import { ProjectCollectionStageVersionVO } from 'project_collection/domain';
+
 
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
   onDelete: DefaultFunction;
   onCancel: DefaultFunction;
+  totalAmount: number | undefined;
+  versionList: ProjectCollectionStageVersionVO[] | undefined;
 }
 
 export default function ProjectCollectionStageDetailModal(props: Props) {
+  const formik = useContext(FormikContext);
+  const edit = formik.values.edit;
 
   return (
     <ModalLayout
@@ -22,9 +31,18 @@ export default function ProjectCollectionStageDetailModal(props: Props) {
       onClose={props.onClose}
       children={
         <Box sx={{
-          width: '100%',
+          width:    '100%',
+          display:  'flex',
+          flexWrap: 'wrap',
         }}>
-          <Form />
+          <Form totalAmount={props.totalAmount} />
+          {!edit && (
+            <Version
+              versionList={props.versionList}
+              totalAmount={props.totalAmount}
+            />
+          )}
+          <Status />
         </Box>
       }
       footer={
@@ -32,7 +50,8 @@ export default function ProjectCollectionStageDetailModal(props: Props) {
           onDelete={props.onDelete}
           onCancel={props.onCancel}
           onClose={props.onClose}
-        />}
+        />
+      }
     />
   );
 }
