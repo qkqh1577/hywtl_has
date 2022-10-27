@@ -10,7 +10,6 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import useDialog from 'components/Dialog';
 import {
   FormikProvider,
   useFormik
@@ -21,14 +20,13 @@ import {
 } from 'admin/estimate/content/parameter';
 import { estimateContentAction } from 'admin/estimate/content/action';
 import { EstimateContentId } from 'admin/estimate/content/domain';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 import { useNavigate } from 'react-router-dom';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { alert, error } = useDialog();
   const { detail, variableList, requestUpsert, requestDelete } = useSelector((root: RootState) => root.estimateContent);
   const upsert = useCallback((params: EstimateContentParameter) => dispatch(estimateContentAction.upsert(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(estimateContentAction.deleteOne()), [dispatch]);
@@ -63,34 +61,25 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(estimateContentAction.requestUpsert(ApiStatus.IDLE));
+    closeStatus(requestUpsert, () => {
       if (id) {
         dispatch(estimateContentAction.setId(EstimateContentId(id)));
       }
       else {
         navigate('/admin/estimate-content-management');
       }
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(estimateContentAction.requestUpsert(ApiStatus.IDLE));
-    }
+      dispatch(estimateContentAction.requestUpsert('idle'));
+    });
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
-      dispatch(estimateContentAction.requestDelete(ApiStatus.IDLE));
+    closeStatus(requestDelete, () => {
       navigate('/admin/estimate-content-management');
-    }
-    else if (requestDelete === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(estimateContentAction.requestDelete(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(estimateContentAction.requestDelete('idle'));
+    });
   }, [requestDelete]);
 
   return (

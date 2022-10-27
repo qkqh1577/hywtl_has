@@ -19,9 +19,9 @@ export interface ProjectMemoState {
 
 const initial: ProjectMemoState = {
   open:          true,
-  requestAdd:    ApiStatus.IDLE,
-  requestChange: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE,
+  requestAdd:    'idle',
+  requestChange: 'idle',
+  requestDelete: 'idle',
 };
 export const projectMemoReducer = createReducer(initial, {
   [ProjectMemoAction.setDrawer]:     (state,

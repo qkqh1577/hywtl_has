@@ -21,8 +21,8 @@ export interface ProjectDocumentState {
 }
 
 const initial: ProjectDocumentState = {
-  requestAdd:    ApiStatus.IDLE,
-  requestChange: ApiStatus.IDLE,
+  requestAdd:    'idle',
+  requestChange: 'idle',
 };
 
 export const projectDocumentReducer = createReducer(initial, {

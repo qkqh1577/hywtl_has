@@ -13,9 +13,9 @@ export interface RivalBidState {
 }
 
 const initial: RivalBidState = {
-  requestPush:   ApiStatus.IDLE,
-  requestUpdate: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE,
+  requestPush:   'idle',
+  requestUpdate: 'idle',
+  requestDelete: 'idle',
 };
 
 export const rivalBidReducer = createReducer(initial, {

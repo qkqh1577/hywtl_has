@@ -27,13 +27,13 @@ export interface ProjectComplexState {
 }
 
 const initial: ProjectComplexState = {
-  requestPushSite:   ApiStatus.IDLE,
-  requestUpdateSite: ApiStatus.IDLE,
-  requestDeleteSite: ApiStatus.IDLE,
+  requestPushSite:   'idle',
+  requestUpdateSite: 'idle',
+  requestDeleteSite: 'idle',
 
-  requestPushBuilding:   ApiStatus.IDLE,
-  requestUpdateBuilding: ApiStatus.IDLE,
-  requestDeleteBuilding: ApiStatus.IDLE,
+  requestPushBuilding:   'idle',
+  requestUpdateBuilding: 'idle',
+  requestDeleteBuilding: 'idle',
 };
 
 export const projectComplexReducer = createReducer(initial, {

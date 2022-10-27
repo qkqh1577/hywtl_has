@@ -25,8 +25,7 @@ import {
 import { loginAction } from 'login/action';
 import { LoginParameter } from 'login/parameter';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -73,12 +72,12 @@ export default function LoginForm() {
   };
 
   useEffect(() => {
-    if (requestLogin === ApiStatus.DONE) {
-      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+    if (requestLogin === 'done') {
+      dispatch(loginAction.requestLogin('idle'));
       dispatch(loginAction.requestDetail());
     }
-    else if (requestLogin === ApiStatus.FAIL) {
-      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+    else if (requestLogin === message) {
+      dispatch(loginAction.requestLogin('idle'));
       error('로그인에 실패하였습니다.');
     }
   }, [requestLogin]);

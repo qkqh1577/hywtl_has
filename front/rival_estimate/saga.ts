@@ -30,13 +30,13 @@ function* watchPush() {
     yield take(rivalEstimateAction.push);
     const { projectId } = yield select((root: RootState) => root.rivalEstimate);
     try {
-      yield put(rivalEstimateAction.requestPush(ApiStatus.REQUEST));
+      yield put(rivalEstimateAction.requestPush('request'));
       yield call(rivalEstimateApi.push, projectId);
-      yield put(rivalEstimateAction.requestPush(ApiStatus.DONE));
+      yield put(rivalEstimateAction.requestPush('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalEstimateAction.requestPush(ApiStatus.FAIL));
+      const message = getErrorMessage();
+      yield put(rivalEstimateAction.requestPush(message));
     }
   }
 }
@@ -45,13 +45,13 @@ function* watchUpdate() {
   while (true) {
     const { payload: params } = yield take(rivalEstimateAction.update);
     try {
-      yield put(rivalEstimateAction.requestUpdate(ApiStatus.REQUEST));
+      yield put(rivalEstimateAction.requestUpdate('request'));
       yield call(rivalEstimateApi.update, params.id, params);
-      yield put(rivalEstimateAction.requestUpdate(ApiStatus.DONE));
+      yield put(rivalEstimateAction.requestUpdate('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalEstimateAction.requestUpdate(ApiStatus.FAIL));
+      const message = getErrorMessage();
+      yield put(rivalEstimateAction.requestUpdate(message));
     }
   }
 }
@@ -60,13 +60,13 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(rivalEstimateAction.deleteOne);
     try {
-      yield put(rivalEstimateAction.requestDelete(ApiStatus.REQUEST));
+      yield put(rivalEstimateAction.requestDelete('request'));
       yield call(rivalEstimateApi.deleteOne, id);
-      yield put(rivalEstimateAction.requestDelete(ApiStatus.DONE));
+      yield put(rivalEstimateAction.requestDelete('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalEstimateAction.requestDelete(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(rivalEstimateAction.requestDelete(message));
     }
   }
 }

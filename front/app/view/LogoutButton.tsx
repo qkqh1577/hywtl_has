@@ -1,5 +1,5 @@
 import React from 'react';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { DefaultFunction } from 'type/Function';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'assets/theme';

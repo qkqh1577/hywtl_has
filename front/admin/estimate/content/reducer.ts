@@ -20,8 +20,8 @@ export interface EstimateContentState {
 }
 
 const initial: EstimateContentState = {
-  requestDelete: ApiStatus.IDLE,
-  requestUpsert: ApiStatus.IDLE,
+  requestDelete: 'idle',
+  requestUpsert: 'idle',
 };
 
 export const estimateContentReducer = createReducer(initial, {

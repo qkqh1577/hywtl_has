@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { ProjectContractId } from 'project_contract/domain';
 import { projectContractAction } from 'project_contract/action';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   FormikProvider,
   useFormik
@@ -19,7 +19,6 @@ import {
   ProjectContractFinalParameter
 } from 'project_contract/parameter';
 import ProjectContractFinalModal from 'project_contract/view/FinalModal';
-import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectContractFinalModalRoute() {
 
@@ -48,17 +47,17 @@ export default function ProjectContractFinalModalRoute() {
   }, [list]);
 
   useEffect(() => {
-    if (requestSetFinal === ApiStatus.DONE) {
+    if (requestSetFinal === 'done') {
       alert('변경하였습니다.');
       formik.setSubmitting(false);
       dispatch(projectContractAction.setProjectId(projectId));
-      dispatch(projectContractAction.requestSetFinal(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestSetFinal('idle'));
       onClose();
     }
-    else if (requestSetFinal === ApiStatus.FAIL) {
+    else if (requestSetFinal === message) {
       error('변경에 실패하였습니다.');
       formik.setSubmitting(false);
-      dispatch(projectContractAction.requestSetFinal(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestSetFinal('idle'));
     }
   }, [requestSetFinal]);
 

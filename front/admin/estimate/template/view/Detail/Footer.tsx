@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
 import useId from 'services/useId';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 interface Props {
   onDelete: DefaultFunction;

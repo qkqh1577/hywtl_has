@@ -17,7 +17,7 @@ import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import Select from 'layouts/Select';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function () {
   const { error } = useDialog();

@@ -10,8 +10,7 @@ import React, {
 import ProjectBasicBasicSection from 'project_basic/view/BasicSection';
 import { projectBasicAction } from 'project_basic/action';
 import { ProjectBasicParameter } from 'project_basic/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { projectAction } from 'project/action';
 
 export default function ProjectBasicBasicRoute() {
@@ -22,13 +21,13 @@ export default function ProjectBasicBasicRoute() {
   const onUpdate = useCallback((params: ProjectBasicParameter) => dispatch(projectBasicAction.updateBasic(params)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdateBasic === ApiStatus.DONE) {
+    if (requestUpdateBasic === 'done') {
       dispatch(projectAction.setId(id));
-      dispatch(projectBasicAction.requestUpdateBasic(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateBasic('idle'));
     }
-    else if (requestUpdateBasic === ApiStatus.FAIL) {
+    else if (requestUpdateBasic === message) {
       error('저장에 실패하였습니다.');
-      dispatch(projectBasicAction.requestUpdateBasic(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateBasic('idle'));
     }
   }, [requestUpdateBasic]);
 

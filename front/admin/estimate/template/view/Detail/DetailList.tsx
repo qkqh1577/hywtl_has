@@ -15,7 +15,7 @@ import {
   testUnitList,
   testUnitName
 } from 'type/TestType';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   Table,
   Td,

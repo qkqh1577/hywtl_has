@@ -30,13 +30,13 @@ function* watchPush() {
     yield take(rivalBidAction.push);
     try {
       const { projectId } = yield select((root: RootState) => root.rivalBid);
-      yield put(rivalBidAction.requestPush(ApiStatus.REQUEST));
+      yield put(rivalBidAction.requestPush('request'));
       yield call(rivalBidApi.push, projectId);
-      yield put(rivalBidAction.requestPush(ApiStatus.DONE));
+      yield put(rivalBidAction.requestPush('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalBidAction.requestPush(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(rivalBidAction.requestPush(message));
     }
   }
 }
@@ -45,13 +45,13 @@ function* watchUpdate() {
   while (true) {
     const { payload: params } = yield take(rivalBidAction.update);
     try {
-      yield put(rivalBidAction.requestUpdate(ApiStatus.REQUEST));
+      yield put(rivalBidAction.requestUpdate('request'));
       yield call(rivalBidApi.update, params);
-      yield put(rivalBidAction.requestUpdate(ApiStatus.DONE));
+      yield put(rivalBidAction.requestUpdate('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalBidAction.requestUpdate(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(rivalBidAction.requestUpdate(message));
     }
   }
 }
@@ -60,13 +60,13 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(rivalBidAction.deleteOne);
     try {
-      yield put(rivalBidAction.requestDelete(ApiStatus.REQUEST));
+      yield put(rivalBidAction.requestDelete('request'));
       yield call(rivalBidApi.deleteOne, id);
-      yield put(rivalBidAction.requestDelete(ApiStatus.DONE));
+      yield put(rivalBidAction.requestDelete('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(rivalBidAction.requestDelete(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(rivalBidAction.requestDelete(message));
     }
   }
 }

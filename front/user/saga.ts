@@ -12,6 +12,7 @@ import {
 import Page from 'type/Page';
 import { userApi } from 'user/api';
 import { ApiStatus } from 'components/DataFieldProps';
+import { dialogAction } from 'dialog/action';
 
 function* getPage() {
   while (true) {
@@ -38,13 +39,15 @@ function* watchChange() {
   while (true) {
     const { payload: params } = yield take(userAction.change);
     try {
-      yield put(userAction.requestChange(ApiStatus.REQUEST));
+      yield put(userAction.requestChange('request'));
       yield call(userApi.change, params);
-      yield put(userAction.requestChange(ApiStatus.DONE));
+      yield put(userAction.requestChange('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(userAction.requestChange(ApiStatus.FAIL));
+
+      yield put(dialogAction.openAlert());
+      yield put(dialogAction.openError(message));
+      yield put(userAction.requestChange(message));
     }
   }
 }

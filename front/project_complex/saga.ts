@@ -75,13 +75,13 @@ function* watchPushSite() {
     yield take(projectComplexAction.pushSite);
     try {
       const { id } = yield select((root: RootState) => root.projectComplex);
-      yield put(projectComplexAction.requestPushSite(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestPushSite('request'));
       yield call(projectComplexApi.pushSite, id);
-      yield put(projectComplexAction.requestPushSite(ApiStatus.DONE));
+      yield put(projectComplexAction.requestPushSite('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestPushSite(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestPushSite(message));
     }
   }
 }
@@ -90,13 +90,13 @@ function* watchUpdateSite() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateSite);
     try {
-      yield put(projectComplexAction.requestUpdateSite(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestUpdateSite('request'));
       yield call(projectComplexApi.updateSite, params);
-      yield put(projectComplexAction.requestUpdateSite(ApiStatus.DONE));
+      yield put(projectComplexAction.requestUpdateSite('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestUpdateSite(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestUpdateSite(message));
     }
   }
 }
@@ -105,13 +105,13 @@ function* watchDeleteSite() {
   while (true) {
     const { payload: siteId } = yield take(projectComplexAction.deleteSite);
     try {
-      yield put(projectComplexAction.requestDeleteSite(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestDeleteSite('request'));
       yield call(projectComplexApi.deleteSite, siteId);
-      yield put(projectComplexAction.requestDeleteSite(ApiStatus.DONE));
+      yield put(projectComplexAction.requestDeleteSite('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestDeleteSite(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestDeleteSite(message));
     }
   }
 }
@@ -122,13 +122,13 @@ function* watchPushBuilding() {
     yield take(projectComplexAction.pushBuilding);
     try {
       const { id } = yield select((root: RootState) => root.projectComplex);
-      yield put(projectComplexAction.requestPushBuilding(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestPushBuilding('request'));
       yield call(projectComplexApi.pushBuilding, id);
-      yield put(projectComplexAction.requestPushBuilding(ApiStatus.DONE));
+      yield put(projectComplexAction.requestPushBuilding('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestPushBuilding(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestPushBuilding(message));
     }
   }
 }
@@ -137,13 +137,13 @@ function* watchUpdateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
     try {
-      yield put(projectComplexAction.requestUpdateBuilding(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestUpdateBuilding('request'));
       yield call(projectComplexApi.updateBuilding, params);
-      yield put(projectComplexAction.requestUpdateBuilding(ApiStatus.DONE));
+      yield put(projectComplexAction.requestUpdateBuilding('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestUpdateBuilding(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestUpdateBuilding(message));
     }
   }
 }
@@ -152,13 +152,13 @@ function* watchDeleteBuilding() {
   while (true) {
     const { payload: buildingId } = yield take(projectComplexAction.deleteBuilding);
     try {
-      yield put(projectComplexAction.requestDeleteBuilding(ApiStatus.REQUEST));
+      yield put(projectComplexAction.requestDeleteBuilding('request'));
       yield call(projectComplexApi.deleteBuilding, buildingId);
-      yield put(projectComplexAction.requestDeleteBuilding(ApiStatus.DONE));
+      yield put(projectComplexAction.requestDeleteBuilding('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectComplexAction.requestDeleteBuilding(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectComplexAction.requestDeleteBuilding(message));
 
     }
   }

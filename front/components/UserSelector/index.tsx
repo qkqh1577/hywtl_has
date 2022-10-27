@@ -7,7 +7,7 @@ import React, {
   useState
 } from 'react';
 import UserSelectorModal from 'components/UserSelector/Modal';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { userApi } from 'user/api';
 import Input, { InputProps } from 'layouts/Input';
 import {

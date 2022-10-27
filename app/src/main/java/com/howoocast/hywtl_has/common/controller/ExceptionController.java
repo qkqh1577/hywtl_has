@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -82,13 +83,14 @@ public class ExceptionController {
         );
     }
 
-    private ErrorBody errorBody(MethodArgumentNotValidException e) {
+    private ErrorBody errorBody(BindException e) {
         return Optional.ofNullable(e.getFieldError())
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .map(code -> {
                 String message = this.getMessage(code);
 
                 if (Objects.isNull(message)) {
+                    e.printStackTrace();
                     return new ErrorBody(
                         "system.method_argument_not_valid.field.is_null",
                         "알 수 없는 에러가 발생하였습니다."
@@ -96,16 +98,29 @@ public class ExceptionController {
                 }
                 return new ErrorBody(code, message);
             })
-            .orElse(new ErrorBody(
-                "system.method_argument_not_valid.field.is_null",
-                "알 수 없는 에러가 발생하였습니다."
-            ));
+            .orElseGet(() -> {
+                e.printStackTrace();
+                return new ErrorBody(
+                    "system.method_argument_not_valid.field.is_null",
+                    "알 수 없는 에러가 발생하였습니다."
+                );
+            });
     }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
-        return new ResponseEntity<>(this.errorBody(e), HttpStatus.BAD_REQUEST);
+        ErrorBody error = this.errorBody(e);
+        log.error("[Not Valid] code: {}, message: {}", error.getCode(), error.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<?> bind(BindException e) {
+        ErrorBody error = this.errorBody(e);
+        log.error("[Not Valid] code: {}, message: {}", error.getCode(), error.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseBody

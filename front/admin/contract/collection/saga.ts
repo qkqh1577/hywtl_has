@@ -7,8 +7,9 @@ import {
 } from 'redux-saga/effects';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
 import { contractCollectionApi } from 'admin/contract/collection/api';
-import { ApiStatus } from 'components/DataFieldProps';
 import { initialContractCollectionParameter } from 'admin/contract/collection/parameter';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchOne() {
   while (true) {
@@ -27,13 +28,15 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(contractCollectionAction.upsert);
     try {
-      yield put(contractCollectionAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(contractCollectionAction.requestUpsert('request'));
       yield call(contractCollectionApi.upsert, params);
-      yield put(contractCollectionAction.requestUpsert(ApiStatus.DONE));
+      yield put(contractCollectionAction.requestUpsert('done'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(contractCollectionAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(contractCollectionAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(contractCollectionAction.requestUpsert(message));
     }
   }
 }

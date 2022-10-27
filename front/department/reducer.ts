@@ -20,8 +20,8 @@ export interface DepartmentState {
 }
 
 const initial: DepartmentState = {
-  requestUpsert: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE
+  requestUpsert: 'idle',
+  requestDelete: 'idle'
 };
 
 export const departmentReducer = createReducer(initial, {

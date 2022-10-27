@@ -19,12 +19,12 @@ import {
   useFormik
 } from 'formik';
 import { contractConditionAction } from 'admin/contract/condition/action';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const dispatch = useDispatch();
-  const { alert, error, rollback } = useDialog();
+  const { rollback } = useDialog();
   const { template, variableList, requestUpsert } = useSelector((root: RootState) => root.contractCondition);
   const upsert = useCallback((formikProps: ContractConditionListParameter) =>
     dispatch(contractConditionAction.upsert(formikProps)), [dispatch]);
@@ -52,17 +52,12 @@ function Element() {
   }, [template]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
+    closeStatus(requestUpsert, () => {
       dispatch(contractConditionAction.requestOne());
-      dispatch(contractConditionAction.requestUpsert(ApiStatus.IDLE));
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(contractConditionAction.requestUpsert(ApiStatus.IDLE));
-    }
+      dispatch(contractConditionAction.requestUpsert('idle'));
+    });
   }, [requestUpsert]);
 
   return (

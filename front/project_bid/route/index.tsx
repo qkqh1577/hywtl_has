@@ -10,8 +10,7 @@ import {
 import { RootState } from 'services/reducer';
 import { projectBidAction } from 'project_bid/action';
 import { ProjectBidParameter } from 'project_bid/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { ProjectId } from 'project/domain';
 
 export default function ProjectBidRoute() {
@@ -23,13 +22,13 @@ export default function ProjectBidRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(projectBidAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
+    if (requestUpdate === 'done') {
       reload(projectId);
-      dispatch(projectBidAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(projectBidAction.requestUpdate('idle'));
     }
-    else if (requestUpdate === ApiStatus.FAIL) {
+    else if (requestUpdate === message) {
       error('변경에 실패하였습니다.');
-      dispatch(projectBidAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(projectBidAction.requestUpdate('idle'));
     }
   }, [requestUpdate]);
 

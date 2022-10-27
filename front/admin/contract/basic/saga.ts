@@ -8,7 +8,8 @@ import {
 import { ContractBasicVO } from 'admin/contract/basic/domain';
 import { contractBasicApi } from 'admin/contract/basic/api';
 import { initialContractBasicParameter } from 'admin/contract/basic/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchOne() {
   while (true) {
@@ -27,13 +28,15 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(contractBasicAction.upsert);
     try {
-      yield put(contractBasicAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(contractBasicAction.requestUpsert('request'));
       yield call(contractBasicApi.upsert, params);
-      yield put(contractBasicAction.requestUpsert(ApiStatus.DONE));
+      yield put(contractBasicAction.requestUpsert('done'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(contractBasicAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(contractBasicAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(contractBasicAction.requestUpsert(message));
     }
   }
 }

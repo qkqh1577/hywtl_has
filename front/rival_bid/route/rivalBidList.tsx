@@ -12,8 +12,7 @@ import { RivalBidParameter } from 'rival_bid/parameter';
 import { RivalBidId } from 'rival_bid/domain';
 import { ProjectId } from 'project/domain';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function ProjectRivalBidListRoute() {
 
@@ -26,36 +25,36 @@ export default function ProjectRivalBidListRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalBidAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestPush === ApiStatus.DONE) {
+    if (requestPush === 'done') {
       reload(projectId);
-      dispatch(rivalBidAction.requestPush(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestPush('idle'));
     }
-    else if (requestPush === ApiStatus.FAIL) {
+    else if (requestPush === message) {
       error('등록에 실패하였습니다.');
-      dispatch(rivalBidAction.requestPush(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestPush('idle'));
     }
   }, [requestPush]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
+    if (requestUpdate === 'done') {
       reload(projectId);
-      dispatch(rivalBidAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestUpdate('idle'));
     }
-    else if (requestUpdate === ApiStatus.FAIL) {
+    else if (requestUpdate === message) {
       error('변경에 실패하였습니다.');
-      dispatch(rivalBidAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestUpdate('idle'));
     }
   }, [requestUpdate]);
 
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
+    if (requestDelete === 'done') {
       reload(projectId);
-      dispatch(rivalBidAction.requestDelete(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestDelete('idle'));
     }
-    else if (requestDelete === ApiStatus.FAIL) {
+    else if (requestDelete === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(rivalBidAction.requestDelete(ApiStatus.IDLE));
+      dispatch(rivalBidAction.requestDelete('idle'));
     }
   }, [requestDelete]);
   return (

@@ -17,8 +17,7 @@ import {
   useFormik
 } from 'formik';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export const memoLabelList: string[] = [
   '견적 의뢰처',
@@ -64,15 +63,15 @@ export default function ProjectAddModalRoute() {
   });
 
   useEffect(() => {
-    if (requestAdd === ApiStatus.DONE) {
+    if (requestAdd === 'done') {
       alert('등록하였습니다.');
       dispatch(projectAction.setAddModal(false));
-      dispatch(projectAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectAction.requestAdd('idle'));
       dispatch(projectAction.setFilter(initialProjectQuery));
     }
-    else if (requestAdd === ApiStatus.FAIL) {
+    else if (requestAdd === message) {
       error('등록에 실패하였습니다.');
-      dispatch(projectAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectAction.requestAdd('idle'));
     }
   }, [requestAdd]);
 

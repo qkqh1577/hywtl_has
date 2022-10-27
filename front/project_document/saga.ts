@@ -13,9 +13,10 @@ import {
 } from 'project_document/domain';
 import { projectDocumentApi } from 'project_document/api';
 import { ProjectId } from 'project/domain';
-import { dialogAction } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
 import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
+import { DialogStatus } from 'dialog/domain';
 
 function* watchProjectId() {
   while (true) {
@@ -59,12 +60,12 @@ function* watchAdd() {
     const { payload: params } = yield take(projectDocumentAction.add);
     try {
       const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
-      yield put(projectDocumentAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectDocumentAction.requestAdd('request'));
       yield call(projectDocumentApi.add, projectId, addModal, params);
-      yield put(projectDocumentAction.requestAdd(ApiStatus.DONE));
+      yield put(projectDocumentAction.requestAdd('done'));
     }
     catch (e) {
-      yield put(projectDocumentAction.requestAdd(ApiStatus.FAIL));
+      yield put(projectDocumentAction.requestAdd(message));
     }
   }
 }
@@ -72,9 +73,9 @@ function* watchAdd() {
 function* watchRequestAdd() {
   while (true) {
     const { payload: status } = yield take(projectDocumentAction.requestAdd);
-    if (status === ApiStatus.DONE) {
+    if (status === 'done') {
       yield put(dialogAction.openAlert('저장하였습니다.'));
-      yield put(projectDocumentAction.requestAdd(ApiStatus.IDLE));
+      yield put(projectDocumentAction.requestAdd('idle'));
       const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
       if (addModal === ProjectDocumentType.RECEIVED) {
         yield call(getReceivedList, projectId);
@@ -87,12 +88,12 @@ function* watchRequestAdd() {
       }
       yield put(projectDocumentAction.addModal(undefined));
     }
-    else if (status === ApiStatus.FAIL) {
+    else if (status === message) {
       yield put(dialogAction.openAlert({
         children: '저장에 실패하였습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
-      yield put(projectDocumentAction.requestAdd(ApiStatus.IDLE));
+      yield put(projectDocumentAction.requestAdd('idle'));
     }
   }
 }
@@ -101,13 +102,13 @@ function* watchChange() {
   while (true) {
     const { payload: params } = yield take(projectDocumentAction.change);
     try {
-      yield put(projectDocumentAction.requestChange(ApiStatus.REQUEST));
+      yield put(projectDocumentAction.requestChange('request'));
       yield call(projectDocumentApi.change, params);
-      yield put(projectDocumentAction.requestChange(ApiStatus.DONE));
+      yield put(projectDocumentAction.requestChange('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectDocumentAction.requestChange(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectDocumentAction.requestChange(message));
     }
   }
 }
@@ -115,9 +116,9 @@ function* watchChange() {
 function* watchRequestChange() {
   while (true) {
     const { payload: status } = yield take(projectDocumentAction.requestChange);
-    if (status === ApiStatus.DONE) {
+    if (status === 'done') {
       yield put(dialogAction.openAlert('저장하였습니다.'));
-      yield put(projectDocumentAction.requestChange(ApiStatus.IDLE));
+      yield put(projectDocumentAction.requestChange('idle'));
       const { projectId, detail } = yield select((root: RootState) => root.projectDocument);
       if (detail.type === ProjectDocumentType.RECEIVED) {
         yield call(getReceivedList, projectId);
@@ -130,12 +131,12 @@ function* watchRequestChange() {
       }
       yield put(projectDocumentAction.setId(undefined));
     }
-    else if (status === ApiStatus.FAIL) {
+    else if (status === message) {
       yield put(dialogAction.openAlert({
         children: '저장에 실패하였습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
-      yield put(projectDocumentAction.requestChange(ApiStatus.IDLE));
+      yield put(projectDocumentAction.requestChange('idle'));
     }
   }
 }
@@ -156,7 +157,7 @@ function* watchDelete() {
       //TODO: 삭제 정책 후 수정 필요
       yield put(dialogAction.openAlert({
         children: '해당 자료는 동 정보에 연결되어 삭제할 수 없습니다. 자료를 삭제하려면, 동 정보 연결을 해제해 주세요.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
     }
   }

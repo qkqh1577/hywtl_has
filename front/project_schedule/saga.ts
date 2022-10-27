@@ -12,8 +12,9 @@ import {
   ProjectScheduleVO
 } from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
-import { dialogAction } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
 import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
 
 function* watchId() {
   while (true) {
@@ -48,14 +49,14 @@ function* watchAdd() {
     console.log(action);
     try {
       const { projectId } = yield select((root: RootState) => root.projectSchedule);
-      yield put(projectScheduleAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectScheduleAction.requestAdd('request'));
       yield call(projectScheduleApi.add, projectId, params);
-      yield put(projectScheduleAction.requestAdd(ApiStatus.DONE));
+      yield put(projectScheduleAction.requestAdd('done'));
       yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectScheduleAction.requestAdd(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectScheduleAction.requestAdd(message));
     }
   }
 }
@@ -70,7 +71,7 @@ function* watchUpdate() {
     catch (e) {
       yield put(dialogAction.openAlert({
         children: '저장에 실패하였습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
     }
   }
@@ -87,7 +88,7 @@ function* watchDelete() {
       //TODO: 삭제 정책 후 수정 필요
       yield put(dialogAction.openAlert({
         children: '해당 일정은 삭제할 수 없습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
     }
   }

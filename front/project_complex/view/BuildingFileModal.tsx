@@ -28,8 +28,9 @@ import { ProjectComplexBuildingId } from 'project_complex/domain';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ProjectComplexBuildingParameter } from 'project_complex/parameter';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import TextBox from 'layouts/Text';
+import { DialogStatus } from 'dialog/domain';
 
 interface Props {
   fileList?: ProjectDocumentShortVO[];
@@ -99,7 +100,7 @@ function DetailFooter(props: DetailFooterProps) {
         shape="basic3"
         onClick={() => {
           confirm({
-            status:       'warn',
+            status:       DialogStatus.WARN,
             children:     '연결을 해제하시겠습니까?',
             confirmText:  '해제',
             afterConfirm: () => {

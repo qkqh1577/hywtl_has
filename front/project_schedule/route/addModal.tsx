@@ -3,7 +3,7 @@ import React, {
   useEffect,
 } from 'react';
 import useId from 'services/useId';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   useDispatch,
   useSelector
@@ -21,7 +21,6 @@ import {
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import dayjs from 'dayjs';
 import { UserId } from 'user/domain';
-import { ApiStatus } from 'components/DataFieldProps';
 
 export default function ProjectScheduleAddModalRoute() {
   const { detail: loginUser } = useSelector((root: RootState) => root.login);
@@ -68,16 +67,16 @@ export default function ProjectScheduleAddModalRoute() {
     }
   }, [addModal]);
   useEffect(() => {
-    if (requestAdd === ApiStatus.DONE) {
+    if (requestAdd === 'done') {
       alert('등록하였습니다.');
       dispatch(projectScheduleAction.addModal(false));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
-      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestAdd('idle'));
       formik.setSubmitting(false);
     }
-    else if (requestAdd === ApiStatus.FAIL) {
+    else if (requestAdd === message) {
       error('등록에 실패하였습니다.');
-      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestAdd('idle'));
       formik.setSubmitting(false);
     }
   }, [requestAdd]);

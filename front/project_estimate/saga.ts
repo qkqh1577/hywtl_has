@@ -13,7 +13,8 @@ import {
 } from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchProjectId() {
   while (true) {
@@ -32,14 +33,22 @@ function* watchAddCustom() {
   while (true) {
     const { payload: params } = yield take(projectEstimateAction.addCustom);
     try {
-      const { projectId } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestAddCustom(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestAddCustom('request'));
+      const { projectId, customAddModal } = yield select((root: RootState) => root.projectEstimate);
+      if (!projectId || !customAddModal) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectEstimateAction.requestAddCustom(message));
+        continue;
+      }
       yield call(projectEstimateApi.addCustom, projectId, params);
-      yield put(projectEstimateAction.requestAddCustom(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestAddCustom('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestAddCustom(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.addCustom, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestAddCustom(message));
     }
   }
 }
@@ -61,13 +70,15 @@ function* watchChangeCustom() {
   while (true) {
     const { payload: params } = yield take(projectEstimateAction.changeCustom);
     try {
-      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestChangeCustom('request'));
       yield call(projectEstimateApi.changeCustom, params);
-      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestChangeCustom('done'));
+      yield put(dialogAction.openAlert('변경하었습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestChangeCustom(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.changeCustom, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestChangeCustom(message));
     }
   }
 }
@@ -76,13 +87,15 @@ function* watchExtensionCustom() {
   while (true) {
     const { payload: params } = yield take(projectEstimateAction.extensionCustom);
     try {
-      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestExtensionCustom('request'));
       yield call(projectEstimateApi.extensionCustom, params);
-      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestExtensionCustom('done'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestExtensionCustom(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.extensionCustom, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestExtensionCustom(message));
     }
   }
 }
@@ -105,13 +118,15 @@ function* watchAddSystem() {
     const { payload: params } = yield take(projectEstimateAction.addSystem);
     try {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestAddSystem(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestAddSystem('request'));
       yield call(projectEstimateApi.addSystem, projectId, params);
-      yield put(projectEstimateAction.requestAddSystem(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestAddSystem('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestAddSystem(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.addSystem, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestAddSystem(message));
     }
   }
 }
@@ -121,13 +136,15 @@ function* watchChangeSystem() {
     const { payload: params } = yield take(projectEstimateAction.changeSystem);
     try {
       const { systemDetail } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestChangeSystem('request'));
       yield call(projectEstimateApi.changeSystem, systemDetail!.id, params);
-      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestChangeSystem('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestChangeSystem(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.changeSystem, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestChangeSystem(message));
     }
   }
 }
@@ -137,13 +154,15 @@ function* watchFinal() {
     const { payload: estimateId } = yield take(projectEstimateAction.setFinal);
     try {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestSetFinal(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestSetFinal('request'));
       yield call(projectEstimateApi.setFinal, projectId, estimateId);
-      yield put(projectEstimateAction.requestSetFinal(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestSetFinal('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestSetFinal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.setFinal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestSetFinal(message));
     }
   }
 }
@@ -153,13 +172,15 @@ function* watchDeleteCustom() {
     yield take(projectEstimateAction.deleteCustom);
     try {
       const { customDetail } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestDeleteCustom('request'));
       yield call(projectEstimateApi.deleteCustom, customDetail.id);
-      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestDeleteCustom('done'));
+      yield put(dialogAction.openError('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestDeleteCustom(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.deleteCustom, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestDeleteCustom(message));
     }
   }
 }
@@ -169,13 +190,15 @@ function* watchDeleteSystem() {
     yield take(projectEstimateAction.deleteSystem);
     try {
       const { systemDetail } = yield select((root: RootState) => root.projectEstimate);
-      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.REQUEST));
+      yield put(projectEstimateAction.requestDeleteSystem('request'));
       yield call(projectEstimateApi.deleteSystem, systemDetail.id);
-      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.DONE));
+      yield put(projectEstimateAction.requestDeleteSystem('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectEstimateAction.requestDeleteSystem(ApiStatus.FAIL));
+      const message = getErrorMessage(projectEstimateAction.deleteSystem, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestDeleteSystem(message));
     }
   }
 }

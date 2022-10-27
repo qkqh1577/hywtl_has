@@ -16,9 +16,9 @@ import {
   RivalProjectVO
 } from 'business/domain';
 import { businessApi } from 'business/api';
-import { dialogAction } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
 
 function* watchFilter() {
   while (true) {
@@ -41,7 +41,7 @@ function* watchRegistrationNumber() {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id) {
         yield put(dialogAction.openAlert({
-          status:   'error',
+          status:   DialogStatus.ERROR,
           children: '이미 사용중인 사업자등록번호 입니다.'
         }));
         continue;
@@ -96,13 +96,13 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(businessAction.upsert);
     try {
-      yield put(businessAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(businessAction.requestUpsert('request'));
       yield call(businessApi.upsert, params);
-      yield put(businessAction.requestUpsert(ApiStatus.DONE));
+      yield put(businessAction.requestUpsert('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(businessAction.requestUpsert(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(businessAction.requestUpsert(message));
     }
   }
 }
@@ -111,13 +111,13 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(businessAction.deleteOne);
     try {
-      yield put(businessAction.requestDelete(ApiStatus.REQUEST));
+      yield put(businessAction.requestDelete('request'));
       yield call(businessApi.delete, id);
-      yield put(businessAction.requestDelete(ApiStatus.DONE));
+      yield put(businessAction.requestDelete('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(businessAction.requestDelete(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(businessAction.requestDelete(message));
     }
   }
 }

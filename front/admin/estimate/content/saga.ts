@@ -13,7 +13,8 @@ import {
   take
 } from 'redux-saga/effects';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchFilter() {
   while (true) {
@@ -35,13 +36,15 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(estimateContentAction.upsert);
     try {
-      yield put(estimateContentAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(estimateContentAction.requestUpsert('request'));
       yield call(estimateContentApi.upsert, params);
-      yield put(estimateContentAction.requestUpsert(ApiStatus.DONE));
+      yield put(estimateContentAction.requestUpsert('done'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(estimateContentAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(estimateContentAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(estimateContentAction.requestUpsert(message));
     }
   }
 }
@@ -51,13 +54,15 @@ function* watchDelete() {
     yield take(estimateContentAction.deleteOne);
     try {
       const { id } = yield select((root: RootState) => root.estimateContent);
-      yield put(estimateContentAction.requestDelete(ApiStatus.REQUEST));
+      yield put(estimateContentAction.requestDelete('request'));
       yield call(estimateContentApi.delete, id);
-      yield put(estimateContentAction.requestDelete(ApiStatus.DONE));
+      yield put(estimateContentAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(estimateContentAction.requestDelete(ApiStatus.FAIL));
+      const message = getErrorMessage(estimateContentAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(estimateContentAction.requestDelete(message));
     }
   }
 }

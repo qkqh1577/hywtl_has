@@ -4,7 +4,7 @@ import {
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   FormikProvider,
   useFormik
@@ -19,7 +19,7 @@ import React, {
   useState
 } from 'react';
 import { projectEstimateAction } from 'project_estimate/action';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 import ProjectComplexBuildingFileModal from 'project_complex/view/BuildingFileModal';
 import { ProjectComplexBuildingId } from 'project_complex/domain';
 import { projectComplexAction } from 'project_complex/action';
@@ -36,7 +36,7 @@ export default function ProjectSystemEstimateModalRoute() {
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
   const { list: contentList } = useSelector((root: RootState) => root.estimateContent);
-  const { alert, error, rollback } = useDialog();
+  const { error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
   const closeBuildingFileModal = () => {
     setBuildingSeq(undefined);
@@ -134,46 +134,32 @@ export default function ProjectSystemEstimateModalRoute() {
   }, [contentList]);
 
   useEffect(() => {
-    if (requestAddSystem === ApiStatus.DONE) {
-      alert('등록하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(projectEstimateAction.requestAddSystem(ApiStatus.IDLE));
+    closeStatus(requestAddSystem, () => {
       dispatch(projectEstimateAction.setProjectId(projectId ?? undefined));
       dispatch(projectEstimateAction.setSystemModal(undefined));
-    }
-    else if (requestAddSystem === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(projectEstimateAction.requestAddSystem(ApiStatus.IDLE));
-    }
+      dispatch(projectEstimateAction.requestAddSystem('idle'));
+    });
   }, [requestAddSystem]);
 
   useEffect(() => {
-    if (requestChangeSystem === ApiStatus.DONE) {
-      alert('변경하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(projectEstimateAction.requestChangeSystem(ApiStatus.IDLE));
+    closeStatus(requestChangeSystem, () => {
       dispatch(projectEstimateAction.setProjectId(projectId ?? undefined));
       dispatch(projectEstimateAction.setSystemModal(systemDetail!.id));
-    }
-    else if (requestChangeSystem === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(projectEstimateAction.requestChangeSystem(ApiStatus.IDLE));
-    }
+      dispatch(projectEstimateAction.requestChangeSystem('idle'));
+    });
   }, [requestChangeSystem]);
 
   useEffect(() => {
-    if (requestDeleteSystem === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
-      dispatch(projectEstimateAction.requestDeleteSystem(ApiStatus.IDLE));
+    closeStatus(requestDeleteSystem, () => {
       dispatch(projectEstimateAction.setProjectId(projectId ?? undefined));
       dispatch(projectEstimateAction.setSystemModal(undefined));
-    }
-    else if (requestDeleteSystem === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(projectEstimateAction.requestDeleteSystem(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectEstimateAction.requestDeleteSystem('idle'));
+    });
   }, [requestDeleteSystem]);
 
   return (

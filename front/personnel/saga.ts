@@ -14,7 +14,6 @@ import {
   PersonnelVO,
 } from 'personnel/domain';
 import { personnelApi } from 'personnel/api';
-import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchId() {
   while (true) {
@@ -46,13 +45,13 @@ function* watchUpdate() {
   while (true) {
     const { payload: params } = yield take(PersonnelAction.update);
     try {
-      yield put(personnelAction.requestUpdate(ApiStatus.REQUEST));
+      yield put(personnelAction.requestUpdate('request'));
       yield call(personnelApi.update, params);
-      yield put(personnelAction.requestUpdate(ApiStatus.DONE));
+      yield put(personnelAction.requestUpdate('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(personnelAction.requestUpdate(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(personnelAction.requestUpdate(message));
     }
   }
 }

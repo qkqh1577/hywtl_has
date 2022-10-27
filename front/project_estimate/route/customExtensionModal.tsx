@@ -16,8 +16,7 @@ import {
 } from 'formik';
 import { ProjectComplexBuildingId } from 'project_complex/domain';
 import ProjectComplexBuildingFileModal from 'project_complex/view/BuildingFileModal';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 import {
   initialProjectCustomEstimateExtensionParameter,
   ProjectCustomEstimateExtensionParameter
@@ -26,7 +25,6 @@ import { projectComplexAction } from 'project_complex/action';
 
 export default function ProjectCustomEstimateExtensionModalRoute() {
 
-  const { error, alert } = useDialog();
   const dispatch = useDispatch();
   const { projectId, customExtensionModal, customDetail, requestExtensionCustom } = useSelector((root: RootState) => root.projectEstimate);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
@@ -40,14 +38,8 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
   const formik = useFormik<ProjectCustomEstimateExtensionParameter>({
     initialValues: initialProjectCustomEstimateExtensionParameter,
     onSubmit:      (values) => {
-
-      if (!customExtensionModal) {
-        error('견적서가 선택되지 않았습니다.');
-        formik.setSubmitting(false);
-        return;
-      }
       onChange({
-        id:           customExtensionModal,
+        id:           values.id,
         plan:         values.plan,
         siteList:     values.siteList,
         buildingList: values.buildingList,
@@ -57,6 +49,7 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
 
   useEffect(() => {
     if (customExtensionModal) {
+      formik.setFieldValue('id', customExtensionModal);
       if (!customDetail?.plan) {
         formik.setFieldValue('plan', {});
       }
@@ -115,19 +108,15 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
   }, [customExtensionModal, buildingList]);
 
   useEffect(() => {
-    if (requestExtensionCustom === ApiStatus.DONE) {
-      formik.setSubmitting(false);
-      alert('저장하였습니다.');
-      dispatch(projectEstimateAction.requestExtensionCustom(ApiStatus.IDLE));
-      dispatch(projectEstimateAction.setCustomDetailModal(customExtensionModal));
+    closeStatus(requestExtensionCustom, () => {
       onClose();
-    }
-    else if (requestExtensionCustom === ApiStatus.FAIL) {
+      dispatch(projectEstimateAction.setCustomDetailModal(customExtensionModal));
+    }, () => {
       formik.setSubmitting(false);
-      error('저장에 실패하였습니다.');
-      dispatch(projectEstimateAction.requestExtensionCustom(ApiStatus.IDLE));
-    }
+      dispatch(projectEstimateAction.requestExtensionCustom('idle'));
+    });
   }, [requestExtensionCustom]);
+
   return (
     <FormikProvider value={formik}>
       <ProjectCustomEstimateExtensionModal

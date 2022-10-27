@@ -3,7 +3,7 @@ import React, {
   useEffect
 } from 'react';
 import useId from 'services/useId';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   UserId,
   UserVO
@@ -24,13 +24,13 @@ import {
   UserChangeParameter
 } from 'user/parameter';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail, requestChange } = useSelector((root: RootState) => root.user);
-  const { confirm, error, rollback, alert } = useDialog();
+  const { confirm, rollback, alert } = useDialog();
   const change = useCallback((formikProps: UserChangeParameter) => dispatch(userAction.change(formikProps)), [dispatch]);
 
   const formik = useFormik<UserChangeParameter>({
@@ -64,17 +64,13 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestChange === ApiStatus.DONE) {
+    closeStatus(requestChange, () => {
       alert('변경하였습니다.');
-      formik.setSubmitting(false);
       dispatch(userAction.setId(UserId(id!)));
-      dispatch(userAction.requestChange(ApiStatus.IDLE));
-    }
-    else if (requestChange === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(userAction.requestChange(ApiStatus.IDLE));
-    }
+      dispatch(userAction.requestChange('idle'));
+    });
   }, [requestChange]);
 
   return (
@@ -90,7 +86,6 @@ function Element() {
         }}
         onPasswordChange={() => {
           confirm({
-            status:       'ok',
             children:     '비밀번호 변경 안내 메일을 발송하겠습니까?',
             confirmText:  '발송',
             afterConfirm: () => {

@@ -2,7 +2,7 @@ import React, {
   useContext,
   useRef
 } from 'react';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { FormikContext, } from 'formik';
 import {
   Box,

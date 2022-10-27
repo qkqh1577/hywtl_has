@@ -9,10 +9,9 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { projectComplexAction } from 'project_complex/action';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { ProjectComplexBuildingParameter, } from 'project_complex/parameter';
 import { ProjectComplexBuildingId, } from 'project_complex/domain';
-import { ApiStatus } from 'components/DataFieldProps';
 import { projectBasicAction } from 'project_basic/action';
 
 export default function ProjectComplexBuildingRoute() {
@@ -33,37 +32,37 @@ export default function ProjectComplexBuildingRoute() {
   const openDocumentModal = useCallback((id: ProjectComplexBuildingId | undefined) => dispatch(projectComplexAction.buildingFileModal(id)), [dispatch]);
 
   useEffect(() => {
-    if (requestPushBuilding === ApiStatus.DONE) {
+    if (requestPushBuilding === 'done') {
       dispatch(projectComplexAction.getBuildingList(id));
-      dispatch(projectComplexAction.requestPushBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestPushBuilding('idle'));
     }
-    else if (requestPushBuilding === ApiStatus.FAIL) {
+    else if (requestPushBuilding === message) {
       error('추가에 실패하였습니다.');
-      dispatch(projectComplexAction.requestPushBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestPushBuilding('idle'));
     }
   }, [requestPushBuilding]);
 
   useEffect(() => {
-    if (requestUpdateBuilding === ApiStatus.DONE) {
+    if (requestUpdateBuilding === 'done') {
       dispatch(projectComplexAction.getBuildingList(id));
-      dispatch(projectComplexAction.requestUpdateBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestUpdateBuilding('idle'));
       dispatch(projectBasicAction.getTest(id));
     }
-    else if (requestUpdateBuilding === ApiStatus.FAIL) {
+    else if (requestUpdateBuilding === message) {
       error('변경에 실패하였습니다.');
-      dispatch(projectComplexAction.requestUpdateBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestUpdateBuilding('idle'));
     }
   }, [requestUpdateBuilding]);
 
   useEffect(() => {
-    if (requestDeleteBuilding === ApiStatus.DONE) {
+    if (requestDeleteBuilding === 'done') {
       dispatch(projectComplexAction.getBuildingList(id));
-      dispatch(projectComplexAction.requestDeleteBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestDeleteBuilding('idle'));
       dispatch(projectBasicAction.getTest(id));
     }
-    else if (requestPushBuilding === ApiStatus.FAIL) {
+    else if (requestPushBuilding === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(projectComplexAction.requestDeleteBuilding(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestDeleteBuilding('idle'));
     }
   }, [requestDeleteBuilding]);
 

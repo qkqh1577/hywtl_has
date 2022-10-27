@@ -30,13 +30,13 @@ function* update() {
     const { payload: params } = yield take(projectBidAction.update);
     try {
       const { projectId } = yield select((root: RootState) => root.projectBid);
-      yield put(projectBidAction.requestUpdate(ApiStatus.REQUEST));
+      yield put(projectBidAction.requestUpdate('request'));
       yield call(projectBidApi.update, projectId, params);
-      yield put(projectBidAction.requestUpdate(ApiStatus.DONE));
+      yield put(projectBidAction.requestUpdate('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBidAction.requestUpdate(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectBidAction.requestUpdate(message));
     }
   }
 }

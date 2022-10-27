@@ -14,14 +14,14 @@ import React, {
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectContractId } from 'project_contract/domain';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import {
   initialProjectContractParameter,
   ProjectContractParameter
 } from 'project_contract/parameter';
 import ProjectContractEstimateSelectModal from 'project_contract/view/EstimateModal';
 import { ProjectEstimateId } from 'project_estimate/domain';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
 
 export default function ProjectContractModalRoute() {
 
@@ -89,31 +89,31 @@ export default function ProjectContractModalRoute() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestAdd === ApiStatus.DONE) {
+    if (requestAdd === 'done') {
       formik.setSubmitting(false);
       alert('등록하였습니다.');
-      dispatch(projectContractAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestAdd('idle'));
       dispatch(projectContractAction.setModal(undefined));
       dispatch(projectContractAction.setProjectId(projectId));
     }
-    else if (requestAdd === ApiStatus.FAIL) {
+    else if (requestAdd === message) {
       formik.setSubmitting(false);
-      dispatch(projectContractAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestAdd('idle'));
       error('등록에 실패하였습니다.');
     }
   }, [requestAdd]);
 
   useEffect(() => {
-    if (requestChange === ApiStatus.DONE) {
+    if (requestChange === 'done') {
       formik.setSubmitting(false);
       alert('변경하였습니다.');
-      dispatch(projectContractAction.requestChange(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestChange('idle'));
       dispatch(projectContractAction.setModal(modal));
       dispatch(projectContractAction.setProjectId(projectId));
     }
-    else if (requestChange === ApiStatus.FAIL) {
+    else if (requestChange === message) {
       formik.setSubmitting(false);
-      dispatch(projectContractAction.requestChange(ApiStatus.IDLE));
+      dispatch(projectContractAction.requestChange('idle'));
       error('변경에 실패하였습니다.');
     }
   }, [requestChange]);
@@ -144,7 +144,7 @@ export default function ProjectContractModalRoute() {
           }
           confirm({
             children:     '계약서를 삭제하시겠습니까?',
-            status:       'warn',
+            status:       DialogStatus.WARN,
             confirmText:  '삭제',
             afterConfirm: () => {onDelete(modal);}
           });

@@ -15,8 +15,7 @@ import {
   ProjectStatus
 } from 'project/domain';
 import { projectAction } from 'project/action';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import ProjectBasicFailReasonModalRoute from 'project_status/route/failReasonModal';
 
 export default function ProjectStatusRoute() {
@@ -31,13 +30,13 @@ export default function ProjectStatusRoute() {
   const openFailReasonModal = useCallback(() => dispatch(projectAction.setFailReasonModal(true)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdateStatus === ApiStatus.DONE) {
+    if (requestUpdateStatus === 'done') {
       dispatch(projectAction.setId(id));
-      dispatch(projectAction.requestUpdateStatus(ApiStatus.IDLE));
+      dispatch(projectAction.requestUpdateStatus('idle'));
     }
-    else if (requestUpdateStatus === ApiStatus.FAIL) {
+    else if (requestUpdateStatus === message) {
       error('변경에 실패하였습니다.');
-      dispatch(projectAction.requestUpdateStatus(ApiStatus.IDLE));
+      dispatch(projectAction.requestUpdateStatus('idle'));
     }
   }, [requestUpdateStatus]);
 

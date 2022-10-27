@@ -32,7 +32,7 @@ export default function ProjectBasicBusinessModalRoute() {
     businessApi.getListAll(query)
                .then(setBusinessList)
                .catch((e) => {
-                 console.error(e);
+                 yield put(dialogAction.openError(message));
                  setBusinessList(undefined);
                });
   };

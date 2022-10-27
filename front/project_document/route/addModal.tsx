@@ -17,7 +17,7 @@ import {
   initialProjectDocumentParameter,
   ProjectDocumentParameter
 } from 'project_document/parameter';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function ProjectDocumentAddModalRoute() {
 

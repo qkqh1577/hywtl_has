@@ -1,5 +1,5 @@
 import { UserId } from 'user/domain';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { Box } from '@mui/material';
 import UserIcon from 'layouts/UserIcon';
 import TextBox from 'layouts/Text';

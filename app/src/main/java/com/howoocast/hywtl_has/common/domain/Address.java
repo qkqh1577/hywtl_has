@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 
+    public static final String KEY = "address";
     @NotBlank
     @Column(nullable = false)
     private String depth1; // 시, 도

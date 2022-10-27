@@ -2,7 +2,7 @@ import {
   useLocation,
   useNavigate
 } from 'react-router-dom';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import React, { useEffect } from 'react';
 import {
   useDispatch,
@@ -10,7 +10,6 @@ import {
 } from 'react-redux';
 import { RootState } from 'services/reducer';
 import { loginAction } from 'login/action';
-import { ApiStatus } from 'components/DataFieldProps';
 import AppBarRoute from 'app/route/appBar';
 import ProjectDrawerRoute from 'project/route/projectDrawer';
 import ProjectMemoDrawerRoute from 'project_memo/route/drawer';
@@ -21,6 +20,7 @@ import ProjectAddModalRoute from 'project/route/projectAddModal';
 import { menuAction } from 'menu/action';
 import ReactRouter from 'services/routes';
 import { Box } from '@mui/material';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function () {
 
@@ -28,7 +28,7 @@ export default function () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { detail: loginUser, requestLogin } = useSelector((root: RootState) => root.login);
-  const { alert } = useDialog();
+  const { error } = useDialog();
   const isLoginPage = pathname.startsWith('/login');
 
   useEffect(() => {
@@ -39,13 +39,14 @@ export default function () {
   }, [loginUser]);
 
   useEffect(() => {
-    if (requestLogin === ApiStatus.FAIL) {
+    closeStatus(requestLogin, undefined, () => {
+      dispatch(loginAction.requestLogin('idle'));
+    }, () => {
       if (pathname !== '/login') {
-        alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
+        error('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
         navigate('/login');
       }
-      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
-    }
+    });
   }, [requestLogin]);
 
   return (

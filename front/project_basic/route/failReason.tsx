@@ -11,8 +11,7 @@ import { RootState } from 'services/reducer';
 import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 import { projectBasicAction } from 'project_basic/action';
 import { ProjectEstimateExpectation } from 'project/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function ProjectBasicFailReasonRoute() {
   const dispatch = useDispatch();
@@ -23,13 +22,13 @@ export default function ProjectBasicFailReasonRoute() {
   const onUpdate = useCallback((params: Partial<ProjectBasicFailReasonParameter>) => dispatch(projectBasicAction.updateFailReason(params)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdateFailReason === ApiStatus.DONE) {
+    if (requestUpdateFailReason === 'done') {
       dispatch(projectBasicAction.getFailReason(id));
-      dispatch(projectBasicAction.requestUpdateFailReason(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateFailReason('idle'));
     }
-    else if (requestUpdateFailReason === ApiStatus.FAIL) {
+    else if (requestUpdateFailReason === message) {
       error('변경에 실패하였습니다.');
-      dispatch(projectBasicAction.requestUpdateFailReason(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateFailReason('idle'));
     }
   }, [requestUpdateFailReason]);
 

@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { projectComplexAction } from 'project_complex/action';
 import { ProjectComplexSiteParameter } from 'project_complex/parameter';
 import { ProjectComplexSiteId } from 'project_complex/domain';
@@ -26,37 +26,37 @@ export default function ProjectComplexSiteRoute() {
   const deleteSite = useCallback((id: ProjectComplexSiteId) => dispatch(projectComplexAction.deleteSite(id)), [dispatch]);
 
   useEffect(() => {
-    if (requestPushSite === ApiStatus.DONE) {
+    if (requestPushSite === 'done') {
       dispatch(projectComplexAction.getSiteList(id));
-      dispatch(projectComplexAction.requestPushSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestPushSite('idle'));
     }
-    else if (requestPushSite === ApiStatus.FAIL) {
+    else if (requestPushSite === message) {
       error('추가에 실패하였습니다.');
-      dispatch(projectComplexAction.requestPushSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestPushSite('idle'));
     }
   }, [requestPushSite]);
 
   useEffect(() => {
-    if (requestUpdateSite === ApiStatus.DONE) {
+    if (requestUpdateSite === 'done') {
       dispatch(projectComplexAction.getSiteList(id));
-      dispatch(projectComplexAction.requestUpdateSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestUpdateSite('idle'));
       dispatch(projectBasicAction.getTest(id));
     }
-    else if (requestUpdateSite === ApiStatus.FAIL) {
+    else if (requestUpdateSite === message) {
       error('변경에 실패하였습니다.');
-      dispatch(projectComplexAction.requestUpdateSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestUpdateSite('idle'));
     }
   }, [requestUpdateSite]);
 
   useEffect(() => {
-    if (requestDeleteSite === ApiStatus.DONE) {
+    if (requestDeleteSite === 'done') {
       dispatch(projectComplexAction.getSiteList(id));
-      dispatch(projectComplexAction.requestDeleteSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestDeleteSite('idle'));
       dispatch(projectBasicAction.getTest(id));
     }
-    else if (requestDeleteSite === ApiStatus.FAIL) {
+    else if (requestDeleteSite === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(projectComplexAction.requestDeleteSite(ApiStatus.IDLE));
+      dispatch(projectComplexAction.requestDeleteSite('idle'));
     }
   }, [requestDeleteSite]);
 

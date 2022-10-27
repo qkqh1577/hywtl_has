@@ -14,9 +14,10 @@ import {
 import { RootState } from 'services/reducer';
 import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectCustomEstimateChangeParameter } from 'project_estimate/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 import { ProjectEstimateId } from 'project_estimate/domain';
+import { DialogStatus } from 'dialog/domain';
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
@@ -54,32 +55,22 @@ export default function ProjectCustomEstimateDetailModalRoute() {
   }, [customDetail]);
 
   useEffect(() => {
-    if (requestChangeCustom === ApiStatus.DONE) {
-      alert('변경하었습니다.');
+    closeStatus(requestChangeCustom, () => {
       dispatch(projectEstimateAction.setProjectId(projectId!));
       dispatch(projectEstimateAction.setCustomDetailModal(customDetail!.id));
-      dispatch(projectEstimateAction.requestChangeCustom(ApiStatus.IDLE));
+    }, () => {
+      dispatch(projectEstimateAction.requestChangeCustom('idle'));
       formik.setSubmitting(false);
-    }
-    else if (requestChangeCustom === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
-      dispatch(projectEstimateAction.requestChangeCustom(ApiStatus.IDLE));
-      formik.setSubmitting(false);
-    }
+    });
   }, [requestChangeCustom]);
 
   useEffect(() => {
-    if (requestDeleteCustom === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
+    closeStatus(requestDeleteCustom, () => {
       dispatch(projectEstimateAction.setProjectId(projectId!));
       dispatch(projectEstimateAction.setCustomDetailModal(undefined));
-      dispatch(projectEstimateAction.requestDeleteCustom(ApiStatus.IDLE));
-    }
-    else if (requestDeleteCustom === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(projectEstimateAction.requestDeleteCustom(ApiStatus.IDLE));
-    }
-
+    }, () => {
+      dispatch(projectEstimateAction.requestDeleteCustom('idle'));
+    });
   }, [requestDeleteCustom]);
 
   return (
@@ -106,7 +97,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
             return;
           }
           confirm({
-            status:       'warn',
+            status:       DialogStatus.WARN,
             children:     '해당 견적서를 삭제하시겠습니까?',
             confirmText:  '삭제',
             afterConfirm: () => {

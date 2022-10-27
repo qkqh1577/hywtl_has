@@ -24,8 +24,8 @@ export interface BusinessState {
 }
 
 const initialState: BusinessState = {
-  requestUpsert: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE,
+  requestUpsert: 'idle',
+  requestDelete: 'idle',
 };
 
 export const businessReducer = createReducer(initialState, {

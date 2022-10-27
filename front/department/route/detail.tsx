@@ -20,9 +20,9 @@ import {
 } from 'department/parameter';
 import { departmentAction } from 'department/action';
 import { DepartmentId } from 'department/domain';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
+import { DialogStatus } from 'dialog/domain';
 
 function Element() {
   const id = useId();
@@ -61,10 +61,10 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
+    if (requestUpsert === 'done') {
       alert('저장하였습니다.');
       formik.setSubmitting(false);
-      dispatch(departmentAction.requestUpsert(ApiStatus.IDLE));
+      dispatch(departmentAction.requestUpsert('idle'));
       if (id) {
         dispatch(departmentAction.setId(DepartmentId(id)));
       }
@@ -72,23 +72,23 @@ function Element() {
         navigate('/admin/department-management');
       }
     }
-    else if (requestUpsert === ApiStatus.FAIL) {
+    else if (requestUpsert === message) {
       error('저장에 실패하였습니다.');
       formik.setSubmitting(false);
-      dispatch(departmentAction.requestUpsert(ApiStatus.IDLE));
+      dispatch(departmentAction.requestUpsert('idle'));
     }
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
+    if (requestDelete === 'done') {
       alert('삭제하였습니다.');
       dispatch(departmentAction.setId(undefined));
-      dispatch(departmentAction.requestDelete(ApiStatus.IDLE));
+      dispatch(departmentAction.requestDelete('idle'));
       navigate('/admin/department-management');
     }
-    else if (requestDelete === ApiStatus.FAIL) {
+    else if (requestDelete === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(departmentAction.requestDelete(ApiStatus.IDLE));
+      dispatch(departmentAction.requestDelete('idle'));
     }
   }, [requestDelete]);
   return (
@@ -114,7 +114,7 @@ function Element() {
         onDelete={() => {
           if (id) {
             confirm({
-              status:       'warn',
+              status:       DialogStatus.WARN,
               children:     '해당 조직 정보를 삭제하시겠습니까?',
               confirmText:  '삭제',
               afterConfirm: () => {

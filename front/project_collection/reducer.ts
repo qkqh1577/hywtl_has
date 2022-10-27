@@ -25,11 +25,11 @@ export interface ProjectCollectionState {
 const initial: ProjectCollectionState = {
   seqModal:              false,
   addModal:              false,
-  requestUpdateManager:  ApiStatus.IDLE,
-  requestChangeStageSeq: ApiStatus.IDLE,
-  requestAddStage:       ApiStatus.IDLE,
-  requestChangeStage:    ApiStatus.IDLE,
-  requestDeleteStage:    ApiStatus.IDLE,
+  requestUpdateManager:  'idle',
+  requestChangeStageSeq: 'idle',
+  requestAddStage:       'idle',
+  requestChangeStage:    'idle',
+  requestDeleteStage:    'idle',
 };
 
 export const projectCollectionReducer = createReducer(initial, {

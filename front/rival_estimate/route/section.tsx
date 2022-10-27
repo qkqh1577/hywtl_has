@@ -13,7 +13,7 @@ import { ProjectId } from 'project/domain';
 import { RivalEstimateParameter } from 'rival_estimate/parameter';
 import { RivalEstimateId } from 'rival_estimate/domain';
 import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function RivalEstimateListRoute() {
 
@@ -26,35 +26,35 @@ export default function RivalEstimateListRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalEstimateAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestPush === ApiStatus.DONE) {
-      dispatch(rivalEstimateAction.requestPush(ApiStatus.IDLE));
+    if (requestPush === 'done') {
+      dispatch(rivalEstimateAction.requestPush('idle'));
       reload(projectId);
     }
-    else if (requestPush === ApiStatus.FAIL) {
+    else if (requestPush === message) {
       error('등록에 실패하였습니다.');
-      dispatch(rivalEstimateAction.requestPush(ApiStatus.IDLE));
+      dispatch(rivalEstimateAction.requestPush('idle'));
     }
   }, [requestPush]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
-      dispatch(rivalEstimateAction.requestUpdate(ApiStatus.IDLE));
+    if (requestUpdate === 'done') {
+      dispatch(rivalEstimateAction.requestUpdate('idle'));
       reload(projectId);
     }
-    else if (requestUpdate === ApiStatus.FAIL) {
+    else if (requestUpdate === message) {
       error('변경에 실패하였습니다.');
-      dispatch(rivalEstimateAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(rivalEstimateAction.requestUpdate('idle'));
     }
   }, [requestUpdate]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
-      dispatch(rivalEstimateAction.requestDelete(ApiStatus.IDLE));
+    if (requestDelete === 'done') {
+      dispatch(rivalEstimateAction.requestDelete('idle'));
       reload(projectId);
     }
-    else if (requestDelete === ApiStatus.FAIL) {
+    else if (requestDelete === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(rivalEstimateAction.requestDelete(ApiStatus.IDLE));
+      dispatch(rivalEstimateAction.requestDelete('idle'));
     }
   }, [requestDelete]);
 

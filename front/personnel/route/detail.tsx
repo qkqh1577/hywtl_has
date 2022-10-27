@@ -21,8 +21,7 @@ import {
 import { PersonnelId, } from 'personnel/domain';
 import PersonnelDetail from 'personnel/view/Detail';
 import { departmentAction } from 'department/action';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 
 function Element() {
   const id = useId();
@@ -71,15 +70,15 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
+    if (requestUpdate === 'done') {
       alert('저장하였습니다.');
       formik.setSubmitting(false);
       dispatch(personnelAction.setId(PersonnelId(id!)));
-      dispatch(personnelAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(personnelAction.requestUpdate('idle'));
     }
-    else if (requestUpdate === ApiStatus.FAIL) {
+    else if (requestUpdate === message) {
       error('저장에 실패하였습니다.');
-      dispatch(personnelAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(personnelAction.requestUpdate('idle'));
       formik.setSubmitting(false);
     }
   }, [requestUpdate]);

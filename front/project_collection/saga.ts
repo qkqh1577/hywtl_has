@@ -45,13 +45,13 @@ function* watchUpdateManager() {
     const { payload: userId } = yield take(projectCollectionAction.updateManager);
     try {
       const { projectId } = yield select((root: RootState) => root.projectCollection);
-      yield put(projectCollectionAction.requestUpdateManager(ApiStatus.REQUEST));
+      yield put(projectCollectionAction.requestUpdateManager('request'));
       yield call(projectCollectionApi.updateManager, projectId, userId);
-      yield put(projectCollectionAction.requestUpdateManager(ApiStatus.DONE));
+      yield put(projectCollectionAction.requestUpdateManager('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectCollectionAction.requestUpdateManager(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectCollectionAction.requestUpdateManager(message));
     }
   }
 }
@@ -61,13 +61,13 @@ function* watchChangeStageSeq() {
     const { payload: idList } = yield take(projectCollectionAction.changeStageSeq);
     try {
       const { projectId } = yield select((root: RootState) => root.projectCollection);
-      yield put(projectCollectionAction.requestChangeStageSeq(ApiStatus.REQUEST));
+      yield put(projectCollectionAction.requestChangeStageSeq('request'));
       yield call(projectCollectionApi.changeStageSeq, projectId, idList);
-      yield put(projectCollectionAction.requestChangeStageSeq(ApiStatus.DONE));
+      yield put(projectCollectionAction.requestChangeStageSeq('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectCollectionAction.requestChangeStageSeq(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectCollectionAction.requestChangeStageSeq(message));
     }
   }
 }
@@ -77,13 +77,13 @@ function* watchAddStage() {
     const { payload: params } = yield take(projectCollectionAction.addStage);
     try {
       const { projectId } = yield select((root: RootState) => root.projectCollection);
-      yield put(projectCollectionAction.requestAddStage(ApiStatus.REQUEST));
+      yield put(projectCollectionAction.requestAddStage('request'));
       yield call(projectCollectionApi.addStage, projectId, params);
-      yield put(projectCollectionAction.requestAddStage(ApiStatus.DONE));
+      yield put(projectCollectionAction.requestAddStage('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectCollectionAction.requestAddStage(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectCollectionAction.requestAddStage(message));
     }
   }
 }
@@ -92,13 +92,13 @@ function* watchChangeStage() {
   while (true) {
     const { payload: params } = yield take(projectCollectionAction.changeStage);
     try {
-      yield put(projectCollectionAction.requestChangeStage(ApiStatus.REQUEST));
+      yield put(projectCollectionAction.requestChangeStage('request'));
       yield call(projectCollectionApi.changeStage, params);
-      yield put(projectCollectionAction.requestChangeStage(ApiStatus.DONE));
+      yield put(projectCollectionAction.requestChangeStage('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectCollectionAction.requestChangeStage(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectCollectionAction.requestChangeStage(message));
     }
   }
 }
@@ -107,13 +107,13 @@ function* watchDeleteStage() {
   while (true) {
     const { payload: id } = yield take(projectCollectionAction.deleteStage);
     try {
-      yield put(projectCollectionAction.requestDeleteStage(ApiStatus.REQUEST));
+      yield put(projectCollectionAction.requestDeleteStage('request'));
       yield call(projectCollectionApi.deleteStage, id);
-      yield put(projectCollectionAction.requestDeleteStage(ApiStatus.DONE));
+      yield put(projectCollectionAction.requestDeleteStage('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectCollectionAction.requestDeleteStage(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectCollectionAction.requestDeleteStage(message));
     }
   }
 }

@@ -6,35 +6,37 @@ import {
 } from 'redux-saga/effects';
 import { loginAction } from 'login/action';
 import { loginApi } from 'login/api';
-import { ApiStatus } from 'components/DataFieldProps';
 import { LoginVO } from 'login/domain';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchLogin() {
   while (true) {
     const { payload: params } = yield take(loginAction.login);
     try {
-      yield put(loginAction.requestLogin(ApiStatus.REQUEST));
+      yield put(loginAction.requestLogin('request'));
       yield call(loginApi.login, params);
-      yield put(loginAction.requestLogin(ApiStatus.DONE));
+      yield put(loginAction.requestLogin('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(loginAction.requestLogin(ApiStatus.FAIL));
+      const message = getErrorMessage(loginAction.login, e);
+      yield put(loginAction.requestLogin(message));
     }
   }
 }
 
 function* watchLogout() {
   while (true) {
-    yield take(loginAction.requestLogout);
+    yield take(loginAction.logout);
     try {
-      yield put(loginAction.requestLogout(ApiStatus.REQUEST));
+      yield put(loginAction.requestLogout('request'));
       yield call(loginApi.logout);
-      yield put(loginAction.requestLogout(ApiStatus.DONE));
+      yield put(loginAction.requestLogout('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(loginAction.requestLogout(ApiStatus.FAIL));
+      const message = getErrorMessage(loginAction.logout, e);
+      yield put(dialogAction.openError(message));
+      yield put(loginAction.requestLogout(message));
     }
   }
 }
@@ -49,12 +51,14 @@ function* watchDetail() {
       }
       else {
         yield put(loginAction.setDetail(undefined));
-        yield put(loginAction.requestLogin(ApiStatus.FAIL));
+        yield put(loginAction.requestLogin('로그인 정보가 없습니다.'));
       }
     }
     catch (e) {
+      const message = getErrorMessage(loginAction.requestDetail, e);
       yield put(loginAction.setDetail(undefined));
-      yield put(loginAction.requestLogin(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(loginAction.requestLogin(message));
     }
   }
 }
@@ -63,13 +67,15 @@ function* watchChange() {
   while (true) {
     const { payload: params } = yield take(loginAction.change);
     try {
-      yield put(loginAction.requestChange(ApiStatus.REQUEST));
+      yield put(loginAction.requestChange('request'));
       yield call(loginApi.change, params);
-      yield put(loginAction.requestChange(ApiStatus.DONE));
+      yield put(loginAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(loginAction.requestChange(ApiStatus.FAIL));
+      const message = getErrorMessage(loginAction.change, e);
+      yield put(dialogAction.openError(message));
+      yield put(loginAction.requestChange(message));
     }
   }
 }

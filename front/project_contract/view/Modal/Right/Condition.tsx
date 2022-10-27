@@ -19,7 +19,7 @@ import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddRow from './ConditionAddRow';
 import { ContractConditionVO } from 'admin/contract/condition/domain';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function () {
   const formik = useContext(FormikContext);

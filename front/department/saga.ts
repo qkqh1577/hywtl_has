@@ -11,7 +11,6 @@ import {
   DepartmentVO
 } from 'department/domain';
 import { departmentApi } from 'department/api';
-import { ApiStatus } from 'components/DataFieldProps';
 
 function* watchFilter() {
   while (true) {
@@ -51,13 +50,13 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(departmentAction.upsert);
     try {
-      yield put(departmentAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(departmentAction.requestUpsert('request'));
       yield call(departmentApi.upsert, params);
-      yield put(departmentAction.requestUpsert(ApiStatus.DONE));
+      yield put(departmentAction.requestUpsert('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(departmentAction.requestUpsert(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(departmentAction.requestUpsert(message));
     }
   }
 }
@@ -66,13 +65,13 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(departmentAction.deleteOne);
     try {
-      yield put(departmentAction.requestDelete(ApiStatus.REQUEST));
+      yield put(departmentAction.requestDelete('request'));
       yield call(departmentApi.deleteOne, id);
-      yield put(departmentAction.requestDelete(ApiStatus.DONE));
+      yield put(departmentAction.requestDelete('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(departmentAction.requestDelete(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(departmentAction.requestDelete(message));
     }
   }
 }

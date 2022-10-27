@@ -10,7 +10,8 @@ import {
 } from 'user_notification/action';
 import { userNotificationApi } from 'user_notification/api';
 import { UserNotificationVO } from 'user_notification/domain';
-import { dialogAction } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
+import { DialogStatus } from 'dialog/domain';
 
 function* watchCount() {
   while (true) {
@@ -57,7 +58,7 @@ function* deleteOne() {
     catch (e) {
       yield put(dialogAction.openAlert({
         children: '문제가 발생했습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
     }
   }
@@ -74,7 +75,7 @@ function* deleteAll() {
     catch (e) {
       yield put(dialogAction.openAlert({
         children: '문제가 발생했습니다.',
-        status:   'error',
+        status:   DialogStatus.ERROR,
       }));
     }
   }

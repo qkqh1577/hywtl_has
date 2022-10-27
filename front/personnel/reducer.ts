@@ -18,7 +18,7 @@ export interface PersonnelState {
 }
 
 const initialState: PersonnelState = {
-  requestUpdate: ApiStatus.IDLE,
+  requestUpdate: 'idle',
 };
 
 export const personnelReducer = createReducer(initialState, {

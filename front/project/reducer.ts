@@ -28,9 +28,9 @@ export interface ProjectState {
 }
 
 const initial: ProjectState = {
-  requestAdd:           ApiStatus.IDLE,
-  requestUpdateStatus:  ApiStatus.IDLE,
-  requestAddFailReason: ApiStatus.IDLE,
+  requestAdd:           'idle',
+  requestUpdateStatus:  'idle',
+  requestAddFailReason: 'idle',
   addModal:             false,
   failReasonModal:      false,
   drawerOpen:           true,

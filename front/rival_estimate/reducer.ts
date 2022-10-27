@@ -13,9 +13,9 @@ export interface RivalEstimateState {
 }
 
 const initialRivalEstimateState: RivalEstimateState = {
-  requestPush:   ApiStatus.IDLE,
-  requestUpdate: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE,
+  requestPush:   'idle',
+  requestUpdate: 'idle',
+  requestDelete: 'idle',
 };
 
 export const rivalEstimateReducer = createReducer(initialRivalEstimateState, {

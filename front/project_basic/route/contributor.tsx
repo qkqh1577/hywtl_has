@@ -15,8 +15,7 @@ import {
 import { projectBasicAction } from 'project_basic/action';
 import { ProjectId } from 'project/domain';
 import { ProjectBasicContributorId } from 'project_basic/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function ProjectBasicContributorRoute() {
 
@@ -42,68 +41,68 @@ export default function ProjectBasicContributorRoute() {
   const onDeleteExternal = useCallback((id: ProjectBasicContributorId) => dispatch(projectBasicAction.deleteExternal(id)), [dispatch]);
 
   useEffect(() => {
-    if (requestAddInternal === ApiStatus.DONE) {
+    if (requestAddInternal === 'done') {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestAddInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestAddInternal('idle'));
     }
-    else if (requestAddInternal === ApiStatus.FAIL) {
+    else if (requestAddInternal === message) {
       error('사내 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestAddInternal('idle'));
     }
   }, [requestAddInternal]);
 
   useEffect(() => {
-    if (requestUpdateInternal === ApiStatus.DONE) {
+    if (requestUpdateInternal === 'done') {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestUpdateInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateInternal('idle'));
     }
-    else if (requestUpdateInternal === ApiStatus.FAIL) {
+    else if (requestUpdateInternal === message) {
       error('사내 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateInternal('idle'));
     }
   }, [requestUpdateInternal]);
 
   useEffect(() => {
-    if (requestDeleteInternal === ApiStatus.DONE) {
+    if (requestDeleteInternal === 'done') {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestDeleteInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestDeleteInternal('idle'));
     }
-    else if (requestDeleteInternal === ApiStatus.FAIL) {
+    else if (requestDeleteInternal === message) {
       error('사내 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteInternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestDeleteInternal('idle'));
     }
   }, [requestDeleteInternal]);
 
   useEffect(() => {
-    if (requestAddExternal === ApiStatus.DONE) {
+    if (requestAddExternal === 'done') {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestAddExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestAddExternal('idle'));
     }
-    else if (requestAddExternal === ApiStatus.FAIL) {
+    else if (requestAddExternal === message) {
       error('사외 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestAddExternal('idle'));
     }
   }, [requestAddExternal]);
 
   useEffect(() => {
-    if (requestUpdateExternal === ApiStatus.DONE) {
+    if (requestUpdateExternal === 'done') {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestUpdateExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateExternal('idle'));
     }
-    else if (requestUpdateExternal === ApiStatus.FAIL) {
+    else if (requestUpdateExternal === message) {
       error('사외 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestUpdateExternal('idle'));
     }
   }, [requestUpdateExternal]);
 
   useEffect(() => {
-    if (requestDeleteExternal === ApiStatus.DONE) {
+    if (requestDeleteExternal === 'done') {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestDeleteExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestDeleteExternal('idle'));
     }
-    else if (requestDeleteExternal === ApiStatus.FAIL) {
+    else if (requestDeleteExternal === message) {
       error('사외 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteExternal(ApiStatus.IDLE));
+      dispatch(projectBasicAction.requestDeleteExternal('idle'));
     }
   }, [requestDeleteExternal]);
 

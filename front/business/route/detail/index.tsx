@@ -23,10 +23,10 @@ import BusinessDetail from 'business/view/Detail';
 import BusinessInvolvedProjectRoute from 'business/route/detail/involvedProject';
 import BusinessRivalStatisticRoute from 'business/route/detail/rivalStatistic';
 import BusinessRivalProjectListRoute from 'business/route/detail/rivalProject';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
 import BusinessBasicRoute from 'business/route/detail/basic';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
 
 function Element() {
   const id = useId();
@@ -63,29 +63,29 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
+    if (requestUpsert === 'done') {
       alert('수정하였습니다.');
       formik.setSubmitting(false);
       dispatch(businessAction.setId(id ? BusinessId(id) : undefined));
-      dispatch(businessAction.requestUpsert(ApiStatus.IDLE));
+      dispatch(businessAction.requestUpsert('idle'));
     }
-    else if (requestUpsert === ApiStatus.FAIL) {
+    else if (requestUpsert === message) {
       error('수정에 실패하였습니다.');
       formik.setSubmitting(false);
-      dispatch(businessAction.requestUpsert(ApiStatus.IDLE));
+      dispatch(businessAction.requestUpsert('idle'));
     }
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
+    if (requestDelete === 'done') {
       alert('삭제하였습니다.');
       dispatch(businessAction.setId(undefined));
-      dispatch(businessAction.requestDelete(ApiStatus.IDLE));
+      dispatch(businessAction.requestDelete('idle'));
       navigate('/business-management');
     }
-    else if (requestDelete === ApiStatus.FAIL) {
+    else if (requestDelete === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(businessAction.requestDelete(ApiStatus.IDLE));
+      dispatch(businessAction.requestDelete('idle'));
     }
   }, [requestDelete]);
 
@@ -107,7 +107,7 @@ function Element() {
         onDelete={() => {
           if (id) {
             confirm({
-              status:       'warn',
+              status:       DialogStatus.WARN,
               children:     '해당 업체 정보를 삭제하시겠습니까?',
               confirmText:  '삭제',
               afterConfirm: () => {

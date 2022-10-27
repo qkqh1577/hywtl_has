@@ -18,9 +18,9 @@ import {
 } from 'formik';
 import { ProjectScheduleId, } from 'project_schedule/domain';
 import ProjectScheduleDetailModal from 'project_schedule/view/DetailModal';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 import dayjs from 'dayjs';
+import { DialogStatus } from 'dialog/domain';
 
 export default function ProjectScheduleDetailModalRoute() {
   const dispatch = useDispatch();
@@ -80,31 +80,31 @@ export default function ProjectScheduleDetailModalRoute() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
+    if (requestUpdate === 'done') {
       alert('수정하였습니다.');
-      dispatch(projectScheduleAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestUpdate('idle'));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
       formik.setSubmitting(false);
     }
-    else if (requestUpdate === ApiStatus.FAIL) {
+    else if (requestUpdate === message) {
       error('수정에 실패하였습니다.');
-      dispatch(projectScheduleAction.requestUpdate(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestUpdate('idle'));
       formik.setSubmitting(false);
     }
   }, [requestUpdate]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
+    if (requestDelete === 'done') {
       alert('삭제되었습니다.');
-      dispatch(projectScheduleAction.requestDelete(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestDelete('idle'));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
       formik.setSubmitting(false);
     }
-    else if (requestDelete === ApiStatus.FAIL) {
+    else if (requestDelete === message) {
       error('삭제에 실패하였습니다.');
-      dispatch(projectScheduleAction.requestDelete(ApiStatus.IDLE));
+      dispatch(projectScheduleAction.requestDelete('idle'));
       formik.setSubmitting(false);
     }
   }, [requestDelete]);
@@ -117,7 +117,7 @@ export default function ProjectScheduleDetailModalRoute() {
         onDelete={() => {
           if (detail && detail.id) {
             confirm({
-              status:       'warn',
+              status:       DialogStatus.WARN,
               children:     '해당 일정을 삭제하시겠습니까?',
               confirmText:  '삭제',
               afterConfirm: () => {

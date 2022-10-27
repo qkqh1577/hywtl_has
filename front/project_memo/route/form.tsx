@@ -22,8 +22,7 @@ import {
   ProjectMemoAddParameter,
 } from 'project_memo/parameter';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function ProjectMemoDrawerFormRoute() {
   const { pathname } = useLocation();
@@ -49,7 +48,7 @@ export default function ProjectMemoDrawerFormRoute() {
   }, [defaultCategory]);
 
   useEffect(() => {
-    if (requestAdd === ApiStatus.DONE) {
+    if (requestAdd === 'done') {
       formik.setSubmitting(false);
       alert('등록하였습니다.');
       formik.setValues({
@@ -57,9 +56,9 @@ export default function ProjectMemoDrawerFormRoute() {
         category:    defaultCategory,
       });
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-      dispatch(projectMemoAction.requestAdd(ApiStatus.IDLE));
+      dispatch(projectMemoAction.requestAdd('idle'));
     }
-    else if (requestAdd === ApiStatus.FAIL) {
+    else if (requestAdd === message) {
       formik.setSubmitting(false);
       error('등록에 실패하였습니다.');
 

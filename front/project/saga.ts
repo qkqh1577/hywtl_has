@@ -40,13 +40,13 @@ function* watchAdd() {
   while (true) {
     const { payload: params } = yield take(projectAction.add);
     try {
-      yield put(projectAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectAction.requestAdd('request'));
       yield call(projectApi.add, params);
-      yield put(projectAction.requestAdd(ApiStatus.DONE));
+      yield put(projectAction.requestAdd('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestAdd(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestAdd(message));
     }
   }
 }
@@ -56,13 +56,13 @@ function* watchUpdateStatus() {
     const { payload: params } = yield take(projectAction.updateStatus);
     try {
       const { id } = yield select((root: RootState) => root.project);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.REQUEST));
+      yield put(projectAction.requestUpdateStatus('request'));
       yield call(projectApi.updateStatus, id, params);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.DONE));
+      yield put(projectAction.requestUpdateStatus('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestUpdateStatus(message));
     }
   }
 }
@@ -72,13 +72,13 @@ function* watchAddFailReason() {
     const { payload: params } = yield take(projectAction.addFailReason);
     try {
       const { id } = yield select((root: RootState) => root.project);
-      yield put(projectAction.requestAddFailReason(ApiStatus.REQUEST));
+      yield put(projectAction.requestAddFailReason('request'));
       yield call(projectApi.addFailReason, id, params);
-      yield put(projectAction.requestAddFailReason(ApiStatus.DONE));
+      yield put(projectAction.requestAddFailReason('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestAddFailReason(ApiStatus.FAIL));
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestAddFailReason(message));
     }
   }
 }

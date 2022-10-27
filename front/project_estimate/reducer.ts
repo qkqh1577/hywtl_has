@@ -32,14 +32,14 @@ export interface ProjectEstimateState {
 
 const initial: ProjectEstimateState = {
   finalModal:             false,
-  requestAddCustom:       ApiStatus.IDLE,
-  requestAddSystem:       ApiStatus.IDLE,
-  requestChangeCustom:    ApiStatus.IDLE,
-  requestChangeSystem:    ApiStatus.IDLE,
-  requestExtensionCustom: ApiStatus.IDLE,
-  requestSetFinal:        ApiStatus.IDLE,
-  requestDeleteCustom:    ApiStatus.IDLE,
-  requestDeleteSystem:    ApiStatus.IDLE,
+  requestAddCustom:       'idle',
+  requestAddSystem:       'idle',
+  requestChangeCustom:    'idle',
+  requestChangeSystem:    'idle',
+  requestExtensionCustom: 'idle',
+  requestSetFinal:        'idle',
+  requestDeleteCustom:    'idle',
+  requestDeleteSystem:    'idle',
 };
 
 export const projectEstimateReducer = createReducer(initial, {

@@ -5,7 +5,7 @@ import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 interface Props {
   index: number;

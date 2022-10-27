@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import useId from 'services/useId';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import Button from 'layouts/Button';
 
 interface Props {

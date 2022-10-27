@@ -45,18 +45,18 @@ export interface ProjectBasicState {
 }
 
 const initial: ProjectBasicState = {
-  requestUpdateBasic:      ApiStatus.IDLE,
-  requestAddBusiness:      ApiStatus.IDLE,
-  requestChangeBusiness:   ApiStatus.IDLE,
-  requestDeleteBusiness:   ApiStatus.IDLE,
-  requestUpdateDesign:     ApiStatus.IDLE,
-  requestUpdateFailReason: ApiStatus.IDLE,
-  requestAddInternal:      ApiStatus.IDLE,
-  requestUpdateInternal:   ApiStatus.IDLE,
-  requestDeleteInternal:   ApiStatus.IDLE,
-  requestAddExternal:      ApiStatus.IDLE,
-  requestUpdateExternal:   ApiStatus.IDLE,
-  requestDeleteExternal:   ApiStatus.IDLE,
+  requestUpdateBasic:      'idle',
+  requestAddBusiness:      'idle',
+  requestChangeBusiness:   'idle',
+  requestDeleteBusiness:   'idle',
+  requestUpdateDesign:     'idle',
+  requestUpdateFailReason: 'idle',
+  requestAddInternal:      'idle',
+  requestUpdateInternal:   'idle',
+  requestDeleteInternal:   'idle',
+  requestAddExternal:      'idle',
+  requestUpdateExternal:   'idle',
+  requestDeleteExternal:   'idle',
 };
 
 export const projectBasicReducer = createReducer(initial, {
