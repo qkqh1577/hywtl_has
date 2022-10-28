@@ -14,8 +14,8 @@ public class ProjectContractCollectionStageParameter {
     @NotBlank(message = ProjectContractCollection.KEY + "_stage.name.not_blank")
     private String name;
 
-    @NotNull(message = ProjectContractCollection.KEY + "_stage.ratio.not_null")
-    private Double ratio;
+    @NotNull(message = ProjectContractCollection.KEY + "_stage.rate.not_null")
+    private Double rate;
 
     @NotNull(message = ProjectContractCollection.KEY + ".amount.not_null")
     private Long amount;

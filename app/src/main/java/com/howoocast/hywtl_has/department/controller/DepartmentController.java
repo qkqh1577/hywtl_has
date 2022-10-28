@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.department.controller;
 
-import com.howoocast.hywtl_has.department.common.DepartmentCategory;
+import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
 import com.howoocast.hywtl_has.department.parameter.DepartmentChangeTreeParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentParameter;
 import com.howoocast.hywtl_has.department.parameter.DepartmentPredicateBuilder;

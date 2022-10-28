@@ -28,7 +28,7 @@ export default function () {
       error('단계가 필요합니다.');
       return;
     }
-    if (!item.ratio) {
+    if (!item.rate) {
       error('비율이 필요합니다.');
       return;
     }
@@ -54,14 +54,14 @@ export default function () {
       </Td>
       <Td>
         <Input
-          key={item.ratio}
+          key={item.rate}
           type="number"
-          defaultValue={item.ratio ?? ''}
+          defaultValue={item.rate ?? ''}
           variant="outlined"
           onBlur={(e) => {
             const value = +(e.target.value) || undefined;
-            if (item.ratio !== value) {
-              setItem((prevState => ({ ...prevState, ratio: value })));
+            if (item.rate !== value) {
+              setItem((prevState => ({ ...prevState, rate: value })));
             }
           }}
         />

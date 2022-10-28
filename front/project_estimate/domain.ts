@@ -93,7 +93,7 @@ export interface ProjectEstimateComplexBuildingVO {
   floorCount?: number;
   height?: number;
   baseArea?: number;
-  ratio?: number;
+  rate?: number;
   buildingDocument?: ProjectDocumentShortVO;
   conditionList?: string[];
   inTest?: boolean;

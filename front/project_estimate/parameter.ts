@@ -98,7 +98,7 @@ export interface ProjectEstimateComplexBuildingParameter {
   floorCount?: number;
   height?: number;
   baseArea?: number;
-  ratio?: number;
+  rate?: number;
   buildingDocumentId?: ProjectDocumentId;
   conditionList?: string[];
   inTest?: boolean;

@@ -96,7 +96,7 @@ public class User extends CustomEntity {
     /**
      * 영문명
      */
-    private String englishName;
+    private String engName;
 
     /**
      * 생년월일
@@ -247,7 +247,7 @@ public class User extends CustomEntity {
     }
 
     public void change(
-        String englishName,
+        String engName,
         LocalDate birthDate,
         String sex,
         String mobilePhone,
@@ -257,7 +257,7 @@ public class User extends CustomEntity {
         String address,
         @Nullable FileItem profile
     ) {
-        this.englishName = englishName;
+        this.engName = engName;
         this.birthDate = birthDate;
         this.sex = sex;
         this.mobilePhone = mobilePhone;

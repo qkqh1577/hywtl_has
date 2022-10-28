@@ -32,15 +32,15 @@ import { ColorPalette } from 'assets/theme';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function TotalRatio() {
+function TotalRate() {
 
   const formik = useContext(FormikContext);
   const list = formik.values.stageList;
   const [value, setValue] = useState<number>(0);
   useEffect(() => {
     setValue(
-      list.map((item) => item.ratio)
-          .map(ratio => !ratio || Number.isNaN(+ratio) ? 0 : +ratio)
+      list.map((item) => item.rate)
+          .map(rate => !rate || Number.isNaN(+rate) ? 0 : +rate)
           .reduce((a,
                    b
             ) => a + b
@@ -110,14 +110,14 @@ export default function Form() {
               </Td>
               <Td>
                 <Input
-                  key={item.ratio}
+                  key={item.rate}
                   type="number"
-                  defaultValue={item.ratio ?? ''}
+                  defaultValue={item.rate ?? ''}
                   variant="outlined"
                   onBlur={(e) => {
                     const value = +(e.target.value) || undefined;
-                    if (item.ratio !== value) {
-                      formik.setFieldValue(`stageList.${i}.ratio`, value);
+                    if (item.rate !== value) {
+                      formik.setFieldValue(`stageList.${i}.rate`, value);
                     }
                   }}
                 />
@@ -230,7 +230,7 @@ export default function Form() {
             합계
           </Td>
           <Td>
-            <TotalRatio />
+            <TotalRate />
           </Td>
           <Td align="right">
             금액 합계

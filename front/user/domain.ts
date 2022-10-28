@@ -48,7 +48,7 @@ export interface UserShortVO {
 
 export interface UserVO
   extends UserShortVO {
-  englishName?: string;
+  engName?: string;
   sex?: string;
   mobilePhone?: string;
   privateEmail?: string;

@@ -5,16 +5,16 @@ import { FormikContext } from 'formik';
 import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextBox from 'layouts/Text';
-import { initialPersonnelLicenseParameter } from 'personnel/parameter';
+import { initialPersonnelLicenceParameter } from 'personnel/parameter';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 const spaceCount = 6;
-export default function LicenseForm() {
+export default function LicenceForm() {
   const formik = useContext(FormikContext);
-  const licenseList = formik.values.licenseList ?? [];
+  const licenceList = formik.values.licenceList ?? [];
   const edit = formik.values.edit;
   return (
     <Box sx={{
@@ -35,7 +35,7 @@ export default function LicenseForm() {
         {edit && (
           <Button
             onClick={() => {
-              formik.setFieldValue('licenseList', [...licenseList, initialPersonnelLicenseParameter]);
+              formik.setFieldValue('licenceList', [...licenceList, initialPersonnelLicenceParameter]);
             }}>
             + 추가
           </Button>
@@ -48,7 +48,7 @@ export default function LicenseForm() {
         justifyContent: 'space-between',
         alignItems:     'flex-start'
       }}>
-        {!edit && licenseList.length === 0 && (
+        {!edit && licenceList.length === 0 && (
           <Box sx={{
             display:     'flex',
             width:       '100%',
@@ -60,7 +60,7 @@ export default function LicenseForm() {
             </TextBox>
           </Box>
         )}
-        {licenseList.map((values,
+        {licenceList.map((values,
                           i
         ) => (
           <Box
@@ -76,11 +76,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="면허정보"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="면허정보" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.name}
@@ -91,7 +87,7 @@ export default function LicenseForm() {
                     }
                     const value = e.target.value || undefined;
                     if (values.name !== value) {
-                      formik.setFieldValue(`licenseList.${i}.name`, value);
+                      formik.setFieldValue(`licenceList.${i}.name`, value);
                     }
                   }}
                 />
@@ -101,10 +97,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                label="종별"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel label="종별" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.type}
@@ -115,7 +108,7 @@ export default function LicenseForm() {
                     }
                     const value = e.target.value || undefined;
                     if (values.type !== value) {
-                      formik.setFieldValue(`licenseList.${i}.type`, value);
+                      formik.setFieldValue(`licenceList.${i}.type`, value);
                     }
                   }}
                 />
@@ -125,11 +118,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="발급기관명"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="발급기관명" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.organizationName}
@@ -140,7 +129,7 @@ export default function LicenseForm() {
                     }
                     const value = e.target.value || undefined;
                     if (values.organizationName !== value) {
-                      formik.setFieldValue(`licenseList.${i}.organizationName`, value);
+                      formik.setFieldValue(`licenceList.${i}.organizationName`, value);
                     }
                   }}
                 />
@@ -150,11 +139,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="인가번호"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="인가번호" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.qualifiedNumber}
@@ -165,7 +150,7 @@ export default function LicenseForm() {
                     }
                     const value = e.target.value || undefined;
                     if (values.qualifiedNumber !== value) {
-                      formik.setFieldValue(`licenseList.${i}.qualifiedNumber`, value);
+                      formik.setFieldValue(`licenceList.${i}.qualifiedNumber`, value);
                     }
                   }}
                 />
@@ -175,10 +160,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                label="비고"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel label="비고" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.note}
@@ -189,7 +171,7 @@ export default function LicenseForm() {
                     }
                     const value = e.target.value || undefined;
                     if (values.note !== value) {
-                      formik.setFieldValue(`licenseList.${i}.note`, value);
+                      formik.setFieldValue(`licenceList.${i}.note`, value);
                     }
                   }}
                 />
@@ -199,11 +181,7 @@ export default function LicenseForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel
-                required={edit}
-                label="만료일"
-                labelPosition="top"
-              >
+              <DataFieldWithLabel required={edit} label="만료일" labelPosition="top">
                 <DatePicker
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
@@ -220,7 +198,7 @@ export default function LicenseForm() {
                     const formikValue = values.qualifiedDate ? dayjs(values.qualifiedDate)
                     .format('YYYY-MM-DD') : undefined;
                     if (formikValue !== value) {
-                      formik.setFieldValue(`licenseList.${i}.qualifiedDate`, value);
+                      formik.setFieldValue(`licenceList.${i}.qualifiedDate`, value);
                     }
                   }}
                   renderInput={(parameter) => (
@@ -246,13 +224,13 @@ export default function LicenseForm() {
             }}>
               {edit && (
                 <FontAwesomeIcon
+                  icon="trash"
                   style={{
                     color:  ColorPalette._9bb6ea,
                     cursor: 'pointer'
                   }}
-                  icon="trash"
                   onClick={() => {
-                    formik.setFieldValue('licenseList', licenseList.filter((license,
+                    formik.setFieldValue('licenceList', licenceList.filter((licence,
                                                                             j
                     ) => i !== j));
                   }}

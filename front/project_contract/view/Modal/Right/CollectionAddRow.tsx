@@ -11,6 +11,7 @@ import useDialog from 'dialog/hook';
 import { ProjectContractCollectionStageParameter } from 'project_contract/parameter';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { getRateAmount } from 'util/NumberUtil';
 
 interface Props {
   stageList: ProjectContractCollectionStageParameter[];
@@ -29,7 +30,7 @@ export default function ({
       error('단계가 필요합니다.');
       return;
     }
-    if (!item.ratio) {
+    if (!item.rate) {
       error('비율이 필요합니다.');
       return;
     }
@@ -57,23 +58,23 @@ export default function ({
       </Td>
       <Td>
         <Input
-          key={item.ratio}
+          key={item.rate}
           type="number"
-          defaultValue={item.ratio ?? ''}
+          defaultValue={item.rate ?? ''}
           variant="outlined"
           onBlur={(e) => {
             const value = +(e.target.value) || undefined;
-            if (item.ratio !== value) {
+            if (item.rate !== value) {
               setItem((prevState => ({
                 ...prevState,
-                ratio: value
+                rate: value
               } as ProjectContractCollectionStageParameter)));
             }
           }}
         />
       </Td>
       <Td align="right">
-        {getAmount(item.ratio, totalAmount)
+        {getRateAmount(item.rate, totalAmount)
         .toLocaleString()}
       </Td>
       <Td>
@@ -129,17 +130,4 @@ export default function ({
       </Td>
     </TableRow>
   );
-}
-
-function getAmount(ratio: number | string | undefined,
-                   totalAmount: number | undefined
-): number {
-  if (!ratio || !totalAmount) {
-    return 0;
-  }
-  const r = (typeof ratio === 'string' ? +ratio : ratio) / 100.0;
-
-  const t = (totalAmount * r).toFixed(0);
-
-  return +t;
 }

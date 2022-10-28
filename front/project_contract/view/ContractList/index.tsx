@@ -114,7 +114,7 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>
                   {item.pdfFile && (
                     <Button shape="small" onClick={() => {
-                      window.open(`/file-items/${item.pdfFile!.id}`, '_blank');
+                      window.open(`/file-item/${item.pdfFile!.id}`, '_blank');
                     }}>
                       다운로드
                     </Button>

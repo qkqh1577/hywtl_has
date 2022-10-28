@@ -26,7 +26,7 @@ export const initialProjectContractBasicParameter = {} as ProjectContractBasicPa
 
 export interface ProjectContractCollectionStageParameter {
   name: string;
-  ratio: number;
+  rate: number;
   amount: number;
   note?: string;
   expectedDate: string;

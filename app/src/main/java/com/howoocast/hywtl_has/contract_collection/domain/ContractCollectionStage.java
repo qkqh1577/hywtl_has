@@ -14,7 +14,7 @@ public class ContractCollectionStage {
 
     private String name;
 
-    private Double ratio;
+    private Double rate;
 
     private String note;
 
@@ -22,13 +22,13 @@ public class ContractCollectionStage {
 
     public static ContractCollectionStage of(
         String name,
-        Double ratio,
+        Double rate,
         String note,
         ContractCollectionStageExpectedDateType expectedDate
     ) {
         ContractCollectionStage instance = new ContractCollectionStage();
         instance.name = name;
-        instance.ratio = ratio;
+        instance.rate = rate;
         instance.note = note;
         instance.expectedDate = expectedDate;
 

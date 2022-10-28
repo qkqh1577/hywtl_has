@@ -42,7 +42,7 @@ public class PersonnelPredicateBuilder {
         } else if (keywordType.equals("영문명")) {
             BooleanBuilder criteria = new BooleanBuilder();
             criteria.or(personnel.basic.isNotNull().and(personnel.basic.engName.containsIgnoreCase(keyword)));
-            criteria.or(personnel.basic.isNull().and(personnel.user.englishName.containsIgnoreCase(keyword)));
+            criteria.or(personnel.basic.isNull().and(personnel.user.engName.containsIgnoreCase(keyword)));
             this.criteria.and(criteria);
         } else if (keywordType.equals("주소")) {
             BooleanBuilder criteria = new BooleanBuilder();

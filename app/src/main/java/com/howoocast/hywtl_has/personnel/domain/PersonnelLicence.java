@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PersonnelLicense {
+public class PersonnelLicence {
 
-    public static final String KEY = "personnel_license";
+    public static final String KEY = "personnel_licence";
     @NotBlank
     @Column(nullable = false)
     protected String name; // 면허 이름
@@ -36,7 +36,7 @@ public class PersonnelLicense {
 
     protected String note; // 비고
 
-    public static PersonnelLicense of(
+    public static PersonnelLicence of(
         String name,
         String type,
         String organizationName,
@@ -44,7 +44,7 @@ public class PersonnelLicense {
         LocalDate qualifiedDate,
         String note
     ) {
-        return new PersonnelLicense(
+        return new PersonnelLicence(
             name,
             type,
             organizationName,

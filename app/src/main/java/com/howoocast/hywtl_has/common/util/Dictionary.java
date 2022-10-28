@@ -109,11 +109,6 @@ public class Dictionary extends HashMap<String, String> {
         this.put("language.organization_name", "발급기관명");
         this.put("language.type", "자격증 대상 언어");
         this.put("latitude", "위도");
-        this.put("license", "면허 정보");
-        this.put("license.name", "면허명");
-        this.put("license.organization_name", "발급기관명");
-        this.put("license.qualified_date", "인가일");
-        this.put("license.qualified_number", "인가 번호");
         this.put("list", "목록");
         this.put("longitude", "경도");
         this.put("manager", "담당자");
@@ -136,6 +131,11 @@ public class Dictionary extends HashMap<String, String> {
         this.put("personnel", "인사");
         this.put("personnel_basic.relationship", "인사 비상연락처와의 관계");
         this.put("personnel_job", "소속 정보");
+        this.put("personnel_licence", "면허 정보");
+        this.put("personnel_licence.name", "면허명");
+        this.put("personnel_licence.organization_name", "발급기관명");
+        this.put("personnel_licence.qualified_date", "인가일");
+        this.put("personnel_licence.qualified_number", "인가 번호");
         this.put("place", "장소");
         this.put("plan", "상세");
         this.put("price", "가격");

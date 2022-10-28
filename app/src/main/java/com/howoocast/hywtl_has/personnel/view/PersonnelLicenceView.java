@@ -1,13 +1,13 @@
 package com.howoocast.hywtl_has.personnel.view;
 
-import com.howoocast.hywtl_has.personnel.domain.PersonnelLicense;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelLicence;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PersonnelLicenseView {
+public class PersonnelLicenceView {
 
     private String name;
     private String type;
@@ -16,8 +16,8 @@ public class PersonnelLicenseView {
     private LocalDate qualifiedDate;
     private String note;
 
-    public static PersonnelLicenseView assemble(PersonnelLicense source) {
-        PersonnelLicenseView target = new PersonnelLicenseView();
+    public static PersonnelLicenceView assemble(PersonnelLicence source) {
+        PersonnelLicenceView target = new PersonnelLicenceView();
         target.name = source.getName();
         target.type = source.getType();
         target.organizationName = source.getOrganizationName();

@@ -36,7 +36,7 @@ public class ContractCollectionService {
                 .map(List::stream)
                 .map(list -> list.map(stage -> ContractCollectionStage.of(
                     stage.getName(),
-                    stage.getRatio(),
+                    stage.getRate(),
                     stage.getNote(),
                     stage.getExpectedDate()
                 )))

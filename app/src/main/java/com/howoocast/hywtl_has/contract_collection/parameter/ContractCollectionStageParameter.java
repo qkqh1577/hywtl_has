@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ContractCollectionStageParameter {
 
     private String name;
-    private Double ratio;
+    private Double rate;
     private String note;
     private ContractCollectionStageExpectedDateType expectedDate;
 }

@@ -17,22 +17,22 @@ public class FileController {
 
     private final FileItemService fileItemService;
 
-    @GetMapping("/file-items/{id}")
+    @GetMapping("/file-item/{id}")
     public void downloadById(@PathVariable Long id, HttpServletResponse response) throws Exception {
         fileItemService.get(id).download(response);
     }
 
-    @GetMapping(value = "/file-items", params = "fileKey")
+    @GetMapping(value = "/file-item", params = "fileKey")
     public void downloadByFileKey(@RequestParam String fileKey, HttpServletResponse response) throws Exception {
         fileItemService.getByFileKey(fileKey).download(response);
     }
 
-    @GetMapping("/file-items/{id}/streaming")
+    @GetMapping("/file-item/{id}/streaming")
     public StreamingResponseBody streamingById(@PathVariable Long id) throws Exception {
         return fileItemService.get(id).streaming();
     }
 
-    @GetMapping(value = "/file-items/streaming", params = "fileKey")
+    @GetMapping(value = "/file-item/streaming", params = "fileKey")
     public StreamingResponseBody streamingByFileKey(@RequestParam String fileKey) throws Exception {
         return fileItemService.getByFileKey(fileKey).streaming();
     }

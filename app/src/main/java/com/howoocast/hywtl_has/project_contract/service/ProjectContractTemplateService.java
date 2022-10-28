@@ -90,8 +90,8 @@ public class ProjectContractTemplateService {
             template.getStageList().stream()
                 .map(stageTemplate -> ProjectContractCollectionStage.of(
                     stageTemplate.getName(),
-                    stageTemplate.getRatio(),
-                    getAmount(estimate, stageTemplate.getRatio()),
+                    stageTemplate.getRate(),
+                    getAmount(estimate, stageTemplate.getRate()),
                     stageTemplate.getNote(),
                     getDate(estimate, stageTemplate.getExpectedDate())))
                 .collect(Collectors.toList()),
@@ -169,12 +169,12 @@ public class ProjectContractTemplateService {
             .collect(Collectors.toList());
     }
 
-    private Long getAmount(@Nullable ProjectEstimate estimate, Double ratio) {
+    private Long getAmount(@Nullable ProjectEstimate estimate, Double rate) {
         if (Objects.isNull(estimate)) {
             return 0L;
         }
         Long totalAmount = estimate.getPlan().getTotalAmount();
-        return (long) Math.floor(ratio * totalAmount / 100);
+        return (long) Math.floor(rate * totalAmount / 100);
     }
 
     private @Nullable

@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.department.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
-import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
 import javax.persistence.Column;

@@ -25,6 +25,7 @@ import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContractCollectionStage } from 'admin/contract/collection/domain';
 import useDialog from 'dialog/hook';
+import { getRateAmount } from 'util/NumberUtil';
 
 export default function () {
   const { error } = useDialog();
@@ -44,8 +45,8 @@ export default function () {
     return +(amount * 1.1).toFixed(0);
   }, [plan.totalAmount, isLh]);
 
-  const totalRatio = useMemo(() =>
-      stageList.map(stage => stage.ratio ?? 0)
+  const totalRate = useMemo(() =>
+      stageList.map(stage => stage.rate ?? 0)
                .reduce((a,
                         b
                ) => a + b, 0),
@@ -98,24 +99,24 @@ export default function () {
             </Td>
             <Td>
               <Input
-                key={stage.ratio}
+                key={stage.rate}
                 type="number"
                 variant="outlined"
                 readOnly={!edit}
-                defaultValue={stage.ratio ?? ''}
+                defaultValue={stage.rate ?? ''}
                 onBlur={(e) => {
                   if (!edit) {
                     return;
                   }
                   const value = +(e.target.value) || undefined;
-                  if (stage.ratio !== value) {
-                    formik.setFieldValue(`collection.stageList.${i}.ratio`, value);
+                  if (stage.rate !== value) {
+                    formik.setFieldValue(`collection.stageList.${i}.rate`, value);
                   }
                 }}
               />
             </Td>
             <Td align="right">
-              {getAmount(stage.ratio, totalAmount)
+              {getRateAmount(stage.rate, totalAmount)
               .toLocaleString()}
             </Td>
             <Td>
@@ -241,16 +242,16 @@ export default function () {
         <TableRow>
           <Td>합계</Td>
           <Td sx={{
-            color: totalRatio !== 100 ? ColorPalette._eb4c4c : 'inherit',
+            color: totalRate !== 100 ? ColorPalette._eb4c4c : 'inherit',
           }}>
-            {totalRatio}
+            {totalRate}
           </Td>
           <Td
             align="right"
             sx={{
-              color: totalRatio !== 100 ? ColorPalette._eb4c4c : 'inherit',
+              color: totalRate !== 100 ? ColorPalette._eb4c4c : 'inherit',
             }}>
-            {getAmount(totalRatio, totalAmount)
+            {getRateAmount(totalRate, totalAmount)
             .toLocaleString()}
           </Td>
           <Td colSpan={edit ? 4 : 2}>
@@ -274,17 +275,4 @@ export default function () {
       </TableBody>
     </Table>
   );
-}
-
-function getAmount(ratio: number | string | undefined,
-                   totalAmount: number | undefined
-): number {
-  if (!ratio || !totalAmount) {
-    return 0;
-  }
-  const r = (typeof ratio === 'string' ? +ratio : ratio) / 100.0;
-
-  const t = (totalAmount * r).toFixed(0);
-
-  return +t;
 }

@@ -59,7 +59,7 @@ public class LoginService {
         FileItem profile = fileItemService.build(parameter.getProfile());
         User instance = this.load(username);
         instance.change(
-            parameter.getEnglishName(),
+            parameter.getEngName(),
             parameter.getBirthDate(),
             parameter.getSex(),
             parameter.getMobilePhone(),

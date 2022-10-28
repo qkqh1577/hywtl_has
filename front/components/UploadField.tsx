@@ -39,7 +39,7 @@ export default function UploadField({ accept, name, disableDownload, disableSele
     }
 
     if (file.id) {
-      setImageUrl(`/file-items/${file.id}`);
+      setImageUrl(`/file-item/${file.id}`);
       return;
     }
     if (file.multipartFile) {
@@ -82,7 +82,7 @@ export default function UploadField({ accept, name, disableDownload, disableSele
           <InputAdornment position="end" sx={{ marginRight: '10px' }}>
             {file && !disableDownload && (
               <Button shape="small" onClick={() => {
-                window.open(`/file-items/${file.id}`, '_blank');
+                window.open(`/file-item/${file.id}`, '_blank');
               }}>
                 다운로드
               </Button>

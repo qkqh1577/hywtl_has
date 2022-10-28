@@ -7,7 +7,7 @@ import CompanyForm from 'personnel/view/Detail/Form/CompanyForm';
 import JobForm from 'personnel/view/Detail/Form/JobForm';
 import AcademicForm from 'personnel/view/Detail/Form/AcademicForm';
 import CareerForm from 'personnel/view/Detail/Form/CareerForm';
-import LicenseForm from 'personnel/view/Detail/Form/LicenseForm';
+import LicenceForm from 'personnel/view/Detail/Form/LicenceForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import Divider from 'layouts/Divider';
 import { DepartmentShortVO } from 'department/domain';
@@ -38,7 +38,7 @@ export default function FormList(props: Props) {
       <Divider />
       <CareerForm />
       <Divider />
-      <LicenseForm />
+      <LicenceForm />
       <Divider />
       <LanguageForm />
     </Box>

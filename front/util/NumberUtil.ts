@@ -92,3 +92,35 @@ export function cut10000(amount: number | undefined): number {
   return +value.toFixed(1);
 }
 
+
+export function getRateAmount(rate: number | string | undefined,
+                              totalAmount: number | undefined
+): number {
+  if (!rate || !totalAmount) {
+    return 0;
+  }
+  const r = (typeof rate === 'string' ? +rate : rate) / 100.0;
+
+  const t = (totalAmount * r).toFixed(0);
+
+  return +t;
+}
+
+export function getRatio(height: unknown,
+                         baseArea: unknown
+): string {
+  const h = typeof height === 'string' ? +height : height;
+  const b = typeof baseArea === 'string' ? +baseArea : baseArea;
+  if (typeof h !== 'number' || typeof b !== 'number') {
+    return '-';
+  }
+  if (Number.isNaN(h) || Number.isNaN(b)) {
+    return '-';
+  }
+  if (h <= 0 || b <= 0) {
+    return '-';
+  }
+
+  const ratio = h / Math.sqrt(b);
+  return ratio.toFixed(4);
+}

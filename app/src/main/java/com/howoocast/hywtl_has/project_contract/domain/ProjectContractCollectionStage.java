@@ -22,7 +22,7 @@ public class ProjectContractCollectionStage {
     /**
      * 비율
      */
-    private Double ratio;
+    private Double rate;
 
     /**
      * 금액
@@ -40,14 +40,14 @@ public class ProjectContractCollectionStage {
 
     public static ProjectContractCollectionStage of(
         String name,
-        Double ratio,
+        Double rate,
         @Nullable Long amount,
         String note,
         @Nullable LocalDate expectedDate
     ) {
         ProjectContractCollectionStage instance = new ProjectContractCollectionStage();
         instance.name = name;
-        instance.ratio = ratio;
+        instance.rate = rate;
         instance.amount = amount;
         instance.note = note;
         instance.expectedDate = expectedDate;

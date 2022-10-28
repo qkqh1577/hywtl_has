@@ -21,7 +21,7 @@ public class UserView {
     private LocalDateTime createdAt;
     private LocalDateTime loginAt;
     private LocalDateTime passwordChangedAt;
-    private String englishName;
+    private String engName;
     private LocalDate birthDate;
     private String sex;
     private String mobilePhone;
@@ -42,7 +42,7 @@ public class UserView {
         target.createdAt = source.getCreatedAt();
         target.loginAt = source.getLoginAt();
         target.passwordChangedAt = source.getPasswordChangedAt();
-        target.englishName = source.getEnglishName();
+        target.engName = source.getEngName();
         target.birthDate = source.getBirthDate();
         target.sex = source.getSex();
         target.mobilePhone = source.getMobilePhone();

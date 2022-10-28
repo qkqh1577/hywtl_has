@@ -16,7 +16,6 @@ public class PersonnelJobView {
     private String jobPosition;
     private String jobClass;
     private String jobDuty;
-
     private Boolean isRepresentative;
 
     public static PersonnelJobView assemble(PersonnelJob source) {

@@ -46,7 +46,7 @@ public class Personnel extends CustomEntity {
     private List<PersonnelCareer> careerList; // 경력 목록
 
     @ElementCollection
-    private List<PersonnelLicense> licenseList; // 면허 목록
+    private List<PersonnelLicence> licenceList; // 면허 목록
 
     @ElementCollection
     private List<PersonnelLanguage> languageList; // 어학 자격 목록
@@ -65,7 +65,7 @@ public class Personnel extends CustomEntity {
         List<PersonnelJob> jobList,
         List<PersonnelAcademic> academicList,
         List<PersonnelCareer> careerList,
-        List<PersonnelLicense> licenseList,
+        List<PersonnelLicence> licenceList,
         List<PersonnelLanguage> languageList
     ) {
         this.basic = basic;
@@ -73,7 +73,7 @@ public class Personnel extends CustomEntity {
         this.jobList = jobList;
         this.academicList = academicList;
         this.careerList = careerList;
-        this.licenseList = licenseList;
+        this.licenceList = licenceList;
         this.languageList = languageList;
     }
 }

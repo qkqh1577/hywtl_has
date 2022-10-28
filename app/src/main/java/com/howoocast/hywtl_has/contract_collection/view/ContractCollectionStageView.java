@@ -8,14 +8,14 @@ import lombok.Getter;
 public class ContractCollectionStageView {
 
     private String name;
-    private Double ratio;
+    private Double rate;
     private String note;
     private ContractCollectionStageExpectedDateType expectedDate;
 
     public static ContractCollectionStageView assemble(ContractCollectionStage source) {
         ContractCollectionStageView target = new ContractCollectionStageView();
         target.name = source.getName();
-        target.ratio = source.getRatio();
+        target.rate = source.getRate();
         target.note = source.getNote();
         target.expectedDate = source.getExpectedDate();
         return target;

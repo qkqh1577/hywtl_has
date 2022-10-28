@@ -82,12 +82,12 @@ export default function () {
       <FieldBox>
         <DataFieldWithLabel label="영문명" labelPosition="top">
           <Input
-            key={formik.values.englishName}
-            defaultValue={formik.values.englishName ?? ''}
+            key={formik.values.engName}
+            defaultValue={formik.values.engName ?? ''}
             onBlur={(e) => {
               const value = e.target.value || undefined;
-              if (formik.values.englishName !== value) {
-                formik.setFieldValue('englishName', value);
+              if (formik.values.engName !== value) {
+                formik.setFieldValue('engName', value);
               }
             }}
           />

@@ -21,7 +21,7 @@ public class PersonnelView {
     private List<PersonnelJobView> jobList;
     private List<PersonnelAcademicView> academicList;
     private List<PersonnelCareerView> careerList;
-    private List<PersonnelLicenseView> licenseList;
+    private List<PersonnelLicenceView> licenceList;
     private List<PersonnelLanguageView> languageList;
 
     public static PersonnelView assemble(Personnel source) {
@@ -34,12 +34,12 @@ public class PersonnelView {
         target.company = PersonnelCompanyView.assemble(source.getCompany());
         target.academicList = ListConvertor.make(source.getAcademicList(), PersonnelAcademicView::assemble);
         target.careerList = ListConvertor.make(source.getCareerList(), PersonnelCareerView::assemble);
-        target.licenseList = ListConvertor.make(source.getLicenseList(), PersonnelLicenseView::assemble);
+        target.licenceList = ListConvertor.make(source.getLicenceList(), PersonnelLicenceView::assemble);
         target.languageList = ListConvertor.make(source.getLanguageList(), PersonnelLanguageView::assemble);
 
         if (Objects.isNull(source.getBasic())) {
             target.basic = new PersonnelBasicView();
-            target.basic.setEngName(source.getUser().getEnglishName());
+            target.basic.setEngName(source.getUser().getEngName());
             target.basic.setBirthDate(source.getUser().getBirthDate());
             target.basic.setSex(source.getUser().getSex());
             target.basic.setAddress(source.getUser().getAddress());

@@ -89,7 +89,7 @@ export default function UserSelector({ onChange, ...props }: Props) {
                 {user.profile?.id && (
                   <img
                     alt="프로필 사진"
-                    src={`/file-items/${user.profile.id}`}
+                    src={`/file-item/${user.profile.id}`}
                     style={{
                       objectFit: 'cover',
                       width:     '25px',

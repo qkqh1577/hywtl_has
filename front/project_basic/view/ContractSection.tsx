@@ -114,7 +114,7 @@ export default function ProjectBasicContractSection({ detail }: Props) {
             ) => (
               <TableRow key={i}>
                 <Td>{item.name}</Td>
-                <Td>{item.ratio}</Td>
+                <Td>{item.rate}</Td>
                 <Td>{item.note}</Td>
                 <Td>
                   <DateFormat date={item.expectedDate} />

@@ -1,35 +1,35 @@
 package com.howoocast.hywtl_has.personnel.parameter;
 
 import com.howoocast.hywtl_has.common.parameter.CustomParameter;
-import com.howoocast.hywtl_has.personnel.domain.PersonnelLicense;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelLicence;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Setter
-public class PersonnelLicenseParameter extends CustomParameter<PersonnelLicense> {
+public class PersonnelLicenceParameter extends CustomParameter<PersonnelLicence> {
 
-    @NotBlank(message = PersonnelLicense.KEY + ".name.not_blank")
+    @NotBlank(message = PersonnelLicence.KEY + ".name.not_blank")
     private String name;
 
     private String type;
 
-    @NotBlank(message = PersonnelLicense.KEY + ".organization_name.not_blank")
+    @NotBlank(message = PersonnelLicence.KEY + ".organization_name.not_blank")
     private String organizationName;
 
-    @NotBlank(message = PersonnelLicense.KEY + ".qualified_number.not_blank")
+    @NotBlank(message = PersonnelLicence.KEY + ".qualified_number.not_blank")
     private String qualifiedNumber;
 
-    @NotBlank(message = PersonnelLicense.KEY + ".qualified_date.not_null")
+    @NotBlank(message = PersonnelLicence.KEY + ".qualified_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate qualifiedDate;
 
     private String note;
 
     @Override
-    public PersonnelLicense build() {
-        return PersonnelLicense.of(
+    public PersonnelLicence build() {
+        return PersonnelLicence.of(
             name,
             type,
             organizationName,

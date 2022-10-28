@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class LoginUserChangeParameter {
 
     private FileItemParameter profile;
-    private String englishName;
+    private String engName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String sex;

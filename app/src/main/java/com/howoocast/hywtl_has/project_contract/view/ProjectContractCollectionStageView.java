@@ -8,7 +8,7 @@ import lombok.Getter;
 public class ProjectContractCollectionStageView {
 
     private String name;
-    private Double ratio;
+    private Double rate;
     private Long amount;
     private String note;
     private LocalDate expectedDate;
@@ -16,7 +16,7 @@ public class ProjectContractCollectionStageView {
     public static ProjectContractCollectionStageView assemble(ProjectContractCollectionStage source) {
         ProjectContractCollectionStageView target = new ProjectContractCollectionStageView();
         target.name = source.getName();
-        target.ratio = source.getRatio();
+        target.rate = source.getRate();
         target.amount = source.getAmount();
         target.note = source.getNote();
         target.expectedDate = source.getExpectedDate();

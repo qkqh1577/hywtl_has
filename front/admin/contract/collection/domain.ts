@@ -51,7 +51,7 @@ export interface ContractCollectionVO {
 
 export interface ContractCollectionStage {
   name?: string;
-  ratio?: number;
+  rate?: number;
   note?: string;
   expectedDate?: ExpectedDateType;
 }

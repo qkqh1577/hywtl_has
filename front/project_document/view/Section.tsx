@@ -108,7 +108,7 @@ export default function ProjectDocumentSection(props: Props) {
                       shape="square"
                       children={<FontAwesomeIcon icon="download" />}
                       onClick={() => {
-                        window.open(`/file-items/${item.file.id}`, '_blank');
+                        window.open(`/file-item/${item.file.id}`, '_blank');
                       }}
                     />
                   </Box>
@@ -128,7 +128,7 @@ export default function ProjectDocumentSection(props: Props) {
                         shape="square"
                         children={<FontAwesomeIcon icon="download" />}
                         onClick={() => {
-                          window.open(`/file-items/${item.mailFileId}`, '_blank');
+                          window.open(`/file-item/${item.mailFileId}`, '_blank');
                         }}
                       />
                     )}

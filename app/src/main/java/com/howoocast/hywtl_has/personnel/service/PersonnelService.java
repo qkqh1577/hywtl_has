@@ -92,7 +92,7 @@ public class PersonnelService {
                 .collect(Collectors.toList()),
             ListConvertor.make(parameter.getAcademicList()),
             ListConvertor.make(parameter.getCareerList()),
-            ListConvertor.make(parameter.getLicenseList()),
+            ListConvertor.make(parameter.getLicenceList()),
             ListConvertor.make(parameter.getLanguageList())
         );
         if (Objects.isNull(instance.getId())) {

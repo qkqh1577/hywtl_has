@@ -8,7 +8,7 @@ export interface PersonnelParameter {
   jobList: PersonnelJobParameter[]; // 소속정보
   academicList?: PersonnelAcademicParameter[]; // 학력정보
   careerList?: PersonnelCareerParameter[]; // 경력정보
-  licenseList?: PersonnelLicenseParameter[]; // 면허정보
+  licenceList?: PersonnelLicenceParameter[]; // 면허정보
   languageList?: PersonnelLanguageParameter[]; // 어학정보
 }
 
@@ -67,7 +67,7 @@ export interface PersonnelCareerParameter {
 
 export const initialPersonnelCareerParameter = {} as PersonnelCareerParameter;
 
-export interface PersonnelLicenseParameter {
+export interface PersonnelLicenceParameter {
   name?: string;
   type?: string;
   organizationName?: string;
@@ -76,7 +76,7 @@ export interface PersonnelLicenseParameter {
   note?: string;
 }
 
-export const initialPersonnelLicenseParameter = {} as PersonnelLicenseParameter;
+export const initialPersonnelLicenceParameter = {} as PersonnelLicenceParameter;
 
 export interface PersonnelLanguageParameter {
   name?: string;

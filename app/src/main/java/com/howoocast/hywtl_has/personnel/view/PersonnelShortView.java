@@ -21,7 +21,7 @@ public class PersonnelShortView {
     private PersonnelCompanyView company;
     private Integer academicCount;
     private Integer careerCount;
-    private Integer licenseCount;
+    private Integer licenceCount;
     private Integer languageCount;
 
     private DepartmentShortView department;
@@ -37,11 +37,11 @@ public class PersonnelShortView {
         target.company = PersonnelCompanyView.assemble(source.getCompany());
         target.academicCount = getSize(source.getAcademicList());
         target.careerCount = getSize(source.getCareerList());
-        target.licenseCount = getSize(source.getLicenseList());
+        target.licenceCount = getSize(source.getLicenceList());
         target.languageCount = getSize(source.getLanguageList());
         if (Objects.isNull(source.getBasic())) {
             target.basic = new PersonnelBasicView();
-            target.basic.setEngName(source.getUser().getEnglishName());
+            target.basic.setEngName(source.getUser().getEngName());
             target.basic.setBirthDate(source.getUser().getBirthDate());
             target.basic.setSex(source.getUser().getSex());
             target.basic.setAddress(source.getUser().getAddress());

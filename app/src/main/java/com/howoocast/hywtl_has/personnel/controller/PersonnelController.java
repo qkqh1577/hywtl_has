@@ -9,7 +9,7 @@ import com.howoocast.hywtl_has.personnel.view.PersonnelCareerView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelCompanyView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelJobView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelLanguageView;
-import com.howoocast.hywtl_has.personnel.view.PersonnelLicenseView;
+import com.howoocast.hywtl_has.personnel.view.PersonnelLicenceView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelShortView;
 import com.howoocast.hywtl_has.personnel.view.PersonnelView;
 import java.time.LocalDate;
@@ -112,9 +112,9 @@ public class PersonnelController {
         return PersonnelView.assemble(personnelService.get(id)).getCareerList();
     }
 
-    @GetMapping("/personnel/{id}/license-list")
-    public List<PersonnelLicenseView> licenseList(@PathVariable Long id) {
-        return PersonnelView.assemble(personnelService.get(id)).getLicenseList();
+    @GetMapping("/personnel/{id}/licence-list")
+    public List<PersonnelLicenceView> licenceList(@PathVariable Long id) {
+        return PersonnelView.assemble(personnelService.get(id)).getLicenceList();
     }
 
     @GetMapping("/personnel/{id}/language-list")

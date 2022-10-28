@@ -77,7 +77,7 @@ export interface PersonnelCareerVO {
   endDate?: Date; // 퇴사일
 }
 
-export interface PersonnelLicenseVO {
+export interface PersonnelLicenceVO {
   name?: string; // 면허 이름(정보)
   type?: string; // 종별
   organizationName?: string; // 발급기관명
@@ -105,7 +105,7 @@ export interface PersonnelVO {
   jobList: PersonnelJobVO[],
   academicList: PersonnelAcademicVO[],
   careerList: PersonnelCareerVO[],
-  licenseList: PersonnelLicenseVO[],
+  licenceList: PersonnelLicenceVO[],
   languageList: PersonnelLanguageVO[],
 }
 

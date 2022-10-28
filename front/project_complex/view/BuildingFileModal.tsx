@@ -190,7 +190,7 @@ export default function ProjectComplexBuildingFileModal(props: Props) {
                         shape="square"
                         children={<FontAwesomeIcon icon="download" />}
                         onClick={() => {
-                          window.open(`/file-items/${file.file.id}`, '_blank');
+                          window.open(`/file-item/${file.file.id}`, '_blank');
                         }}
                       />
                     </Box>

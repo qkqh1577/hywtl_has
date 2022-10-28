@@ -59,7 +59,7 @@ export interface ProjectContractCollectionVO {
 
 export interface ProjectContractCollectionStage {
   name: string; // 단계명
-  ratio: number; // 비율
+  rate: number; // 비율
   amount: number; // 금액
   note?: string; // 시기
   expectedDate: Date; // 예정일

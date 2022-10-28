@@ -184,7 +184,7 @@ public class ProjectContractService {
             parameter.getStageNote(),
             parameter.getStageList().stream().map(item -> ProjectContractCollectionStage.of(
                     item.getName(),
-                    item.getRatio(),
+                    item.getRate(),
                     item.getAmount(),
                     item.getNote(),
                     item.getExpectedDate()

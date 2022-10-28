@@ -1,7 +1,7 @@
 package com.howoocast.hywtl_has.department.parameter;
 
-import com.howoocast.hywtl_has.department.common.DepartmentCategory;
 import com.howoocast.hywtl_has.department.domain.Department;
+import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
