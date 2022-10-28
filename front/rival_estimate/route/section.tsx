@@ -12,13 +12,11 @@ import { rivalEstimateAction } from 'rival_estimate/action';
 import { ProjectId } from 'project/domain';
 import { RivalEstimateParameter } from 'rival_estimate/parameter';
 import { RivalEstimateId } from 'rival_estimate/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function RivalEstimateListRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const { projectId, list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalEstimate);
   const push = useCallback(() => dispatch(rivalEstimateAction.push()), [dispatch]);
   const onUpdate = useCallback((params: RivalEstimateParameter) => dispatch(rivalEstimateAction.update(params)), [dispatch]);
@@ -26,36 +24,27 @@ export default function RivalEstimateListRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalEstimateAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestPush === 'done') {
-      dispatch(rivalEstimateAction.requestPush('idle'));
+    closeStatus(requestPush, () => {
       reload(projectId);
-    }
-    else if (requestPush === message) {
-      error('등록에 실패하였습니다.');
+    }, () => {
       dispatch(rivalEstimateAction.requestPush('idle'));
-    }
+    });
   }, [requestPush]);
 
   useEffect(() => {
-    if (requestUpdate === 'done') {
-      dispatch(rivalEstimateAction.requestUpdate('idle'));
+    closeStatus(requestUpdate, () => {
       reload(projectId);
-    }
-    else if (requestUpdate === message) {
-      error('변경에 실패하였습니다.');
+    }, () => {
       dispatch(rivalEstimateAction.requestUpdate('idle'));
-    }
+    });
   }, [requestUpdate]);
 
   useEffect(() => {
-    if (requestDelete === 'done') {
-      dispatch(rivalEstimateAction.requestDelete('idle'));
+    closeStatus(requestDelete, () => {
       reload(projectId);
-    }
-    else if (requestDelete === message) {
-      error('삭제에 실패하였습니다.');
+    }, () => {
       dispatch(rivalEstimateAction.requestDelete('idle'));
-    }
+    });
   }, [requestDelete]);
 
   return (

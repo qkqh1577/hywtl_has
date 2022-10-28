@@ -156,8 +156,6 @@ public class ProjectContractTemplateService {
                 for (String raw : template.getDescriptionList()) {
                     String description = raw;
                     for (ContractConditionVariable variable : variableList) {
-                        log.debug("[Variable] description: {}, variable.name: {}, variable.value: {}", description,
-                            variable.getName(), variable.getValue());
                         description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
                     }
                     descriptionList.add(description);

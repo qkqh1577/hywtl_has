@@ -9,7 +9,8 @@ import { rivalEstimateAction } from 'rival_estimate/action';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { rivalEstimateApi } from 'rival_estimate/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchProjectId() {
   while (true) {
@@ -28,14 +29,21 @@ function* watchProjectId() {
 function* watchPush() {
   while (true) {
     yield take(rivalEstimateAction.push);
-    const { projectId } = yield select((root: RootState) => root.rivalEstimate);
     try {
       yield put(rivalEstimateAction.requestPush('request'));
+      const { projectId } = yield select((root: RootState) => root.rivalEstimate);
+      if (!projectId) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(rivalEstimateAction.requestPush(message));
+        continue;
+      }
       yield call(rivalEstimateApi.push, projectId);
       yield put(rivalEstimateAction.requestPush('done'));
     }
     catch (e) {
-      const message = getErrorMessage();
+      const message = getErrorMessage(rivalEstimateAction.push, e);
+      yield put(dialogAction.openError(message));
       yield put(rivalEstimateAction.requestPush(message));
     }
   }
@@ -50,7 +58,8 @@ function* watchUpdate() {
       yield put(rivalEstimateAction.requestUpdate('done'));
     }
     catch (e) {
-      const message = getErrorMessage();
+      const message = getErrorMessage(rivalEstimateAction.update, e);
+      yield put(dialogAction.openError(message));
       yield put(rivalEstimateAction.requestUpdate(message));
     }
   }
@@ -65,6 +74,7 @@ function* watchDelete() {
       yield put(rivalEstimateAction.requestDelete('done'));
     }
     catch (e) {
+      const message = getErrorMessage(rivalEstimateAction.deleteOne, e);
       yield put(dialogAction.openError(message));
       yield put(rivalEstimateAction.requestDelete(message));
     }

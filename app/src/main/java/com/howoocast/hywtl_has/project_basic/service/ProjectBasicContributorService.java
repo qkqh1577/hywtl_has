@@ -65,7 +65,6 @@ public class ProjectBasicContributorService {
     public void updateInternal(Long id, ProjectBasicInternalContributorParameter parameter) {
         ProjectBasicInternalContributor instance = this.loadInternal(id);
         User user = new CustomFinder<>(userRepository, User.class).byIdIfExists(parameter.getUserId());
-        log.debug("[update internal]: user id: {}, user is null: {}", parameter.getUserId(), user == null);
         List<EventEntity> eventList = instance.update(
             parameter.getRate(),
             user

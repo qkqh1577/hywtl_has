@@ -15,12 +15,11 @@ import {
 import { projectBasicAction } from 'project_basic/action';
 import { ProjectId } from 'project/domain';
 import { ProjectBasicContributorId } from 'project_basic/domain';
-import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectBasicContributorRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const {
           id,
           internalList,
@@ -41,71 +40,52 @@ export default function ProjectBasicContributorRoute() {
   const onDeleteExternal = useCallback((id: ProjectBasicContributorId) => dispatch(projectBasicAction.deleteExternal(id)), [dispatch]);
 
   useEffect(() => {
-    if (requestAddInternal === 'done') {
+    closeStatus(requestAddInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestAddInternal('idle'));
-    }
-    else if (requestAddInternal === message) {
-      error('사내 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddInternal('idle'));
-    }
+    });
   }, [requestAddInternal]);
 
   useEffect(() => {
-    if (requestUpdateInternal === 'done') {
+    closeStatus(requestUpdateInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestUpdateInternal('idle'));
-    }
-    else if (requestUpdateInternal === message) {
-      error('사내 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateInternal('idle'));
-    }
+    });
   }, [requestUpdateInternal]);
 
   useEffect(() => {
-    if (requestDeleteInternal === 'done') {
+    closeStatus(requestDeleteInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestDeleteInternal('idle'));
-    }
-    else if (requestDeleteInternal === message) {
-      error('사내 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteInternal('idle'));
-    }
+    });
   }, [requestDeleteInternal]);
 
   useEffect(() => {
-    if (requestAddExternal === 'done') {
+    closeStatus(requestAddExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestAddExternal('idle'));
-    }
-    else if (requestAddExternal === message) {
-      error('사외 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddExternal('idle'));
-    }
+    });
   }, [requestAddExternal]);
 
   useEffect(() => {
-    if (requestUpdateExternal === 'done') {
+    closeStatus(requestUpdateExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestUpdateExternal('idle'));
-    }
-    else if (requestUpdateExternal === message) {
-      error('사외 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateExternal('idle'));
-    }
+    });
   }, [requestUpdateExternal]);
 
   useEffect(() => {
-    if (requestDeleteExternal === 'done') {
+    closeStatus(requestDeleteExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
+    }, () => {
       dispatch(projectBasicAction.requestDeleteExternal('idle'));
-    }
-    else if (requestDeleteExternal === message) {
-      error('사외 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteExternal('idle'));
-    }
+    });
   }, [requestDeleteExternal]);
-
 
   return (
     <ProjectBasicContributorSection

@@ -22,11 +22,12 @@ import {
 import ProjectContractEstimateSelectModal from 'project_contract/view/EstimateModal';
 import { ProjectEstimateId } from 'project_estimate/domain';
 import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectContractModalRoute() {
 
   const dispatch = useDispatch();
-  const { error, rollback, alert, confirm } = useDialog();
+  const { error, rollback, confirm } = useDialog();
   const {
           projectId,
           modal,
@@ -89,33 +90,23 @@ export default function ProjectContractModalRoute() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestAdd === 'done') {
-      formik.setSubmitting(false);
-      alert('등록하였습니다.');
-      dispatch(projectContractAction.requestAdd('idle'));
+    closeStatus(requestAdd, () => {
       dispatch(projectContractAction.setModal(undefined));
       dispatch(projectContractAction.setProjectId(projectId));
-    }
-    else if (requestAdd === message) {
+    }, () => {
       formik.setSubmitting(false);
       dispatch(projectContractAction.requestAdd('idle'));
-      error('등록에 실패하였습니다.');
-    }
+    });
   }, [requestAdd]);
 
   useEffect(() => {
-    if (requestChange === 'done') {
-      formik.setSubmitting(false);
-      alert('변경하였습니다.');
-      dispatch(projectContractAction.requestChange('idle'));
+    closeStatus(requestChange, () => {
       dispatch(projectContractAction.setModal(modal));
       dispatch(projectContractAction.setProjectId(projectId));
-    }
-    else if (requestChange === message) {
+    }, () => {
       formik.setSubmitting(false);
       dispatch(projectContractAction.requestChange('idle'));
-      error('변경에 실패하였습니다.');
-    }
+    });
   }, [requestChange]);
 
   return (

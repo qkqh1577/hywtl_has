@@ -4,20 +4,19 @@ import {
   put,
   take
 } from 'redux-saga/effects';
-import {
-  PersonnelAction,
-  personnelAction
-} from 'personnel/action';
+import { personnelAction } from 'personnel/action';
 import Page from 'type/Page';
 import {
   PersonnelShortVO,
   PersonnelVO,
 } from 'personnel/domain';
 import { personnelApi } from 'personnel/api';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchId() {
   while (true) {
-    const { payload: id } = yield take(PersonnelAction.setId);
+    const { payload: id } = yield take(personnelAction.setId);
     if (id) {
       const detail: PersonnelVO = yield call(personnelApi.getOne, id);
       yield put(personnelAction.setOne(detail));
@@ -43,13 +42,15 @@ function* watchFilter() {
 
 function* watchUpdate() {
   while (true) {
-    const { payload: params } = yield take(PersonnelAction.update);
+    const { payload: params } = yield take(personnelAction.update);
     try {
       yield put(personnelAction.requestUpdate('request'));
       yield call(personnelApi.update, params);
       yield put(personnelAction.requestUpdate('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(personnelAction.update, e);
       yield put(dialogAction.openError(message));
       yield put(personnelAction.requestUpdate(message));
     }

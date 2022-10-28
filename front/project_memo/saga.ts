@@ -12,8 +12,8 @@ import { projectMemoApi } from 'project_memo/api';
 import { RootState } from 'services/reducer';
 import { dialogAction } from 'dialog/action';
 import { ProjectId } from 'project/domain';
-import { ApiStatus } from 'components/DataFieldProps';
 import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -48,8 +48,10 @@ function* watchAdd() {
       yield put(projectMemoAction.requestAdd('request'));
       yield call(projectMemoApi.add, projectId, params);
       yield put(projectMemoAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectMemoAction.add, e);
       yield put(dialogAction.openError(message));
       yield put(projectMemoAction.requestAdd(message));
     }
@@ -63,8 +65,10 @@ function* watchChange() {
       yield put(projectMemoAction.requestChange('request'));
       yield call(projectMemoApi.change, params.id, params);
       yield put(projectMemoAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectMemoAction.change, e);
       yield put(dialogAction.openError(message));
       yield put(projectMemoAction.requestChange(message));
     }
@@ -78,8 +82,10 @@ function* watchDelete() {
       yield put(projectMemoAction.requestDelete('request'));
       yield call(projectMemoApi.deleteOne, id);
       yield put(projectMemoAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectMemoAction.deleteOne, e);
       yield put(dialogAction.openError(message));
       yield put(projectMemoAction.requestDelete(message));
     }

@@ -8,38 +8,38 @@ import {
 } from 'redux-saga/effects';
 import {
   ProjectDocumentShortVO,
-  ProjectDocumentType,
   ProjectDocumentVO
 } from 'project_document/domain';
 import { projectDocumentApi } from 'project_document/api';
-import { ProjectId } from 'project/domain';
 import { dialogAction } from 'dialog/action';
-import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
-import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchProjectId() {
   while (true) {
     const { payload: id } = yield take(projectDocumentAction.setProjectId);
-    yield call(getSentList, id);
-    yield call(getReceivedList, id);
-    yield call(getBuildingList, id);
+    if (id) {
+      const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getSentList, id);
+      yield put(projectDocumentAction.setSentList(list));
+    }
+    else {
+      yield put(projectDocumentAction.setSentList(undefined));
+    }
+    if (id) {
+      const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getReceivedList, id);
+      yield put(projectDocumentAction.setReceivedList(list));
+    }
+    else {
+      yield put(projectDocumentAction.setReceivedList(undefined));
+    }
+    if (id) {
+      const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getBuildingList, id);
+      yield put(projectDocumentAction.setBuildingList(list));
+    }
+    else {
+      yield put(projectDocumentAction.setBuildingList(undefined));
+    }
   }
-}
-
-function* getSentList(id: ProjectId) {
-  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getSentList, id);
-  yield put(projectDocumentAction.setSentList(list));
-}
-
-function* getReceivedList(id: ProjectId) {
-  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getReceivedList, id);
-  yield put(projectDocumentAction.setReceivedList(list));
-}
-
-function* getBuildingList(id: ProjectId) {
-  const list: ProjectDocumentShortVO[] = yield call(projectDocumentApi.getBuildingList, id);
-  yield put(projectDocumentAction.setBuildingList(list));
 }
 
 function* watchId() {
@@ -59,41 +59,28 @@ function* watchAdd() {
   while (true) {
     const { payload: params } = yield take(projectDocumentAction.add);
     try {
-      const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
       yield put(projectDocumentAction.requestAdd('request'));
+      const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
+      if (!projectId) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectDocumentAction.requestAdd(message));
+        continue;
+      }
+      if (!addModal) {
+        const message = '자료 형식이 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectDocumentAction.requestAdd(message));
+        continue;
+      }
       yield call(projectDocumentApi.add, projectId, addModal, params);
       yield put(projectDocumentAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectDocumentAction.add, e);
+      yield put(dialogAction.openError(message));
       yield put(projectDocumentAction.requestAdd(message));
-    }
-  }
-}
-
-function* watchRequestAdd() {
-  while (true) {
-    const { payload: status } = yield take(projectDocumentAction.requestAdd);
-    if (status === 'done') {
-      yield put(dialogAction.openAlert('저장하였습니다.'));
-      yield put(projectDocumentAction.requestAdd('idle'));
-      const { projectId, addModal } = yield select((root: RootState) => root.projectDocument);
-      if (addModal === ProjectDocumentType.RECEIVED) {
-        yield call(getReceivedList, projectId);
-      }
-      else if (addModal === ProjectDocumentType.SENT) {
-        yield call(getSentList, projectId);
-      }
-      else if (addModal === ProjectDocumentType.BUILDING) {
-        yield call(getBuildingList, projectId);
-      }
-      yield put(projectDocumentAction.addModal(undefined));
-    }
-    else if (status === message) {
-      yield put(dialogAction.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   DialogStatus.ERROR,
-      }));
-      yield put(projectDocumentAction.requestAdd('idle'));
     }
   }
 }
@@ -105,60 +92,36 @@ function* watchChange() {
       yield put(projectDocumentAction.requestChange('request'));
       yield call(projectDocumentApi.change, params);
       yield put(projectDocumentAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectDocumentAction.change, e);
       yield put(dialogAction.openError(message));
       yield put(projectDocumentAction.requestChange(message));
     }
   }
 }
 
-function* watchRequestChange() {
-  while (true) {
-    const { payload: status } = yield take(projectDocumentAction.requestChange);
-    if (status === 'done') {
-      yield put(dialogAction.openAlert('저장하였습니다.'));
-      yield put(projectDocumentAction.requestChange('idle'));
-      const { projectId, detail } = yield select((root: RootState) => root.projectDocument);
-      if (detail.type === ProjectDocumentType.RECEIVED) {
-        yield call(getReceivedList, projectId);
-      }
-      else if (detail.type === ProjectDocumentType.SENT) {
-        yield call(getSentList, projectId);
-      }
-      else if (detail.type === ProjectDocumentType.BUILDING) {
-        yield call(getBuildingList, projectId);
-      }
-      yield put(projectDocumentAction.setId(undefined));
-    }
-    else if (status === message) {
-      yield put(dialogAction.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   DialogStatus.ERROR,
-      }));
-      yield put(projectDocumentAction.requestChange('idle'));
-    }
-  }
-}
-
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(projectDocumentAction.delete);
+    yield take(projectDocumentAction.deleteOne);
     try {
-      yield call(projectDocumentApi.delete, id);
-      yield put(dialogAction.openAlert('삭제 했습니다.'));
-      const { projectId } = yield select((root: RootState) => root.projectDocument);
-      yield call(getSentList, projectId);
-      yield call(getReceivedList, projectId);
-      yield call(getBuildingList, projectId);
-      yield put(projectDocumentAction.setId(undefined));
+      yield put(projectDocumentAction.requestDelete('request'));
+      const { id } = yield select((root: RootState) => root.projectDocument);
+      if (!id) {
+        const message = '자료가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectDocumentAction.requestDelete(message));
+        continue;
+      }
+      yield call(projectDocumentApi.deleteOne, id);
+      yield put(projectDocumentAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      //TODO: 삭제 정책 후 수정 필요
-      yield put(dialogAction.openAlert({
-        children: '해당 자료는 동 정보에 연결되어 삭제할 수 없습니다. 자료를 삭제하려면, 동 정보 연결을 해제해 주세요.',
-        status:   DialogStatus.ERROR,
-      }));
+      const message = getErrorMessage(projectDocumentAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectDocumentAction.requestDelete(message));
     }
   }
 }
@@ -167,8 +130,6 @@ export default function* documentSaga() {
   yield fork(watchProjectId);
   yield fork(watchId);
   yield fork(watchAdd);
-  yield fork(watchRequestAdd);
   yield fork(watchChange);
-  yield fork(watchRequestChange);
   yield fork(watchDelete);
 };

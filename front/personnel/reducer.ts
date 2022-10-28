@@ -6,7 +6,7 @@ import {
   PersonnelVO,
 } from 'personnel/domain';
 import { createReducer } from 'typesafe-actions';
-import { PersonnelAction } from 'personnel/action';
+import { PersonnelActionType } from 'personnel/action';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export interface PersonnelState {
@@ -22,34 +22,34 @@ const initialState: PersonnelState = {
 };
 
 export const personnelReducer = createReducer(initialState, {
-  [PersonnelAction.setId]:         (state,
-                                    action
-                                   ) => ({
+  [PersonnelActionType.setId]:         (state,
+                                        action
+                                       ) => ({
     ...state,
     id: action.payload,
   }),
-  [PersonnelAction.setOne]:        (state,
-                                    action
-                                   ) => ({
+  [PersonnelActionType.setOne]:        (state,
+                                        action
+                                       ) => ({
     ...state,
     detail: action.payload,
 
   }),
-  [PersonnelAction.setFilter]:     (state,
-                                    action
-                                   ) => ({
+  [PersonnelActionType.setFilter]:     (state,
+                                        action
+                                       ) => ({
     ...state,
     filter: action.payload.values,
   }),
-  [PersonnelAction.setPage]:       (state,
-                                    action
-                                   ) => ({
+  [PersonnelActionType.setPage]:       (state,
+                                        action
+                                       ) => ({
     ...state,
     page: action.payload,
   }),
-  [PersonnelAction.requestUpdate]: (state,
-                                    action
-                                   ) => ({
+  [PersonnelActionType.requestUpdate]: (state,
+                                        action
+                                       ) => ({
     ...state,
     requestUpdate: action.payload,
   })

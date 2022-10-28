@@ -153,7 +153,6 @@ export default function () {
                                   }
                                   result.push(prevList[k]);
                                 }
-                                console.log({ prevList, result });
                                 formik.setFieldValue(`conditionList.${i}.descriptionList`, result);
                               }}
                             />

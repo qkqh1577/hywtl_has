@@ -132,7 +132,6 @@ export default function Form({ variableList }: Props) {
                                   }
                                   result.push(prevList[k]);
                                 }
-                                console.log({ prevList, result });
                                 formik.setFieldValue(`contractConditionList.${i}.descriptionList`, result);
                               }}
                             />

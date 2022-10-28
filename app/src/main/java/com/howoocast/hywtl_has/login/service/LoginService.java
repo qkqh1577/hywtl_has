@@ -58,9 +58,6 @@ public class LoginService {
 
         FileItem profile = fileItemService.build(parameter.getProfile());
         User instance = this.load(username);
-        log.debug(parameter.getEnglishName());
-        log.debug("birth date is null: {}", parameter.getBirthDate() == null);
-        log.debug(parameter.getSex());
         instance.change(
             parameter.getEnglishName(),
             parameter.getBirthDate(),

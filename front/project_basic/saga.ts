@@ -15,13 +15,14 @@ import {
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectComplexTestVO } from 'project_complex/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchId() {
   while (true) {
@@ -75,6 +76,7 @@ function* watchAddInternal() {
       yield put(projectBasicAction.requestAddInternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.addInternal, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestAddInternal(message));
     }
@@ -90,6 +92,7 @@ function* watchAddExternal() {
       yield put(projectBasicAction.requestAddExternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.addExternal, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestAddExternal(message));
     }
@@ -105,6 +108,7 @@ function* watchUpdateInternal() {
       yield put(projectBasicAction.requestUpdateInternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.updateInternal, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestUpdateInternal(message));
     }
@@ -120,6 +124,7 @@ function* watchUpdateExternal() {
       yield put(projectBasicAction.requestUpdateExternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.updateExternal, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestUpdateExternal(message));
     }
@@ -135,6 +140,8 @@ function* watchDeleteInternal() {
       yield put(projectBasicAction.requestDeleteInternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.deleteInternal, e);
+      yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestDeleteInternal(message));
     }
   }
@@ -149,6 +156,8 @@ function* watchDeleteExternal() {
       yield put(projectBasicAction.requestDeleteExternal('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.deleteExternal, e);
+      yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestDeleteExternal(message));
     }
   }
@@ -279,8 +288,10 @@ function* watchAddBusiness() {
       yield put(projectBasicAction.requestAddBusiness('request'));
       yield call(projectBasicApi.addBusiness, id, params);
       yield put(projectBasicAction.requestAddBusiness('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.addBusiness, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestAddBusiness(message));
     }
@@ -294,8 +305,10 @@ function* watchChangeBusiness() {
       yield put(projectBasicAction.requestChangeBusiness('request'));
       yield call(projectBasicApi.changeBusiness, params);
       yield put(projectBasicAction.requestChangeBusiness('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.changeBusiness, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestChangeBusiness(message));
     }
@@ -309,8 +322,10 @@ function* watchDeleteBusiness() {
       yield put(projectBasicAction.requestDeleteBusiness('request'));
       yield call(projectBasicApi.deleteBusiness, id);
       yield put(projectBasicAction.requestDeleteBusiness('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.deleteBusiness, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestDeleteBusiness(message));
     }
@@ -327,6 +342,7 @@ function* watchUpdateBasic() {
       yield put(projectBasicAction.requestUpdateBasic('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.updateBasic, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestUpdateBasic(message));
     }
@@ -343,6 +359,7 @@ function* watchUpdateDesign() {
       yield put(projectBasicAction.requestUpdateDesign('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.updateDesign, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestUpdateDesign(message));
     }
@@ -359,6 +376,7 @@ function* watchUpdateFailReason() {
       yield put(projectBasicAction.requestUpdateFailReason('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBasicAction.updateFailReason, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestUpdateFailReason(message));
     }

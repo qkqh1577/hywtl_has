@@ -12,7 +12,8 @@ import {
 } from 'project_collection/domain';
 import { projectCollectionApi } from 'project_collection/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchProjectId() {
   while (true) {
@@ -50,6 +51,7 @@ function* watchUpdateManager() {
       yield put(projectCollectionAction.requestUpdateManager('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectCollectionAction.updateManager, e);
       yield put(dialogAction.openError(message));
       yield put(projectCollectionAction.requestUpdateManager(message));
     }
@@ -64,8 +66,10 @@ function* watchChangeStageSeq() {
       yield put(projectCollectionAction.requestChangeStageSeq('request'));
       yield call(projectCollectionApi.changeStageSeq, projectId, idList);
       yield put(projectCollectionAction.requestChangeStageSeq('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectCollectionAction.changeStageSeq, e);
       yield put(dialogAction.openError(message));
       yield put(projectCollectionAction.requestChangeStageSeq(message));
     }
@@ -80,8 +84,10 @@ function* watchAddStage() {
       yield put(projectCollectionAction.requestAddStage('request'));
       yield call(projectCollectionApi.addStage, projectId, params);
       yield put(projectCollectionAction.requestAddStage('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectCollectionAction.addStage, e);
       yield put(dialogAction.openError(message));
       yield put(projectCollectionAction.requestAddStage(message));
     }
@@ -93,10 +99,18 @@ function* watchChangeStage() {
     const { payload: params } = yield take(projectCollectionAction.changeStage);
     try {
       yield put(projectCollectionAction.requestChangeStage('request'));
+      if (!params.id) {
+        const message = '기성 단계가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectCollectionAction.requestChangeStage(message));
+        continue;
+      }
       yield call(projectCollectionApi.changeStage, params);
       yield put(projectCollectionAction.requestChangeStage('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectCollectionAction.changeStage, e);
       yield put(dialogAction.openError(message));
       yield put(projectCollectionAction.requestChangeStage(message));
     }
@@ -110,8 +124,10 @@ function* watchDeleteStage() {
       yield put(projectCollectionAction.requestDeleteStage('request'));
       yield call(projectCollectionApi.deleteStage, id);
       yield put(projectCollectionAction.requestDeleteStage('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectCollectionAction.deleteStage, e);
       yield put(dialogAction.openError(message));
       yield put(projectCollectionAction.requestDeleteStage(message));
     }

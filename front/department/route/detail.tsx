@@ -23,12 +23,13 @@ import { DepartmentId } from 'department/domain';
 import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
 import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, alert, confirm, rollback } = useDialog();
+  const { confirm, rollback } = useDialog();
   const { detail, requestUpsert, requestDelete } = useSelector((root: RootState) => root.department);
   const upsert = useCallback((formikProps: DepartmentParameter) => dispatch(departmentAction.upsert(formikProps)), [dispatch]);
   const deleteOne = useCallback((id: DepartmentId) => dispatch(departmentAction.deleteOne(id)), [dispatch]);
@@ -61,36 +62,28 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === 'done') {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(departmentAction.requestUpsert('idle'));
+    closeStatus(requestUpsert, () => {
       if (id) {
         dispatch(departmentAction.setId(DepartmentId(id)));
       }
       else {
         navigate('/admin/department-management');
       }
-    }
-    else if (requestUpsert === message) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
       dispatch(departmentAction.requestUpsert('idle'));
-    }
+    });
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === 'done') {
-      alert('삭제하였습니다.');
+    closeStatus(requestDelete, () => {
       dispatch(departmentAction.setId(undefined));
-      dispatch(departmentAction.requestDelete('idle'));
       navigate('/admin/department-management');
-    }
-    else if (requestDelete === message) {
-      error('삭제에 실패하였습니다.');
+    }, () => {
       dispatch(departmentAction.requestDelete('idle'));
-    }
+    });
   }, [requestDelete]);
+
   return (
     <FormikProvider value={formik}>
       <DepartmentDetail

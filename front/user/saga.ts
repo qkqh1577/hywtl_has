@@ -11,8 +11,8 @@ import {
 } from 'user/domain';
 import Page from 'type/Page';
 import { userApi } from 'user/api';
-import { ApiStatus } from 'components/DataFieldProps';
 import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* getPage() {
   while (true) {
@@ -42,10 +42,10 @@ function* watchChange() {
       yield put(userAction.requestChange('request'));
       yield call(userApi.change, params);
       yield put(userAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-
-      yield put(dialogAction.openAlert());
+      const message = getErrorMessage(userAction.change, e);
       yield put(dialogAction.openError(message));
       yield put(userAction.requestChange(message));
     }

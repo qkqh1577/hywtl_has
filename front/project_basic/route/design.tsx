@@ -10,23 +10,19 @@ import {
 import { RootState } from 'services/reducer';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
 import { projectBasicAction } from 'project_basic/action';
-import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectBasicDesignRoute() {
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const { id, design, requestUpdateDesign } = useSelector((root: RootState) => root.projectBasic);
   const onUpdate = useCallback((params: ProjectBasicDesignParameter) => dispatch(projectBasicAction.updateDesign(params)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdateDesign === 'done') {
+    closeStatus(requestUpdateDesign, () => {
       dispatch(projectBasicAction.getDesign(id));
+    }, () => {
       dispatch(projectBasicAction.requestUpdateDesign('idle'));
-    }
-    else if (requestUpdateDesign === message) {
-      error('저장에 실패하였습니다.');
-      dispatch(projectBasicAction.requestUpdateDesign('idle'));
-    }
+    });
   }, [requestUpdateDesign]);
   return (
     <ProjectBasicDesignSection

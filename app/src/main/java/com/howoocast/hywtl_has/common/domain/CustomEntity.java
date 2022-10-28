@@ -1,9 +1,7 @@
 package com.howoocast.hywtl_has.common.domain;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.Optional;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -52,10 +50,6 @@ public abstract class CustomEntity {
     @PreUpdate
     public void modifiedAt() {
         this.modifiedAt = LocalDateTime.now();
-        log.debug("[Custom Entity]: postUpdate requested");
-        log.debug("[Custom Entity]: modified by: {}", this.modifiedBy);
-        log.debug("[Custom Entity]: deleted at: {}", Optional.ofNullable(this.deletedAt).map(date ->
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date)).orElse(null));
         if (Objects.nonNull(this.deletedAt)) {
             this.deletedBy = this.modifiedBy;
         }

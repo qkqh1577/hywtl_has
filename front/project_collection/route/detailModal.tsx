@@ -20,15 +20,16 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectCollectionStageDetailModalRoute() {
 
   const dispatch = useDispatch();
-  const { error, alert, rollback } = useDialog();
+  const { error, rollback } = useDialog();
   const { contract } = useSelector((root: RootState) => root.projectBasic);
   const { projectId, stage, requestChangeStage, requestDeleteStage } = useSelector((root: RootState) => root.projectCollection);
   const onClose = useCallback(() => dispatch(projectCollectionAction.stageDetailModal(undefined)), [dispatch]);
-  const onChangeSubmit = useCallback((params: ProjectCollectionChangeStageParameter) => dispatch(projectCollectionAction.changeStage(params)), [dispatch]);
+  const onChange = useCallback((params: ProjectCollectionChangeStageParameter) => dispatch(projectCollectionAction.changeStage(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.deleteStage(id)), [dispatch]);
   const totalAmount = useMemo(() => {
     if (!contract || !contract.estimate.plan?.totalAmount) {
@@ -43,12 +44,7 @@ export default function ProjectCollectionStageDetailModalRoute() {
   const formik = useFormik<ProjectCollectionChangeStageParameter>({
     initialValues: initialProjectCollectionChangeStageParameter,
     onSubmit:      (values) => {
-      console.log(formik, formik.values, formik.isSubmitting);
-      if (!stage || !values.id) {
-        error('기성 단계가 선택되지 않았습니다.');
-        return;
-      }
-      onChangeSubmit(values);
+      onChange(values);
     }
   });
 
@@ -65,32 +61,22 @@ export default function ProjectCollectionStageDetailModalRoute() {
   }, [stage]);
 
   useEffect(() => {
-    if (requestChangeStage === 'done') {
-      formik.setSubmitting(false);
-      alert('변경하였습니다.');
-      onClose();
+    closeStatus(requestChangeStage, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
-      dispatch(projectCollectionAction.requestChangeStage('idle'));
-    }
-    else if (requestChangeStage === message) {
+      onClose();
+    }, () => {
       formik.setSubmitting(false);
-      error('변경에 실패하였습니다.');
       dispatch(projectCollectionAction.requestChangeStage('idle'));
-    }
+    });
   }, [requestChangeStage]);
 
   useEffect(() => {
-    if (requestDeleteStage === 'done') {
-      alert('삭제하였습니다.');
-      onClose();
+    closeStatus(requestDeleteStage, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
+      onClose();
+    }, () => {
       dispatch(projectCollectionAction.requestDeleteStage('idle'));
-    }
-    else if (requestDeleteStage === message) {
-      error('삭제에 실패하였습니다.');
-      dispatch(projectCollectionAction.requestDeleteStage('idle'));
-
-    }
+    });
   }, [requestDeleteStage]);
 
   return (

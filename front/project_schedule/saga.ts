@@ -13,8 +13,7 @@ import {
 } from 'project_schedule/domain';
 import { projectScheduleApi } from 'project_schedule/api';
 import { dialogAction } from 'dialog/action';
-import { ApiStatus } from 'components/DataFieldProps';
-import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchId() {
   while (true) {
@@ -44,17 +43,22 @@ function* watchFilter() {
 
 function* watchAdd() {
   while (true) {
-    const action = yield take(projectScheduleAction.add);
-    const { payload: params } = action;
-    console.log(action);
+    const { payload: params } = yield take(projectScheduleAction.add);
     try {
-      const { projectId } = yield select((root: RootState) => root.projectSchedule);
       yield put(projectScheduleAction.requestAdd('request'));
+      const { projectId } = yield select((root: RootState) => root.projectSchedule);
+      if (!projectId) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectScheduleAction.requestAdd(message));
+        continue;
+      }
       yield call(projectScheduleApi.add, projectId, params);
       yield put(projectScheduleAction.requestAdd('done'));
-      yield put(dialogAction.openAlert('저장하였습니다.'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectScheduleAction.add, e);
       yield put(dialogAction.openError(message));
       yield put(projectScheduleAction.requestAdd(message));
     }
@@ -65,31 +69,39 @@ function* watchUpdate() {
   while (true) {
     const { payload: params } = yield take(projectScheduleAction.update);
     try {
+      yield put(projectScheduleAction.requestUpdate('request'));
       yield call(projectScheduleApi.update, params);
-      yield put(dialogAction.openAlert('저장하였습니다.'));
+      yield put(projectScheduleAction.requestUpdate('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      yield put(dialogAction.openAlert({
-        children: '저장에 실패하였습니다.',
-        status:   DialogStatus.ERROR,
-      }));
+      const message = getErrorMessage(projectScheduleAction.update, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectScheduleAction.requestUpdate(message));
     }
   }
 }
 
 function* watchDelete() {
   while (true) {
-    const { payload: id } = yield take(projectScheduleAction.deleteOne);
+    yield take(projectScheduleAction.deleteOne);
     try {
+      yield put(projectScheduleAction.requestDelete('request'));
+      const { id } = yield select((root: RootState) => root.projectSchedule);
+      if (!id) {
+        const message = '일정이 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectScheduleAction.requestDelete(message));
+        continue;
+      }
       yield call(projectScheduleApi.deleteOne, id);
-      yield put(dialogAction.openAlert('삭제 했습니다.'));
+      yield put(projectScheduleAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      //TODO: 삭제 정책 후 수정 필요
-      yield put(dialogAction.openAlert({
-        children: '해당 일정은 삭제할 수 없습니다.',
-        status:   DialogStatus.ERROR,
-      }));
+      const message = getErrorMessage(projectScheduleAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectScheduleAction.requestDelete(message));
     }
   }
 }

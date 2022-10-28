@@ -13,43 +13,22 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import { ProjectDocumentId, } from 'project_document/domain';
 import {
   initialProjectDocumentChangeParameter,
   ProjectDocumentChangeParameter
 } from 'project_document/parameter';
 import useDialog from 'dialog/hook';
-
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectDocumentDetailModalRoute() {
 
   const dispatch = useDispatch();
-  const { rollback, error } = useDialog();
-  const { detail } = useSelector((root: RootState) => root.projectDocument);
+  const { rollback } = useDialog();
+  const { projectId, detail, requestChange, requestDelete } = useSelector((root: RootState) => root.projectDocument);
 
-  const onClose = useCallback(() => dispatch(projectDocumentAction.setOne(undefined)), [dispatch]);
-
+  const onClose = useCallback(() => dispatch(projectDocumentAction.setId(undefined)), [dispatch]);
   const change = useCallback((params: ProjectDocumentChangeParameter) => dispatch(projectDocumentAction.change(params)), [dispatch]);
-
-  const remove = useCallback((id: ProjectDocumentId) => dispatch(projectDocumentAction.delete(id)), [dispatch]);
-
-  const onCancel = () => {
-    if (!detail) {
-      error('자료가 선택되지 않았습니다.');
-      return;
-    }
-    rollback(() => {
-      formik.setValues(detail as ProjectDocumentChangeParameter);
-    });
-  };
-
-  const onDelete = () => {
-    if (!detail) {
-      error('자료가 선택되지 않았습니다.');
-      return;
-    }
-    remove(detail.id);
-  };
+  const deleteOne = useCallback(() => dispatch(projectDocumentAction.deleteOne()), [dispatch]);
 
   const formik = useFormik<ProjectDocumentChangeParameter>({
     initialValues: initialProjectDocumentChangeParameter,
@@ -60,12 +39,33 @@ export default function ProjectDocumentDetailModalRoute() {
 
   useEffect(() => {
     if (detail) {
-      formik.setValues(detail as ProjectDocumentChangeParameter);
+      formik.setValues({ ...detail, edit: false } as ProjectDocumentChangeParameter);
     }
     else {
       formik.setValues(initialProjectDocumentChangeParameter);
     }
   }, [detail]);
+
+  useEffect(() => {
+    closeStatus(requestChange, () => {
+      dispatch(projectDocumentAction.setProjectId(projectId));
+
+      onClose();
+    }, () => {
+      formik.setSubmitting(false);
+      dispatch(projectDocumentAction.requestChange('idle'));
+    });
+  }, [requestChange]);
+
+  useEffect(() => {
+    closeStatus(requestDelete, () => {
+      dispatch(projectDocumentAction.setProjectId(projectId));
+      onClose();
+    }, () => {
+      dispatch(projectDocumentAction.requestDelete('idle'));
+    });
+
+  }, [requestDelete]);
 
   return (
     <FormikProvider value={formik}>
@@ -75,8 +75,12 @@ export default function ProjectDocumentDetailModalRoute() {
         onChange={() => {
           formik.handleSubmit();
         }}
-        onCancel={onCancel}
-        onDelete={onDelete}
+        onCancel={() => {
+          rollback(() => {
+            formik.setValues({ ...detail, edit: false } as ProjectDocumentChangeParameter);
+          });
+        }}
+        onDelete={deleteOne}
       />
     </FormikProvider>
   );

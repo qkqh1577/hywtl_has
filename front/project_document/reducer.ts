@@ -17,12 +17,14 @@ export interface ProjectDocumentState {
   addModal?: ProjectDocumentType;
   requestAdd: ApiStatus;
   requestChange: ApiStatus;
+  requestDelete: ApiStatus;
   detailModal?: ProjectDocumentVO;
 }
 
 const initial: ProjectDocumentState = {
   requestAdd:    'idle',
   requestChange: 'idle',
+  requestDelete: 'idle',
 };
 
 export const projectDocumentReducer = createReducer(initial, {
@@ -76,6 +78,12 @@ export const projectDocumentReducer = createReducer(initial, {
                                              ) => ({
     ...state,
     requestChange: action.payload,
+  }),
+  [ProjectDocumentActionType.requestDelete]: (state,
+                                              action
+                                             ) => ({
+    ...state,
+    requestDelete: action.payload,
   })
 });
 

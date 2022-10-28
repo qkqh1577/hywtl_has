@@ -23,15 +23,16 @@ export enum ProjectDocumentActionType {
   requestAdd      = 'project/sales/document/add/request',
   change          = 'project/sales/document/change',
   requestChange   = 'project/sales/document/change/request',
-  delete          = 'project/sales/document/delete',
+  deleteOne       = 'project/sales/document/delete',
+  requestDelete   = 'project/sales/document/delete/request',
   addModal        = 'project/sales/document/add-modal',
 }
 
 export const projectDocumentAction = {
   setProjectId:    createAction(ProjectDocumentActionType.setProjectId)<ProjectId | undefined>(),
-  setReceivedList: createAction(ProjectDocumentActionType.setReceivedList)<ProjectDocumentShortVO[]>(),
-  setSentList:     createAction(ProjectDocumentActionType.setSentList)<ProjectDocumentShortVO[]>(),
-  setBuildingList: createAction(ProjectDocumentActionType.setBuildingList)<ProjectDocumentShortVO[]>(),
+  setReceivedList: createAction(ProjectDocumentActionType.setReceivedList)<ProjectDocumentShortVO[] | undefined>(),
+  setSentList:     createAction(ProjectDocumentActionType.setSentList)<ProjectDocumentShortVO[] | undefined>(),
+  setBuildingList: createAction(ProjectDocumentActionType.setBuildingList)<ProjectDocumentShortVO[] | undefined>(),
   setId:           createAction(ProjectDocumentActionType.setId)<ProjectDocumentId | undefined>(),
   setOne:          createAction(ProjectDocumentActionType.setOne)<ProjectDocumentVO | undefined>(),
   add:             createAction(ProjectDocumentActionType.add)<ProjectDocumentParameter>(),
@@ -39,5 +40,6 @@ export const projectDocumentAction = {
   change:          createAction(ProjectDocumentActionType.change)<ProjectDocumentChangeParameter>(),
   requestChange:   createAction(ProjectDocumentActionType.requestChange)<ApiStatus>(),
   addModal:        createAction(ProjectDocumentActionType.addModal)<ProjectDocumentType | undefined>(),
-  delete:          createAction(ProjectDocumentActionType.delete)<number>(),
+  deleteOne:       createAction(ProjectDocumentActionType.deleteOne)(),
+  requestDelete:   createAction(ProjectDocumentActionType.requestDelete)<ApiStatus>(),
 };

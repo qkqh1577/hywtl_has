@@ -45,11 +45,6 @@ public class ProjectBasicFailReasonService {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         ProjectBasicFailReason instance = ProjectBasicFailReason.of(project);
         Business win = new CustomFinder<>(businessRepository, Business.class).byIdIfExists(parameter.getWinId());
-        log.debug("[add fail reason] test amount: {}", parameter.getTestAmount());
-        log.debug("[add fail reason] review amount: {}", parameter.getReviewAmount());
-        log.debug("[add fail reason] expected duration: {}", parameter.getExpectedDuration());
-        log.debug("[add fail reason] reason: {}", parameter.getReason());
-        log.debug("[add fail reason] win id: {}", parameter.getWinId());
         List<EventEntity> eventList = instance.update(
             win,
             parameter.getTestAmount(),

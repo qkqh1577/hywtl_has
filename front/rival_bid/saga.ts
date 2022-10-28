@@ -8,8 +8,9 @@ import {
 import { rivalBidAction } from 'rival_bid/action';
 import { rivalBidApi } from 'rival_bid/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
 import { RivalBidVO } from 'rival_bid/domain';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchProjectId() {
   while (true) {
@@ -26,15 +27,21 @@ function* watchProjectId() {
 
 function* watchPush() {
   while (true) {
-
     yield take(rivalBidAction.push);
     try {
-      const { projectId } = yield select((root: RootState) => root.rivalBid);
       yield put(rivalBidAction.requestPush('request'));
+      const { projectId } = yield select((root: RootState) => root.rivalBid);
+      if (!projectId) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(rivalBidAction.requestPush(message));
+        continue;
+      }
       yield call(rivalBidApi.push, projectId);
       yield put(rivalBidAction.requestPush('done'));
     }
     catch (e) {
+      const message = getErrorMessage(rivalBidAction.push, e);
       yield put(dialogAction.openError(message));
       yield put(rivalBidAction.requestPush(message));
     }
@@ -50,6 +57,7 @@ function* watchUpdate() {
       yield put(rivalBidAction.requestUpdate('done'));
     }
     catch (e) {
+      const message = getErrorMessage(rivalBidAction.update, e);
       yield put(dialogAction.openError(message));
       yield put(rivalBidAction.requestUpdate(message));
     }
@@ -65,6 +73,7 @@ function* watchDelete() {
       yield put(rivalBidAction.requestDelete('done'));
     }
     catch (e) {
+      const message = getErrorMessage(rivalBidAction.deleteOne, e);
       yield put(dialogAction.openError(message));
       yield put(rivalBidAction.requestDelete(message));
     }

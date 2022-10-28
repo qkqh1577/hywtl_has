@@ -15,13 +15,12 @@ import {
   ProjectStatus
 } from 'project/domain';
 import { projectAction } from 'project/action';
-import useDialog from 'dialog/hook';
 import ProjectBasicFailReasonModalRoute from 'project_status/route/failReasonModal';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectStatusRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const { id, detail, requestUpdateStatus } = useSelector((root: RootState) => root.project);
   const { test, contract } = useSelector((root: RootState) => root.projectBasic);
   const { detail: collection } = useSelector((root: RootState) => root.projectCollection);
@@ -30,14 +29,11 @@ export default function ProjectStatusRoute() {
   const openFailReasonModal = useCallback(() => dispatch(projectAction.setFailReasonModal(true)), [dispatch]);
 
   useEffect(() => {
-    if (requestUpdateStatus === 'done') {
+    closeStatus(requestUpdateStatus, () => {
       dispatch(projectAction.setId(id));
+    }, () => {
       dispatch(projectAction.requestUpdateStatus('idle'));
-    }
-    else if (requestUpdateStatus === message) {
-      error('변경에 실패하였습니다.');
-      dispatch(projectAction.requestUpdateStatus('idle'));
-    }
+    });
   }, [requestUpdateStatus]);
 
   return (

@@ -35,7 +35,6 @@ public class AuditConfiguration {
             }
             entityManager.setFlushMode(FlushModeType.COMMIT);
             String username = UsernameExtractor.get(authentication);
-            log.debug("[Audit] username: {}", username);
             User user = userRepository.findByUsername(username).orElseThrow(() -> {
                 throw new NotFoundException(User.KEY, "username", username);
             });

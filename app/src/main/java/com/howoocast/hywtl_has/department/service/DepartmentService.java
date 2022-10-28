@@ -162,8 +162,6 @@ public class DepartmentService {
         list.stream()
             .map(item -> getAncestorIdList(item, new ArrayList<>()))
             .filter(idList -> !idList.contains(instance.getId()))
-            .peek(idList -> log.debug("[Id List] start: {}, size: {}", idList.get(0), idList.size()))
-            .peek(idList -> idList.forEach(id -> log.debug("[Id] parent: {}", id)))
             .map(idList -> idList.get(0))
             .filter(id -> Objects.equals(instance.getParent().getId(), id))
             .findFirst()

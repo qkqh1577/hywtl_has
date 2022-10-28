@@ -52,7 +52,7 @@ class ProjectDocumentApi {
     return data;
   }
 
-  async delete(id: ProjectDocumentId): Promise<void> {
+  async deleteOne(id: ProjectDocumentId): Promise<void> {
     const { data } = await apiClient.delete(`/project/sales/document/${id}`);
     return data;
   }

@@ -22,7 +22,7 @@ import { DialogStatus } from 'dialog/domain';
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
   const { projectId, customDetail, requestChangeCustom, requestDeleteCustom } = useSelector((root: RootState) => root.projectEstimate);
-  const { alert, error, rollback, confirm } = useDialog();
+  const { error, rollback, confirm } = useDialog();
   const onClose = useCallback(() => dispatch(projectEstimateAction.setCustomDetailModal(undefined)), [dispatch]);
   const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteCustom()), [dispatch]);

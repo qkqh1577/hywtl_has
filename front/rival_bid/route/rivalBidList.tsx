@@ -12,12 +12,11 @@ import { RivalBidParameter } from 'rival_bid/parameter';
 import { RivalBidId } from 'rival_bid/domain';
 import { ProjectId } from 'project/domain';
 import { RootState } from 'services/reducer';
-import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectRivalBidListRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const { projectId, list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalBid);
   const onPush = useCallback(() => dispatch(rivalBidAction.push()), [dispatch]);
   const onUpdate = useCallback((params: RivalBidParameter) => dispatch(rivalBidAction.update(params)), [dispatch]);
@@ -25,38 +24,29 @@ export default function ProjectRivalBidListRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalBidAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestPush === 'done') {
+    closeStatus(requestPush, () => {
       reload(projectId);
+    }, () => {
       dispatch(rivalBidAction.requestPush('idle'));
-    }
-    else if (requestPush === message) {
-      error('등록에 실패하였습니다.');
-      dispatch(rivalBidAction.requestPush('idle'));
-    }
+    });
   }, [requestPush]);
 
   useEffect(() => {
-    if (requestUpdate === 'done') {
+    closeStatus(requestUpdate, () => {
       reload(projectId);
+    }, () => {
       dispatch(rivalBidAction.requestUpdate('idle'));
-    }
-    else if (requestUpdate === message) {
-      error('변경에 실패하였습니다.');
-      dispatch(rivalBidAction.requestUpdate('idle'));
-    }
+    });
   }, [requestUpdate]);
 
-
   useEffect(() => {
-    if (requestDelete === 'done') {
+    closeStatus(requestDelete, () => {
       reload(projectId);
+    }, () => {
       dispatch(rivalBidAction.requestDelete('idle'));
-    }
-    else if (requestDelete === message) {
-      error('삭제에 실패하였습니다.');
-      dispatch(rivalBidAction.requestDelete('idle'));
-    }
+    });
   }, [requestDelete]);
+
   return (
     <ProjectRivalBidList
       list={list}

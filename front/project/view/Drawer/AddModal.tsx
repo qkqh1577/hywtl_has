@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import UserSelector from 'components/UserSelector';
 import { ColorPalette } from 'assets/theme';
-import { memoLabelList } from 'project/route/projectAddModal';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import Input from 'layouts/Input';
@@ -20,6 +19,7 @@ import {
   ProjectProgressStatus,
   projectProgressStatusName
 } from 'project/domain';
+import { memoLabelList } from 'project/parameter';
 
 export interface AddModalProps {
   open: boolean;

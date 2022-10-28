@@ -22,12 +22,11 @@ import {
   ProjectMemoAddParameter,
 } from 'project_memo/parameter';
 import { RootState } from 'services/reducer';
-import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectMemoDrawerFormRoute() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { alert, error } = useDialog();
   const { requestAdd } = useSelector((root: RootState) => root.projectMemo);
   const setOpen = useCallback((open: boolean) => dispatch(projectMemoAction.setDrawer(open)), [dispatch]);
   const add = useCallback((formikProps: ProjectMemoAddParameter) => dispatch(projectMemoAction.add(formikProps)), [dispatch]);
@@ -48,21 +47,16 @@ export default function ProjectMemoDrawerFormRoute() {
   }, [defaultCategory]);
 
   useEffect(() => {
-    if (requestAdd === 'done') {
-      formik.setSubmitting(false);
-      alert('등록하였습니다.');
+    closeStatus(requestAdd, () => {
+      dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
       formik.setValues({
         description: '',
         category:    defaultCategory,
       });
-      dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-      dispatch(projectMemoAction.requestAdd('idle'));
-    }
-    else if (requestAdd === message) {
+    }, () => {
       formik.setSubmitting(false);
-      error('등록에 실패하였습니다.');
-
-    }
+      dispatch(projectMemoAction.requestAdd('idle'));
+    });
   }, [requestAdd]);
 
   return (

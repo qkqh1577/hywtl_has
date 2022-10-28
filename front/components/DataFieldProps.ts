@@ -8,7 +8,7 @@ export type ApiStatus = 'idle' | 'request' | 'done' | string;
 export function closeStatus(
   status: ApiStatus,
   done: DefaultFunction | undefined,
-  close: DefaultFunction,
+  close: DefaultFunction | undefined,
   fail?: DefaultFunction,
 ) {
   if (status !== 'idle' && status !== 'request') {
@@ -20,7 +20,9 @@ export function closeStatus(
     else if (fail) {
       fail();
     }
-    close();
+    if (close) {
+      close();
+    }
   }
 }
 

@@ -27,12 +27,13 @@ import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
 import BusinessBasicRoute from 'business/route/detail/basic';
 import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { alert, error, confirm, rollback } = useDialog();
+  const { error, confirm, rollback } = useDialog();
   const { detail, requestDelete, requestUpsert } = useSelector((root: RootState) => root.business);
   const upsert = useCallback((formikProps: BusinessParameter) => {
     dispatch(businessAction.upsert(formikProps));
@@ -63,30 +64,26 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === 'done') {
-      alert('수정하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(businessAction.setId(id ? BusinessId(id) : undefined));
+    closeStatus(requestUpsert, () => {
+      if (id) {
+        dispatch(businessAction.setId(BusinessId(id)));
+      }
+      else {
+        navigate('/business-management');
+      }
+    }, () => {
       dispatch(businessAction.requestUpsert('idle'));
-    }
-    else if (requestUpsert === message) {
-      error('수정에 실패하였습니다.');
       formik.setSubmitting(false);
-      dispatch(businessAction.requestUpsert('idle'));
-    }
+    });
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === 'done') {
-      alert('삭제하였습니다.');
+    closeStatus(requestDelete, () => {
       dispatch(businessAction.setId(undefined));
-      dispatch(businessAction.requestDelete('idle'));
       navigate('/business-management');
-    }
-    else if (requestDelete === message) {
-      error('삭제에 실패하였습니다.');
+    }, () => {
       dispatch(businessAction.requestDelete('idle'));
-    }
+    });
   }, [requestDelete]);
 
   return (

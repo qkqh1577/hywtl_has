@@ -19,6 +19,7 @@ import { businessApi } from 'business/api';
 import { dialogAction } from 'dialog/action';
 import { RootState } from 'services/reducer';
 import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -99,8 +100,15 @@ function* watchUpsert() {
       yield put(businessAction.requestUpsert('request'));
       yield call(businessApi.upsert, params);
       yield put(businessAction.requestUpsert('done'));
+      if (params.id) {
+        yield put(dialogAction.openAlert('변경하였습니다.'));
+      }
+      else {
+        yield put(dialogAction.openAlert('등록하였습니다.'));
+      }
     }
     catch (e) {
+      const message = getErrorMessage(businessAction.upsert, e);
       yield put(dialogAction.openError(message));
       yield put(businessAction.requestUpsert(message));
     }
@@ -114,8 +122,10 @@ function* watchDelete() {
       yield put(businessAction.requestDelete('request'));
       yield call(businessApi.delete, id);
       yield put(businessAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(businessAction.deleteOne, e);
       yield put(dialogAction.openError(message));
       yield put(businessAction.requestDelete(message));
     }

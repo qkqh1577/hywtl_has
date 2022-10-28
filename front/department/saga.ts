@@ -11,6 +11,8 @@ import {
   DepartmentVO
 } from 'department/domain';
 import { departmentApi } from 'department/api';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -53,8 +55,15 @@ function* watchUpsert() {
       yield put(departmentAction.requestUpsert('request'));
       yield call(departmentApi.upsert, params);
       yield put(departmentAction.requestUpsert('done'));
+      if (params.id) {
+        yield put(dialogAction.openAlert('변경하였습니다.'));
+      }
+      else {
+        yield put(dialogAction.openAlert('등록하였습니다.'));
+      }
     }
     catch (e) {
+      const message = getErrorMessage(departmentAction.upsert, e);
       yield put(dialogAction.openError(message));
       yield put(departmentAction.requestUpsert(message));
     }
@@ -68,8 +77,10 @@ function* watchDelete() {
       yield put(departmentAction.requestDelete('request'));
       yield call(departmentApi.deleteOne, id);
       yield put(departmentAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(departmentAction.deleteOne, e);
       yield put(dialogAction.openError(message));
       yield put(departmentAction.requestDelete(message));
     }

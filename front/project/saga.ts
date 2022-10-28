@@ -12,8 +12,9 @@ import {
   ProjectShortVO,
   ProjectVO
 } from 'project/domain';
-import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -43,8 +44,10 @@ function* watchAdd() {
       yield put(projectAction.requestAdd('request'));
       yield call(projectApi.add, params);
       yield put(projectAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectAction.add, e);
       yield put(dialogAction.openError(message));
       yield put(projectAction.requestAdd(message));
     }
@@ -61,6 +64,7 @@ function* watchUpdateStatus() {
       yield put(projectAction.requestUpdateStatus('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectAction.updateStatus, e);
       yield put(dialogAction.openError(message));
       yield put(projectAction.requestUpdateStatus(message));
     }
@@ -71,12 +75,20 @@ function* watchAddFailReason() {
   while (true) {
     const { payload: params } = yield take(projectAction.addFailReason);
     try {
-      const { id } = yield select((root: RootState) => root.project);
       yield put(projectAction.requestAddFailReason('request'));
+      const { id } = yield select((root: RootState) => root.project);
+      if (!id) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectAction.requestAddFailReason(message));
+        continue;
+      }
       yield call(projectApi.addFailReason, id, params);
       yield put(projectAction.requestAddFailReason('done'));
+      yield put(dialogAction.openAlert('수주 실패 정보를 등록하였습니다.'));
     }
     catch (e) {
+      const message = getErrorMessage(projectAction.addFailReason, e);
       yield put(dialogAction.openError(message));
       yield put(projectAction.requestAddFailReason(message));
     }

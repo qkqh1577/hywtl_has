@@ -9,7 +9,8 @@ import { projectBidAction } from 'project_bid/action';
 import { ProjectBidVO } from 'project_bid/domain';
 import { projectBidApi } from 'project_bid/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchProjectId() {
   while (true) {
@@ -24,7 +25,6 @@ function* watchProjectId() {
   }
 }
 
-
 function* update() {
   while (true) {
     const { payload: params } = yield take(projectBidAction.update);
@@ -35,6 +35,7 @@ function* update() {
       yield put(projectBidAction.requestUpdate('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectBidAction.update, e);
       yield put(dialogAction.openError(message));
       yield put(projectBidAction.requestUpdate(message));
     }

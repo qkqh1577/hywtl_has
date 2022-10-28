@@ -13,7 +13,8 @@ import {
 } from 'project_complex/domain';
 import { projectComplexApi } from 'project_complex/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchId() {
   while (true) {
@@ -80,6 +81,7 @@ function* watchPushSite() {
       yield put(projectComplexAction.requestPushSite('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.pushSite, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestPushSite(message));
     }
@@ -95,6 +97,7 @@ function* watchUpdateSite() {
       yield put(projectComplexAction.requestUpdateSite('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.updateSite, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestUpdateSite(message));
     }
@@ -110,6 +113,7 @@ function* watchDeleteSite() {
       yield put(projectComplexAction.requestDeleteSite('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.deleteSite, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestDeleteSite(message));
     }
@@ -127,6 +131,7 @@ function* watchPushBuilding() {
       yield put(projectComplexAction.requestPushBuilding('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.pushBuilding, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestPushBuilding(message));
     }
@@ -142,6 +147,7 @@ function* watchUpdateBuilding() {
       yield put(projectComplexAction.requestUpdateBuilding('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.updateBuilding, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestUpdateBuilding(message));
     }
@@ -157,9 +163,9 @@ function* watchDeleteBuilding() {
       yield put(projectComplexAction.requestDeleteBuilding('done'));
     }
     catch (e) {
+      const message = getErrorMessage(projectComplexAction.deleteBuilding, e);
       yield put(dialogAction.openError(message));
       yield put(projectComplexAction.requestDeleteBuilding(message));
-
     }
   }
 }

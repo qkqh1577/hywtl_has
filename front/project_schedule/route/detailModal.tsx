@@ -16,15 +16,16 @@ import {
   FormikProvider,
   useFormik,
 } from 'formik';
-import { ProjectScheduleId, } from 'project_schedule/domain';
+import { ProjectScheduleId } from 'project_schedule/domain';
 import ProjectScheduleDetailModal from 'project_schedule/view/DetailModal';
 import useDialog from 'dialog/hook';
 import dayjs from 'dayjs';
 import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectScheduleDetailModalRoute() {
   const dispatch = useDispatch();
-  const { confirm, alert, error, rollback } = useDialog();
+  const { confirm, error, rollback } = useDialog();
   const { detail, requestUpdate, requestDelete, filter } = useSelector((root: RootState) => root.projectSchedule);
 
   const onClose = useCallback(() =>
@@ -35,10 +36,9 @@ export default function ProjectScheduleDetailModalRoute() {
     dispatch(projectScheduleAction.deleteOne(id)), [dispatch]);
 
   const formik = useFormik<ProjectScheduleParameter>({
-    enableReinitialize: true,
-    initialValues:      { ...initialProjectScheduleParameter, edit: false } as ProjectScheduleParameter,
-    onSubmit:           (values
-                        ) => {
+    initialValues: { ...initialProjectScheduleParameter, edit: false } as ProjectScheduleParameter,
+    onSubmit:      (values
+                   ) => {
       if (!values.id) {
         formik.setSubmitting(false);
         return;
@@ -60,7 +60,6 @@ export default function ProjectScheduleDetailModalRoute() {
         alertBefore:      values.alertBefore,
         attendanceIdList: values.attendanceIdList,
       });
-      formik.setSubmitting(false);
     }
   });
 
@@ -80,33 +79,23 @@ export default function ProjectScheduleDetailModalRoute() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpdate === 'done') {
-      alert('수정하였습니다.');
-      dispatch(projectScheduleAction.requestUpdate('idle'));
+    closeStatus(requestUpdate, () => {
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
+    }, () => {
       formik.setSubmitting(false);
-    }
-    else if (requestUpdate === message) {
-      error('수정에 실패하였습니다.');
       dispatch(projectScheduleAction.requestUpdate('idle'));
-      formik.setSubmitting(false);
-    }
+    });
   }, [requestUpdate]);
 
   useEffect(() => {
-    if (requestDelete === 'done') {
-      alert('삭제되었습니다.');
-      dispatch(projectScheduleAction.requestDelete('idle'));
+    closeStatus(requestDelete, () => {
       dispatch(projectScheduleAction.setFilter({ ...filter }));
       dispatch(projectScheduleAction.setId(undefined));
+    }, () => {
       formik.setSubmitting(false);
-    }
-    else if (requestDelete === message) {
-      error('삭제에 실패하였습니다.');
       dispatch(projectScheduleAction.requestDelete('idle'));
-      formik.setSubmitting(false);
-    }
+    });
   }, [requestDelete]);
 
   return (
@@ -126,7 +115,7 @@ export default function ProjectScheduleDetailModalRoute() {
             });
           }
           else {
-            alert('일정이 선택되지 않았습니다.');
+            error('일정이 선택되지 않았습니다.');
           }
         }}
         onCancel={() => {
