@@ -30,10 +30,10 @@ export interface ProjectContractState {
 
 const initial: ProjectContractState = {
   finalModal:      false,
-  requestAdd:      ApiStatus.IDLE,
-  requestChange:   ApiStatus.IDLE,
-  requestDelete:   ApiStatus.IDLE,
-  requestSetFinal: ApiStatus.IDLE,
+  requestAdd:      'idle',
+  requestChange:   'idle',
+  requestDelete:   'idle',
+  requestSetFinal: 'idle',
 };
 
 export const projectContractReducer = createReducer(initial, {

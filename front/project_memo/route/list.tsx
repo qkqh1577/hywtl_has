@@ -18,12 +18,10 @@ import {
   initialProjectMemoQuery,
   ProjectMemoChangeParameter
 } from 'project_memo/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
 import { useFormik } from 'formik';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectMemoDrawerListRoute() {
-  const { error, alert } = useDialog();
   const dispatch = useDispatch();
   const { page, requestChange, requestDelete } = useSelector((root: RootState) => root.projectMemo);
   const { detail: loginUser } = useSelector((root: RootState) => root.login);
@@ -53,31 +51,21 @@ export default function ProjectMemoDrawerListRoute() {
   }, [page]);
 
   useEffect(() => {
-    if (requestChange === ApiStatus.DONE) {
-      alert('변경하였습니다.');
-      formik.setSubmitting(false);
+    closeStatus(requestChange, () => {
       formik.setValues({} as ProjectMemoChangeParameter);
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-      dispatch(projectMemoAction.requestChange(ApiStatus.IDLE));
+    }, () => {
       formik.setSubmitting(false);
-    }
-    else if (requestChange === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(projectMemoAction.requestChange(ApiStatus.IDLE));
-    }
+      dispatch(projectMemoAction.requestChange('idle'));
+    });
   }, [requestChange]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
+    closeStatus(requestDelete, () => {
       dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-      dispatch(projectMemoAction.requestDelete(ApiStatus.IDLE));
-    }
-    else if (requestDelete === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(projectMemoAction.requestDelete(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectMemoAction.requestDelete('idle'));
+    });
   }, [requestDelete]);
 
   return (

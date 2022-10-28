@@ -6,8 +6,6 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
 import { projectAction } from 'project/action';
 import { projectBasicAction } from 'project_basic/action';
 import { RootState } from 'services/reducer';
@@ -20,11 +18,11 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectBasicFailReasonModalRoute() {
 
   const dispatch = useDispatch();
-  const { error, alert } = useDialog();
   const { id, failReasonModal, requestAddFailReason } = useSelector((root: RootState) => root.project);
   const onClose = useCallback(() => dispatch(projectAction.setFailReasonModal(false)), [dispatch]);
   const addFailReason = useCallback((params: ProjectBasicFailReasonParameter) => dispatch(projectAction.addFailReason(params)), [dispatch]);
@@ -44,17 +42,12 @@ export default function ProjectBasicFailReasonModalRoute() {
   }, [failReasonModal]);
 
   useEffect(() => {
-    if (requestAddFailReason === ApiStatus.DONE) {
-      alert('수주 실패 정보를 등록하였습니다.');
+    closeStatus(requestAddFailReason, () => {
       onClose();
       dispatch(projectBasicAction.getFailReason(id));
-      dispatch(projectAction.requestAddFailReason(ApiStatus.IDLE));
-    }
-    else if (requestAddFailReason === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
-      dispatch(projectAction.requestAddFailReason(ApiStatus.IDLE));
-    }
-
+    }, () => {
+      dispatch(projectAction.requestAddFailReason('idle'));
+    });
   }, [requestAddFailReason]);
 
   return (

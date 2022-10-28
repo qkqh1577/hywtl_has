@@ -11,7 +11,7 @@ export interface ContractCollectionState {
 
 const initialContractCollectionState = {
   template:      initialContractCollectionParameter,
-  requestUpsert: ApiStatus.IDLE,
+  requestUpsert: 'idle',
 };
 
 export const contractCollectionReducer = createReducer(initialContractCollectionState, {

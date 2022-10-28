@@ -21,9 +21,9 @@ export interface EstimateTemplateState {
 
 const initial: EstimateTemplateState = {
   seqModal:         false,
-  requestUpsert:    ApiStatus.IDLE,
-  requestDelete:    ApiStatus.IDLE,
-  requestChangeSeq: ApiStatus.IDLE,
+  requestUpsert:    'idle',
+  requestDelete:    'idle',
+  requestChangeSeq: 'idle',
 };
 
 export const estimateTemplateReducer = createReducer(initial, {

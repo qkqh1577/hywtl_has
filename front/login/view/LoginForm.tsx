@@ -25,13 +25,11 @@ import {
 import { loginAction } from 'login/action';
 import { LoginParameter } from 'login/parameter';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const { requestLogin } = useSelector((root: RootState) => root.login);
-  const { error } = useDialog();
   const login = useCallback((params: LoginParameter) => dispatch(loginAction.login(params)), [dispatch]);
 
   const handler = {
@@ -73,14 +71,11 @@ export default function LoginForm() {
   };
 
   useEffect(() => {
-    if (requestLogin === ApiStatus.DONE) {
-      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
+    closeStatus(requestLogin, () => {
       dispatch(loginAction.requestDetail());
-    }
-    else if (requestLogin === ApiStatus.FAIL) {
-      dispatch(loginAction.requestLogin(ApiStatus.IDLE));
-      error('로그인에 실패하였습니다.');
-    }
+    }, () => {
+      dispatch(loginAction.requestLogin('idle'));
+    });
   }, [requestLogin]);
 
   return (

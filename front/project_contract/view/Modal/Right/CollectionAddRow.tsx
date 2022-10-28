@@ -7,7 +7,7 @@ import React, {
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { ProjectContractCollectionStageParameter } from 'project_contract/parameter';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';

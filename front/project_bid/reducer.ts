@@ -11,7 +11,7 @@ export interface ProjectBidState {
 }
 
 const initial: ProjectBidState = {
-  requestUpdate: ApiStatus.IDLE,
+  requestUpdate: 'idle',
 };
 
 export const projectBidReducer = createReducer(initial, {

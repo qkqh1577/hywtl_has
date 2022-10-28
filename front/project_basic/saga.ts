@@ -15,13 +15,14 @@ import {
 } from 'project_basic/domain';
 import { projectBasicApi } from 'project_basic/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectComplexTestVO } from 'project_complex/domain';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchId() {
   while (true) {
@@ -70,13 +71,14 @@ function* watchAddInternal() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.addInternal);
     try {
-      yield put(projectBasicAction.requestAddInternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestAddInternal('request'));
       yield call(projectBasicApi.addInternal, id);
-      yield put(projectBasicAction.requestAddInternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestAddInternal('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestAddInternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.addInternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestAddInternal(message));
     }
   }
 }
@@ -85,13 +87,14 @@ function* watchAddExternal() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.addExternal);
     try {
-      yield put(projectBasicAction.requestAddExternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestAddExternal('request'));
       yield call(projectBasicApi.addExternal, id);
-      yield put(projectBasicAction.requestAddExternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestAddExternal('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestAddExternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.addExternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestAddExternal(message));
     }
   }
 }
@@ -100,13 +103,14 @@ function* watchUpdateInternal() {
   while (true) {
     const { payload: params } = yield take(projectBasicAction.updateInternal);
     try {
-      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestUpdateInternal('request'));
       yield call(projectBasicApi.updateInternal, params);
-      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestUpdateInternal('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestUpdateInternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.updateInternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestUpdateInternal(message));
     }
   }
 }
@@ -115,13 +119,14 @@ function* watchUpdateExternal() {
   while (true) {
     const { payload: params } = yield take(projectBasicAction.updateExternal);
     try {
-      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestUpdateExternal('request'));
       yield call(projectBasicApi.updateExternal, params);
-      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestUpdateExternal('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestUpdateExternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.updateExternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestUpdateExternal(message));
     }
   }
 }
@@ -130,12 +135,14 @@ function* watchDeleteInternal() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.deleteInternal);
     try {
-      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestDeleteInternal('request'));
       yield call(projectBasicApi.deleteInternal, id);
-      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestDeleteInternal('done'));
     }
     catch (e) {
-      yield put(projectBasicAction.requestDeleteInternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.deleteInternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestDeleteInternal(message));
     }
   }
 }
@@ -144,12 +151,14 @@ function* watchDeleteExternal() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.deleteExternal);
     try {
-      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestDeleteExternal('request'));
       yield call(projectBasicApi.deleteExternal, id);
-      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.DONE));
+      yield put(projectBasicAction.requestDeleteExternal('done'));
     }
     catch (e) {
-      yield put(projectBasicAction.requestDeleteExternal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.deleteExternal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestDeleteExternal(message));
     }
   }
 }
@@ -276,13 +285,15 @@ function* watchAddBusiness() {
     const { payload: params } = yield take(projectBasicAction.addBusiness);
     try {
       const { id } = yield select((root: RootState) => root.projectBasic);
-      yield put(projectBasicAction.requestAddBusiness(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestAddBusiness('request'));
       yield call(projectBasicApi.addBusiness, id, params);
-      yield put(projectBasicAction.requestAddBusiness(ApiStatus.DONE));
+      yield put(projectBasicAction.requestAddBusiness('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestAddBusiness(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.addBusiness, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestAddBusiness(message));
     }
   }
 }
@@ -291,13 +302,15 @@ function* watchChangeBusiness() {
   while (true) {
     const { payload: params } = yield take(projectBasicAction.changeBusiness);
     try {
-      yield put(projectBasicAction.requestChangeBusiness(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestChangeBusiness('request'));
       yield call(projectBasicApi.changeBusiness, params);
-      yield put(projectBasicAction.requestChangeBusiness(ApiStatus.DONE));
+      yield put(projectBasicAction.requestChangeBusiness('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestChangeBusiness(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.changeBusiness, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestChangeBusiness(message));
     }
   }
 }
@@ -306,13 +319,15 @@ function* watchDeleteBusiness() {
   while (true) {
     const { payload: id } = yield take(projectBasicAction.deleteBusiness);
     try {
-      yield put(projectBasicAction.requestDeleteBusiness(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestDeleteBusiness('request'));
       yield call(projectBasicApi.deleteBusiness, id);
-      yield put(projectBasicAction.requestDeleteBusiness(ApiStatus.DONE));
+      yield put(projectBasicAction.requestDeleteBusiness('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestDeleteBusiness(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.deleteBusiness, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestDeleteBusiness(message));
     }
   }
 }
@@ -322,13 +337,14 @@ function* watchUpdateBasic() {
     const { payload: params } = yield take(projectBasicAction.updateBasic);
     try {
       const { id } = yield select((root: RootState) => root.projectBasic);
-      yield put(projectBasicAction.requestUpdateBasic(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestUpdateBasic('request'));
       yield call(projectBasicApi.updateBasic, id, params);
-      yield put(projectBasicAction.requestUpdateBasic(ApiStatus.DONE));
+      yield put(projectBasicAction.requestUpdateBasic('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestUpdateBasic(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.updateBasic, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestUpdateBasic(message));
     }
   }
 }
@@ -338,13 +354,14 @@ function* watchUpdateDesign() {
     const { payload: params } = yield take(projectBasicAction.updateDesign);
     try {
       const { id } = yield select((root: RootState) => root.projectBasic);
-      yield put(projectBasicAction.requestUpdateDesign(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestUpdateDesign('request'));
       yield call(projectBasicApi.updateDesign, id, params);
-      yield put(projectBasicAction.requestUpdateDesign(ApiStatus.DONE));
+      yield put(projectBasicAction.requestUpdateDesign('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestUpdateDesign(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.updateDesign, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestUpdateDesign(message));
     }
   }
 }
@@ -354,13 +371,14 @@ function* watchUpdateFailReason() {
     const { payload: params } = yield take(projectBasicAction.updateFailReason);
     try {
       const { id } = yield select((root: RootState) => root.projectBasic);
-      yield put(projectBasicAction.requestUpdateFailReason(ApiStatus.REQUEST));
+      yield put(projectBasicAction.requestUpdateFailReason('request'));
       yield call(projectBasicApi.updateFailReason, id, params);
-      yield put(projectBasicAction.requestUpdateFailReason(ApiStatus.DONE));
+      yield put(projectBasicAction.requestUpdateFailReason('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectBasicAction.requestUpdateFailReason(ApiStatus.FAIL));
+      const message = getErrorMessage(projectBasicAction.updateFailReason, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectBasicAction.requestUpdateFailReason(message));
     }
   }
 }

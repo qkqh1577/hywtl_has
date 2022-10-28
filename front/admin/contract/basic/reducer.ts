@@ -11,7 +11,7 @@ export interface ContractBasicState {
 
 const initialContractBasicState: ContractBasicState = {
   template:      initialContractBasicParameter,
-  requestUpsert: ApiStatus.IDLE,
+  requestUpsert: 'idle',
 };
 
 export const contractBasicReducer = createReducer(initialContractBasicState, {

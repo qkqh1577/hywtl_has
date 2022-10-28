@@ -11,7 +11,8 @@ import {
 import { contractConditionApi } from 'admin/contract/condition/api';
 import { contractConditionAction } from './action';
 import { initialContractConditionListParameter } from 'admin/contract/condition/parameter';
-import { ApiStatus } from 'components/DataFieldProps';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchPage() {
   while (true) {
@@ -30,13 +31,15 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(contractConditionAction.upsert);
     try {
-      yield put(contractConditionAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(contractConditionAction.requestUpsert('request'));
       yield call(contractConditionApi.upsert, params);
-      yield put(contractConditionAction.requestUpsert(ApiStatus.DONE));
+      yield put(contractConditionAction.requestUpsert('done'));
+      yield put(dialogAction.openAlert('저장하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(contractConditionAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(contractConditionAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(contractConditionAction.requestUpsert(message));
     }
   }
 }

@@ -18,7 +18,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  requestChange: ApiStatus.IDLE,
+  requestChange: 'idle',
 };
 
 export const userReducer = createReducer(initialState, {

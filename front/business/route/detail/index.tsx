@@ -23,16 +23,17 @@ import BusinessDetail from 'business/view/Detail';
 import BusinessInvolvedProjectRoute from 'business/route/detail/involvedProject';
 import BusinessRivalStatisticRoute from 'business/route/detail/rivalStatistic';
 import BusinessRivalProjectListRoute from 'business/route/detail/rivalProject';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
 import BusinessBasicRoute from 'business/route/detail/basic';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { alert, error, confirm, rollback } = useDialog();
+  const { error, confirm, rollback } = useDialog();
   const { detail, requestDelete, requestUpsert } = useSelector((root: RootState) => root.business);
   const upsert = useCallback((formikProps: BusinessParameter) => {
     dispatch(businessAction.upsert(formikProps));
@@ -63,30 +64,26 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('수정하였습니다.');
+    closeStatus(requestUpsert, () => {
+      if (id) {
+        dispatch(businessAction.setId(BusinessId(id)));
+      }
+      else {
+        navigate('/business-management');
+      }
+    }, () => {
+      dispatch(businessAction.requestUpsert('idle'));
       formik.setSubmitting(false);
-      dispatch(businessAction.setId(id ? BusinessId(id) : undefined));
-      dispatch(businessAction.requestUpsert(ApiStatus.IDLE));
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('수정에 실패하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(businessAction.requestUpsert(ApiStatus.IDLE));
-    }
+    });
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
+    closeStatus(requestDelete, () => {
       dispatch(businessAction.setId(undefined));
-      dispatch(businessAction.requestDelete(ApiStatus.IDLE));
       navigate('/business-management');
-    }
-    else if (requestDelete === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(businessAction.requestDelete(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(businessAction.requestDelete('idle'));
+    });
   }, [requestDelete]);
 
   return (
@@ -107,7 +104,7 @@ function Element() {
         onDelete={() => {
           if (id) {
             confirm({
-              status:       'warn',
+              status:       DialogStatus.WARN,
               children:     '해당 업체 정보를 삭제하시겠습니까?',
               confirmText:  '삭제',
               afterConfirm: () => {

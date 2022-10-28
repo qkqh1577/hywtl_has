@@ -1,9 +1,18 @@
 package com.howoocast.hywtl_has.common.util;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 
 public final class KoreanLetterUtil {
+
+    public static final List<String> alphabet_list = Arrays.asList(
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    );
 
     public static String toUnicode(String text) {
         if (Objects.isNull(text)) {
@@ -54,6 +63,17 @@ public final class KoreanLetterUtil {
             return "";
         }
         return result ? "은" : "는";
+    }
+
+    public static boolean hasAlphabet(String text) {
+        for (int i = 0; i < text.length() - 1; i++) {
+            String letter = text.substring(i, i + 1);
+            if (alphabet_list.contains(letter)) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
 }

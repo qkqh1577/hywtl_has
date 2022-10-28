@@ -10,7 +10,7 @@ import {
   businessManagerStatusName,
 } from 'business/domain';
 import { FormikContext } from 'formik';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import TextBox from 'layouts/Text';
 import Button from 'layouts/Button';
 import { initialBusinessManagerParameter } from 'business/parameter';

@@ -15,7 +15,7 @@ export interface ContractConditionState {
 
 const initialContractConditionState = {
   template:      initialContractConditionListParameter,
-  requestUpsert: ApiStatus.IDLE,
+  requestUpsert: 'idle',
 };
 
 export const contractConditionReducer = createReducer(initialContractConditionState, {

@@ -17,7 +17,7 @@ export default function NotificationButtonRoute() {
   const { count } = useSelector((root: RootState) => root.userNotification);
   const { pathname } = useLocation();
 
-  const onModalOpen = useCallback(() => dispatch(userNotificationAction.requestList()), [dispatch]);
+  const onModalOpen = useCallback(() => dispatch(userNotificationAction.setModal(true)), [dispatch]);
 
   useEffect(() => {
     dispatch(userNotificationAction.requestCount());

@@ -22,7 +22,7 @@ import {
   expectedDateTypeName
 } from 'admin/contract/collection/domain';
 import { FormikContext } from 'formik';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import Button from 'layouts/Button';
 import AddRow from 'admin/contract/collection/view/Form/AddRow';
 import Input from 'layouts/Input';

@@ -12,8 +12,9 @@ import {
   ProjectShortVO,
   ProjectVO
 } from 'project/domain';
-import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -40,13 +41,15 @@ function* watchAdd() {
   while (true) {
     const { payload: params } = yield take(projectAction.add);
     try {
-      yield put(projectAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectAction.requestAdd('request'));
       yield call(projectApi.add, params);
-      yield put(projectAction.requestAdd(ApiStatus.DONE));
+      yield put(projectAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestAdd(ApiStatus.FAIL));
+      const message = getErrorMessage(projectAction.add, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestAdd(message));
     }
   }
 }
@@ -56,13 +59,14 @@ function* watchUpdateStatus() {
     const { payload: params } = yield take(projectAction.updateStatus);
     try {
       const { id } = yield select((root: RootState) => root.project);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.REQUEST));
+      yield put(projectAction.requestUpdateStatus('request'));
       yield call(projectApi.updateStatus, id, params);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.DONE));
+      yield put(projectAction.requestUpdateStatus('done'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestUpdateStatus(ApiStatus.FAIL));
+      const message = getErrorMessage(projectAction.updateStatus, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestUpdateStatus(message));
     }
   }
 }
@@ -71,14 +75,22 @@ function* watchAddFailReason() {
   while (true) {
     const { payload: params } = yield take(projectAction.addFailReason);
     try {
+      yield put(projectAction.requestAddFailReason('request'));
       const { id } = yield select((root: RootState) => root.project);
-      yield put(projectAction.requestAddFailReason(ApiStatus.REQUEST));
+      if (!id) {
+        const message = '프로젝트가 선택되지 않았습니다.';
+        yield put(dialogAction.openError(message));
+        yield put(projectAction.requestAddFailReason(message));
+        continue;
+      }
       yield call(projectApi.addFailReason, id, params);
-      yield put(projectAction.requestAddFailReason(ApiStatus.DONE));
+      yield put(projectAction.requestAddFailReason('done'));
+      yield put(dialogAction.openAlert('수주 실패 정보를 등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectAction.requestAddFailReason(ApiStatus.FAIL));
+      const message = getErrorMessage(projectAction.addFailReason, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestAddFailReason(message));
     }
   }
 }

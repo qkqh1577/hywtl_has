@@ -31,8 +31,7 @@ export default function ProjectBasicBusinessModalRoute() {
   const onSearch = (query: SearchProps) => {
     businessApi.getListAll(query)
                .then(setBusinessList)
-               .catch((e) => {
-                 console.error(e);
+               .catch(() => {
                  setBusinessList(undefined);
                });
   };

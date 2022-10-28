@@ -27,7 +27,6 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
   const formik = useContext(FormikContext);
   const plan = formik.values.plan;
 
-  console.log(plan);
   useEffect(() => {
     const testAmount = plan.testAmount || 0;
     const reviewAmount = plan.reviewAmount || 0;

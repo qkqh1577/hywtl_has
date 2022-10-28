@@ -33,8 +33,6 @@ export default function UploadField({ accept, name, disableDownload, disableSele
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
-
-    console.log(file);
     if (!file) {
       setImageUrl(undefined);
       return;
@@ -47,7 +45,6 @@ export default function UploadField({ accept, name, disableDownload, disableSele
     if (file.multipartFile) {
       setImageUrl(URL.createObjectURL(file.multipartFile));
     }
-
   }, [file]);
   return (
     <Box sx={{

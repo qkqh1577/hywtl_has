@@ -10,9 +10,10 @@ import Page from 'type/Page';
 import { ProjectMemoVO } from 'project_memo/domain';
 import { projectMemoApi } from 'project_memo/api';
 import { RootState } from 'services/reducer';
-import { dialogActions } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
 import { ProjectId } from 'project/domain';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -23,8 +24,8 @@ function* watchFilter() {
       yield put(projectMemoAction.setPage(page));
     }
     catch (e) {
-      yield put(dialogActions.openAlert({
-        status:   'error',
+      yield put(dialogAction.openAlert({
+        status:   DialogStatus.ERROR,
         children: e as string,
       }));
     }
@@ -44,13 +45,15 @@ function* watchAdd() {
     const { payload: params } = yield take(projectMemoAction.add);
     try {
       const projectId: ProjectId = yield call(getProjectId);
-      yield put(projectMemoAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectMemoAction.requestAdd('request'));
       yield call(projectMemoApi.add, projectId, params);
-      yield put(projectMemoAction.requestAdd(ApiStatus.DONE));
+      yield put(projectMemoAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectMemoAction.requestAdd(ApiStatus.FAIL));
+      const message = getErrorMessage(projectMemoAction.add, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectMemoAction.requestAdd(message));
     }
   }
 }
@@ -59,13 +62,15 @@ function* watchChange() {
   while (true) {
     const { payload: params } = yield take(projectMemoAction.change);
     try {
-      yield put(projectMemoAction.requestChange(ApiStatus.REQUEST));
+      yield put(projectMemoAction.requestChange('request'));
       yield call(projectMemoApi.change, params.id, params);
-      yield put(projectMemoAction.requestChange(ApiStatus.DONE));
+      yield put(projectMemoAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectMemoAction.requestChange(ApiStatus.FAIL));
+      const message = getErrorMessage(projectMemoAction.change, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectMemoAction.requestChange(message));
     }
   }
 }
@@ -74,13 +79,15 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(projectMemoAction.deleteOne);
     try {
-      yield put(projectMemoAction.requestDelete(ApiStatus.REQUEST));
+      yield put(projectMemoAction.requestDelete('request'));
       yield call(projectMemoApi.deleteOne, id);
-      yield put(projectMemoAction.requestDelete(ApiStatus.DONE));
+      yield put(projectMemoAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectMemoAction.requestDelete(ApiStatus.FAIL));
+      const message = getErrorMessage(projectMemoAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectMemoAction.requestDelete(message));
     }
   }
 }

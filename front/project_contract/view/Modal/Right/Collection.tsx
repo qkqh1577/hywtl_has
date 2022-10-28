@@ -24,7 +24,7 @@ import AddRow from './CollectionAddRow';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContractCollectionStage } from 'admin/contract/collection/domain';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 
 export default function () {
   const { error } = useDialog();

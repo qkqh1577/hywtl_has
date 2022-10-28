@@ -17,13 +17,12 @@ import {
   initialProjectDocumentParameter,
   ProjectDocumentParameter
 } from 'project_document/parameter';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectDocumentAddModalRoute() {
 
-  const { error } = useDialog();
   const dispatch = useDispatch();
-  const { projectId, addModal } = useSelector((root: RootState) => root.projectDocument);
+  const { projectId, addModal, requestAdd } = useSelector((root: RootState) => root.projectDocument);
 
   const onClose = useCallback(() => dispatch(projectDocumentAction.addModal(undefined)), [dispatch]);
   const onAdd = useCallback((params: ProjectDocumentParameter) => dispatch(projectDocumentAction.add(params)), [dispatch]);
@@ -31,18 +30,7 @@ export default function ProjectDocumentAddModalRoute() {
   const formik = useFormik<ProjectDocumentParameter>({
     initialValues: initialProjectDocumentParameter,
     onSubmit:      (values) => {
-      if (!projectId) {
-        error('프로젝트가 선택되지 않았습니다.');
-        formik.setSubmitting(false);
-        return;
-      }
-      if (!addModal) {
-        error('자료 형식이 선택되지 않았습니다.');
-        formik.setSubmitting(false);
-        return;
-      }
       onAdd(values);
-      formik.setSubmitting(false);
     }
   });
 
@@ -51,6 +39,15 @@ export default function ProjectDocumentAddModalRoute() {
       formik.setValues(initialProjectDocumentParameter);
     }
   }, [addModal]);
+
+  useEffect(() => {
+    closeStatus(requestAdd, () => {
+      dispatch(projectDocumentAction.setProjectId(projectId));
+    }, () => {
+      formik.setSubmitting(false);
+      dispatch(projectDocumentAction.addModal(undefined));
+    });
+  }, [requestAdd]);
 
   return (
     <FormikProvider value={formik}>

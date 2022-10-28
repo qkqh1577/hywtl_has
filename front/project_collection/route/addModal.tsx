@@ -8,7 +8,6 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
-import useDialog from 'components/Dialog';
 import { RootState } from 'services/reducer';
 import React, {
   useCallback,
@@ -16,12 +15,11 @@ import React, {
   useMemo
 } from 'react';
 import { projectCollectionAction } from 'project_collection/action';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectCollectionStageAddModalRoute() {
 
   const dispatch = useDispatch();
-  const { alert, error } = useDialog();
   const { contract } = useSelector((root: RootState) => root.projectBasic);
   const { projectId, addModal, requestAddStage } = useSelector((root: RootState) => root.projectCollection);
   const onAdd = useCallback((params: ProjectCollectionAddStageParameter) => dispatch(projectCollectionAction.addStage(params)), [dispatch]);
@@ -50,19 +48,13 @@ export default function ProjectCollectionStageAddModalRoute() {
   }, [addModal]);
 
   useEffect(() => {
-    if (requestAddStage === ApiStatus.DONE) {
-      alert('등록하였습니다.');
-      formik.setSubmitting(false);
-      onClose();
+    closeStatus(requestAddStage, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
-      dispatch(projectCollectionAction.requestAddStage(ApiStatus.IDLE));
-    }
-    else if (requestAddStage === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
+      onClose();
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(projectCollectionAction.requestAddStage(ApiStatus.IDLE));
-
-    }
+      dispatch(projectCollectionAction.requestAddStage('idle'));
+    });
   }, [requestAddStage]);
 
   return (

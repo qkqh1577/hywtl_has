@@ -12,9 +12,9 @@ export interface LoginState {
 }
 
 const initial: LoginState = {
-  requestLogin:  ApiStatus.IDLE,
-  requestLogout: ApiStatus.IDLE,
-  requestChange: ApiStatus.IDLE,
+  requestLogin:  'idle',
+  requestLogout: 'idle',
+  requestChange: 'idle',
   changeModal:   false,
 };
 

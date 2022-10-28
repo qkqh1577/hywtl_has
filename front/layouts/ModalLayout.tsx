@@ -2,12 +2,12 @@ import React from 'react';
 import {
   Box,
   Modal,
-  Paper,
-  Typography
+  Paper
 } from '@mui/material';
 import { ColorPalette } from 'assets/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DefaultFunction } from 'type/Function';
+import TextBox from 'layouts/Text';
 
 export interface ModalLayoutProps {
   open: boolean;
@@ -62,12 +62,7 @@ export default function ModalLayout({
           backgroundColor: ColorPalette._2d3a54,
           color:           ColorPalette._ffffff,
         }}>
-          <Typography sx={{
-            fontSize:   '18px',
-            fontWeight: 'bold',
-          }}
-            children={title}
-          />
+          <TextBox variant="heading2">{title}</TextBox>
           <FontAwesomeIcon
             icon="xmark"
             onClick={onClose}

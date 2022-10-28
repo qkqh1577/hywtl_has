@@ -14,12 +14,10 @@ import { RootState } from 'services/reducer';
 import { LoginChangeParameter } from 'login/parameter';
 import { loginAction } from 'login/action';
 import LoginChangeModal from 'login/view/ChangeModal';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function LoginChangeModalRoute() {
   const dispatch = useDispatch();
-  const { error, alert } = useDialog();
   const { detail: loginUser, changeModal, requestChange } = useSelector((root: RootState) => root.login);
 
   const change = useCallback((formikProps: LoginChangeParameter) =>
@@ -48,15 +46,12 @@ export default function LoginChangeModalRoute() {
   }, [loginUser]);
 
   useEffect(() => {
-    if (requestChange === ApiStatus.DONE) {
-      alert('변경하였습니다.');
+    closeStatus(requestChange, () => {
       dispatch(loginAction.changeModal(false));
-      dispatch(loginAction.requestChange(ApiStatus.IDLE));
-    }
-    else if (requestChange === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
-      dispatch(loginAction.requestChange(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(loginAction.requestChange('idle'));
+
+    });
   }, [requestChange]);
 
   const onClose = useCallback(() => dispatch(loginAction.changeModal(false)), [dispatch]);

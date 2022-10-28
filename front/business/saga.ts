@@ -16,9 +16,10 @@ import {
   RivalProjectVO
 } from 'business/domain';
 import { businessApi } from 'business/api';
-import { dialogActions } from 'components/Dialog';
+import { dialogAction } from 'dialog/action';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
+import { DialogStatus } from 'dialog/domain';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -40,14 +41,14 @@ function* watchRegistrationNumber() {
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id) {
-        yield put(dialogActions.openAlert({
-          status:   'error',
+        yield put(dialogAction.openAlert({
+          status:   DialogStatus.ERROR,
           children: '이미 사용중인 사업자등록번호 입니다.'
         }));
         continue;
       }
     }
-    yield put(dialogActions.openAlert('사용 가능합니다.'));
+    yield put(dialogAction.openAlert('사용 가능합니다.'));
   }
 }
 
@@ -96,13 +97,20 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(businessAction.upsert);
     try {
-      yield put(businessAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(businessAction.requestUpsert('request'));
       yield call(businessApi.upsert, params);
-      yield put(businessAction.requestUpsert(ApiStatus.DONE));
+      yield put(businessAction.requestUpsert('done'));
+      if (params.id) {
+        yield put(dialogAction.openAlert('변경하였습니다.'));
+      }
+      else {
+        yield put(dialogAction.openAlert('등록하였습니다.'));
+      }
     }
     catch (e) {
-      console.error(e);
-      yield put(businessAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(businessAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(businessAction.requestUpsert(message));
     }
   }
 }
@@ -111,13 +119,15 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(businessAction.deleteOne);
     try {
-      yield put(businessAction.requestDelete(ApiStatus.REQUEST));
+      yield put(businessAction.requestDelete('request'));
       yield call(businessApi.delete, id);
-      yield put(businessAction.requestDelete(ApiStatus.DONE));
+      yield put(businessAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(businessAction.requestDelete(ApiStatus.FAIL));
+      const message = getErrorMessage(businessAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(businessAction.requestDelete(message));
     }
   }
 }

@@ -19,12 +19,12 @@ import {
   initialContractBasicParameter,
 } from 'admin/contract/basic/parameter';
 import { ContractBasicVO } from 'admin/contract/basic/domain';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const dispatch = useDispatch();
-  const { alert, error, rollback } = useDialog();
+  const { rollback } = useDialog();
   const { template, requestUpsert } = useSelector((root: RootState) => root.contractBasic);
   const upsert = useCallback((formikProps: ContractBasicParameter) => dispatch(contractBasicAction.upsert(formikProps)), [dispatch]);
 
@@ -45,17 +45,12 @@ function Element() {
   }, [template]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
+    closeStatus(requestUpsert, () => {
       dispatch(contractBasicAction.requestOne());
-      dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(contractBasicAction.requestUpsert(ApiStatus.IDLE));
-    }
+      dispatch(contractBasicAction.requestUpsert('idle'));
+    });
   }, [requestUpsert]);
 
   return (

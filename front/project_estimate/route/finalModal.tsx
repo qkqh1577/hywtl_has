@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectEstimateId } from 'project_estimate/domain';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 import {
   FormikProvider,
   useFormik
@@ -19,12 +19,10 @@ import {
   initialProjectEstimateFinalParameter,
   ProjectEstimateFinalParameter
 } from 'project_estimate/parameter';
-import useDialog from 'components/Dialog';
 
 export default function ProjectEstimateFinalModalRoute() {
 
   const dispatch = useDispatch();
-  const { alert, error } = useDialog();
   const { projectId, list, finalModal, requestSetFinal } = useSelector((root: RootState) => root.projectEstimate);
   const setFinal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setFinal(id)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectEstimateAction.setFinalModal(false)), [dispatch]);
@@ -48,18 +46,14 @@ export default function ProjectEstimateFinalModalRoute() {
   }, [list]);
 
   useEffect(() => {
-    if (requestSetFinal === ApiStatus.DONE) {
-      alert('변경하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(projectEstimateAction.setProjectId(projectId));
-      dispatch(projectEstimateAction.requestSetFinal(ApiStatus.IDLE));
+    closeStatus(requestSetFinal, () => {
       onClose();
-    }
-    else if (requestSetFinal === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
+      dispatch(projectEstimateAction.setProjectId(projectId));
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(projectEstimateAction.requestSetFinal(ApiStatus.IDLE));
-    }
+      dispatch(projectEstimateAction.requestSetFinal('idle'));
+
+    });
   }, [requestSetFinal]);
 
   return (

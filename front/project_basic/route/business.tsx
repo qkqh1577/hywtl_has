@@ -14,12 +14,10 @@ import {
   ProjectBasicBusinessParameter
 } from 'project_basic/parameter';
 import { ProjectBasicBusiness } from 'project_basic/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectBasicBusinessRoute() {
   const dispatch = useDispatch();
-  const { alert, error } = useDialog();
   const { id, businessList, requestAddBusiness, requestChangeBusiness, requestDeleteBusiness } = useSelector((root: RootState) => root.projectBasic);
 
   const openAddModal = useCallback(() => dispatch(projectBasicAction.setBusiness(initialProjectBasicBusinessParameter)), [dispatch]);
@@ -35,46 +33,30 @@ export default function ProjectBasicBusinessRoute() {
 
 
   useEffect(() => {
-    if (requestAddBusiness === ApiStatus.DONE) {
-      alert('등록하였습니다.');
+    closeStatus(requestAddBusiness, () => {
       dispatch(projectBasicAction.getBusinessList(id));
-      dispatch(projectBasicAction.requestAddBusiness(ApiStatus.IDLE));
       dispatch(projectBasicAction.setBusiness(undefined));
-    }
-    else if (requestAddBusiness === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
-      dispatch(projectBasicAction.requestAddBusiness(ApiStatus.IDLE));
-
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestAddBusiness('idle'));
+    });
   }, [requestAddBusiness]);
 
-
   useEffect(() => {
-    if (requestChangeBusiness === ApiStatus.DONE) {
-      alert('변경하였습니다.');
+    closeStatus(requestChangeBusiness, () => {
       dispatch(projectBasicAction.getBusinessList(id));
-      dispatch(projectBasicAction.requestChangeBusiness(ApiStatus.IDLE));
       dispatch(projectBasicAction.setBusiness(undefined));
-    }
-    else if (requestChangeBusiness === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
-      dispatch(projectBasicAction.requestChangeBusiness(ApiStatus.IDLE));
-
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestChangeBusiness('idle'));
+    });
   }, [requestChangeBusiness]);
 
   useEffect(() => {
-    if (requestDeleteBusiness === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
+    closeStatus(requestDeleteBusiness, () => {
       dispatch(projectBasicAction.getBusinessList(id));
-      dispatch(projectBasicAction.requestDeleteBusiness(ApiStatus.IDLE));
       dispatch(projectBasicAction.setBusiness(undefined));
-    }
-    else if (requestDeleteBusiness === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(projectBasicAction.requestDeleteBusiness(ApiStatus.IDLE));
-
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestDeleteBusiness('idle'));
+    });
   }, [requestDeleteBusiness]);
 
   return (

@@ -19,12 +19,12 @@ import {
   useFormik
 } from 'formik';
 import { ContractCollectionVO } from 'admin/contract/collection/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 
 function Element() {
   const dispatch = useDispatch();
-  const { alert, error, rollback } = useDialog();
+  const { rollback } = useDialog();
   const { template, requestUpsert } = useSelector((root: RootState) => root.contractCollection);
   const upsert = useCallback((formikProps: ContractCollectionParameter) =>
     dispatch(contractCollectionAction.upsert(formikProps)), [dispatch]);
@@ -45,17 +45,12 @@ function Element() {
   }, [template]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(contractCollectionAction.requestUpsert(ApiStatus.IDLE));
+    closeStatus(requestUpsert, () => {
       dispatch(contractCollectionAction.requestOne());
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(contractCollectionAction.requestUpsert(ApiStatus.IDLE));
-    }
+      dispatch(contractCollectionAction.requestUpsert('idle'));
+    });
   }, [requestUpsert]);
 
   return (

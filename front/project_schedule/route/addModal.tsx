@@ -2,8 +2,6 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import useId from 'services/useId';
-import useDialog from 'components/Dialog';
 import {
   useDispatch,
   useSelector
@@ -21,12 +19,10 @@ import {
 import ProjectScheduleAddModal from 'project_schedule/view/AddModal';
 import dayjs from 'dayjs';
 import { UserId } from 'user/domain';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectScheduleAddModalRoute() {
   const { detail: loginUser } = useSelector((root: RootState) => root.login);
-  const projectId = useId();
-  const { alert, error } = useDialog();
   const dispatch = useDispatch();
   const { addModal, requestAdd, filter } = useSelector((root: RootState) => root.projectSchedule);
   const add = useCallback((formikProps: ProjectScheduleParameter) =>
@@ -34,14 +30,8 @@ export default function ProjectScheduleAddModalRoute() {
   const onClose = useCallback(() => dispatch(projectScheduleAction.addModal(false)), [dispatch]);
 
   const formik = useFormik<ProjectScheduleParameter>({
-    enableReinitialize: true,
-    initialValues:      { ...initialProjectScheduleParameter, managerId: loginUser?.id ?? UserId(1) },
-    onSubmit:           (values) => {
-      if (!projectId) {
-        error('프로젝트가 선택되지 않았습니다.');
-        formik.setSubmitting(false);
-        return;
-      }
+    initialValues: { ...initialProjectScheduleParameter, managerId: loginUser?.id ?? UserId(1) },
+    onSubmit:      (values) => {
       const allDay = values.allDay;
       const startTime = allDay ? dayjs(values.startTime)
       .format('YYYY-MM-DD') + ' 00:00' : dayjs(values.startTime)
@@ -58,7 +48,6 @@ export default function ProjectScheduleAddModalRoute() {
         alertBefore:      values.alertBefore,
         attendanceIdList: values.attendanceIdList,
       });
-      formik.setSubmitting(false);
     }
   });
 
@@ -67,19 +56,15 @@ export default function ProjectScheduleAddModalRoute() {
       formik.setValues({ ...initialProjectScheduleParameter, managerId: loginUser?.id ?? UserId(1) });
     }
   }, [addModal]);
+
   useEffect(() => {
-    if (requestAdd === ApiStatus.DONE) {
-      alert('등록하였습니다.');
+    closeStatus(requestAdd, () => {
       dispatch(projectScheduleAction.addModal(false));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
-      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
+    }, () => {
       formik.setSubmitting(false);
-    }
-    else if (requestAdd === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
-      dispatch(projectScheduleAction.requestAdd(ApiStatus.IDLE));
-      formik.setSubmitting(false);
-    }
+      dispatch(projectScheduleAction.requestAdd('idle'));
+    });
   }, [requestAdd]);
 
   return (

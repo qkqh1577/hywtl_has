@@ -14,10 +14,6 @@ import 'dayjs/locale/ko';
 import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from 'assets/theme';
 import {
-  Alert,
-  Confirm
-} from 'components/Dialog';
-import {
   Box,
   CssBaseline
 } from '@mui/material';
@@ -48,12 +44,15 @@ import {
   faPen,
   faPlus,
   faStar,
+  faTimes,
   faTrash,
   faUser,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { faReadme, } from '@fortawesome/free-brands-svg-icons';
 import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
+import AlertRoute from 'dialog/route/alert';
+import ConfirmRoute from 'dialog/route/confirm';
 
 library.add(
   faAddressCard,
@@ -79,6 +78,7 @@ library.add(
   faPlus,
   faReadme as IconDefinition,
   faStar,
+  faTimes,
   faTrash,
   faUser,
   faXmark,
@@ -104,8 +104,8 @@ const render = () => {
                   }}>
                     <App />
                   </Box>
-                  <Alert />
-                  <Confirm />
+                  <AlertRoute />
+                  <ConfirmRoute />
                   <BusinessSelectorModalRoute />
                 </ThemeProvider>
               </LocalizationProvider>

@@ -1,12 +1,29 @@
 import { SxProps } from '@mui/system';
 import React from 'react';
 import { FormikContextType } from 'formik';
+import { DefaultFunction } from 'type/Function';
 
-export enum ApiStatus {
-  IDLE     = 'idle',
-  REQUEST  = 'request',
-  DONE     = 'done',
-  FAIL     = 'fail',
+export type ApiStatus = 'idle' | 'request' | 'done' | string;
+
+export function closeStatus(
+  status: ApiStatus,
+  done: DefaultFunction | undefined,
+  close: DefaultFunction | undefined,
+  fail?: DefaultFunction,
+) {
+  if (status !== 'idle' && status !== 'request') {
+    if (status === 'done') {
+      if (done) {
+        done();
+      }
+    }
+    else if (fail) {
+      fail();
+    }
+    if (close) {
+      close();
+    }
+  }
 }
 
 export type Values = {
@@ -21,7 +38,6 @@ export enum FieldStatus {
   /** 읽기 모드, 드래그 가능, 편집 불가, 필드 제공 */
   ReadOnly,
 }
-
 
 export type DataFieldValue = string | number;
 

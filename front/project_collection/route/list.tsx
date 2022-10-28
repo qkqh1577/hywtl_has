@@ -12,12 +12,10 @@ import { RootState } from 'services/reducer';
 import { projectCollectionAction } from 'project_collection/action';
 import { ProjectCollectionStageId } from 'project_collection/domain';
 import { UserId } from 'user/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectCollectionListRoute() {
 
-  const { error } = useDialog();
   const dispatch = useDispatch();
   const { contract } = useSelector((root: RootState) => root.projectBasic);
   const { projectId, detail, requestUpdateManager } = useSelector((root: RootState) => root.projectCollection);
@@ -36,13 +34,11 @@ export default function ProjectCollectionListRoute() {
   }, [contract]);
 
   useEffect(() => {
-    if (requestUpdateManager === ApiStatus.DONE) {
+    closeStatus(requestUpdateManager, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
-      dispatch(projectCollectionAction.requestUpdateManager(ApiStatus.IDLE));
-    }
-    else if (requestUpdateManager === ApiStatus.FAIL) {
-      error('담당자 변경에 실패하였습니다.');
-    }
+    }, () => {
+      dispatch(projectCollectionAction.requestUpdateManager('idle'));
+    });
   }, [requestUpdateManager]);
 
   return (

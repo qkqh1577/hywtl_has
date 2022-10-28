@@ -15,9 +15,10 @@ import {
 } from 'project_contract/domain';
 import { projectContractApi } from 'project_contract/api';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
+import { getErrorMessage } from 'type/Error';
+import { dialogAction } from 'dialog/action';
 
 function* watchProjectId() {
   while (true) {
@@ -50,30 +51,33 @@ function* watchAdd() {
     const { payload: params } = yield take(projectContractAction.add);
     try {
       const { projectId } = yield select((root: RootState) => root.projectContract);
-      yield put(projectContractAction.requestAdd(ApiStatus.REQUEST));
+      yield put(projectContractAction.requestAdd('request'));
       yield call(projectContractApi.add, projectId, params);
-      yield put(projectContractAction.requestAdd(ApiStatus.DONE));
+      yield put(projectContractAction.requestAdd('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectContractAction.requestAdd(ApiStatus.FAIL));
+      const message = getErrorMessage(projectContractAction.add, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestAdd(message));
     }
   }
 }
-
 
 function* watchChange() {
   while (true) {
     const { payload: params } = yield take(projectContractAction.change);
     try {
       const { modal } = yield select((root: RootState) => root.projectContract);
-      yield put(projectContractAction.requestChange(ApiStatus.REQUEST));
+      yield put(projectContractAction.requestChange('request'));
       yield call(projectContractApi.change, modal, params);
-      yield put(projectContractAction.requestChange(ApiStatus.DONE));
+      yield put(projectContractAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectContractAction.requestChange(ApiStatus.FAIL));
+      const message = getErrorMessage(projectContractAction.change, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestChange(message));
     }
   }
 }
@@ -82,13 +86,15 @@ function* watchDelete() {
   while (true) {
     const { payload: id } = yield take(projectContractAction.deleteOne);
     try {
-      yield put(projectContractAction.requestDelete(ApiStatus.REQUEST));
+      yield put(projectContractAction.requestDelete('request'));
       yield call(projectContractApi.deleteOne, id);
-      yield put(projectContractAction.requestDelete(ApiStatus.DONE));
+      yield put(projectContractAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectContractAction.requestDelete(ApiStatus.FAIL));
+      const message = getErrorMessage(projectContractAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestDelete(message));
     }
   }
 }
@@ -98,13 +104,15 @@ function* watchFinal() {
     const { payload: contractId } = yield take(projectContractAction.setFinal);
     try {
       const { projectId } = yield select((root: RootState) => root.projectContract);
-      yield put(projectContractAction.requestSetFinal(ApiStatus.REQUEST));
+      yield put(projectContractAction.requestSetFinal('request'));
       yield call(projectContractApi.setFinal, projectId, contractId);
-      yield put(projectContractAction.requestSetFinal(ApiStatus.DONE));
+      yield put(projectContractAction.requestSetFinal('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
-      console.error(e);
-      yield put(projectContractAction.requestSetFinal(ApiStatus.FAIL));
+      const message = getErrorMessage(projectContractAction.setFinal, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestSetFinal(message));
     }
   }
 }
@@ -125,7 +133,7 @@ function* watchEstimate() {
       yield put(projectContractAction.setBasic(basic));
     }
     catch (e) {
-      console.error(e);
+      yield put(dialogAction.openError('견적서 정보를 불러올 수 없습니다.'));
       yield put(projectContractAction.setBasic(undefined));
     }
     try {
@@ -133,7 +141,7 @@ function* watchEstimate() {
       yield put(projectContractAction.setCollection(collection));
     }
     catch (e) {
-      console.error(e);
+      yield put(dialogAction.openError('기성 단계 정보를 불러올 수 없습니다.'));
       yield put(projectContractAction.setCollection(undefined));
     }
     try {
@@ -141,7 +149,7 @@ function* watchEstimate() {
       yield put(projectContractAction.setConditionList(conditionList));
     }
     catch (e) {
-      console.error(e);
+      yield put(dialogAction.openError('계약 조건 정보를 불러올 수 없습니다.'));
       yield put(projectContractAction.setConditionList(undefined));
     }
   }

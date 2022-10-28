@@ -9,7 +9,7 @@ import {
 import { PersonnelParameter } from 'personnel/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 
-export enum PersonnelAction {
+export enum PersonnelActionType {
   setId         = 'personnel/id/set',
   setOne        = 'personnel/one/set',
   setFilter     = 'personnel/filter/set',
@@ -19,10 +19,10 @@ export enum PersonnelAction {
 }
 
 export const personnelAction = {
-  setId:         createAction(PersonnelAction.setId)<PersonnelId | undefined>(),
-  setOne:        createAction(PersonnelAction.setOne)<PersonnelVO | undefined>(),
-  setFilter:     createAction(PersonnelAction.setFilter)<PersonnelQuery>(),
-  setPage:       createAction(PersonnelAction.setPage)<Page<PersonnelShortVO> | undefined>(),
-  update:        createAction(PersonnelAction.update)<PersonnelParameter>(),
-  requestUpdate: createAction(PersonnelAction.requestUpdate)<ApiStatus>(),
+  setId:         createAction(PersonnelActionType.setId)<PersonnelId | undefined>(),
+  setOne:        createAction(PersonnelActionType.setOne)<PersonnelVO | undefined>(),
+  setFilter:     createAction(PersonnelActionType.setFilter)<PersonnelQuery>(),
+  setPage:       createAction(PersonnelActionType.setPage)<Page<PersonnelShortVO> | undefined>(),
+  update:        createAction(PersonnelActionType.update)<PersonnelParameter>(),
+  requestUpdate: createAction(PersonnelActionType.requestUpdate)<ApiStatus>(),
 };

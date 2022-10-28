@@ -21,15 +21,15 @@ import {
 import { PersonnelId, } from 'personnel/domain';
 import PersonnelDetail from 'personnel/view/Detail';
 import { departmentAction } from 'department/action';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail, requestUpdate } = useSelector((root: RootState) => root.personnel);
   const { list: departmentList } = useSelector((root: RootState) => root.department);
-  const { rollback, error, alert } = useDialog();
+  const { rollback } = useDialog();
 
   const update = useCallback((formikProps: PersonnelParameter) => {
     return dispatch(personnelAction.update(formikProps));
@@ -39,16 +39,6 @@ function Element() {
     initialValues: initialPersonnelParameter,
     onSubmit:      (values) => {
       update(values);
-      // update({
-      //   id:           PersonnelId(id!),
-      //   basic:        toPersonnelBasic(values.basic),
-      //   company:      toPersonnelCompany(values.company),
-      //   jobList:      values.jobList.map((item) => toPersonnelJob(item)),
-      //   academicList: values.academicList?.map((item) => toPersonnelAcademy(item)),
-      //   careerList:   values.careerList?.map((item) => toPersonnelCareer(item)),
-      //   licenseList:  values.licenseList?.map((item) => toPersonnelLicense(item)),
-      //   languageList: values.languageList?.map((item) => toPersonnelLanguage(item)),
-      // });
     }
   });
 
@@ -71,17 +61,12 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
+    closeStatus(requestUpdate, () => {
       dispatch(personnelAction.setId(PersonnelId(id!)));
-      dispatch(personnelAction.requestUpdate(ApiStatus.IDLE));
-    }
-    else if (requestUpdate === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
-      dispatch(personnelAction.requestUpdate(ApiStatus.IDLE));
+    }, () => {
       formik.setSubmitting(false);
-    }
+      dispatch(personnelAction.requestUpdate('idle'));
+    });
   }, [requestUpdate]);
 
   return (

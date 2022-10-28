@@ -11,7 +11,7 @@ import {
 } from 'layouts/Table';
 import Button from 'layouts/Button';
 import Tooltip from 'components/Tooltip';
-import useDialog from 'components/Dialog';
+import useDialog from 'dialog/hook';
 import { FormikContext } from 'formik';
 import {
   ContractConditionVariableVO,
@@ -132,7 +132,6 @@ export default function Form({ variableList }: Props) {
                                   }
                                   result.push(prevList[k]);
                                 }
-                                console.log({ prevList, result });
                                 formik.setFieldValue(`contractConditionList.${i}.descriptionList`, result);
                               }}
                             />

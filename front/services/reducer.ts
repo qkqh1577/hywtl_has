@@ -7,10 +7,6 @@ import {
   UserState,
 } from 'user/reducer';
 import {
-  dialogReducer,
-  DialogState,
-} from 'components/Dialog';
-import {
   departmentReducer,
   DepartmentState,
 } from 'department/reducer';
@@ -110,6 +106,10 @@ import {
   projectCollectionReducer,
   ProjectCollectionState
 } from 'project_collection/reducer';
+import {
+  dialogReducer,
+  DialogState
+} from 'dialog/reducer';
 
 export interface RootState {
   business: BusinessState;

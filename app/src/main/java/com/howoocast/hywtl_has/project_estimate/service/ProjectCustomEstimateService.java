@@ -54,7 +54,11 @@ public class ProjectCustomEstimateService {
         ProjectCustomEstimateAddParameter parameter
     ) {
         Business business = new CustomFinder<>(businessRepository, Business.class).byId(parameter.getBusinessId());
-        FileItem file = Objects.requireNonNull(fileItemService.build(parameter.getFile()));
+
+        FileItem file = fileItemService.build(parameter.getFile());
+        if (Objects.isNull(file)) {
+            throw new IllegalRequestException(ProjectCustomEstimate.KEY + ".file.not_null", " 파일은 필수 항목입니다.");
+        }
 
         ProjectCustomEstimate instance = ProjectCustomEstimate.of(
             estimateService.of(projectId, username),

@@ -11,8 +11,9 @@ import {
 } from 'admin/estimate/template/domain';
 import { estimateTemplateApi } from 'admin/estimate/template/api';
 import { estimateTemplateAction } from 'admin/estimate/template/action';
-import { ApiStatus } from 'components/DataFieldProps';
 import { RootState } from 'services/reducer';
+import { dialogAction } from 'dialog/action';
+import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
   while (true) {
@@ -39,13 +40,15 @@ function* watchUpsert() {
   while (true) {
     const { payload: params } = yield take(estimateTemplateAction.upsert);
     try {
-      yield put(estimateTemplateAction.requestUpsert(ApiStatus.REQUEST));
+      yield put(estimateTemplateAction.requestUpsert('request'));
       yield call(estimateTemplateApi.upsert, params);
-      yield put(estimateTemplateAction.requestUpsert(ApiStatus.DONE));
+      yield put(estimateTemplateAction.requestUpsert('done'));
+      yield put(dialogAction.openAlert('저장하였습니다'));
     }
     catch (e) {
-      console.log(e);
-      yield put(estimateTemplateAction.requestUpsert(ApiStatus.FAIL));
+      const message = getErrorMessage(estimateTemplateAction.upsert, e);
+      yield put(dialogAction.openError(message));
+      yield put(estimateTemplateAction.requestUpsert(message));
     }
   }
 }
@@ -54,13 +57,15 @@ function* watchSeq() {
   while (true) {
     const { payload: idList } = yield take(estimateTemplateAction.changeSeq);
     try {
-      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.REQUEST));
+      yield put(estimateTemplateAction.requestChangeSeq('request'));
       yield call(estimateTemplateApi.changeSeq, idList);
-      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.DONE));
+      yield put(estimateTemplateAction.requestChangeSeq('done'));
+      yield put(dialogAction.openAlert('변경하였습니다'));
     }
     catch (e) {
-      console.error(e);
-      yield put(estimateTemplateAction.requestChangeSeq(ApiStatus.FAIL));
+      const message = getErrorMessage(estimateTemplateAction.changeSeq, e);
+      yield put(dialogAction.openError(message));
+      yield put(estimateTemplateAction.requestChangeSeq(message));
     }
   }
 }
@@ -70,13 +75,15 @@ function* watchDelete() {
     yield take(estimateTemplateAction.deleteOne);
     try {
       const { id } = yield select((root: RootState) => root.estimateTemplate);
-      yield put(estimateTemplateAction.requestDelete(ApiStatus.REQUEST));
+      yield put(estimateTemplateAction.requestDelete('request'));
       yield call(estimateTemplateApi.deleteOne, id);
-      yield put(estimateTemplateAction.requestDelete(ApiStatus.DONE));
+      yield put(estimateTemplateAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다'));
     }
     catch (e) {
-      console.error(e);
-      yield put(estimateTemplateAction.requestDelete(ApiStatus.FAIL));
+      const message = getErrorMessage(estimateTemplateAction.deleteOne, e);
+      yield put(dialogAction.openError(message));
+      yield put(estimateTemplateAction.requestDelete(message));
     }
   }
 }

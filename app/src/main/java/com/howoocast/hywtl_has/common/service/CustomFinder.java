@@ -41,7 +41,6 @@ public class CustomFinder<D extends CustomEntity> {
         String methodName = name.startsWith("findBy")
             ? name
             : "findBy" + name.substring(0, 1).toUpperCase() + name.substring(1);
-        log.debug("[method] {}", methodName);
         try {
             Method find = repository.getClass().getMethod(methodName, value.getClass());
             Optional<D> optional = (Optional<D>) find.invoke(repository, value);

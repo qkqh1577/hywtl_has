@@ -20,15 +20,16 @@ import {
 } from 'department/parameter';
 import { departmentAction } from 'department/action';
 import { DepartmentId } from 'department/domain';
-import useDialog from 'components/Dialog';
-import { ApiStatus } from 'components/DataFieldProps';
+import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
+import { DialogStatus } from 'dialog/domain';
+import { closeStatus } from 'components/DataFieldProps';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, alert, confirm, rollback } = useDialog();
+  const { confirm, rollback } = useDialog();
   const { detail, requestUpsert, requestDelete } = useSelector((root: RootState) => root.department);
   const upsert = useCallback((formikProps: DepartmentParameter) => dispatch(departmentAction.upsert(formikProps)), [dispatch]);
   const deleteOne = useCallback((id: DepartmentId) => dispatch(departmentAction.deleteOne(id)), [dispatch]);
@@ -61,36 +62,28 @@ function Element() {
   }, [detail]);
 
   useEffect(() => {
-    if (requestUpsert === ApiStatus.DONE) {
-      alert('저장하였습니다.');
-      formik.setSubmitting(false);
-      dispatch(departmentAction.requestUpsert(ApiStatus.IDLE));
+    closeStatus(requestUpsert, () => {
       if (id) {
         dispatch(departmentAction.setId(DepartmentId(id)));
       }
       else {
         navigate('/admin/department-management');
       }
-    }
-    else if (requestUpsert === ApiStatus.FAIL) {
-      error('저장에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(departmentAction.requestUpsert(ApiStatus.IDLE));
-    }
+      dispatch(departmentAction.requestUpsert('idle'));
+    });
   }, [requestUpsert]);
 
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
-      alert('삭제하였습니다.');
+    closeStatus(requestDelete, () => {
       dispatch(departmentAction.setId(undefined));
-      dispatch(departmentAction.requestDelete(ApiStatus.IDLE));
       navigate('/admin/department-management');
-    }
-    else if (requestDelete === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(departmentAction.requestDelete(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(departmentAction.requestDelete('idle'));
+    });
   }, [requestDelete]);
+
   return (
     <FormikProvider value={formik}>
       <DepartmentDetail
@@ -114,7 +107,7 @@ function Element() {
         onDelete={() => {
           if (id) {
             confirm({
-              status:       'warn',
+              status:       DialogStatus.WARN,
               children:     '해당 조직 정보를 삭제하시겠습니까?',
               confirmText:  '삭제',
               afterConfirm: () => {

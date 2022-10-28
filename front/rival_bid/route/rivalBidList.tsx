@@ -12,13 +12,11 @@ import { RivalBidParameter } from 'rival_bid/parameter';
 import { RivalBidId } from 'rival_bid/domain';
 import { ProjectId } from 'project/domain';
 import { RootState } from 'services/reducer';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectRivalBidListRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const { projectId, list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalBid);
   const onPush = useCallback(() => dispatch(rivalBidAction.push()), [dispatch]);
   const onUpdate = useCallback((params: RivalBidParameter) => dispatch(rivalBidAction.update(params)), [dispatch]);
@@ -26,38 +24,29 @@ export default function ProjectRivalBidListRoute() {
   const reload = useCallback((projectId: ProjectId | undefined) => dispatch(rivalBidAction.setProjectId(projectId)), [dispatch]);
 
   useEffect(() => {
-    if (requestPush === ApiStatus.DONE) {
+    closeStatus(requestPush, () => {
       reload(projectId);
-      dispatch(rivalBidAction.requestPush(ApiStatus.IDLE));
-    }
-    else if (requestPush === ApiStatus.FAIL) {
-      error('등록에 실패하였습니다.');
-      dispatch(rivalBidAction.requestPush(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(rivalBidAction.requestPush('idle'));
+    });
   }, [requestPush]);
 
   useEffect(() => {
-    if (requestUpdate === ApiStatus.DONE) {
+    closeStatus(requestUpdate, () => {
       reload(projectId);
-      dispatch(rivalBidAction.requestUpdate(ApiStatus.IDLE));
-    }
-    else if (requestUpdate === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
-      dispatch(rivalBidAction.requestUpdate(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(rivalBidAction.requestUpdate('idle'));
+    });
   }, [requestUpdate]);
 
-
   useEffect(() => {
-    if (requestDelete === ApiStatus.DONE) {
+    closeStatus(requestDelete, () => {
       reload(projectId);
-      dispatch(rivalBidAction.requestDelete(ApiStatus.IDLE));
-    }
-    else if (requestDelete === ApiStatus.FAIL) {
-      error('삭제에 실패하였습니다.');
-      dispatch(rivalBidAction.requestDelete(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(rivalBidAction.requestDelete('idle'));
+    });
   }, [requestDelete]);
+
   return (
     <ProjectRivalBidList
       list={list}

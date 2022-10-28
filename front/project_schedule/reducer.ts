@@ -20,9 +20,9 @@ export interface ProjectScheduleState {
 }
 
 const initial: ProjectScheduleState = {
-  requestAdd:    ApiStatus.IDLE,
-  requestUpdate: ApiStatus.IDLE,
-  requestDelete: ApiStatus.IDLE,
+  requestAdd:    'idle',
+  requestUpdate: 'idle',
+  requestDelete: 'idle',
 };
 
 export const projectScheduleReducer = createReducer(initial, {

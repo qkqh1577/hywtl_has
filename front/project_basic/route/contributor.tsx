@@ -15,13 +15,11 @@ import {
 import { projectBasicAction } from 'project_basic/action';
 import { ProjectId } from 'project/domain';
 import { ProjectBasicContributorId } from 'project_basic/domain';
-import { ApiStatus } from 'components/DataFieldProps';
-import useDialog from 'components/Dialog';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectBasicContributorRoute() {
 
   const dispatch = useDispatch();
-  const { error } = useDialog();
   const {
           id,
           internalList,
@@ -42,71 +40,52 @@ export default function ProjectBasicContributorRoute() {
   const onDeleteExternal = useCallback((id: ProjectBasicContributorId) => dispatch(projectBasicAction.deleteExternal(id)), [dispatch]);
 
   useEffect(() => {
-    if (requestAddInternal === ApiStatus.DONE) {
+    closeStatus(requestAddInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestAddInternal(ApiStatus.IDLE));
-    }
-    else if (requestAddInternal === ApiStatus.FAIL) {
-      error('사내 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddInternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestAddInternal('idle'));
+    });
   }, [requestAddInternal]);
 
   useEffect(() => {
-    if (requestUpdateInternal === ApiStatus.DONE) {
+    closeStatus(requestUpdateInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestUpdateInternal(ApiStatus.IDLE));
-    }
-    else if (requestUpdateInternal === ApiStatus.FAIL) {
-      error('사내 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateInternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestUpdateInternal('idle'));
+    });
   }, [requestUpdateInternal]);
 
   useEffect(() => {
-    if (requestDeleteInternal === ApiStatus.DONE) {
+    closeStatus(requestDeleteInternal, () => {
       dispatch(projectBasicAction.getInternalList(id));
-      dispatch(projectBasicAction.requestDeleteInternal(ApiStatus.IDLE));
-    }
-    else if (requestDeleteInternal === ApiStatus.FAIL) {
-      error('사내 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteInternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestDeleteInternal('idle'));
+    });
   }, [requestDeleteInternal]);
 
   useEffect(() => {
-    if (requestAddExternal === ApiStatus.DONE) {
+    closeStatus(requestAddExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestAddExternal(ApiStatus.IDLE));
-    }
-    else if (requestAddExternal === ApiStatus.FAIL) {
-      error('사외 기여자 추가에 실패했습니다.');
-      dispatch(projectBasicAction.requestAddExternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestAddExternal('idle'));
+    });
   }, [requestAddExternal]);
 
   useEffect(() => {
-    if (requestUpdateExternal === ApiStatus.DONE) {
+    closeStatus(requestUpdateExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestUpdateExternal(ApiStatus.IDLE));
-    }
-    else if (requestUpdateExternal === ApiStatus.FAIL) {
-      error('사외 기여자 변경에 실패했습니다.');
-      dispatch(projectBasicAction.requestUpdateExternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestUpdateExternal('idle'));
+    });
   }, [requestUpdateExternal]);
 
   useEffect(() => {
-    if (requestDeleteExternal === ApiStatus.DONE) {
+    closeStatus(requestDeleteExternal, () => {
       dispatch(projectBasicAction.getExternalList(id));
-      dispatch(projectBasicAction.requestDeleteExternal(ApiStatus.IDLE));
-    }
-    else if (requestDeleteExternal === ApiStatus.FAIL) {
-      error('사외 기여자 삭제에 실패했습니다.');
-      dispatch(projectBasicAction.requestDeleteExternal(ApiStatus.IDLE));
-    }
+    }, () => {
+      dispatch(projectBasicAction.requestDeleteExternal('idle'));
+    });
   }, [requestDeleteExternal]);
-
 
   return (
     <ProjectBasicContributorSection

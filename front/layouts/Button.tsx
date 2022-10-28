@@ -20,12 +20,22 @@ const basicStyle: MuiButtonProps['sx'] = {
   boxShadow:    'none',
   wordBreak:    'keep-all',
   whiteSpace:   'nowrap',
-  '&:hover':    {
-    boxShadow: 'none',
-  }
 };
 
+function getColor(color: string | undefined,
+                  defaultColor: string
+): string {
+  if (color === 'error') {
+    return ColorPalette._ffb72b;
+  }
+  if (color === 'warning') {
+    return ColorPalette._eb4c4c;
+  }
+  return defaultColor;
+}
+
 function Basic1Button(props: MuiButtonProps) {
+
 
   return (
     <MuiButton
@@ -33,8 +43,12 @@ function Basic1Button(props: MuiButtonProps) {
       variant="contained"
       sx={{
         ...basicStyle,
-        backgroundColor: ColorPalette._386dd6,
+        backgroundColor: getColor(props.color, ColorPalette._386dd6),
         color:           ColorPalette._ffffff,
+        '&:hover':       {
+          boxShadow:       'none',
+          backgroundColor: getColor(props.color, ColorPalette._0047d3),
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />
@@ -49,7 +63,12 @@ function Basic2Button(props: MuiButtonProps) {
       sx={{
         ...basicStyle,
         backgroundColor: `${ColorPalette._e4e9f2} !important`,
-        color:           ColorPalette._386dd6,
+        color:           getColor(props.color, ColorPalette._386dd6),
+        border:          'none',
+        '&:hover':       {
+          boxShadow: 'none',
+          border:    `1px solid ${getColor(props.color, ColorPalette._386dd6)}`,
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />
@@ -64,8 +83,13 @@ function Basic3Button(props: MuiButtonProps) {
       sx={{
         ...basicStyle,
         backgroundColor: ColorPalette._ffffff,
-        color:           ColorPalette._386dd6,
-        borderColor:     ColorPalette._9bb6ea,
+        color:           getColor(props.color, ColorPalette._386dd6),
+        border:          `1px solid ${getColor(props.color, ColorPalette._9bb6ea)}`,
+        '&:hover':       {
+          boxShadow: 'none',
+          color:     ColorPalette._386dd6,
+          border:    `1px solid ${ColorPalette._0047d3}`,
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />
@@ -80,8 +104,13 @@ function Basic4Button(props: MuiButtonProps) {
       sx={{
         ...basicStyle,
         backgroundColor: ColorPalette._e4e9f2,
-        color:           ColorPalette._386dd6,
-        borderColor:     ColorPalette._9bb6ea,
+        color:           getColor(props.color, ColorPalette._386dd6),
+        borderColor:     getColor(props.color, ColorPalette._9bb6ea),
+        '&:hover':       {
+          boxShadow:   'none',
+          color:       ColorPalette._386dd6,
+          borderColor: ColorPalette._9bb6ea,
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />
@@ -98,9 +127,13 @@ function SmallButton(props: MuiButtonProps) {
         width:           '100%',
         height:          '28px',
         fontSize:        '12px',
-        backgroundColor: ColorPalette._386dd6,
+        backgroundColor: getColor(props.color, ColorPalette._386dd6),
         color:           ColorPalette._ffffff,
         minWidth:        'unset',
+        '&:hover':       {
+          boxShadow:       'none',
+          backgroundColor: getColor(props.color, ColorPalette._0047d3),
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />
@@ -118,9 +151,14 @@ function Small3Button(props: MuiButtonProps) {
         height:          '28px',
         fontSize:        '12px',
         backgroundColor: ColorPalette._ffffff,
-        color:           ColorPalette._386dd6,
-        borderColor:     ColorPalette._9bb6ea,
         minWidth:        'unset',
+        color:           getColor(props.color, ColorPalette._386dd6),
+        border:          `1px solid ${getColor(props.color, ColorPalette._9bb6ea)}`,
+        '&:hover':       {
+          boxShadow: 'none',
+          color:     ColorPalette._386dd6,
+          border:    `1px solid ${ColorPalette._0047d3}`,
+        },
         ...props.sx,
       } as MuiButtonProps['sx']}
     />

@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 import { ProjectContractId } from 'project_contract/domain';
 import { projectContractAction } from 'project_contract/action';
-import useDialog from 'components/Dialog';
 import {
   FormikProvider,
   useFormik
@@ -19,12 +18,11 @@ import {
   ProjectContractFinalParameter
 } from 'project_contract/parameter';
 import ProjectContractFinalModal from 'project_contract/view/FinalModal';
-import { ApiStatus } from 'components/DataFieldProps';
+import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectContractFinalModalRoute() {
 
   const dispatch = useDispatch();
-  const { alert, error } = useDialog();
   const { projectId, list, finalModal, requestSetFinal } = useSelector((root: RootState) => root.projectContract);
   const onClose = useCallback(() => dispatch(projectContractAction.setFinalModal(false)), [dispatch]);
   const setFinal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setFinal(id)), [dispatch]);
@@ -48,18 +46,13 @@ export default function ProjectContractFinalModalRoute() {
   }, [list]);
 
   useEffect(() => {
-    if (requestSetFinal === ApiStatus.DONE) {
-      alert('변경하였습니다.');
-      formik.setSubmitting(false);
+    closeStatus(requestSetFinal, () => {
       dispatch(projectContractAction.setProjectId(projectId));
-      dispatch(projectContractAction.requestSetFinal(ApiStatus.IDLE));
       onClose();
-    }
-    else if (requestSetFinal === ApiStatus.FAIL) {
-      error('변경에 실패하였습니다.');
+    }, () => {
       formik.setSubmitting(false);
-      dispatch(projectContractAction.requestSetFinal(ApiStatus.IDLE));
-    }
+      dispatch(projectContractAction.requestSetFinal('idle'));
+    });
   }, [requestSetFinal]);
 
   return (
