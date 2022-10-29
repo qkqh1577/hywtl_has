@@ -1,12 +1,16 @@
 import {createAction} from "typesafe-actions";
-import {ProjectDbVO} from "./domain";
+import {ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 
 export enum ProjectDbAction {
     requestList = 'project/db/list/request',
-    setList = 'project/db/list/set'
+    setList = 'project/db/list/set',
+    requestSchema = 'project/db/schema/request',
+    setSchema = 'project/db/schema/set'
 }
 
 export const projectDbAction = {
     requestList: createAction(ProjectDbAction.requestList)(),
-    setList: createAction(ProjectDbAction.setList)<ProjectDbVO[]>()
+    setList: createAction(ProjectDbAction.setList)<ProjectDbVO[]>(),
+    requestSchema: createAction(ProjectDbAction.requestSchema)(),
+    setSchema: createAction(ProjectDbAction.setSchema)<ProjectDbSchemaVO[]>()
 };

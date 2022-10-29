@@ -9,14 +9,15 @@ import {projectDbAction} from 'project_db/action';
 function Element() {
 
     const dispatch = useDispatch();
-    const {list} = useSelector((root: RootState) => root.projectDb);
+    const {list, schema} = useSelector((root: RootState) => root.projectDb);
 
     useEffect(() => {
         dispatch(projectDbAction.requestList());
+        dispatch(projectDbAction.requestSchema());
     }, []);
 
     return (
-        <ProjectDbPage list={list}/>
+        <ProjectDbPage list={list} schema={schema}/>
     )
 }
 
