@@ -3,13 +3,6 @@ import React from 'react';
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import {ProjectDbVO} from "../../domain";
-import {ProjectVO} from "../../../project/domain";
-import {ProjectEstimateVO} from "../../../project_estimate/domain";
-
-// const columns = [
-//     {key: 'id', name: 'ID'},
-//     {key: 'title', name: 'Title'},
-// ];
 
 const rows = [
     {id: 0, title: 'Example'},
@@ -45,10 +38,14 @@ function prepare(prefix: string, entity: any, columns: Column[], row: Row) {
     });
 }
 
+const theme = {
+    dark: 'rdg-dark',
+    light: 'rdg-light'
+};
+
 export default function List(props: Props) {
     console.debug(props.list);
     const {list} = props;
-
     const columns: Column[] = [];
     const rows: Row[] = [];
 
@@ -57,18 +54,16 @@ export default function List(props: Props) {
         const row: Row = {id: index};
 
         prepare('', project, columns, row);
-        projectBid          && prepare('bid', projectBid, columns, row);
-        projectComplexSite  && prepare('projectComplexSite', projectComplexSite, columns, row);
-        projectEstimate     && prepare('projectEstimate', projectEstimate, columns, row);
-        projectMemo         && prepare('projectMemo', projectMemo, columns, row);
+        projectBid && prepare('bid', projectBid, columns, row);
+        projectComplexSite && prepare('projectComplexSite', projectComplexSite, columns, row);
+        projectEstimate && prepare('projectEstimate', projectEstimate, columns, row);
+        projectMemo && prepare('projectMemo', projectMemo, columns, row);
 
-        for(let i=0;i<200;i++){
-            rows.push(row);
-        }
+        rows.push(row);
 
     });
 
     return (
-        <DataGrid columns={columns} rows={rows} style={{height:'calc(100vh - 200px)'}} />
+        <DataGrid className={theme.light} columns={columns} rows={rows} style={{height: '100%'}}/>
     )
 }

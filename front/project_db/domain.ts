@@ -11,3 +11,14 @@ export interface ProjectDbVO {
     projectEstimate?: ProjectEstimateVO,
     projectMemo?: ProjectMemoVO
 }
+
+interface ProjectDbAttributeVO{
+    description: string,
+    type: string
+}
+
+export interface ProjectDbSchemaVO {
+    attributes: ProjectDbAttributeVO[],
+    description: string,
+    type: string
+}
