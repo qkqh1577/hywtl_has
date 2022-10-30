@@ -44,7 +44,6 @@ const theme = {
 };
 
 export default function List(props: Props) {
-    console.debug(props.list);
     const {list} = props;
     const columns: Column[] = [];
     const rows: Row[] = [];

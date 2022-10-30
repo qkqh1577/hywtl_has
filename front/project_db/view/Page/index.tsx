@@ -1,10 +1,10 @@
 import React from 'react';
 import PageLayout, {FormikLayoutProps} from 'layouts/PageLayout';
 import List from './list';
-import SearchBox from './searchForm';
+import SearchBox from './form';
 import {ProjectDbSchemaVO, ProjectDbVO} from "../../domain";
 import {Box} from "@mui/material";
-import GridFilter from "./gridFilter";
+import Filter from "./filter";
 
 interface Props {
     list: ProjectDbVO[],
@@ -18,7 +18,7 @@ function ProjectDbList(props: Props) {
                 <List list={props.list}/>
             </Box>
             <Box style={{display: 'flex', width: '200px'}}>
-                <GridFilter schema={props.schema}/>
+                <Filter schema={props.schema}/>
             </Box>
         </Box>
     );
