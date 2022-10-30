@@ -32,7 +32,7 @@ const StyledAccordionSummary = withStyles({
     }
 })(AccordionSummary);
 
-export default function SearchForm(props: Props) {
+export default function Form(props: Props) {
 
     const [state, setState] = useState(false);
     const toggleDrawer = (isOpen: boolean) =>

@@ -6,10 +6,10 @@ class ProjectDbApi {
 
     async getList(): Promise<ProjectDbVO[]> {
         const query: ProjectDbQuery = {
-            projectEstimate: false,
-            projectBid: false,
+            projectEstimate: true,
+            projectBid: true,
             projectComplexSite: false,
-            projectMemo: true
+            projectMemo: false
         };
         const {data} = await apiClient.get('/project/db', query);
         return data;
