@@ -5,6 +5,11 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemEx
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.repository.FileItemRepository;
+import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
+import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,6 +36,8 @@ public class FileItemService {
     private Long maxSizeLimit;
 
     private final FileItemRepository fileItemRepository;
+
+    private final FileConversionHistoryRepository fileConversionHistoryRepository;
 
     @Transactional(readOnly = true)
     public FileItem get(Long id) {
@@ -93,5 +100,26 @@ public class FileItemService {
             extensionList,
             maxSizeLimit
         ));
+    }
+
+    public FileItem convertToPDF(MultipartFile multipartFile) throws IOException {
+        File word = convertToFile(multipartFile);
+        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of());
+        return fileItemRepository.save(FileItem.of(
+            word,
+            rootPath,
+            extensionList,
+            maxSizeLimit,
+            word.getName().replace(".docx", ".pdf"),
+            history
+        ));
+    }
+    private File convertToFile(MultipartFile file) throws IOException {
+        File word = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        word.createNewFile();
+        FileOutputStream fos = new FileOutputStream(word);
+        fos.write(file.getBytes());
+        fos.close();
+        return word;
     }
 }

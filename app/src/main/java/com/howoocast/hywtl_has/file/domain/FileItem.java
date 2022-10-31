@@ -1,15 +1,21 @@
 package com.howoocast.hywtl_has.file.domain;
 
+import com.documents4j.api.DocumentType;
+import com.documents4j.api.IConverter;
+import com.documents4j.job.LocalConverter;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.FileSystemException;
 import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException.RequestFileNotAvailableExceptionType;
 import com.howoocast.hywtl_has.common.util.SHA265Generator;
+import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -20,6 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -235,4 +243,68 @@ public class FileItem extends CustomEntity {
         }
 
     }
+
+    /* 변환 로직 관련 */
+    public static FileItem of(
+        File file,
+        String dirPath,
+        List<String> extWhiteList,
+        Long maxFileSize,
+        String fileName,
+        FileConversionHistory history
+    ) throws IOException {
+        try {
+            if (file.length() >= maxFileSize) {
+                throw new RequestFileNotAvailableException(
+                    RequestFileNotAvailableExceptionType.EXCEEDED_SIZE);
+            }
+        } catch (Exception e) {
+            throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
+        }
+
+        File rootDir = new File(dirPath);
+        if (!rootDir.exists() || rootDir.isFile()) {
+            if (!rootDir.canWrite()) {
+                throw new FileSystemException(FileSystemExceptionType.PERMISSION_DENIED);
+            }
+            if (!rootDir.mkdirs()) {
+                throw new FileSystemException(FileSystemExceptionType.IO_EXCEPTION);
+            }
+        }
+        FileItem instance = new FileItem();
+        instance.filename = fileName;
+        instance.setExt(extWhiteList);
+        instance.setPath(dirPath);
+        instance.size = file.length();
+        try {
+            instance.saveFileAsPdf(file, history);
+        } catch (Exception e) {
+            e.printStackTrace();
+//            history.update(PocFileState.FAIL);
+        }
+
+        return instance;
+    }
+
+    private void saveFileAsPdf(File file, FileConversionHistory history)
+        throws IOException, InterruptedException, ExecutionException {
+        System.out.println("converting start");
+        File pdf = new File(this.path);
+        BufferedInputStream wordInputStream = new BufferedInputStream(new FileInputStream(file));
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(pdf));
+        IConverter converter = LocalConverter.builder().build();
+        Future<Boolean> conversion = converter
+            .convert(wordInputStream).as(DocumentType.DOCX)
+            .to(outputStream).as(DocumentType.PDF)
+            .schedule();
+        System.out.println("schedule start");
+        if (conversion.get()) {
+            System.out.println("schedule end");
+//            history.update(PocFileState.COMPLETE);
+        }
+        outputStream.flush();
+        outputStream.close();
+        System.out.println("converting end");
+    }
+
 }
