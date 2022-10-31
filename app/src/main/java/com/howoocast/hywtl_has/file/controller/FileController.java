@@ -52,7 +52,7 @@ public class FileController {
 
     /* pdf 변환 작업 */
     /* static file down load api */
-    @GetMapping(value = "/file-item/docx", params = "fileName")
+    @GetMapping(value = "/file-item/template", params = "fileName")
     public ResponseEntity<Resource> downloadTemplate(@RequestParam String fileName) throws Exception {
         try {
             Resource resource = resourceLoader.getResource("classpath:static/files/" + fileName);

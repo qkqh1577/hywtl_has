@@ -28,16 +28,28 @@ import { estimateTemplateAction } from 'admin/estimate/template/action';
 import { initialEstimateTemplateQuery } from 'admin/estimate/template/query';
 import { estimateContentAction } from 'admin/estimate/content/action';
 import { initialEstimateContentQuery } from 'admin/estimate/content/query';
+import {
+  blobToFile,
+  getBlob,
+  loadFile
+} from 'util/FileUtil';
+import PizZip from 'pizzip';
+import Docxtemplater from 'docxtemplater';
+import apiClient from 'services/api';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem, list } = useSelector((root: RootState) => root.projectEstimate);
+  const { detail } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
   const { list: contentList } = useSelector((root: RootState) => root.estimateContent);
   const { error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
+  /* 견적번호 가져오기 관련 문제 */
+  // console.log("list : ", Array.isArray(list) && list[list.length-1].code);
+  // console.log('detail : ', detail);
   const closeBuildingFileModal = () => {
     setBuildingSeq(undefined);
   };
@@ -187,6 +199,7 @@ export default function ProjectSystemEstimateModalRoute() {
         }}
         onDelete={onDelete}
         openDocumentModal={setBuildingSeq}
+        onUpload={generate}
       />
       <ProjectComplexBuildingFileModal
         buildingId={typeof buildingSeq === 'number' ? ProjectComplexBuildingId(buildingSeq) : undefined}
@@ -213,4 +226,43 @@ export default function ProjectSystemEstimateModalRoute() {
       />
     </FormikProvider>
   );
+}
+
+async function generate(values: ProjectSystemEstimateParameter) {
+  loadFile(
+    'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
+    async function (error, content) {
+      if(error) { throw error; }
+      const zip = new PizZip(content);
+      const doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks:    true,
+      });
+      const data = {
+        recipient: values.recipient!,
+        projectName: 'project 이름',
+        estimateDate: values.plan.estimateDate,
+        expectedServiceDate: values.plan.expectedServiceDate,
+        manager1Id: values.plan.manager1Id,
+        manager2Id: values.plan.manager2Id,
+        contentList: getContentList(values.contentList)
+      }
+      console.log('data : ', data);
+      doc.setData(data);
+      doc.render(data);
+
+      const formData = new FormData();
+      formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
+      console.log("formData : ", formData);
+      await apiClient.post('/file-item/conversion', formData);
+    }
+  )
+}
+
+const getContentList = (list: string[]) => {
+  return list.map((content) => {
+    return {
+      content: content,
+    };
+  });
 }

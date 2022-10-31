@@ -8,19 +8,26 @@ import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
 import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Slf4j
 @Setter
@@ -103,14 +110,15 @@ public class FileItemService {
     }
 
     public FileItem convertToPDF(MultipartFile multipartFile) throws IOException {
-        File word = convertToFile(multipartFile);
+        FileItem wordFileItem = build(multipartFile);
+        File wordFile = new File(wordFileItem.getPath());
         FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of());
         return fileItemRepository.save(FileItem.of(
-            word,
+            wordFile,
             rootPath,
             extensionList,
             maxSizeLimit,
-            word.getName().replace(".docx", ".pdf"),
+            wordFileItem.getFilename().replace(".docx", ".pdf"),
             history
         ));
     }
@@ -121,5 +129,25 @@ public class FileItemService {
         fos.write(file.getBytes());
         fos.close();
         return word;
+    }
+
+    @Nullable
+    private MultipartFile convertToMultipartFile(@Nullable File pdf) throws IOException {
+        if(Objects.isNull(pdf)) {
+            return null;
+        }
+        DiskFileItem pdfFileItem =new DiskFileItem(
+            "file",
+            Files.probeContentType(pdf.toPath()),
+            false,
+            pdf.getName(),
+            (int) pdf.length(),
+            pdf.getParentFile()
+        );
+        InputStream input =new FileInputStream(pdf);
+        OutputStream os = pdfFileItem.getOutputStream();
+        IOUtils.copy(input, os);
+
+        return new CommonsMultipartFile(pdfFileItem);
     }
 }

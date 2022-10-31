@@ -4,12 +4,14 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Button from 'layouts/Button';
 import React, { useContext } from 'react';
-import { FormikContext } from 'formik';
+import { FormikContext, } from 'formik';
 import { DefaultFunction } from 'type/Function';
+import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  onUpload: DefaultFunction<ProjectSystemEstimateParameter>;
 }
 
 export default function ProjectSystemEstimateModalTopForm(props: Props) {
@@ -17,7 +19,6 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const isDetail = !edit && formik.values.id;
-
   return (
     <Box
       sx={{
@@ -74,6 +75,7 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         {edit && (
           <Button onClick={() => {
             formik.handleSubmit();
+            props.onUpload(formik.values);
           }}>
             저장
           </Button>
