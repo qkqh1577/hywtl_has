@@ -9,15 +9,36 @@ import {projectDbAction} from 'project_db/action';
 function Element() {
 
     const dispatch = useDispatch();
-    const {list, schema} = useSelector((root: RootState) => root.projectDb);
+    const {list, schema, filter} = useSelector((root: RootState) => root.projectDb);
 
     useEffect(() => {
         dispatch(projectDbAction.requestList());
         dispatch(projectDbAction.requestSchema());
-    }, []);
+    }, [dispatch]);
+
+    useEffect(() => {
+        //TODO: LOAD INITIAL FILTER STATE (CURRENT: RANDOM DATA)
+        const initialFilterState = {};
+        const entities: string[] = Object.keys(schema);
+        entities.map((entityName, index) => {
+            const entityInfo = schema[entityName];
+            const attributes = Object.keys(entityInfo.attributes);
+            const initialAttrState = {};
+            attributes.map((attributeName, attributeIndex) => {
+                const attributeInfo = entityInfo.attributes[attributeName];
+                //initialAttrState[attributeName] = attributeIndex % 2 === 0;
+                initialAttrState[attributeName] = true;
+            });
+            initialFilterState[entityInfo.type] = {
+                checked: true,
+                attributes: initialAttrState
+            };
+        });
+        dispatch(projectDbAction.setFilter(initialFilterState));
+    }, [schema]);
 
     return (
-        <ProjectDbPage list={list} schema={schema}/>
+        <ProjectDbPage list={list} schema={schema} filter={filter}/>
     )
 }
 

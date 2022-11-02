@@ -4,12 +4,23 @@ import {ProjectDbAction} from "./action";
 
 export interface ProjectDbState {
     list: ProjectDbVO[],
-    schema: ProjectDbSchemaVO[]
+    schema: ProjectDbSchemaVO[],
+    filter: ProjectDbFilter
+}
+
+export interface ProjectDbFilter {
+    [entity: string]: {
+        checked: boolean,
+        attributes: {
+            [attr: string]: boolean
+        }
+    }
 }
 
 const initialState: ProjectDbState = {
     list: [],
-    schema: []
+    schema: [],
+    filter: {}
 };
 
 export const projectDbReducer = createReducer(initialState, {
@@ -20,5 +31,9 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setSchema]: (state, action) => ({
         ...state,
         schema: action.payload
+    }),
+    [ProjectDbAction.setFilter]: (state, action) => ({
+        ...state,
+        filter: action.payload
     })
 });

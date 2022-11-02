@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {
     Accordion, AccordionDetails,
     AccordionSummary,
@@ -12,73 +12,56 @@ import {
 import {ProjectDbSchemaVO} from "../../domain";
 import InboxIcon from '@mui/icons-material/Inbox';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {ProjectDbFilter} from "../../reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../../services/reducer";
+import ProjectDbPage from "./index";
+import {projectDbAction, ProjectDbAction} from "../../action";
 
 interface Props {
-    schema: ProjectDbSchemaVO[]
-}
-
-interface FilterState {
-    [entity: string]: {
-        checked: boolean,
-        attributes: {
-            [attr: string]: boolean
-        }
-    }
+    schema: ProjectDbSchemaVO[],
+    filter: ProjectDbFilter
 }
 
 export default function Filter(props: Props) {
+
     const {schema} = props;
     const entities: string[] = Object.keys(schema);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [filterState, setFilterState] = useState<FilterState>({});
+    const dispatch = useDispatch();
+    const {filter} = useSelector((root: RootState) => root.projectDb);
 
-    useEffect(() => {
-        //TODO: LOAD INITIAL FILTER STATE (CURRENT: RANDOM DATA)
-        const initialFilterState = {};
-        entities.map((entityName, index) => {
-            const entityInfo = schema[entityName];
-            const attributes = Object.keys(entityInfo.attributes);
-            const initialAttrState = {};
-            attributes.map((attributeName, attributeIndex) => {
-                const attributeInfo = entityInfo.attributes[attributeName];
-                initialAttrState[attributeName] = attributeIndex % 2 === 0;
-            });
-            initialFilterState[entityInfo.type] = {
-                checked: true,
-                attributes: initialAttrState
-            };
-        });
-        setFilterState(initialFilterState);
-    }, [schema]);
+    const setFilter = useCallback(
+        (filterState) => dispatch(projectDbAction.setFilter(filterState))
+        , [dispatch]);
 
     const onEntityItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string) => {
         const checked = event.target.checked;
-        const newFilterState = {...filterState};
+        const newFilterState = {...filter};
         newFilterState[entityType].checked = checked;
 
         const attributes = Object.keys(newFilterState[entityType].attributes);
         attributes.forEach((attrName) => {
             newFilterState[entityType].attributes[attrName] = checked;
         });
-        setFilterState(newFilterState);
+        setFilter(newFilterState);
     };
 
     const onAttributeItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string, attributeName: string) => {
         const checked = event.target.checked;
-        const newFilterState = {...filterState};
+        const newFilterState = {...filter};
         newFilterState[entityType].attributes[attributeName] = checked;
-        setFilterState(newFilterState);
+        setFilter(newFilterState);
     };
 
     return (
         <Box sx={{width: '100%', height: '100%', overflowY: 'scroll'}}>
 
-            {entities.map((entityName, index) => {
+            {entities.reverse().map((entityName, index) => {
                 const entityInfo = schema[entityName];
                 const entityType = entityInfo.type;
                 const attributes = Object.keys(entityInfo.attributes);
                 const baseKey = (index + 1) * 1000;
-                const entityItemChecked = entityType in filterState && filterState[entityType].checked;
+                const entityItemChecked = entityType in filter && filter[entityType].checked;
 
                 return (
                     <Accordion key={baseKey}>
@@ -107,7 +90,7 @@ export default function Filter(props: Props) {
                                 {attributes.map((attributeName, attributeIndex) => {
                                     const attributeInfo = entityInfo.attributes[attributeName];
                                     const attrItemChecked = entityItemChecked &&
-                                        filterState[entityType].attributes[attributeName];
+                                        filter[entityType].attributes[attributeName];
 
                                     return (
                                         <ListItemButton

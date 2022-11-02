@@ -1,5 +1,57 @@
 project-db:
   entities:
+    project:
+      type: ProjectView
+      description: 기본정보
+      attributes:
+        id:
+          type: Long
+          description: 아이디
+        code:
+          type: String
+          description: 코드
+        name:
+          type: String
+          description: 프로젝트명
+        alias:
+          type: String
+          description: 별칭
+        bidType:
+          type: ProjectBasicBidType
+          description: 입찰유형
+        receptionManager:
+          type: UserShortView
+          description: 접수담당
+        salesManager:
+          type: UserShortView
+          description: 영업담당
+        projectManager:
+          type: UserShortView
+          description: PM
+        expectedMonth:
+          type: LocalDate
+          description: 예상월
+        requestedMonth:
+          type: LocalDate
+          description: 요청월
+        isLh:
+          type: Boolean
+          description: LH여부
+        progressStatus:
+          type: ProjectProgressStatus
+          description: 진행상태
+        estimateExpectation:
+          type: ProjectEstimateExpectation
+          description: 예상확도
+        estimateStatus:
+          type: ProjectEstimateStatus
+          description: 견적상태
+        contractStatus:
+          type: ProjectContractStatus
+          description: 계약상태
+        modifiedAt:
+          type: LocalDateTime
+          description: 최종수정
     estimate:
       type: ProjectEstimateView
       description: 견적정보
