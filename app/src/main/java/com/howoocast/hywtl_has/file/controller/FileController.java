@@ -73,9 +73,9 @@ public class FileController {
 
     /* conversion */
     @PostMapping("/file-item/conversion")
-    public void convertToPDF(@ModelAttribute MultipartFile multipartFile) {
+    public void convertToPDF(@ModelAttribute MultipartFile file) {
         try {
-            fileItemService.convertToPDF(multipartFile);
+            fileItemService.convertToPDF(file);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

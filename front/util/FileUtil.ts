@@ -1,6 +1,9 @@
 import PizZipUtils from 'pizzip/utils';
+import Docxtemplater from 'docxtemplater';
 
-export function loadFile(url, callback) {
+export function loadFile(url,
+                         callback
+) {
   PizZipUtils.getBinaryContent(url, callback);
 }
 
@@ -13,7 +16,7 @@ export const blobToFile = (blob: Blob,
   });
 };
 
-export function getBlob(doc) {
+export function getBlob(doc: Docxtemplater): Blob {
   return doc.getZip()
             .generate({
               type:        'blob',

@@ -36,6 +36,7 @@ import {
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import apiClient from 'services/api';
+import { toAmountKor } from 'util/NumberUtil';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
@@ -229,6 +230,9 @@ export default function ProjectSystemEstimateModalRoute() {
 }
 
 async function generate(values: ProjectSystemEstimateParameter) {
+  console.log("values : ", values);
+  const manager1 = values.plan.manager1Id ? await apiClient.get(`/personnel?userId=${values.plan.manager1Id}`) : undefined;
+  const manager2 = values.plan.manager2Id ? await apiClient.get(`/personnel?userId=${values.plan.manager2Id}`) : undefined;
   loadFile(
     'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
     async function (error, content) {
@@ -238,22 +242,31 @@ async function generate(values: ProjectSystemEstimateParameter) {
         paragraphLoop: true,
         linebreaks:    true,
       });
+
+      console.log(getJobClass(manager1?.data?.jobList))
+
       const data = {
         recipient: values.recipient!,
         projectName: 'project 이름',
         estimateDate: values.plan.estimateDate,
         expectedServiceDate: values.plan.expectedServiceDate,
-        manager1Id: values.plan.manager1Id,
-        manager2Id: values.plan.manager2Id,
+        manager1_jobClass: getJobClass(manager1?.data?.jobList),
+        manager1_name: manager1?.data?.name,
+        manager1_phone: manager1?.data?.basic.phone,
+        manager1_email: manager1?.data?.email,
+        manager2_jobClass: getJobClass(manager2?.data?.jobList),
+        manager2_name: manager2?.data?.name,
+        manager2_phone: manager2?.data?.basic.phone,
+        manager2_email: manager2?.data?.email,
+        totalAmount: values.plan.totalAmount,
+        totalAmountKor: toAmountKor(values.plan?.totalAmount ?? 0),
         contentList: getContentList(values.contentList)
       }
       console.log('data : ', data);
       doc.setData(data);
       doc.render(data);
-
       const formData = new FormData();
       formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
-      console.log("formData : ", formData);
       await apiClient.post('/file-item/conversion', formData);
     }
   )
@@ -265,4 +278,8 @@ const getContentList = (list: string[]) => {
       content: content,
     };
   });
+}
+
+const getJobClass = (jobList) => {
+  return jobList.filter(job => job.isRepresentative)[0].jobClass;
 }

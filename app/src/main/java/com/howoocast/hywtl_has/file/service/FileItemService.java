@@ -109,8 +109,9 @@ public class FileItemService {
         ));
     }
 
-    public FileItem convertToPDF(MultipartFile multipartFile) throws IOException {
-        FileItem wordFileItem = build(multipartFile);
+    @Transactional
+    public FileItem convertToPDF(MultipartFile file) throws IOException {
+        FileItem wordFileItem = build(file);
         File wordFile = new File(wordFileItem.getPath());
         FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of());
         return fileItemRepository.save(FileItem.of(
