@@ -11,6 +11,7 @@ import {
 } from 'formik';
 import {
   initialProjectSystemEstimateParameter,
+  ProjectEstimateTemplateParameter,
   ProjectSystemEstimateParameter
 } from 'project_estimate/parameter';
 import React, {
@@ -230,21 +231,20 @@ export default function ProjectSystemEstimateModalRoute() {
 }
 
 async function generate(values: ProjectSystemEstimateParameter) {
-  console.log("values : ", values);
+  console.log('values : ', values);
   const manager1 = values.plan.manager1Id ? await apiClient.get(`/personnel?userId=${values.plan.manager1Id}`) : undefined;
   const manager2 = values.plan.manager2Id ? await apiClient.get(`/personnel?userId=${values.plan.manager2Id}`) : undefined;
   loadFile(
     'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
-    async function (error, content) {
-      if(error) { throw error; }
+    async function (error,
+                    content
+    ) {
+      if (error) { throw error; }
       const zip = new PizZip(content);
       const doc = new Docxtemplater(zip, {
         paragraphLoop: true,
         linebreaks:    true,
       });
-
-      console.log(getJobClass(manager1?.data?.jobList))
-
       const data = {
         recipient: values.recipient!,
         projectName: 'project 이름',
@@ -258,10 +258,13 @@ async function generate(values: ProjectSystemEstimateParameter) {
         manager2_name: manager2?.data?.name,
         manager2_phone: manager2?.data?.basic.phone,
         manager2_email: manager2?.data?.email,
-        totalAmount: values.plan.totalAmount,
+        totalAmount: values.plan.totalAmount.toLocaleString(),
         totalAmountKor: toAmountKor(values.plan?.totalAmount ?? 0),
-        contentList: getContentList(values.contentList)
-      }
+        discountAmount: values.plan.discountAmount ? values.plan.discountAmount.toLocaleString() : 0,
+        testAmount: values.plan.testAmount.toLocaleString(),
+        serviceList: getServiceList(values.templateList),
+        contentList: getContentList(values.contentList),
+      };
       console.log('data : ', data);
       doc.setData(data);
       doc.render(data);
@@ -269,7 +272,7 @@ async function generate(values: ProjectSystemEstimateParameter) {
       formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
       await apiClient.post('/file-item/conversion', formData);
     }
-  )
+  );
 }
 
 const getContentList = (list: string[]) => {
@@ -278,8 +281,34 @@ const getContentList = (list: string[]) => {
       content: content,
     };
   });
-}
+};
+
+const getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
+  return list.map((service,
+                   index
+  ) => {
+    return {
+      index: index + 1,
+      title: service.title,
+      detailList: service.detailList.map((detail) => {
+        return {
+          unit: detail.unit,
+          testCount: detail.testCount,
+          unitAmount: detail.unitAmount.toLocaleString(),
+          totalAmount: detail.totalAmount.toLocaleString(),
+          note: detail.note,
+          titleList: detail.titleList.map((title) => {
+            return {
+              title: title,
+            }
+          })
+        };
+      }),
+    };
+  });
+};
+
 
 const getJobClass = (jobList) => {
   return jobList.filter(job => job.isRepresentative)[0].jobClass;
-}
+};
