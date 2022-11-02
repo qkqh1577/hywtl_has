@@ -8,7 +8,7 @@ class ProjectDbApi {
         const query: ProjectDbQuery = {
             projectEstimate: true,
             projectBid: true,
-            projectComplexSite: false,
+            projectComplexSite: true,
             projectMemo: false
         };
         const {data} = await apiClient.get('/project/db', query);
