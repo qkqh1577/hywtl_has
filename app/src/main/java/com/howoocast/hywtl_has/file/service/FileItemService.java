@@ -110,11 +110,11 @@ public class FileItemService {
     }
 
     @Transactional
-    public FileItem convertToPDF(MultipartFile file) throws IOException {
+    public void convertToPDF(MultipartFile file) throws IOException {
         FileItem wordFileItem = build(file);
         File wordFile = new File(wordFileItem.getPath());
-        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of());
-        return fileItemRepository.save(FileItem.of(
+        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of(wordFileItem));
+        fileItemRepository.save(FileItem.of(
             wordFile,
             rootPath,
             extensionList,
@@ -123,6 +123,9 @@ public class FileItemService {
             history
         ));
     }
+
+    //TODO: 삭제 여부 확인.
+    /* 계약서에서 사용될 수 있어서 남긴 로직 */
     private File convertToFile(MultipartFile file) throws IOException {
         File word = new File(Objects.requireNonNull(file.getOriginalFilename()));
         word.createNewFile();
@@ -134,10 +137,10 @@ public class FileItemService {
 
     @Nullable
     private MultipartFile convertToMultipartFile(@Nullable File pdf) throws IOException {
-        if(Objects.isNull(pdf)) {
+        if (Objects.isNull(pdf)) {
             return null;
         }
-        DiskFileItem pdfFileItem =new DiskFileItem(
+        DiskFileItem pdfFileItem = new DiskFileItem(
             "file",
             Files.probeContentType(pdf.toPath()),
             false,
@@ -145,7 +148,7 @@ public class FileItemService {
             (int) pdf.length(),
             pdf.getParentFile()
         );
-        InputStream input =new FileInputStream(pdf);
+        InputStream input = new FileInputStream(pdf);
         OutputStream os = pdfFileItem.getOutputStream();
         IOUtils.copy(input, os);
 

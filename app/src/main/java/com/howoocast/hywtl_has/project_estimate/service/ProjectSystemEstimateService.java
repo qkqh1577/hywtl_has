@@ -13,6 +13,7 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateType;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateTemplateParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
+import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectSystemEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import java.util.List;
@@ -37,6 +38,8 @@ public class ProjectSystemEstimateService {
     private final ProjectContractRepository contractRepository;
 
     private final ApplicationEventPublisher eventPublisher;
+
+    private final ProjectEstimateRepository estimateRepository;
 
     @Transactional(readOnly = true)
     public ProjectSystemEstimate get(Long id) {
@@ -130,5 +133,9 @@ public class ProjectSystemEstimateService {
         return repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(ProjectSystemEstimate.KEY, id);
         });
+    }
+
+    public Long getSequenceNumber(Long projectId) {
+        return estimateRepository.findNextSeq(projectId);
     }
 }

@@ -9,6 +9,7 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemEx
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException;
 import com.howoocast.hywtl_has.common.exception.RequestFileNotAvailableException.RequestFileNotAvailableExceptionType;
 import com.howoocast.hywtl_has.common.util.SHA265Generator;
+import com.howoocast.hywtl_has.file_conversion_history.common.FileState;
 import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -278,9 +279,10 @@ public class FileItem extends CustomEntity {
         instance.size = file.length();
         try {
             instance.saveFileAsPdf(file, history);
+            history.setConvertedFile(instance);
         } catch (Exception e) {
             e.printStackTrace();
-//            history.update(PocFileState.FAIL);
+            history.updateState(FileState.FAIL);
         }
 
         return instance;
@@ -288,7 +290,6 @@ public class FileItem extends CustomEntity {
 
     private void saveFileAsPdf(File file, FileConversionHistory history)
         throws IOException, InterruptedException, ExecutionException {
-        System.out.println("converting start");
         File pdf = new File(this.path);
         BufferedInputStream wordInputStream = new BufferedInputStream(new FileInputStream(file));
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(pdf));
@@ -297,14 +298,10 @@ public class FileItem extends CustomEntity {
             .convert(wordInputStream).as(DocumentType.DOCX)
             .to(outputStream).as(DocumentType.PDF)
             .schedule();
-        System.out.println("schedule start");
         if (conversion.get()) {
-            System.out.println("schedule end");
-//            history.update(PocFileState.COMPLETE);
+            history.updateState(FileState.COMPLETE);
         }
         outputStream.flush();
         outputStream.close();
-        System.out.println("converting end");
     }
-
 }

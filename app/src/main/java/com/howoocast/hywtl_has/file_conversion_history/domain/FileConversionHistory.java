@@ -3,10 +3,11 @@ package com.howoocast.hywtl_has.file_conversion_history.domain;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file_conversion_history.common.FileState;
-import javax.persistence.CascadeType;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
@@ -23,16 +24,36 @@ public class FileConversionHistory extends CustomEntity {
     public static final String KEY = "file_conversion_history";
 
     @Enumerated(EnumType.STRING)
-    private FileState state = FileState.WAITING;
+    private FileState state;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private FileItem fileItem;
+    @OneToOne
+    @JoinColumn(name = "original_file_id")
+    private FileItem originalFile;
 
-    public static FileConversionHistory of() {
-        return new FileConversionHistory();
+    @OneToOne
+    @JoinColumn(name = "converted_file_id")
+    private FileItem convertedFile;
+
+    @OneToOne
+    @JoinColumn(name = "project_estimate_id")
+    private ProjectEstimate projectEstimate;
+
+    public static FileConversionHistory of(FileItem originalFile) {
+        FileConversionHistory result = new FileConversionHistory();
+        result.originalFile = originalFile;
+        result.state = FileState.WAITING;
+        return result;
+    }
+
+    public void setConvertedFile(FileItem convertedFile) {
+        this.convertedFile = convertedFile;
     }
 
     public void updateState(FileState state) {
         this.state = state;
+    }
+
+    public void setProjectEstimate(ProjectEstimate projectEstimate) {
+        this.projectEstimate = projectEstimate;
     }
 }

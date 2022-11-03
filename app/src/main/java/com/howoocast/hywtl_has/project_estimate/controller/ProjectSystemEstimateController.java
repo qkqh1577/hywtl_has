@@ -31,6 +31,14 @@ public class ProjectSystemEstimateController {
         return ProjectSystemEstimateView.assemble(service.get(id));
     }
 
+    /* 채번 로직 */
+    @GetMapping("/project/sales/{projectId}/sequence-number")
+    public Long getSequenceNumber(
+        @PathVariable Long projectId
+    ) {
+        return service.getSequenceNumber(projectId);
+    }
+
     @PutMapping("/project/sales/{projectId}/system-estimate")
     public void add(
         @PathVariable Long projectId,
