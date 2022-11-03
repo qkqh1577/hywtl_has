@@ -53,7 +53,7 @@ export const initialProjectCustomEstimateExtensionParameter = {
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
-  docx: FileItemParameter;
+  file: FileItemParameter;
   plan: ProjectEstimatePlanParameter;
   siteList: ProjectEstimateComplexSiteParameter[];
   buildingList: ProjectEstimateComplexBuildingParameter[];
@@ -69,7 +69,7 @@ export const initialProjectSystemEstimateParameter = {
   templateList: [],
   contentList:  [],
   edit:         true,
-  docx:         {},
+  file:         {},
 } as unknown as ProjectSystemEstimateParameter;
 
 export interface ProjectEstimatePlanParameter {

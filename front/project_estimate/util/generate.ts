@@ -16,8 +16,9 @@ import { personnelApi } from 'personnel/api';
 import { documentDataApi } from 'project_estimate/util/api';
 import { fileToView } from 'file-item';
 
-export async function generate(values: ProjectSystemEstimateParameter,
-                               project: ProjectVO
+export function generate(values: ProjectSystemEstimateParameter,
+                               project: ProjectVO,
+                               callback: (values: ProjectSystemEstimateParameter) => void
 ) {
   loadFile(
     'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
@@ -34,11 +35,8 @@ export async function generate(values: ProjectSystemEstimateParameter,
       doc.setData(data);
       doc.render(data);
 
-      // const formData = new FormData();
-      // formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
-      values.docx = fileToView(blobToFile(getBlob(doc), '계약서.docx'));
-      // return fileToView(blobToFile(getBlob(doc), '계약서.docx'))
-      // documentDataApi.upload(formData);
+      values.file = fileToView(blobToFile(getBlob(doc), '계약서.docx'));
+      callback && callback(values);
     }
   );
 }
