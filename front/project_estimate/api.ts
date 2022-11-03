@@ -55,7 +55,7 @@ class ProjectEstimateApi {
                   params: ProjectSystemEstimateParameter
   ): Promise<void> {
     console.log("params", params);
-    const { data } = await apiClient.post(`/project/sales/${projectId}/system-estimate`, toFormData(params));
+    const { data } = await apiClient.put(`/project/sales/${projectId}/system-estimate`, toFormData(params));
     return data;
   }
 
