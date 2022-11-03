@@ -83,15 +83,12 @@ export default function List(props: Props) {
         list && list.forEach((entities, index) => {
             const {project, projectBid, projectComplexSite, projectEstimate, projectMemo} = entities;
             const row: Row = {id: index};
-
             assignGridValues('Project', project, newColumns, row);
             projectBid && assignGridValues('ProjectBid', projectBid, newColumns, row);
             projectComplexSite && assignGridValues('ProjectComplexSite', projectComplexSite, newColumns, row);
             projectEstimate && assignGridValues('ProjectEstimate', projectEstimate, newColumns, row);
             projectMemo && assignGridValues('ProjectMemo', projectMemo, newColumns, row);
-
-            for(let i=0;i<10000;i++)
-                newRows.push(row);
+            newRows.push(row);
         });
 
         setColumns(newColumns);

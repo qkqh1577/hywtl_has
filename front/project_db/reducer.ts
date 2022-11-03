@@ -1,11 +1,12 @@
-import {ProjectDbSchemaVO, ProjectDbVO} from "./domain";
+import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 import {createReducer} from "typesafe-actions";
 import {ProjectDbAction} from "./action";
 
 export interface ProjectDbState {
     list: ProjectDbVO[],
     schema: ProjectDbSchemaVO[],
-    filter: ProjectDbFilter
+    filter: ProjectDbFilter,
+    preset: ProjectDbPreset[]
 }
 
 export interface ProjectDbFilter {
@@ -20,7 +21,8 @@ export interface ProjectDbFilter {
 const initialState: ProjectDbState = {
     list: [],
     schema: [],
-    filter: {}
+    filter: {},
+    preset: []
 };
 
 export const projectDbReducer = createReducer(initialState, {
@@ -35,5 +37,9 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setFilter]: (state, action) => ({
         ...state,
         filter: action.payload
+    }),
+    [ProjectDbAction.setPresetList]: (state, action) => ({
+        ...state,
+        preset: action.payload
     })
 });

@@ -22,8 +22,8 @@ public class ProjectDbService {
     private final ProjectDbInformationSchema schema;
 
     @Transactional(readOnly = true)
-    public List<ProjectDbView> find(ProjectDbParameter projectDbParameter) {
-        return projectDbRepository.findByDynamicJoin(projectDbParameter);
+    public List<ProjectDbView> list(ProjectDbParameter projectDbParameter) {
+        return projectDbRepository.findAll(projectDbParameter);
     }
 
     public ProjectDbSchemaView getInformationSchema() {
