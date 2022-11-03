@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import ModalLayout from 'layouts/ModalLayout';
 import ProjectSystemEstimateModalForm from 'project_estimate/view/SystemModal/Form';
-import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   open: boolean;
@@ -11,7 +10,6 @@ interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   openDocumentModal: DefaultFunction<number>;
-  onUpload: DefaultFunction<ProjectSystemEstimateParameter>;
 }
 
 export default function ProjectSystemEstimateModal(props: Props) {
@@ -30,7 +28,6 @@ export default function ProjectSystemEstimateModal(props: Props) {
           onCancel={props.onCancel}
           onDelete={props.onDelete}
           openDocumentModal={props.openDocumentModal}
-          onUpload={props.onUpload}
         />
       }
     />

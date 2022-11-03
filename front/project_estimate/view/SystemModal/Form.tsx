@@ -4,14 +4,12 @@ import { DefaultFunction } from 'type/Function';
 import TopForm from 'project_estimate/view/SystemModal/TopForm';
 import LeftForm from 'project_estimate/view/SystemModal/LeftForm';
 import RightForm from 'project_estimate/view/SystemModal/RightForm';
-import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   openDocumentModal: DefaultFunction<number>;
-  onUpload: DefaultFunction<ProjectSystemEstimateParameter>;
 }
 
 export default function ProjectSystemEstimateModalForm(props: Props) {
@@ -25,7 +23,10 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
       justifyContent: 'space-between',
       alignContent:   'flex-start'
     }}>
-      <TopForm onCancel={props.onCancel} onDelete={props.onDelete} onUpload={props.onUpload}/>
+      <TopForm
+        onCancel={props.onCancel}
+        onDelete={props.onDelete}
+      />
       <Box sx={{
         width:    '100%',
         display:  'flex',

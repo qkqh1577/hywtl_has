@@ -6,12 +6,10 @@ import Button from 'layouts/Button';
 import React, { useContext } from 'react';
 import { FormikContext, } from 'formik';
 import { DefaultFunction } from 'type/Function';
-import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
-  onUpload: DefaultFunction<ProjectSystemEstimateParameter>;
 }
 
 export default function ProjectSystemEstimateModalTopForm(props: Props) {
@@ -75,7 +73,6 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         {edit && (
           <Button onClick={() => {
             formik.handleSubmit();
-            props.onUpload(formik.values);
           }}>
             저장
           </Button>
