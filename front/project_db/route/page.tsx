@@ -1,19 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {AppRoute} from "../../services/routes";
 import ProjectDbPage from "../view/Page";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../services/reducer";
 
 import {projectDbAction} from 'project_db/action';
+import {ProjectDbFilter} from "../reducer";
 
 function Element() {
 
     const dispatch = useDispatch();
-    const {list, schema, filter} = useSelector((root: RootState) => root.projectDb);
+    const {schema} = useSelector((root: RootState) => root.projectDb);
+    const setFilter = useCallback((filterState: ProjectDbFilter) => {
+        dispatch(projectDbAction.setFilter(filterState));
+    }, [schema]);
 
     useEffect(() => {
         dispatch(projectDbAction.requestList());
         dispatch(projectDbAction.requestSchema());
+        dispatch(projectDbAction.requestPresetList());
     }, [dispatch]);
 
     useEffect(() => {
@@ -26,7 +31,6 @@ function Element() {
             const initialAttrState = {};
             attributes.map((attributeName, attributeIndex) => {
                 const attributeInfo = entityInfo.attributes[attributeName];
-                //initialAttrState[attributeName] = attributeIndex % 2 === 0;
                 initialAttrState[attributeName] = true;
             });
             initialFilterState[entityInfo.type] = {
@@ -34,11 +38,11 @@ function Element() {
                 attributes: initialAttrState
             };
         });
-        dispatch(projectDbAction.setFilter(initialFilterState));
+        setFilter(initialFilterState);
     }, [schema]);
 
     return (
-        <ProjectDbPage list={list} schema={schema} filter={filter}/>
+        <ProjectDbPage/>
     )
 }
 

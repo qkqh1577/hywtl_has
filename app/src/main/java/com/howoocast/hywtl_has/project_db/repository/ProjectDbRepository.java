@@ -6,5 +6,5 @@ import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
 import java.util.List;
 
 public interface ProjectDbRepository {
-    List<ProjectDbView> findByDynamicJoin(ProjectDbParameter parameter);
+    List<ProjectDbView> findAll(ProjectDbParameter parameter);
 }

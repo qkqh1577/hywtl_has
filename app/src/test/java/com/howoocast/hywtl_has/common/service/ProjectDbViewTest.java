@@ -26,7 +26,7 @@ public class ProjectDbViewTest {
     void test() {
         ProjectDbParameter param = new ProjectDbParameter();
 
-        List<ProjectDbView> projects = projectDbRepository.findByDynamicJoin(param);
+        List<ProjectDbView> projects = projectDbRepository.findAll(param);
         for (ProjectDbView project : projects) {
             System.out.println(">>> Project code = " + project.getProject().getCode());
 

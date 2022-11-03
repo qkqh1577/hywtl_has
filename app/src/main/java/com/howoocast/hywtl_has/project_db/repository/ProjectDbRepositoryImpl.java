@@ -28,7 +28,7 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
     }
 
     @Override
-    public List<ProjectDbView> findByDynamicJoin(ProjectDbParameter parameter) {
+    public List<ProjectDbView> findAll(ProjectDbParameter parameter) {
 
         ArrayList<Expression> classes = new ArrayList<>() {{
             add(project);
