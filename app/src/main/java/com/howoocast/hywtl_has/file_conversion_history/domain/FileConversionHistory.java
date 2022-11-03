@@ -38,10 +38,11 @@ public class FileConversionHistory extends CustomEntity {
     @JoinColumn(name = "project_estimate_id")
     private ProjectEstimate projectEstimate;
 
-    public static FileConversionHistory of(FileItem originalFile) {
+    public static FileConversionHistory of(FileItem originalFile, ProjectEstimate projectEstimate) {
         FileConversionHistory result = new FileConversionHistory();
         result.originalFile = originalFile;
         result.state = FileState.WAITING;
+        result.projectEstimate = projectEstimate;
         return result;
     }
 
@@ -51,9 +52,5 @@ public class FileConversionHistory extends CustomEntity {
 
     public void updateState(FileState state) {
         this.state = state;
-    }
-
-    public void setProjectEstimate(ProjectEstimate projectEstimate) {
-        this.projectEstimate = projectEstimate;
     }
 }

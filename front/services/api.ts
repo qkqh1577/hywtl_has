@@ -18,7 +18,14 @@ export function toFormData(parameter: Parameter,
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     const value = parameter[key];
+    if (key === 'docx') {
+      console.log('docx parameter : ', parameter);
+      console.log('value : ', parameter[key]);
+    }
     if (typeof value === 'undefined' || value === null || Number.isNaN(value) || value === '') {
+      if (key === 'docx') {
+        console.log('docx continue??');
+      }
       continue;
     }
     const name = prefix ? `${prefix}.${key}` : key;

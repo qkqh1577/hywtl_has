@@ -14,6 +14,7 @@ import { toAmountKor } from 'util/NumberUtil';
 import { testUnitName } from 'type/TestType';
 import { personnelApi } from 'personnel/api';
 import { documentDataApi } from 'project_estimate/util/api';
+import { fileToView } from 'file-item';
 
 export async function generate(values: ProjectSystemEstimateParameter,
                                project: ProjectVO
@@ -32,9 +33,12 @@ export async function generate(values: ProjectSystemEstimateParameter,
       const data = await setData(values, project);
       doc.setData(data);
       doc.render(data);
-      const formData = new FormData();
-      formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
-      documentDataApi.upload(formData);
+
+      // const formData = new FormData();
+      // formData.append('file', blobToFile(getBlob(doc), '계약서.docx'));
+      values.docx = fileToView(blobToFile(getBlob(doc), '계약서.docx'));
+      // return fileToView(blobToFile(getBlob(doc), '계약서.docx'))
+      // documentDataApi.upload(formData);
     }
   );
 }

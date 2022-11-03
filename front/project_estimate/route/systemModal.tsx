@@ -49,15 +49,16 @@ export default function ProjectSystemEstimateModalRoute() {
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteSystem()), [dispatch]);
   const formik = useFormik<ProjectSystemEstimateParameter>({
     initialValues: initialProjectSystemEstimateParameter,
-    onSubmit:      (values) => {
+    onSubmit:      async (values) => {
       if (systemModal) {
+        await generate(values, detail!);
         onChange(values);
-        generate(values, detail!);
         return;
       }
       if (systemModal === null) {
+        await generate(values, detail!);
+        console.log("values : ", values);
         onAdd(values);
-        generate(values, detail!);
         return;
       }
       error('시스템 견적서가 선택되지 않았습니다.');

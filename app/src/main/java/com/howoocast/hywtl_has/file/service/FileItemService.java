@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
 import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -110,10 +111,10 @@ public class FileItemService {
     }
 
     @Transactional
-    public void convertToPDF(MultipartFile file) throws IOException {
+    public void convertToPDF(FileItemParameter file, ProjectSystemEstimate projectEstimate) throws IOException {
         FileItem wordFileItem = build(file);
         File wordFile = new File(wordFileItem.getPath());
-        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of(wordFileItem));
+        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of(wordFileItem, projectEstimate));
         fileItemRepository.save(FileItem.of(
             wordFile,
             rootPath,

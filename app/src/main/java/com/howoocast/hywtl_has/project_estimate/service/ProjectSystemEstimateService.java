@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplateDetail;
@@ -16,6 +17,7 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateP
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectSystemEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,8 @@ public class ProjectSystemEstimateService {
     private final ApplicationEventPublisher eventPublisher;
 
     private final ProjectEstimateRepository estimateRepository;
+
+    private final FileItemService fileItemService;
 
     @Transactional(readOnly = true)
     public ProjectSystemEstimate get(Long id) {
@@ -71,6 +75,11 @@ public class ProjectSystemEstimateService {
             null,
             instance.getCode()
         ));
+        try {
+            fileItemService.convertToPDF(parameter.getFile(), instance);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
