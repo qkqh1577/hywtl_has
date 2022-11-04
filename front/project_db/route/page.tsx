@@ -22,7 +22,7 @@ function Element() {
     }, [dispatch]);
 
     useEffect(() => {
-        //TODO: LOAD INITIAL FILTER STATE (CURRENT: RANDOM DATA)
+        //TODO: LOAD INITIAL FILTER STATE
         const initialFilterState = {};
         const entities: string[] = Object.keys(schema);
         entities.map((entityName, index) => {
@@ -31,10 +31,11 @@ function Element() {
             const initialAttrState = {};
             attributes.map((attributeName, attributeIndex) => {
                 const attributeInfo = entityInfo.attributes[attributeName];
-                initialAttrState[attributeName] = true;
+                initialAttrState[attributeName] = entityName === 'project';
             });
+
             initialFilterState[entityInfo.type] = {
-                checked: true,
+                checked: entityName === 'project',
                 attributes: initialAttrState
             };
         });

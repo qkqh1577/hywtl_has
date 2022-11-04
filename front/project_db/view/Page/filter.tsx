@@ -37,7 +37,15 @@ export default function Filter(props: Props) {
     const onEntityItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string) => {
         const checked = event.target.checked;
         const newFilterState = {...filter};
-        newFilterState[entityType].checked = checked;
+
+        if (!newFilterState[entityType]) {
+            newFilterState[entityType] = {
+                checked: checked,
+                attributes: {}
+            }
+        } else {
+            newFilterState[entityType].checked = checked;
+        }
 
         const attributes = Object.keys(newFilterState[entityType].attributes);
         attributes.forEach((attrName) => {
