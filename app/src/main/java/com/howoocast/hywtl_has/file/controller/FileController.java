@@ -50,6 +50,15 @@ public class FileController {
     public void downloadByProjectEstimateId(@RequestParam Long projectEstimateId, HttpServletResponse response) throws Exception {
         fileItemService.getByProjectEstimateId(projectEstimateId).download(response);
     }
+
+    @GetMapping(value= "/file-item",params = {"projectContractId", "type"})
+    public void downloadByProjectContractId(
+        @RequestParam Long projectContractId,
+        @RequestParam(required = false) String type,
+        HttpServletResponse response) throws Exception {
+        fileItemService.getByProjectContractId(projectContractId, type).download(response);
+    }
+
     /* pdf 변환 작업 */
     /* static file down load api */
     @GetMapping(value = "/file-item/template", params = "fileName")

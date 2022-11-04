@@ -107,12 +107,17 @@ export default function ProjectContractModalTopForm(props: Props) {
           <Button shape="basic3"
             sx={{
               marginRight: '10px',
-            }}>
+            }}
+            onClick={() => {window.open(`/file-item?projectContractId=${id}&type=word`, '_blank');}}
+          >
             Word 다운로드
           </Button>
         )}
         {!edit && (
-          <Button shape="basic3">
+          <Button
+            shape="basic3"
+            onClick={() => {window.open(`/file-item?projectContractId=${id}&type=pdf`, '_blank');}}
+          >
             PDF 다운로드
           </Button>
         )}

@@ -23,6 +23,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -116,10 +117,23 @@ public class FileItemService {
         FileConversionHistory history = fileConversionHistoryRepository.findByProjectEstimateId(
             projectEstimateId);
 
+        return getFileItem(history, "pdf");
+    }
+
+    public FileItem getByProjectContractId(Long projectContractId, String type) {
+        FileConversionHistory history = fileConversionHistoryRepository.findByProjectContractId(
+            projectContractId);
+
+        return getFileItem(history, type);
+    }
+    private FileItem getFileItem(FileConversionHistory history, String type) {
         if (history.getState() == FileState.FAIL) {
             throw new FileSystemException(FileSystemExceptionType.FAILED_TO_CONVERT);
         }else if(history.getState() == FileState.WAITING) {
             throw new FileSystemException(FileSystemExceptionType.IS_CONVERTING);
+        }
+        if(StringUtils.equals(type, "word")) {
+            return get(history.getOriginalFile().getId());
         }
         return get(history.getConvertedFile().getId());
     }
