@@ -33,7 +33,7 @@ import { generate } from 'project_estimate/util/generate';
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
   const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem, list } = useSelector((root: RootState) => root.projectEstimate);
-  const { detail } = useSelector((root: RootState) => root.project);
+  const { detail: project } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
@@ -51,13 +51,13 @@ export default function ProjectSystemEstimateModalRoute() {
     initialValues: initialProjectSystemEstimateParameter,
     onSubmit:      (values) => {
       if (systemModal) {
-        generate(values, detail!, (values) => {
+        generate(values, project!, (values) => {
           onChange(values);
         });
         return;
       }
       if (systemModal === null) {
-        generate(values, detail!, (values) => {
+        generate(values, project!, (values) => {
           onAdd(values);
         });
         return;

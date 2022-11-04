@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
@@ -75,7 +76,7 @@ public class ProjectSystemEstimateService {
             null,
             instance.getCode()
         ));
-        convert(parameter, instance);
+        convert(parameter.getFile(), instance);
     }
 
     @Transactional
@@ -94,7 +95,7 @@ public class ProjectSystemEstimateService {
         estimateService.changePlan(instance, parameter.getPlan());
         estimateService.changeSiteList(instance, parameter.getSiteList());
         estimateService.changeBuildingList(instance, parameter.getBuildingList());
-        convert(parameter, instance);
+        convert(parameter.getFile(), instance);
     }
 
     @Transactional
@@ -145,9 +146,9 @@ public class ProjectSystemEstimateService {
         });
     }
 
-    private void convert(ProjectSystemEstimateParameter parameter, ProjectSystemEstimate instance) {
+    private void convert(FileItemParameter parameter, ProjectSystemEstimate instance) {
         try {
-            fileItemService.convertToPDF(parameter.getFile(), instance);
+            fileItemService.convertToPDF(parameter, instance);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

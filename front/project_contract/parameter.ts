@@ -62,6 +62,7 @@ export interface ProjectContractParameter {
   basic: ProjectContractBasicParameter;
   collection: ProjectContractCollectionParameter;
   conditionList: ProjectContractConditionParameter[];
+  file: FileItemParameter;
 }
 
 export const initialProjectContractParameter = {
@@ -69,4 +70,5 @@ export const initialProjectContractParameter = {
   collection:    initialProjectContractCollectionParameter,
   conditionList: [initialProjectContractConditionParameter],
   edit:          true,
+  file:          {},
 } as unknown as ProjectContractParameter;

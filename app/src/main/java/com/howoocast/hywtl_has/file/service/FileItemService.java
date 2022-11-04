@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import com.howoocast.hywtl_has.file_conversion_history.common.FileState;
 import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
 import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import java.io.File;
 import java.io.FileInputStream;
@@ -129,6 +130,22 @@ public class FileItemService {
         File wordFile = new File(wordFileItem.getPath());
         FileConversionHistory history = fileConversionHistoryRepository.save(
             FileConversionHistory.of(wordFileItem, projectEstimate));
+        fileItemRepository.save(FileItem.of(
+            wordFile,
+            rootPath,
+            extensionList,
+            maxSizeLimit,
+            wordFileItem.getFilename().replace(".docx", ".pdf"),
+            history
+        ));
+    }
+
+    @Transactional
+    public void convertToContractPDF(FileItemParameter file, ProjectContract projectContract) throws IOException {
+        FileItem wordFileItem = build(file);
+        File wordFile = new File(wordFileItem.getPath());
+        FileConversionHistory history = fileConversionHistoryRepository.save(
+            FileConversionHistory.of(wordFileItem, projectContract));
         fileItemRepository.save(FileItem.of(
             wordFile,
             rootPath,

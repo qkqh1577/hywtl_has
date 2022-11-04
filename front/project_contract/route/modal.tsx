@@ -23,6 +23,7 @@ import ProjectContractEstimateSelectModal from 'project_contract/view/EstimateMo
 import { ProjectEstimateId } from 'project_estimate/domain';
 import { DialogStatus } from 'dialog/domain';
 import { closeStatus } from 'components/DataFieldProps';
+import { generate } from 'project_contract/util/generate';
 
 export default function ProjectContractModalRoute() {
 
@@ -49,10 +50,14 @@ export default function ProjectContractModalRoute() {
     initialValues: initialProjectContractParameter,
     onSubmit:      (values) => {
       if (modal && values.id && modal === values.id) {
-        onChange(values);
+        generate(values, (values) => {
+          onChange(values);
+        });
       }
       else if (modal === null) {
-        onAdd(values);
+        generate(values, (values) => {
+          onAdd(values);
+        });
       }
     }
   });

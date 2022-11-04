@@ -51,7 +51,7 @@ public class ProjectSystemEstimateController {
         Enumeration<String> paramKeys = request.getParameterNames();
         while (paramKeys.hasMoreElements()) {
             String key = paramKeys.nextElement();
-            System.out.println("check : " + key+":"+request.getParameter(key));
+            System.out.println("check : " + key + ":" + request.getParameter(key));
         }
         service.add(
             projectId,

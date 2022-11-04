@@ -42,14 +42,14 @@ class ProjectContractApi {
   async add(projectId: number,
             params: ProjectContractParameter
   ): Promise<void> {
-    const { data } = await apiClient.put(`/project/sales/${projectId}/contract`, params);
+    const { data } = await apiClient.put(`/project/sales/${projectId}/contract`, toFormData(params));
     return data;
   }
 
   async change(projectContractId: ProjectContractId,
                params: ProjectContractParameter
   ): Promise<void> {
-    const { data } = await apiClient.put(`/project/sales/contract/${projectContractId}`, params);
+    const { data } = await apiClient.put(`/project/sales/contract/${projectContractId}`, toFormData(params));
     return data;
   }
 

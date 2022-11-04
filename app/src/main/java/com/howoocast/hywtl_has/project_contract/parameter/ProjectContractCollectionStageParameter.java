@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -23,5 +24,6 @@ public class ProjectContractCollectionStageParameter {
     private String note;
 
     @NotNull(message = ProjectContractCollection.KEY + "_stage.expected_date.not_null")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expectedDate;
 }

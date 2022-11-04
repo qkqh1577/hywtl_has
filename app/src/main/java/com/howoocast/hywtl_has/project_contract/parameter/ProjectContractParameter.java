@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.parameter;
 
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -32,4 +33,5 @@ public class ProjectContractParameter {
     @NotEmpty(message = ProjectContract.KEY + ".condition_list.not_empty")
     private List<ProjectContractConditionParameter> conditionList;
 
+    private FileItemParameter file;
 }
