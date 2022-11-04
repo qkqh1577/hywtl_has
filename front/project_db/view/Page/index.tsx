@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {dialogActions} from "../../../components/Dialog";
 import {ProjectDbPreset} from "../../domain";
 import {projectDbAction} from "../../action";
+import PresetModal from "./presetModal";
 
 interface PresetSaveModalProps {
     state: boolean,
@@ -29,70 +30,10 @@ const style = {
     p: 4,
 };
 
-const PresetSaveModal = (props: PresetSaveModalProps) => {
-    const {state, close} = props;
-
-    const {filter} = useSelector((root: RootState) => root.projectDb);
-    const [presetName, setPresetName] = useState('');
-    const dispatch = useDispatch();
-
-    const onSaveButtonClick = () => {
-        if (presetName === '') {
-            dispatch(dialogActions.openAlert({
-                status: 'error',
-                children: '프리셋 이름은 필수 입니다.'
-            }));
-            return;
-        }
-
-        const preset: ProjectDbPreset = {
-            id:0,
-            name: presetName,
-            filter: filter
-        };
-
-        dispatch(projectDbAction.addPreset(preset));
-        close();
-
-    };
-
-    return (
-        <Modal
-            open={state}
-            onClose={close}
-        >
-            <Box sx={style}>
-                <Box sx={{marginBottom: '20px'}}>
-                    <Input
-                        sx={{width: '100%'}}
-                        inputRef={input => {
-                            input && setTimeout(() => {
-                                input.focus();
-                            }, 100);
-                        }}
-                        onChange={(event) => setPresetName(event.target.value)}
-                        placeholder="저장할 프리셋 이름을 입력 하세요"/>
-                </Box>
-                <Box sx={{textAlign: 'center'}}>
-                    <Button onClick={onSaveButtonClick}>신규 프리셋 등록</Button>
-                </Box>
-            </Box>
-        </Modal>
-    );
-};
-
 const ProjectDbList = () => {
 
     const {list, schema, filter} = useSelector((root: RootState) => root.projectDb);
     const [presetModal, setPresetModal] = useState(false);
-
-    const onPresetSaveButtonClicked = () => {
-        setPresetModal(true);
-    };
-
-    const onPresetSaveModalClose = () => {
-        setPresetModal(false);
-    };
 
     return (
         <>
@@ -101,10 +42,15 @@ const ProjectDbList = () => {
                     <TabHolder/>
                 </Box>
                 <Box style={{display: 'flex', width: '200px'}}>
-                    <Button onClick={onPresetSaveButtonClicked} sx={{width: '100%'}} startIcon={<AddIcon/>}>
+                    <Button onClick={() => setPresetModal(true)}
+                            sx={{
+                                width: '100%',
+                                borderBottomLeftRadius:'0px !important',
+                                borderBottomRightRadius:'0px !important'}}
+                            startIcon={<AddIcon/>}>
                         프리셋 등록
                     </Button>
-                    {presetModal && <PresetSaveModal state={presetModal} close={onPresetSaveModalClose}/>}
+                    {presetModal && <PresetModal state={presetModal} handleClose={() => setPresetModal(false)}/>}
                 </Box>
             </Box>
             <Box style={{display: 'flex', width: '100%', height: '100%', maxHeight: 'calc(100vh - 330px)'}}>
