@@ -54,7 +54,7 @@ public class FileController {
     @GetMapping(value= "/file-item",params = {"projectContractId", "type"})
     public void downloadByProjectContractId(
         @RequestParam Long projectContractId,
-        @RequestParam(required = false) String type,
+        @RequestParam(required = false, defaultValue = "pdf") String type,
         HttpServletResponse response) throws Exception {
         fileItemService.getByProjectContractId(projectContractId, type).download(response);
     }

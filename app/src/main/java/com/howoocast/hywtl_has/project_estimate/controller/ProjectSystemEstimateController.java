@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,13 +47,15 @@ public class ProjectSystemEstimateController {
         @PathVariable Long projectId,
         Authentication authentication,
         @Valid @ModelAttribute ProjectSystemEstimateParameter parameter,
-        HttpServletRequest request
+        HttpServletRequest request,
+        Model model
     ) {
         Enumeration<String> paramKeys = request.getParameterNames();
         while (paramKeys.hasMoreElements()) {
             String key = paramKeys.nextElement();
             System.out.println("check : " + key + ":" + request.getParameter(key));
         }
+        model.addAttribute("contentList",parameter.getContentList());
         service.add(
             projectId,
             UsernameExtractor.get(authentication),

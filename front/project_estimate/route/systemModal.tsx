@@ -58,6 +58,7 @@ export default function ProjectSystemEstimateModalRoute() {
       }
       if (systemModal === null) {
         generate(values, project!, (values) => {
+          console.log("values : ", values);
           onAdd(values);
         });
         return;
