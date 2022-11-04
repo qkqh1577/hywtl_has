@@ -58,7 +58,7 @@ export interface ProjectSystemEstimateParameter
   siteList: ProjectEstimateComplexSiteParameter[];
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
-  contentList: string[];
+  contentList: ProjectContentList[];
 }
 
 export const initialProjectSystemEstimateParameter = {
@@ -125,4 +125,8 @@ export interface ProjectEstimateTemplateDetailParameter {
   totalAmount: number;
   inUse: boolean;
   note?: string;
+}
+
+interface ProjectContentList {
+  content: string;
 }

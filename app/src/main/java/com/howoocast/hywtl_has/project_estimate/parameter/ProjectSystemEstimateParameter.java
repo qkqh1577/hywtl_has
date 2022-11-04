@@ -13,25 +13,6 @@ import lombok.Setter;
 @Setter
 public class ProjectSystemEstimateParameter {
 
-    public ProjectSystemEstimateParameter(Boolean isSent, String recipient, String note, Boolean isLh,
-        ProjectEstimatePlanParameter plan, List<ProjectEstimateComplexSiteParameter> siteList,
-        List<ProjectEstimateComplexBuildingParameter> buildingList, List<ProjectEstimateTemplateParameter> templateList,
-        List<String> contentList, FileItemParameter file) {
-        System.out.println("hello world");
-        System.out.println(contentList);
-
-        this.isSent = isSent;
-        this.recipient = recipient;
-        this.note = note;
-        this.isLh = isLh;
-        this.plan = plan;
-        this.siteList = siteList;
-        this.buildingList = buildingList;
-        this.templateList = templateList;
-        this.contentList = contentList;
-        this.file = file;
-    }
-
     @NotNull(message = ProjectSystemEstimate.KEY + ".is_sent.not_null")
     private Boolean isSent;
 
@@ -54,7 +35,13 @@ public class ProjectSystemEstimateParameter {
     @NotEmpty(message = ProjectSystemEstimate.KEY + ".template_list.not_empty")
     private List<ProjectEstimateTemplateParameter> templateList;
 
-    private List<String> contentList;
+    private List<Content> contentList;
 
     private FileItemParameter file;
+
+    @Getter
+    @Setter
+    public static class Content {
+        private String content;
+    }
 }

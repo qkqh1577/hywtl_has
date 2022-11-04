@@ -4,13 +4,10 @@ import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectSystemEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectSystemEstimateView;
-import java.util.Enumeration;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,16 +43,8 @@ public class ProjectSystemEstimateController {
     public void add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @ModelAttribute ProjectSystemEstimateParameter parameter,
-        HttpServletRequest request,
-        Model model
+        @Valid @ModelAttribute ProjectSystemEstimateParameter parameter
     ) {
-        Enumeration<String> paramKeys = request.getParameterNames();
-        while (paramKeys.hasMoreElements()) {
-            String key = paramKeys.nextElement();
-            System.out.println("check : " + key + ":" + request.getParameter(key));
-        }
-        model.addAttribute("contentList",parameter.getContentList());
         service.add(
             projectId,
             UsernameExtractor.get(authentication),
