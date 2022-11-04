@@ -46,6 +46,10 @@ public class FileController {
         return fileItemService.getByFileKey(fileKey).streaming();
     }
 
+    @GetMapping(value = "/file-item",params = "projectEstimateId")
+    public void downloadByProjectEstimateId(@RequestParam Long projectEstimateId, HttpServletResponse response) throws Exception {
+        fileItemService.getByProjectEstimateId(projectEstimateId).download(response);
+    }
     /* pdf 변환 작업 */
     /* static file down load api */
     @GetMapping(value = "/file-item/template", params = "fileName")

@@ -75,11 +75,7 @@ public class ProjectSystemEstimateService {
             null,
             instance.getCode()
         ));
-        try {
-            fileItemService.convertToPDF(parameter.getFile(), instance);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        convert(parameter, instance);
     }
 
     @Transactional
@@ -98,6 +94,7 @@ public class ProjectSystemEstimateService {
         estimateService.changePlan(instance, parameter.getPlan());
         estimateService.changeSiteList(instance, parameter.getSiteList());
         estimateService.changeBuildingList(instance, parameter.getBuildingList());
+        convert(parameter, instance);
     }
 
     @Transactional
@@ -118,6 +115,10 @@ public class ProjectSystemEstimateService {
             instance.getCode(),
             null
         ));
+    }
+
+    public Long getSequenceNumber(Long projectId) {
+        return estimateRepository.findNextSeq(projectId);
     }
 
     private List<ProjectEstimateTemplate> toTemplateList(List<ProjectEstimateTemplateParameter> templateList) {
@@ -144,7 +145,11 @@ public class ProjectSystemEstimateService {
         });
     }
 
-    public Long getSequenceNumber(Long projectId) {
-        return estimateRepository.findNextSeq(projectId);
+    private void convert(ProjectSystemEstimateParameter parameter, ProjectSystemEstimate instance) {
+        try {
+            fileItemService.convertToPDF(parameter.getFile(), instance);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

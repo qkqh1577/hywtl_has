@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemEx
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.repository.FileItemRepository;
+import com.howoocast.hywtl_has.file_conversion_history.common.FileState;
 import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
 import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
@@ -110,11 +111,24 @@ public class FileItemService {
         ));
     }
 
+    public FileItem getByProjectEstimateId(Long projectEstimateId) {
+        FileConversionHistory history = fileConversionHistoryRepository.findByProjectEstimateId(
+            projectEstimateId);
+
+        if (history.getState() == FileState.FAIL) {
+            throw new FileSystemException(FileSystemExceptionType.FAILED_TO_CONVERT);
+        }else if(history.getState() == FileState.WAITING) {
+            throw new FileSystemException(FileSystemExceptionType.IS_CONVERTING);
+        }
+        return get(history.getConvertedFile().getId());
+    }
+
     @Transactional
     public void convertToPDF(FileItemParameter file, ProjectSystemEstimate projectEstimate) throws IOException {
         FileItem wordFileItem = build(file);
         File wordFile = new File(wordFileItem.getPath());
-        FileConversionHistory history = fileConversionHistoryRepository.save(FileConversionHistory.of(wordFileItem, projectEstimate));
+        FileConversionHistory history = fileConversionHistoryRepository.save(
+            FileConversionHistory.of(wordFileItem, projectEstimate));
         fileItemRepository.save(FileItem.of(
             wordFile,
             rootPath,

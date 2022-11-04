@@ -61,7 +61,7 @@ class ProjectEstimateApi {
   async changeSystem(id: ProjectEstimateId,
                      params: ProjectSystemEstimateParameter
   ): Promise<void> {
-    const { data } = await apiClient.put(`/project/sales/system-estimate/${id}`, params);
+    const { data } = await apiClient.put(`/project/sales/system-estimate/${id}`, toFormData(params));
     return data;
   }
 

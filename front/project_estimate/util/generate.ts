@@ -35,7 +35,7 @@ export function generate(values: ProjectSystemEstimateParameter,
       doc.setData(data);
       doc.render(data);
 
-      values.file = fileToView(blobToFile(getBlob(doc), '계약서.docx'));
+      values.file = fileToView(blobToFile(getBlob(doc), `견적서-${data.projectName}-${data.estimateNumber}.docx`));
       callback && callback(values);
     }
   );

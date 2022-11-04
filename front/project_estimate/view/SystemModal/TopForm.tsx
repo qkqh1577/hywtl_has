@@ -91,7 +91,9 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
           </Button>
         )}
         {isDetail && (
-          <Button>PDF 다운로드</Button>
+          <Button onClick={() => {
+            window.open(`/file-item?projectEstimateId=${isDetail}`, '_blank')
+          }}>PDF 다운로드</Button>
         )}
         {isDetail && (
           <Button shape="basic4">계약서 등록</Button>
