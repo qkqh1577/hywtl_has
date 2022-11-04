@@ -4,6 +4,8 @@ import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectSystemEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectSystemEstimateView;
+import java.util.Enumeration;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +45,14 @@ public class ProjectSystemEstimateController {
     public void add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @ModelAttribute ProjectSystemEstimateParameter parameter
+        @Valid @ModelAttribute ProjectSystemEstimateParameter parameter,
+        HttpServletRequest request
     ) {
+        Enumeration<String> paramKeys = request.getParameterNames();
+        while (paramKeys.hasMoreElements()) {
+            String key = paramKeys.nextElement();
+            System.out.println("check : " + key+":"+request.getParameter(key));
+        }
         service.add(
             projectId,
             UsernameExtractor.get(authentication),
