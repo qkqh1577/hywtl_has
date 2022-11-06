@@ -6,15 +6,13 @@ export interface ProjectDbState {
     list: ProjectDbVO[],
     schema: ProjectDbSchemaVO[],
     filter: ProjectDbFilter,
-    preset: ProjectDbPreset[]
+    preset: ProjectDbPreset[],
+    activePreset?: ProjectDbPreset,
 }
 
 export interface ProjectDbFilter {
-    [entity: string]: {
-        checked: boolean,
-        attributes: {
-            [attr: string]: boolean
-        }
+    [entity: string]:  {
+        [attr: string]: boolean
     }
 }
 
@@ -41,5 +39,30 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setPresetList]: (state, action) => ({
         ...state,
         preset: action.payload
-    })
+    }),
+    [ProjectDbAction.setActivePreset]: (state, action) => ({
+        ...state,
+        activePreset: action.payload
+    }),
+    [ProjectDbAction.openDefaultPreset]: (state, action) => {
+
+        const initialFilterState : ProjectDbFilter = {};
+        const entities: string[] = Object.keys(state.schema);
+        entities.map((entityName, index) => {
+            const entityInfo = state.schema[entityName];
+            const attributes = Object.keys(entityInfo.attributes);
+            const initialAttrState = {};
+            attributes.map((attributeName, attributeIndex) => {
+                const attributeInfo = entityInfo.attributes[attributeName];
+                initialAttrState[attributeName] = entityName === 'project';
+            });
+            initialFilterState[entityInfo.type] = initialAttrState;
+        });
+
+        return {
+            ...state,
+            filter: initialFilterState,
+            activePreset: undefined
+        }
+    }
 });

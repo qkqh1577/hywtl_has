@@ -35,6 +35,8 @@ function* watchAddPreset() {
         yield call(projectDbApi.savePreset, preset);
         const list: ProjectDbPreset[] = yield call(projectDbApi.getPresetList);
         yield put(projectDbAction.setPresetList(list));
+        const lastPreset = list[list.length-1];
+        yield put(projectDbAction.setActivePreset(lastPreset));
     }
 }
 

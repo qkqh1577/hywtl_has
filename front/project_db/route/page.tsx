@@ -22,24 +22,7 @@ function Element() {
     }, [dispatch]);
 
     useEffect(() => {
-        //TODO: LOAD INITIAL FILTER STATE
-        const initialFilterState = {};
-        const entities: string[] = Object.keys(schema);
-        entities.map((entityName, index) => {
-            const entityInfo = schema[entityName];
-            const attributes = Object.keys(entityInfo.attributes);
-            const initialAttrState = {};
-            attributes.map((attributeName, attributeIndex) => {
-                const attributeInfo = entityInfo.attributes[attributeName];
-                initialAttrState[attributeName] = entityName === 'project';
-            });
-
-            initialFilterState[entityInfo.type] = {
-                checked: entityName === 'project',
-                attributes: initialAttrState
-            };
-        });
-        setFilter(initialFilterState);
+        dispatch(projectDbAction.openDefaultPreset());
     }, [schema]);
 
     return (
