@@ -13,7 +13,10 @@ export enum ProjectDbAction {
     setPresetList = 'project/db/preset/set',
     addPreset = 'project/db/preset/add',
     removePreset = 'project/db/preset/remove',
-    changePreset = 'project/db/preset/change'
+    changePreset = 'project/db/preset/change',
+
+    setActivePreset = 'project/db/preset/active',
+    openDefaultPreset = 'project/db/preset/default'
 }
 
 export const projectDbAction = {
@@ -28,4 +31,7 @@ export const projectDbAction = {
     addPreset: createAction(ProjectDbAction.addPreset)<ProjectDbPreset>(),
     removePreset: createAction(ProjectDbAction.removePreset)<number>(),
     changePreset: createAction(ProjectDbAction.changePreset)<number, ProjectDbFilter>(),
+
+    setActivePreset: createAction(ProjectDbAction.setActivePreset)<ProjectDbPreset | undefined>(),
+    openDefaultPreset: createAction(ProjectDbAction.openDefaultPreset)()
 };

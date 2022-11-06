@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -19,10 +19,14 @@ interface Props {
 
 export default function PresetModal(props: Props) {
     const {state, handleClose} = props;
-    const {filter} = useSelector((root: RootState) => root.projectDb);
+    const {filter, activePreset} = useSelector((root: RootState) => root.projectDb);
     const [presetName, setPresetName] = useState('');
     const [helperText, setHelperText] = useState('');
     const dispatch = useDispatch();
+
+    const setActivePreset = useCallback(
+        (presetItem: ProjectDbPreset | undefined) => dispatch(projectDbAction.setActivePreset(presetItem))
+        ,[]);
 
     const onSaveButtonClick = () => {
         if (presetName === '') {

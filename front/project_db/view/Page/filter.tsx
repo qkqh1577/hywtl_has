@@ -26,7 +26,6 @@ interface Props {
 export default function Filter(props: Props) {
 
     const {schema} = props;
-    const entities: string[] = Object.keys(schema);
     const dispatch = useDispatch();
     const {filter} = useSelector((root: RootState) => root.projectDb);
 
@@ -38,18 +37,9 @@ export default function Filter(props: Props) {
         const checked = event.target.checked;
         const newFilterState = {...filter};
 
-        if (!newFilterState[entityType]) {
-            newFilterState[entityType] = {
-                checked: checked,
-                attributes: {}
-            }
-        } else {
-            newFilterState[entityType].checked = checked;
-        }
-
-        const attributes = Object.keys(newFilterState[entityType].attributes);
-        attributes.forEach((attrName) => {
-            newFilterState[entityType].attributes[attrName] = checked;
+        if (!newFilterState[entityType]) newFilterState[entityType] = {};
+        Object.keys(newFilterState[entityType]).forEach((attrName) => {
+            newFilterState[entityType][attrName] = checked;
         });
         setFilter(newFilterState);
     };
@@ -57,19 +47,29 @@ export default function Filter(props: Props) {
     const onAttributeItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string, attributeName: string) => {
         const checked = event.target.checked;
         const newFilterState = {...filter};
-        newFilterState[entityType].attributes[attributeName] = checked;
+        newFilterState[entityType][attributeName] = checked;
         setFilter(newFilterState);
     };
+
 
     return (
         <Box sx={{width: '100%', height: '100%', overflowY: 'scroll'}}>
 
-            {entities.reverse().map((entityName, index) => {
+            {Object.keys(schema).reverse().map((entityName, index) => {
                 const entityInfo = schema[entityName];
                 const entityType = entityInfo.type;
                 const attributes = Object.keys(entityInfo.attributes);
                 const baseKey = (index + 1) * 1000;
-                const entityItemChecked = entityType in filter && filter[entityType].checked;
+                let entityItemChecked = false;
+
+                if (entityType in filter) {
+                    Object.keys(filter[entityType]).forEach(attrName => {
+                        if (filter[entityType][attrName]) {
+                            entityItemChecked = true;
+                            return false;
+                        }
+                    });
+                }
 
                 return (
                     <Accordion key={baseKey}>
@@ -97,8 +97,7 @@ export default function Filter(props: Props) {
                             <List>
                                 {attributes.map((attributeName, attributeIndex) => {
                                     const attributeInfo = entityInfo.attributes[attributeName];
-                                    const attrItemChecked = entityItemChecked &&
-                                        filter[entityType].attributes[attributeName];
+                                    const attrItemChecked = entityType in filter && filter[entityType][attributeName];
 
                                     return (
                                         <ListItemButton

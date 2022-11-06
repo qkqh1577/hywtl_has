@@ -42,7 +42,7 @@ export default function List(props: Props) {
 
     const isVisibleAttr = (prefix: string, attrName: string) => {
         const entityType = `${prefix}View`;
-        return filter && filter[entityType] && filter[entityType].attributes[attrName];
+        return filter && filter[entityType] && filter[entityType][attrName];
     };
 
     const getHumanReadableAttrName = (prefix: string, attrName: string) => {
