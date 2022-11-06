@@ -46,6 +46,8 @@ export const projectDbReducer = createReducer(initialState, {
     }),
     [ProjectDbAction.openDefaultPreset]: (state, action) => {
 
+        const defaultEntityName = 'ProjectView';
+
         const initialFilterState : ProjectDbFilter = {};
         const entities: string[] = Object.keys(state.schema);
         entities.map((entityName, index) => {
@@ -54,7 +56,7 @@ export const projectDbReducer = createReducer(initialState, {
             const initialAttrState = {};
             attributes.map((attributeName, attributeIndex) => {
                 const attributeInfo = entityInfo.attributes[attributeName];
-                initialAttrState[attributeName] = entityName === 'project';
+                initialAttrState[attributeName] = entityName === defaultEntityName;
             });
             initialFilterState[entityInfo.type] = initialAttrState;
         });

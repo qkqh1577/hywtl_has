@@ -27,10 +27,9 @@ const StyledTab = withStyles({
 
 export default function TabHolder() {
 
-    const {preset: presetList, schema, activePreset} = useSelector((root: RootState) => root.projectDb);
+    const {preset: presetList, activePreset} = useSelector((root: RootState) => root.projectDb);
     const dispatch = useDispatch();
     const [removalModalState, setRemovalModalState] = useState(false);
-    //const [activeTab, setActiveTab] = useState(0);
 
     const setActivePreset = useCallback(
         (presetItem: ProjectDbPreset | undefined) => dispatch(projectDbAction.setActivePreset(presetItem))

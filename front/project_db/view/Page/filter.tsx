@@ -51,7 +51,6 @@ export default function Filter(props: Props) {
         setFilter(newFilterState);
     };
 
-
     return (
         <Box sx={{width: '100%', height: '100%', overflowY: 'scroll'}}>
 
