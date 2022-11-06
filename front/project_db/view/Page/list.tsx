@@ -40,25 +40,16 @@ export default function List(props: Props) {
     const [columns, setColumns] = useState<Column[]>([]);
     const [rows, setRows] = useState<Row[]>([]);
 
-    const isVisibleAttr = (prefix: string, attrName: string) => {
-        const entityType = `${prefix}View`;
+    const isVisibleAttr = (entityType: string, attrName: string) => {
         return filter && filter[entityType] && filter[entityType][attrName];
     };
 
-    const getHumanReadableAttrName = (prefix: string, attrName: string) => {
+    const getHumanReadableAttrName = (entityName:string, attrName: string) => {
         try {
-            const entityMap = {
-                'Project': 'project',
-                'ProjectBid': 'bid',
-                'ProjectEstimate': 'estimate',
-                'ProjectComplexSite': 'complex-site',
-                'ProjectMemo': 'memo'
-            };
-            const entityName = entityMap[prefix];
             return schema[entityName].attributes[attrName].description;
         } catch (e) {
             console.debug(e);
-            console.warn(`Cannot find human readable attribute name for [${prefix}.${attrName}]`);
+            console.warn(`Cannot find human readable attribute name for [${entityName}_${attrName}]`);
             return attrName;
         }
     }
@@ -81,14 +72,14 @@ export default function List(props: Props) {
     const prepareGridData = () => {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
+
         list && list.forEach((entities, index) => {
-            const {project, projectBid, projectComplexSite, projectEstimate, projectMemo} = entities;
             const row: Row = {id: index};
-            assignGridValues('Project', project, newColumns, row);
-            projectBid && assignGridValues('ProjectBid', projectBid, newColumns, row);
-            projectComplexSite && assignGridValues('ProjectComplexSite', projectComplexSite, newColumns, row);
-            projectEstimate && assignGridValues('ProjectEstimate', projectEstimate, newColumns, row);
-            projectMemo && assignGridValues('ProjectMemo', projectMemo, newColumns, row);
+            Object.keys(entities).forEach((entityName) => {
+                const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
+                console.debug(entityName, entityNameReal);
+                entities[entityName] && assignGridValues(entityNameReal, entities[entityName], newColumns, row);
+            });
             newRows.push(row);
         });
 

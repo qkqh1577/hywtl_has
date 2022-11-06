@@ -1,6 +1,6 @@
 project-db:
   entities:
-    project:
+    ProjectView:
       type: ProjectView
       description: 기본정보
       attributes:
@@ -52,7 +52,7 @@ project-db:
         modifiedAt:
           type: LocalDateTime
           description: 최종수정
-    estimate:
+    ProjectEstimateView:
       type: ProjectEstimateView
       description: 견적정보
       attributes:
@@ -95,7 +95,7 @@ project-db:
         buildingList:
           type: List<ProjectEstimateComplexBuildingView>
           description: 동정보
-    complex-site:
+    ProjectComplexSiteView:
       type: ProjectComplexSiteView
       description: 동정보
       attributes:
@@ -117,7 +117,7 @@ project-db:
         modifiedAt:
           type: LocalDateTime
           description: 수정일시
-    memo:
+    ProjectMemoView:
       type: ProjectMemoView
       description: 메모
       attributes:
@@ -142,7 +142,7 @@ project-db:
         attendanceList:
           type: List<Long>
           description: 알림대상자ID
-    bid:
+    ProjectBidView:
       type: ProjectBidView
       description: 입찰정보
       attributes:
