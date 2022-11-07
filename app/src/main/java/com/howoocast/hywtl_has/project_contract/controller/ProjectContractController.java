@@ -7,10 +7,8 @@ import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractParamet
 import com.howoocast.hywtl_has.project_contract.service.ProjectContractService;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractShortView;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractView;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,14 +68,8 @@ public class ProjectContractController {
     public void add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @ModelAttribute ProjectContractParameter parameter,
-        HttpServletRequest request
+        @Valid @ModelAttribute ProjectContractParameter parameter
     ) {
-        Enumeration<String> paramKeys = request.getParameterNames();
-        while (paramKeys.hasMoreElements()) {
-            String key = paramKeys.nextElement();
-            System.out.println("check : " + key + ":" + request.getParameter(key));
-        }
         service.add(
             projectId,
             UsernameExtractor.get(authentication),
