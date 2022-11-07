@@ -121,6 +121,7 @@ public class ProjectContractService {
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
+        convert(parameter.getFile(), instance);
     }
 
     @Transactional

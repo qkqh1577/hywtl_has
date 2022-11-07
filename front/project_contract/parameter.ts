@@ -45,11 +45,15 @@ export const initialProjectContractCollectionParameter = {
 
 export interface ProjectContractConditionParameter {
   title: string;
-  descriptionList: string[];
+  descriptionList: ProjectContractConditionDescriptionToMap[];
+}
+
+export interface ProjectContractConditionDescriptionToMap{
+  description: string;
 }
 
 export const initialProjectContractConditionParameter = {
-  descriptionList: ['']
+  descriptionList: [{}]
 } as ProjectContractConditionParameter;
 
 export interface ProjectContractParameter {

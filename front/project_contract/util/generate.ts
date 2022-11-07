@@ -7,6 +7,7 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import {
   ProjectContractCollectionStageParameter,
+  ProjectContractConditionDescriptionToMap,
   ProjectContractConditionParameter,
   ProjectContractParameter
 } from 'project_contract/parameter';
@@ -35,7 +36,9 @@ export function generate(values: ProjectContractParameter,
 
 const setData = async (values: ProjectContractParameter
 ) => {
-  console.log("values : ", values);
+  console.log('values : ', values);
+  values.conditionList = getMappedConditions(values.conditionList);
+  console.log(values.conditionList);
   return {
     serviceName:           values.basic.serviceName,
     serviceDuration:       values.basic.serviceDuration,
@@ -54,13 +57,13 @@ const setData = async (values: ProjectContractParameter
     ordererAddress:        values.basic.ordererAddress ?? '',
     ordererCompanyName:    values.basic.ordererCompanyName ?? '',
     ordererCeoName:        values.basic.ordererCeoName ?? '',
-    conditions:            getConditions(values.conditionList),
+    conditionList:         values.conditionList,
   };
 };
 
 function getCollections(stageList: ProjectContractCollectionStageParameter[]) {
   return stageList.map((stage,
-                                   index
+                        index
   ) => {
     return {
       name:   stage.name,
@@ -75,15 +78,32 @@ function getConditions(conditionList: ProjectContractConditionParameter[]) {
   return conditionList.map((condition) => {
     return {
       title:        condition.title,
-      descriptions: getDescriptions(condition.descriptionList)
+      descriptions: getDescriptions(condition.descriptionList as unknown as string[]),
     };
   });
 }
 
-function getDescriptions(descriptions) {
+function getDescriptions(descriptions: string []): ProjectContractConditionDescriptionToMap[] {
   return descriptions.map((description) => {
     return {
-      description,
+      description: description,
+    };
+  });
+}
+
+function getMappedConditions(conditionList: ProjectContractConditionParameter[]): ProjectContractConditionParameter[] {
+  return conditionList.map((condition) => {
+    return {
+      title:           condition.title,
+      descriptionList: getMappedDescriptionList(condition.descriptionList as unknown as string[]),
+    };
+  });
+}
+
+function getMappedDescriptionList(descriptionList: string[]): ProjectContractConditionDescriptionToMap[] {
+  return descriptionList.map((description) => {
+    return {
+      description: description,
     };
   });
 }

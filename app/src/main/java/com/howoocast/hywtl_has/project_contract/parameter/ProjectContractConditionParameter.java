@@ -15,5 +15,11 @@ public class ProjectContractConditionParameter {
     private String title;
 
     @NotEmpty(message = ProjectContractCondition.KEY + ".title.not_empty")
-    private List<String> descriptionList;
+    private List<Description> descriptionList;
+
+    @Getter
+    @Setter
+    public static class Description {
+        private String description;
+    }
 }

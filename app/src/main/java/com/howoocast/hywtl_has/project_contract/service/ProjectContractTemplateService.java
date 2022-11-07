@@ -18,6 +18,7 @@ import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollectionStage;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCondition;
+import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractConditionParameter.Description;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
@@ -152,13 +153,15 @@ public class ProjectContractTemplateService {
         );
         return templateList.stream().map(template -> {
 
-                List<String> descriptionList = new ArrayList<>();
+                List<Description> descriptionList = new ArrayList<>();
                 for (String raw : template.getDescriptionList()) {
                     String description = raw;
+                    Description descriptionType = new Description();
                     for (ContractConditionVariable variable : variableList) {
-                        description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
+                        descriptionType.setDescription(
+                            description.replace(String.format("{%s}", variable.getName()), variable.getValue()));
                     }
-                    descriptionList.add(description);
+                    descriptionList.add(descriptionType);
                 }
 
                 return ProjectContractCondition.of(
