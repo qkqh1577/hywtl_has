@@ -1,9 +1,12 @@
 package com.howoocast.hywtl_has.project_db.repository;
 
+import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
 import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -47,6 +50,12 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
             query = query.leftJoin(projectBid).on(project.id.eq(projectBid.project.id));
         if (parameter.getProjectMemo())
             query = query.leftJoin(projectMemo).on(project.id.eq(projectMemo.project.id));
+
+        BooleanBuilder builder = new BooleanBuilder();
+        PathBuilder<Project> path = new PathBuilder<>(Project.class, "project");
+        //builder.and(path.getString("basic.code").eq("22001"));
+
+        query.where(builder);
 
         return query.distinct().fetch().stream().map(tuple -> {
             return new ProjectDbView(
