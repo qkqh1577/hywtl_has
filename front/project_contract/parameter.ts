@@ -51,12 +51,12 @@ export interface ProjectContractConditionParameter {
   descriptionList: ProjectContractConditionDescriptionToMap[];
 }
 
-export interface ProjectContractConditionDescriptionToMap{
+export interface ProjectContractConditionDescriptionToMap {
   description: string;
 }
 
 export const initialProjectContractConditionParameter = {
-  descriptionList: [{}]
+  descriptionList: [{ description: '' }]
 } as ProjectContractConditionParameter;
 
 export interface ProjectContractParameter {

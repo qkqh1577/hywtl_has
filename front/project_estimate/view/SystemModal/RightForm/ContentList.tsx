@@ -76,7 +76,7 @@ export default function () {
                 <Input
                   key={content}
                   readOnly={!edit}
-                  defaultValue={content ?? ''}
+                  defaultValue={typeof content === 'object' ? content.content : content}
                   variant="outlined"
                   onBlur={(e) => {
                     const value = e.target.value || undefined;

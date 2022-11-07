@@ -158,8 +158,8 @@ public class ProjectContractTemplateService {
                     String description = raw;
                     Description descriptionType = new Description();
                     for (ContractConditionVariable variable : variableList) {
-                        descriptionType.setDescription(
-                            description.replace(String.format("{%s}", variable.getName()), variable.getValue()));
+                        description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
+                        descriptionType.setDescription(description);
                     }
                     descriptionList.add(descriptionType);
                 }

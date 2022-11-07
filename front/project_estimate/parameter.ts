@@ -67,7 +67,7 @@ export const initialProjectSystemEstimateParameter = {
   siteList:     [{}],
   buildingList: [{}],
   templateList: [],
-  contentList:  [{}],
+  contentList:  [{content: ''}],
   edit:         true,
   file:         {},
 } as unknown as ProjectSystemEstimateParameter;
