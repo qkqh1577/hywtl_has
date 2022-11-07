@@ -1,4 +1,5 @@
 import {
+  ProjectEstimateContentListToMap,
   ProjectEstimateTemplateParameter,
   ProjectSystemEstimateParameter
 } from 'project_estimate/parameter';
@@ -17,8 +18,8 @@ import { documentDataApi } from 'project_estimate/util/api';
 import { fileToView } from 'file-item';
 
 export function generate(values: ProjectSystemEstimateParameter,
-                               project: ProjectVO,
-                               callback: (values: ProjectSystemEstimateParameter) => void
+                         project: ProjectVO,
+                         callback: (values: ProjectSystemEstimateParameter) => void
 ) {
   loadFile(
     'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
@@ -47,6 +48,7 @@ const setData = async (values: ProjectSystemEstimateParameter,
   const estimateNumber = getEstimateNumber(project.code!, await documentDataApi.getSequenceNumber(project.id));
   const manager1 = await personnelApi.getOne(values.plan.manager1Id) ?? undefined;
   const manager2 = await personnelApi.getOne(values.plan.manager2Id) ?? undefined;
+  values.contentList = mapToContentList(values.contentList as unknown as string[]);
   return {
     recipient:           values.recipient!,
     projectName:         project.name,
@@ -66,7 +68,7 @@ const setData = async (values: ProjectSystemEstimateParameter,
     discountAmount:      values.plan.discountAmount ? values.plan.discountAmount.toLocaleString() : 0,
     testAmount:          values.plan.testAmount.toLocaleString(),
     serviceList:         getServiceList(values.templateList),
-    contentList:         getContentList(values.contentList),
+    contentList:         values.contentList,
   };
 };
 
@@ -75,14 +77,6 @@ const getEstimateNumber = (code: string,
 ) => {
   return 'Q' + code + sequenceNumber.toString()
                                     .padStart(2, '0');
-};
-
-const getContentList = (list: string[]) => {
-  return list.map((content) => {
-    return {
-      content: content,
-    };
-  });
 };
 
 const getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
@@ -112,4 +106,12 @@ const getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
 
 const getJobClass = (jobList) => {
   return jobList.filter(job => job.isRepresentative)[0].jobClass;
+};
+
+const mapToContentList = (contentList: string[]): ProjectEstimateContentListToMap[] => {
+  return contentList.map(content => {
+    return {
+      content: content,
+    };
+  });
 };

@@ -58,7 +58,7 @@ export interface ProjectSystemEstimateParameter
   siteList: ProjectEstimateComplexSiteParameter[];
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
-  contentList: ProjectContentList[];
+  contentList: ProjectEstimateContentListToMap[];
 }
 
 export const initialProjectSystemEstimateParameter = {
@@ -67,7 +67,7 @@ export const initialProjectSystemEstimateParameter = {
   siteList:     [{}],
   buildingList: [{}],
   templateList: [],
-  contentList:  [],
+  contentList:  [{}],
   edit:         true,
   file:         {},
 } as unknown as ProjectSystemEstimateParameter;
@@ -127,6 +127,9 @@ export interface ProjectEstimateTemplateDetailParameter {
   note?: string;
 }
 
-interface ProjectContentList {
+export interface ProjectEstimateContentListToMap {
   content: string;
+}
+export interface MappedProjectEstimateContentList {
+  contentList: ProjectEstimateContentListToMap[]
 }
