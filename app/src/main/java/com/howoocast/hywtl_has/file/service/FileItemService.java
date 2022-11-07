@@ -11,12 +11,7 @@ import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversion
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,14 +19,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @Slf4j
 @Setter
@@ -168,36 +160,5 @@ public class FileItemService {
             wordFileItem.getFilename().replace(".docx", ".pdf"),
             history
         ));
-    }
-
-    //TODO: 삭제 여부 확인.
-    /* 계약서에서 사용될 수 있어서 남긴 로직 */
-    private File convertToFile(MultipartFile file) throws IOException {
-        File word = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        word.createNewFile();
-        FileOutputStream fos = new FileOutputStream(word);
-        fos.write(file.getBytes());
-        fos.close();
-        return word;
-    }
-
-    @Nullable
-    private MultipartFile convertToMultipartFile(@Nullable File pdf) throws IOException {
-        if (Objects.isNull(pdf)) {
-            return null;
-        }
-        DiskFileItem pdfFileItem = new DiskFileItem(
-            "file",
-            Files.probeContentType(pdf.toPath()),
-            false,
-            pdf.getName(),
-            (int) pdf.length(),
-            pdf.getParentFile()
-        );
-        InputStream input = new FileInputStream(pdf);
-        OutputStream os = pdfFileItem.getOutputStream();
-        IOUtils.copy(input, os);
-
-        return new CommonsMultipartFile(pdfFileItem);
     }
 }

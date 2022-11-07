@@ -79,15 +79,4 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-//    /* conversion */
-//    @PostMapping("/file-item/conversion")
-//    public void convertToPDF(@ModelAttribute MultipartFile multipartFile) {
-//        try {
-//            fileItemService.convertToPDF(multipartFile);
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }
