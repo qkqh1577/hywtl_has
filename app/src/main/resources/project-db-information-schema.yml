@@ -7,51 +7,77 @@ project-db:
         id:
           type: Long
           description: 아이디
+          search: false
         code:
           type: String
           description: 코드
+          search: true
+          prefix: basic
         name:
           type: String
           description: 프로젝트명
+          search: true
+          prefix: basic
         alias:
           type: String
           description: 별칭
+          search: true
+          prefix: basic
         bidType:
           type: ProjectBasicBidType
           description: 입찰유형
+          search: true
+          prefix: basic
+          option: ["DEFAULT","G2B","COMPANY"]
+          optionLabel: ["일반","나라장터 입찰","기업 입찰"]
         receptionManager:
           type: UserShortView
           description: 접수담당
+          search: false
         salesManager:
           type: UserShortView
           description: 영업담당
+          search: false
         projectManager:
           type: UserShortView
           description: PM
+          search: false
         expectedMonth:
           type: LocalDate
           description: 예상월
+          search: false
         requestedMonth:
           type: LocalDate
           description: 요청월
+          search: false
         isLh:
           type: Boolean
           description: LH여부
+          search: true
         progressStatus:
           type: ProjectProgressStatus
           description: 진행상태
+          search: false
+          prefix: status
         estimateExpectation:
           type: ProjectEstimateExpectation
           description: 예상확도
+          search: false
+          prefix: status
         estimateStatus:
           type: ProjectEstimateStatus
           description: 견적상태
+          search: false
+          prefix: status
         contractStatus:
           type: ProjectContractStatus
           description: 계약상태
+          search: false
+          prefix: status
         modifiedAt:
           type: LocalDateTime
           description: 최종수정
+          search: false
     ProjectEstimateView:
       type: ProjectEstimateView
       description: 견적정보
@@ -102,21 +128,27 @@ project-db:
         id:
           type: Long
           description: 아이디
+          search: false
         name:
           type: String
           description: 이름
+          search: true
         withEnvironmentTest:
           type: Boolean
-          description: 환경실험여부
+          description: 환경실험여부,
+          search: true
         estimateFigureDifficulty:
           type: String
           description: 난이도
+          search: false
         manager:
           type: UserShortView
           description: 담당자
+          search: false
         modifiedAt:
           type: LocalDateTime
           description: 수정일시
+          search: false
     ProjectMemoView:
       type: ProjectMemoView
       description: 메모

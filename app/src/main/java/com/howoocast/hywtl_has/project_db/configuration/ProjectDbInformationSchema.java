@@ -18,7 +18,7 @@ public class ProjectDbInformationSchema {
     public static class InformationSchema {
         private String type;
         private String description;
-        private Map<String /* attr. name */, Map<String, String>> attributes;
+        private Map<String /* attr. name */, Map<String, Object>> attributes;
     }
 
 }

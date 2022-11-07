@@ -16,7 +16,8 @@ export enum ProjectDbAction {
     changePreset = 'project/db/preset/change',
 
     setActivePreset = 'project/db/preset/active',
-    openDefaultPreset = 'project/db/preset/default'
+    openDefaultPreset = 'project/db/preset/default',
+    setDynamicSelectState = 'project/db/dynamic/select/set'
 }
 
 export const projectDbAction = {
@@ -33,5 +34,6 @@ export const projectDbAction = {
     changePreset: createAction(ProjectDbAction.changePreset)<number, ProjectDbFilter>(),
 
     setActivePreset: createAction(ProjectDbAction.setActivePreset)<ProjectDbPreset | undefined>(),
-    openDefaultPreset: createAction(ProjectDbAction.openDefaultPreset)()
+    openDefaultPreset: createAction(ProjectDbAction.openDefaultPreset)(),
+    setDynamicSelectState: createAction(ProjectDbAction.setDynamicSelectState)<object>()
 };

@@ -8,6 +8,7 @@ export interface ProjectDbState {
     filter: ProjectDbFilter,
     preset: ProjectDbPreset[],
     activePreset?: ProjectDbPreset,
+    dynamicSelectState?:{}
 }
 
 export interface ProjectDbFilter {
@@ -20,7 +21,8 @@ const initialState: ProjectDbState = {
     list: [],
     schema: [],
     filter: {},
-    preset: []
+    preset: [],
+    dynamicSelectState:{}
 };
 
 export const projectDbReducer = createReducer(initialState, {
@@ -66,5 +68,10 @@ export const projectDbReducer = createReducer(initialState, {
             filter: initialFilterState,
             activePreset: undefined
         }
-    }
+    },
+    [ProjectDbAction.setDynamicSelectState]: (state, action) =>({
+        ...state,
+        dynamicSelectState: action.payload
+    })
+
 });
