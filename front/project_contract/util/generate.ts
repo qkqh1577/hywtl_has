@@ -69,7 +69,7 @@ function getCollections(stageList: ProjectContractCollectionStageParameter[]) {
     return {
       name:   stage.name,
       rate:   stage.rate,
-      amount: 0,
+      amount: stage.amount.toLocaleString() ?? 0,
       note:   stage.note,
     };
   });
