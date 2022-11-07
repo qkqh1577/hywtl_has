@@ -114,14 +114,14 @@ public class FileItemService {
     }
 
     public FileItem getByProjectEstimateId(Long projectEstimateId) {
-        FileConversionHistory history = fileConversionHistoryRepository.findByProjectEstimateId(
+        FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectEstimateIdOrderByCreatedAtDesc(
             projectEstimateId);
 
         return getFileItem(history, "pdf");
     }
 
     public FileItem getByProjectContractId(Long projectContractId, String type) {
-        FileConversionHistory history = fileConversionHistoryRepository.findByProjectContractId(
+        FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectContractIdOrderByCreatedAtDesc(
             projectContractId);
 
         return getFileItem(history, type);

@@ -5,7 +5,7 @@ import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHist
 
 public interface FileConversionHistoryRepository extends CustomRepository<FileConversionHistory> {
 
-    FileConversionHistory findByProjectEstimateId(Long projectEstimateId);
+    FileConversionHistory findTopByProjectEstimateIdOrderByCreatedAtDesc(Long projectEstimateId);
 
-    FileConversionHistory findByProjectContractId(Long projectContractId);
+    FileConversionHistory findTopByProjectContractIdOrderByCreatedAtDesc(Long projectContractId);
 }
