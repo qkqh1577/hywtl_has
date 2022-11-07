@@ -17,7 +17,7 @@ import { toAmountKor } from 'util/NumberUtil';
 export function generate(values: ProjectContractParameter,
                          callback: (values: ProjectContractParameter) => void
 ) {
-  loadFile('http://localhost:8080/file-item/template?fileName=contract_template.docx',
+  loadFile(`${location.origin}/file-item/template?fileName=contract_template.docx`,
     async function (error,
                     content
     ) {

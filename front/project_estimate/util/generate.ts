@@ -23,7 +23,7 @@ export function generate(values: ProjectSystemEstimateParameter,
                          callback: (values: ProjectSystemEstimateParameter) => void
 ) {
   loadFile(
-    'http://localhost:8080/file-item/template?fileName=estimate_template.docx',
+    `${location.origin}/file-item/template?fileName=estimate_template.docx`,
     async function (error,
                     content
     ) {
