@@ -314,7 +314,7 @@ export default function () {
                     borderBottom: k === detail.titleList.length - 1 ? 'auto' : 'none',
                     borderRight:  'none !important',
                   }}>
-                    {title}
+                    {typeof title === "object" ? title?.title : title}
                   </Td>
                   {k === 0 && (
                     <Td rowSpan={detail.titleList.length}>

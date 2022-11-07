@@ -118,7 +118,7 @@ export interface ProjectEstimateTemplateParameter {
 }
 
 export interface ProjectEstimateTemplateDetailParameter {
-  titleList: string[];
+  titleList: ProjectEstimateTemplateDetailTitleListToMap[];
   unit: TestUnit;
   testCount: number;
   unitAmount: number;
@@ -130,6 +130,6 @@ export interface ProjectEstimateTemplateDetailParameter {
 export interface ProjectEstimateContentListToMap {
   content: string;
 }
-export interface MappedProjectEstimateContentList {
-  contentList: ProjectEstimateContentListToMap[]
+export interface ProjectEstimateTemplateDetailTitleListToMap {
+  title: string;
 }

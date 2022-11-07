@@ -1,5 +1,6 @@
 import {
   ProjectEstimateContentListToMap,
+  ProjectEstimateTemplateDetailTitleListToMap,
   ProjectEstimateTemplateParameter,
   ProjectSystemEstimateParameter
 } from 'project_estimate/parameter';
@@ -49,6 +50,7 @@ const setData = async (values: ProjectSystemEstimateParameter,
   const manager1 = await personnelApi.getOne(values.plan.manager1Id) ?? undefined;
   const manager2 = await personnelApi.getOne(values.plan.manager2Id) ?? undefined;
   values.contentList = mapToContentList(values.contentList as unknown as string[]);
+  values.templateList = getMappedServiceList(values.templateList);
   return {
     recipient:           values.recipient!,
     projectName:         project.name,
@@ -79,6 +81,35 @@ const getEstimateNumber = (code: string,
                                     .padStart(2, '0');
 };
 
+
+const getMappedServiceList = (list: ProjectEstimateTemplateParameter[]) => {
+  return list.map((service) => {
+    return {
+      title:      service.title,
+      testType:   service.testType,
+      detailList: service.detailList.map((detail) => {
+        return {
+          unit:        detail.unit,
+          testCount:   detail.testCount,
+          unitAmount:  detail.unitAmount,
+          totalAmount: detail.totalAmount,
+          note:        detail.note,
+          titleList:   getMappedTitleList(detail.titleList as unknown as string[]),
+          inUse:       detail.inUse,
+        };
+      })
+    };
+  });
+};
+
+const getMappedTitleList = (list: string[]): ProjectEstimateTemplateDetailTitleListToMap[] => {
+  return list.map((title) => {
+    return {
+      title: title,
+    };
+  });
+};
+
 const getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
   return list.map((service,
                    index
@@ -95,7 +126,7 @@ const getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
           note:        detail.note,
           titleList:   detail.titleList.map((title) => {
             return {
-              title: title,
+              title: title.title,
             };
           })
         };
