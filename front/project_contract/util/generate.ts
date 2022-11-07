@@ -12,6 +12,7 @@ import {
   ProjectContractParameter
 } from 'project_contract/parameter';
 import { fileToView } from 'file-item';
+import { toAmountKor } from 'util/NumberUtil';
 
 export function generate(values: ProjectContractParameter,
                          callback: (values: ProjectContractParameter) => void
@@ -36,28 +37,28 @@ export function generate(values: ProjectContractParameter,
 
 const setData = async (values: ProjectContractParameter
 ) => {
-  console.log('values : ', values);
   values.conditionList = getMappedConditions(values.conditionList);
-  console.log(values.conditionList);
   return {
-    serviceName:           values.basic.serviceName,
-    serviceDuration:       values.basic.serviceDuration,
-    serviceAmount:         '100,000,000',
-    stageNote:             values.collection.stageNote,
-    collections:           getCollections(values.collection.stageList),
-    stagePercent:          '100',
-    totalAmount:           values.collection.totalAmount,
-    totalAmountNote:       values.collection.totalAmountNote,
-    outcome:               values.basic.outcome,
-    description:           values.basic.description,
-    contractDate:          values.basic.contractDate,
-    contractorAddress:     values.basic.contractorAddress ?? '',
-    contractorCompanyName: values.basic.contractorCompanyName ?? '',
-    contractorCeoName:     values.basic.contractorCeoName ?? '',
-    ordererAddress:        values.basic.ordererAddress ?? '',
-    ordererCompanyName:    values.basic.ordererCompanyName ?? '',
-    ordererCeoName:        values.basic.ordererCeoName ?? '',
-    conditionList:         values.conditionList,
+    serviceName:                 values.basic.serviceName,
+    serviceDuration:             values.basic.serviceDuration,
+    expectedTestDeadLine:        values.estimate.plan ? values.estimate.plan.expectedTestDeadline : '',
+    expectedFinalReportDeadLine: values.estimate.plan ? values.estimate.plan.expectedFinalReportDeadline : '',
+    stageNote:                   values.collection.stageNote,
+    collections:                 getCollections(values.collection.stageList),
+    stagePercent:                getSumPercent(values.collection.stageList),
+    totalAmountKor:              toAmountKor(values.collection.totalAmount ?? 0),
+    totalAmount:                 values.collection.totalAmount.toLocaleString() ?? 0,
+    totalAmountNote:             values.collection.totalAmountNote,
+    outcome:                     values.basic.outcome,
+    description:                 values.basic.description,
+    contractDate:                values.basic.contractDate,
+    contractorAddress:           values.basic.contractorAddress ?? '',
+    contractorCompanyName:       values.basic.contractorCompanyName ?? '',
+    contractorCeoName:           values.basic.contractorCeoName ?? '',
+    ordererAddress:              values.basic.ordererAddress ?? '',
+    ordererCompanyName:          values.basic.ordererCompanyName ?? '',
+    ordererCeoName:              values.basic.ordererCeoName ?? '',
+    conditionList:               values.conditionList,
   };
 };
 
@@ -70,23 +71,6 @@ function getCollections(stageList: ProjectContractCollectionStageParameter[]) {
       rate:   stage.rate,
       amount: 0,
       note:   stage.note,
-    };
-  });
-}
-
-function getConditions(conditionList: ProjectContractConditionParameter[]) {
-  return conditionList.map((condition) => {
-    return {
-      title:        condition.title,
-      descriptions: getDescriptions(condition.descriptionList as unknown as string[]),
-    };
-  });
-}
-
-function getDescriptions(descriptions: string []): ProjectContractConditionDescriptionToMap[] {
-  return descriptions.map((description) => {
-    return {
-      description: description,
     };
   });
 }
@@ -106,4 +90,11 @@ function getMappedDescriptionList(descriptionList: string[]): ProjectContractCon
       description: description,
     };
   });
+}
+
+function getSumPercent(stageList: ProjectContractCollectionStageParameter[]): number {
+  return stageList.map((stage) => stage.rate)
+                  .reduce((a,
+                           b
+                  ) => a + b, 0);
 }

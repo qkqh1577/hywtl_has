@@ -1,4 +1,7 @@
-import { ProjectEstimateId } from 'project_estimate/domain';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 import { ProjectContractId } from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
 
@@ -59,6 +62,7 @@ export const initialProjectContractConditionParameter = {
 export interface ProjectContractParameter {
   id?: ProjectContractId;
   estimateId: ProjectEstimateId;
+  estimate: ProjectEstimateVO;
   isSent: boolean;
   recipient: string;
   note?: string;
