@@ -28,7 +28,10 @@ import { estimateTemplateAction } from 'admin/estimate/template/action';
 import { initialEstimateTemplateQuery } from 'admin/estimate/template/query';
 import { estimateContentAction } from 'admin/estimate/content/action';
 import { initialEstimateContentQuery } from 'admin/estimate/content/query';
-import { generate } from 'project_estimate/util/generate';
+import {
+  FileUtil,
+  generateFile
+} from 'util/FileUtil';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
@@ -50,16 +53,27 @@ export default function ProjectSystemEstimateModalRoute() {
   const formik = useFormik<ProjectSystemEstimateParameter>({
     initialValues: initialProjectSystemEstimateParameter,
     onSubmit:      (values) => {
+
       if (systemModal) {
-        generate(values, project!, (values) => {
-          onChange(values);
-        });
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onChange(values as ProjectSystemEstimateParameter);
+          },
+          project!,
+          'estimate_template',
+          'estimate'));
         return;
       }
       if (systemModal === null) {
-        generate(values, project!, (values) => {
-          onAdd(values);
-        });
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onAdd(values as ProjectSystemEstimateParameter);
+          },
+          project!,
+          'estimate_template',
+          'estimate'));
         return;
       }
       error('시스템 견적서가 선택되지 않았습니다.');
