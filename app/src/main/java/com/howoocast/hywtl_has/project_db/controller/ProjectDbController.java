@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -23,7 +24,7 @@ public class ProjectDbController {
     private final ProjectDbPresetService projectDbPresetService;
 
     @GetMapping("/project/db")
-    public List<ProjectDbView> getList(ProjectDbParameter parameter) {
+    public List<ProjectDbView> getList(@ModelAttribute ProjectDbParameter parameter) {
         log.debug(parameter.toString());
         return projectDbService.list(parameter);
     }

@@ -1,6 +1,7 @@
 import {createAction} from "typesafe-actions";
 import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 import {ProjectDbFilter} from "./reducer";
+import {ProjectDbSearch} from "./view/Page/form";
 
 export enum ProjectDbAction {
     requestList = 'project/db/list/request',
@@ -21,7 +22,7 @@ export enum ProjectDbAction {
 }
 
 export const projectDbAction = {
-    requestList: createAction(ProjectDbAction.requestList)(),
+    requestList: createAction(ProjectDbAction.requestList)<ProjectDbSearch>(),
     setList: createAction(ProjectDbAction.setList)<ProjectDbVO[]>(),
     requestSchema: createAction(ProjectDbAction.requestSchema)(),
     setSchema: createAction(ProjectDbAction.setSchema)<ProjectDbSchemaVO[]>(),

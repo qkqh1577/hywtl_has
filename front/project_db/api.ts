@@ -2,6 +2,8 @@ import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 import apiClient from "../services/api";
 import {ProjectDbQuery} from "./query";
 import {ProjectDbFilter} from "./reducer";
+import {ProjectDbSearch} from "./view/Page/form";
+
 
 interface ProjectDbPresetRawVO {
     id: number,
@@ -11,13 +13,32 @@ interface ProjectDbPresetRawVO {
 
 class ProjectDbApi {
 
+    async getList(searchState: ProjectDbSearch): Promise<ProjectDbVO[]> {
 
-    async getList(): Promise<ProjectDbVO[]> {
+        console.debug(searchState);
+
+        const keys = {};
+        const values = {};
+
+        Object.keys(searchState.search).forEach(entityName => {
+            if(!keys[entityName]) keys[entityName] = [];
+            if(!values[entityName]) values[entityName] = [];
+
+            searchState.search[entityName].forEach(value => {
+                console.debug(value);
+                keys[entityName].push(value.key);
+                values[entityName].push(value.value);
+            });
+        });
+
         const query: ProjectDbQuery = {
             projectEstimate: true,
             projectBid: true,
             projectComplexSite: true,
-            projectMemo: false
+            projectMemo: false,
+            search: searchState.search,
+            keys: keys,
+            values: values
         };
         const {data} = await apiClient.get('/project/db', query);
         return data;
