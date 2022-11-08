@@ -10,13 +10,13 @@ import {ProjectDbFilter} from "../reducer";
 function Element() {
 
     const dispatch = useDispatch();
-    const {schema} = useSelector((root: RootState) => root.projectDb);
-    const setFilter = useCallback((filterState: ProjectDbFilter) => {
-        dispatch(projectDbAction.setFilter(filterState));
-    }, [schema]);
+    const {schema, filter} = useSelector((root: RootState) => root.projectDb);
 
     useEffect(() => {
-        dispatch(projectDbAction.requestList());
+        dispatch(projectDbAction.requestList({
+            filter: {},
+            search: {}
+        }));
         dispatch(projectDbAction.requestSchema());
         dispatch(projectDbAction.requestPresetList());
     }, [dispatch]);

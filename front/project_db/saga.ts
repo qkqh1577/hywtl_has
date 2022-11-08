@@ -7,8 +7,8 @@ import {yellow} from "@mui/material/colors";
 
 function* watchList() {
     while (true) {
-        yield take(projectDbAction.requestList);
-        const list: ProjectDbVO[] = yield call(projectDbApi.getList);
+        const {payload: searchState} = yield take(projectDbAction.requestList);
+        const list: ProjectDbVO[] = yield call(projectDbApi.getList, searchState);
         yield put(projectDbAction.setList(list));
     }
 }

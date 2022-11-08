@@ -5,7 +5,7 @@ import {
     AccordionSummary,
     Box,
     Button,
-    Checkbox,
+    Checkbox, Chip,
     FormControl,
     FormControlLabel,
     FormHelperText,
@@ -20,6 +20,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import {projectDbAction} from "../../action";
+import {ProjectDbSchemaVO} from "../../domain";
+import {ProjectDbFilter} from "../../reducer";
 
 interface Props {
 }
@@ -45,45 +47,106 @@ const StyledAccordionSummary = withStyles({
     }
 })(AccordionSummary);
 
-interface ProjectDbSearchData {
-    [any: string]: [{
-        key: string,
-        value: any
-    }]
+export interface ProjectDbSearch {
+    filter: ProjectDbFilter,
+    search: ProjectDbSearchItems
+}
+
+export interface ProjectDbSearchItems {
+    [any: string]: KeyValuePair[]
 };
+
+interface KeyValuePair {
+    key: string,
+    value: string | number | boolean,
+}
+
+/**
+ * API 검색용 AttrName을 일반 AttrName으로 변경
+ * @param fullAttrName
+ */
+function getAttrName(fullAttrName: string) {
+    const tmpAttrNameArr = fullAttrName.split('.');
+    return tmpAttrNameArr[tmpAttrNameArr.length - 1];
+}
+
+// function generateSearchConditionStr(searchState: ProjectDbSearchItems, schema: ProjectDbSchemaVO[]) {
+//     let result = '';
+//     Object.keys(searchState).forEach(entityName => {
+//         const values: KeyValuePair[] = searchState[entityName];
+//         values.forEach((kv, index) => {
+//             const entityInfo = schema[entityName];
+//             const attrName = getAttrName(kv.key);
+//             const attrInfo = entityInfo.attributes[attrName];
+//             result = `${result}${index > 0 ? ',' : ''} ${attrInfo.description}=${kv.value}`
+//         });
+//     });
+//     return result;
+// }
 
 export default function Form(props: Props) {
 
-    const {schema, filter, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
+    const {schema, filter, list, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
+    const entities = Object.keys(filter);
     const dispatch = useDispatch();
     const [state, setState] = useState(false);
-    const [searchState, setSearchState] = useState<ProjectDbSearchData>({})
+    const [searchConditionStr, setSearchConditionStr] = useState('설정된 검색 조건 없음');
+    const [searchState, setSearchState] = useState<ProjectDbSearchItems>({})
     const setDynamicSelectState = useCallback((entityName: string, searchName: string, value: string) => {
         const newState = {...dynamicSelectState};
         newState[`${entityName}.${searchName}`] = value;
         dispatch(projectDbAction.setDynamicSelectState(newState));
     }, [dynamicSelectState]);
 
-    useEffect(()=>{
+    useEffect(() => {
         console.debug(`dynamic select state is `, dynamicSelectState);
-        return ()=>{
+        return () => {
             console.debug('clean dynamic select state');
             dispatch(projectDbAction.setDynamicSelectState({}));
         }
-    },[]);
+    }, []);
+
+    // useEffect(() => {
+    //     const strSearchCondition = generateSearchConditionStr(searchState, schema);
+    //     setSearchConditionStr(`${strSearchCondition} - 검색 결과 ${list.length}건`)
+    // }, [list, filter]);
+
+    useEffect(() => {
+        const newSearchState = {};
+
+        Object.keys(searchState).forEach((entityName, index) => {
+            const attributes = searchState[entityName];
+            newSearchState[entityName] = [];
+
+            attributes.forEach(items => {
+                const realAttrName = getAttrName(items.key);
+                if (filter[entityName][realAttrName]) {
+                    newSearchState[entityName].push({
+                        key: items.key,
+                        value: items.value
+                    });
+                }
+            });
+        });
+
+        setSearchState(newSearchState);
+
+    }, [filter]);
 
     const toggleDrawer = (isOpen: boolean) =>
         (event: React.KeyboardEvent | React.MouseEvent) => {
             setState(isOpen);
         };
 
-    const entities = Object.keys(filter);
-
     const onSearch = () => {
-        console.debug(searchState);
+        const searchData: ProjectDbSearch = {
+            filter: filter,
+            search: searchState
+        };
+        dispatch(projectDbAction.requestList(searchData));
     };
 
-    function updateSearchState(entityName: string, attrName: string, value) {
+    const updateSearchState = (entityName: string, attrName: string, value) => {
         let newSearchState = {...searchState};
         if (entityName in newSearchState) {
             if (newSearchState[entityName].some(item => item.key === attrName)) {
@@ -106,7 +169,6 @@ export default function Form(props: Props) {
             }];
         }
         setSearchState(newSearchState);
-        console.debug(newSearchState)
     }
 
     const renderInput = (entityName: string, attrName: string, attrInfo: any) => {
@@ -133,23 +195,24 @@ export default function Form(props: Props) {
                 break;
             case "Boolean":
                 tag = <FormControlLabel
-                    control={<Checkbox/>} label={attrInfo.description}
+                    control={<Checkbox value={true}/>} label={attrInfo.description}
                     onChange={(event) => onChange(attrInfo, event)}/>
                 break;
             case "Select":
                 tag = (
                     <Select
+                        sx={{minWidth: '180px'}}
                         displayEmpty
                         value={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`] ? dynamicSelectState[`${entityName}.${searchName}`] : ''}
                         onChange={(event) => onChange(attrInfo, event)}
                     >
-                        <MenuItem value=""> {attrInfo.description} 선택 </MenuItem>
+                        <MenuItem key={0} value=""> {attrInfo.description} 선택 </MenuItem>
                         {
-                            Object.keys(attrInfo.option).map(index => {
-                                const option = attrInfo.option[index];
-                                const optionLabel = (attrInfo.optionLabel[index]) ? attrInfo.optionLabel[index] : option;
+                            Object.keys(attrInfo.option).map((key, index) => {
+                                const option = attrInfo.option[key];
+                                const optionLabel = (attrInfo.optionLabel[key]) ? attrInfo.optionLabel[key] : option;
                                 return (
-                                    <MenuItem value={option}>{optionLabel}</MenuItem>
+                                    <MenuItem key={index + 1} value={option}>{optionLabel}</MenuItem>
                                 );
                             })
                         }
@@ -170,7 +233,33 @@ export default function Form(props: Props) {
                 <StyledAccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                 >
-                    <Typography>현재 검색 조건: YYYY-MM-DD ~ YYYY-MM-DD (TOTAL 2 RECORDS)</Typography>
+                    <Typography>
+                    {
+                        Object.keys(searchState).length >0 && Object.keys(searchState).map((entityName, index) => {
+                            return (<div>
+                                {
+                                    searchState[entityName].map((item, index2) => {
+                                        if (item.value === '') return true;
+                                        const entityInfo = schema[entityName];
+                                        const attrName = getAttrName(item.key);
+                                        const attrInfo = entityInfo.attributes[attrName];
+                                        return (<Chip
+                                            label={`${attrInfo.description}:${item.value}`}
+                                            sx={{marginLeft:'3px',marginRight:'3px'}}
+                                            variant="outlined"
+                                        />);
+                                    })
+                                }
+                                <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
+                            </div>);
+                        })
+                    }
+                    {
+                        Object.keys(searchState).length === 0 && (
+                            <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
+                        )
+                    }
+                    </Typography>
                 </StyledAccordionSummary>
                 <AccordionDetails>
                     {entities.map((entityName, index) => {
@@ -188,12 +277,12 @@ export default function Form(props: Props) {
                                     {schema[entityName].description}
                                 </h4>
                                 <div>
-                                    {Object.keys(attributes).map((attrName) => {
+                                    {Object.keys(attributes).map((attrName, index2) => {
                                         const attrInfo = schema[entityName].attributes[attrName];
                                         if (!attrInfo.search) return true;
 
                                         return attributes[attrName] && (
-                                            <div style={{display: 'inline-flex', marginRight: '10px'}}>
+                                            <div key={index2} style={{display: 'inline-flex', marginRight: '10px'}}>
                                                 {renderInput(entityName, attrName, attrInfo)}
                                             </div>
                                         );

@@ -100,6 +100,7 @@ project-db:
         recipient:
           type: String
           description: 수신인
+          search: true
         note:
           type: String
           description: 노트
