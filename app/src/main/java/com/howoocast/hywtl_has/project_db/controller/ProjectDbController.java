@@ -24,7 +24,7 @@ public class ProjectDbController {
     private final ProjectDbPresetService projectDbPresetService;
 
     @GetMapping("/project/db")
-    public List<ProjectDbView> getList(@ModelAttribute ProjectDbParameter parameter) {
+    public List<ProjectDbView> getList(@ModelAttribute ProjectDbParameter parameter) throws ClassNotFoundException {
         log.debug(parameter.toString());
         return projectDbService.list(parameter);
     }

@@ -22,8 +22,8 @@ public class ProjectDbService {
     private final ProjectDbInformationSchema schema;
 
     @Transactional(readOnly = true)
-    public List<ProjectDbView> list(ProjectDbParameter projectDbParameter) {
-        return projectDbRepository.findAll(projectDbParameter);
+    public List<ProjectDbView> list(ProjectDbParameter projectDbParameter) throws ClassNotFoundException{
+        return projectDbRepository.findAll(projectDbParameter, schema);
     }
 
     public ProjectDbSchemaView getInformationSchema() {

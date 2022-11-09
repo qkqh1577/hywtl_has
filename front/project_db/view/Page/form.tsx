@@ -172,9 +172,14 @@ export default function Form(props: Props) {
     }
 
     const renderInput = (entityName: string, attrName: string, attrInfo: any) => {
+        console.debug(entityName, attrName, attrInfo);
         const searchName = (attrInfo.prefix) ? `${attrInfo.prefix}.${attrName}` : attrName;
         const onChange = (attrInfo, event: React.ChangeEvent<any> | SelectChangeEvent<any>) => {
-            const value = event.target.value;
+
+            let value: any = (attrInfo.type === 'Boolean') ? event.target.checked : event.target.value;
+            if (value === false) {
+                value = '';
+            }
             updateSearchState(entityName, searchName, value);
             setDynamicSelectState(entityName, searchName, value);
         };
@@ -186,12 +191,12 @@ export default function Form(props: Props) {
             case "String":
                 tag = <TextField
                     type="string" label={attrInfo.description}
-                    onChange={(event) => onChange(attrInfo, event)}/>
+                    onBlur={(event) => onChange(attrInfo, event)}/>
                 break;
             case "Long":
                 tag = <TextField
                     type="number" label={attrInfo.description}
-                    onChange={(event) => onChange(attrInfo, event)}/>
+                    onBlur={(event) => onChange(attrInfo, event)}/>
                 break;
             case "Boolean":
                 tag = <FormControlLabel
@@ -234,31 +239,28 @@ export default function Form(props: Props) {
                     expandIcon={<ExpandMoreIcon/>}
                 >
                     <Typography>
-                    {
-                        Object.keys(searchState).length >0 && Object.keys(searchState).map((entityName, index) => {
-                            return (<div>
-                                {
-                                    searchState[entityName].map((item, index2) => {
-                                        if (item.value === '') return true;
-                                        const entityInfo = schema[entityName];
-                                        const attrName = getAttrName(item.key);
-                                        const attrInfo = entityInfo.attributes[attrName];
-                                        return (<Chip
-                                            label={`${attrInfo.description}:${item.value}`}
-                                            sx={{marginLeft:'3px',marginRight:'3px'}}
-                                            variant="outlined"
-                                        />);
-                                    })
-                                }
-                                <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
-                            </div>);
-                        })
-                    }
-                    {
-                        Object.keys(searchState).length === 0 && (
-                            <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
-                        )
-                    }
+                        {
+                            Object.keys(searchState).length > 0 && Object.keys(searchState).map((entityName, index) => {
+                                return (<>
+                                    {
+                                        searchState[entityName].map((item, index2) => {
+                                            if (item.value === '') return true;
+                                            const entityInfo = schema[entityName];
+                                            const attrName = getAttrName(item.key);
+                                            const attrInfo = entityInfo.attributes[attrName];
+                                            return (<Chip
+                                                label={`${attrInfo.description}:${item.value}`}
+                                                sx={{marginLeft: '3px', marginRight: '3px'}}
+                                                variant="outlined"
+                                            />);
+                                        })
+                                    }
+                                </>);
+                            })
+
+                        }
+
+                        <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
                     </Typography>
                 </StyledAccordionSummary>
                 <AccordionDetails>

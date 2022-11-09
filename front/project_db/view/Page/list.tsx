@@ -44,13 +44,35 @@ export default function List(props: Props) {
         return filter && filter[entityType] && filter[entityType][attrName];
     };
 
-    const getHumanReadableAttrName = (entityName:string, attrName: string) => {
+    const getHumanReadableAttrName = (entityName: string, attrName: string) => {
         try {
             return schema[entityName].attributes[attrName].description;
         } catch (e) {
             console.debug(e);
             console.warn(`Cannot find human readable attribute name for [${entityName}_${attrName}]`);
             return attrName;
+        }
+    }
+
+    const getHumanReadableAttrValue = (entity: any, entityName: string, attrName: string) => {
+        try {
+            const attrInfo = schema[entityName].attributes[attrName];
+            let result = entity[attrName];
+
+            if ('option' in attrInfo) {
+                Object.keys(attrInfo.option).forEach(k => {
+                    const attrCode = attrInfo.option[k];
+                    if (attrCode === entity[attrName]) {
+                        result = attrInfo.optionLabel[k];
+                        return false;
+                    }
+                });
+            }
+            return result;
+        } catch (e) {
+            console.debug(e);
+            console.warn(`Cannot find human readable value name for [${entityName}_${attrName}]`);
+            return entity[attrName];
         }
     }
 
@@ -65,7 +87,7 @@ export default function List(props: Props) {
                 name: getHumanReadableAttrName(prefix, attrName)
             };
             columns.push(column);
-            row[newAttrName] = entity[attrName];
+            row[newAttrName] = getHumanReadableAttrValue(entity, prefix, attrName);
         });
     }
 
@@ -93,7 +115,7 @@ export default function List(props: Props) {
     }, [list, filter]);
 
     return (
-        <div style={{position:'relative', width:'100%', height:'100%'}}>
+        <div style={{position: 'relative', width: '100%', height: '100%'}}>
             {/*<Skeleton*/}
             {/*    sx={{ bgcolor: 'grey', position:'absolute', zIndex:1000, left:'0px', top:'0px', width: '100%', height: '100%' }}*/}
             {/*    variant="rectangular"*/}
