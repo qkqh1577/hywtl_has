@@ -18,13 +18,13 @@ import EstimateContentList from 'admin/estimate/content/view/List';
 
 function Element() {
   const dispatch = useDispatch();
-  const { list, filter } = useSelector((root: RootState) => root.estimateContent);
+  const { list } = useSelector((root: RootState) => root.estimateContent);
   const setFilter = useCallback((query: EstimateContentQuery) => dispatch(estimateContentAction.setFilter(query)), [dispatch]);
 
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues:      filter ?? initialEstimateContentQuery,
+    initialValues:      initialEstimateContentQuery,
     onSubmit:           (values) => {
       setFilter(values);
     }

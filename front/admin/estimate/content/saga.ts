@@ -27,8 +27,13 @@ function* watchFilter() {
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(estimateContentAction.setId);
-    const detail: EstimateContentVO = yield call(estimateContentApi.getOne, id);
-    yield put(estimateContentAction.setOne(detail));
+    if (id) {
+      const detail: EstimateContentVO = yield call(estimateContentApi.getOne, id);
+      yield put(estimateContentAction.setOne(detail));
+    }
+    else {
+      yield put(estimateContentAction.setOne(undefined));
+    }
   }
 }
 
