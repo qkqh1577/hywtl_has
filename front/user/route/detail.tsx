@@ -78,10 +78,12 @@ function Element() {
       <UserDetail
         onCancel={() => {
           rollback(() => {
-            formik.setValues({
-              ...detail,
-              edit: false,
-            } as unknown as UserChangeParameter);
+            if (detail) {
+              formik.setValues({
+                ...detail,
+                edit: false,
+              } as unknown as UserChangeParameter);
+            }
           });
         }}
         onPasswordChange={() => {

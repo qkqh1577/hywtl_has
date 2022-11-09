@@ -11,7 +11,7 @@ function ListButton() {
     <Button
       shape="basic3"
       onClick={() => {
-        navigate('/admin/department-management');
+        navigate('/admin/user-management');
       }}
       sx={{
         marginRight: '10px'
@@ -31,7 +31,7 @@ export default function (props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
 
-  if (edit) {
+  if (edit || !formik.values.id) {
     return (
       <Box sx={{
         width:          '100%',
