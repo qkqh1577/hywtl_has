@@ -5,6 +5,7 @@ import BasicContractForm from 'admin/contract/basic/view/Form/BasicContractForm'
 import { Box } from '@mui/material';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
+import { ColorPalette } from 'assets/theme';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -19,7 +20,10 @@ export default function () {
       <Box sx={{
         display: 'flex',
         width:   '100%',
-        padding: '20px 0',
+        padding: '10px 0',
+        border:  `1px solid ${ColorPalette._e4e9f2}`,
+        mt:      1,
+        mb:      1
       }}>
         <Input
           multiline
