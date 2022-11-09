@@ -9,7 +9,7 @@ export interface EstimateTemplateDetailParameter
 }
 
 export const initialEstimateTemplateDetailParameter = {
-  titleList: [''],
+  titleList: [],
 } as unknown as EstimateTemplateDetailParameter;
 
 export interface EstimateTemplateParameter

@@ -35,6 +35,10 @@ function Element() {
     setFilter(initialEstimateTemplateQuery);
   }, [seqModal]);
 
+  useEffect(() => {
+    formik.setSubmitting(false);
+  }, []);
+
   return (
     <EstimateTemplateList
       formik={formik}
