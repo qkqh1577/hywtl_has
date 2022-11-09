@@ -54,26 +54,35 @@ project-db:
           type: Boolean
           description: LH여부
           search: true
+          prefix: basic
         progressStatus:
           type: ProjectProgressStatus
           description: 진행상태
-          search: false
+          search: true
           prefix: status
+          option: [ "TEMPORARY","UNDER_CONTRACT","BEFORE_SERVICE","SERVICE_ON_GOING","SERVICE_COMPLETE","SERVICE_HOLDING"]
+          optionLabel: [ "가등록","등록","용역 개시 전","용역 진행 중","용역 완료","용역 홀딩"]
         estimateExpectation:
           type: ProjectEstimateExpectation
           description: 예상확도
-          search: false
+          search: true
           prefix: status
+          option: ["LOW","AVERAGE","HIGH","NEARLY","WIN","LOSE"]
+          optionLabel: ["가능성 낮음","가능성 보통","가능성 높음","계약 직전","수주 성공","수주 실패"]
         estimateStatus:
           type: ProjectEstimateStatus
           description: 견적상태
-          search: false
+          search: true
           prefix: status
+          option: ["ORAL","BEFORE","COMPLETE","CONTRAST"]
+          optionLabel: ["구두 견적","견적 전","견적 완료","대비 견적"]
         contractStatus:
           type: ProjectContractStatus
           description: 계약상태
           search: false
-          prefix: status
+          prefix: status,
+          option: ["BEFORE","COMPLETE","CHANGE"]
+          optionLabel: ["계약 전","계약 완료","변경 계약 중"]
         modifiedAt:
           type: LocalDateTime
           description: 최종수정

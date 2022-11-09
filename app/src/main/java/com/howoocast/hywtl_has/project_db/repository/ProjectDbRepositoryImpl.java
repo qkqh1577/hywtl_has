@@ -1,12 +1,14 @@
 package com.howoocast.hywtl_has.project_db.repository;
 
-import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.domain.*;
 import com.howoocast.hywtl_has.project_bid.domain.ProjectBid;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexSite;
+import com.howoocast.hywtl_has.project_db.configuration.ProjectDbInformationSchema;
 import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
 import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
+import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,7 +41,7 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
     }
 
     @Override
-    public List<ProjectDbView> findAll(ProjectDbParameter parameter) {
+    public List<ProjectDbView> findAll(ProjectDbParameter parameter, ProjectDbInformationSchema schema) throws ClassNotFoundException {
 
         ArrayList<Expression> classes = new ArrayList<>() {{
             add(project);
@@ -61,39 +64,46 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         PathBuilder<Project> projectPathBuilder = new PathBuilder<>(Project.class, "project");
-        PathBuilder<ProjectEstimate> projectEstimatePathBuilder = new PathBuilder<>(ProjectEstimate.class, ProjectEstimate.KEY);
-        PathBuilder<ProjectComplexSite> projectComplexSitePathBuilder = new PathBuilder<>(ProjectComplexSite.class, ProjectComplexSite.KEY);
-        PathBuilder<ProjectBid> projectBidPathBuilder = new PathBuilder<>(ProjectBid.class, ProjectBid.KEY);
-        PathBuilder<ProjectMemo> projectMemoPathBuilder = new PathBuilder<>(ProjectMemo.class, ProjectMemo.KEY);
+        PathBuilder<ProjectEstimate> projectEstimatePathBuilder = new PathBuilder<>(ProjectEstimate.class, "projectEstimate");
+        PathBuilder<ProjectComplexSite> projectComplexSitePathBuilder = new PathBuilder<>(ProjectComplexSite.class, "projectComplexSite");
+        PathBuilder<ProjectBid> projectBidPathBuilder = new PathBuilder<>(ProjectBid.class, "projectBid");
+        PathBuilder<ProjectMemo> projectMemoPathBuilder = new PathBuilder<>(ProjectMemo.class, "projectMemo");
+
+        Map<String, ProjectDbInformationSchema.InformationSchema> entityMap = schema.getEntities();
 
         for (String entityName : parameter.getKeys().keySet()) {
-            log.debug(String.format("Check where condition for Entity [%s]", entityName));
+            ProjectDbInformationSchema.InformationSchema entityInfo = entityMap.get(entityName);
+            Map<String, Map<String, Object>> attributeMap = entityInfo.getAttributes();
 
             List<String> attributes = parameter.getKeys().get(entityName);
             List<String> values = parameter.getValues().get(entityName);
 
-            if (attributes == null || values == null ) continue;
+            if (attributes == null || values == null) continue;
 
             for (int i = 0; i < attributes.size(); i++) {
                 String attrName = attributes.get(i);
                 String attrValue = values.get(i);
 
                 if (attrName == null || attrValue == null || attrValue.equals("")) continue;
+                String[] attrNameTemp = attrName.split("\\.");
+                String shortAttrName = (attrNameTemp.length == 0) ? attrName : attrNameTemp[attrNameTemp.length - 1];
+
+                Map<String, Object> attributeInfo = attributeMap.get(shortAttrName);
+                String attrType = (String) attributeInfo.get("type");
 
                 if ("ProjectView".equals(entityName)) {
-                    builder.and(projectPathBuilder.getString(attrName).contains(attrValue));
+                    addCriteria(attrType, attrName, attrValue, builder, projectPathBuilder);
                 } else if ("ProjectEstimateView".equals(entityName)) {
-                    builder.and(projectEstimatePathBuilder.getString(attrName).contains(attrValue));
+                    addCriteria(attrType, attrName, attrValue, builder, projectEstimatePathBuilder);
                 } else if ("ProjectComplexSiteView".equals(entityName)) {
-                    builder.and(projectComplexSitePathBuilder.getString(attrName).contains(attrValue));
+                    addCriteria(attrType, attrName, attrValue, builder, projectComplexSitePathBuilder);
                 } else if ("ProjectBidView".equals(entityName)) {
-                    builder.and(projectBidPathBuilder.getString(attrName).contains(attrValue));
+                    addCriteria(attrType, attrName, attrValue, builder, projectBidPathBuilder);
                 } else if ("ProjectMemoView".equals(entityName)) {
-                    builder.and(projectMemoPathBuilder.getString(attrName).contains(attrValue));
+                    addCriteria(attrType, attrName, attrValue, builder, projectMemoPathBuilder);
                 }
             }
         }
-        //builder.and(path.getString("basic.code").eq("22001"));
 
         query.where(builder);
 
@@ -102,6 +112,31 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
                     classes.stream().map(qclass -> tuple.get(qclass)).collect(Collectors.toList()).toArray());
         }).collect(Collectors.toList());
 
+    }
+
+    private void addCriteria(
+            String attrType, String attrName, String attrValue,
+            BooleanBuilder builder, PathBuilder pathBuilder) {
+
+        Class enumType = getEnumClassByName(attrType);
+        if (enumType != null) {
+            builder.and(pathBuilder.getEnum(attrName, enumType).stringValue().eq(attrValue));
+        } else if (attrType.equals("Boolean")) {
+            builder.and(pathBuilder.getBoolean(attrName).stringValue().eq(attrValue));
+        } else {
+            builder.and(pathBuilder.getString(attrName).contains(attrValue));
+        }
+    }
+
+    private Class getEnumClassByName(String className) {
+        HashMap<String, Class> classMap = new HashMap<>();
+        classMap.put("ProjectBasicBidType", ProjectBasicBidType.class);
+        classMap.put("ProjectProgressStatus", ProjectProgressStatus.class);
+        classMap.put("ProjectEstimateExpectation", ProjectEstimateExpectation.class);
+        classMap.put("ProjectEstimateStatus", ProjectEstimateStatus.class);
+        classMap.put("ProjectContractStatus", ProjectContractStatus.class);
+        classMap.put("ProjectMemoCategory", ProjectMemoCategory.class);
+        return classMap.get(className);
     }
 
 }

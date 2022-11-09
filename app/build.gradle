@@ -27,6 +27,10 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${querydslVersion}"
     implementation "org.mariadb.jdbc:mariadb-java-client:${mariadbDriverVersion}"
 
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+
+
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jpa"
