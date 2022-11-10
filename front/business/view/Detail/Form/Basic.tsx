@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {
   Box,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material';
 import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
@@ -14,7 +14,8 @@ interface Props {
 
 export default function BusinessBasicSection(props: Props) {
   const formik = useContext(FormikContext);
-  const edit = formik.values.edit;
+  const edit = formik.values.edit === false ? !formik.values.id : (formik.values.id && formik.values.edit);
+
   return (
     <Box sx={{
       display:  'flex',
@@ -78,7 +79,7 @@ export default function BusinessBasicSection(props: Props) {
                   return;
                 }
                 const value = e.target.value || undefined;
-                if (formik.values.name !== value) {
+                if (formik.values.ceoName !== value) {
                   formik.setFieldValue('ceoName', value);
                 }
               }}
@@ -106,7 +107,7 @@ export default function BusinessBasicSection(props: Props) {
                   return;
                 }
                 const value = e.target.value || undefined;
-                if (formik.values.name !== value) {
+                if (formik.values.registrationNumber !== value) {
                   formik.setFieldValue('registrationNumber', value);
                 }
               }}
@@ -129,7 +130,7 @@ export default function BusinessBasicSection(props: Props) {
                   return;
                 }
                 const value = e.target.value || undefined;
-                if (formik.values.name !== value) {
+                if (formik.values.officePhone !== value) {
                   formik.setFieldValue('officePhone', value);
                 }
               }}
@@ -211,7 +212,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="우편 번호">
+          <DataFieldWithLabel label="비고">
             <Input
               readOnly={!edit}
               key={formik.values.note}

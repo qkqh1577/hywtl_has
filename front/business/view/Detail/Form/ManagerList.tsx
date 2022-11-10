@@ -6,6 +6,7 @@ import {
   RadioGroup
 } from '@mui/material';
 import {
+  BusinessManagerStatus,
   businessManagerStatusList,
   businessManagerStatusName,
 } from 'business/domain';
@@ -23,7 +24,7 @@ export default function BusinessManagerListSection() {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const managerList = formik.values.managerList;
-  const edit = formik.values.edit;
+  const edit = formik.values.edit === false ? !formik.values.id : (formik.values.id && formik.values.edit);
 
   return (
     <Box sx={{
@@ -242,19 +243,26 @@ export default function BusinessManagerListSection() {
                 labelPosition="left"
               >
                 {edit && (
-                  <RadioGroup row>
+                  <RadioGroup
+                    row
+                    value={manager.status}
+                    defaultValue={BusinessManagerStatus.IN_OFFICE}
+                    onChange={(e) => {
+                      if (!edit) {
+                        return;
+                      }
+                      if(manager.status !== e.target.value){
+                        formik.setFieldValue(`managerList.${i}.status`, e.target.value);
+                      }
+                    }}
+                  >
                     {businessManagerStatusList.map(item => (
                       <FormControlLabel
                         key={item}
                         label={businessManagerStatusName(item)}
+                        value={item}
                         control={
-                          <Radio
-                            value={item as string}
-                            checked={manager.status === item}
-                            onChange={() => {
-                              formik.setFieldValue(`managerList.i.status`, item);
-                            }}
-                          />
+                          <Radio/>
                         }
                       />
                     ))}
@@ -272,19 +280,13 @@ export default function BusinessManagerListSection() {
                   />
                 )}
               </DataFieldWithLabel>
-            </Box>
-
-            <Box sx={{
-              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
-              marginRight:  '30px',
-              marginBottom: '15px',
-            }}>
               {edit && (
                 <Box sx={{
                   display:        'flex',
                   paddingLeft:    'calc(100% - 80px)',
                   width:          '100%',
                   justifyContent: 'flex-end',
+                  mt: 2
                 }}>
                   <Button
                     shape="small3"
@@ -301,6 +303,12 @@ export default function BusinessManagerListSection() {
                   />
                 </Box>
               )}
+            </Box>
+            <Box sx={{
+              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight:  '30px',
+              marginBottom: '15px',
+            }}>
               {!edit && (
                 <DataFieldWithLabel label="담당 프로젝트">
                   <Input

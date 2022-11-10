@@ -43,53 +43,54 @@ interface Props {
 
 export default function (props: Props) {
   const formik = useContext(FormikContext);
-  if (formik.values.edit) {
+
+  if (formik.values.id && !formik.values.edit) {
     return (
       <Box sx={{
         width:          '100%',
-        margin:         '20px 0',
+        margin:         '10px 0',
         display:        'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems:     'center'
       }}>
-        <Button
-          sx={{
-            marginRight: '10px',
-          }}
-          onClick={() => {
-            formik.handleSubmit();
-          }}>
-          저장
-        </Button>
-        <Button shape="basic2" onClick={props.onCancel}>
-          취소
-        </Button>
+        <Box sx={{
+          width: '40%'
+        }}>
+          <ListButton />
+          <Button shape="basic3" onClick={props.onDelete}>
+            삭제
+          </Button>
+        </Box>
+        <Box sx={{
+          width:          '40%',
+          display:        'flex',
+          justifyContent: 'flex-end',
+        }}>
+          <EditButton />
+        </Box>
       </Box>
     );
   }
   return (
     <Box sx={{
       width:          '100%',
-      margin:         '10px 0',
+      margin:         '20px 0',
       display:        'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems:     'center'
     }}>
-      <Box sx={{
-        width: '40%'
-      }}>
-        <ListButton />
-        <Button shape="basic3" onClick={props.onDelete}>
-          삭제
-        </Button>
-      </Box>
-      <Box sx={{
-        width:          '40%',
-        display:        'flex',
-        justifyContent: 'flex-end',
-      }}>
-        <EditButton />
-      </Box>
+      <Button
+        sx={{
+          marginRight: '10px',
+        }}
+        onClick={() => {
+          formik.handleSubmit();
+        }}>
+        저장
+      </Button>
+      <Button shape="basic2" onClick={props.onCancel}>
+        취소
+      </Button>
     </Box>
   );
 };
