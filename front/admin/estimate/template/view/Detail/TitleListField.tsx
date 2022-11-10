@@ -1,5 +1,8 @@
 import { Box, } from '@mui/material';
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useRef
+} from 'react';
 import TextBox from 'layouts/Text';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +20,8 @@ export default function ({ index, list }: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+  const newInputRef = useRef<HTMLInputElement>(null);
+
   if (!edit) {
     return (
       <Box sx={{
@@ -156,12 +161,28 @@ export default function ({ index, list }: Props) {
           justifyContent: 'flex-end',
           alignItems:     'center',
         }}>
+        <Box sx={{
+          mr:    1,
+          width: '100%'
+        }}>
+          <Input
+            variant="outlined"
+            defaultValue={''}
+            inputRef={newInputRef}
+          />
+        </Box>
         <IconButton
           tooltip="항목 추가"
           shape="square"
           children={<FontAwesomeIcon icon="plus" />}
           onClick={() => {
-            formik.setFieldValue(`detailList.${index}.titleList`, [...list, '']);
+            const value = newInputRef.current?.value;
+            if (!value) {
+              error('항목을 입력해주세요.');
+              return;
+            }
+            formik.setFieldValue(`detailList.${index}.titleList`, [...list, value]);
+            newInputRef.current.value = '';
           }}
         />
       </Box>

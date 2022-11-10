@@ -1,10 +1,12 @@
 import {
   Box,
-  MenuItem,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
 } from '@mui/material';
 import React, { useContext } from 'react';
 import {
-  testTypeList,
+  TestType,
   testTypeName
 } from 'type/TestType';
 import DetailList from './DetailList';
@@ -12,7 +14,6 @@ import { ColorPalette } from 'assets/theme';
 import TextBox from 'layouts/Text';
 import Divider from 'layouts/Divider';
 import { FormikContext } from 'formik';
-import Select from 'layouts/Select';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 
@@ -20,6 +21,7 @@ export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+
   return (
     <Box sx={{
       display:      'flex',
@@ -82,9 +84,10 @@ export default function () {
             marginBottom: '15px',
           }}>
             <DataFieldWithLabel label="실험 타입" required={edit}>
-              <Select
-                readOnly={!edit}
+              <RadioGroup
+                row
                 value={formik.values.testType ?? ''}
+                defaultValue={TestType.COMMON}
                 onChange={(e) => {
                   if (!edit) {
                     return;
@@ -93,11 +96,117 @@ export default function () {
                   if (formik.values.testType !== value) {
                     formik.setFieldValue('testType', value);
                   }
-                }}>
-                {testTypeList.map(item => (
-                  <MenuItem key={item} value={item}>{testTypeName(item)}</MenuItem>
-                ))}
-              </Select>
+                }}
+              >
+                <FormControlLabel
+                  label={testTypeName(TestType.COMMON)}
+                  value={TestType.COMMON}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+                <FormControlLabel
+                  label={testTypeName(TestType.REVIEW)}
+                  value={TestType.REVIEW}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+                <FormControlLabel
+                  label={testTypeName(TestType.F)}
+                  value={TestType.F}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+                <FormControlLabel
+                  label={testTypeName(TestType.P)}
+                  value={TestType.P}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+                <FormControlLabel
+                  label={testTypeName(TestType.A)}
+                  value={TestType.A}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+                <FormControlLabel
+                  label={testTypeName(TestType.E)}
+                  value={TestType.E}
+                  control={
+                    <Radio/>
+                  }
+                  sx={{
+                    marginRight:                   '20px',
+                    alignItems:                    'center',
+                    '& > span.MuiTypography-root': {
+                      marginLeft: '6px',
+                      fontWeight: 'normal',
+                      fontSize:   '13px',
+                      lineHeight: '20px',
+                      color:      ColorPalette._252627,
+                    }
+                  }}
+                />
+              </RadioGroup>
             </DataFieldWithLabel>
           </Box>
         </Box>

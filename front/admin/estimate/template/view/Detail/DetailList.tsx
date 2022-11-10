@@ -41,7 +41,7 @@ export default function () {
     <Table>
       <TableHead>
         <TableRow>
-          <Th sx={{ width: '330px' }}>
+          <Th sx={{ width: '350px' }}>
             <RequiredMark required={edit} text="세부 항목명" />
           </Th>
           <Th sx={{ width: '130px' }}>
@@ -224,7 +224,7 @@ export default function () {
         <TableFooter>
           <TableRow>
             <Td colSpan={5} />
-            <Td colSpan={1}>
+            <Td colSpan={2}>
               <Box sx={{
                 display:        'flex',
                 flexWrap:       'nowrap',
