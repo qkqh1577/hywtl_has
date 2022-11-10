@@ -274,6 +274,7 @@ export default function BasicForm() {
             <UploadField
               preview
               accept="image/*"
+              edit={edit}
               disableDownload
               value={values.image}
               onChange={(e) => {

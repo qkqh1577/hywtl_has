@@ -11,7 +11,7 @@ import Input from 'layouts/Input';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
-const spaceCount = 6;
+const spaceCount = 4;
 export default function CareerForm() {
   const formik = useContext(FormikContext);
   const careerList = formik.values.careerList ?? [];

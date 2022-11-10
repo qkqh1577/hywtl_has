@@ -29,6 +29,7 @@ export default function JobForm(props: Props) {
   const formik = useContext(FormikContext);
   const jobList = formik.values.jobList ?? [];
   const edit = formik.values.edit;
+
   return (
     <Box sx={{
       display:  'flex',
@@ -114,10 +115,12 @@ export default function JobForm(props: Props) {
                       }
                       formik.setFieldValue('jobList', jobList.map(((job,
                                                                     j
-                      ) => ({
-                        ...job,
-                        isRepresentative: i === j,
-                      }))));
+                      ) => {
+                        return ({
+                          ...job,
+                          isRepresentative: i === j,
+                        })
+                      })));
                     }}
                   />
                 </FormGroup>
