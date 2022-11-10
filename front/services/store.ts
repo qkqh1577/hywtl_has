@@ -32,6 +32,7 @@ import rivalEstimateSaga from 'rival_estimate/saga';
 import userNotificationSaga from 'user_notification/saga';
 import userSaga from 'user/saga';
 import { businessSelectorSaga } from 'components/BusinessSelector';
+import projectDbSaga from 'project_db/saga';
 
 const middleware = createSagaMiddleware();
 
@@ -63,6 +64,7 @@ function* saga() {
     rivalEstimateSaga(),
     userNotificationSaga(),
     userSaga(),
+    projectDbSaga(),
   ]);
 }
 

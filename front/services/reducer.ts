@@ -110,6 +110,10 @@ import {
   dialogReducer,
   DialogState
 } from 'dialog/reducer';
+import {
+  projectDbReducer,
+  ProjectDbState
+} from "../project_db/reducer";
 
 export interface RootState {
   business: BusinessState;
@@ -139,6 +143,7 @@ export interface RootState {
   rivalEstimate: RivalEstimateState;
   user: UserState;
   userNotification: UserNotificationState;
+  projectDb: ProjectDbState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -169,6 +174,7 @@ const reducer = combineReducers<RootState>({
   rivalEstimate:      rivalEstimateReducer,
   user:               userReducer,
   userNotification:   userNotificationReducer,
+  projectDb:          projectDbReducer,
 });
 
 const rootReducer: Reducer = (state,
