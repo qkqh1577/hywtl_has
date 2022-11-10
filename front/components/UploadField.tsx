@@ -16,20 +16,23 @@ import {
 import Button from 'layouts/Button';
 import { ColorPalette } from 'assets/theme';
 import Input, { InputProps } from 'layouts/Input';
+import TextBox from 'layouts/Text';
 
 interface UploadFieldProps
   extends Omit<InputProps, |'onChange'> {
   accept?: string;
   preview?: boolean;
+  edit?: boolean;
   disableDownload?: boolean;
   disableSelect?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function UploadField({ accept, name, disableDownload, disableSelect, onChange, ...props }: UploadFieldProps) {
+export default function UploadField({ accept, name, disableDownload, disableSelect, onChange, preview, edit, ...props }: UploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const file = useMemo(() => props.value ? toView(props.value as File | FileItemView) : undefined, [props.value]);
+  const multipartFile = useMemo(() => props.value && (props.value as any).multipartFile ? (props.value as any).multipartFile : undefined, [file]);
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
@@ -42,19 +45,52 @@ export default function UploadField({ accept, name, disableDownload, disableSele
       setImageUrl(`/file-item/${file.id}`);
       return;
     }
-    if (file.multipartFile) {
-      setImageUrl(URL.createObjectURL(file.multipartFile));
+    if (preview && multipartFile) {
+      setImageUrl(URL.createObjectURL(multipartFile));
     }
   }, [file]);
   return (
     <Box sx={{
-      width:    '100%',
-      display:  'flex',
-      flexWrap: 'nowrap',
+      width:         '100%',
+      display:       'flex',
+      flexWrap:      'nowrap',
+      flexDirection: 'column',
     }}>
-      {props.preview && file && (
+      {preview && file && (
+        <Box>
+          <img
+            src={imageUrl}
+            alt="프로필 이미지"
+            style={{
+              width:        '200px',
+              height:       '200px',
+              objectFit:    'contain',
+              borderRadius: '10px'
+            }}
+          />
+          {edit && (<Box sx={{
+            marginLeft: 'calc((100px - 47.71px))'
+          }}>
+            <Button onClick={() => {
+              inputRef.current?.click();
+            }}>
+              이미지 변경
+            </Button>
+            <TextBox variant="body13"
+              sx={{
+                marginLeft: '20px',
+              }}>
+              &#183; 권장 이미지 사이지 : 200x200
+            </TextBox>
+            <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />
+          </Box>)
+          }
+        </Box>
+
+      )}
+      {!preview && (
         <Box sx={{
-          width:        '100px',
+          width:        '100%',
           maxHeight:    '100px',
           marginRight:  '10px',
           padding:      '0 4px',
@@ -64,41 +100,33 @@ export default function UploadField({ accept, name, disableDownload, disableSele
           flex:         1,
           border:       `1px solid ${ColorPalette._e4e9f2}`
         }}>
-          <img
-            width="60px"
-            src={imageUrl}
-            alt="프로필 이미지"
-            style={{
-              objectFit: 'contain'
-            }}
+          <Input
+            {...props}
+            value={file?.filename ?? ''}
+            readOnly
+            endAdornment={!props.disabled && (
+              <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                {file && !disableDownload && (
+                  <Button shape="small" onClick={() => {
+                    window.open(`/file-item/${file.id}`, '_blank');
+                  }}>
+                    다운로드
+                  </Button>
+                )}
+                {!disableSelect && (
+                  <Button onClick={() => {
+                    inputRef.current?.click();
+                  }}>
+                    파일선택
+                  </Button>
+                )}
+              </InputAdornment>
+            )
+            }
           />
+          <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />
         </Box>
       )}
-      <Input
-        {...props}
-        value={file?.filename ?? ''}
-        readOnly
-        endAdornment={!props.disabled && (
-          <InputAdornment position="end" sx={{ marginRight: '10px' }}>
-            {file && !disableDownload && (
-              <Button shape="small" onClick={() => {
-                window.open(`/file-item/${file.id}`, '_blank');
-              }}>
-                다운로드
-              </Button>
-            )}
-            {!disableSelect && (
-              <Button onClick={() => {
-                inputRef.current?.click();
-              }}>
-                파일선택
-              </Button>
-            )}
-          </InputAdornment>
-        )
-        }
-      />
-      <input type="file" ref={inputRef} accept={accept} style={{ display: 'none' }} onChange={onChange} />
     </Box>
   );
 }

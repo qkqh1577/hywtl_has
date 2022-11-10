@@ -57,7 +57,20 @@ export default function DataFieldWithLabel(props: Props) {
               <RequiredMark required={required} text={label} />
             </Typography>
           )}
-          {typeof label !== 'string' && label}
+          {typeof label !== 'string' &&
+            (
+              <Typography sx={{
+                ...labelSX,
+                fontSize:       '13px',
+                color:          ColorPalette._9b9ea4,
+                wordBreak:      'keep-all',
+                whiteSpace:     'nowrap',
+                justifyContent: 'space-between',
+                width:          '100%',
+              }}>
+                <RequiredMark required={required} text={label} />
+              </Typography>
+            )}
         </Box>
       </Box>
       <Box sx={{
