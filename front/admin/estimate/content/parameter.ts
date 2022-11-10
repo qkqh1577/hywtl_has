@@ -11,6 +11,6 @@ export interface EstimateContentParameter
 
 export const initialEstimateContentParameter = {
   testTypeList: [TestType.COMMON, TestType.REVIEW],
-  detailList:   [''],
+  detailList:   [],
   edit:         true,
 } as unknown as EstimateContentParameter;

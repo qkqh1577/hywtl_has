@@ -22,7 +22,6 @@ function SubmitButton() {
   return (
     <Button
       children="검색"
-      disabled={formik?.isSubmitting}
       onClick={onClick}
       sx={{
         marginBottom: '15px',
