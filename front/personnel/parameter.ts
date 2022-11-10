@@ -44,7 +44,9 @@ export interface PersonnelJobParameter {
   jobDuty?: string;
 }
 
-export const initialPersonnelJobParameter = {} as PersonnelJobParameter;
+export const initialPersonnelJobParameter = {
+  isRepresentative: false,
+} as PersonnelJobParameter;
 
 export interface PersonnelAcademicParameter {
   academyName?: string;

@@ -134,8 +134,8 @@ export default function LanguageForm() {
                 <Input
                   readOnly={!edit}
                   key={values.grade}
-                  value={values.grade ?? ''}
-                  onChange={(e) => {
+                  defaultValue={values.grade ?? ''}
+                  onBlur={(e) => {
                     if (!edit) {
                       return;
                     }
