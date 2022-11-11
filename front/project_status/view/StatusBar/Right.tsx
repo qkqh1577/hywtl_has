@@ -136,7 +136,7 @@ export default function ProjectStatusRightBar(props: Props) {
         backgroundColor: ColorPalette._cddaf5,
       },
     }}>
-      <DataBox title="실험 종류" width="90px">
+      <DataBox title="실험 종류" width="115px">
         <Input
           readOnly
           variant="outlined"
