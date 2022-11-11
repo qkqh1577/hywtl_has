@@ -66,6 +66,7 @@ export default function () {
         <DataFieldWithLabel label="프로필 사진" labelPosition="top">
           <UploadField
             preview
+            edit={true}
             disableDownload
             accept="image/*"
             value={formik.values.profile}
