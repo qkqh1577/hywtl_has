@@ -40,7 +40,7 @@ public class EstimateTemplateService {
     }
 
     @Transactional
-    public void add(EstimateTemplateParameter parameter) {
+    public EstimateTemplate add(EstimateTemplateParameter parameter) {
 
         List<EstimateTemplateDetail> detailList = parameter.getDetailList()
             .stream().map(detailParams -> EstimateTemplateDetail.of(
@@ -59,7 +59,7 @@ public class EstimateTemplateService {
             maxSeq + 1,
             detailList
         );
-        repository.save(instance);
+        return repository.save(instance);
     }
 
     @Transactional

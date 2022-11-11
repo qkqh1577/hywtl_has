@@ -20,9 +20,7 @@ class EstimateTemplateApi {
 
   async upsert(parameter: EstimateTemplateParameter): Promise<void> {
     const { data } = await apiClient.put(
-      parameter.id ? `/admin/estimate-template/${parameter.id}` : '/admin/estimate-template',
-      parameter
-    );
+      `/admin/estimate-template${parameter.id ? `/${parameter.id}` : ''}`, parameter);
     return data;
   }
 
