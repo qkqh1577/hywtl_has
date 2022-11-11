@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {ReactEventHandler, useCallback, useEffect, useState} from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -6,9 +6,7 @@ import {
     Box,
     Button,
     Checkbox, Chip,
-    FormControl,
     FormControlLabel,
-    FormHelperText,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -16,12 +14,13 @@ import {
     Typography
 } from "@mui/material";
 import {withStyles, makeStyles} from '@mui/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import {projectDbAction} from "../../action";
-import {ProjectDbSchemaVO} from "../../domain";
 import {ProjectDbFilter} from "../../reducer";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TagIcon from '@mui/icons-material/Tag';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 interface Props {
 }
@@ -35,8 +34,8 @@ const useContainerStyle = makeStyles({
 
 const StyledAccordionSummary = withStyles({
     root: {
-        flexDirection: "column",
-        width: '100%',
+        // flexDirection: "column",
+        // width: '100%',
     },
     content: {
         marginBottom: 0,
@@ -61,36 +60,13 @@ interface KeyValuePair {
     value: string | number | boolean,
 }
 
-/**
- * API 검색용 AttrName을 일반 AttrName으로 변경
- * @param fullAttrName
- */
-function getAttrName(fullAttrName: string) {
-    const tmpAttrNameArr = fullAttrName.split('.');
-    return tmpAttrNameArr[tmpAttrNameArr.length - 1];
-}
-
-// function generateSearchConditionStr(searchState: ProjectDbSearchItems, schema: ProjectDbSchemaVO[]) {
-//     let result = '';
-//     Object.keys(searchState).forEach(entityName => {
-//         const values: KeyValuePair[] = searchState[entityName];
-//         values.forEach((kv, index) => {
-//             const entityInfo = schema[entityName];
-//             const attrName = getAttrName(kv.key);
-//             const attrInfo = entityInfo.attributes[attrName];
-//             result = `${result}${index > 0 ? ',' : ''} ${attrInfo.description}=${kv.value}`
-//         });
-//     });
-//     return result;
-// }
 
 export default function Form(props: Props) {
 
     const {schema, filter, list, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
     const entities = Object.keys(filter);
+
     const dispatch = useDispatch();
-    const [state, setState] = useState(false);
-    const [searchConditionStr, setSearchConditionStr] = useState('설정된 검색 조건 없음');
     const [searchState, setSearchState] = useState<ProjectDbSearchItems>({})
     const setDynamicSelectState = useCallback((entityName: string, searchName: string, value: string) => {
         const newState = {...dynamicSelectState};
@@ -98,18 +74,56 @@ export default function Form(props: Props) {
         dispatch(projectDbAction.setDynamicSelectState(newState));
     }, [dynamicSelectState]);
 
+    const [searchInputs, setSearchInputs] = useState<DynamicInput[]>([]);
+
+    interface DynamicInput {
+        entityName: string,
+        attrName: string,
+        attrInfo: any,
+        value: string | boolean | number
+    };
+    const prepareInputs = () => {
+
+        const initInputs: DynamicInput[] = [];
+
+        entities.map((entityName, index) => {
+
+            const attributes = filter[entityName];
+            let hasCheckedAttr = false;
+            Object.keys(attributes).forEach(attrName => {
+                if (attributes[attrName]) {
+                    hasCheckedAttr = true;
+                    return false;
+                }
+            });
+
+            Object.keys(attributes).map((attrName, index2) => {
+
+                const attrInfo = schema[entityName].attributes[attrName];
+                if (!attrInfo.search || !attributes[attrName]) return true;
+
+
+
+                initInputs.push({
+                    'entityName': entityName,
+                    'attrName': attrName,
+                    'attrInfo': attrInfo,
+                    'value': (attrInfo.type==='Boolean')?false:''
+                });
+
+            });
+        });
+
+        return initInputs;
+    };
+
+
     useEffect(() => {
-        console.debug(`dynamic select state is `, dynamicSelectState);
         return () => {
-            console.debug('clean dynamic select state');
-            dispatch(projectDbAction.setDynamicSelectState({}));
+            const initDynamicSelectState = {};
+            dispatch(projectDbAction.setDynamicSelectState(initDynamicSelectState));
         }
     }, []);
-
-    // useEffect(() => {
-    //     const strSearchCondition = generateSearchConditionStr(searchState, schema);
-    //     setSearchConditionStr(`${strSearchCondition} - 검색 결과 ${list.length}건`)
-    // }, [list, filter]);
 
     useEffect(() => {
         const newSearchState = {};
@@ -130,13 +144,9 @@ export default function Form(props: Props) {
         });
 
         setSearchState(newSearchState);
+        setSearchInputs(prepareInputs());
 
     }, [filter]);
-
-    const toggleDrawer = (isOpen: boolean) =>
-        (event: React.KeyboardEvent | React.MouseEvent) => {
-            setState(isOpen);
-        };
 
     const onSearch = () => {
         const searchData: ProjectDbSearch = {
@@ -171,8 +181,10 @@ export default function Form(props: Props) {
         setSearchState(newSearchState);
     }
 
-    const renderInput = (entityName: string, attrName: string, attrInfo: any) => {
-        console.debug(entityName, attrName, attrInfo);
+    //const renderInput = (entityName: string, attrName: string, attrInfo: any) => {
+    const renderInput = (inputState: DynamicInput, index) => {
+        const {entityName, attrName, attrInfo, value: inputValue} = inputState;
+
         const searchName = (attrInfo.prefix) ? `${attrInfo.prefix}.${attrName}` : attrName;
         const onChange = (attrInfo, event: React.ChangeEvent<any> | SelectChangeEvent<any>) => {
 
@@ -181,7 +193,6 @@ export default function Form(props: Props) {
                 value = '';
             }
             updateSearchState(entityName, searchName, value);
-            setDynamicSelectState(entityName, searchName, value);
         };
 
         let tag: any;
@@ -190,26 +201,62 @@ export default function Form(props: Props) {
         switch (attrType) {
             case "String":
                 tag = <TextField
+                    sx={{marginRight:'3px'}}
                     type="string" label={attrInfo.description}
-                    onBlur={(event) => onChange(attrInfo, event)}/>
+                    //onBlur={(event) => onChange(attrInfo, event)}
+                    //value={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`]}/>
+                    onChange={(event) => {
+                        let newState = [...searchInputs];
+                        newState[index].value = event.target.value;
+
+                        setSearchInputs(newState);
+                        let value : string = event.target.value;
+
+                        updateSearchState(entityName, searchName, value);
+                    }}
+                    value={inputValue}/>
                 break;
             case "Long":
                 tag = <TextField
+                    sx={{marginRight:'3px'}}
                     type="number" label={attrInfo.description}
-                    onBlur={(event) => onChange(attrInfo, event)}/>
+                    onBlur={(event) => onChange(attrInfo, event)}
+                    //value={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`]}/>
+                    value={inputValue}/>
                 break;
             case "Boolean":
                 tag = <FormControlLabel
-                    control={<Checkbox value={true}/>} label={attrInfo.description}
-                    onChange={(event) => onChange(attrInfo, event)}/>
+                    sx={{marginRight:'3px'}}
+                    control={<Checkbox
+                        //checked={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`] ? dynamicSelectState[`${entityName}.${searchName}`] : false}
+                        checked={inputValue as boolean}
+                        value={true}/>}
+                    label={attrInfo.description}
+                    onChange={(event, checked) => {
+                        let newState = [...searchInputs];
+                        newState[index].value = checked;
+
+                        setSearchInputs(newState);
+                        onChange(attrInfo, event);
+                    }
+                    }/>
                 break;
             case "Select":
                 tag = (
                     <Select
-                        sx={{minWidth: '180px'}}
+                        sx={{minWidth: '180px',marginRight:'3px'}}
                         displayEmpty
-                        value={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`] ? dynamicSelectState[`${entityName}.${searchName}`] : ''}
-                        onChange={(event) => onChange(attrInfo, event)}
+                        //value={dynamicSelectState && dynamicSelectState[`${entityName}.${searchName}`] ? dynamicSelectState[`${entityName}.${searchName}`] : ''}
+                        value={inputValue}
+                        onChange={(event) => {
+
+                            let newState = [...searchInputs];
+                            newState[index].value = event.target.value;
+
+                            setSearchInputs(newState);
+                            onChange(attrInfo, event);
+
+                        }}
                     >
                         <MenuItem key={0} value=""> {attrInfo.description} 선택 </MenuItem>
                         {
@@ -232,16 +279,26 @@ export default function Form(props: Props) {
         return tag;
     };
 
+    const removeSearchFilter = (entityName: string, item: KeyValuePair, event: React.MouseEvent<SVGSVGElement>) => {
+        event.stopPropagation();
+        setDynamicSelectState(entityName, item.key, '');
+        updateSearchState(entityName, item.key, '');
+    };
+
     return (
         <Box className={useContainerStyle().root}>
             <Accordion>
                 <StyledAccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                 >
-                    <Typography>
+                    <Typography component={'span'}>
+                        <Chip icon={<TagIcon/>} sx={{backgroundColor: '#d3e9ff', fontWeight: 'bold'}} variant="outlined"
+                              label={`검색 결과 - ${list.length}건`}/>
+                    </Typography>
+                    <Typography component={'span'}>
                         {
                             Object.keys(searchState).length > 0 && Object.keys(searchState).map((entityName, index) => {
-                                return (<>
+                                return (<div key={index}>
                                     {
                                         searchState[entityName].map((item, index2) => {
                                             if (item.value === '') return true;
@@ -249,55 +306,64 @@ export default function Form(props: Props) {
                                             const attrName = getAttrName(item.key);
                                             const attrInfo = entityInfo.attributes[attrName];
                                             return (<Chip
+                                                key={index2 * 1000}
+                                                icon={<HighlightOffIcon
+                                                    onClick={event => removeSearchFilter(entityName, item, event)}/>}
                                                 label={`${attrInfo.description}:${item.value}`}
                                                 sx={{marginLeft: '3px', marginRight: '3px'}}
                                                 variant="outlined"
                                             />);
                                         })
                                     }
-                                </>);
+                                </div>);
                             })
-
                         }
-
-                        <Chip variant="outlined" label={`검색 결과 - ${list.length}건`}/>
                     </Typography>
                 </StyledAccordionSummary>
                 <AccordionDetails>
-                    {entities.map((entityName, index) => {
-                        const attributes = filter[entityName];
-                        let hasCheckedAttr = false;
-                        Object.keys(attributes).forEach(attrName => {
-                            if (attributes[attrName]) {
-                                hasCheckedAttr = true;
-                                return false;
-                            }
-                        });
-                        return hasCheckedAttr && (
-                            <div key={index}>
-                                <h4>
-                                    {schema[entityName].description}
-                                </h4>
-                                <div>
-                                    {Object.keys(attributes).map((attrName, index2) => {
-                                        const attrInfo = schema[entityName].attributes[attrName];
-                                        if (!attrInfo.search) return true;
+                    {searchInputs.map((item, index) => renderInput(item, index))}
+                    <div style={{display: 'inline-flex'}}>
+                        <Button onClick={onSearch}>검색</Button>
+                    </div>
+                    {/*{entities.map((entityName, index) => {*/}
+                    {/*    const attributes = filter[entityName];*/}
+                    {/*    let hasCheckedAttr = false;*/}
+                    {/*    Object.keys(attributes).forEach(attrName => {*/}
+                    {/*        if (attributes[attrName]) {*/}
+                    {/*            hasCheckedAttr = true;*/}
+                    {/*            return false;*/}
+                    {/*        }*/}
+                    {/*    });*/}
+                    {/*    return hasCheckedAttr && (*/}
+                    {/*        <div key={index}>*/}
+                    {/*            <h4>*/}
+                    {/*                {schema[entityName].description}*/}
+                    {/*            </h4>*/}
+                    {/*            <div>*/}
+                    {/*                {Object.keys(attributes).map((attrName, index2) => {*/}
+                    {/*                    const attrInfo = schema[entityName].attributes[attrName];*/}
+                    {/*                    if (!attrInfo.search) return true;*/}
 
-                                        return attributes[attrName] && (
-                                            <div key={index2} style={{display: 'inline-flex', marginRight: '10px'}}>
-                                                {renderInput(entityName, attrName, attrInfo)}
-                                            </div>
-                                        );
-                                    })}
-                                    <div style={{display: 'inline-flex'}}>
-                                        <Button onClick={onSearch}>검색</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
+                    {/*                    return attributes[attrName] && (*/}
+                    {/*                        <div key={index2} style={{display: 'inline-flex', marginRight: '10px'}}>*/}
+                    {/*                            {renderInput(entityName, attrName, attrInfo)}*/}
+                    {/*                        </div>*/}
+                    {/*                    );*/}
+                    {/*                })}*/}
+                    {/*                <div style={{display: 'inline-flex'}}>*/}
+                    {/*                    <Button onClick={onSearch}>검색</Button>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*    )*/}
+                    {/*})}*/}
                 </AccordionDetails>
             </Accordion>
         </Box>
     )
+}
+
+function getAttrName(fullAttrName: string) {
+    const tmpAttrNameArr = fullAttrName.split('.');
+    return tmpAttrNameArr[tmpAttrNameArr.length - 1];
 }

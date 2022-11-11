@@ -68,6 +68,11 @@ export default function List(props: Props) {
                     }
                 });
             }
+
+            if(typeof result === 'boolean'){
+                result = (result)?'Y':'N';
+            }
+
             return result;
         } catch (e) {
             console.debug(e);
@@ -76,18 +81,26 @@ export default function List(props: Props) {
         }
     }
 
-    const assignGridValues = (prefix: string, entity: any, columns: Column[], row: Row) => {
+    const assignRowValues = (prefix: string, entity: any, row: Row) => {
         Object.keys(entity).forEach(attrName => {
             if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
+            const newAttrName = `${prefix}_${attrName}`;
+            console.debug(attrName, typeof entity[attrName], isVisibleAttr(prefix, attrName), entity[attrName], getHumanReadableAttrValue(entity, prefix, attrName));
+            row[newAttrName] = getHumanReadableAttrValue(entity, prefix, attrName);
+        });
+    }
 
+    const assignColumnValues = (prefix: string, entity: any, columns: Column[]) => {
+        Object.keys(entity).forEach(attrName => {
+            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
+            if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
             const newAttrName = `${prefix}_${attrName}`;
             const column: Column = {
                 key: newAttrName,
                 name: getHumanReadableAttrName(prefix, attrName)
             };
             columns.push(column);
-            row[newAttrName] = getHumanReadableAttrValue(entity, prefix, attrName);
         });
     }
 
@@ -95,17 +108,21 @@ export default function List(props: Props) {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
 
+        list && list.length > 0 && Object.keys(list[0]).forEach((entityName) => {
+            const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
+            list[0][entityName] && assignColumnValues(entityNameReal, list[0][entityName], newColumns);
+        });
+
+        setColumns(newColumns);
+
         list && list.forEach((entities, index) => {
             const row: Row = {id: index};
             Object.keys(entities).forEach((entityName) => {
                 const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
-                console.debug(entityName, entityNameReal);
-                entities[entityName] && assignGridValues(entityNameReal, entities[entityName], newColumns, row);
+                entities[entityName] && assignRowValues(entityNameReal, entities[entityName], row);
             });
             newRows.push(row);
         });
-
-        setColumns(newColumns);
         setRows(newRows);
     };
 

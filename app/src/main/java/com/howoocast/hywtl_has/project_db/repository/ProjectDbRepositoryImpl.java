@@ -122,7 +122,8 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         if (enumType != null) {
             builder.and(pathBuilder.getEnum(attrName, enumType).stringValue().eq(attrValue));
         } else if (attrType.equals("Boolean")) {
-            builder.and(pathBuilder.getBoolean(attrName).stringValue().eq(attrValue));
+            //builder.and(pathBuilder.getBoolean(attrName).stringValue().eq(attrValue));
+            builder.and(pathBuilder.getBoolean(attrName).eq(Boolean.valueOf(attrValue)));
         } else {
             builder.and(pathBuilder.getString(attrName).contains(attrValue));
         }
