@@ -123,12 +123,6 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
                         {projectBasicBidTypeName(item)}
                       </MenuItem>
                     ))}
-                    <MenuItem value={ProjectProgressStatus.TEMPORARY}>
-                      {projectProgressStatusName(ProjectProgressStatus.TEMPORARY)}
-                    </MenuItem>
-                    <MenuItem value={ProjectProgressStatus.UNDER_CONTRACT}>
-                      {projectProgressStatusName(ProjectProgressStatus.UNDER_CONTRACT)}
-                    </MenuItem>
                   </Select>
                 </DataFieldWithLabel>
               </Grid>
