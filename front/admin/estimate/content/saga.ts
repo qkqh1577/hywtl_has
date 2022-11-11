@@ -42,7 +42,11 @@ function* watchUpsert() {
     const { payload: params } = yield take(estimateContentAction.upsert);
     try {
       yield put(estimateContentAction.requestUpsert('request'));
-      yield call(estimateContentApi.upsert, params);
+      const data = yield call(estimateContentApi.upsert, params);
+      if (!params.id) {
+        const detail: EstimateContentVO = yield call(estimateContentApi.getOne, data.id);
+        yield put(estimateContentAction.setOne(detail));
+      }
       yield put(estimateContentAction.requestUpsert('done'));
       yield put(dialogAction.openAlert('저장하였습니다.'));
     }

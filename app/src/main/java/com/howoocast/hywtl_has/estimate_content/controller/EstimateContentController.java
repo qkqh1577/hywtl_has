@@ -63,10 +63,12 @@ public class EstimateContentController {
     }
 
     @PutMapping("/admin/estimate-content")
-    public void add(
+    public EstimateContentView add(
         @Valid @RequestBody EstimateContentAddParameter parameter
     ) {
-        service.add(parameter);
+        return EstimateContentMapper.toView(
+            service.add(parameter)
+        );
     }
 
     @PutMapping("/admin/estimate-content/{id}")

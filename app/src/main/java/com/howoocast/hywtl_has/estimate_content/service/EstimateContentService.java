@@ -46,7 +46,7 @@ public class EstimateContentService {
     }
 
     @Transactional
-    public void add(
+    public EstimateContent add(
         EstimateContentAddParameter parameter
     ) {
         List<EstimateContent> list = repository.findAll();
@@ -76,7 +76,7 @@ public class EstimateContentService {
             }
         }
 
-        repository.save(EstimateContent.of(
+        return repository.save(EstimateContent.of(
             parameter.getName(),
             parameterTestTypeList,
             parameter.getDetailList()
