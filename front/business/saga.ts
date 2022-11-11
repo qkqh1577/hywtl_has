@@ -40,7 +40,7 @@ function* watchRegistrationNumber() {
     const list: BusinessShortVO[] = yield call(businessApi.getList, registrationNumber);
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
-      if (!detail || detail.id !== list[0].id) {
+      if (!detail || detail.id !== list[0].id || detail.registrationNumber === list[0].registrationNumber) {
         yield put(dialogAction.openAlert({
           status:   DialogStatus.ERROR,
           children: '이미 사용중인 사업자등록번호 입니다.'

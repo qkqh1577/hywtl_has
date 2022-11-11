@@ -10,6 +10,7 @@ import Input from 'layouts/Input';
 
 interface Props {
   checkButton: React.ReactNode;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export default function BusinessBasicSection(props: Props) {
@@ -102,15 +103,7 @@ export default function BusinessBasicSection(props: Props) {
                   {props.checkButton}
                 </InputAdornment>
               }
-              onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e.target.value || undefined;
-                if (formik.values.registrationNumber !== value) {
-                  formik.setFieldValue('registrationNumber', value);
-                }
-              }}
+              inputRef={props.inputRef}
             />
           </DataFieldWithLabel>
         </Box>

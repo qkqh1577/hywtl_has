@@ -6,6 +6,7 @@ import Button from 'layouts/Button';
 
 export interface Props {
   onCheck: DefaultFunction<string>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export default function RegistrationNumberCheckButton(props: Props) {
@@ -21,13 +22,13 @@ export default function RegistrationNumberCheckButton(props: Props) {
     <Button
       shape="small"
       children="중복 조회"
-      onClick={() => {
-        const value = formik.values.registrationNumber || undefined;
-        console.log("registrationNumber check value : ", value)
+      onMouseDown={(e) => {
+        const value = props.inputRef.current?.value;
         if (!value) {
           error('사업자 번호를 입력해 주시기 바랍니다.');
           return;
         }
+        formik.setFieldValue('registrationNumber', value);
         props.onCheck(value);
       }}
     />
