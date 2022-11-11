@@ -133,26 +133,53 @@ export default function ProjectAddModal({ open, onClose }: AddModalProps) {
             width:   '40%',
             height:  'calc(100% - 40px)',
             border:  `1px solid ${ColorPalette._e4e9f2}`,
+            padding: '20px'
           }}>
             <Grid container spacing={2}>
               {memoLabelList.map((label,
                                   i
-              ) => (
-                <Grid key={label} item sm={12}>
-                  <DataFieldWithLabel label={label} labelPosition="top">
-                    <Input
-                      key={formik.values[`memo_${i}`]}
-                      defaultValue={formik.values[`memo_${i}`] ?? ''}
-                      onBlur={(e) => {
-                        const value = e.target.value || undefined;
-                        if (formik.values[`memo_${i}`] !== value) {
-                          formik.setFieldValue(`memo_${i}`, value);
-                        }
-                      }}
-                    />
-                  </DataFieldWithLabel>
-                </Grid>
-              ))}
+              ) => {
+                return (
+                  (<Grid key={label} item sm={12}>
+                    <DataFieldWithLabel label={label} labelPosition="top">
+                      {memoLabelList.length === i + 1 && (
+                        <Box sx={{
+                          width:  '100%',
+                          height: '15vh',
+                          mt:      1,
+                          mb:      1,
+                          border:  `1px solid ${ColorPalette._e4e9f2}`,
+                        }}>
+                          <Input
+                            multiline
+                            variant="outlined"
+                            key={formik.values[`memo_${i}`]}
+                            defaultValue={formik.values[`memo_${i}`] ?? ''}
+                            onBlur={(e) => {
+                              const value = e.target.value || undefined;
+                              if (formik.values[`memo_${i}`] !== value) {
+                                formik.setFieldValue(`memo_${i}`, value);
+                              }
+                            }}
+                          />
+                        </Box>
+                      )}
+                      {memoLabelList.length !== i + 1 && (
+                        <Input
+                          key={formik.values[`memo_${i}`]}
+                          defaultValue={formik.values[`memo_${i}`] ?? ''}
+                          onBlur={(e) => {
+                            const value = e.target.value || undefined;
+                            if (formik.values[`memo_${i}`] !== value) {
+                              formik.setFieldValue(`memo_${i}`, value);
+                            }
+                          }}
+                        />
+                      )}
+                    </DataFieldWithLabel>
+                  </Grid>)
+                );
+              })}
             </Grid>
           </Box>
           <Box sx={{
