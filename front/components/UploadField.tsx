@@ -68,7 +68,7 @@ export default function UploadField({ accept, name, disableDownload, disableSele
               width:           '200px',
               height:          '200px',
               borderRadius:    '10px',
-              backgroundColor: ColorPalette._e4e9f2,
+              backgroundColor: ColorPalette._b2b4b7,
             }}
           />
           {edit && (<Box sx={{
