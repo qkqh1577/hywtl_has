@@ -26,6 +26,7 @@ dependencies {
     implementation "com.querydsl:querydsl-core:${querydslVersion}"
     implementation "com.querydsl:querydsl-apt:${querydslVersion}"
     implementation "org.mariadb.jdbc:mariadb-java-client:${mariadbDriverVersion}"
+    implementation 'org.docx4j:docx4j-documents4j-local:11.4.8'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
