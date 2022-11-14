@@ -49,11 +49,11 @@ export default function ProjectAddModalRoute() {
       });
     }
   });
-
   useEffect(() => {
     closeStatus(requestAdd, () => {
       dispatch(projectAction.setAddModal(false));
       dispatch(projectAction.setFilter(initialProjectQuery));
+      formik.resetForm();
     }, () => {
       dispatch(projectAction.requestAdd('idle'));
     });
