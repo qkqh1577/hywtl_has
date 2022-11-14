@@ -106,7 +106,7 @@ export default function ProjectBasicContributorSection(props: Props) {
               <TableRow>
                 <Th sx={{ width: '150px' }}>소속</Th>
                 <Th sx={{ width: '150px' }}>이름</Th>
-                <Th sx={{ width: '80px' }}>기여도(%)</Th>
+                <Th sx={{ width: '100px' }}>기여도(%)</Th>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -184,7 +184,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                 <Th sx={{ width: '150px' }}>업체명</Th>
                 <Th sx={{ width: '150px' }}>소속</Th>
                 <Th sx={{ width: '150px' }}>이름</Th>
-                <Th sx={{ width: '80px' }}>기여도(%)</Th>
+                <Th sx={{ width: '100px' }}>기여도(%)</Th>
               </TableRow>
             </TableHead>
             <TableBody>
