@@ -326,7 +326,7 @@ export default function () {
                 readOnly
                 variant="standard"
                 key={formik.values.manager}
-                defaultValue={formik.values.manager.name}
+                defaultValue={formik.values.manager ? formik.values.manager.name : ''}
               />
             )}
             {edit && (
