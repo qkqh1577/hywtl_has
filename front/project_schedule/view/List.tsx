@@ -59,11 +59,11 @@ export default function List(props: Pick<ProjectScheduleProps, | 'list' | 'onDet
                   `
                 ${dayjs(item.startTime)
                   .locale('ko')
-                  .format('YYYY년 MM월 DD일 ddd hh:mm')}
+                  .format('YYYY년 MM월 DD일 ddd HH:mm')}
                 ~
                 ${dayjs(item.endTime)
                   .locale('ko')
-                  .format('YYYY년 MM월 DD일 ddd hh:mm')}
+                  .format('YYYY년 MM월 DD일 ddd HH:mm')}
                 [${item.type}] ${item.title}
                 `
                 }
