@@ -279,7 +279,7 @@ export default function () {
               alignItems: 'center',
             }}>
               <Checkbox
-                readOnly={!edit}
+                disabled={!edit}
                 checked={typeof formik.values.alertBefore === 'number' && formik.values.alertBefore >= 0}
                 onChange={() => {
                   if (typeof formik.values.alertBefore === 'number') {
