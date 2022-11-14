@@ -70,12 +70,14 @@ export default function ({ totalElements }: Props) {
         <Select
           value={formik.values.tabName ?? ''}
           variant="outlined"
+          displayEmpty
           onChange={(e) => {
             const value = e.target.value || undefined;
             if (formik.values.tabName !== value) {
               formik.setFieldValue('tabName', value);
             }
           }}>
+          <MenuItem value="">전체</MenuItem>
           {tabNameList.map(item => (
             <MenuItem key={item} value={item}>{item}</MenuItem>
           ))}
