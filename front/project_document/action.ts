@@ -40,6 +40,6 @@ export const projectDocumentAction = {
   change:          createAction(ProjectDocumentActionType.change)<ProjectDocumentChangeParameter>(),
   requestChange:   createAction(ProjectDocumentActionType.requestChange)<ApiStatus>(),
   addModal:        createAction(ProjectDocumentActionType.addModal)<ProjectDocumentType | undefined>(),
-  deleteOne:       createAction(ProjectDocumentActionType.deleteOne)(),
+  deleteOne:       createAction(ProjectDocumentActionType.deleteOne)<ProjectDocumentId | undefined>(),
   requestDelete:   createAction(ProjectDocumentActionType.requestDelete)<ApiStatus>(),
 };

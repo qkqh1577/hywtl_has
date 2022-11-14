@@ -19,6 +19,7 @@ import {
 } from 'project_document/parameter';
 import useDialog from 'dialog/hook';
 import { closeStatus } from 'components/DataFieldProps';
+import { ProjectDocumentId } from 'project_document/domain';
 
 export default function ProjectDocumentDetailModalRoute() {
 
@@ -28,7 +29,7 @@ export default function ProjectDocumentDetailModalRoute() {
 
   const onClose = useCallback(() => dispatch(projectDocumentAction.setId(undefined)), [dispatch]);
   const change = useCallback((params: ProjectDocumentChangeParameter) => dispatch(projectDocumentAction.change(params)), [dispatch]);
-  const deleteOne = useCallback(() => dispatch(projectDocumentAction.deleteOne()), [dispatch]);
+  const deleteOne = useCallback((id: ProjectDocumentId) => dispatch(projectDocumentAction.deleteOne(id)), [dispatch]);
 
   const formik = useFormik<ProjectDocumentChangeParameter>({
     initialValues: initialProjectDocumentChangeParameter,
