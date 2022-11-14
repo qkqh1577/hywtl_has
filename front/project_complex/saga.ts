@@ -142,9 +142,13 @@ function* watchUpdateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
     try {
+      console.log("params : ", params);
       yield put(projectComplexAction.requestUpdateBuilding('request'));
       yield call(projectComplexApi.updateBuilding, params);
       yield put(projectComplexAction.requestUpdateBuilding('done'));
+      if (params.buildingDocumentId !== -1) {
+        yield put(projectComplexAction.setBuilding(undefined));
+      }
     }
     catch (e) {
       const message = getErrorMessage(projectComplexAction.updateBuilding, e);
