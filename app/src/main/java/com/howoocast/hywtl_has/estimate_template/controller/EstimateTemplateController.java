@@ -75,10 +75,10 @@ public class EstimateTemplateController {
     }
 
     @PutMapping("/admin/estimate-template")
-    public void add(
+    public EstimateTemplateView add(
         @Valid @RequestBody EstimateTemplateParameter parameter
     ) {
-        service.add(parameter);
+        return EstimateTemplateView.assemble(service.add(parameter));
     }
 
     @PutMapping("/admin/estimate-template/{id}")

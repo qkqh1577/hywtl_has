@@ -89,7 +89,7 @@ function Element() {
   return (
     <FormikProvider value={formik}>
       <BusinessDetail
-        basic={<BusinessBasicRoute />}
+        basic={<BusinessBasicRoute/>}
         involvedProjectList={<BusinessInvolvedProjectRoute />}
         rivalStatistic={<BusinessRivalStatisticRoute />}
         rivalProjectList={<BusinessRivalProjectListRoute />}

@@ -17,6 +17,7 @@ import Button from 'layouts/Button';
 import { ColorPalette } from 'assets/theme';
 import Input, { InputProps } from 'layouts/Input';
 import TextBox from 'layouts/Text';
+import defaultImage from 'assets/default-profile.png';
 
 interface UploadFieldProps
   extends Omit<InputProps, |'onChange'> {
@@ -34,7 +35,6 @@ export default function UploadField({ accept, name, disableDownload, disableSele
   const file = useMemo(() => props.value ? toView(props.value as File | FileItemView) : undefined, [props.value]);
   const multipartFile = useMemo(() => props.value && (props.value as any).multipartFile ? (props.value as any).multipartFile : undefined, [file]);
   const [imageUrl, setImageUrl] = useState<string>();
-
   useEffect(() => {
     if (!file) {
       setImageUrl(undefined);
@@ -56,16 +56,19 @@ export default function UploadField({ accept, name, disableDownload, disableSele
       flexWrap:      'nowrap',
       flexDirection: 'column',
     }}>
-      {preview && file && (
+      {preview && (
         <Box>
           <img
-            src={imageUrl}
+            src={imageUrl ?? ''}
             alt="프로필 이미지"
+            onError={(e) => {
+              (e.target as any).src = defaultImage;
+            }}
             style={{
-              width:        '200px',
-              height:       '200px',
-              objectFit:    'contain',
-              borderRadius: '10px'
+              width:           '200px',
+              height:          '200px',
+              borderRadius:    '10px',
+              backgroundColor: ColorPalette._b2b4b7,
             }}
           />
           {edit && (<Box sx={{

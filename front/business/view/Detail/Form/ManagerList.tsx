@@ -19,7 +19,7 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
 
-const spaceCount = 4;
+const spaceCount = 3;
 export default function BusinessManagerListSection() {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
@@ -251,7 +251,7 @@ export default function BusinessManagerListSection() {
                       if (!edit) {
                         return;
                       }
-                      if(manager.status !== e.target.value){
+                      if (manager.status !== e.target.value) {
                         formik.setFieldValue(`managerList.${i}.status`, e.target.value);
                       }
                     }}
@@ -262,7 +262,7 @@ export default function BusinessManagerListSection() {
                         label={businessManagerStatusName(item)}
                         value={item}
                         control={
-                          <Radio/>
+                          <Radio />
                         }
                       />
                     ))}
@@ -280,13 +280,43 @@ export default function BusinessManagerListSection() {
                   />
                 )}
               </DataFieldWithLabel>
+            </Box>
+            <Box sx={{
+              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
+              marginRight:  '30px',
+              marginBottom: '15px',
+            }}>
+              {!edit && (
+                <Box sx={{
+                  display:    'flex',
+                  alignItems: 'center',
+                }}>
+                  <DataFieldWithLabel label="담당 프로젝트">
+                    <Input
+                      disabled
+                      key={manager.projectCount}
+                      defaultValue={manager.projectCount ?? '-'}
+                    />
+                  </DataFieldWithLabel>
+                  <Button
+                    sx={{
+                      ml: 1
+                    }}
+                    onClick={() => {
+                      console.log('modal open');
+                    }}
+                  >
+                    상세
+                  </Button>
+                </Box>
+              )}
               {edit && (
                 <Box sx={{
                   display:        'flex',
                   paddingLeft:    'calc(100% - 80px)',
                   width:          '100%',
                   justifyContent: 'flex-end',
-                  mt: 2
+                  mt:             2
                 }}>
                   <Button
                     shape="small3"
@@ -302,21 +332,6 @@ export default function BusinessManagerListSection() {
                     }}
                   />
                 </Box>
-              )}
-            </Box>
-            <Box sx={{
-              width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
-              marginRight:  '30px',
-              marginBottom: '15px',
-            }}>
-              {!edit && (
-                <DataFieldWithLabel label="담당 프로젝트">
-                  <Input
-                    disabled
-                    key={manager.projectCount}
-                    defaultValue={manager.projectCount ?? '-'}
-                  />
-                </DataFieldWithLabel>
               )}
             </Box>
             <Divider />

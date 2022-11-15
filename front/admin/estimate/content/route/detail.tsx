@@ -62,8 +62,8 @@ function Element() {
 
   useEffect(() => {
     closeStatus(requestUpsert, () => {
-      if (id) {
-        dispatch(estimateContentAction.setId(EstimateContentId(id)));
+      if (detail) {
+        dispatch(estimateContentAction.setId(EstimateContentId(detail.id)));
       }
       else {
         navigate('/admin/estimate-content-management');

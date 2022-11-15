@@ -53,7 +53,9 @@ function Element() {
 
   useEffect(() => {
     closeStatus(requestUpsert, () => {
-      dispatch(estimateTemplateAction.setId(id ? EstimateTemplateId(id) : undefined));
+      if(detail) {
+        dispatch(estimateTemplateAction.setId(EstimateTemplateId(detail.id)));
+      }
     }, () => {
       formik.setSubmitting(false);
       dispatch(estimateTemplateAction.requestUpsert('idle'));
