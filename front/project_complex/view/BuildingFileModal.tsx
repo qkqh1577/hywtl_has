@@ -94,7 +94,9 @@ function DetailFooter(props: DetailFooterProps) {
       width:                         '100%',
       '& > button:not(:last-child)': {
         marginRight: '10px',
-      }
+      },
+      display: 'flex',
+      justifyContent: 'center',
     }}>
       <Button
         shape="basic3"

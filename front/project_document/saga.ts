@@ -104,10 +104,9 @@ function* watchChange() {
 
 function* watchDelete() {
   while (true) {
-    yield take(projectDocumentAction.deleteOne);
+    const { payload: id } = yield take(projectDocumentAction.deleteOne);
     try {
       yield put(projectDocumentAction.requestDelete('request'));
-      const { id } = yield select((root: RootState) => root.projectDocument);
       if (!id) {
         const message = '자료가 선택되지 않았습니다.';
         yield put(dialogAction.openError(message));

@@ -1,12 +1,14 @@
 package com.howoocast.hywtl_has.project_document.service;
 
 import com.howoocast.hywtl_has.common.domain.EventEntity;
+import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexBuildingRepository;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocumentType;
 import com.howoocast.hywtl_has.project_document.parameter.ProjectDocumentAddParameter;
@@ -38,6 +40,8 @@ public class ProjectDocumentService {
     private final FileItemService fileItemService;
 
     private final ApplicationEventPublisher eventPublisher;
+
+    private final ProjectComplexBuildingRepository projectComplexBuildingRepository;
 
     @Transactional(readOnly = true)
     public List<ProjectDocument> list(
@@ -105,6 +109,10 @@ public class ProjectDocumentService {
 
     @Transactional
     public void delete(Long id) {
+        projectComplexBuildingRepository.findByBuildingDocument_Id(id).ifPresent(building -> {
+            throw new IllegalRequestException(ProjectDocument.KEY + ".document.violation",
+                "해당 자료는 동 정보에 연결되어 삭제할 수 없습니다. 자료를 삭제하려면, 동 정보 연결을 해제해 주세요.");
+        });
         ProjectDocument instance = this.load(id);
         eventPublisher.publishEvent(ProjectLogEvent.of(
             instance.getProject(),

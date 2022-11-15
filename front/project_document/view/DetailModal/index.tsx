@@ -6,18 +6,20 @@ import Form from 'project_document/view/DetailModal/Form';
 import ProjectDocumentUpdateModalButtonBlock from 'project_document/view/DetailModal/ButtonBlock';
 import { DefaultFunction } from 'type/Function';
 import { FormikContext } from 'formik';
+import { ProjectDocumentId } from 'project_document/domain';
 
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
   onChange: DefaultFunction;
-  onDelete: DefaultFunction;
+  onDelete: (id: ProjectDocumentId) => void;
   onCancel: DefaultFunction;
 }
 
 export default function ProjectDocumentDetailModal(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+
   return (
     <ModalLayout
       width="35vw"
@@ -37,6 +39,7 @@ export default function ProjectDocumentDetailModal(props: Props) {
         <>
           {!edit && (
             <ProjectDocumentDetailModalButtonBlock
+              projectDocumentId={ProjectDocumentId(formik.values.id)}
               onEdit={() => {
                 formik.setFieldValue('edit', true);
               }}

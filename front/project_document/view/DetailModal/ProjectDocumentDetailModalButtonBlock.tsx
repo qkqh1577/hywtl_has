@@ -2,17 +2,20 @@ import React from 'react';
 import { Box, } from '@mui/material';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
+import { ProjectDocumentId } from 'project_document/domain';
 
 interface Props {
-  onDelete: DefaultFunction;
+  onDelete: (id: ProjectDocumentId) => void;
   onEdit: DefaultFunction;
   onClose: DefaultFunction;
+  projectDocumentId: ProjectDocumentId;
 }
 
 export default function ProjectDocumentDetailModalButtonBlock({
                                                                 onDelete,
                                                                 onEdit,
                                                                 onClose,
+                                                                projectDocumentId
                                                               }: Props) {
   return (
     <Box sx={{
@@ -23,7 +26,9 @@ export default function ProjectDocumentDetailModalButtonBlock({
     }}>
       <Button
         shape="basic3"
-        onClick={onDelete}
+        onClick={() => {
+          onDelete(projectDocumentId);
+        }}
         sx={{
           marginRight: '10px',
         }}>
