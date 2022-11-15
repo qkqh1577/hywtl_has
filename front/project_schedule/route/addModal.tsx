@@ -43,7 +43,7 @@ export default function ProjectScheduleAddModalRoute() {
         startTime,
         endTime,
         allDay,
-        title:            values.title ?? '',
+        title:            values.title,
         managerId:        values.managerId,
         alertBefore:      values.alertBefore,
         attendanceIdList: values.attendanceIdList,
