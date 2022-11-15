@@ -28,7 +28,6 @@ interface Props {
 }
 
 export default function MultiUserSelectorModal(props: Props) {
-
   const [keyword, setKeyword] = useState<string>();
   const [value, setValue] = useState<UserId[]>(Array.isArray(props.value) ? props.value : []);
   const [userList, setUserList] = useState<UserVO[]>([]);
@@ -98,7 +97,6 @@ export default function MultiUserSelectorModal(props: Props) {
                 onClick={() => {
                   if (keyword) {
                     setKeyword(undefined);
-                    onSubmit();
                   }
                 }}>
                 초기화
