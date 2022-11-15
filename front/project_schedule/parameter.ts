@@ -21,4 +21,3 @@ export const initialProjectScheduleParameter: ProjectScheduleParameter = {
   allDay:           false,
   attendanceIdList: [],
 };
-

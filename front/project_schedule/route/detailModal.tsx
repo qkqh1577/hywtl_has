@@ -74,6 +74,7 @@ export default function ProjectScheduleDetailModalRoute() {
         manager:   detail.manager,
         managerId: detail.manager.id,
         edit:      false,
+        attendanceIdList: detail.attendanceList?.map(item => item.id),
       } as ProjectScheduleParameter);
     }
   }, [detail]);

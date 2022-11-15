@@ -21,7 +21,7 @@ import UserIcon from 'layouts/UserIcon';
 
 interface Props {
   open: boolean;
-  value?: UserId[] | UserVO[];
+  value?: UserId[];
   title?: string;
   onClose: DefaultFunction;
   onChange: (value: UserId[] | undefined) => void;
@@ -30,7 +30,7 @@ interface Props {
 export default function MultiUserSelectorModal(props: Props) {
 
   const [keyword, setKeyword] = useState<string>();
-  const [value, setValue] = useState<UserId[]>(Array.isArray(props.value) ? (typeof props.value === 'object' ? props.value.map(item => item.id as UserId) : props.value) : []);
+  const [value, setValue] = useState<UserId[]>(Array.isArray(props.value) ? props.value : []);
   const [userList, setUserList] = useState<UserVO[]>([]);
 
   const onSubmit = () => {

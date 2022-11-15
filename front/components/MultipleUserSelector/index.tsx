@@ -1,7 +1,4 @@
-import {
-  UserId,
-  UserVO
-} from 'user/domain';
+import { UserId } from 'user/domain';
 import useDialog from 'dialog/hook';
 import { Box } from '@mui/material';
 import UserIcon from 'layouts/UserIcon';
@@ -13,7 +10,7 @@ interface Props {
   readOnly?: boolean;
   viewCount?: number;
   onChange: (value: UserId[] | undefined) => void;
-  value?: UserId[] | UserVO[];
+  value?: UserId[];
   title?: string;
 }
 
@@ -22,9 +19,9 @@ export default function MultiUserSelector(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = () => { setOpen(true);};
   const onClose = () => { setOpen(false);};
-  const value: UserId[] = Array.isArray(props.value) ?
-    (typeof props.value === 'object' ? props.value.map(item => item.id as UserId) : props.value)
+  const value: UserId[] = Array.isArray(props.value) ? props.value
     : (typeof props.value === 'undefined' ? [] : [props.value]);
+
   return (
     <Box sx={{
       display:        'flex',
