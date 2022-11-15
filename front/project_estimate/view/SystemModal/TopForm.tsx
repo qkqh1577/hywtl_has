@@ -4,7 +4,7 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Button from 'layouts/Button';
 import React, { useContext } from 'react';
-import { FormikContext } from 'formik';
+import { FormikContext, } from 'formik';
 import { DefaultFunction } from 'type/Function';
 
 interface Props {
@@ -17,7 +17,6 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const isDetail = !edit && formik.values.id;
-
   return (
     <Box
       sx={{
@@ -92,7 +91,9 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
           </Button>
         )}
         {isDetail && (
-          <Button>PDF 다운로드</Button>
+          <Button onClick={() => {
+            window.open(`/file-item?projectEstimateId=${isDetail}`, '_blank')
+          }}>PDF 다운로드</Button>
         )}
         {isDetail && (
           <Button shape="basic4">계약서 등록</Button>

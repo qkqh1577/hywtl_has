@@ -68,7 +68,7 @@ public class ProjectContractController {
     public void add(
         @PathVariable Long projectId,
         Authentication authentication,
-        @Valid @RequestBody ProjectContractParameter parameter
+        @Valid @ModelAttribute ProjectContractParameter parameter
     ) {
         service.add(
             projectId,
@@ -80,7 +80,7 @@ public class ProjectContractController {
     @PutMapping("/project/sales/contract/{id}")
     public void change(
         @PathVariable Long id,
-        @Valid @RequestBody ProjectContractParameter parameter
+        @Valid @ModelAttribute ProjectContractParameter parameter
     ) {
         service.change(id, parameter);
     }

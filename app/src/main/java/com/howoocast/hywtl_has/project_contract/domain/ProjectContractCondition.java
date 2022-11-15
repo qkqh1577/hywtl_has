@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.project_contract.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractConditionParameter.Description;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -28,11 +30,12 @@ public class ProjectContractCondition extends CustomEntity {
 
     public static ProjectContractCondition of(
         String title,
-        List<String> descriptionList
+        List<Description> descriptionList
     ) {
         ProjectContractCondition instance = new ProjectContractCondition();
         instance.title = title;
-        instance.descriptionList = descriptionList;
+        instance.descriptionList = descriptionList.stream().map(Description::getDescription)
+            .collect(Collectors.toList());
         return instance;
     }
 }

@@ -28,10 +28,15 @@ import { estimateTemplateAction } from 'admin/estimate/template/action';
 import { initialEstimateTemplateQuery } from 'admin/estimate/template/query';
 import { estimateContentAction } from 'admin/estimate/content/action';
 import { initialEstimateContentQuery } from 'admin/estimate/content/query';
+import {
+  FileUtil,
+  generateFile
+} from 'util/FileUtil';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem, list } = useSelector((root: RootState) => root.projectEstimate);
+  const { detail: project } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
@@ -48,12 +53,27 @@ export default function ProjectSystemEstimateModalRoute() {
   const formik = useFormik<ProjectSystemEstimateParameter>({
     initialValues: initialProjectSystemEstimateParameter,
     onSubmit:      (values) => {
+
       if (systemModal) {
-        onChange(values);
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onChange(values as ProjectSystemEstimateParameter);
+          },
+          project!,
+          'estimate_template',
+          'estimate'));
         return;
       }
       if (systemModal === null) {
-        onAdd(values);
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onAdd(values as ProjectSystemEstimateParameter);
+          },
+          project!,
+          'estimate_template',
+          'estimate'));
         return;
       }
       error('시스템 견적서가 선택되지 않았습니다.');

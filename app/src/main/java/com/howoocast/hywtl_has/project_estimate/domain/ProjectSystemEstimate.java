@@ -3,9 +3,11 @@ package com.howoocast.hywtl_has.project_estimate.domain;
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter.Content;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
@@ -58,7 +60,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String recipient, Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<String> contentList,
+        List<Content> contentList,
         Business business
     ) {
         ProjectSystemEstimate instance = new ProjectSystemEstimate(
@@ -72,7 +74,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             business
         );
         instance.templateList = templateList;
-        instance.contentList = contentList;
+        instance.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
         return instance;
     }
 
@@ -82,7 +84,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<String> contentList
+        List<Content> contentList
     ) {
         List<EventEntity> eventList = super.change(
             isSent,
@@ -111,7 +113,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
                 ? null
                 : "복합 내용은 일시 정보만 기록함"
         ));
-        this.contentList = contentList;
+        this.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
 
         return eventList;
     }

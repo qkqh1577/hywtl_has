@@ -5,12 +5,20 @@ import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemEx
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.repository.FileItemRepository;
+import com.howoocast.hywtl_has.file_conversion_history.common.FileState;
+import com.howoocast.hywtl_has.file_conversion_history.domain.FileConversionHistory;
+import com.howoocast.hywtl_has.file_conversion_history.repository.FileConversionHistoryRepository;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -31,6 +39,8 @@ public class FileItemService {
     private Long maxSizeLimit;
 
     private final FileItemRepository fileItemRepository;
+
+    private final FileConversionHistoryRepository fileConversionHistoryRepository;
 
     @Transactional(readOnly = true)
     public FileItem get(Long id) {
@@ -92,6 +102,63 @@ public class FileItemService {
             rootPath,
             extensionList,
             maxSizeLimit
+        ));
+    }
+
+    public FileItem getByProjectEstimateId(Long projectEstimateId) {
+        FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectEstimateIdOrderByCreatedAtDesc(
+            projectEstimateId);
+
+        return getFileItem(history, "pdf");
+    }
+
+    public FileItem getByProjectContractId(Long projectContractId, String type) {
+        FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectContractIdOrderByCreatedAtDesc(
+            projectContractId);
+
+        return getFileItem(history, type);
+    }
+    private FileItem getFileItem(FileConversionHistory history, String type) {
+        if (history.getState() == FileState.FAIL) {
+            throw new FileSystemException(FileSystemExceptionType.FAILED_TO_CONVERT);
+        }else if(history.getState() == FileState.WAITING) {
+            throw new FileSystemException(FileSystemExceptionType.IS_CONVERTING);
+        }
+        if(StringUtils.equals(type, "word")) {
+            return get(history.getOriginalFile().getId());
+        }
+        return get(history.getConvertedFile().getId());
+    }
+
+    @Transactional
+    public void convertToPDF(FileItemParameter file, ProjectSystemEstimate projectEstimate) throws IOException {
+        FileItem wordFileItem = build(file);
+        File wordFile = new File(wordFileItem.getPath());
+        FileConversionHistory history = fileConversionHistoryRepository.save(
+            FileConversionHistory.of(wordFileItem, projectEstimate));
+        fileItemRepository.save(FileItem.of(
+            wordFile,
+            rootPath,
+            extensionList,
+            maxSizeLimit,
+            wordFileItem.getFilename().replace(".docx", ".pdf"),
+            history
+        ));
+    }
+
+    @Transactional
+    public void convertToContractPDF(FileItemParameter file, ProjectContract projectContract) throws IOException {
+        FileItem wordFileItem = build(file);
+        File wordFile = new File(wordFileItem.getPath());
+        FileConversionHistory history = fileConversionHistoryRepository.save(
+            FileConversionHistory.of(wordFileItem, projectContract));
+        fileItemRepository.save(FileItem.of(
+            wordFile,
+            rootPath,
+            extensionList,
+            maxSizeLimit,
+            wordFileItem.getFilename().replace(".docx", ".pdf"),
+            history
         ));
     }
 }

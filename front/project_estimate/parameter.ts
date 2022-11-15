@@ -53,11 +53,12 @@ export const initialProjectCustomEstimateExtensionParameter = {
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
+  file: FileItemParameter;
   plan: ProjectEstimatePlanParameter;
   siteList: ProjectEstimateComplexSiteParameter[];
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
-  contentList: string[];
+  contentList: ProjectEstimateContentListToMap[];
 }
 
 export const initialProjectSystemEstimateParameter = {
@@ -66,8 +67,9 @@ export const initialProjectSystemEstimateParameter = {
   siteList:     [{}],
   buildingList: [{}],
   templateList: [],
-  contentList:  [],
+  contentList:  [{content: ''}],
   edit:         true,
+  file:         {},
 } as unknown as ProjectSystemEstimateParameter;
 
 export interface ProjectEstimatePlanParameter {
@@ -116,11 +118,18 @@ export interface ProjectEstimateTemplateParameter {
 }
 
 export interface ProjectEstimateTemplateDetailParameter {
-  titleList: string[];
+  titleList: ProjectEstimateTemplateDetailTitleListToMap[];
   unit: TestUnit;
   testCount: number;
   unitAmount: number;
   totalAmount: number;
   inUse: boolean;
   note?: string;
+}
+
+export interface ProjectEstimateContentListToMap {
+  content: string;
+}
+export interface ProjectEstimateTemplateDetailTitleListToMap {
+  title: string;
 }

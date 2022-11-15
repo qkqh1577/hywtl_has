@@ -113,7 +113,7 @@ export default function () {
                       <Input
                         variant="outlined"
                         key={description}
-                        defaultValue={description ?? ''}
+                        defaultValue={typeof description === "object" ? description.description : description}
                         readOnly={!edit}
                         onBlur={(e) => {
                           if (!edit) {

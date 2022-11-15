@@ -1,4 +1,7 @@
-import { ProjectEstimateId } from 'project_estimate/domain';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 import { ProjectContractId } from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
 
@@ -45,16 +48,21 @@ export const initialProjectContractCollectionParameter = {
 
 export interface ProjectContractConditionParameter {
   title: string;
-  descriptionList: string[];
+  descriptionList: ProjectContractConditionDescriptionToMap[];
+}
+
+export interface ProjectContractConditionDescriptionToMap {
+  description: string;
 }
 
 export const initialProjectContractConditionParameter = {
-  descriptionList: ['']
+  descriptionList: [{ description: '' }]
 } as ProjectContractConditionParameter;
 
 export interface ProjectContractParameter {
   id?: ProjectContractId;
   estimateId: ProjectEstimateId;
+  estimate: ProjectEstimateVO;
   isSent: boolean;
   recipient: string;
   note?: string;
@@ -62,6 +70,7 @@ export interface ProjectContractParameter {
   basic: ProjectContractBasicParameter;
   collection: ProjectContractCollectionParameter;
   conditionList: ProjectContractConditionParameter[];
+  file: FileItemParameter;
 }
 
 export const initialProjectContractParameter = {
@@ -69,4 +78,5 @@ export const initialProjectContractParameter = {
   collection:    initialProjectContractCollectionParameter,
   conditionList: [initialProjectContractConditionParameter],
   edit:          true,
+  file:          {},
 } as unknown as ProjectContractParameter;

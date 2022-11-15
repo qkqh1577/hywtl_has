@@ -117,7 +117,7 @@ export default function ProjectEstimateListSection(props: Props) {
                       </TextLink>
                       <IconButton
                         shape="square"
-                        onClick={() => {console.log(item);}}
+                        onClick={() => {window.open(`/file-item?projectEstimateId=${item.id}`, '_blank');}}
                         children={<FontAwesomeIcon icon="download" />}
                       />
                     </Box>

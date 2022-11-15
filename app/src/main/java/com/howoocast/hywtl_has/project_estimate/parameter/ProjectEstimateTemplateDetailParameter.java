@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ProjectEstimateTemplateDetailParameter {
 
     @NotEmpty(message = ProjectEstimateTemplateDetail.KEY + ".title_list.not_empty")
-    private List<String> titleList;
+    private List<Title> titleList;
     @NotBlank(message = ProjectEstimateTemplateDetail.KEY + ".unit.not_blank")
     private String unit;
     @NotNull(message = ProjectEstimateTemplateDetail.KEY + ".test_count.not_null")
@@ -24,4 +24,10 @@ public class ProjectEstimateTemplateDetailParameter {
     @NotNull(message = ProjectEstimateTemplateDetail.KEY + ".in_use.not_null")
     private Boolean inUse;
     private String note;
+
+    @Getter
+    @Setter
+    public static class Title {
+        private String title;
+    }
 }

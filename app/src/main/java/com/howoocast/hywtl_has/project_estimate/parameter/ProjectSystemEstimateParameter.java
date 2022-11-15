@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.parameter;
 
+import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -34,5 +35,13 @@ public class ProjectSystemEstimateParameter {
     @NotEmpty(message = ProjectSystemEstimate.KEY + ".template_list.not_empty")
     private List<ProjectEstimateTemplateParameter> templateList;
 
-    private List<String> contentList;
+    private List<Content> contentList;
+
+    private FileItemParameter file;
+
+    @Getter
+    @Setter
+    public static class Content {
+        private String content;
+    }
 }

@@ -23,6 +23,10 @@ import ProjectContractEstimateSelectModal from 'project_contract/view/EstimateMo
 import { ProjectEstimateId } from 'project_estimate/domain';
 import { DialogStatus } from 'dialog/domain';
 import { closeStatus } from 'components/DataFieldProps';
+import {
+  FileUtil,
+  generateFile
+} from 'util/FileUtil';
 
 export default function ProjectContractModalRoute() {
 
@@ -49,10 +53,24 @@ export default function ProjectContractModalRoute() {
     initialValues: initialProjectContractParameter,
     onSubmit:      (values) => {
       if (modal && values.id && modal === values.id) {
-        onChange(values);
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onChange(values as ProjectContractParameter);
+          },
+          null,
+          'contract_template',
+          'contract'));
       }
       else if (modal === null) {
-        onAdd(values);
+        generateFile(new FileUtil(
+          values,
+          (values) => {
+            onAdd(values as ProjectContractParameter);
+          },
+          null,
+          'contract_template',
+          'contract'));
       }
     }
   });

@@ -25,6 +25,7 @@ import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateReposi
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -96,6 +97,8 @@ public class ProjectContractService {
             null,
             instance.getCode()
         ));
+
+        convert(parameter.getFile(), instance);
     }
 
     @Transactional
@@ -118,6 +121,7 @@ public class ProjectContractService {
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
+        convert(parameter.getFile(), instance);
     }
 
     @Transactional
@@ -213,5 +217,13 @@ public class ProjectContractService {
         code += String.format("%02d", nextSeq);
 
         return code;
+    }
+
+    private void convert(FileItemParameter parameter, ProjectContract instance) {
+        try {
+            fileItemService.convertToContractPDF(parameter, instance);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

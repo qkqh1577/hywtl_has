@@ -1,7 +1,9 @@
 package com.howoocast.hywtl_has.project_estimate.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateTemplateDetailParameter.Title;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -70,7 +72,7 @@ public class ProjectEstimateTemplateDetail extends CustomEntity {
     private String note;
 
     public static ProjectEstimateTemplateDetail of(
-        List<String> titleList,
+        List<Title> titleList,
         String unit,
         Long testCount,
         Long unitAmount,
@@ -79,7 +81,7 @@ public class ProjectEstimateTemplateDetail extends CustomEntity {
         String note
     ) {
         ProjectEstimateTemplateDetail instance = new ProjectEstimateTemplateDetail();
-        instance.titleList = titleList;
+        instance.titleList = titleList.stream().map(Title::getTitle).collect(Collectors.toList());
         instance.unit = unit;
         instance.testCount = testCount;
         instance.unitAmount = unitAmount;

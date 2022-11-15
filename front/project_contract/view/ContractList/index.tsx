@@ -106,10 +106,10 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>{item.confirmed ? 'Y' : 'N'}</Td>
                 <Td>{item.estimateCode}</Td>
                 <Td>
-                  <Button shape="small" onClick={() => {console.log(item);}}>다운로드</Button>
+                  <Button shape="small" onClick={() => {window.open(`/file-item?projectContractId=${item.id}&type=word`, '_blank');}}>다운로드</Button>
                 </Td>
                 <Td>
-                  <Button shape="small" onClick={() => {console.log(item);}}>다운로드</Button>
+                  <Button shape="small" onClick={() => {window.open(`/file-item?projectContractId=${item.id}&type=pdf`, '_blank');}}>다운로드</Button>
                 </Td>
                 <Td>
                   {item.pdfFile && (
