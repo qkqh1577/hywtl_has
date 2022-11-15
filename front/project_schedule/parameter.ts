@@ -3,8 +3,8 @@ import { ProjectScheduleId } from 'project_schedule/domain';
 
 export interface ProjectScheduleParameter {
   id?: ProjectScheduleId;
-  startTime: string;
-  endTime: string;
+  startTime: string | null;
+  endTime: string | null;
   allDay: boolean;
   title: string;
   alertBefore?: number;
