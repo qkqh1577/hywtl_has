@@ -305,9 +305,9 @@ export default function () {
       }}>
         <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
           <MultiUserSelector
-            value={formik.values.attendanceList}
+            value={formik.values.attendanceIdList}
             onChange={(list) => {
-              formik.setFieldValue('attendanceList', list);
+              formik.setFieldValue('attendanceIdList', list);
             }}
           />
         </DataFieldWithLabel>
