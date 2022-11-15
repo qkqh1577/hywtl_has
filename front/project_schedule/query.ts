@@ -7,11 +7,3 @@ export interface ProjectScheduleQuery {
   type?: string;
   projectId?: ProjectId;
 }
-
-export const initialProjectScheduleQuery: ProjectScheduleQuery = {
-  keyword:   '',
-  startDate: undefined,
-  endDate:   undefined,
-  type:      '',
-  projectId: undefined
-};

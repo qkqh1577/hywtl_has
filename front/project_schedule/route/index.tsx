@@ -22,10 +22,6 @@ function Element() {
     if (id && id !== projectId) {
       dispatch(projectScheduleAction.setProjectId(ProjectId(id)));
     }
-    else {
-      dispatch(projectScheduleAction.setProjectId(undefined));
-
-    }
   }, [id]);
 
   return (
