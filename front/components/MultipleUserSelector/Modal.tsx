@@ -44,6 +44,10 @@ export default function MultiUserSelectorModal(props: Props) {
     }
   }, [keyword]);
 
+  useEffect(() => {
+    setValue(Array.isArray(props.value) ? props.value : []);
+  }, [props.value]);
+
   return (
     <ModalLayout
       width="40vw"

@@ -61,6 +61,7 @@ export default function ProjectScheduleAddModalRoute() {
     closeStatus(requestAdd, () => {
       dispatch(projectScheduleAction.addModal(false));
       dispatch(projectScheduleAction.setFilter({ ...filter }));
+      formik.resetForm();
     }, () => {
       formik.setSubmitting(false);
       dispatch(projectScheduleAction.requestAdd('idle'));
