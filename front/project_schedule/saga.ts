@@ -32,6 +32,9 @@ function* watchFilter() {
   while (true) {
     const { payload: filter } = yield take(projectScheduleAction.setFilter);
     try {
+      if(!filter.projectId){
+        continue;
+      }
       const list: ProjectScheduleShortVO[] = yield call(projectScheduleApi.getList, filter.projectId, filter);
       yield put(projectScheduleAction.setList(list));
     }
