@@ -95,7 +95,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 </TableRow>
               )}
               {list && list.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} selected={item.confirmed}>
                   <Td>
                     <Box sx={{
                       width:          '100%',
