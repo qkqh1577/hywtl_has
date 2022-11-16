@@ -16,7 +16,10 @@ import ProjectContractModalRoute from 'project_contract/route/modal';
 import ProjectRivalBidListRoute from 'rival_bid/route/rivalBidList';
 import useId from 'services/useId';
 import { projectBidAction } from 'project_bid/action';
-import { ProjectId } from 'project/domain';
+import {
+  ProjectBasicBidType,
+  ProjectId
+} from 'project/domain';
 import {
   useDispatch,
   useSelector
@@ -35,12 +38,12 @@ function Element() {
   const { detail } = useSelector((root: RootState) => root.project);
   const { error } = useDialog();
   const navigate = useNavigate();
-
+  console.log('detail : ', detail);
   useEffect(() => {
-    if(detail && !detail.code){
+    if (detail && !detail.code) {
       error('프로젝트 진행 현황을 등록으로 변경해 주시기 바랍니다.', () => navigate(-1));
     }
-  }, [detail && detail.code])
+  }, [detail && detail.code]);
 
   useEffect(() => {
     const projectId = id ? ProjectId(id) : undefined;
@@ -54,17 +57,25 @@ function Element() {
   return (
     <ProjectContainerRoute>
       <Box sx={{ width: '100%' }}>
-        <ProjectEstimateListRoute />
-        <RivalEstimateListRoute />
-        <ProjectBidRoute />
-        <ProjectRivalBidListRoute />
+        {detail && detail.bidType === ProjectBasicBidType.DEFAULT && (
+          <>
+            <ProjectEstimateListRoute />
+            <RivalEstimateListRoute />
+            <ProjectCustomEstimateAddModalRoute />
+            <ProjectCustomEstimateDetailModalRoute />
+            <ProjectCustomEstimateExtensionModalRoute />
+            <ProjectSystemEstimateModalRoute />
+            <ProjectEstimateFinalModalRoute />
+            <ProjectContractModalRoute />
+          </>
+        )}
+        {detail && detail.bidType !== ProjectBasicBidType.DEFAULT && (
+          <>
+            <ProjectBidRoute />
+            <ProjectRivalBidListRoute />
+          </>
+        )}
         <ProjectContractListRoute />
-        <ProjectCustomEstimateAddModalRoute />
-        <ProjectCustomEstimateDetailModalRoute />
-        <ProjectCustomEstimateExtensionModalRoute />
-        <ProjectSystemEstimateModalRoute />
-        <ProjectEstimateFinalModalRoute />
-        <ProjectContractModalRoute />
         <ProjectContractFinalModalRoute />
       </Box>
     </ProjectContainerRoute>
