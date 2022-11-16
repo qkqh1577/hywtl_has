@@ -16,7 +16,7 @@ export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-
+  console.log(formik.values.isFinal);
   return (
     <Box sx={{
       width:          '100%',
@@ -32,7 +32,7 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 구분" labelPosition="top">
           <Input
-            readOnly={edit}
+            readOnly
             key={formik.values.type}
             defaultValue={formik.values.type ? projectEstimateTypeName(formik.values.type) : ''}
           />
@@ -41,7 +41,7 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 번호" labelPosition="top">
           <Input
-            readOnly={edit}
+            readOnly
             key={formik.values.code}
             defaultValue={formik.values.code ?? ''}
           />
@@ -72,7 +72,7 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="최종 여부" labelPosition="top">
           <Input
-            readOnly={edit}
+            readOnly
             key={formik.values.isFinal}
             defaultValue={formik.values.isFinal ? 'Y' : 'N'}
           />
@@ -109,7 +109,6 @@ export default function () {
         <DataFieldWithLabel required={edit} label="LH 여부" labelPosition="top">
           <Select
             displayEmpty
-            readOnly={!edit}
             value={typeof formik.values.isLh === 'boolean' ? (formik.values.isLh ? 'Y' : 'N') : ''}
             onChange={(e) => {
               const value = e.target.value || undefined;

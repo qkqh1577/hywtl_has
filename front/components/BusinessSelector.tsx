@@ -381,7 +381,6 @@ export default function BusinessSelector(props: FieldProps) {
   return (
     <Input
       {...restProps}
-      readOnly
       value={detail?.name ?? ''}
       onClick={() => {
         if (restProps.disabled || restProps.readOnly) {
