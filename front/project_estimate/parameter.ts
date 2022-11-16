@@ -22,6 +22,7 @@ export interface ProjectEstimateBasicParameter {
   isSent: boolean | undefined;
   recipient: string;
   note?: string;
+  confirmed?: boolean;
 }
 
 export interface ProjectCustomEstimateAddParameter

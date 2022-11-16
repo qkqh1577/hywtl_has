@@ -16,7 +16,7 @@ export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  console.log(formik.values.isFinal);
+
   return (
     <Box sx={{
       width:          '100%',
@@ -73,8 +73,8 @@ export default function () {
         <DataFieldWithLabel label="최종 여부" labelPosition="top">
           <Input
             readOnly
-            key={formik.values.isFinal}
-            defaultValue={formik.values.isFinal ? 'Y' : 'N'}
+            key={formik.values.confirmed}
+            defaultValue={formik.values.confirmed ? 'Y' : 'N'}
           />
         </DataFieldWithLabel>
       </Box>
