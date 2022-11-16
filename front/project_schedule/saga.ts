@@ -32,6 +32,9 @@ function* watchFilter() {
   while (true) {
     const { payload: filter } = yield take(projectScheduleAction.setFilter);
     try {
+      if(!filter.projectId){
+        continue;
+      }
       const list: ProjectScheduleShortVO[] = yield call(projectScheduleApi.getList, filter.projectId, filter);
       yield put(projectScheduleAction.setList(list));
     }
@@ -84,10 +87,9 @@ function* watchUpdate() {
 
 function* watchDelete() {
   while (true) {
-    yield take(projectScheduleAction.deleteOne);
+    const { payload: id } = yield take(projectScheduleAction.deleteOne);
     try {
       yield put(projectScheduleAction.requestDelete('request'));
-      const { id } = yield select((root: RootState) => root.projectSchedule);
       if (!id) {
         const message = '일정이 선택되지 않았습니다.';
         yield put(dialogAction.openError(message));

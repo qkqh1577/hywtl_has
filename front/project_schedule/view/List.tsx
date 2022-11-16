@@ -42,24 +42,28 @@ export default function List(props: Pick<ProjectScheduleProps, | 'list' | 'onDet
               sx={{
                 display:      'flex',
                 width:        '100%',
-                height:       '100%',
                 flexWrap:     'nowrap',
                 border:       `1px solid ${ColorPalette._e4e9f2}`,
                 borderRadius: '5px',
                 marginBottom: '15px',
-                padding:      '15px 15px'
+                padding:      '15px 15px',
               }}>
               <TextLink
+                sx={{
+                  textAlign: 'left',
+                  fontSize:  '12px',
+                  fontWeight: 'normal'
+                }}
                 onClick={() => onDetailModalOpen(item.id)}
                 children={
                   `
                 ${dayjs(item.startTime)
                   .locale('ko')
-                  .format('YYYY년 MM월 DD일 ddd hh:mm')}
+                  .format('YYYY년 MM월 DD일 ddd HH:mm')}
                 ~
                 ${dayjs(item.endTime)
                   .locale('ko')
-                  .format('YYYY년 MM월 DD일 ddd hh:mm')}
+                  .format('YYYY년 MM월 DD일 ddd HH:mm')}
                 [${item.type}] ${item.title}
                 `
                 }

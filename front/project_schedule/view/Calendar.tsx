@@ -11,10 +11,13 @@ import React, {
 } from 'react';
 import { ProjectScheduleProps } from 'project_schedule/view/index';
 
+const LIMIT_EVENT = 3;
+
 function EventContent(props: {
   event: EventInput;
 }) {
   const { event } = props;
+
   return (
     <Box sx={{
       padding: '4px',
@@ -122,7 +125,7 @@ function DayCellContent(props: {
             color:  ColorPalette._386dd6,
             cursor: 'pointer'
           }}>
-                    +{eventCount}건
+                    {eventCount > LIMIT_EVENT ? `+${eventCount - LIMIT_EVENT}건` : ''}
                   </span>
       )}
       <span>
@@ -359,15 +362,18 @@ export default function ProjectScheduleCalendar(props: ProjectScheduleProps) {
               events={events}
             />
           )}
-          eventContent={(params) => (
-            <EventContent event={{
-              ...params.event._def.extendedProps,
-              title:  params.event.title,
-              id:     params.event.id,
-              allDay: params.event.allDay,
-              start:  params.event.start!,
-              end:    params.event.end!,
-            }} />
+          eventContent={(params
+          ) => (
+            <EventContent
+              event={{
+                ...params.event._def.extendedProps,
+                title:  params.event.title,
+                id:     params.event.id,
+                allDay: params.event.allDay,
+                start:  params.event.start!,
+                end:    params.event.end!,
+              }}
+            />
           )}
         />
       </Box>

@@ -25,7 +25,6 @@ export default function ProjectScheduleRoute() {
   const id = useId();
   const dispatch = useDispatch();
   const { list, filter, projectId } = useSelector((root: RootState) => root.projectSchedule);
-
   const setFilter = useCallback((filter: ProjectScheduleQuery) => dispatch(projectScheduleAction.setFilter(filter)), [dispatch]);
 
   const formik = useFormik<ProjectScheduleQuery>({
@@ -48,7 +47,7 @@ export default function ProjectScheduleRoute() {
                    endDate: string
   ) => {
     setFilter({
-      projectId: projectId ?? ProjectId(id!),
+      projectId: id && id !== projectId ? ProjectId(id!) : undefined,
       startDate,
       endDate
     });

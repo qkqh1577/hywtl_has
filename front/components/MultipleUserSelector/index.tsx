@@ -19,7 +19,9 @@ export default function MultiUserSelector(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const onOpen = () => { setOpen(true);};
   const onClose = () => { setOpen(false);};
-  const value: UserId[] = Array.isArray(props.value) ? props.value : (typeof props.value === 'undefined' ? [] : [props.value]);
+  const value: UserId[] = Array.isArray(props.value) ? props.value
+    : (typeof props.value === 'undefined' ? [] : [props.value]);
+
   return (
     <Box sx={{
       display:        'flex',

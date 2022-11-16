@@ -19,7 +19,9 @@ function Element() {
   const { projectId } = useSelector((root: RootState) => root.projectSchedule);
 
   useEffect(() => {
-    dispatch(projectScheduleAction.setProjectId(id && id !== projectId ? ProjectId(id) : undefined));
+    if (id && id !== projectId) {
+      dispatch(projectScheduleAction.setProjectId(ProjectId(id)));
+    }
   }, [id]);
 
   return (

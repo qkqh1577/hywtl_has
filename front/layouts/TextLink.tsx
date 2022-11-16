@@ -1,10 +1,15 @@
-import { Typography } from '@mui/material';
+import {
+  Typography,
+  TypographyProps
+} from '@mui/material';
 import { ColorPalette } from 'assets/theme';
 import { DefaultFunction } from 'type/Function';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
-interface Props {
+interface Props extends Pick<TypographyProps, 'sx'>{
   children: string;
   onClick?: string | DefaultFunction;
 }
@@ -12,6 +17,19 @@ interface Props {
 export default function TextLink(props: Props) {
 
   const navigate = useNavigate();
+
+  const sx = {
+    width:      '100%',
+    textAlign:  'center',
+    fontSize:   'inherit',
+    fontWeight: props.onClick ? 'bold' : 'inherit',
+    cursor:     props.onClick ? 'pointer' : 'default',
+    '&:hover':  {
+      color:              ColorPalette._386dd6,
+      textDecorationLine: props.onClick ? 'underline' : 'inherit',
+    },
+    ...(props.sx ?? {}),
+  } as SxProps<Theme>
 
   return (
     <Typography
@@ -24,17 +42,7 @@ export default function TextLink(props: Props) {
           props.onClick();
         }
       }}
-      sx={{
-        width:      '100%',
-        textAlign:  'center',
-        fontSize:   'inherit',
-        fontWeight: props.onClick ? 'bold' : 'inherit',
-        cursor:     props.onClick ? 'pointer' : 'default',
-        '&:hover':  {
-          color:              ColorPalette._386dd6,
-          textDecorationLine: props.onClick ? 'underline' : 'inherit',
-        }
-      }}
+      sx={sx}
     />
   );
 }

@@ -279,7 +279,7 @@ export default function () {
               alignItems: 'center',
             }}>
               <Checkbox
-                readOnly={!edit}
+                disabled={!edit}
                 checked={typeof formik.values.alertBefore === 'number' && formik.values.alertBefore >= 0}
                 onChange={() => {
                   if (typeof formik.values.alertBefore === 'number') {
@@ -326,7 +326,7 @@ export default function () {
                 readOnly
                 variant="standard"
                 key={formik.values.manager}
-                defaultValue={formik.values.manager.name}
+                defaultValue={formik.values.manager ? formik.values.manager.name : ''}
               />
             )}
             {edit && (
@@ -351,9 +351,9 @@ export default function () {
         <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
           <MultiUserSelector
             readOnly={!edit}
-            value={formik.values.attendanceList}
+            value={formik.values.attendanceIdList}
             onChange={(list) => {
-              formik.setFieldValue('attendanceList', list);
+              formik.setFieldValue('attendanceIdList', list);
             }}
           />
         </DataFieldWithLabel>

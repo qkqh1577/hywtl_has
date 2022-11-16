@@ -44,12 +44,12 @@ export default function ProjectScheduleDetailModalRoute() {
         return;
       }
       const allDay = values.allDay;
-      const startTime = allDay ? dayjs(values.startTime)
-      .format('YYYY-MM-DD') + ' 00:00' : dayjs(values.startTime)
-      .format('YYYY-MM-DD HH:mm');
-      const endTime = allDay ? dayjs(values.endTime)
-      .format('YYYY-MM-DD') + ' 23:59' : dayjs(values.endTime)
-      .format('YYYY-MM-DD HH:mm');
+      const startTime = allDay ? (values.startTime ? dayjs(values.startTime)
+      .format('YYYY-MM-DD') + ' 00:00' : null) : (values.startTime ? dayjs(values.startTime)
+      .format('YYYY-MM-DD HH:mm') : null);
+      const endTime = allDay ? (values.endTime ? dayjs(values.endTime)
+      .format('YYYY-MM-DD') + ' 23:59' : null) : (values.endTime ? dayjs(values.endTime)
+      .format('YYYY-MM-DD HH:mm') : null);
       update({
         id:               values.id,
         startTime,
@@ -74,6 +74,7 @@ export default function ProjectScheduleDetailModalRoute() {
         manager:   detail.manager,
         managerId: detail.manager.id,
         edit:      false,
+        attendanceIdList: detail.attendanceList?.map(item => item.id),
       } as ProjectScheduleParameter);
     }
   }, [detail]);
@@ -129,6 +130,7 @@ export default function ProjectScheduleDetailModalRoute() {
               manager:   detail!.manager,
               managerId: detail!.manager.id,
               edit:      false,
+              attendanceIdList: detail!.attendanceList?.map(item => item.id),
             } as ProjectScheduleParameter);
           });
         }}
