@@ -38,7 +38,7 @@ function Element() {
   const { detail } = useSelector((root: RootState) => root.project);
   const { error } = useDialog();
   const navigate = useNavigate();
-  console.log('detail : ', detail);
+
   useEffect(() => {
     if (detail && !detail.code) {
       error('프로젝트 진행 현황을 등록으로 변경해 주시기 바랍니다.', () => navigate(-1));
