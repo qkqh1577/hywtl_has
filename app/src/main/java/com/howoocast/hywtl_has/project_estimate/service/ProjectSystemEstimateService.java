@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.estimate_content.domain.EstimateContentVariable;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
@@ -15,6 +16,7 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateType;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateTemplateParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter.Content;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectSystemEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
@@ -152,5 +154,24 @@ public class ProjectSystemEstimateService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Content> contentList(List<String> list) {
+        Integer buildingCount = 1;
+        Integer totalBuildingCount = 1;
+        Long totalAmount = 1L;
+        List<EstimateContentVariable> variableList = EstimateContentVariable.list(
+            buildingCount,
+            totalBuildingCount,
+            totalAmount
+        );
+        return list.stream().map(item -> {
+            Content contentType = new Content();
+            for (EstimateContentVariable variable : variableList) {
+                item = item.replace(String.format("{%s}", variable.getName()), variable.getValue());
+                contentType.setContent(item);
+            }
+            return contentType;
+        }).collect(Collectors.toList());
     }
 }
