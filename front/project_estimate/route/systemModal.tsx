@@ -32,10 +32,12 @@ import {
   FileUtil,
   generateFile
 } from 'util/FileUtil';
+import { projectContractAction } from 'project_contract/action';
+import { ProjectSystemEstimateVO } from 'project_estimate/domain';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem, list } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
   const { detail: project } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
@@ -50,6 +52,7 @@ export default function ProjectSystemEstimateModalRoute() {
   const onChange = useCallback((params: ProjectSystemEstimateParameter) => dispatch(projectEstimateAction.changeSystem(params)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectEstimateAction.setSystemModal(undefined)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteSystem()), [dispatch]);
+  const openContractAddModal = useCallback((values: ProjectSystemEstimateVO) => dispatch(projectContractAction.setModal(values)), [dispatch]);
   const formik = useFormik<ProjectSystemEstimateParameter>({
     initialValues: initialProjectSystemEstimateParameter,
     onSubmit:      (values) => {
@@ -207,6 +210,7 @@ export default function ProjectSystemEstimateModalRoute() {
         }}
         onDelete={onDelete}
         openDocumentModal={setBuildingSeq}
+        openContractAddModal={openContractAddModal}
       />
       <ProjectComplexBuildingFileModal
         buildingId={typeof buildingSeq === 'number' ? ProjectComplexBuildingId(buildingSeq) : undefined}

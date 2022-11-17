@@ -10,7 +10,10 @@ import {
 import { createReducer } from 'typesafe-actions';
 import { ProjectContractActionType } from 'project_contract/action';
 import { ApiStatus } from 'components/DataFieldProps';
-import { ProjectEstimateVO } from 'project_estimate/domain';
+import {
+  ProjectEstimateVO,
+  ProjectSystemEstimateVO
+} from 'project_estimate/domain';
 
 export interface ProjectContractState {
   detail?: ProjectContractVO;
@@ -26,6 +29,7 @@ export interface ProjectContractState {
   requestChange: ApiStatus;
   requestDelete: ApiStatus;
   requestSetFinal: ApiStatus;
+  detailBasedEstimate?: ProjectSystemEstimateVO;
 }
 
 const initial: ProjectContractState = {
@@ -114,5 +118,11 @@ export const projectContractReducer = createReducer(initial, {
                                                 ) => ({
     ...state,
     conditionList: action.payload,
-  })
+  }),
+  [ProjectContractActionType.setDetailBasedEstimate]:        (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    detailBasedEstimate: action.payload,
+  }),
 });

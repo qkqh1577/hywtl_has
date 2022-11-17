@@ -1,8 +1,9 @@
 import { DefaultFunction } from 'type/Function';
 import React, { useContext } from 'react';
-import { FormikContext } from 'formik';
+import { FormikContext, } from 'formik';
 import ModalLayout from 'layouts/ModalLayout';
 import ProjectSystemEstimateModalForm from 'project_estimate/view/SystemModal/Form';
+import { ProjectSystemEstimateVO } from 'project_estimate/domain';
 
 interface Props {
   open: boolean;
@@ -10,6 +11,7 @@ interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   openDocumentModal: DefaultFunction<number>;
+  openContractAddModal: (values: ProjectSystemEstimateVO) => void;
 }
 
 export default function ProjectSystemEstimateModal(props: Props) {
@@ -28,6 +30,7 @@ export default function ProjectSystemEstimateModal(props: Props) {
           onCancel={props.onCancel}
           onDelete={props.onDelete}
           openDocumentModal={props.openDocumentModal}
+          openContractAddModal = {props.openContractAddModal}
         />
       }
     />

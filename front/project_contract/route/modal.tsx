@@ -42,6 +42,7 @@ export default function ProjectContractModalRoute() {
           conditionList,
           requestAdd,
           requestChange,
+          detailBasedEstimate
         } = useSelector((root: RootState) => root.projectContract);
   const { list: estimateList } = useSelector((root: RootState) => root.projectEstimate);
   const onClose = useCallback(() => dispatch(projectContractAction.setModal(undefined)), [dispatch]);
@@ -62,7 +63,7 @@ export default function ProjectContractModalRoute() {
           'contract_template',
           'contract'));
       }
-      else if (modal === null) {
+      else if (modal === null || typeof modal === 'object') {
         generateFile(new FileUtil(
           values,
           (values) => {
@@ -106,6 +107,19 @@ export default function ProjectContractModalRoute() {
       } as unknown as ProjectContractParameter);
     }
   }, [detail]);
+
+  useEffect(() => {
+    if (detailBasedEstimate) {
+      formik.setValues({
+        isSent: detailBasedEstimate.isSent,
+        recipient: detailBasedEstimate.recipient,
+        note: detailBasedEstimate.note,
+        estimate: detailBasedEstimate,
+        estimateId: detailBasedEstimate.id,
+        edit:       true
+      } as unknown as ProjectContractParameter);
+    }
+  }, [detailBasedEstimate]);
 
   useEffect(() => {
     closeStatus(requestAdd, () => {
