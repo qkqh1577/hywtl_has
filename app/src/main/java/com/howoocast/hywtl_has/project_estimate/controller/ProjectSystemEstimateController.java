@@ -32,7 +32,7 @@ public class ProjectSystemEstimateController {
         @PathVariable Long id
     ) {
         ProjectSystemEstimate projectSystemEstimate = service.get(id);
-        List<Content> contentList = service.contentList(projectSystemEstimate.getContentList());
+        List<Content> contentList = service.contentList(projectSystemEstimate);
         return ProjectSystemEstimateView.assemble(projectSystemEstimate, contentList);
     }
 

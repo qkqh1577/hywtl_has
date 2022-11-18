@@ -25,7 +25,7 @@ public class EstimateContentVariable {
      */
     private String note;
 
-    private String value;
+    private String value = "";
 
     public static List<EstimateContentVariable> list() {
         return list(null, null, null);
@@ -36,9 +36,6 @@ public class EstimateContentVariable {
         @Nullable Integer totalBuildingCount,
         @Nullable Long totalAmount
     ) {
-        if (list != null) {
-            return list;
-        }
         list = new ArrayList<>();
         {
             EstimateContentVariable instance = new EstimateContentVariable();

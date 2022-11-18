@@ -10,6 +10,7 @@ import com.howoocast.hywtl_has.estimate_content.domain.EstimateContentVariable;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplateDetail;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateType;
@@ -22,6 +23,7 @@ import com.howoocast.hywtl_has.project_estimate.repository.ProjectSystemEstimate
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -156,15 +158,42 @@ public class ProjectSystemEstimateService {
         }
     }
 
-    public List<Content> contentList(List<String> list) {
+    public List<Content> contentList(ProjectSystemEstimate estimate) {
+
         Integer buildingCount = 1;
-        Integer totalBuildingCount = 1;
-        Long totalAmount = 1L;
-        List<EstimateContentVariable> variableList = EstimateContentVariable.list(
-            buildingCount,
-            totalBuildingCount,
-            totalAmount
-        );
+
+        // TODO: additional a test building?
+        Integer aBuildingCount = 0;
+        // TODO: additional a test type amount?
+        Long aTestAmount = 0L;
+        // TODO: additional a test type week?
+        Integer aTestWeek = 0;
+
+        int totalSiteCount = 0;
+        int totalBuildingCount = 0;
+        Long reviewAmount = 0L;
+        Long totalAmount = 0L;
+        Integer testReportWeek = 0;
+        Integer finalReportWeek = 0;
+
+        if (Objects.nonNull(estimate)) {
+            if (Objects.nonNull(estimate.getSiteList())) {
+                totalSiteCount = estimate.getSiteList().size();
+            }
+            if (Objects.nonNull(estimate.getBuildingList())) {
+                List<ProjectEstimateComplexBuilding> buildingList = estimate.getBuildingList();
+                totalBuildingCount = buildingList.size();
+            }
+            if (Objects.nonNull(estimate.getPlan())) {
+                reviewAmount = estimate.getPlan().getReviewAmount();
+                totalAmount = estimate.getPlan().getTotalAmount();
+                testReportWeek = estimate.getPlan().getExpectedTestDeadline();
+                finalReportWeek = estimate.getPlan().getExpectedFinalReportDeadline();
+            }
+        }
+
+        List<String> list = estimate.getContentList();
+        List<EstimateContentVariable> variableList = EstimateContentVariable.list(buildingCount, totalBuildingCount, totalAmount);
         return list.stream().map(item -> {
             Content contentType = new Content();
             for (EstimateContentVariable variable : variableList) {
