@@ -12,7 +12,10 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { FormikContext } from 'formik';
+import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
 import {
   Table,
   Td,
@@ -29,7 +32,10 @@ import Input from 'layouts/Input';
 import { toAmount } from 'util/NumberUtil';
 import Toggle from 'layouts/Toggle';
 import Button from 'layouts/Button';
-import { ProjectEstimateTemplateDetailParameter } from 'project_estimate/parameter';
+import {
+  ProjectEstimateTemplateDetailParameter,
+  ProjectSystemEstimateParameter
+} from 'project_estimate/parameter';
 
 type getTestCount = (type: TestType,
                      unit: TestUnit
@@ -149,20 +155,21 @@ export default function () {
   const siteList = formik.values.siteList;
   const buildingList = formik.values.buildingList;
   const templateList = formik.values.templateList;
+  const templateListWithOutReview = templateList.filter((template) => template.testType !== TestType.REVIEW);
+  const templateListReviewTestType = templateList.filter((template) => template.testType === TestType.REVIEW);
 
   const totalTestAmount = useMemo((): number => {
-    if (!Array.isArray(templateList)) {
+    if (!Array.isArray(templateListWithOutReview)) {
       return 0;
     }
-    const withoutReview = templateList.filter(template => template.testType !== TestType.REVIEW);
-    if (withoutReview.length === 0) {
+    if (templateListWithOutReview.length === 0) {
       return 0;
     }
-    const onlyUse = withoutReview.map(template => template.detailList)
-                                 .reduce((a,
-                                          b
-                                 ) => [...a, ...b])
-                                 .filter(detail => detail.inUse);
+    const onlyUse = templateListWithOutReview.map(template => template.detailList)
+                                                    .reduce((a,
+                                                             b
+                                                    ) => [...a, ...b])
+                                                    .filter(detail => detail.inUse);
 
     if (!Array.isArray(onlyUse) || onlyUse.length === 0) {
       return 0;
@@ -171,21 +178,20 @@ export default function () {
                   .reduce((a,
                            b
                   ) => a + b);
-  }, [templateList]);
+  }, [templateListWithOutReview]);
 
   const totalReviewAmount = useMemo((): number | undefined => {
-    if (!Array.isArray(templateList)) {
+    if (!Array.isArray(templateListReviewTestType)) {
       return undefined;
     }
-    const withReview = templateList.filter(template => template.testType === TestType.REVIEW);
-    if (withReview.length === 0) {
+    if (templateListReviewTestType.length === 0) {
       return undefined;
     }
-    const onlyUse = withReview.map(template => template.detailList)
-                              .reduce((a,
-                                       b
-                              ) => [...a, ...b])
-                              .filter(detail => detail.inUse);
+    const onlyUse = templateListReviewTestType.map(template => template.detailList)
+                                              .reduce((a,
+                                                       b
+                                              ) => [...a, ...b])
+                                              .filter(detail => detail.inUse);
 
     if (!Array.isArray(onlyUse) || onlyUse.length === 0) {
       return 0;
@@ -194,7 +200,7 @@ export default function () {
                   .reduce((a,
                            b
                   ) => a + b);
-  }, [templateList]);
+  }, [templateListReviewTestType]);
 
   const getTestCount: getTestCount = useCallback((testType,
                                                   unit
@@ -278,124 +284,7 @@ export default function () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Array.isArray(templateList) && templateList.map((template,
-                                                            i
-          ) => {
-            if (!template) {
-              return null;
-            }
-            const detailCount = template.detailCount || template.detailList?.map(detail => detail?.titleList?.length ?? 0)
-                                                                .reduce((a,
-                                                                         b
-                                                                ) => a + b, 0) || 1;
-            return Array.isArray(template.detailList) && template.detailList.map((detail,
-                                                                                  j
-            ) => {
-              if (!detail) {
-                return null;
-              }
-
-              return Array.isArray(detail.titleList) && detail.titleList.map((title,
-                                                                              k
-              ) => (
-                <TableRow key={`${i}_${j}_${k}`}>
-                  {j === 0 && k === 0 && (
-                    <Td rowSpan={detailCount}>
-                      {i + 1}
-                    </Td>
-                  )}
-                  {j === 0 && k === 0 && (
-                    <Td rowSpan={detailCount}>
-                      {template.title}
-                    </Td>
-                  )}
-                  <Td sx={{
-                    textAlign:    'left',
-                    borderBottom: k === detail.titleList.length - 1 ? 'auto' : 'none',
-                    borderRight:  'none !important',
-                  }}>
-                    {typeof title === "object" ? title?.title : title}
-                  </Td>
-                  {k === 0 && (
-                    <Td rowSpan={detail.titleList.length}>
-                      <Select
-                        readOnly={!edit}
-                        variant="outlined"
-                        value={detail.unit ?? ''}
-                        onChange={(e) => {
-                          const value = e.target.value || undefined;
-                          if (detail.unit !== value) {
-                            formik.setFieldValue(`templateList.${i}.detailList.${j}.unit`, value);
-                          }
-                        }}>
-                        {testUnitList.map((item) => (
-                          <MenuItem key={item} value={item}>{testUnitName(item)}</MenuItem>
-                        ))}
-                      </Select>
-                    </Td>
-                  )}
-                  {k === 0 && (
-                    <Td rowSpan={detail.titleList.length}>
-                      {getTestCount(template.testType, detail.unit)}
-                    </Td>
-                  )}
-                  {k === 0 && (
-                    <Td rowSpan={detail.titleList.length}>
-                      <Input
-                        isAmount
-                        key={detail.unitAmount}
-                        readOnly={!edit}
-                        variant="outlined"
-                        defaultValue={detail.unitAmount?.toLocaleString() ?? ''}
-                        onBlur={(e) => {
-                          const value = toAmount(e.target.value || 0) || 0;
-                          if (detail.unitAmount !== value) {
-                            formik.setFieldValue(`templateList.${i}.detailList.${j}.unitAmount`, value);
-                          }
-                        }}
-                      />
-                    </Td>
-                  )}
-                  {k === 0 && (
-                    <Td rowSpan={detail.titleList.length}>
-                      <TotalAmountCell
-                        key={detail.totalAmount}
-                        testType={template.testType}
-                        fieldName={`templateList.${i}.detailList.${j}`}
-                        detail={detail}
-                        getTestCount={getTestCount}
-                      />
-                    </Td>
-                  )}
-                  {k === 0 && (
-                    <Td rowSpan={detail.titleList.length}>
-                      <Box sx={{
-                        width:   '100%',
-                        padding: '10px 0',
-                        height:  '100%',
-                      }}>
-                        <Input
-                          multiline
-                          fullHeight
-                          key={detail.note}
-                          readOnly={!edit}
-                          variant="outlined"
-                          defaultValue={detail.note ?? ''}
-                          onBlur={(e) => {
-                            const value = e.target.value || undefined;
-                            if (detail.note !== value) {
-                              formik.setFieldValue(`templateList.${i}.detailList.${j}.note`, value);
-                            }
-                          }}
-                        />
-                      </Box>
-                    </Td>
-                  )}
-                </TableRow>
-              ));
-            });
-          })}
-
+          {getTemplateRow(templateListWithOutReview, edit, formik, getTestCount)}
           <TableRow>
             <Td colSpan={3} />
             <Td align="right" colSpan={3}>
@@ -434,9 +323,147 @@ export default function () {
             </Td>
             <Td />
           </TableRow>
+          {getTemplateRow(templateListReviewTestType, edit, formik, getTestCount, templateListWithOutReview)}
         </TableBody>
       </Table>
-
     </Box>
   );
+}
+
+function getTemplateRow(templateList,
+                        edit: boolean,
+                        formik: FormikContextType<ProjectSystemEstimateParameter>,
+                        getTestCount: (type: TestType,
+                                       unit: TestUnit
+                        ) => number,
+                        templateListWithoutReview?
+) {
+  return <>
+    {Array.isArray(templateList) && templateList.map((template,
+                                                      i
+    ) => {
+      if (!template) {
+        return null;
+      }
+      const templateListWithoutReviewLength = Array.isArray(templateListWithoutReview) ? templateListWithoutReview.length : 0;
+      // 용역 항목 타이틀 rowSpan 계산하는 로직
+      const detailCount = template.detailCount || template.detailList?.map(detail => detail?.titleList?.length ?? 0)
+                                                          .reduce((a,
+                                                                   b
+                                                          ) => a + b, 0) || 1;
+      // 용역항목 디테일 리스트 렌더링
+      return Array.isArray(template.detailList) && template.detailList.map((detail,
+                                                                            j
+      ) => {
+        if (!detail) {
+          return null;
+        }
+
+        return Array.isArray(detail.titleList) && detail.titleList.map((title,
+                                                                        k
+        ) => (
+          <TableRow key={`${i}_${j}_${k}`}>
+            {j === 0 && k === 0 && (
+              <Td rowSpan={detailCount}>
+                ({(templateListWithoutReviewLength + i) + 1})
+              </Td>
+            )}
+            {j === 0 && k === 0 && (
+              <Td rowSpan={detailCount}>
+                {template.title}
+              </Td>
+            )}
+            {/* 용역 항목 리스트 */}
+            <Td sx={{
+              textAlign:    'left',
+              borderBottom: k === detail.titleList.length - 1 ? 'auto' : 'none',
+              borderRight:  'none !important',
+            }}>
+              {typeof title === 'object' ? title?.title : title}
+            </Td>
+            {/* 단위 */}
+            {k === 0 && (
+              <Td rowSpan={detail.titleList.length}>
+                <Select
+                  readOnly={!edit}
+                  variant="outlined"
+                  value={detail.unit ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value || undefined;
+                    if (detail.unit !== value) {
+                      formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.unit`, value);
+                    }
+                  }}>
+                  {testUnitList.map((item) => (
+                    <MenuItem key={item} value={item}>{testUnitName(item)}</MenuItem>
+                  ))}
+                </Select>
+              </Td>
+            )}
+            {/* 수량  */}
+            {k === 0 && (
+              <Td rowSpan={detail.titleList.length}>
+                {getTestCount(template.testType, detail.unit)}
+              </Td>
+            )}
+            {/* 단가 */}
+            {k === 0 && (
+              <Td rowSpan={detail.titleList.length}>
+                <Input
+                  isAmount
+                  key={detail.unitAmount}
+                  readOnly={!edit}
+                  variant="outlined"
+                  defaultValue={detail.unitAmount?.toLocaleString() ?? ''}
+                  onBlur={(e) => {
+                    const value = toAmount(e.target.value || 0) || 0;
+                    if (detail.unitAmount !== value) {
+                      formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.unitAmount`, value);
+                    }
+                  }}
+                />
+              </Td>
+            )}
+            {/* 금액 셀 */}
+            {k === 0 && (
+              <Td rowSpan={detail.titleList.length}>
+                <TotalAmountCell
+                  key={detail.totalAmount}
+                  testType={template.testType}
+                  fieldName={`templateList.${templateListWithoutReviewLength + i}.detailList.${j}`}
+                  detail={detail}
+                  getTestCount={getTestCount}
+                />
+              </Td>
+            )}
+            {/* 비고 */}
+            {k === 0 && (
+              <Td rowSpan={detail.titleList.length}>
+                <Box sx={{
+                  width:   '100%',
+                  padding: '10px 0',
+                  height:  '100%',
+                }}>
+                  <Input
+                    multiline
+                    fullHeight
+                    key={detail.note}
+                    readOnly={!edit}
+                    variant="outlined"
+                    defaultValue={detail.note ?? ''}
+                    onBlur={(e) => {
+                      const value = e.target.value || undefined;
+                      if (detail.note !== value) {
+                        formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.note`, value);
+                      }
+                    }}
+                  />
+                </Box>
+              </Td>
+            )}
+          </TableRow>
+        ));
+      });
+    })}
+  </>;
 }

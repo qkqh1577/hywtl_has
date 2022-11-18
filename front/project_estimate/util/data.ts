@@ -8,7 +8,10 @@ import { ProjectVO } from 'project/domain';
 import { documentDataApi } from 'project_estimate/util/api';
 import { personnelApi } from 'personnel/api';
 import { toAmountKor } from 'util/NumberUtil';
-import { testUnitName } from 'type/TestType';
+import {
+  TestType,
+  testUnitName
+} from 'type/TestType';
 import { PersonnelJobVO } from 'personnel/domain';
 
 class ProjectEstimateData {
@@ -20,6 +23,7 @@ class ProjectEstimateData {
     const manager2 = await personnelApi.getOne(values.plan.manager2Id) ?? undefined;
     values.contentList = this.mapToContentList(values.contentList as unknown as string[]);
     values.templateList = this.getMappedServiceList(values.templateList);
+    const templateListWithOutReview = values.templateList.filter(template => template.testType !== TestType.REVIEW);
     return {
       recipient:           values.recipient!,
       projectName:         project.name,
@@ -38,7 +42,8 @@ class ProjectEstimateData {
       totalAmountKor:      toAmountKor(values.plan?.totalAmount ?? 0),
       discountAmount:      values.plan.discountAmount ? values.plan.discountAmount.toLocaleString() : 0,
       testAmount:          values.plan.testAmount.toLocaleString(),
-      serviceList:         this.getServiceList(values.templateList),
+      serviceList:         this.getServiceList(templateListWithOutReview),
+      serviceReviewList:   this.getServiceList(values.templateList.filter(template => template.testType === TestType.REVIEW), templateListWithOutReview.length),
       contentList:         values.contentList,
     };
   };
@@ -62,7 +67,7 @@ class ProjectEstimateData {
             testCount:   detail.testCount,
             unitAmount:  detail.unitAmount,
             totalAmount: detail.totalAmount,
-            note:        detail.note,
+            note:        detail.note ?? '',
             titleList:   this.getMappedTitleList(detail.titleList as unknown as string[]),
             inUse:       detail.inUse,
           };
@@ -79,12 +84,12 @@ class ProjectEstimateData {
     });
   };
 
-  getServiceList = (list: ProjectEstimateTemplateParameter[]) => {
+  getServiceList = (list: ProjectEstimateTemplateParameter[], templateListWithoutReviewLength: number = 0) => {
     return list.map((service,
                      index
     ) => {
       return {
-        index:      index + 1,
+        index:      (templateListWithoutReviewLength + index) + 1,
         title:      service.title,
         detailList: service.detailList.map((detail) => {
           return {
