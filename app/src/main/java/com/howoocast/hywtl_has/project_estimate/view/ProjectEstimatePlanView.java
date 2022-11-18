@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
 import java.time.LocalDate;
+import java.util.Optional;
 import lombok.Getter;
 
 @Getter
@@ -31,8 +32,8 @@ public class ProjectEstimatePlanView {
         target.discountAmount = extensionInput.getDiscountAmount();
         target.reviewAmount = extensionInput.getReviewAmount();
         target.totalAmount = extensionInput.getTotalAmount();
-        target.manager1Id = extensionInput.getManager1().getId();
-        target.manager2Id = extensionInput.getManager2().getId();
+        target.manager1Id = Optional.ofNullable(extensionInput.getManager1()).map(manager -> manager.getId()).orElse(null);
+        target.manager2Id = Optional.ofNullable(extensionInput.getManager2()).map(manager -> manager.getId()).orElse(null);
         return target;
     }
 }
