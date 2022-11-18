@@ -287,7 +287,7 @@ public class ProjectContract extends CustomEntity {
             Optional.ofNullable(before).map(ProjectContractCollection::getTotalAmount).orElse(null),
             Optional.ofNullable(after).map(ProjectContractCollection::getTotalAmount).orElse(null)
         ));
-
+        this.collection = after;
         return eventList;
     }
 }
