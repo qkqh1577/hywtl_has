@@ -14,7 +14,6 @@ public class ProjectEstimateShortView {
     private String code;
     private String type;
     private Boolean isSent;
-    private Boolean isLh;
     private Boolean confirmed;
     private String recipient;
     private UserShortView createdBy;
@@ -28,7 +27,6 @@ public class ProjectEstimateShortView {
         target.code = source.getCode();
         target.type = source.getType();
         target.isSent = source.getIsSent();
-        target.isLh = source.getIsLh();
         target.confirmed = source.getConfirmed();
         target.recipient = source.getRecipient();
         target.createdBy = UserShortView.assemble(source.getWriter());

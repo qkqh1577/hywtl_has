@@ -53,6 +53,11 @@ public class ProjectEstimatePlan {
     private Long discountAmount;
 
     /**
+     * LH 여부
+     */
+    private Boolean isLh;
+
+    /**
      * 합계(부가세 별도)
      */
     private Long totalAmount;
@@ -71,7 +76,8 @@ public class ProjectEstimatePlan {
         Long testAmount,
         Long reviewAmount,
         Long discountAmount,
-        Long totalAmount
+        Long totalAmount,
+        Boolean isLh
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -82,6 +88,7 @@ public class ProjectEstimatePlan {
         instance.reviewAmount = reviewAmount;
         instance.discountAmount = discountAmount;
         instance.totalAmount = totalAmount;
+        instance.isLh = isLh;
         return instance;
     }
 
@@ -95,7 +102,8 @@ public class ProjectEstimatePlan {
         Long discountAmount,
         Long totalAmount,
         @Nullable User manager1,
-        @Nullable User manager2
+        @Nullable User manager2,
+        Boolean isLh
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -108,6 +116,7 @@ public class ProjectEstimatePlan {
         instance.totalAmount = totalAmount;
         instance.manager1 = manager1;
         instance.manager2 = manager2;
+        instance.isLh = isLh;
         return instance;
     }
 }

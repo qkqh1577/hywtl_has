@@ -49,7 +49,6 @@ export interface ProjectEstimateVO {
   code: string;
   type: ProjectEstimateType;
   isSent: boolean;
-  isLh: boolean;
   confirmed: boolean;
   recipient: string;
   note?: string;
@@ -65,6 +64,7 @@ export interface ProjectEstimateVO {
 
 export interface ProjectEstimatePlanVO {
   estimateDate: Date;
+  isLh: boolean;
   expectedServiceDate: Date;
   expectedTestDeadline: number;
   expectedFinalReportDeadline: number;

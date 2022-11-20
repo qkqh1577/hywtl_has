@@ -18,7 +18,6 @@ export interface ProjectEstimateFinalParameter {
 export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;
 
 export interface ProjectEstimateBasicParameter {
-  isLh: boolean | undefined;
   isSent: boolean | undefined;
   recipient: string;
   note?: string;
@@ -46,7 +45,7 @@ export interface ProjectCustomEstimateExtensionParameter {
 }
 
 export const initialProjectCustomEstimateExtensionParameter = {
-  plan:         {},
+  plan:         { isLh: false },
   siteList:     [],
   buildingList: [],
   edit:         true,
@@ -64,11 +63,11 @@ export interface ProjectSystemEstimateParameter
 
 export const initialProjectSystemEstimateParameter = {
   isSent:       false,
-  plan:         {},
+  plan:         { isLh: false },
   siteList:     [{}],
   buildingList: [{}],
   templateList: [],
-  contentList:  [{content: ''}],
+  contentList:  [{ content: '' }],
   edit:         true,
   file:         {},
 } as unknown as ProjectSystemEstimateParameter;
@@ -84,6 +83,7 @@ export interface ProjectEstimatePlanParameter {
   totalAmount: number;
   manager1Id: UserId;
   manager2Id: UserId;
+  isLh: boolean;
 }
 
 export interface ProjectEstimateComplexSiteParameter {
@@ -131,6 +131,7 @@ export interface ProjectEstimateTemplateDetailParameter {
 export interface ProjectEstimateContentListToMap {
   content: string;
 }
+
 export interface ProjectEstimateTemplateDetailTitleListToMap {
   title: string;
 }

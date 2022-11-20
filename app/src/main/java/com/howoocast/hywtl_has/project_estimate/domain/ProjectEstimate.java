@@ -73,11 +73,6 @@ public abstract class ProjectEstimate extends CustomEntity {
     private String recipient;
 
     /**
-     * LH 여부
-     */
-    private Boolean isLh;
-
-    /**
      * 비고
      */
     private String note;
@@ -108,7 +103,6 @@ public abstract class ProjectEstimate extends CustomEntity {
         ProjectEstimateType type,
         Boolean isSent,
         String recipient,
-        @Nullable Boolean isLh,
         String note,
         User writer,
         Project project,
@@ -118,7 +112,6 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.code = code;
         this.type = type.name();
         this.recipient = recipient;
-        this.isLh = Optional.ofNullable(isLh).orElse(project.getBasic().getIsLh());
         this.note = note;
         this.writer = writer;
         this.isSent = isSent;
@@ -169,12 +162,6 @@ public abstract class ProjectEstimate extends CustomEntity {
             recipient
         ));
         this.recipient = recipient;
-        eventList.add(EventEntity.of(
-            "LH 여부 변경",
-            this.isLh,
-            isLh
-        ));
-        this.isLh = isLh;
         eventList.add(EventEntity.of(
             "비고 변경",
             this.note,
@@ -251,6 +238,12 @@ public abstract class ProjectEstimate extends CustomEntity {
             "견적 담당자2 변경",
             Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getManager2).orElse(null),
             Optional.ofNullable(plan).map(ProjectEstimatePlan::getManager2).orElse(null)
+        ));
+
+        eventList.add(EventEntity.of(
+            "LH 여부 변경",
+            Optional.ofNullable(this.plan).map(ProjectEstimatePlan::getIsLh).orElse(null),
+            Optional.ofNullable(plan).map(ProjectEstimatePlan::getIsLh).orElse(null)
         ));
 
         this.plan = plan;

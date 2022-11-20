@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import {
   Box,
-  InputAdornment
+  InputAdornment,
+  MenuItem
 } from '@mui/material';
 import { ColorPalette } from 'assets/theme';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
@@ -11,13 +12,14 @@ import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import TextBox from 'layouts/Text';
 import UserSelector from 'components/UserSelector';
+import Select from 'layouts/Select';
 
 export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const plan = formik.values.plan;
-
+  console.log("formik.values.isLh : ", formik.values)
   return (
     <Box sx={{
       width:          '100%',
@@ -195,6 +197,26 @@ export default function () {
               </InputAdornment>
             }
           />
+        </DataFieldWithLabel>
+      </Box>
+      <Box>
+        <DataFieldWithLabel required label="LH 여부" labelPosition="top">
+          <Select
+            disabled={!edit}
+            displayEmpty
+            value={typeof formik.values.plan.isLh === 'boolean' ? (formik.values.plan.isLh ? 'Y' : 'N') : ''}
+            onChange={(e) => {
+              const value = e.target.value || undefined;
+              if (value === 'Y') {
+                formik.setFieldValue('plan.isLh', true);
+              }
+              else {
+                formik.setFieldValue('plan.isLh', false);
+              }
+            }}>
+            <MenuItem value="Y">Y</MenuItem>
+            <MenuItem value="N">N</MenuItem>
+          </Select>
         </DataFieldWithLabel>
       </Box>
     </Box>

@@ -16,6 +16,7 @@ public class ProjectEstimatePlanView {
     private Long reviewAmount;
     private Long discountAmount;
     private Long totalAmount;
+    private Boolean isLh;
     private Long manager1Id;
     private Long manager2Id;
 
@@ -32,8 +33,11 @@ public class ProjectEstimatePlanView {
         target.discountAmount = extensionInput.getDiscountAmount();
         target.reviewAmount = extensionInput.getReviewAmount();
         target.totalAmount = extensionInput.getTotalAmount();
-        target.manager1Id = Optional.ofNullable(extensionInput.getManager1()).map(manager -> manager.getId()).orElse(null);
-        target.manager2Id = Optional.ofNullable(extensionInput.getManager2()).map(manager -> manager.getId()).orElse(null);
+        target.isLh = extensionInput.getIsLh();
+        target.manager1Id = Optional.ofNullable(extensionInput.getManager1()).map(manager -> manager.getId())
+            .orElse(null);
+        target.manager2Id = Optional.ofNullable(extensionInput.getManager2()).map(manager -> manager.getId())
+            .orElse(null);
         return target;
     }
 }
