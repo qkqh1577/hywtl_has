@@ -8,13 +8,13 @@ import React, {
 import Button from 'layouts/Button';
 import {
   ProjectEstimateId,
-  ProjectEstimateVO
+  ProjectEstimateShortVO,
 } from 'project_estimate/domain';
 import Form from './Form';
 import { FormikContext } from 'formik';
 
 interface Props {
-  list: ProjectEstimateVO[] | undefined;
+  list: ProjectEstimateShortVO[] | undefined;
   getEstimate: (id: ProjectEstimateId | undefined) => void;
 }
 
