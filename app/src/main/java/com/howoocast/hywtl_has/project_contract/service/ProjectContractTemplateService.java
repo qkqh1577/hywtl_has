@@ -8,7 +8,6 @@ import com.howoocast.hywtl_has.contract_collection.domain.ContractCollection;
 import com.howoocast.hywtl_has.contract_collection.domain.ContractCollectionStageExpectedDateType;
 import com.howoocast.hywtl_has.contract_collection.repository.ContractCollectionRepository;
 import com.howoocast.hywtl_has.contract_condition.domain.ContractCondition;
-import com.howoocast.hywtl_has.contract_condition.domain.ContractConditionVariable;
 import com.howoocast.hywtl_has.contract_condition.repository.ContractConditionRepository;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -20,10 +19,8 @@ import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCondition;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractConditionParameter.Description;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -101,76 +98,82 @@ public class ProjectContractTemplateService {
         );
     }
 
-
     @Transactional(readOnly = true)
-    public List<ProjectContractCondition> conditionList(
-        @Nullable Long estimateId
-    ) {
-
+    public List<ProjectContractCondition> conditionList(){
         List<ContractCondition> templateList = conditionRepository.findAll();
-        ProjectEstimate estimate = new CustomFinder<>(estimateRepository, ProjectEstimate.class)
-            .byIdIfExists(estimateId);
-
-        // TODO: additional a test building?
-        Integer aBuildingCount = 0;
-        // TODO: additional a test type amount?
-        Long aTestAmount = 0L;
-        // TODO: additional a test type week?
-        Integer aTestWeek = 0;
-
-        int totalSiteCount = 0;
-        int totalBuildingCount = 0;
-        Long reviewAmount = 0L;
-        Long totalAmount = 0L;
-        Integer testReportWeek = 0;
-        Integer finalReportWeek = 0;
-
-        if (Objects.nonNull(estimate)) {
-            if (Objects.nonNull(estimate.getSiteList())) {
-                totalSiteCount = estimate.getSiteList().size();
-            }
-            if (Objects.nonNull(estimate.getBuildingList())) {
-                List<ProjectEstimateComplexBuilding> buildingList = estimate.getBuildingList();
-                totalBuildingCount = buildingList.size();
-            }
-            if (Objects.nonNull(estimate.getPlan())) {
-                reviewAmount = estimate.getPlan().getReviewAmount();
-                totalAmount = estimate.getPlan().getTotalAmount();
-                testReportWeek = estimate.getPlan().getExpectedTestDeadline();
-                finalReportWeek = estimate.getPlan().getExpectedFinalReportDeadline();
-            }
-        }
-        List<ContractConditionVariable> variableList = ContractConditionVariable.list(
-            totalSiteCount,
-            totalBuildingCount,
-            aBuildingCount,
-            aTestAmount,
-            aTestWeek,
-            reviewAmount,
-            totalAmount,
-            testReportWeek,
-            finalReportWeek
-        );
-        return templateList.stream().map(template -> {
-
-                List<Description> descriptionList = new ArrayList<>();
-                for (String raw : template.getDescriptionList()) {
-                    String description = raw;
-                    Description descriptionType = new Description();
-                    for (ContractConditionVariable variable : variableList) {
-                        description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
-                        descriptionType.setDescription(description);
-                    }
-                    descriptionList.add(descriptionType);
-                }
-
-                return ProjectContractCondition.of(
-                    template.getTitle(),
-                    descriptionList
-                );
-            })
-            .collect(Collectors.toList());
+        return templateList.stream().map(template -> ProjectContractCondition.of(template.getTitle(),
+            template.getDescriptionList().stream().map(Description::of).collect(Collectors.toList()))).collect(Collectors.toList());
     }
+
+//    @Transactional(readOnly = true)
+//    public List<ProjectContractCondition> conditionList(
+//        @Nullable Long estimateId
+//    ) {
+//
+//        List<ContractCondition> templateList = conditionRepository.findAll();
+//        ProjectEstimate estimate = new CustomFinder<>(estimateRepository, ProjectEstimate.class)
+//            .byIdIfExists(estimateId);
+//
+//        // TODO: additional a test building?
+//        Integer aBuildingCount = 0;
+//        // TODO: additional a test type amount?
+//        Long aTestAmount = 0L;
+//        // TODO: additional a test type week?
+//        Integer aTestWeek = 0;
+//
+//        int totalSiteCount = 0;
+//        int totalBuildingCount = 0;
+//        Long reviewAmount = 0L;
+//        Long totalAmount = 0L;
+//        Integer testReportWeek = 0;
+//        Integer finalReportWeek = 0;
+//
+//        if (Objects.nonNull(estimate)) {
+//            if (Objects.nonNull(estimate.getSiteList())) {
+//                totalSiteCount = estimate.getSiteList().size();
+//            }
+//            if (Objects.nonNull(estimate.getBuildingList())) {
+//                List<ProjectEstimateComplexBuilding> buildingList = estimate.getBuildingList();
+//                totalBuildingCount = buildingList.size();
+//            }
+//            if (Objects.nonNull(estimate.getPlan())) {
+//                reviewAmount = estimate.getPlan().getReviewAmount();
+//                totalAmount = estimate.getPlan().getTotalAmount();
+//                testReportWeek = estimate.getPlan().getExpectedTestDeadline();
+//                finalReportWeek = estimate.getPlan().getExpectedFinalReportDeadline();
+//            }
+//        }
+//        List<ContractConditionVariable> variableList = ContractConditionVariable.list(
+//            totalSiteCount,
+//            totalBuildingCount,
+//            aBuildingCount,
+//            aTestAmount,
+//            aTestWeek,
+//            reviewAmount,
+//            totalAmount,
+//            testReportWeek,
+//            finalReportWeek
+//        );
+//        return templateList.stream().map(template -> {
+//
+//                List<Description> descriptionList = new ArrayList<>();
+//                for (String raw : template.getDescriptionList()) {
+//                    String description = raw;
+//                    Description descriptionType = new Description();
+//                    for (ContractConditionVariable variable : variableList) {
+//                        description = description.replace(String.format("{%s}", variable.getName()), variable.getValue());
+//                        descriptionType.setDescription(description);
+//                    }
+//                    descriptionList.add(descriptionType);
+//                }
+//
+//                return ProjectContractCondition.of(
+//                    template.getTitle(),
+//                    descriptionList
+//                );
+//            })
+//            .collect(Collectors.toList());
+//    }
 
     private Long getAmount(@Nullable ProjectEstimate estimate, Double rate) {
         if (Objects.isNull(estimate)) {
