@@ -53,7 +53,10 @@ export default function (props: Props) {
       </Box>
       <Box>
         <Button onClick={props.onExtend} sx={{ marginRight: '10px' }}>실험정보 입력</Button>
-        <Button shape="basic4" onClick={() => props.onContract(formik.values)}>계약서 등록</Button>
+        <Button shape="basic4" onClick={() => {
+          props.onContract(formik.values)
+          props.onClose();
+        }}>계약서 등록</Button>
       </Box>
     </Box>
   );
