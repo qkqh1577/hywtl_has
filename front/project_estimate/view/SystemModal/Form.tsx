@@ -5,6 +5,7 @@ import TopForm from 'project_estimate/view/SystemModal/TopForm';
 import LeftForm from 'project_estimate/view/SystemModal/LeftForm';
 import RightForm from 'project_estimate/view/SystemModal/RightForm';
 import { ProjectSystemEstimateVO } from 'project_estimate/domain';
+import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 
 interface Props {
   onClose: DefaultFunction;
@@ -12,6 +13,7 @@ interface Props {
   onDelete: DefaultFunction;
   openDocumentModal: DefaultFunction<number>;
   openContractAddModal: (values: ProjectSystemEstimateVO) => void;
+  variableList?: EstimateContentVariableVO[];
 }
 
 export default function ProjectSystemEstimateModalForm(props: Props) {
@@ -38,7 +40,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
         flexWrap: 'nowrap',
       }}>
         <LeftForm openDocumentModal={props.openDocumentModal} />
-        <RightForm />
+        <RightForm variableList={props.variableList}/>
       </Box>
     </Box>
   );

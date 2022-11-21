@@ -43,8 +43,10 @@ export default function ProjectSystemEstimateModalRoute() {
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
   const { list: contentList } = useSelector((root: RootState) => root.estimateContent);
+  const { variableList } = useSelector((root: RootState) => root.estimateContent);
   const { error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
+
   const closeBuildingFileModal = () => {
     setBuildingSeq(undefined);
   };
@@ -91,6 +93,7 @@ export default function ProjectSystemEstimateModalRoute() {
       dispatch(projectComplexAction.setId(projectId));
       dispatch(estimateTemplateAction.setFilter(initialEstimateTemplateQuery));
       dispatch(estimateContentAction.setFilter(initialEstimateContentQuery));
+      dispatch(estimateContentAction.requestVariableList());
       formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
     }
   }, [systemModal]);
@@ -210,6 +213,7 @@ export default function ProjectSystemEstimateModalRoute() {
         onDelete={onDelete}
         openDocumentModal={setBuildingSeq}
         openContractAddModal={openContractAddModal}
+        variableList={variableList}
       />
       <ProjectComplexBuildingFileModal
         buildingId={typeof buildingSeq === 'number' ? ProjectComplexBuildingId(buildingSeq) : undefined}
