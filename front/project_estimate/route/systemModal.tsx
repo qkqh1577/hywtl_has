@@ -56,7 +56,6 @@ export default function ProjectSystemEstimateModalRoute() {
   const formik = useFormik<ProjectSystemEstimateParameter>({
     initialValues: initialProjectSystemEstimateParameter(project?.isLh ?? false),
     onSubmit:      (values) => {
-
       if (systemModal) {
         generateFile(new FileUtil(
           values,

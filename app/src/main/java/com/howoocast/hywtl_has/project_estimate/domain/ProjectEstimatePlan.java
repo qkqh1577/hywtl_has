@@ -62,6 +62,12 @@ public class ProjectEstimatePlan {
      */
     private Long totalAmount;
 
+    /**
+     * 실험정보 입력 여부
+     */
+
+    private Boolean hasExperimentInfo;
+
     @ManyToOne
     private User manager1;
 
@@ -77,7 +83,8 @@ public class ProjectEstimatePlan {
         Long reviewAmount,
         Long discountAmount,
         Long totalAmount,
-        Boolean isLh
+        Boolean isLh,
+        Boolean hasExperimentInfo
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -89,6 +96,7 @@ public class ProjectEstimatePlan {
         instance.discountAmount = discountAmount;
         instance.totalAmount = totalAmount;
         instance.isLh = isLh;
+        instance.hasExperimentInfo = hasExperimentInfo;
         return instance;
     }
 
@@ -103,7 +111,8 @@ public class ProjectEstimatePlan {
         Long totalAmount,
         @Nullable User manager1,
         @Nullable User manager2,
-        Boolean isLh
+        Boolean isLh,
+        Boolean hasExperimentInfo
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -117,6 +126,7 @@ public class ProjectEstimatePlan {
         instance.manager1 = manager1;
         instance.manager2 = manager2;
         instance.isLh = isLh;
+        instance.hasExperimentInfo = hasExperimentInfo;
         return instance;
     }
 }

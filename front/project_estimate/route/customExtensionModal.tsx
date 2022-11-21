@@ -41,7 +41,7 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
     onSubmit:      (values) => {
       onChange({
         id:           values.id,
-        plan:         values.plan,
+        plan:         {...values.plan, hasExperimentInfo: true},
         siteList:     values.siteList,
         buildingList: values.buildingList,
       });
@@ -112,6 +112,8 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
     closeStatus(requestExtensionCustom, () => {
       onClose();
       dispatch(projectEstimateAction.setCustomDetailModal(customExtensionModal));
+      dispatch(projectEstimateAction.setProjectId(projectId));
+
     }, () => {
       formik.setSubmitting(false);
       dispatch(projectEstimateAction.requestExtensionCustom('idle'));

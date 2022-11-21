@@ -16,8 +16,12 @@ import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectCustomEstimateChangeParameter } from 'project_estimate/parameter';
 import { closeStatus } from 'components/DataFieldProps';
 import useDialog from 'dialog/hook';
-import { ProjectEstimateId } from 'project_estimate/domain';
+import {
+  ProjectEstimateId,
+  ProjectSystemEstimateVO
+} from 'project_estimate/domain';
 import { DialogStatus } from 'dialog/domain';
+import { projectContractAction } from 'project_contract/action';
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
   const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteCustom()), [dispatch]);
   const onExtend = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomExtensionModal(id)), [dispatch]);
+  const openContractAddModal = useCallback((values: ProjectSystemEstimateVO) => dispatch(projectContractAction.setModal(values)), [dispatch]);
   const formik = useFormik<ProjectCustomEstimateChangeParameter>({
     initialValues: { edit: false } as unknown as ProjectCustomEstimateChangeParameter,
     onSubmit:      (values) => {
@@ -111,8 +116,8 @@ export default function ProjectCustomEstimateDetailModalRoute() {
           }
           onExtend(customDetail.id);
         }}
-        onContract={() => {
-
+        onContract={(values) => {
+          openContractAddModal(values)
         }}
       />
     </FormikProvider>

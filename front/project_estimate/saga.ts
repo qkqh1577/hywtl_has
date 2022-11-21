@@ -8,7 +8,7 @@ import {
 import { projectEstimateAction } from 'project_estimate/action';
 import {
   ProjectCustomEstimateVO,
-  ProjectEstimateVO,
+  ProjectEstimateShortVO,
   ProjectSystemEstimateVO
 } from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
@@ -20,7 +20,7 @@ function* watchProjectId() {
   while (true) {
     const { payload: projectId } = yield take(projectEstimateAction.setProjectId);
     if (projectId) {
-      const list: ProjectEstimateVO[] = yield call(projectEstimateApi.getList, projectId);
+      const list: ProjectEstimateShortVO[] = yield call(projectEstimateApi.getList, projectId);
       yield put(projectEstimateAction.setList(list));
     }
     else {

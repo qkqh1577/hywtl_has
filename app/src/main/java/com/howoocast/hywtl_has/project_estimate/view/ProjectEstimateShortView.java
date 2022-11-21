@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.view;
 
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -21,6 +22,8 @@ public class ProjectEstimateShortView {
     private LocalDateTime modifiedAt;
     private BusinessShortView business;
 
+    private Boolean hasExperimentInfo;
+
     public static ProjectEstimateShortView assemble(ProjectEstimate source) {
         ProjectEstimateShortView target = new ProjectEstimateShortView();
         target.id = source.getId();
@@ -33,6 +36,7 @@ public class ProjectEstimateShortView {
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         target.business = BusinessShortView.assemble(source.getBusiness());
+        target.hasExperimentInfo = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getHasExperimentInfo).orElse(false);
         return target;
     }
 }

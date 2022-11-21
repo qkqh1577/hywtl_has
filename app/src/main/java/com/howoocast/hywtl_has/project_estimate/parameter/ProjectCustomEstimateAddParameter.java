@@ -28,4 +28,6 @@ public class ProjectCustomEstimateAddParameter {
     @NotNull(message = ProjectCustomEstimate.KEY + ".type.not_null")
     private ProjectEstimateType type;
 
+    private Boolean hasExperimentInfo;
+
 }

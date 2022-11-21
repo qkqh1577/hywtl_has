@@ -62,6 +62,21 @@ export interface ProjectEstimateVO {
   test?: ProjectEstimateTestVO;
 }
 
+export interface ProjectEstimateShortVO {
+  id: ProjectEstimateId;
+  code: string;
+  type: ProjectEstimateType;
+  isSent: boolean;
+  confirmed: boolean;
+  recipient: string;
+  note?: string;
+  createdBy: UserShortVO;
+  createdAt: Date;
+  modifiedAt?: Date;
+  business: BusinessShortVO;
+  hasExperimentInfo: boolean;
+}
+
 export interface ProjectEstimatePlanVO {
   estimateDate: Date;
   isLh: boolean;
@@ -74,6 +89,7 @@ export interface ProjectEstimatePlanVO {
   totalAmount: number;
   manager1?: UserShortVO;
   manager2?: UserShortVO;
+  hasExperimentInfo: boolean;
 }
 
 export interface ProjectEstimateComplexSiteVO {

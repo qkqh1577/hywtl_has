@@ -46,7 +46,7 @@ export interface ProjectCustomEstimateExtensionParameter {
 
 export const initialProjectCustomEstimateExtensionParameter = (isLh: boolean) => {
   return {
-    plan:         { isLh: isLh },
+    plan:         { isLh: isLh, hasExperimentInfo: false },
     siteList:     [],
     buildingList: [],
     edit:         true,
@@ -66,7 +66,7 @@ export interface ProjectSystemEstimateParameter
 export const initialProjectSystemEstimateParameter = (isLh: boolean) => {
   return {
     isSent:       false,
-    plan:         { isLh: isLh },
+    plan:         { isLh: isLh, hasExperimentInfo: true },
     siteList:     [{}],
     buildingList: [{}],
     templateList: [],
@@ -88,6 +88,7 @@ export interface ProjectEstimatePlanParameter {
   manager1Id: UserId;
   manager2Id: UserId;
   isLh: boolean;
+  hasExperimentInfo: boolean;
 }
 
 export interface ProjectEstimateComplexSiteParameter {

@@ -2,8 +2,8 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   ProjectEstimateType,
-  ProjectEstimateVO,
   ProjectSystemEstimateVO,
 } from 'project_estimate/domain';
 import { createReducer } from 'typesafe-actions';
@@ -16,7 +16,7 @@ export interface ProjectEstimateState {
   customDetailModal?: ProjectEstimateId;
   customExtensionModal?: ProjectEstimateId;
   finalModal: boolean;
-  list?: ProjectEstimateVO[];
+  list?: ProjectEstimateShortVO[];
   projectId?: ProjectId;
   requestAddCustom: ApiStatus;
   requestAddSystem: ApiStatus;
