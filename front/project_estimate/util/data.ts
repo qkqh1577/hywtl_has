@@ -45,6 +45,7 @@ class ProjectEstimateData {
       serviceList:         this.getServiceList(templateListWithOutReview),
       serviceReviewList:   this.getServiceList(values.templateList.filter(template => template.testType === TestType.REVIEW), templateListWithOutReview.length),
       contentList:         values.contentList,
+      isLh:                values.plan.isLh ? '면제' : '별도'
     };
   };
 
@@ -84,7 +85,9 @@ class ProjectEstimateData {
     });
   };
 
-  getServiceList = (list: ProjectEstimateTemplateParameter[], templateListWithoutReviewLength: number = 0) => {
+  getServiceList = (list: ProjectEstimateTemplateParameter[],
+                    templateListWithoutReviewLength: number = 0
+  ) => {
     return list.map((service,
                      index
     ) => {

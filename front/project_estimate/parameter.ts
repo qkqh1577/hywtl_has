@@ -44,12 +44,14 @@ export interface ProjectCustomEstimateExtensionParameter {
   buildingList: ProjectEstimateComplexBuildingParameter[];
 }
 
-export const initialProjectCustomEstimateExtensionParameter = {
-  plan:         { isLh: false },
-  siteList:     [],
-  buildingList: [],
-  edit:         true,
-} as unknown as ProjectCustomEstimateExtensionParameter;
+export const initialProjectCustomEstimateExtensionParameter = (isLh: boolean) => {
+  return {
+    plan:         { isLh: isLh },
+    siteList:     [],
+    buildingList: [],
+    edit:         true,
+  } as unknown as ProjectCustomEstimateExtensionParameter;
+}
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
@@ -61,16 +63,18 @@ export interface ProjectSystemEstimateParameter
   contentList: ProjectEstimateContentListToMap[];
 }
 
-export const initialProjectSystemEstimateParameter = {
-  isSent:       false,
-  plan:         { isLh: false },
-  siteList:     [{}],
-  buildingList: [{}],
-  templateList: [],
-  contentList:  [{ content: '' }],
-  edit:         true,
-  file:         {},
-} as unknown as ProjectSystemEstimateParameter;
+export const initialProjectSystemEstimateParameter = (isLh: boolean) => {
+  return {
+    isSent:       false,
+    plan:         { isLh: isLh },
+    siteList:     [{}],
+    buildingList: [{}],
+    templateList: [],
+    contentList:  [{ content: '' }],
+    edit:         true,
+    file:         {},
+  } as unknown as ProjectSystemEstimateParameter;
+};
 
 export interface ProjectEstimatePlanParameter {
   estimateDate: string;

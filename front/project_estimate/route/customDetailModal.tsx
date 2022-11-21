@@ -36,7 +36,6 @@ export default function ProjectCustomEstimateDetailModalRoute() {
         recipient:  values.recipient,
         note:       values.note,
         businessId: values.businessId,
-        isLh:       !!values.isLh,
       } as ProjectCustomEstimateChangeParameter);
     }
   });

@@ -19,7 +19,7 @@ export default function () {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const plan = formik.values.plan;
-  console.log("formik.values.isLh : ", formik.values)
+
   return (
     <Box sx={{
       width:          '100%',

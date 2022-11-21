@@ -54,7 +54,7 @@ export default function ProjectSystemEstimateModalRoute() {
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteSystem()), [dispatch]);
   const openContractAddModal = useCallback((values: ProjectSystemEstimateVO) => dispatch(projectContractAction.setModal(values)), [dispatch]);
   const formik = useFormik<ProjectSystemEstimateParameter>({
-    initialValues: initialProjectSystemEstimateParameter,
+    initialValues: initialProjectSystemEstimateParameter(project?.isLh ?? false),
     onSubmit:      (values) => {
 
       if (systemModal) {
@@ -86,13 +86,13 @@ export default function ProjectSystemEstimateModalRoute() {
   useEffect(() => {
     if (typeof systemModal !== 'undefined') {
       dispatch(projectDocumentAction.setProjectId(projectId));
-      formik.setValues(initialProjectSystemEstimateParameter);
+      formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
     }
     if (systemModal === null) {
       dispatch(projectComplexAction.setId(projectId));
       dispatch(estimateTemplateAction.setFilter(initialEstimateTemplateQuery));
       dispatch(estimateContentAction.setFilter(initialEstimateContentQuery));
-      formik.setValues(initialProjectSystemEstimateParameter);
+      formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
     }
   }, [systemModal]);
 
@@ -193,7 +193,7 @@ export default function ProjectSystemEstimateModalRoute() {
         onCancel={() => {
           rollback(() => {
             if (systemModal === null) {
-              formik.setValues(initialProjectSystemEstimateParameter);
+              formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
               dispatch(projectEstimateAction.setSystemModal(undefined));
             }
             else {

@@ -14,6 +14,7 @@ export default function () {
   const formik = useContext(FormikContext);
   const templateList = formik.values.templateList;
   const discountAmount = formik.values.plan?.discountAmount ?? 0;
+  const isLh = formik.values.plan.isLh;
 
   const totalAmount = useMemo((): number => {
     if (!templateList || !Array.isArray(templateList) || templateList.length === 0) {
@@ -50,7 +51,7 @@ export default function () {
       justifyContent: 'center',
       alignItems:     'center',
     }}>
-      <TextBox variant="body2" sx={{ marginRight: '4px' }}>합계(부가세 별도):</TextBox>
+      <TextBox variant="body2" sx={{ marginRight: '4px' }}>{`합계(부가세 ${isLh ? '면제' : '별도'}):`}</TextBox>
       <TextBox variant="body1" sx={{ marginRight: '4px' }}>{toAmountKor(formik.values.plan?.totalAmount ?? 0)}</TextBox>
       <TextBox variant="body1">{`(￦${(formik.values.plan?.totalAmount ?? 0).toLocaleString()})`}</TextBox>
     </Box>
