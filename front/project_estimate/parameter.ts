@@ -1,6 +1,7 @@
 import { FileItemParameter } from 'file-item';
 import {
   ProjectEstimateId,
+  ProjectEstimateTestVO,
   ProjectEstimateType
 } from 'project_estimate/domain';
 import { BusinessId } from 'business/domain';
@@ -61,6 +62,7 @@ export interface ProjectSystemEstimateParameter
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
   contentList: ProjectEstimateContentListToMap[];
+  test?: ProjectEstimateTestVO;
 }
 
 export const initialProjectSystemEstimateParameter = (isLh: boolean) => {

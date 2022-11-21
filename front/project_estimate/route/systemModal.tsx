@@ -34,6 +34,7 @@ import {
 } from 'util/FileUtil';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectSystemEstimateVO } from 'project_estimate/domain';
+import { ProjectVariable } from 'project_estimate/util/variable';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
@@ -66,7 +67,8 @@ export default function ProjectSystemEstimateModalRoute() {
           },
           project!,
           'estimate_template',
-          'estimate'));
+          'estimate',
+          ProjectVariable.list(variableList, values) ?? []));
         return;
       }
       if (systemModal === null) {
@@ -77,7 +79,8 @@ export default function ProjectSystemEstimateModalRoute() {
           },
           project!,
           'estimate_template',
-          'estimate'));
+          'estimate',
+          ProjectVariable.list(variableList, values) ?? []));
         return;
       }
       error('시스템 견적서가 선택되지 않았습니다.');
@@ -241,3 +244,4 @@ export default function ProjectSystemEstimateModalRoute() {
     </FormikProvider>
   );
 }
+

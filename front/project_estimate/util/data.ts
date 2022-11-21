@@ -13,17 +13,22 @@ import {
   testUnitName
 } from 'type/TestType';
 import { PersonnelJobVO } from 'personnel/domain';
+import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
+
 
 class ProjectEstimateData {
+
   setData = async (values: ProjectSystemEstimateParameter,
+                   variableList: EstimateContentVariableVO[],
                    project: ProjectVO
   ) => {
     const estimateNumber = this.getEstimateNumber(project.code!, await documentDataApi.getSequenceNumber(project.id));
     const manager1 = await personnelApi.getOne(values.plan.manager1Id) ?? undefined;
     const manager2 = await personnelApi.getOne(values.plan.manager2Id) ?? undefined;
-    values.contentList = this.mapToContentList(values.contentList as unknown as string[]);
+    values.contentList = this.mapToContentList(values.contentList as unknown as string[], variableList);
     values.templateList = this.getMappedServiceList(values.templateList);
     const templateListWithOutReview = values.templateList.filter(template => template.testType !== TestType.REVIEW);
+
     return {
       recipient:           values.recipient!,
       projectName:         project.name,
@@ -116,13 +121,27 @@ class ProjectEstimateData {
     return jobList.filter(job => job.isRepresentative)[0].jobClass;
   };
 
-  mapToContentList = (contentList: string[]): ProjectEstimateContentListToMap[] => {
+  mapToContentList = (contentList: string[],
+                      variableList: EstimateContentVariableVO[]
+  ): ProjectEstimateContentListToMap[] => {
     return contentList.map(content => {
       return {
-        content: content,
+        content: this.convertFromVariableToValue(content, variableList),
       };
     });
   };
+  convertFromVariableToValue = (content: string,
+                                variableList: EstimateContentVariableVO[]
+  ): string => {
+    let result = content;
+    variableList.forEach(variable => {
+      if (content.includes(variable.name)) {
+        result = content.replace(`{${variable.name}}`, variable.value ?? '');
+      }
+    });
+    return result;
+  };
+
 }
 
 export const projectEstimateData = new ProjectEstimateData();

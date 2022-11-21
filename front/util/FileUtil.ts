@@ -7,13 +7,15 @@ import { fileToView } from 'file-item';
 import { projectEstimateData } from 'project_estimate/util/data';
 import { projectContractData } from 'project_contract/util/data';
 import { ProjectContractParameter } from 'project_contract/parameter';
+import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 
 export const generateFile = ({
                                values,
                                callback,
                                project,
                                templateFileName,
-                               type
+                               type,
+                               variableList
                              }: FileUtil) => {
   loadFile(
     `${location.origin}/file-item/template?fileName=${templateFileName}.docx`,
@@ -28,7 +30,7 @@ export const generateFile = ({
       });
 
       if (type === 'estimate') {
-        const data = await projectEstimateData.setData(values as ProjectSystemEstimateParameter, project as ProjectVO);
+        const data = await projectEstimateData.setData(values as ProjectSystemEstimateParameter, variableList, project as ProjectVO);
         doc.setData(data);
         doc.render(data);
         values.file = fileToView(blobToFile(getBlob(doc), `견적서-${data.projectName}-${data.estimateNumber}.docx`));
@@ -74,13 +76,15 @@ export class FileUtil {
               private _callback: (values: ProjectSystemEstimateParameter | ProjectContractParameter) => void,
               private _project: ProjectVO | null,
               private _templateFileName: string,
-              private _type: string
+              private _type: string,
+              private _variableList
   ) {
     this._values = _values;
     this._callback = _callback;
     this._project = _project;
     this._templateFileName = _templateFileName;
     this._type = _type;
+    this._variableList = _variableList;
   }
 
   get values(): ProjectSystemEstimateParameter | ProjectContractParameter {
@@ -114,5 +118,14 @@ export class FileUtil {
   set type(value: any) {
     this._type = value;
   }
+
+  set variableList(value: EstimateContentVariableVO[]) {
+    this._variableList = value;
+  }
+
+  get variableList(): EstimateContentVariableVO[] {
+    return this._variableList;
+  }
+
 }
 

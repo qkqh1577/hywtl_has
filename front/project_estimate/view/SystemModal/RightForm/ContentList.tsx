@@ -32,7 +32,7 @@ export default function (props: Props) {
   const edit = formik.values.edit;
   const contentList = formik.values.contentList;
   const [tempContent, setTempContent] = useState<string>();
-  console.log(props.variableList);
+
   return (
     <Box sx={{
       display:        'flex',

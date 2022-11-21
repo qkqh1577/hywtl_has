@@ -3,10 +3,8 @@ package com.howoocast.hywtl_has.project_estimate.controller;
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
-import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter.Content;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectSystemEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectSystemEstimateView;
-import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +30,7 @@ public class ProjectSystemEstimateController {
         @PathVariable Long id
     ) {
         ProjectSystemEstimate projectSystemEstimate = service.get(id);
-        List<Content> contentList = service.contentList(projectSystemEstimate);
-        return ProjectSystemEstimateView.assemble(projectSystemEstimate, contentList);
+        return ProjectSystemEstimateView.assemble(projectSystemEstimate);
     }
 
     /* 채번 로직 */
