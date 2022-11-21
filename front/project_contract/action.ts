@@ -11,6 +11,7 @@ import {
 import { ProjectContractParameter } from 'project_contract/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 import {
+  ProjectCustomEstimateVO,
   ProjectEstimateId,
   ProjectEstimateVO,
   ProjectSystemEstimateVO
@@ -50,7 +51,7 @@ export const projectContractAction = {
   setFinal:         createAction(ProjectContractActionType.setFinal)<ProjectContractId>(),
   setFinalModal:    createAction(ProjectContractActionType.setFinalModal)<boolean>(),
   setList:          createAction(ProjectContractActionType.setList)<ProjectContractShortVO[] | undefined>(),
-  setModal:         createAction(ProjectContractActionType.setModal)<ProjectContractId | null | undefined | ProjectSystemEstimateVO>(),
+  setModal:         createAction(ProjectContractActionType.setModal)<ProjectContractId | null | undefined | ProjectSystemEstimateVO | ProjectCustomEstimateVO>(),
   setProjectId:     createAction(ProjectContractActionType.setProjectId)<ProjectId | undefined>(),
   getEstimate:      createAction(ProjectContractActionType.getEstimate)<ProjectEstimateId | undefined>(),
   setEstimate:      createAction(ProjectContractActionType.setEstimate)<ProjectEstimateVO | undefined>(),

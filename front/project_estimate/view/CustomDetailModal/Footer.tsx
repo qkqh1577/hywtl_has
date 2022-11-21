@@ -3,14 +3,14 @@ import { Box } from '@mui/material';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
-import { ProjectSystemEstimateVO } from 'project_estimate/domain';
+import { ProjectCustomEstimateVO, } from 'project_estimate/domain';
 
 interface Props {
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   onExtend: DefaultFunction;
-  onContract: (values: ProjectSystemEstimateVO) => void;
+  onContract: (values: ProjectCustomEstimateVO) => void;
 }
 
 export default function (props: Props) {
@@ -55,7 +55,6 @@ export default function (props: Props) {
         <Button onClick={props.onExtend} sx={{ marginRight: '10px' }}>실험정보 입력</Button>
         <Button shape="basic4" onClick={() => {
           props.onContract(formik.values)
-          props.onClose();
         }}>계약서 등록</Button>
       </Box>
     </Box>
