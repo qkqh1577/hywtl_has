@@ -36,7 +36,7 @@ export const generateFile = ({
         values.file = fileToView(blobToFile(getBlob(doc), `견적서-${data.projectName}-${data.estimateNumber}.docx`));
       }
       else {
-        const data = await projectContractData.setData(values as ProjectContractParameter);
+        const data = await projectContractData.setData(values as ProjectContractParameter, variableList);
         doc.setData(data);
         doc.render(data);
         values.file = fileToView(blobToFile(getBlob(doc), `계약서-${data.serviceName}.docx`));

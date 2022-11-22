@@ -27,6 +27,8 @@ import {
   FileUtil,
   generateFile
 } from 'util/FileUtil';
+import { contractConditionAction } from 'admin/contract/condition/action';
+import { ProjectContractVariable } from 'project_contract/util/variable';
 
 export default function ProjectContractModalRoute() {
 
@@ -50,6 +52,7 @@ export default function ProjectContractModalRoute() {
   const onAdd = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.add(params)), [dispatch]);
   const onChange = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.change(params)), [dispatch]);
   const getEstimate = useCallback((id: ProjectEstimateId | undefined) => dispatch(projectContractAction.getEstimate(id)), [dispatch]);
+  const { variableList } = useSelector((root: RootState) => root.contractCondition);
   const formik = useFormik<ProjectContractParameter>({
     initialValues: initialProjectContractParameter,
     onSubmit:      (values) => {
@@ -61,7 +64,9 @@ export default function ProjectContractModalRoute() {
           },
           null,
           'contract_template',
-          'contract'));
+          'contract',
+          ProjectContractVariable.list(variableList, values)
+        ));
       }
       else if (modal === null || typeof modal === 'object') {
         generateFile(new FileUtil(
@@ -71,7 +76,9 @@ export default function ProjectContractModalRoute() {
           },
           null,
           'contract_template',
-          'contract'));
+          'contract',
+          ProjectContractVariable.list(variableList, values)
+        ));
       }
     }
   });
@@ -79,6 +86,7 @@ export default function ProjectContractModalRoute() {
   useEffect(() => {
     if (!modal) {
       formik.setValues(initialProjectContractParameter);
+      dispatch(contractConditionAction.requestVariableList());
     }
   }, [modal]);
 
@@ -105,16 +113,17 @@ export default function ProjectContractModalRoute() {
         estimateId: detail.estimate.id,
         edit:       false
       } as unknown as ProjectContractParameter);
+      dispatch(contractConditionAction.requestVariableList());
     }
   }, [detail]);
 
   useEffect(() => {
     if (detailBasedEstimate) {
       formik.setValues({
-        isSent: detailBasedEstimate.isSent,
-        recipient: detailBasedEstimate.recipient,
-        note: detailBasedEstimate.note,
-        estimate: detailBasedEstimate,
+        isSent:     detailBasedEstimate.isSent,
+        recipient:  detailBasedEstimate.recipient,
+        note:       detailBasedEstimate.note,
+        estimate:   detailBasedEstimate,
         estimateId: detailBasedEstimate.id,
         edit:       true
       } as unknown as ProjectContractParameter);
@@ -172,6 +181,7 @@ export default function ProjectContractModalRoute() {
             afterConfirm: () => {onDelete(modal);}
           });
         }}
+        variableList={variableList}
       />
       <ProjectContractEstimateSelectModal
         list={estimateList}

@@ -6,12 +6,14 @@ import { Box } from '@mui/material';
 import Top from './Top';
 import Left from './Left';
 import Right from './Right';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  variableList?: ContractConditionVariableVO[];
 }
 
 export default function ProjectContractModal(props: Props) {
@@ -36,7 +38,7 @@ export default function ProjectContractModal(props: Props) {
           onDelete={props.onDelete}
         />
         <Left />
-        <Right />
+        <Right variableList={props.variableList}/>
       </Box>
     </ModalLayout>
   );

@@ -17,4 +17,5 @@ export interface ContractConditionListVO {
 export interface ContractConditionVariableVO {
   name: string;
   note: string;
+  value?: string;
 }

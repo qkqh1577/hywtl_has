@@ -6,8 +6,13 @@ import ContractDate from './ContractDate';
 import Orderer from './Orderer';
 import Contractor from './Contractor';
 import Condition from './Condition';
+import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
 
-export default function ProjectContractModalRightForm() {
+interface Props {
+  variableList?: ContractConditionVariableVO[];
+}
+
+export default function ProjectContractModalRightForm(props: Props) {
 
   return (
     <Box sx={{
@@ -23,7 +28,7 @@ export default function ProjectContractModalRightForm() {
       <ContractDate />
       <Orderer />
       <Contractor />
-      <Condition />
+      <Condition variableList={props.variableList} />
     </Box>
   );
 }
