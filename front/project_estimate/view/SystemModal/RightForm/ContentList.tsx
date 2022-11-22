@@ -185,7 +185,7 @@ export default function (props: Props) {
         </Table>
       </Box>
       {
-        edit && props.variableList && (
+        edit && (
           <Box sx={{
             display:  'flex',
             width:    '30%',
@@ -194,7 +194,7 @@ export default function (props: Props) {
             <TextBox variant="body8">
               *내용으로 변수명을 입력 시, 해당 변수에 해당하는 데이터가 보여집니다
             </TextBox>
-            <VariableList {...props} />
+            <VariableList variableList={props.variableList} />
           </Box>
         )
       }

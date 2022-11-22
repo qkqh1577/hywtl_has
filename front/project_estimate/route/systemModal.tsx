@@ -111,6 +111,7 @@ export default function ProjectSystemEstimateModalRoute() {
         contentList:  systemDetail.contentList ?? [],
         edit:         false,
       } as unknown as ProjectSystemEstimateParameter);
+      dispatch(estimateContentAction.requestVariableList());
     }
   }, [systemModal, systemDetail]);
 
