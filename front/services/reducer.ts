@@ -113,7 +113,11 @@ import {
 import {
   projectDbReducer,
   ProjectDbState
-} from "../project_db/reducer";
+} from '../project_db/reducer';
+import {
+  progressReducer,
+  ProgressState
+} from 'components/Progress/reducer';
 
 export interface RootState {
   business: BusinessState;
@@ -144,6 +148,7 @@ export interface RootState {
   user: UserState;
   userNotification: UserNotificationState;
   projectDb: ProjectDbState;
+  progress: ProgressState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -175,6 +180,7 @@ const reducer = combineReducers<RootState>({
   user:               userReducer,
   userNotification:   userNotificationReducer,
   projectDb:          projectDbReducer,
+  progress:           progressReducer,
 });
 
 const rootReducer: Reducer = (state,

@@ -10,7 +10,7 @@ import {
 } from 'formik';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectContractId } from 'project_contract/domain';
@@ -29,6 +29,7 @@ import {
 } from 'util/FileUtil';
 import { contractConditionAction } from 'admin/contract/condition/action';
 import { ProjectContractVariable } from 'project_contract/util/variable';
+import { Progress } from 'components/Progress';
 
 export default function ProjectContractModalRoute() {
 
@@ -151,42 +152,45 @@ export default function ProjectContractModalRoute() {
   }, [requestChange]);
 
   return (
-    <FormikProvider value={formik}>
-      <ProjectContractModal
-        open={typeof modal !== 'undefined'}
-        onClose={onClose}
-        onCancel={() => {
-          rollback(() => {
-            if (modal === null) {
-              onClose();
+    <>
+      <FormikProvider value={formik}>
+        <ProjectContractModal
+          open={typeof modal !== 'undefined'}
+          onClose={onClose}
+          onCancel={() => {
+            rollback(() => {
+              if (modal === null) {
+                onClose();
+              }
+              else if (detail) {
+                formik.setValues({
+                  ...detail,
+                  estimateId: detail.estimate.id,
+                  edit:       false
+                } as unknown as ProjectContractParameter);
+              }
+            });
+          }}
+          onDelete={() => {
+            if (!modal) {
+              error('계약서가 선택되지 않았습니다.');
+              return;
             }
-            else if (detail) {
-              formik.setValues({
-                ...detail,
-                estimateId: detail.estimate.id,
-                edit:       false
-              } as unknown as ProjectContractParameter);
-            }
-          });
-        }}
-        onDelete={() => {
-          if (!modal) {
-            error('계약서가 선택되지 않았습니다.');
-            return;
-          }
-          confirm({
-            children:     '계약서를 삭제하시겠습니까?',
-            status:       DialogStatus.WARN,
-            confirmText:  '삭제',
-            afterConfirm: () => {onDelete(modal);}
-          });
-        }}
-        variableList={variableList}
-      />
-      <ProjectContractEstimateSelectModal
-        list={estimateList}
-        getEstimate={getEstimate}
-      />
-    </FormikProvider>
+            confirm({
+              children:     '계약서를 삭제하시겠습니까?',
+              status:       DialogStatus.WARN,
+              confirmText:  '삭제',
+              afterConfirm: () => {onDelete(modal);}
+            });
+          }}
+          variableList={variableList}
+        />
+        <ProjectContractEstimateSelectModal
+          list={estimateList}
+          getEstimate={getEstimate}
+        />
+      </FormikProvider>
+      <Progress/>
+    </>
   );
 }

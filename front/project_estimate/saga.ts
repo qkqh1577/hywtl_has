@@ -15,6 +15,7 @@ import { projectEstimateApi } from 'project_estimate/api';
 import { RootState } from 'services/reducer';
 import { dialogAction } from 'dialog/action';
 import { getErrorMessage } from 'type/Error';
+import { progressAction } from 'components/Progress/action';
 
 function* watchProjectId() {
   while (true) {
@@ -118,13 +119,16 @@ function* watchAddSystem() {
     const { payload: params } = yield take(projectEstimateAction.addSystem);
     try {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
+      yield put(progressAction.progress(true));
       yield put(projectEstimateAction.requestAddSystem('request'));
       yield call(projectEstimateApi.addSystem, projectId, params);
       yield put(projectEstimateAction.requestAddSystem('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectEstimateAction.addSystem, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectEstimateAction.requestAddSystem(message));
     }
@@ -136,13 +140,16 @@ function* watchChangeSystem() {
     const { payload: params } = yield take(projectEstimateAction.changeSystem);
     try {
       const { systemDetail } = yield select((root: RootState) => root.projectEstimate);
+      yield put(progressAction.progress(true));
       yield put(projectEstimateAction.requestChangeSystem('request'));
       yield call(projectEstimateApi.changeSystem, systemDetail!.id, params);
       yield put(projectEstimateAction.requestChangeSystem('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectEstimateAction.changeSystem, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectEstimateAction.requestChangeSystem(message));
     }

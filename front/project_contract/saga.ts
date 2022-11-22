@@ -22,6 +22,7 @@ import {
 import { projectEstimateApi } from 'project_estimate/api';
 import { getErrorMessage } from 'type/Error';
 import { dialogAction } from 'dialog/action';
+import { progressAction } from 'components/Progress/action';
 
 function* watchProjectId() {
   while (true) {
@@ -86,13 +87,16 @@ function* watchAdd() {
     const { payload: params } = yield take(projectContractAction.add);
     try {
       const { projectId } = yield select((root: RootState) => root.projectContract);
+      yield put(progressAction.progress(true));
       yield put(projectContractAction.requestAdd('request'));
       yield call(projectContractApi.add, projectId, params);
       yield put(projectContractAction.requestAdd('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectContractAction.add, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectContractAction.requestAdd(message));
     }
@@ -104,13 +108,16 @@ function* watchChange() {
     const { payload: params } = yield take(projectContractAction.change);
     try {
       const { modal } = yield select((root: RootState) => root.projectContract);
+      yield put(progressAction.progress(true));
       yield put(projectContractAction.requestChange('request'));
       yield call(projectContractApi.change, modal, params);
       yield put(projectContractAction.requestChange('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectContractAction.change, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectContractAction.requestChange(message));
     }
