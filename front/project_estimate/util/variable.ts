@@ -1,6 +1,7 @@
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 import { toAmountKor } from 'util/NumberUtil';
+import { TestType } from 'type/TestType';
 
 export class ProjectEstimateVariable {
   private name: string;
@@ -17,14 +18,16 @@ export class ProjectEstimateVariable {
   }
 
   public static list(list: EstimateContentVariableVO[] = [],
-                     values?: ProjectSystemEstimateParameter
+                     values: ProjectSystemEstimateParameter
   ) {
+    let targetTest = getTargetTest(values);
+
     if (list.length === 0) {
       return [];
     }
     return list.map((item) => {
       if (item.name === 'experiment_num') {
-        return new ProjectEstimateVariable(item.name, item.note, values?.test?.targetTest ?? '실험 동 수 없음');
+        return new ProjectEstimateVariable(item.name, item.note, targetTest || '실험 동 수 없음');
       }
       if (item.name === 'total_apartment_num') {
         return new ProjectEstimateVariable(item.name, item.note, values?.buildingList.length ?? 0);
@@ -50,3 +53,38 @@ export class ProjectEstimateVariable {
     });
   }
 }
+
+const getTargetTest = (values: ProjectSystemEstimateParameter) => {
+  let targetTest: string = '';
+  let testTypeFCount: number = 0;
+  let testTypePCount: number = 0;
+  let testTypeACount: number = 0;
+  let testTypeECount: number = 0;
+
+  values?.buildingList.forEach(building => {
+    building.testTypeList?.forEach(testType => {
+      if (testType === TestType.P) {
+        testTypePCount++;
+      }
+      if (testType === TestType.A) {
+        testTypeACount++;
+      }
+      if (testType === TestType.F) {
+        testTypeFCount++;
+      }
+    });
+    targetTest =
+      (testTypeFCount ? (TestType.F + testTypeFCount) : '') +
+      (testTypePCount ? (TestType.P + testTypePCount) : '') +
+      (testTypeACount ? (TestType.A + testTypeACount) : '');
+  });
+
+  values?.siteList.forEach(site => {
+    if (site.withEnvironmentTest) {
+      testTypeECount++;
+    }
+  });
+  targetTest += (testTypeECount ? (TestType.E + testTypeECount) : '');
+  return targetTest;
+};
+
