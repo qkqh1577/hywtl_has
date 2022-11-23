@@ -1,19 +1,11 @@
 import React, {
-  ChangeEvent,
   useCallback,
   useEffect,
   useRef,
   useState
 } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
-import {
-  Box,
-  Pagination,
-  Stack,
-} from '@mui/material';
-import DataFieldWithLabel from 'layouts/DataFieldLabel';
-import Input from 'layouts/Input';
-import Button from 'layouts/Button';
+import { Box, } from '@mui/material';
 import {
   useDispatch,
   useSelector
@@ -21,7 +13,6 @@ import {
 import { RootState } from 'services/reducer';
 import { ColorPalette } from 'assets/theme';
 import { addressModalAction } from 'components/AddressModal/action';
-import TextBox from 'layouts/Text';
 import {
   Address,
   initialAddress
@@ -31,6 +22,12 @@ import {
   AddressQuery,
   initialAddressQuery
 } from 'components/AddressModal/query';
+import Footer from 'components/AddressModal/view/Footer';
+import DefaultMessage from 'components/AddressModal/view/Form/DefaultMessage';
+import PaginationSection from 'components/AddressModal/view/Form/PaginationSection';
+import DetailAddressInput from 'components/AddressModal/view/Form/DetailAddressInput';
+import AddressSearchSection from 'components/AddressModal/view/Form/AddressSearchSection';
+import AddressForm from 'components/AddressModal/view/Form/AddressForm';
 
 interface Props {
   formik: FormikContextType<any>;
@@ -57,16 +54,16 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
     }
   }, [query.page]);
 
-  useEffect( () => {
+  useEffect(() => {
     setAddressList(list);
-  },[list])
+  }, [list]);
 
-  useEffect( () => {
+  useEffect(() => {
       setQuery(initialAddressQuery);
       setDetailAddress('');
       setAddressList([]);
     }
-  ,[isSaved])
+    , [isSaved]);
 
   return (
     <ModalLayout
@@ -74,44 +71,15 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
       width="500px"
       open={!!addressModal}
       onClose={onClose}
-      footer={
-        <Box sx={{
-          width:          '100%',
-          margin:         '20px 0',
-          display:        'flex',
-          justifyContent: 'center',
-          alignItems:     'center',
-        }}>
-          <Button
-            sx={{
-              marginRight: '10px',
-            }}
-            onClick={() => {
-              if (Array.isArray(fieldName)) {
-                fieldName.forEach((name) => {
-                  if(name.includes('address')) {
-                    formik.setFieldValue(name, `${addressValue.roadAddr} ${detailAddress}`);
-                  }else {
-                    formik.setFieldValue(name, addressValue.zipNo);
-                  }
-                })
-              }else{
-                formik.setFieldValue(fieldName, `${addressValue.roadAddr} ${detailAddress}`);
-              }
-              setIsSaved(!isSaved);
-              onClose();
-            }}>
-            저장
-          </Button>
-          <Button
-            shape="basic2"
-            onClick={() => {
-              setIsSaved(!isSaved);
-              onClose();
-            }}>
-            취소
-          </Button>
-        </Box>}
+      footer={<Footer
+        formik={formik}
+        fieldName={fieldName}
+        addressValue={addressValue}
+        detailAddress={detailAddress}
+        onClose={onClose}
+        setIsSaved={setIsSaved}
+        isSaved={isSaved}
+      />}
     >
       <Box sx={{
         display:  'flex',
@@ -119,43 +87,10 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
         flexWrap: 'wrap',
         height:   '100%',
       }}>
-        <Box sx={{
-          display:      'flex',
-          width:        '100%',
-          flexWrap:     'nowrap',
-          padding:      '10px',
-          border:       `1px solid ${ColorPalette._e4e9f2}`,
-          marginBottom: '10px',
-        }}>
-          <Box sx={{
-            display:     'flex',
-            flexWrap:    'nowrap',
-            width:       '100%',
-            marginRight: '10px',
-          }}>
-            <Input
-              variant="outlined"
-              placeholder="입력"
-              value={query.keyword ?? ''}
-              onChange={(e) => {
-                const value = e.target.value || undefined;
-                if (value !== query.keyword) {
-                  setQuery((prevState) => ({ ...prevState, keyword: value, page: 1 }));
-                }
-              }}
-            />
-          </Box>
-          <Box sx={{
-            display:  'flex',
-            flexWrap: 'nowrap',
-          }}>
-            <Button sx={{ marginRight: '10px' }} onClick={() => {
-              dispatch(addressModalAction.setFilter(query));
-            }}>
-              검색
-            </Button>
-          </Box>
-        </Box>
+        <AddressSearchSection
+          query={query}
+          setQuery={setQuery}
+        />
         <Box sx={{
           display:  'flex',
           width:    '100%',
@@ -171,122 +106,33 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
             padding:       '10px'
           }}>
             {addressList.length > 0 && addressList.map((item,
-                                          index
+                                                        index
             ) => {
               return (
-                <Box
-                  ref={boxRef}
-                  onClick={() => {
-                    boxRef.current = item;
-                    setAddressValue(boxRef.current);
-                  }}
+                <AddressForm
                   key={`${index}_${item.zipNo}`}
-                  sx={{
-                    display:         'flex',
-                    width:           '100%',
-                    flexWrap:        'nowrap',
-                    padding:         '10px',
-                    border:          `1px solid ${ColorPalette._e4e9f2}`,
-                    marginBottom:    '3px',
-                    flexDirection:   'column',
-                    cursor:          'pointer',
-                    backgroundColor: (boxRef.current?.roadAddr ?? null) === item.roadAddr ? ColorPalette._e4e9f2 : ColorPalette._ffffff,
-                  }}>
-                  <TextBox variant="body1">{item.zipNo}</TextBox>
-                  <TextBox variant="body2">{item.roadAddr}</TextBox>
-                  <TextBox variant="body2">{item.jibunAddr}</TextBox>
-                </Box>
+                  item={item}
+                  boxRef={boxRef}
+                  setAddressValue={setAddressValue}
+                  index={index}
+                />
               );
             })}
             {addressList.length > 0 && (
-              <Stack spacing={2} direction="row" sx={{
-                display:        'flex',
-                justifyContent: 'center',
-                width:          '100%',
-                marginTop:      '3px'
-              }
-              }>
-                <Pagination
-                  count={totalPage}
-                  color={'secondary'}
-                  shape="rounded"
-                  size="small"
-                  showFirstButton
-                  showLastButton
-                  onChange={(e: ChangeEvent<unknown>,
-                             page: number
-                  ) => {
-                    setQuery((prevState) => ({ ...prevState, page: page }));
-                  }}
-                />
-              </Stack>
+              <PaginationSection
+                totalPage={totalPage}
+                setQuery={setQuery}
+              />
             )}
             {addressList.length === 0 && (
-              <>
-                <Box sx={{
-                  display:       'flex',
-                  flexDirection: 'column',
-                  marginBottom:  '3px'
-                }}>
-                  <TextBox variant="body2">도로명 + 건설 번호</TextBox>
-                  <TextBox variant="body12">예) 판교역로 235, 제주첨단로 242</TextBox>
-                </Box>
-                <Box sx={{
-                  display:       'flex',
-                  flexDirection: 'column',
-                  marginBottom:  '3px'
-                }}>
-                  <TextBox variant="body2">지역명(동/리) + 번지</TextBox>
-                  <TextBox variant="body12">예) 삼평동 681, 제주 영평동 2181</TextBox>
-                </Box>
-                <Box sx={{
-                  display:       'flex',
-                  flexDirection: 'column',
-                  marginBottom:  '3px'
-                }}>
-                  <TextBox variant="body2">지역명(동/리) + 건물명(아파트명)</TextBox>
-                  <TextBox variant="body12">예) 분당 주공, 연수동 주공 3차</TextBox>
-                </Box>
-                <Box sx={{
-                  display:       'flex',
-                  flexDirection: 'column',
-                }}>
-                  <TextBox variant="body2">사서함명 + 번호</TextBox>
-                  <TextBox variant="body12">예) 분당우체국사서함 1~100</TextBox>
-                </Box>
-              </>
+              <DefaultMessage />
             )}
           </Box>
         </Box>
-        <Box sx={{
-          display:   'flex',
-          width:     '100%',
-          flexWrap:  'nowrap',
-          padding:   '10px',
-          border:    `1px solid ${ColorPalette._e4e9f2}`,
-          marginTop: '10px',
-        }}>
-          <Box sx={{
-            display:     'flex',
-            flexWrap:    'nowrap',
-            width:       '100%',
-            marginRight: '10px',
-          }}>
-            <DataFieldWithLabel label="상세주소">
-              <Input
-                variant="outlined"
-                placeholder="입력"
-                value={detailAddress ?? ''}
-                onChange={(e) => {
-                  const value = e.target.value || '';
-                  if (value !== detailAddress) {
-                    setDetailAddress(value);
-                  }
-                }}
-              />
-            </DataFieldWithLabel>
-          </Box>
-        </Box>
+        <DetailAddressInput
+          detailAddress={detailAddress}
+          setDetailAddress={setDetailAddress}
+        />
       </Box>
     </ModalLayout>
   );
