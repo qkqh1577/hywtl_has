@@ -21,5 +21,11 @@ public class ProjectContractConditionParameter {
     @Setter
     public static class Description {
         private String description;
+
+        public static Description of(String description) {
+            Description instance = new Description();
+            instance.description = description;
+            return instance;
+        }
     }
 }

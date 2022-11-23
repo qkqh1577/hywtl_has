@@ -111,6 +111,7 @@ export default function () {
                   const value = +(e.target.value) || undefined;
                   if (stage.rate !== value) {
                     formik.setFieldValue(`collection.stageList.${i}.rate`, value);
+                    formik.setFieldValue(`collection.stageList.${i}.amount`, getRateAmount(value, totalAmount));
                   }
                 }}
               />

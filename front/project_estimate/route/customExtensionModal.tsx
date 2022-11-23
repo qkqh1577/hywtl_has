@@ -27,6 +27,7 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
 
   const dispatch = useDispatch();
   const { projectId, customExtensionModal, customDetail, requestExtensionCustom } = useSelector((root: RootState) => root.projectEstimate);
+  const { detail: project } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const [buildingSeq, setBuildingSeq] = useState<number>();
@@ -36,11 +37,11 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
     setBuildingSeq(undefined);
   };
   const formik = useFormik<ProjectCustomEstimateExtensionParameter>({
-    initialValues: initialProjectCustomEstimateExtensionParameter,
+    initialValues: initialProjectCustomEstimateExtensionParameter(project?.isLh ?? false),
     onSubmit:      (values) => {
       onChange({
         id:           values.id,
-        plan:         values.plan,
+        plan:         {...values.plan, hasExperimentInfo: true},
         siteList:     values.siteList,
         buildingList: values.buildingList,
       });
@@ -51,7 +52,7 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
     if (customExtensionModal) {
       formik.setFieldValue('id', customExtensionModal);
       if (!customDetail?.plan) {
-        formik.setFieldValue('plan', {});
+        formik.setFieldValue('plan', {isLh: project?.isLh ?? false});
       }
       else {
         formik.setFieldValue('plan', customDetail.plan);
@@ -70,7 +71,7 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
       }
     }
     else {
-      formik.setValues(initialProjectCustomEstimateExtensionParameter);
+      formik.setValues(initialProjectCustomEstimateExtensionParameter(project?.isLh ?? false));
     }
   }, [customExtensionModal]);
 
@@ -111,6 +112,8 @@ export default function ProjectCustomEstimateExtensionModalRoute() {
     closeStatus(requestExtensionCustom, () => {
       onClose();
       dispatch(projectEstimateAction.setCustomDetailModal(customExtensionModal));
+      dispatch(projectEstimateAction.setProjectId(projectId));
+
     }, () => {
       formik.setSubmitting(false);
       dispatch(projectEstimateAction.requestExtensionCustom('idle'));

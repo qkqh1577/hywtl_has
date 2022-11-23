@@ -15,10 +15,14 @@ import {
 } from 'project_contract/domain';
 import { projectContractApi } from 'project_contract/api';
 import { RootState } from 'services/reducer';
-import { ProjectEstimateVO } from 'project_estimate/domain';
+import {
+  ProjectEstimateId,
+  ProjectEstimateVO
+} from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
 import { getErrorMessage } from 'type/Error';
 import { dialogAction } from 'dialog/action';
+import { progressAction } from 'components/Progress/action';
 
 function* watchProjectId() {
   while (true) {
@@ -33,12 +37,44 @@ function* watchProjectId() {
   }
 }
 
+function* getContractData(id: ProjectEstimateId) {
+  const { projectId } = yield select((root: RootState) => root.projectContract);
+  try {
+    const basic: ProjectContractBasicVO = yield call(projectContractApi.getBasic, projectId);
+    yield put(projectContractAction.setBasic(basic));
+  }
+  catch (e) {
+    yield put(dialogAction.openError('견적서 정보를 불러올 수 없습니다.'));
+    yield put(projectContractAction.setBasic(undefined));
+  }
+  try {
+    const collection: ProjectContractCollectionVO = yield call(projectContractApi.getCollection, id);
+    yield put(projectContractAction.setCollection(collection));
+  }
+  catch (e) {
+    yield put(dialogAction.openError('기성 단계 정보를 불러올 수 없습니다.'));
+    yield put(projectContractAction.setCollection(undefined));
+  }
+  try {
+    const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getConditionList, id);
+    yield put(projectContractAction.setConditionList(conditionList));
+  }
+  catch (e) {
+    yield put(dialogAction.openError('계약 조건 정보를 불러올 수 없습니다.'));
+    yield put(projectContractAction.setConditionList(undefined));
+  }
+}
+
 function* watchModal() {
   while (true) {
-    const { payload: id } = yield take(projectContractAction.setModal);
-    if (id) {
-      const detail: ProjectContractVO = yield call(projectContractApi.getOne, id);
+    const { payload: data } = yield take(projectContractAction.setModal);
+    if (typeof data !== 'object' && data) {
+      const detail: ProjectContractVO = yield call(projectContractApi.getOne, data);
       yield put(projectContractAction.setDetail(detail));
+    }
+    else if (typeof data == 'object' && data !== null && data != undefined) {
+      yield put(projectContractAction.setDetailBasedEstimate(data));
+      yield call(getContractData, data.id);
     }
     else {
       yield put(projectContractAction.setDetail(undefined));
@@ -51,13 +87,16 @@ function* watchAdd() {
     const { payload: params } = yield take(projectContractAction.add);
     try {
       const { projectId } = yield select((root: RootState) => root.projectContract);
+      yield put(progressAction.progress(true));
       yield put(projectContractAction.requestAdd('request'));
       yield call(projectContractApi.add, projectId, params);
       yield put(projectContractAction.requestAdd('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('등록하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectContractAction.add, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectContractAction.requestAdd(message));
     }
@@ -69,13 +108,16 @@ function* watchChange() {
     const { payload: params } = yield take(projectContractAction.change);
     try {
       const { modal } = yield select((root: RootState) => root.projectContract);
+      yield put(progressAction.progress(true));
       yield put(projectContractAction.requestChange('request'));
       yield call(projectContractApi.change, modal, params);
       yield put(projectContractAction.requestChange('done'));
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectContractAction.change, e);
+      yield put(progressAction.progress(false));
       yield put(dialogAction.openError(message));
       yield put(projectContractAction.requestChange(message));
     }
@@ -127,32 +169,9 @@ function* watchEstimate() {
     else {
       yield put(projectContractAction.setEstimate(undefined));
     }
-    const { projectId } = yield select((root: RootState) => root.projectContract);
-    try {
-      const basic: ProjectContractBasicVO = yield call(projectContractApi.getBasic, projectId);
-      yield put(projectContractAction.setBasic(basic));
-    }
-    catch (e) {
-      yield put(dialogAction.openError('견적서 정보를 불러올 수 없습니다.'));
-      yield put(projectContractAction.setBasic(undefined));
-    }
-    try {
-      const collection: ProjectContractCollectionVO = yield call(projectContractApi.getCollection, estimateId);
-      yield put(projectContractAction.setCollection(collection));
-    }
-    catch (e) {
-      yield put(dialogAction.openError('기성 단계 정보를 불러올 수 없습니다.'));
-      yield put(projectContractAction.setCollection(undefined));
-    }
-    try {
-      const conditionList: ProjectContractConditionVO[] = yield call(projectContractApi.getConditionList, estimateId);
-      yield put(projectContractAction.setConditionList(conditionList));
-    }
-    catch (e) {
-      yield put(dialogAction.openError('계약 조건 정보를 불러올 수 없습니다.'));
-      yield put(projectContractAction.setConditionList(undefined));
-    }
+    yield call(getContractData, estimateId);
   }
+
 }
 
 export default function* projectContractSaga() {

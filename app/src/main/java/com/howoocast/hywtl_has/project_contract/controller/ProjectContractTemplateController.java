@@ -42,7 +42,7 @@ public class ProjectContractTemplateController {
     public List<ProjectContractConditionView> conditionList(
         @RequestParam(required = false) Long estimateId
     ) {
-        return service.conditionList(estimateId).stream()
+        return service.conditionList().stream()
             .map(ProjectContractConditionView::assemble)
             .collect(Collectors.toList());
     }

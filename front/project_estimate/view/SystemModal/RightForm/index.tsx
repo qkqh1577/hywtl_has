@@ -5,8 +5,12 @@ import Plan from './Plan';
 import Amount from './Amount';
 import TemplateList from './TemplateList';
 import ContentList from './ContentList';
+import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
 
-export default function ProjectSystemEstimateModalRightForm() {
+type Props = {
+  variableList?: EstimateContentVariableVO[];
+}
+export default function ProjectSystemEstimateModalRightForm(props: Props) {
 
   return (
     <Box sx={{
@@ -30,7 +34,7 @@ export default function ProjectSystemEstimateModalRightForm() {
       <Plan />
       <Amount />
       <TemplateList />
-      <ContentList />
+      <ContentList variableList={props.variableList}/>
     </Box>
   );
 }

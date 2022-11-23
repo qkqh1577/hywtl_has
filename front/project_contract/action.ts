@@ -11,8 +11,10 @@ import {
 import { ProjectContractParameter } from 'project_contract/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
 import {
+  ProjectCustomEstimateVO,
   ProjectEstimateId,
-  ProjectEstimateVO
+  ProjectEstimateVO,
+  ProjectSystemEstimateVO
 } from 'project_estimate/domain';
 
 export enum ProjectContractActionType {
@@ -34,6 +36,7 @@ export enum ProjectContractActionType {
   setBasic         = 'project/sales/contract/basic/set',
   setCollection    = 'project/sales/contract/collection/set',
   setConditionList = 'project/sales/contract/condition-list/set',
+  setDetailBasedEstimate = 'project/sales/contract-based-estimate/set'
 }
 
 export const projectContractAction = {
@@ -48,11 +51,12 @@ export const projectContractAction = {
   setFinal:         createAction(ProjectContractActionType.setFinal)<ProjectContractId>(),
   setFinalModal:    createAction(ProjectContractActionType.setFinalModal)<boolean>(),
   setList:          createAction(ProjectContractActionType.setList)<ProjectContractShortVO[] | undefined>(),
-  setModal:         createAction(ProjectContractActionType.setModal)<ProjectContractId | null | undefined>(),
+  setModal:         createAction(ProjectContractActionType.setModal)<ProjectContractId | null | undefined | ProjectSystemEstimateVO | ProjectCustomEstimateVO>(),
   setProjectId:     createAction(ProjectContractActionType.setProjectId)<ProjectId | undefined>(),
   getEstimate:      createAction(ProjectContractActionType.getEstimate)<ProjectEstimateId | undefined>(),
   setEstimate:      createAction(ProjectContractActionType.setEstimate)<ProjectEstimateVO | undefined>(),
   setBasic:         createAction(ProjectContractActionType.setBasic)<ProjectContractBasicVO | undefined>(),
   setCollection:    createAction(ProjectContractActionType.setCollection)<ProjectContractCollectionVO | undefined>(),
   setConditionList: createAction(ProjectContractActionType.setConditionList)<ProjectContractConditionVO[] | undefined>(),
+  setDetailBasedEstimate: createAction(ProjectContractActionType.setDetailBasedEstimate)<ProjectSystemEstimateVO>(),
 };

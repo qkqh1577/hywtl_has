@@ -4,13 +4,14 @@ import { DefaultFunction } from 'type/Function';
 import { FormikContext } from 'formik';
 import Form from './Form';
 import Footer from './Footer';
+import { ProjectCustomEstimateVO, } from 'project_estimate/domain';
 
 interface Props {
   onClose: DefaultFunction;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   onExtend: DefaultFunction;
-  onContract: DefaultFunction;
+  onContract: (values: ProjectCustomEstimateVO) => void;
 }
 
 export default function ProjectCustomEstimateDetailModal(props: Props) {

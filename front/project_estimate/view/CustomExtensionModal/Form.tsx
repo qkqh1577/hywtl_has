@@ -1,6 +1,7 @@
 import {
   Box,
-  InputAdornment
+  InputAdornment,
+  MenuItem
 } from '@mui/material';
 import React, {
   useContext,
@@ -17,6 +18,7 @@ import dayjs from 'dayjs';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
 import { toAmount } from 'util/NumberUtil';
+import Select from 'layouts/Select';
 
 interface Props {
   openDocumentModal: DefaultFunction<number>;
@@ -26,6 +28,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
 
   const formik = useContext(FormikContext);
   const plan = formik.values.plan;
+  const isLh = plan.isLh;
 
   useEffect(() => {
     const testAmount = plan.testAmount || 0;
@@ -46,22 +49,27 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
       alignContent: 'flex-start',
     }}>
       <Box sx={{
-        width:          '100%',
-        display:        'flex',
-        flexWrap:       'wrap',
-        justifyContent: 'space-around',
-        marginBottom:   '15px',
-        border:         `1px solid ${ColorPalette._e4e9f2}`,
-        borderRadius:   '5px',
-        padding:        '10px',
-        '& > div':      {
+        width:             '100%',
+        display:           'flex',
+        flexWrap:          'wrap',
+        justifyContent:    'space-around',
+        marginBottom:      '15px',
+        border:            `1px solid ${ColorPalette._e4e9f2}`,
+        borderRadius:      '5px',
+        padding:           '10px',
+        '& > div':         {
           display:    'flex',
           alignItems: 'center',
-          width:      'calc(100% / 5)',
           margin:     '10px'
+        },
+        '& > .firstLine':  {
+          width: 'calc(100% / 5)',
+        },
+        '& > .secondLine': {
+          width: 'calc(100% / 6)',
         }
       }}>
-        <Box>
+        <Box className="firstLine">
           <DataFieldWithLabel label="견적 일자" labelPosition="top">
             <DatePicker
               key={plan.estimateDate}
@@ -106,7 +114,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="firstLine">
           <DataFieldWithLabel label="착수 가능일" labelPosition="top">
             <DatePicker
               value={plan.expectedServiceDate ? dayjs(plan.expectedServiceDate)
@@ -150,7 +158,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="firstLine">
           <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top">
             <Input
               key={plan.expectedTestDeadline}
@@ -170,7 +178,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="firstLine">
           <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top">
             <Input
               key={plan.expectedFinalReportDeadline}
@@ -190,7 +198,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="secondLine">
           <DataFieldWithLabel label="풍동 금액" labelPosition="top">
             <Input
               isAmount
@@ -205,7 +213,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="secondLine">
           <DataFieldWithLabel label="구검" labelPosition="top">
             <Input
               isAmount
@@ -220,7 +228,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
+        <Box className="secondLine">
           <DataFieldWithLabel label="특별할인" labelPosition="top">
             <Input
               isAmount
@@ -235,14 +243,33 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
             />
           </DataFieldWithLabel>
         </Box>
-        <Box>
-          <DataFieldWithLabel label="합계(부가세 별도)" labelPosition="top">
+        <Box className="secondLine">
+          <DataFieldWithLabel label={`합계(부가세 ${isLh ? '면제' : '별도'})`} labelPosition="top">
             <Input
               isAmount
               readOnly
               key={plan.totalAmount}
               defaultValue={plan.totalAmount?.toLocaleString() ?? ''}
             />
+          </DataFieldWithLabel>
+        </Box>
+        <Box className="secondLine">
+          <DataFieldWithLabel required label="LH 여부" labelPosition="top">
+            <Select
+              displayEmpty
+              value={typeof formik.values.plan.isLh === 'boolean' ? (formik.values.plan.isLh ? 'Y' : 'N') : ''}
+              onChange={(e) => {
+                const value = e.target.value || undefined;
+                if (value === 'Y') {
+                  formik.setFieldValue('plan.isLh', true);
+                }
+                else {
+                  formik.setFieldValue('plan.isLh', false);
+                }
+              }}>
+              <MenuItem value="Y">Y</MenuItem>
+              <MenuItem value="N">N</MenuItem>
+            </Select>
           </DataFieldWithLabel>
         </Box>
       </Box>

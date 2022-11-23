@@ -20,7 +20,7 @@ export default function () {
       justifyContent: 'center',
       alignItems:     'center',
     }}>
-      <TextBox variant="body2" sx={{ marginRight: '4px' }}>합계(부가세 별도):</TextBox>
+      <TextBox variant="body2" sx={{ marginRight: '4px' }}>{`합계(부가세 ${plan.isLh ? '면제' : '별도'}):`}</TextBox>
       <TextBox variant="body1" sx={{ marginRight: '4px' }}>{toAmountKor(plan.totalAmount ?? 0)}</TextBox>
       <TextBox variant="body1">{`(￦${(plan.totalAmount ?? 0).toLocaleString()})`}</TextBox>
     </Box>

@@ -6,10 +6,13 @@ import Button from 'layouts/Button';
 import React, { useContext } from 'react';
 import { FormikContext, } from 'formik';
 import { DefaultFunction } from 'type/Function';
+import { ProjectSystemEstimateVO } from 'project_estimate/domain';
 
 interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  onContractAdd: (values: ProjectSystemEstimateVO) => void;
+  onClose: DefaultFunction;
 }
 
 export default function ProjectSystemEstimateModalTopForm(props: Props) {
@@ -92,11 +95,21 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         )}
         {isDetail && (
           <Button onClick={() => {
-            window.open(`/file-item?projectEstimateId=${isDetail}`, '_blank')
-          }}>PDF 다운로드</Button>
+            window.open(`/file-item?projectEstimateId=${isDetail}`, '_blank');
+          }}>
+            PDF 다운로드
+          </Button>
         )}
         {isDetail && (
-          <Button shape="basic4">계약서 등록</Button>
+          <Button
+            shape="basic4"
+            onClick={() => {
+              props.onContractAdd(formik.values);
+              props.onClose();
+            }}
+          >
+            계약서 등록
+          </Button>
         )}
       </Box>
     </Box>

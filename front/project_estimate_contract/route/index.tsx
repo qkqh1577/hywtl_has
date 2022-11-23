@@ -16,16 +16,34 @@ import ProjectContractModalRoute from 'project_contract/route/modal';
 import ProjectRivalBidListRoute from 'rival_bid/route/rivalBidList';
 import useId from 'services/useId';
 import { projectBidAction } from 'project_bid/action';
-import { ProjectId } from 'project/domain';
-import { useDispatch } from 'react-redux';
+import {
+  ProjectBasicBidType,
+  ProjectId
+} from 'project/domain';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
 import { projectEstimateAction } from 'project_estimate/action';
 import { rivalEstimateAction } from 'rival_estimate/action';
 import { rivalBidAction } from 'rival_bid/action';
 import { projectContractAction } from 'project_contract/action';
+import { RootState } from 'services/reducer';
+import useDialog from 'dialog/hook';
+import { useNavigate } from 'react-router-dom';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
+  const { detail } = useSelector((root: RootState) => root.project);
+  const { error } = useDialog();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (detail && !detail.code) {
+      error('프로젝트 진행 현황을 등록으로 변경해 주시기 바랍니다.', () => navigate(-1));
+    }
+  }, [detail && detail.code]);
 
   useEffect(() => {
     const projectId = id ? ProjectId(id) : undefined;
@@ -39,17 +57,25 @@ function Element() {
   return (
     <ProjectContainerRoute>
       <Box sx={{ width: '100%' }}>
-        <ProjectEstimateListRoute />
-        <RivalEstimateListRoute />
-        <ProjectBidRoute />
-        <ProjectRivalBidListRoute />
+        {detail && detail.bidType === ProjectBasicBidType.DEFAULT && (
+          <>
+            <ProjectEstimateListRoute />
+            <RivalEstimateListRoute />
+            <ProjectCustomEstimateAddModalRoute />
+            <ProjectCustomEstimateDetailModalRoute />
+            <ProjectCustomEstimateExtensionModalRoute />
+            <ProjectSystemEstimateModalRoute />
+            <ProjectEstimateFinalModalRoute />
+            <ProjectContractModalRoute />
+          </>
+        )}
+        {detail && detail.bidType !== ProjectBasicBidType.DEFAULT && (
+          <>
+            <ProjectBidRoute />
+            <ProjectRivalBidListRoute />
+          </>
+        )}
         <ProjectContractListRoute />
-        <ProjectCustomEstimateAddModalRoute />
-        <ProjectCustomEstimateDetailModalRoute />
-        <ProjectCustomEstimateExtensionModalRoute />
-        <ProjectSystemEstimateModalRoute />
-        <ProjectEstimateFinalModalRoute />
-        <ProjectContractModalRoute />
         <ProjectContractFinalModalRoute />
       </Box>
     </ProjectContainerRoute>

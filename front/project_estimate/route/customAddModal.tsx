@@ -31,7 +31,6 @@ export default function ProjectCustomEstimateAddModalRoute() {
         recipient:  values.recipient,
         note:       values.note,
         file:       values.file,
-        isLh:       !!values.isLh,
         type:       customAddModal!,
       });
     }

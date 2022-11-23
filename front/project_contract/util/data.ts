@@ -5,12 +5,13 @@ import {
   ProjectContractParameter
 } from 'project_contract/parameter';
 import { toAmountKor } from 'util/NumberUtil';
+import { ContractConditionVariableVO, } from 'admin/contract/condition/domain';
 
 class ProjectContractData {
 
-  setData = async (values: ProjectContractParameter
+  setData = async (values: ProjectContractParameter, variableList: ContractConditionVariableVO[]
   ) => {
-    values.conditionList = this.getMappedConditions(values.conditionList);
+    values.conditionList = this.getMappedConditions(values.conditionList, variableList);
     return {
       serviceName:                 values.basic.serviceName,
       serviceDuration:             values.basic.serviceDuration,
@@ -48,19 +49,19 @@ class ProjectContractData {
     });
   }
 
-  getMappedConditions(conditionList: ProjectContractConditionParameter[]): ProjectContractConditionParameter[] {
+  getMappedConditions(conditionList: ProjectContractConditionParameter[], variableList: ContractConditionVariableVO[]): ProjectContractConditionParameter[] {
     return conditionList.map((condition) => {
       return {
         title:           condition.title,
-        descriptionList: this.getMappedDescriptionList(condition.descriptionList as unknown as string[]),
+        descriptionList: this.getMappedDescriptionList(condition.descriptionList as unknown as string[], variableList),
       };
     });
   }
 
-  getMappedDescriptionList(descriptionList: string[]): ProjectContractConditionDescriptionToMap[] {
+  getMappedDescriptionList(descriptionList: string[], variableList: ContractConditionVariableVO[]): ProjectContractConditionDescriptionToMap[] {
     return descriptionList.map((description) => {
       return {
-        description: description,
+        description: this.convertFromVariableToValue(description, variableList),
       };
     });
   }
@@ -71,6 +72,18 @@ class ProjectContractData {
                              b
                     ) => a + b, 0);
   }
+
+  convertFromVariableToValue = (description: string,
+                                variableList: ContractConditionVariableVO[]
+  ): string => {
+    let result = description;
+    variableList.forEach(variable => {
+      if (description.includes(variable.name)) {
+        result = description.replace(`{${variable.name}}`, variable.value ?? '');
+      }
+    });
+    return result;
+  };
 }
 
 export const projectContractData = new ProjectContractData();

@@ -67,7 +67,8 @@ export default function ({
             if (item.rate !== value) {
               setItem((prevState => ({
                 ...prevState,
-                rate: value
+                rate: value,
+                amount: getRateAmount(value, totalAmount)
               } as ProjectContractCollectionStageParameter)));
             }
           }}

@@ -2,9 +2,9 @@ import SectionLayout from 'layouts/SectionLayout';
 import ButtonSection, { ProjectEstimateListButtonProps } from 'project_estimate/view/EstimateList/ButtonSection';
 import {
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   ProjectEstimateType,
   projectEstimateTypeName,
-  ProjectEstimateVO
 } from 'project_estimate/domain';
 import React, {
   useEffect,
@@ -31,7 +31,7 @@ import { DefaultFunction } from 'type/Function';
 
 interface Props
   extends ProjectEstimateListButtonProps {
-  list?: ProjectEstimateVO[];
+  list?: ProjectEstimateShortVO[];
   openCustomDetailModal: DefaultFunction<ProjectEstimateId>;
   openSystemDetailModal: DefaultFunction<ProjectEstimateId>;
 }
@@ -84,6 +84,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 <Th>등록 일시</Th>
                 <Th>등록자</Th>
                 <Th>송부 여부</Th>
+                <Th>실험정보 입력 여부</Th>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -95,7 +96,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 </TableRow>
               )}
               {list && list.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} selected={item.confirmed}>
                   <Td>
                     <Box sx={{
                       width:          '100%',
@@ -117,7 +118,10 @@ export default function ProjectEstimateListSection(props: Props) {
                       </TextLink>
                       <IconButton
                         shape="square"
-                        onClick={() => {window.open(`/file-item?projectEstimateId=${item.id}`, '_blank');}}
+                        onClick={() => {
+                          window.open(item.type !== ProjectEstimateType.SYSTEM ? `/file-item/${item.id}` : `/file-item?projectEstimateId=${item.id}`,
+                            '_blank');
+                        }}
                         children={<FontAwesomeIcon icon="download" />}
                       />
                     </Box>
@@ -132,6 +136,7 @@ export default function ProjectEstimateListSection(props: Props) {
                   </Td>
                   <Td>{item.createdBy.name}</Td>
                   <Td>{item.isSent ? 'Y' : 'N'}</Td>
+                  <Td>{item.hasExperimentInfo ? 'Y' : 'N'}</Td>
                 </TableRow>
               ))}
             </TableBody>

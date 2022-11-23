@@ -21,4 +21,6 @@ public class ProjectEstimatePlanParameter {
     private Long totalAmount;
     private Long manager1Id;
     private Long manager2Id;
+    private Boolean isLh;
+    private Boolean hasExperimentInfo;
 }

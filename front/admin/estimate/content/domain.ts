@@ -21,4 +21,5 @@ export interface EstimateContentShortVO
 export interface EstimateContentVariableVO {
   name: string;
   note: string;
+  value?: string;
 }

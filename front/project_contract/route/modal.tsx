@@ -10,7 +10,7 @@ import {
 } from 'formik';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
 } from 'react';
 import { projectContractAction } from 'project_contract/action';
 import { ProjectContractId } from 'project_contract/domain';
@@ -27,6 +27,9 @@ import {
   FileUtil,
   generateFile
 } from 'util/FileUtil';
+import { contractConditionAction } from 'admin/contract/condition/action';
+import { ProjectContractVariable } from 'project_contract/util/variable';
+import { Progress } from 'components/Progress';
 
 export default function ProjectContractModalRoute() {
 
@@ -42,6 +45,7 @@ export default function ProjectContractModalRoute() {
           conditionList,
           requestAdd,
           requestChange,
+          detailBasedEstimate
         } = useSelector((root: RootState) => root.projectContract);
   const { list: estimateList } = useSelector((root: RootState) => root.projectEstimate);
   const onClose = useCallback(() => dispatch(projectContractAction.setModal(undefined)), [dispatch]);
@@ -49,6 +53,7 @@ export default function ProjectContractModalRoute() {
   const onAdd = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.add(params)), [dispatch]);
   const onChange = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.change(params)), [dispatch]);
   const getEstimate = useCallback((id: ProjectEstimateId | undefined) => dispatch(projectContractAction.getEstimate(id)), [dispatch]);
+  const { variableList } = useSelector((root: RootState) => root.contractCondition);
   const formik = useFormik<ProjectContractParameter>({
     initialValues: initialProjectContractParameter,
     onSubmit:      (values) => {
@@ -60,9 +65,11 @@ export default function ProjectContractModalRoute() {
           },
           null,
           'contract_template',
-          'contract'));
+          'contract',
+          ProjectContractVariable.list(variableList, values)
+        ));
       }
-      else if (modal === null) {
+      else if (modal === null || typeof modal === 'object') {
         generateFile(new FileUtil(
           values,
           (values) => {
@@ -70,7 +77,9 @@ export default function ProjectContractModalRoute() {
           },
           null,
           'contract_template',
-          'contract'));
+          'contract',
+          ProjectContractVariable.list(variableList, values)
+        ));
       }
     }
   });
@@ -78,6 +87,7 @@ export default function ProjectContractModalRoute() {
   useEffect(() => {
     if (!modal) {
       formik.setValues(initialProjectContractParameter);
+      dispatch(contractConditionAction.requestVariableList());
     }
   }, [modal]);
 
@@ -104,8 +114,22 @@ export default function ProjectContractModalRoute() {
         estimateId: detail.estimate.id,
         edit:       false
       } as unknown as ProjectContractParameter);
+      dispatch(contractConditionAction.requestVariableList());
     }
   }, [detail]);
+
+  useEffect(() => {
+    if (detailBasedEstimate) {
+      formik.setValues({
+        isSent:     detailBasedEstimate.isSent,
+        recipient:  detailBasedEstimate.recipient,
+        note:       detailBasedEstimate.note,
+        estimate:   detailBasedEstimate,
+        estimateId: detailBasedEstimate.id,
+        edit:       true
+      } as unknown as ProjectContractParameter);
+    }
+  }, [detailBasedEstimate]);
 
   useEffect(() => {
     closeStatus(requestAdd, () => {
@@ -128,41 +152,45 @@ export default function ProjectContractModalRoute() {
   }, [requestChange]);
 
   return (
-    <FormikProvider value={formik}>
-      <ProjectContractModal
-        open={typeof modal !== 'undefined'}
-        onClose={onClose}
-        onCancel={() => {
-          rollback(() => {
-            if (modal === null) {
-              onClose();
+    <>
+      <FormikProvider value={formik}>
+        <ProjectContractModal
+          open={typeof modal !== 'undefined'}
+          onClose={onClose}
+          onCancel={() => {
+            rollback(() => {
+              if (modal === null) {
+                onClose();
+              }
+              else if (detail) {
+                formik.setValues({
+                  ...detail,
+                  estimateId: detail.estimate.id,
+                  edit:       false
+                } as unknown as ProjectContractParameter);
+              }
+            });
+          }}
+          onDelete={() => {
+            if (!modal) {
+              error('계약서가 선택되지 않았습니다.');
+              return;
             }
-            else if (detail) {
-              formik.setValues({
-                ...detail,
-                estimateId: detail.estimate.id,
-                edit:       false
-              } as unknown as ProjectContractParameter);
-            }
-          });
-        }}
-        onDelete={() => {
-          if (!modal) {
-            error('계약서가 선택되지 않았습니다.');
-            return;
-          }
-          confirm({
-            children:     '계약서를 삭제하시겠습니까?',
-            status:       DialogStatus.WARN,
-            confirmText:  '삭제',
-            afterConfirm: () => {onDelete(modal);}
-          });
-        }}
-      />
-      <ProjectContractEstimateSelectModal
-        list={estimateList}
-        getEstimate={getEstimate}
-      />
-    </FormikProvider>
+            confirm({
+              children:     '계약서를 삭제하시겠습니까?',
+              status:       DialogStatus.WARN,
+              confirmText:  '삭제',
+              afterConfirm: () => {onDelete(modal);}
+            });
+          }}
+          variableList={variableList}
+        />
+        <ProjectContractEstimateSelectModal
+          list={estimateList}
+          getEstimate={getEstimate}
+        />
+      </FormikProvider>
+      <Progress/>
+    </>
   );
 }

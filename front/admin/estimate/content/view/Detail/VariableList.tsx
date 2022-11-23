@@ -12,7 +12,7 @@ import {
 } from 'layouts/Table';
 
 export interface Props {
-  variableList: EstimateContentVariableVO[] | undefined;
+  variableList?: EstimateContentVariableVO[] | undefined;
 }
 
 export default function VariableList({ variableList }: Props) {

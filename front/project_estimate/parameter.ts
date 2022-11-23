@@ -1,6 +1,7 @@
 import { FileItemParameter } from 'file-item';
 import {
   ProjectEstimateId,
+  ProjectEstimateTestVO,
   ProjectEstimateType
 } from 'project_estimate/domain';
 import { BusinessId } from 'business/domain';
@@ -18,10 +19,10 @@ export interface ProjectEstimateFinalParameter {
 export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;
 
 export interface ProjectEstimateBasicParameter {
-  isLh: boolean | undefined;
   isSent: boolean | undefined;
   recipient: string;
   note?: string;
+  confirmed?: boolean;
 }
 
 export interface ProjectCustomEstimateAddParameter
@@ -44,12 +45,14 @@ export interface ProjectCustomEstimateExtensionParameter {
   buildingList: ProjectEstimateComplexBuildingParameter[];
 }
 
-export const initialProjectCustomEstimateExtensionParameter = {
-  plan:         {},
-  siteList:     [],
-  buildingList: [],
-  edit:         true,
-} as unknown as ProjectCustomEstimateExtensionParameter;
+export const initialProjectCustomEstimateExtensionParameter = (isLh: boolean) => {
+  return {
+    plan:         { isLh: isLh, hasExperimentInfo: false },
+    siteList:     [],
+    buildingList: [],
+    edit:         true,
+  } as unknown as ProjectCustomEstimateExtensionParameter;
+}
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
@@ -59,18 +62,21 @@ export interface ProjectSystemEstimateParameter
   buildingList: ProjectEstimateComplexBuildingParameter[];
   templateList: ProjectEstimateTemplateParameter[];
   contentList: ProjectEstimateContentListToMap[];
+  test?: ProjectEstimateTestVO;
 }
 
-export const initialProjectSystemEstimateParameter = {
-  isSent:       false,
-  plan:         {},
-  siteList:     [{}],
-  buildingList: [{}],
-  templateList: [],
-  contentList:  [{content: ''}],
-  edit:         true,
-  file:         {},
-} as unknown as ProjectSystemEstimateParameter;
+export const initialProjectSystemEstimateParameter = (isLh: boolean) => {
+  return {
+    isSent:       false,
+    plan:         { isLh: isLh, hasExperimentInfo: true },
+    siteList:     [{}],
+    buildingList: [{}],
+    templateList: [],
+    contentList:  [{ content: '' }],
+    edit:         true,
+    file:         {},
+  } as unknown as ProjectSystemEstimateParameter;
+};
 
 export interface ProjectEstimatePlanParameter {
   estimateDate: string;
@@ -83,6 +89,8 @@ export interface ProjectEstimatePlanParameter {
   totalAmount: number;
   manager1Id: UserId;
   manager2Id: UserId;
+  isLh: boolean;
+  hasExperimentInfo: boolean;
 }
 
 export interface ProjectEstimateComplexSiteParameter {
@@ -130,6 +138,7 @@ export interface ProjectEstimateTemplateDetailParameter {
 export interface ProjectEstimateContentListToMap {
   content: string;
 }
+
 export interface ProjectEstimateTemplateDetailTitleListToMap {
   title: string;
 }

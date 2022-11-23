@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   projectEstimateTypeName,
-  ProjectEstimateVO
 } from 'project_estimate/domain';
 import {
   Table,
@@ -18,7 +18,7 @@ import {
 import DateFormat from 'layouts/DateFormat';
 
 interface Props {
-  list: ProjectEstimateVO[] | undefined;
+  list: ProjectEstimateShortVO[] | undefined;
   estimateId: ProjectEstimateId | undefined;
   setEstimateId: (estimateId: ProjectEstimateId) => void;
 }
@@ -47,7 +47,7 @@ export default function ProjectEstimateFinalModalForm(props: Props) {
             </Td>
           </TableRow>
         )}
-        {props.list && props.list.map(item => (
+        {props.list && props.list.filter(item => item.hasExperimentInfo).map(item => (
           <TableRow key={item.id}>
             <Td>
               <Radio

@@ -101,7 +101,6 @@ export default function UploadField({ accept, name, disableDownload, disableSele
           borderRadius: '5px',
           alignContent: 'flex-start',
           flex:         1,
-          border:       `1px solid ${ColorPalette._e4e9f2}`
         }}>
           <Input
             {...props}

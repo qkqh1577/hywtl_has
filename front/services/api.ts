@@ -21,11 +21,13 @@ export function toFormData(parameter: Parameter,
     if (typeof value === 'undefined' || value === null || Number.isNaN(value) || value === '') {
       continue;
     }
-    const name = prefix ? `${prefix}.${key}` : key;
+    const name = prefix ? (isNaN(parseInt(key)) ? `${prefix}.${key}` : prefix) : key;
     if (Array.isArray(value)) {
       value.forEach((item,
                      i
-      ) => toFormData(item, `${name}[${i}]`, result));
+      ) => {
+        return toFormData(item,`${name}[${i}]`, result);
+      })
       continue;
     }
     if (value instanceof File || value instanceof Blob) {

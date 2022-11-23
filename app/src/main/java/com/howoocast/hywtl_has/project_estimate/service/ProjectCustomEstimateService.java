@@ -66,7 +66,6 @@ public class ProjectCustomEstimateService {
             parameter.getType(),
             parameter.getIsSent(),
             parameter.getRecipient(),
-            parameter.getIsLh(),
             parameter.getNote(),
             business
         );

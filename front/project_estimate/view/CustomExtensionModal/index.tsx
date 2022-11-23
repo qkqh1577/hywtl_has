@@ -18,7 +18,7 @@ export default function ProjectCustomEstimateExtensionModal(props: Props) {
   return (
     <ModalLayout
       width="55vw"
-      title=""
+      title="실험정보 입력"
       open={props.open}
       onClose={props.onClose}
       children={<Form openDocumentModal={props.openDocumentModal} />}

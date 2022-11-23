@@ -32,7 +32,7 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 구분" labelPosition="top">
           <Input
-            readOnly={edit}
+            readOnly
             key={formik.values.type}
             defaultValue={formik.values.type ? projectEstimateTypeName(formik.values.type) : ''}
           />
@@ -41,7 +41,7 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="견적 번호" labelPosition="top">
           <Input
-            readOnly={edit}
+            readOnly
             key={formik.values.code}
             defaultValue={formik.values.code ?? ''}
           />
@@ -72,9 +72,9 @@ export default function () {
       <Box sx={{ width: '45%' }}>
         <DataFieldWithLabel label="최종 여부" labelPosition="top">
           <Input
-            readOnly={edit}
-            key={formik.values.isFinal}
-            defaultValue={formik.values.isFinal ? 'Y' : 'N'}
+            readOnly
+            key={formik.values.confirmed}
+            defaultValue={formik.values.confirmed ? 'Y' : 'N'}
           />
         </DataFieldWithLabel>
       </Box>
@@ -103,26 +103,6 @@ export default function () {
               formik.setFieldValue('businessId', id);
             }}
           />
-        </DataFieldWithLabel>
-      </Box>
-      <Box sx={{ width: '45%' }}>
-        <DataFieldWithLabel required={edit} label="LH 여부" labelPosition="top">
-          <Select
-            displayEmpty
-            readOnly={!edit}
-            value={typeof formik.values.isLh === 'boolean' ? (formik.values.isLh ? 'Y' : 'N') : ''}
-            onChange={(e) => {
-              const value = e.target.value || undefined;
-              if (value === 'Y') {
-                formik.setFieldValue('isLh', true);
-              }
-              else {
-                formik.setFieldValue('isLh', false);
-              }
-            }}>
-            <MenuItem value="Y">Y</MenuItem>
-            <MenuItem value="N">N</MenuItem>
-          </Select>
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '90%' }}>

@@ -16,8 +16,12 @@ import { projectEstimateAction } from 'project_estimate/action';
 import { ProjectCustomEstimateChangeParameter } from 'project_estimate/parameter';
 import { closeStatus } from 'components/DataFieldProps';
 import useDialog from 'dialog/hook';
-import { ProjectEstimateId } from 'project_estimate/domain';
+import {
+  ProjectCustomEstimateVO,
+  ProjectEstimateId,
+} from 'project_estimate/domain';
 import { DialogStatus } from 'dialog/domain';
+import { projectContractAction } from 'project_contract/action';
 
 export default function ProjectCustomEstimateDetailModalRoute() {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
   const onChange = useCallback((params: ProjectCustomEstimateChangeParameter) => dispatch(projectEstimateAction.changeCustom(params)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteCustom()), [dispatch]);
   const onExtend = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomExtensionModal(id)), [dispatch]);
+  const openContractAddModal = useCallback((values: ProjectCustomEstimateVO) => dispatch(projectContractAction.setModal(values)), [dispatch]);
   const formik = useFormik<ProjectCustomEstimateChangeParameter>({
     initialValues: { edit: false } as unknown as ProjectCustomEstimateChangeParameter,
     onSubmit:      (values) => {
@@ -36,7 +41,6 @@ export default function ProjectCustomEstimateDetailModalRoute() {
         recipient:  values.recipient,
         note:       values.note,
         businessId: values.businessId,
-        isLh:       !!values.isLh,
       } as ProjectCustomEstimateChangeParameter);
     }
   });
@@ -112,8 +116,13 @@ export default function ProjectCustomEstimateDetailModalRoute() {
           }
           onExtend(customDetail.id);
         }}
-        onContract={() => {
-
+        onContract={(values) => {
+          if (!values.plan) {
+            error('대비/협력/커스텀 견적서로 계약서를 등록하려면 먼저 실험 정보를 입력해주세요.');
+            return;
+          }
+          openContractAddModal(values);
+          onClose();
         }}
       />
     </FormikProvider>

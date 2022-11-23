@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectSystemEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectSystemEstimateView;
@@ -28,7 +29,8 @@ public class ProjectSystemEstimateController {
     public ProjectSystemEstimateView get(
         @PathVariable Long id
     ) {
-        return ProjectSystemEstimateView.assemble(service.get(id));
+        ProjectSystemEstimate projectSystemEstimate = service.get(id);
+        return ProjectSystemEstimateView.assemble(projectSystemEstimate);
     }
 
     /* 채번 로직 */

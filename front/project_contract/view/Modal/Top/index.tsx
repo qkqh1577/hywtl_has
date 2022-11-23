@@ -35,7 +35,7 @@ export default function ProjectContractModalTopForm(props: Props) {
           justifyContent: 'space-between',
           alignItems:     'center',
         }}>
-          <Box sx={{ width: '20%' }}>
+          <Box sx={{ width: '23%' }}>
             <DataFieldWithLabel label="계약 번호">
               <Input
                 readOnly
@@ -44,7 +44,7 @@ export default function ProjectContractModalTopForm(props: Props) {
               />
             </DataFieldWithLabel>
           </Box>
-          <Box sx={{ width: '20%' }}>
+          <Box sx={{ width: '17%' }}>
             <DataFieldWithLabel label="최종 여부">
               <Input
                 readOnly

@@ -32,17 +32,22 @@ import {
   FileUtil,
   generateFile
 } from 'util/FileUtil';
+import { projectContractAction } from 'project_contract/action';
+import { ProjectSystemEstimateVO } from 'project_estimate/domain';
+import { ProjectEstimateVariable, } from 'project_estimate/util/variable';
 
 export default function ProjectSystemEstimateModalRoute() {
   const dispatch = useDispatch();
-  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem, list } = useSelector((root: RootState) => root.projectEstimate);
+  const { projectId, systemModal, systemDetail, requestAddSystem, requestChangeSystem, requestDeleteSystem } = useSelector((root: RootState) => root.projectEstimate);
   const { detail: project } = useSelector((root: RootState) => root.project);
   const { buildingList: buildingFileList } = useSelector((root: RootState) => root.projectDocument);
   const { siteList, buildingList } = useSelector((root: RootState) => root.projectComplex);
   const { list: templateList } = useSelector((root: RootState) => root.estimateTemplate);
   const { list: contentList } = useSelector((root: RootState) => root.estimateContent);
+  const { variableList } = useSelector((root: RootState) => root.estimateContent);
   const { error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
+
   const closeBuildingFileModal = () => {
     setBuildingSeq(undefined);
   };
@@ -50,10 +55,10 @@ export default function ProjectSystemEstimateModalRoute() {
   const onChange = useCallback((params: ProjectSystemEstimateParameter) => dispatch(projectEstimateAction.changeSystem(params)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectEstimateAction.setSystemModal(undefined)), [dispatch]);
   const onDelete = useCallback(() => dispatch(projectEstimateAction.deleteSystem()), [dispatch]);
+  const openContractAddModal = useCallback((values: ProjectSystemEstimateVO) => dispatch(projectContractAction.setModal(values)), [dispatch]);
   const formik = useFormik<ProjectSystemEstimateParameter>({
-    initialValues: initialProjectSystemEstimateParameter,
+    initialValues: initialProjectSystemEstimateParameter(project?.isLh ?? false),
     onSubmit:      (values) => {
-
       if (systemModal) {
         generateFile(new FileUtil(
           values,
@@ -62,7 +67,8 @@ export default function ProjectSystemEstimateModalRoute() {
           },
           project!,
           'estimate_template',
-          'estimate'));
+          'estimate',
+          ProjectEstimateVariable.list(variableList, values) ?? []));
         return;
       }
       if (systemModal === null) {
@@ -73,7 +79,8 @@ export default function ProjectSystemEstimateModalRoute() {
           },
           project!,
           'estimate_template',
-          'estimate'));
+          'estimate',
+          ProjectEstimateVariable.list(variableList, values) ?? []));
         return;
       }
       error('시스템 견적서가 선택되지 않았습니다.');
@@ -83,13 +90,14 @@ export default function ProjectSystemEstimateModalRoute() {
   useEffect(() => {
     if (typeof systemModal !== 'undefined') {
       dispatch(projectDocumentAction.setProjectId(projectId));
-      formik.setValues(initialProjectSystemEstimateParameter);
+      formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
     }
     if (systemModal === null) {
       dispatch(projectComplexAction.setId(projectId));
       dispatch(estimateTemplateAction.setFilter(initialEstimateTemplateQuery));
       dispatch(estimateContentAction.setFilter(initialEstimateContentQuery));
-      formik.setValues(initialProjectSystemEstimateParameter);
+      dispatch(estimateContentAction.requestVariableList());
+      formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
     }
   }, [systemModal]);
 
@@ -103,6 +111,7 @@ export default function ProjectSystemEstimateModalRoute() {
         contentList:  systemDetail.contentList ?? [],
         edit:         false,
       } as unknown as ProjectSystemEstimateParameter);
+      dispatch(estimateContentAction.requestVariableList());
     }
   }, [systemModal, systemDetail]);
 
@@ -190,7 +199,7 @@ export default function ProjectSystemEstimateModalRoute() {
         onCancel={() => {
           rollback(() => {
             if (systemModal === null) {
-              formik.setValues(initialProjectSystemEstimateParameter);
+              formik.setValues(initialProjectSystemEstimateParameter(project?.isLh ?? false));
               dispatch(projectEstimateAction.setSystemModal(undefined));
             }
             else {
@@ -207,6 +216,8 @@ export default function ProjectSystemEstimateModalRoute() {
         }}
         onDelete={onDelete}
         openDocumentModal={setBuildingSeq}
+        openContractAddModal={openContractAddModal}
+        variableList={variableList}
       />
       <ProjectComplexBuildingFileModal
         buildingId={typeof buildingSeq === 'number' ? ProjectComplexBuildingId(buildingSeq) : undefined}
@@ -234,3 +245,4 @@ export default function ProjectSystemEstimateModalRoute() {
     </FormikProvider>
   );
 }
+
