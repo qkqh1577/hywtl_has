@@ -118,6 +118,10 @@ import {
   progressReducer,
   ProgressState
 } from 'components/Progress/reducer';
+import {
+  addressReducer,
+  AddressState
+} from 'components/AddressModal/reducer';
 
 export interface RootState {
   business: BusinessState;
@@ -149,6 +153,7 @@ export interface RootState {
   userNotification: UserNotificationState;
   projectDb: ProjectDbState;
   progress: ProgressState;
+  address: AddressState;
 }
 
 const reducer = combineReducers<RootState>({
@@ -181,6 +186,7 @@ const reducer = combineReducers<RootState>({
   userNotification:   userNotificationReducer,
   projectDb:          projectDbReducer,
   progress:           progressReducer,
+  address:            addressReducer
 });
 
 const rootReducer: Reducer = (state,

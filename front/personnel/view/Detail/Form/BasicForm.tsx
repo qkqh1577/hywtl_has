@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Box,
   FormControlLabel,
+  InputAdornment,
   Radio,
   RadioGroup
 } from '@mui/material';
@@ -14,8 +15,13 @@ import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers';
 import { sexCategoryList } from 'user/domain';
 import { fileToView } from 'file-item';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
-export default function BasicForm() {
+interface Props {
+  onAddressModal: DefaultFunction;
+}
+export default function BasicForm(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const values = formik.values.basic ?? {};
@@ -261,6 +267,13 @@ export default function BasicForm() {
                   formik.setFieldValue('basic.address', value);
                 }
               }}
+              endAdornment={
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                  <Button onClick={props.onAddressModal}>
+                    주소 검색
+                  </Button>
+                </InputAdornment>
+              }
             />
           </DataFieldWithLabel>
         </Box>
