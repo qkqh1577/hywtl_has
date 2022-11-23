@@ -6,8 +6,13 @@ import React, {
 } from 'react';
 import { businessAction } from 'business/action';
 import { useDispatch } from 'react-redux';
+import { DefaultFunction } from 'type/Function';
 
-export default function BusinessBasicRoute() {
+interface Props {
+  onAddressModal: DefaultFunction;
+}
+
+export default function BusinessBasicRoute(props: Props) {
 
   const dispatch = useDispatch();
   const onCheck = useCallback((registrationNumber: string) =>
@@ -18,6 +23,7 @@ export default function BusinessBasicRoute() {
   return (
     <BusinessBasicSection
       inputRef={inputRef}
+      onAddressModal={props.onAddressModal}
       checkButton={
         <RegistrationNumberCheckButton
           inputRef={inputRef}

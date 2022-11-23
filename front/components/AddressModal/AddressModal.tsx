@@ -34,17 +34,20 @@ import {
 
 interface Props {
   formik: FormikContextType<any>;
-  fieldName: string;
+  fieldName: string | string[];
 }
 
 export const AddressModal = ({ formik, fieldName }: Props) => {
   const dispatch = useDispatch();
   const boxRef = useRef<Address>(initialAddress);
   const { addressModal, list, totalPage } = useSelector((state: RootState) => state.address);
+
   const [addressValue, setAddressValue] = useState<Address>(initialAddress);
   const [detailAddress, setDetailAddress] = useState<string>('');
   const [query, setQuery] = useState<AddressQuery>(initialAddressQuery);
   const [addressList, setAddressList] = useState<Address[]>([]);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+
   const onClose = useCallback(() => dispatch(addressModalAction.addressModal(false)), [dispatch]);
   const setFilter = useCallback((query: AddressQuery) => dispatch(addressModalAction.setFilter(query)), [dispatch]);
 
@@ -57,6 +60,13 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
   useEffect( () => {
     setAddressList(list);
   },[list])
+
+  useEffect( () => {
+      setQuery(initialAddressQuery);
+      setDetailAddress('');
+      setAddressList([]);
+    }
+  ,[isSaved])
 
   return (
     <ModalLayout
@@ -77,10 +87,18 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
               marginRight: '10px',
             }}
             onClick={() => {
-              formik.setFieldValue(fieldName, `${addressValue.roadAddr} ${detailAddress}`);
-              setQuery(initialAddressQuery);
-              setDetailAddress('');
-              setAddressList([]);
+              if (Array.isArray(fieldName)) {
+                fieldName.forEach((name) => {
+                  if(name.includes('address')) {
+                    formik.setFieldValue(name, `${addressValue.roadAddr} ${detailAddress}`);
+                  }else {
+                    formik.setFieldValue(name, addressValue.zipNo);
+                  }
+                })
+              }else{
+                formik.setFieldValue(fieldName, `${addressValue.roadAddr} ${detailAddress}`);
+              }
+              setIsSaved(!isSaved);
               onClose();
             }}>
             저장
@@ -88,8 +106,7 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
           <Button
             shape="basic2"
             onClick={() => {
-              setQuery(initialAddressQuery);
-              setAddressList([]);
+              setIsSaved(!isSaved);
               onClose();
             }}>
             취소

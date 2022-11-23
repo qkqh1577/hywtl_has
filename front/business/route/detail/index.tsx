@@ -28,6 +28,8 @@ import { useNavigate } from 'react-router-dom';
 import BusinessBasicRoute from 'business/route/detail/basic';
 import { DialogStatus } from 'dialog/domain';
 import { closeStatus } from 'components/DataFieldProps';
+import { AddressModal } from 'components/AddressModal/AddressModal';
+import { addressModalAction } from 'components/AddressModal/action';
 
 function Element() {
   const id = useId();
@@ -39,6 +41,7 @@ function Element() {
     dispatch(businessAction.upsert(formikProps));
   }, [dispatch]);
   const deleteOne = useCallback((id: BusinessId) => dispatch(businessAction.deleteOne(id)), [dispatch]);
+  const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
 
   const formik = useFormik<BusinessParameter>({
     initialValues: initialBusinessParameter,
@@ -89,7 +92,7 @@ function Element() {
   return (
     <FormikProvider value={formik}>
       <BusinessDetail
-        basic={<BusinessBasicRoute/>}
+        basic={<BusinessBasicRoute onAddressModal={openAddressModal}/>}
         involvedProjectList={<BusinessInvolvedProjectRoute />}
         rivalStatistic={<BusinessRivalStatisticRoute />}
         rivalProjectList={<BusinessRivalProjectListRoute />}
@@ -117,6 +120,7 @@ function Element() {
           }
         }}
       />
+      <AddressModal formik={formik} fieldName={['address', 'zipCode']}/>
     </FormikProvider>
   );
 }
