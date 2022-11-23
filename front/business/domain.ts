@@ -136,3 +136,13 @@ export function businessInvolvedTypeName(type: BusinessInvolvedType | '') {
       return '-';
   }
 }
+
+export enum RegistrationNumberResultType {
+  SUCCESS = 'SUCCESS',
+  FAIL    = 'FAIL',
+}
+
+export interface RegistrationNumberState {
+  state: RegistrationNumberResultType;
+  message: string;
+}

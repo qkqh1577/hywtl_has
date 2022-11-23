@@ -13,12 +13,12 @@ import {
   BusinessInvolvedType,
   BusinessShortVO,
   BusinessVO,
+  RegistrationNumberResultType,
   RivalProjectVO
 } from 'business/domain';
 import { businessApi } from 'business/api';
 import { dialogAction } from 'dialog/action';
 import { RootState } from 'services/reducer';
-import { DialogStatus } from 'dialog/domain';
 import { getErrorMessage } from 'type/Error';
 
 function* watchFilter() {
@@ -41,14 +41,17 @@ function* watchRegistrationNumber() {
     if (list.length > 0) {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id || detail.registrationNumber === list[0].registrationNumber) {
-        yield put(dialogAction.openAlert({
-          status:   DialogStatus.ERROR,
-          children: '이미 사용중인 사업자등록번호 입니다.'
+        yield put(businessAction.checkRegistrationNumber({
+          state:  RegistrationNumberResultType.FAIL,
+          message: '이미 등록되어 있는 사업자번호 입니다.'
         }));
         continue;
       }
     }
-    yield put(dialogAction.openAlert('사용 가능합니다.'));
+    yield put(businessAction.checkRegistrationNumber({
+      state:  RegistrationNumberResultType.SUCCESS,
+      message: '등록 가능한 사업자번호 입니다.'
+    }));
   }
 }
 

@@ -4,6 +4,7 @@ import {
   BusinessInvolvedProjectVO,
   BusinessShortVO,
   BusinessVO,
+  RegistrationNumberState,
   RivalProjectVO
 } from 'business/domain';
 import Page from 'type/Page';
@@ -21,6 +22,7 @@ export interface BusinessState {
   requestUpsert: ApiStatus;
   requestDelete: ApiStatus;
   id?: BusinessId;
+  checkRegistrationNumber?: RegistrationNumberState;
 }
 
 const initialState: BusinessState = {
@@ -29,58 +31,64 @@ const initialState: BusinessState = {
 };
 
 export const businessReducer = createReducer(initialState, {
-  [BusinessActionType.setFilter]:              (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setFilter]:               (state,
+                                                 action
+                                                ) => ({
     ...state,
     filter: action.payload.values
   }),
-  [BusinessActionType.setRegistrationNumber]:  (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setRegistrationNumber]:   (state,
+                                                 action
+                                                ) => ({
     ...state,
     filter: action.payload.values
   }),
-  [BusinessActionType.setId]:                  (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setId]:                   (state,
+                                                 action
+                                                ) => ({
     ...state,
     id: action.payload,
   }),
-  [BusinessActionType.setPage]:                (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setPage]:                 (state,
+                                                 action
+                                                ) => ({
     ...state,
     page: action.payload
   }),
-  [BusinessActionType.setInvolvedProjectList]: (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setInvolvedProjectList]:  (state,
+                                                 action
+                                                ) => ({
     ...state,
     involvedProjectList: action.payload
   }),
-  [BusinessActionType.setRivalProjectList]:    (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setRivalProjectList]:     (state,
+                                                 action
+                                                ) => ({
     ...state,
     rivalProjectList: action.payload
   }),
-  [BusinessActionType.setOne]:                 (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.setOne]:                  (state,
+                                                 action
+                                                ) => ({
     ...state,
     detail: action.payload
   }),
-  [BusinessActionType.requestUpsert]:          (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.requestUpsert]:           (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestUpsert: action.payload
   }),
-  [BusinessActionType.requestDelete]:          (state,
-                                                action
-                                               ) => ({
+  [BusinessActionType.requestDelete]:           (state,
+                                                 action
+                                                ) => ({
     ...state,
     requestDelete: action.payload
+  }),
+  [BusinessActionType.checkRegistrationNumber]: (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    checkRegistrationNumber: action.payload
   })
 });

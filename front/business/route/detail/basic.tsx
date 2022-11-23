@@ -7,9 +7,11 @@ import React, {
 import { businessAction } from 'business/action';
 import { useDispatch } from 'react-redux';
 import { DefaultFunction } from 'type/Function';
+import { RegistrationNumberState } from 'business/domain';
 
 interface Props {
   onAddressModal: DefaultFunction;
+  checkRegistrationNumber?: RegistrationNumberState;
 }
 
 export default function BusinessBasicRoute(props: Props) {
@@ -24,6 +26,7 @@ export default function BusinessBasicRoute(props: Props) {
     <BusinessBasicSection
       inputRef={inputRef}
       onAddressModal={props.onAddressModal}
+      checkRegistrationNumber={props.checkRegistrationNumber}
       checkButton={
         <RegistrationNumberCheckButton
           inputRef={inputRef}

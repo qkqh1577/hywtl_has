@@ -9,11 +9,17 @@ import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
 import { DefaultFunction } from 'type/Function';
 import Button from 'layouts/Button';
+import {
+  RegistrationNumberResultType,
+  RegistrationNumberState
+} from 'business/domain';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   checkButton: React.ReactNode;
   inputRef: React.RefObject<HTMLInputElement>;
   onAddressModal: DefaultFunction;
+  checkRegistrationNumber?: RegistrationNumberState;
 }
 
 export default function BusinessBasicSection(props: Props) {
@@ -91,10 +97,11 @@ export default function BusinessBasicSection(props: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box sx={{
-          display:      'flex',
-          flexWrap:     'nowrap',
-          width:        '47%',
-          marginBottom: '15px',
+          display:       'flex',
+          flexWrap:      'nowrap',
+          width:         '47%',
+          marginBottom:  '15px',
+          flexDirection: 'column',
         }}>
           <DataFieldWithLabel required={edit} label="사업자번호">
             <Input
@@ -109,6 +116,19 @@ export default function BusinessBasicSection(props: Props) {
               inputRef={props.inputRef}
             />
           </DataFieldWithLabel>
+          {props.checkRegistrationNumber && (
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'flex-end',
+            }}>
+              <TextBox variant="body7"
+                sx={{ color: `${props.checkRegistrationNumber.state === RegistrationNumberResultType.SUCCESS ? `${ColorPalette._4c9eeb}` : `${ColorPalette._eb4c4c}` }`,
+                  marginLeft: '10px'
+              }}>
+                {props.checkRegistrationNumber.message}
+              </TextBox>
+            </Box>
+          )}
         </Box>
         <Box sx={{
           display:      'flex',

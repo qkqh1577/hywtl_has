@@ -36,7 +36,7 @@ function Element() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error, confirm, rollback } = useDialog();
-  const { detail, requestDelete, requestUpsert } = useSelector((root: RootState) => root.business);
+  const { detail, requestDelete, requestUpsert, checkRegistrationNumber } = useSelector((root: RootState) => root.business);
   const upsert = useCallback((formikProps: BusinessParameter) => {
     dispatch(businessAction.upsert(formikProps));
   }, [dispatch]);
@@ -92,7 +92,10 @@ function Element() {
   return (
     <FormikProvider value={formik}>
       <BusinessDetail
-        basic={<BusinessBasicRoute onAddressModal={openAddressModal}/>}
+        basic={<BusinessBasicRoute
+          onAddressModal={openAddressModal}
+          checkRegistrationNumber={checkRegistrationNumber}
+        />}
         involvedProjectList={<BusinessInvolvedProjectRoute />}
         rivalStatistic={<BusinessRivalStatisticRoute />}
         rivalProjectList={<BusinessRivalProjectListRoute />}
