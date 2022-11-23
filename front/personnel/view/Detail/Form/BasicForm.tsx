@@ -257,19 +257,10 @@ export default function BasicForm(props: Props) {
             <Input
               readOnly={!edit}
               key={values.address}
-              defaultValue={values.address ?? ''}
-              onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e.target.value || undefined;
-                if (values.phone !== value) {
-                  formik.setFieldValue('basic.address', value);
-                }
-              }}
+              value={values.address ?? ''}
               endAdornment={
                 <InputAdornment position="end" sx={{ marginRight: '10px' }}>
-                  <Button onClick={props.onAddressModal}>
+                  <Button disabled={!edit} onClick={props.onAddressModal}>
                     주소 검색
                   </Button>
                 </InputAdornment>
