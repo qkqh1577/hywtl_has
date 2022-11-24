@@ -28,3 +28,13 @@ export function getErrorMessage<TPayload>(action: Action<TPayload>,
   return '오류가 발생하였습니다.';
 }
 
+export function getErrorCode<TPayload>(action: Action<TPayload>,
+                                          e: unknown
+) {
+  const axiosError = getAxiosError(action, e);
+  if (axiosError.response?.data) {
+    return axiosError.response.data.code;
+  }
+  return '오류가 발생하였습니다.';
+}
+
