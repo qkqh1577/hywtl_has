@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -207,14 +208,24 @@ public class User extends CustomEntity {
 
     public void changePassword(
         String nowPassword,
-        String newPassword
+        String newPassword,
+        String newPasswordConfirm
     ) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(nowPassword, this.password)) {
             throw new PasswordException(PasswordExceptionType.NOT_MATCH);
         }
+
+        String pattern = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$";
+        if(!Pattern.matches(pattern, newPassword)){
+            throw new PasswordException(PasswordExceptionType.WEAK);
+        }
+
         if (passwordEncoder.matches(newPassword, this.password)) {
             throw new PasswordException(PasswordExceptionType.SAME);
+        }
+        if(!newPassword.equals(newPasswordConfirm)) {
+            throw new PasswordException(PasswordExceptionType.NOT_EQUAL_NEW_PASSWORD);
         }
         this.setPassword(newPassword);
     }

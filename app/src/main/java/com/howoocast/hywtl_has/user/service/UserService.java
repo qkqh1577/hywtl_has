@@ -115,7 +115,7 @@ public class UserService {
     @Transactional
     public void changePassword(Long id, UserPasswordChangeParameter parameter) {
         User instance = this.load(id);
-        instance.changePassword(parameter.getNowPassword(), parameter.getNewPassword());
+        instance.changePassword(parameter.getNowPassword(), parameter.getNewPassword(), parameter.getNewPasswordConfirm());
     }
 
     @Transactional
