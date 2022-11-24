@@ -9,6 +9,7 @@ import { DefaultFunction } from 'type/Function';
 interface Props {
   departmentList: DepartmentShortVO[] | undefined;
   onCancel: DefaultFunction;
+  onAddressModal: DefaultFunction;
 }
 
 export default function PersonnelDetail(props: Props) {
@@ -17,7 +18,10 @@ export default function PersonnelDetail(props: Props) {
   return (
     <PageLayout
       title={edit ? '인사카드 수정' : '인사카드 상세'}
-      body={<FormList departmentList={props.departmentList} />}
+      body={<FormList
+        departmentList={props.departmentList}
+        onAddressModal={props.onAddressModal}
+      />}
       footer={<Footer onCancel={props.onCancel} />}
     />
   );

@@ -11,9 +11,11 @@ import LicenceForm from 'personnel/view/Detail/Form/LicenceForm';
 import LanguageForm from 'personnel/view/Detail/Form/LanguageForm';
 import Divider from 'layouts/Divider';
 import { DepartmentShortVO } from 'department/domain';
+import { DefaultFunction } from 'type/Function';
 
 interface Props {
   departmentList: DepartmentShortVO[] | undefined;
+  onAddressModal: DefaultFunction;
 }
 
 export default function FormList(props: Props) {
@@ -28,7 +30,7 @@ export default function FormList(props: Props) {
     }}>
       <AccountForm />
       <Divider />
-      <BasicForm />
+      <BasicForm onAddressModal={props.onAddressModal}/>
       <Divider />
       <CompanyForm />
       <Divider />

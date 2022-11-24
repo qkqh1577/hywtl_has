@@ -7,10 +7,19 @@ import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
+import { DefaultFunction } from 'type/Function';
+import Button from 'layouts/Button';
+import {
+  RegistrationNumberResultType,
+  RegistrationNumberState
+} from 'business/domain';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   checkButton: React.ReactNode;
   inputRef: React.RefObject<HTMLInputElement>;
+  onAddressModal: DefaultFunction;
+  checkRegistrationNumber?: RegistrationNumberState;
 }
 
 export default function BusinessBasicSection(props: Props) {
@@ -88,10 +97,11 @@ export default function BusinessBasicSection(props: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box sx={{
-          display:      'flex',
-          flexWrap:     'nowrap',
-          width:        '47%',
-          marginBottom: '15px',
+          display:       'flex',
+          flexWrap:      'nowrap',
+          width:         '47%',
+          marginBottom:  '15px',
+          flexDirection: 'column',
         }}>
           <DataFieldWithLabel required={edit} label="사업자번호">
             <Input
@@ -106,6 +116,19 @@ export default function BusinessBasicSection(props: Props) {
               inputRef={props.inputRef}
             />
           </DataFieldWithLabel>
+          {props.checkRegistrationNumber && (
+            <Box sx={{
+              display:        'flex',
+              justifyContent: 'flex-end',
+            }}>
+              <TextBox variant="body7"
+                sx={{ color: `${props.checkRegistrationNumber.state === RegistrationNumberResultType.SUCCESS ? `${ColorPalette._4c9eeb}` : `${ColorPalette._eb4c4c}` }`,
+                  marginLeft: '10px'
+              }}>
+                {props.checkRegistrationNumber.message}
+              </TextBox>
+            </Box>
+          )}
         </Box>
         <Box sx={{
           display:      'flex',
@@ -156,23 +179,21 @@ export default function BusinessBasicSection(props: Props) {
         <Box sx={{
           display:      'flex',
           flexWrap:     'nowrap',
-          width:        '47%',
+          width:        '100%',
           marginBottom: '15px',
         }}>
           <DataFieldWithLabel label="주소">
             <Input
               readOnly={!edit}
               key={formik.values.address}
-              defaultValue={formik.values.address ?? ''}
-              onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e.target.value || undefined;
-                if (formik.values.address !== value) {
-                  formik.setFieldValue('address', value);
-                }
-              }}
+              value={formik.values.address ?? ''}
+              endAdornment={
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                  <Button disabled={!edit} onClick={props.onAddressModal}>
+                    주소 검색
+                  </Button>
+                </InputAdornment>
+              }
             />
           </DataFieldWithLabel>
         </Box>
@@ -186,23 +207,14 @@ export default function BusinessBasicSection(props: Props) {
             <Input
               readOnly={!edit}
               key={formik.values.zipCode}
-              defaultValue={formik.values.zipCode ?? ''}
-              onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e.target.value || undefined;
-                if (formik.values.zipCode !== value) {
-                  formik.setFieldValue('zipCode', value);
-                }
-              }}
+              value={formik.values.zipCode ?? ''}
             />
           </DataFieldWithLabel>
         </Box>
         <Box sx={{
           display:      'flex',
           flexWrap:     'nowrap',
-          width:        '47%',
+          width:        '100%',
           marginBottom: '15px',
         }}>
           <DataFieldWithLabel label="비고">

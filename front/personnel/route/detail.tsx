@@ -23,6 +23,8 @@ import PersonnelDetail from 'personnel/view/Detail';
 import { departmentAction } from 'department/action';
 import useDialog from 'dialog/hook';
 import { closeStatus } from 'components/DataFieldProps';
+import { addressModalAction } from 'components/AddressModal/action';
+import { AddressModal } from 'components/AddressModal/AddressModal';
 
 function Element() {
   const id = useId();
@@ -30,6 +32,7 @@ function Element() {
   const { detail, requestUpdate } = useSelector((root: RootState) => root.personnel);
   const { list: departmentList } = useSelector((root: RootState) => root.department);
   const { rollback } = useDialog();
+  const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
 
   const update = useCallback((formikProps: PersonnelParameter) => {
     return dispatch(personnelAction.update(formikProps));
@@ -73,6 +76,7 @@ function Element() {
     <FormikProvider value={formik}>
       <PersonnelDetail
         departmentList={departmentList}
+        onAddressModal={openAddressModal}
         onCancel={() => {
           rollback(() => {
             formik.setValues({
@@ -82,6 +86,7 @@ function Element() {
           });
         }}
       />
+      <AddressModal fieldName='basic.address' formik={formik}/>
     </FormikProvider>
   );
 }

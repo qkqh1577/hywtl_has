@@ -81,4 +81,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new LoginEntryPointService(userRepository);
     }
+
 }

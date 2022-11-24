@@ -55,6 +55,11 @@ public class Business extends CustomEntity {
     private String address;
 
     /**
+     * 우편 번호
+     */
+    private String zipCode;
+
+    /**
      * 대표 전화번호
      */
     private String officePhone;
@@ -76,6 +81,7 @@ public class Business extends CustomEntity {
         String ceoName,
         String registrationNumber,
         String address,
+        String zipCode,
         String officePhone,
         String note,
         String fax,
@@ -87,6 +93,7 @@ public class Business extends CustomEntity {
             ceoName,
             registrationNumber,
             address,
+            zipCode,
             officePhone,
             note,
             fax,
@@ -100,6 +107,7 @@ public class Business extends CustomEntity {
         String ceoName,
         String registrationNumber,
         String address,
+        String zipCode,
         String officePhone,
         String note,
         String fax,
@@ -109,6 +117,7 @@ public class Business extends CustomEntity {
         this.ceoName = ceoName;
         this.registrationNumber = registrationNumber;
         this.address = address;
+        this.zipCode = zipCode;
         this.officePhone = officePhone;
         this.note = note;
         this.fax = fax;

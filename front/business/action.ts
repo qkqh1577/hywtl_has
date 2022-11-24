@@ -7,6 +7,7 @@ import {
   BusinessInvolvedType,
   BusinessShortVO,
   BusinessVO,
+  RegistrationNumberState,
   RivalProjectVO
 } from 'business/domain';
 import { BusinessParameter } from 'business/parameter';
@@ -25,6 +26,7 @@ export enum BusinessActionType {
   requestUpsert              = 'business/upsert/request',
   deleteOne                  = 'business/delete',
   requestDelete              = 'business/delete/request',
+  checkRegistrationNumber    = 'business/registration-number/check',
 }
 
 export const businessAction = {
@@ -40,4 +42,5 @@ export const businessAction = {
   deleteOne:                  createAction(BusinessActionType.deleteOne)<BusinessId>(),
   requestUpsert:              createAction(BusinessActionType.requestUpsert)<ApiStatus>(),
   requestDelete:              createAction(BusinessActionType.requestDelete)<ApiStatus>(),
+  checkRegistrationNumber:    createAction(BusinessActionType.checkRegistrationNumber)<RegistrationNumberState>(),
 };
