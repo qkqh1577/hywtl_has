@@ -8,6 +8,7 @@ interface Props {
   open: boolean;
   onResetPassword: DefaultFunction;
   onClose: DefaultFunction;
+  onAddressModal: DefaultFunction
 }
 
 export default function LoginChangeModal(props: Props) {
@@ -18,7 +19,10 @@ export default function LoginChangeModal(props: Props) {
       title="계정 수정"
       onClose={props.onClose}
       width="35vw"
-      children={<Form />}
+      children={
+      <Form
+        onAddressModal={props.onAddressModal}
+      />}
       footer={
         <Footer
           onResetPassword={props.onResetPassword}

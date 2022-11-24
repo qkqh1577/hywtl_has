@@ -2,6 +2,7 @@ import { LoginVO } from 'login/domain';
 import { createReducer } from 'typesafe-actions';
 import { LoginActionType } from 'login/action';
 import { ApiStatus } from 'components/DataFieldProps';
+import { PasswordValidation } from 'login/parameter';
 
 export interface LoginState {
   detail?: LoginVO;
@@ -9,6 +10,8 @@ export interface LoginState {
   requestLogout: ApiStatus;
   requestChange: ApiStatus;
   changeModal: boolean;
+  passwordChangeModal: boolean;
+  passwordValidation?: PasswordValidation;
 }
 
 const initial: LoginState = {
@@ -16,6 +19,7 @@ const initial: LoginState = {
   requestLogout: 'idle',
   requestChange: 'idle',
   changeModal:   false,
+  passwordChangeModal: false,
 };
 
 export const loginReducer = createReducer(initial, {
@@ -48,5 +52,17 @@ export const loginReducer = createReducer(initial, {
                                  ) => ({
     ...state,
     changeModal: action.payload
+  }),
+  [LoginActionType.passwordChangeModal]: (state,
+                                  action
+                                 ) => ({
+    ...state,
+    passwordChangeModal: action.payload
+  }),
+  [LoginActionType.passwordValidation]: (state,
+                                          action
+                                         ) => ({
+    ...state,
+    passwordValidation: action.payload
   })
 });

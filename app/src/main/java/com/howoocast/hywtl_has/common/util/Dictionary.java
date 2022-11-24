@@ -182,6 +182,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("unit", "단위");
         this.put("unit_amount", "단가");
         this.put("user", "유저");
+        this.put("confirm", "확인");
         this.put("user_invitation", "유저 초대");
         this.put("username", "아이디");
         this.put("verification", "인증");

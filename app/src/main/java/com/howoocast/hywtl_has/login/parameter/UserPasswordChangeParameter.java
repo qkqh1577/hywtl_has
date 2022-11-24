@@ -13,4 +13,7 @@ public class UserPasswordChangeParameter {
 
     @NotBlank(message = "user.new_password.not_blank")
     private String newPassword;
+
+    @NotBlank(message = "user.new_password_confirm.not_blank")
+    private String newPasswordConfirm;
 }

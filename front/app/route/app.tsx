@@ -21,6 +21,7 @@ import { menuAction } from 'menu/action';
 import ReactRouter from 'services/routes';
 import { Box } from '@mui/material';
 import { closeStatus } from 'components/DataFieldProps';
+import PasswordChangeModalRoute from 'login/route/passwordChangeModal';
 
 export default function () {
 
@@ -73,6 +74,7 @@ export default function () {
       <ProjectMemoDrawerRoute />
       <ProjectAddModalRoute />
       <LoginChangeModalRoute />
+      <PasswordChangeModalRoute />
       <UserNotificationModalRoute />
     </Box>
   );
