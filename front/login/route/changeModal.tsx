@@ -19,7 +19,7 @@ import { closeStatus } from 'components/DataFieldProps';
 export default function LoginChangeModalRoute() {
   const dispatch = useDispatch();
   const { detail: loginUser, changeModal, requestChange } = useSelector((root: RootState) => root.login);
-
+  const openPasswordChangeModal = useCallback(() => dispatch(loginAction.passwordChangeModal(true)), [dispatch]);
   const change = useCallback((formikProps: LoginChangeParameter) =>
     dispatch(loginAction.change(formikProps)), [dispatch]);
 
@@ -62,7 +62,8 @@ export default function LoginChangeModalRoute() {
         open={changeModal}
         onClose={onClose}
         onResetPassword={() => {
-          console.log('change password requested');
+          openPasswordChangeModal();
+          onClose();
         }}
       />
     </FormikProvider>

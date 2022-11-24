@@ -3,6 +3,7 @@ import { LoginVO } from 'login/domain';
 import {
   LoginChangeParameter,
   LoginParameter,
+  PasswordChangeParameter,
 } from 'login/parameter';
 
 class LoginApi {
@@ -23,6 +24,11 @@ class LoginApi {
 
   async logout(): Promise<void> {
     const { data } = await apiClient.post('/logout', new FormData());
+    return data;
+  }
+
+  async changePassword(params: PasswordChangeParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/admin/user/${params.id}/password`, params);
     return data;
   }
 }

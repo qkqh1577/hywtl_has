@@ -7,7 +7,10 @@ import {
 import { loginAction } from 'login/action';
 import { loginApi } from 'login/api';
 import { LoginVO } from 'login/domain';
-import { getErrorMessage } from 'type/Error';
+import {
+  getErrorCode,
+  getErrorMessage
+} from 'type/Error';
 import { dialogAction } from 'dialog/action';
 
 function* watchLogin() {
@@ -81,9 +84,32 @@ function* watchChange() {
   }
 }
 
+function* watchPasswordChange() {
+  while (true) {
+    const { payload: params } = yield take(loginAction.changePassword);
+    try {
+      yield put(loginAction.requestChange('request'));
+      yield call(loginApi.changePassword, params);
+      yield put(loginAction.requestChange('done'));
+      yield put(dialogAction.openAlert('변경하였습니다.'));
+      yield put(loginAction.passwordChangeModal(false));
+    }
+    catch (e) {
+      const message = getErrorMessage(loginAction.changePassword, e);
+      const code = getErrorCode(loginAction.changePassword, e);
+      yield put(loginAction.passwordValidation({
+        code:    code,
+        message: message
+      }));
+      yield put(loginAction.requestChange(message));
+    }
+  }
+}
+
 export default function* loginSaga() {
   yield fork(watchLogin);
   yield fork(watchLogout);
   yield fork(watchDetail);
   yield fork(watchChange);
+  yield fork(watchPasswordChange);
 }
