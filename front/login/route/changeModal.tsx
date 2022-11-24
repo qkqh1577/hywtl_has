@@ -15,11 +15,15 @@ import { LoginChangeParameter } from 'login/parameter';
 import { loginAction } from 'login/action';
 import LoginChangeModal from 'login/view/ChangeModal';
 import { closeStatus } from 'components/DataFieldProps';
+import { addressModalAction } from 'components/AddressModal/action';
+import { AddressModal } from 'components/AddressModal/AddressModal';
 
 export default function LoginChangeModalRoute() {
   const dispatch = useDispatch();
   const { detail: loginUser, changeModal, requestChange } = useSelector((root: RootState) => root.login);
   const openPasswordChangeModal = useCallback(() => dispatch(loginAction.passwordChangeModal(true)), [dispatch]);
+  const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
+
   const change = useCallback((formikProps: LoginChangeParameter) =>
     dispatch(loginAction.change(formikProps)), [dispatch]);
 
@@ -65,7 +69,11 @@ export default function LoginChangeModalRoute() {
           openPasswordChangeModal();
           onClose();
         }}
+        onAddressModal={() => {
+          openAddressModal();
+        }}
       />
+      <AddressModal formik={formik} fieldName={'address'} />
     </FormikProvider>
   );
 };

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Box,
   FormControlLabel,
+  InputAdornment,
   Radio,
   RadioGroup,
 } from '@mui/material';
@@ -13,6 +14,12 @@ import Input from 'layouts/Input';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import { sexCategoryList } from 'user/domain';
 import { fileToView } from 'file-item';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
+
+interface Props {
+  onAddressModal: DefaultFunction;
+}
 
 function FieldBox(props: { children: React.ReactNode }) {
   return (
@@ -27,8 +34,9 @@ function FieldBox(props: { children: React.ReactNode }) {
   );
 }
 
-export default function () {
+export default function (props: Props) {
   const formik = useContext(FormikContext);
+
   return (
     <Box sx={{
       width:    '100%',
@@ -216,13 +224,16 @@ export default function () {
         <DataFieldWithLabel label="거주지 주소" labelPosition="top">
           <Input
             key={formik.values.address}
-            defaultValue={formik.values.address ?? ''}
-            onBlur={(e) => {
-              const value = e.target.value || undefined;
-              if (formik.values.address !== value) {
-                formik.setFieldValue('address', value);
-              }
-            }}
+            value={formik.values.address ?? ''}
+            endAdornment={
+              <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                <Button
+                  onClick={props.onAddressModal}
+                >
+                  주소 검색
+                </Button>
+              </InputAdornment>
+            }
           />
         </DataFieldWithLabel>
       </FieldBox>

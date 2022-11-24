@@ -10,7 +10,7 @@ export enum AddressModalType {
 }
 
 export const addressModalAction = {
-  addressModal: createAction(AddressModalType.addressModal)<Boolean>(),
+  addressModal: createAction(AddressModalType.addressModal)<boolean>(),
   setFilter:    createAction(AddressModalType.setFilter)<AddressQuery>(),
   setList:      createAction(AddressModalType.setList)<Address[]>(),
   setTotalPage:    createAction(AddressModalType.setTotalPage)<number>(),

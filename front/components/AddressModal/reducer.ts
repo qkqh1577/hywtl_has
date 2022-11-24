@@ -4,12 +4,12 @@ import { Address } from 'components/AddressModal/domain';
 
 export interface AddressState {
   list: Address[];
-  addressModal?: boolean;
+  addressModal: boolean;
   setFilter?: string;
   totalPage?: number;
 }
 
-const initial: AddressState = {list: []};
+const initial: AddressState = {list: [], addressModal: false};
 
 export const addressReducer = createReducer(initial, {
   [AddressModalType.addressModal]: (state,
