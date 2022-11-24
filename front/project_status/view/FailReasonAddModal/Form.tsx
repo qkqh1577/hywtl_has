@@ -26,9 +26,9 @@ export default function ProjectStatusFailReasonAddModalForm() {
         <DataFieldWithLabel required label="수주업체" labelPosition="top">
           <BusinessSelector
             value={formik.values.winId}
-            onChange={(value) => {
-              if (formik.values.winId !== value) {
-                formik.setFieldValue('winId', value);
+            onChange={(business) => {
+              if (formik.values.winId !== business.id) {
+                formik.setFieldValue('winId', business.id);
               }
             }}
           />

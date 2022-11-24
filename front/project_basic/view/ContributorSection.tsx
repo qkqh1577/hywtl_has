@@ -44,7 +44,6 @@ interface Props {
 }
 
 export default function ProjectBasicContributorSection(props: Props) {
-
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
   useEffect(() => {
@@ -198,10 +197,12 @@ export default function ProjectBasicContributorSection(props: Props) {
                   <Td>
                     <BusinessSelector
                       variant="outlined"
+                      hasEmployee
+                      withEmployee={item.businessManager?.id ?? undefined}
                       value={item.business?.id}
-                      onChange={(value) => {
-                        if (item.business?.id !== value) {
-                          props.onUpdateExternal({ id: item.id, businessId: value });
+                      onChange={(business) => {
+                        if (item.business?.id !== business.id) {
+                          props.onUpdateExternal({ id: item.id, businessId: business.id, businessManagerId: business.managerId });
                         }
                       }}
                     />
