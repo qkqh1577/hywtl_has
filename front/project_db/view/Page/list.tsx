@@ -133,10 +133,6 @@ export default function List(props: Props) {
 
     return (
         <div style={{position: 'relative', width: '100%', height: '100%'}}>
-            {/*<Skeleton*/}
-            {/*    sx={{ bgcolor: 'grey', position:'absolute', zIndex:1000, left:'0px', top:'0px', width: '100%', height: '100%' }}*/}
-            {/*    variant="rectangular"*/}
-            {/*/>*/}
             <DataGrid className={theme.light} columns={columns} rows={rows} style={{height: '100%'}}/>
         </div>
     )

@@ -6,6 +6,8 @@ export interface ProjectDbQuery {
     projectEstimate?: boolean,
     projectMemo?: boolean,
     search?: ProjectDbSearchItems,
+    searchFrom?: string,
+    searchTo?: string,
     keys?: any,
     values?: any
 }

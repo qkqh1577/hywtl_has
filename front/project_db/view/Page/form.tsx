@@ -21,6 +21,7 @@ import {ProjectDbFilter} from "../../reducer";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TagIcon from '@mui/icons-material/Tag';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import {Dayjs} from "dayjs";
 
 interface Props {
 }
@@ -48,7 +49,9 @@ const StyledAccordionSummary = withStyles({
 
 export interface ProjectDbSearch {
     filter: ProjectDbFilter,
-    search: ProjectDbSearchItems
+    search: ProjectDbSearchItems,
+    from?: Dayjs,
+    to?: Dayjs,
 }
 
 export interface ProjectDbSearchItems {
@@ -325,38 +328,6 @@ export default function Form(props: Props) {
                     <div style={{display: 'inline-flex'}}>
                         <Button onClick={onSearch}>검색</Button>
                     </div>
-                    {/*{entities.map((entityName, index) => {*/}
-                    {/*    const attributes = filter[entityName];*/}
-                    {/*    let hasCheckedAttr = false;*/}
-                    {/*    Object.keys(attributes).forEach(attrName => {*/}
-                    {/*        if (attributes[attrName]) {*/}
-                    {/*            hasCheckedAttr = true;*/}
-                    {/*            return false;*/}
-                    {/*        }*/}
-                    {/*    });*/}
-                    {/*    return hasCheckedAttr && (*/}
-                    {/*        <div key={index}>*/}
-                    {/*            <h4>*/}
-                    {/*                {schema[entityName].description}*/}
-                    {/*            </h4>*/}
-                    {/*            <div>*/}
-                    {/*                {Object.keys(attributes).map((attrName, index2) => {*/}
-                    {/*                    const attrInfo = schema[entityName].attributes[attrName];*/}
-                    {/*                    if (!attrInfo.search) return true;*/}
-
-                    {/*                    return attributes[attrName] && (*/}
-                    {/*                        <div key={index2} style={{display: 'inline-flex', marginRight: '10px'}}>*/}
-                    {/*                            {renderInput(entityName, attrName, attrInfo)}*/}
-                    {/*                        </div>*/}
-                    {/*                    );*/}
-                    {/*                })}*/}
-                    {/*                <div style={{display: 'inline-flex'}}>*/}
-                    {/*                    <Button onClick={onSearch}>검색</Button>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    )*/}
-                    {/*})}*/}
                 </AccordionDetails>
             </Accordion>
         </Box>

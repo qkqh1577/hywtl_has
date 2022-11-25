@@ -37,6 +37,8 @@ class ProjectDbApi {
             projectComplexSite: true,
             projectMemo: false,
             search: searchState.search,
+            searchFrom: searchState.from?.format("YYYY-MM-DD"),
+            searchTo: searchState.to?.format("YYYY-MM-DD"),
             keys: keys,
             values: values
         };

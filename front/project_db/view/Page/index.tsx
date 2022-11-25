@@ -8,10 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import TabHolder from "./tabHolder";
 import AddIcon from '@mui/icons-material/Add';
-import {dialogActions} from "../../../components/Dialog";
-import {ProjectDbPreset} from "../../domain";
-import {projectDbAction} from "../../action";
 import PresetModal from "./presetModal";
+import ProjectSearch from "./search";
 
 interface PresetSaveModalProps {
     state: boolean,
@@ -69,7 +67,8 @@ export default function ProjectDbPage() {
     return (
         <PageLayout
             title={"영업DB 분석"}
-            filter={<SearchBox/>}
+            // filter={<SearchBox/>}
+            filter={<ProjectSearch/>}
             body={<ProjectDbList/>}
         />
     )
