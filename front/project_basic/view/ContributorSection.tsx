@@ -201,7 +201,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                       withEmployee={item.businessManager?.id ?? undefined}
                       value={item.business?.id}
                       onChange={(business) => {
-                        if (item.business?.id !== business.id) {
+                        if (item.business?.id !== business.id || item.businessManager?.id !== business.managerId) {
                           props.onUpdateExternal({ id: item.id, businessId: business.id, businessManagerId: business.managerId });
                         }
                       }}

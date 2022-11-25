@@ -3,8 +3,12 @@ package com.howoocast.hywtl_has.business.controller;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
 import com.howoocast.hywtl_has.business.service.BusinessService;
+import com.howoocast.hywtl_has.business.view.BusinessManagerShortView;
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,10 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @Validated
@@ -67,6 +74,13 @@ public class BusinessController {
     @GetMapping("/business/{id}")
     public BusinessView get(@PathVariable Long id) {
         return BusinessMapper.toView(businessService.get(id));
+    }
+
+    @GetMapping("/business/{id}/manager-list")
+    public List<BusinessManagerShortView> getManagerList(@PathVariable Long id) {
+        return businessService.get(id).getManagerList().stream()
+            .map(BusinessManagerShortView::assemble)
+            .collect(Collectors.toList());
     }
 
     @PutMapping({"/business", "/business/{id}"})

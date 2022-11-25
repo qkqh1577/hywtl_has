@@ -56,6 +56,7 @@ import {
 } from 'layouts/Table';
 import Input, { InputProps } from 'layouts/Input';
 import Select from 'layouts/Select';
+import useDialog from 'dialog/hook';
 
 enum BusinessSelectorActionType {
   setModal       = 'system/business-selector/modal/set',
@@ -75,11 +76,12 @@ interface ModalProps {
 }
 
 const businessSelectorAction = {
-  setModal:  createAction(BusinessSelectorActionType.setModal)<ModalProps | undefined>(),
-  setFilter: createAction(BusinessSelectorActionType.setFilter)<BusinessQuery>(),
-  setId:     createAction(BusinessSelectorActionType.setId)<BusinessId | undefined>(),
-  setList:   createAction(BusinessSelectorActionType.setList)<BusinessVO[]>(),
-  setDetail: createAction(BusinessSelectorActionType.setDetail)<BusinessVO | undefined>(),
+  setModal:       createAction(BusinessSelectorActionType.setModal)<ModalProps | undefined>(),
+  setFilter:      createAction(BusinessSelectorActionType.setFilter)<BusinessQuery>(),
+  setId:          createAction(BusinessSelectorActionType.setId)<BusinessId | undefined>(),
+  setList:        createAction(BusinessSelectorActionType.setList)<BusinessVO[]>(),
+  setDetail:      createAction(BusinessSelectorActionType.setDetail)<BusinessVO | undefined>(),
+  setManagerList: createAction(BusinessSelectorActionType.setManagerList)<BusinessManagerVO[]>(),
 };
 
 export interface BusinessSelectorState {
@@ -88,43 +90,51 @@ export interface BusinessSelectorState {
   detail?: BusinessVO;
   list: BusinessVO[];
   filter: BusinessQuery;
+  managerList: BusinessManagerVO[];
 }
 
 const initialState: BusinessSelectorState = {
-  list:   [],
-  filter: {},
+  list:        [],
+  filter:      {},
+  managerList: [],
 };
 
 export const businessSelectorReducer = createReducer(initialState, {
-  [BusinessSelectorActionType.setModal]:  (state,
-                                           action
-                                          ) => ({
+  [BusinessSelectorActionType.setModal]:       (state,
+                                                action
+                                               ) => ({
     ...state,
     modal: action.payload,
   }),
-  [BusinessSelectorActionType.setFilter]: (state,
-                                           action
-                                          ) => ({
+  [BusinessSelectorActionType.setFilter]:      (state,
+                                                action
+                                               ) => ({
     ...state,
     filter: action.payload,
   }),
-  [BusinessSelectorActionType.setList]:   (state,
-                                           action
-                                          ) => ({
+  [BusinessSelectorActionType.setList]:        (state,
+                                                action
+                                               ) => ({
     ...state,
     list: action.payload,
   }),
-  [BusinessSelectorActionType.setId]:     (state,
-                                           action
-                                          ) => ({
+  [BusinessSelectorActionType.setId]:          (state,
+                                                action
+                                               ) => ({
     ...state,
     id: action.payload
   }),
-  [BusinessSelectorActionType.setDetail]: (state,
-                                           action
-                                          ) => ({
+  [BusinessSelectorActionType.setDetail]:      (state,
+                                                action
+                                               ) => ({
     ...state,
     detail: action.payload,
+  }),
+  [BusinessSelectorActionType.setManagerList]: (state,
+                                                action
+                                               ) => ({
+    ...state,
+    managerList: action.payload,
   }),
 });
 
@@ -133,6 +143,7 @@ function* watchFilter() {
     const { payload: filter } = yield take(businessSelectorAction.setFilter);
     const list: BusinessVO[] = yield call(businessApi.getListAll, filter);
     yield put(businessSelectorAction.setList(list));
+    yield put(businessSelectorAction.setManagerList([]));
   }
 }
 
@@ -149,26 +160,40 @@ function* watchId() {
   }
 }
 
+function* watchManagerList() {
+  while (true) {
+    const { payload: id } = yield take(businessSelectorAction.setId);
+    if (id) {
+      const list: BusinessManagerVO[] = yield call(businessApi.getManagerList, id);
+      yield put(businessSelectorAction.setManagerList(list));
+    }
+    else {
+      yield put(businessSelectorAction.setManagerList([]));
+    }
+  }
+}
+
 export function* businessSelectorSaga() {
   yield fork(watchFilter);
   yield fork(watchId);
+  yield fork(watchManagerList);
 }
 
 export function BusinessSelectorModalRoute() {
 
   const dispatch = useDispatch();
-  const { modal, list } = useSelector((root: RootState) => root.businessSelector);
-  const [managerList, setManagerList] = useState<BusinessManagerVO[]>([]);
-  console.log('modal.withEmployee : ', modal?.withEmployee);
-  const open = !!modal;
-  const [id, setId] = useState<BusinessId>();
-  const [business, setBusiness] = useState<BusinessIdWithManagerId>({ id: undefined, managerId: undefined } as BusinessIdWithManagerId);
+  const { modal, list, managerList } = useSelector((root: RootState) => root.businessSelector);
   const onClose = useCallback(() => {
     dispatch(businessSelectorAction.setModal(undefined));
   }, [dispatch]);
+  const { error } = useDialog();
+
+  const open = !!modal;
+  const [business, setBusiness] = useState<BusinessIdWithManagerId>({ id: undefined, managerId: undefined });
+
 
   const setFilter = useCallback((query: BusinessQuery) => dispatch(businessSelectorAction.setFilter(query)), [dispatch]);
-  const edit = true;
+  const setId = useCallback((businessId: BusinessId | undefined) => dispatch(businessSelectorAction.setId(businessId)), [dispatch]);
   const formik = useFormik<BusinessQuery>({
     initialValues: initialBusinessQuery,
     onSubmit:      (values) => {
@@ -182,6 +207,10 @@ export function BusinessSelectorModalRoute() {
   useEffect(() => {
     if (open) {
       setFilter(initialBusinessQuery);
+      if (modal?.withEmployee && modal.id) {
+        setId(BusinessId(modal.id));
+      }
+
       formik.setValues(initialBusinessQuery);
       setBusiness(prevState => ({ ...prevState, id: modal.id, managerId: modal.withEmployee }));
     }
@@ -193,10 +222,11 @@ export function BusinessSelectorModalRoute() {
 
   useEffect(() => {
     if (modal?.hasEmployee) {
-      setManagerList(list.filter(b => b.id === business.id)
-                         .flatMap(b => b.managerList));
+      if (business.id) {
+        setId(business.id);
+      }
     }
-  }, [business.id]);
+  }, [business.id, business.managerId]);
 
   return (
     <ModalLayout
@@ -230,7 +260,7 @@ export function BusinessSelectorModalRoute() {
                         checked={business.id === 1}
                         onChange={() => {
                           if (modal?.allowMyBusiness && business.id !== 1) {
-                            setId(BusinessId(1));
+                            setBusiness(prevState => ({ ...prevState, id: BusinessId(1) }));
                           }
                         }}
                       />
@@ -243,7 +273,7 @@ export function BusinessSelectorModalRoute() {
                         value="other"
                         checked={business.id !== 1}
                         onChange={() => {
-                          setId(undefined);
+                          setBusiness(prevState => ({ ...prevState, id: undefined }));
                         }}
                       />
                     }
@@ -408,6 +438,16 @@ export function BusinessSelectorModalRoute() {
           <Button
             disabled={!modal}
             onClick={() => {
+              if (!business.id) {
+                error('업체를 선택해주세요.');
+                return;
+              }
+
+              if (!business.managerId && modal?.hasEmployee) {
+                error('담당자를 선택해주세요.');
+                return;
+              }
+
               onClose();
               modal?.afterConfirm(business);
             }}
