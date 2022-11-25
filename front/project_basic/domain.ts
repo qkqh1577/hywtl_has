@@ -43,7 +43,8 @@ export interface ProjectBasicBusiness {
 }
 
 export interface ProjectBasicDesignVO {
-  city?: string; // 시/도
+  city1?: string; // 시/도1
+  city2?: string; // 시/도2
   address?: string; // 주소
   complexCount?: number; // 단지 수
   purpose1?: string; // 건물 용도 1

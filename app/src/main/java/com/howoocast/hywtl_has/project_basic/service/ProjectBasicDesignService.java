@@ -40,7 +40,8 @@ public class ProjectBasicDesignService {
             .orElseGet(() -> ProjectBasicDesign.of(project));
 
         List<EventEntity> eventList = instance.update(
-            parameter.getCity(),
+            parameter.getCity1(),
+            parameter.getCity2(),
             parameter.getAddress(),
             parameter.getComplexCount(),
             parameter.getPurpose1(),

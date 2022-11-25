@@ -43,23 +43,14 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
         },
         '& > div.large':       {
           width: 'calc(48% - 10px)',
+        },
+        '& > div.extra-large':       {
+          width: 'calc(100% - 10px)',
         }
       }}>
-        <Box>
-          <DataFieldWithLabel label="시/도">
-            <Input
-              key={detail.city}
-              defaultValue={detail.city ?? ''}
-              onBlur={(e) => {
-                const value = e.target.value || undefined;
-                if (detail.city !== value) {
-                  onUpdate({ city: value });
-                }
-              }}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box className="large">
+        <Box
+          className="extra-large"
+        >
           <DataFieldWithLabel label="주소">
             <Input
               key={detail.address}
@@ -81,6 +72,50 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
           </DataFieldWithLabel>
         </Box>
         <Box>
+          <DataFieldWithLabel label="시/도1">
+            <Select
+              displayEmpty
+              value={detail.city1 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose1Type || undefined;
+                if (detail.city1 !== value) {
+                  onUpdate({ city1: value });
+                }
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose1List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose1Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
+          <DataFieldWithLabel label="시/도2">
+            <Select
+              displayEmpty
+              value={detail.city2 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose1Type || undefined;
+                if (detail.city2 !== value) {
+                  onUpdate({ city2: value });
+                }
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose1List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose1Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
           <DataFieldWithLabel label="단지 수">
             <Input
               type="number"
@@ -90,6 +125,21 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
                 const value = +(e.target.value) || undefined;
                 if (detail.complexCount !== value) {
                   onUpdate({ complexCount: value });
+                }
+              }}
+            />
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
+          <DataFieldWithLabel label="총 동 수">
+            <Input
+              type="number"
+              key={detail.totalBuildingCount}
+              defaultValue={detail.totalBuildingCount ?? ''}
+              onBlur={(e) => {
+                const value = +(e.target.value) || undefined;
+                if (detail.totalBuildingCount !== value) {
+                  onUpdate({ totalBuildingCount: value });
                 }
               }}
             />
@@ -164,21 +214,6 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
                 const value = +(e.target.value) || undefined;
                 if (detail.totalArea !== value) {
                   onUpdate({ totalArea: value });
-                }
-              }}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box>
-          <DataFieldWithLabel label="총 동 수">
-            <Input
-              type="number"
-              key={detail.totalBuildingCount}
-              defaultValue={detail.totalBuildingCount ?? ''}
-              onBlur={(e) => {
-                const value = +(e.target.value) || undefined;
-                if (detail.totalBuildingCount !== value) {
-                  onUpdate({ totalBuildingCount: value });
                 }
               }}
             />

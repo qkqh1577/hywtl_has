@@ -34,7 +34,9 @@ public class ProjectBasicDesign extends CustomEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    private String city;
+    private String city1;
+
+    private String city2;
 
     private String address;
 
@@ -65,7 +67,8 @@ public class ProjectBasicDesign extends CustomEntity {
     }
 
     public List<EventEntity> update(
-        @Nullable String city,
+        @Nullable String city1,
+        @Nullable String city2,
         @Nullable String address,
         @Nullable Integer complexCount,
         @Nullable String purpose1,
@@ -78,13 +81,21 @@ public class ProjectBasicDesign extends CustomEntity {
         @Nullable Double maximumHeight
     ) {
         List<EventEntity> eventList = new ArrayList<>();
-        if (Objects.nonNull(city)) {
+        if (Objects.nonNull(city1)) {
             eventList.add(EventEntity.of(
-                "시/도 변경",
-                this.city,
-                city
+                "시/도1 변경",
+                this.city1,
+                city1
             ));
-            this.city = city;
+            this.city1 = city1;
+        }
+        if (Objects.nonNull(city2)) {
+            eventList.add(EventEntity.of(
+                "시/도2 변경",
+                this.city2,
+                city2
+            ));
+            this.city2 = city2;
         }
         if (Objects.nonNull(address)) {
             eventList.add(EventEntity.of(
