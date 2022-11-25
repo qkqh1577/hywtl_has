@@ -2,14 +2,24 @@ import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import {
   Box,
-  InputAdornment
+  InputAdornment,
+  MenuItem
 } from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
-import { ProjectBasicDesignVO } from 'project_basic/domain';
+import {
+  buildingPurpose1List,
+  buildingPurpose1Name,
+  BuildingPurpose1Type,
+  buildingPurpose2List,
+  buildingPurpose2Name,
+  BuildingPurpose2Type,
+  ProjectBasicDesignVO
+} from 'project_basic/domain';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
+import Select from 'layouts/Select';
 
 interface Props {
   detail: ProjectBasicDesignVO;
@@ -87,30 +97,46 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
         </Box>
         <Box>
           <DataFieldWithLabel label="건물용도1">
-            <Input
-              key={detail.purpose1}
-              defaultValue={detail.purpose1 ?? ''}
-              onBlur={(e) => {
-                const value = e.target.value || undefined;
+            <Select
+              displayEmpty
+              value={detail.purpose1 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose1Type || undefined;
                 if (detail.purpose1 !== value) {
                   onUpdate({ purpose1: value });
                 }
-              }}
-            />
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose1List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose1Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
           </DataFieldWithLabel>
         </Box>
         <Box>
           <DataFieldWithLabel label="건물용도2">
-            <Input
-              key={detail.purpose2}
-              defaultValue={detail.purpose2 ?? ''}
-              onBlur={(e) => {
-                const value = e.target.value || undefined;
+            <Select
+              displayEmpty
+              value={detail.purpose2 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose2Type || undefined;
                 if (detail.purpose2 !== value) {
                   onUpdate({ purpose2: value });
                 }
-              }}
-            />
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose2List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose2Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
           </DataFieldWithLabel>
         </Box>
         <Box>
