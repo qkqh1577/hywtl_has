@@ -71,7 +71,7 @@ export default function LoginChangeModalRoute() {
         }}
         onAddressModal={openAddressModal}
       />
-      {changeModal && <AddressModal formik={formik} fieldName={'address'} />}
+      {changeModal && <AddressModal updateByFormik={ {formik : formik, fieldName : 'address'}} />}
     </FormikProvider>
   );
 };

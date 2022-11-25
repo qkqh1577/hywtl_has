@@ -86,7 +86,7 @@ function Element() {
           });
         }}
       />
-      <AddressModal fieldName='basic.address' formik={formik}/>
+      <AddressModal updateByFormik={ {formik : formik, fieldName : 'basic.address'}} />
     </FormikProvider>
   );
 }
