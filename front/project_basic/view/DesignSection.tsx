@@ -15,6 +15,7 @@ import {
   buildingPurpose2List,
   buildingPurpose2Name,
   BuildingPurpose2Type,
+  CityDataVO,
   ProjectBasicDesignVO
 } from 'project_basic/domain';
 import Button from 'layouts/Button';
@@ -25,9 +26,22 @@ interface Props {
   detail: ProjectBasicDesignVO;
   onUpdate: (params: ProjectBasicDesignParameter) => void;
   onAddressModal: DefaultFunction;
+  city1List?: CityDataVO[];
+  city2List?: CityDataVO[];
+  setRegCode: (string) => void;
+  regCode: string;
 }
 
-export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressModal }: Props) {
+export default function ProjectBasicDesignSection({
+                                                    detail,
+                                                    onUpdate,
+                                                    onAddressModal,
+                                                    city1List,
+                                                    city2List,
+                                                    setRegCode,
+                                                    regCode
+                                                  }: Props) {
+  console.log('detail.city2 : ', detail.city2);
   return (
     <SectionLayout title="설계 개요" modifiedAt={detail.modifiedAt}>
       <Box sx={{
@@ -44,7 +58,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
         '& > div.large':       {
           width: 'calc(48% - 10px)',
         },
-        '& > div.extra-large':       {
+        '& > div.extra-large': {
           width: 'calc(100% - 10px)',
         }
       }}>
@@ -77,17 +91,18 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
               displayEmpty
               value={detail.city1 ?? ''}
               onChange={(e) => {
-                const value = e.target.value as BuildingPurpose1Type || undefined;
+                const value = e.target.value as string || undefined;
                 if (detail.city1 !== value) {
+                  setRegCode(value);
                   onUpdate({ city1: value });
                 }
               }}>
               <MenuItem value={''}>
                 선택
               </MenuItem>
-              {buildingPurpose1List.map(item => (
-                <MenuItem key={item} value={item}>
-                  {buildingPurpose1Name(item)}
+              {Array.isArray(city1List) && city1List.map(item => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
                 </MenuItem>
               ))}
             </Select>
@@ -99,7 +114,7 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
               displayEmpty
               value={detail.city2 ?? ''}
               onChange={(e) => {
-                const value = e.target.value as BuildingPurpose1Type || undefined;
+                const value = e.target.value as string || undefined;
                 if (detail.city2 !== value) {
                   onUpdate({ city2: value });
                 }
@@ -107,9 +122,9 @@ export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressM
               <MenuItem value={''}>
                 선택
               </MenuItem>
-              {buildingPurpose1List.map(item => (
-                <MenuItem key={item} value={item}>
-                  {buildingPurpose1Name(item)}
+              {Array.isArray(city2List) && city2List.map(item => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
                 </MenuItem>
               ))}
             </Select>

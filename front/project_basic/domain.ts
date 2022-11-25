@@ -135,3 +135,13 @@ export function buildingPurpose2Name(type: BuildingPurpose2Type | '') {
       return '-';
   }
 }
+
+/* 시군구 api */
+export interface CityListData {
+  regcodes: CityDataVO[];
+}
+
+export interface CityDataVO {
+  code: string,
+  name: string
+}
