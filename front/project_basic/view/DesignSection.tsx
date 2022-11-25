@@ -1,17 +1,23 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
-import { Box } from '@mui/material';
+import {
+  Box,
+  InputAdornment
+} from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
 import { ProjectBasicDesignVO } from 'project_basic/domain';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
 
 interface Props {
   detail: ProjectBasicDesignVO;
   onUpdate: (params: ProjectBasicDesignParameter) => void;
+  onAddressModal: DefaultFunction;
 }
 
-export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
+export default function ProjectBasicDesignSection({ detail, onUpdate, onAddressModal }: Props) {
   return (
     <SectionLayout title="설계 개요" modifiedAt={detail.modifiedAt}>
       <Box sx={{
@@ -48,6 +54,13 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
             <Input
               key={detail.address}
               defaultValue={detail.address ?? ''}
+              endAdornment={
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                  <Button onClick={onAddressModal}>
+                    주소 검색
+                  </Button>
+                </InputAdornment>
+              }
               onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (detail.address !== value) {
