@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PageLayout from 'layouts/PageLayout';
 import List from './list';
-import SearchBox from './form';
+import SearchBox from './deprecated/form';
 import {Box, Button, Input, Modal, Typography} from "@mui/material";
 import Filter from "./filter";
 import {useDispatch, useSelector} from "react-redux";

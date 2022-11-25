@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, TextField, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TagIcon from "@mui/icons-material/Tag";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import {makeStyles, withStyles} from "@mui/styles";
-import {ProjectDbSearch, ProjectDbSearchItems} from "./form";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
-import {projectDbAction} from "../../action";
 import {DesktopDatePicker} from "@mui/x-date-pickers";
 import dayjs, {Dayjs} from "dayjs";
+import {ProjectDbSearchCondition} from "../../reducer";
+import {projectDbAction} from "../../action";
 
 const useContainerStyle = makeStyles({
     root: {
@@ -35,19 +34,22 @@ const StyledAccordionSummary = withStyles({
 export default function ProjectSearch() {
 
     const dispatch = useDispatch();
-    const {schema, filter, list, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
-    const [searchState, setSearchState] = useState<ProjectDbSearchItems>({});
+    const {list, search} = useSelector((root: RootState) => root.projectDb);
+
+    const setSearch = useCallback(
+        (searchState) => dispatch(projectDbAction.setSearch(searchState))
+        , [search]);
+
+    const [searchState, setSearchState] = useState<ProjectDbSearchCondition>({});
     const [searchFrom, setSearchFrom] = useState<Dayjs>(dayjs(new Date()));
     const [searchTo, setSearchTo] = useState<Dayjs>(dayjs(new Date()));
 
     const onSearch = () => {
-        const searchData: ProjectDbSearch = {
-            filter: filter,
+        setSearch({
             search: searchState,
             from: searchFrom,
             to: searchTo
-        };
-        dispatch(projectDbAction.requestList(searchData));
+        });
     };
 
     const onSearchFromDateChange = (newValue: Dayjs) => {

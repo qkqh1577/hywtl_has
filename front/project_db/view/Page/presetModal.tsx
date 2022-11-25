@@ -8,7 +8,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
-import {dialogActions} from "../../../components/Dialog";
 import {ProjectDbPreset} from "../../domain";
 import {projectDbAction} from "../../action";
 
@@ -19,14 +18,10 @@ interface Props {
 
 export default function PresetModal(props: Props) {
     const {state, handleClose} = props;
-    const {filter, activePreset} = useSelector((root: RootState) => root.projectDb);
+    const {filter} = useSelector((root: RootState) => root.projectDb);
     const [presetName, setPresetName] = useState('');
     const [helperText, setHelperText] = useState('');
     const dispatch = useDispatch();
-
-    const setActivePreset = useCallback(
-        (presetItem: ProjectDbPreset | undefined) => dispatch(projectDbAction.setActivePreset(presetItem))
-        ,[]);
 
     const onSaveButtonClick = () => {
         if (presetName === '') {
@@ -56,7 +51,7 @@ export default function PresetModal(props: Props) {
                     required
                     type="text"
                     fullWidth
-                    error={presetName.length === 0 && helperText!=''}
+                    error={presetName.length === 0 && helperText != ''}
                     helperText={helperText}
                     variant="standard"
                     onChange={event => {

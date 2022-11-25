@@ -1,8 +1,7 @@
 import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 import apiClient from "../services/api";
 import {ProjectDbQuery} from "./query";
-import {ProjectDbFilter} from "./reducer";
-import {ProjectDbSearch} from "./view/Page/form";
+import {ProjectDbSearch} from "./reducer";
 
 
 interface ProjectDbPresetRawVO {
@@ -14,18 +13,14 @@ interface ProjectDbPresetRawVO {
 class ProjectDbApi {
 
     async getList(searchState: ProjectDbSearch): Promise<ProjectDbVO[]> {
-
-        console.debug(searchState);
-
         const keys = {};
         const values = {};
 
-        Object.keys(searchState.search).forEach(entityName => {
+        searchState.condition && Object.keys(searchState.condition).forEach(entityName => {
             if(!keys[entityName]) keys[entityName] = [];
             if(!values[entityName]) values[entityName] = [];
 
-            searchState.search[entityName].forEach(value => {
-                console.debug(value);
+            searchState.condition[entityName].forEach(value => {
                 keys[entityName].push(value.key);
                 values[entityName].push(value.value);
             });
@@ -36,7 +31,7 @@ class ProjectDbApi {
             projectBid: true,
             projectComplexSite: true,
             projectMemo: false,
-            search: searchState.search,
+            search: searchState.condition,
             searchFrom: searchState.from?.format("YYYY-MM-DD"),
             searchTo: searchState.to?.format("YYYY-MM-DD"),
             keys: keys,
@@ -66,14 +61,12 @@ class ProjectDbApi {
     }
 
     async savePreset(preset: ProjectDbPreset): Promise<void> {
-        console.debug(preset);
         const presetRaw: ProjectDbPresetRawVO = {
             id: preset.id,
             name: preset.name,
             preset: JSON.stringify(preset.filter)
         };
         const {data} = await apiClient.post('/project/db/preset', presetRaw);
-        console.debug(data);
         return data;
     }
 

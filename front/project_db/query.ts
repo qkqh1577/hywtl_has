@@ -1,11 +1,11 @@
-import {ProjectDbSearchItems} from "./view/Page/form";
+import {ProjectDbSearchCondition} from "./reducer";
 
 export interface ProjectDbQuery {
     projectBid?: boolean,
     projectComplexSite?: boolean,
     projectEstimate?: boolean,
     projectMemo?: boolean,
-    search?: ProjectDbSearchItems,
+    search?: ProjectDbSearchCondition,
     searchFrom?: string,
     searchTo?: string,
     keys?: any,

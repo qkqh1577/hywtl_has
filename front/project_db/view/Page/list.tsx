@@ -1,16 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import 'react-data-grid/lib/styles.css';
 import DataGrid from 'react-data-grid';
 import {ProjectDbVO} from "../../domain";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
-import {Skeleton} from "@mui/material";
 
-const rows = [
-    {id: 0, title: 'Example'},
-    {id: 1, title: 'Demo'}
-];
+interface Props {
+    list: ProjectDbVO[]
+}
 
 interface Column {
     key: string,
@@ -19,12 +17,7 @@ interface Column {
 
 interface Row {
     id: number,
-
     [key: string]: any
-}
-
-interface Props {
-    list: ProjectDbVO[]
 }
 
 const theme = {
@@ -34,11 +27,15 @@ const theme = {
 
 export default function List(props: Props) {
 
-    const {filter, schema} = useSelector((root: RootState) => root.projectDb);
     const {list} = props;
-
+    const {filter, schema} = useSelector((root: RootState) => root.projectDb);
     const [columns, setColumns] = useState<Column[]>([]);
     const [rows, setRows] = useState<Row[]>([]);
+
+    useEffect(() => {
+        console.debug('[LIST COMPONENT] filter state has changed');
+        prepareGridData();
+    }, [list, filter]);
 
     const isVisibleAttr = (entityType: string, attrName: string) => {
         return filter && filter[entityType] && filter[entityType][attrName];
@@ -69,8 +66,8 @@ export default function List(props: Props) {
                 });
             }
 
-            if(typeof result === 'boolean'){
-                result = (result)?'Y':'N';
+            if (typeof result === 'boolean') {
+                result = (result) ? 'Y' : 'N';
             }
 
             return result;
@@ -86,7 +83,6 @@ export default function List(props: Props) {
             if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
             const newAttrName = `${prefix}_${attrName}`;
-            console.debug(attrName, typeof entity[attrName], isVisibleAttr(prefix, attrName), entity[attrName], getHumanReadableAttrValue(entity, prefix, attrName));
             row[newAttrName] = getHumanReadableAttrValue(entity, prefix, attrName);
         });
     }
@@ -126,10 +122,6 @@ export default function List(props: Props) {
         setRows(newRows);
     };
 
-    useEffect(() => {
-        console.debug('[LIST COMPONENT] filter state has changed');
-        prepareGridData();
-    }, [list, filter]);
 
     return (
         <div style={{position: 'relative', width: '100%', height: '100%'}}>

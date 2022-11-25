@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import {withStyles, makeStyles} from '@mui/styles';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../services/reducer";
-import {projectDbAction} from "../../action";
-import {ProjectDbFilter} from "../../reducer";
+import {RootState} from "../../../../services/reducer";
+import {projectDbAction} from "../../../action";
+import {ProjectSearchKV, ProjectDbFilter, ProjectDbSearch, ProjectDbSearchCondition} from "../../../reducer";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TagIcon from '@mui/icons-material/Tag';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -47,30 +47,21 @@ const StyledAccordionSummary = withStyles({
     }
 })(AccordionSummary);
 
-export interface ProjectDbSearch {
-    filter: ProjectDbFilter,
-    search: ProjectDbSearchItems,
-    from?: Dayjs,
-    to?: Dayjs,
-}
 
-export interface ProjectDbSearchItems {
-    [any: string]: KeyValuePair[]
-};
-
-interface KeyValuePair {
-    key: string,
-    value: string | number | boolean,
-}
 
 
 export default function Form(props: Props) {
 
-    const {schema, filter, list, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
+    const {schema, filter, list, search, dynamicSelectState} = useSelector((root: RootState) => root.projectDb);
     const entities = Object.keys(filter);
 
     const dispatch = useDispatch();
-    const [searchState, setSearchState] = useState<ProjectDbSearchItems>({})
+    const [searchState, setSearchState] = useState<ProjectDbSearchCondition>({})
+
+    const setSearch = useCallback(
+        (searchState) => dispatch(projectDbAction.setSearch(searchState))
+        , [search]);
+
     const setDynamicSelectState = useCallback((entityName: string, searchName: string, value: string) => {
         const newState = {...dynamicSelectState};
         newState[`${entityName}.${searchName}`] = value;
@@ -152,11 +143,10 @@ export default function Form(props: Props) {
     }, [filter]);
 
     const onSearch = () => {
-        const searchData: ProjectDbSearch = {
-            filter: filter,
-            search: searchState
-        };
-        dispatch(projectDbAction.requestList(searchData));
+        setSearch({
+            ...search,
+            condition: searchState
+        })
     };
 
     const updateSearchState = (entityName: string, attrName: string, value) => {
@@ -282,7 +272,7 @@ export default function Form(props: Props) {
         return tag;
     };
 
-    const removeSearchFilter = (entityName: string, item: KeyValuePair, event: React.MouseEvent<SVGSVGElement>) => {
+    const removeSearchFilter = (entityName: string, item: ProjectSearchKV, event: React.MouseEvent<SVGSVGElement>) => {
         event.stopPropagation();
         setDynamicSelectState(entityName, item.key, '');
         updateSearchState(entityName, item.key, '');
