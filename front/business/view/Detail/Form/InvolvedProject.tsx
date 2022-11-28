@@ -30,7 +30,7 @@ interface Props {
 }
 
 export default function BusinessInvolvedProjectSection(props: Props) {
-
+  console.log(props.list);
   return (
     <Box sx={{
       display:  'flex',
@@ -92,6 +92,7 @@ export default function BusinessInvolvedProjectSection(props: Props) {
               <Th>프로젝트명</Th>
               <Th>역할</Th>
               <Th>대표담당자</Th>
+              <Th>견적분류</Th>
               <Th>착수일</Th>
               <Th>마감일</Th>
               <Th>상세</Th>
@@ -106,11 +107,11 @@ export default function BusinessInvolvedProjectSection(props: Props) {
               </TableRow>
             )}
             {props.list && props.list.map((project,
-                                           i
+                                           index
             ) => (
-              <TableRow key={project.id}>
+              <TableRow key={`${project.id}_${index}`}>
                 <Td>
-                  {i + 1}
+                  {index + 1}
                 </Td>
                 <Td>
                   {project.code}
@@ -125,13 +126,23 @@ export default function BusinessInvolvedProjectSection(props: Props) {
                   {project.manager}
                 </Td>
                 <Td>
+                  {"견적 분류"}
+                </Td>
+                <Td>
                   <DateFormat date={project.beginDate} />
                 </Td>
                 <Td>
                   <DateFormat date={project.closeDate} />
                 </Td>
                 <Td>
-                  <Button shape="small">새 창으로 상세 보기</Button>
+                  <Button
+                    shape="small"
+                    onClick={() => {
+                      window.open(`/project/sales-management/${project.id}/basic`);
+                    }}
+                  >
+                    새 창으로 상세 보기
+                  </Button>
                 </Td>
               </TableRow>
             ))}

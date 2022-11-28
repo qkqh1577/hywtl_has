@@ -6,6 +6,7 @@ import {
   RadioGroup
 } from '@mui/material';
 import {
+  BusinessManagerId,
   BusinessManagerStatus,
   businessManagerStatusList,
   businessManagerStatusName,
@@ -19,8 +20,12 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
 
+interface Props {
+  openProjectListModal: (id:BusinessManagerId) => void;
+}
+
 const spaceCount = 3;
-export default function BusinessManagerListSection() {
+export default function BusinessManagerListSection(props: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const managerList = formik.values.managerList;
@@ -303,7 +308,7 @@ export default function BusinessManagerListSection() {
                       ml: 1
                     }}
                     onClick={() => {
-                      console.log('modal open');
+                      props.openProjectListModal(manager.id);
                     }}
                   >
                     상세

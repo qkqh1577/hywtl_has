@@ -12,7 +12,7 @@ public class BusinessInvolvedProjectView {
     private String code;
     private String name;
     private ProjectInvolvedType involvedType;
-    private BusinessManagerShortView manager;
+    private String manager;
     private LocalDate beginDate;
     private LocalDate closeDate;
 
@@ -23,7 +23,7 @@ public class BusinessInvolvedProjectView {
         target.code = source.getProject().getBasic().getCode();
         target.name = source.getProject().getBasic().getName();
         target.involvedType = source.getInvolvedType();
-        target.manager = BusinessManagerShortView.assemble(source.getBusinessManager());
+        target.manager = source.getBusinessManager().getName();
         // TODO: beginDate and closeDate
         return target;
     }

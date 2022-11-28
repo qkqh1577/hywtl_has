@@ -2,9 +2,8 @@ package com.howoocast.hywtl_has.business.view;
 
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.BusinessManagerStatus;
-import lombok.Getter;
-
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class BusinessManagerView {
@@ -18,7 +17,6 @@ public class BusinessManagerView {
     private String email;
     private List<String> meta;
     private BusinessManagerStatus status;
-
     private Integer projectCount;
 
     public static BusinessManagerView assemble(BusinessManager businessManager) {
@@ -33,8 +31,7 @@ public class BusinessManagerView {
         target.email = businessManager.getEmail();
         target.meta = businessManager.getMeta();
         target.status = businessManager.getStatus();
-        // TODO: bind project count
-        target.projectCount = 0;
+        target.projectCount = businessManager.getProjectList().size();
 
         return target;
     }

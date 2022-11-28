@@ -2,6 +2,7 @@ import { BusinessQuery, } from 'business/query';
 import {
   BusinessId,
   BusinessInvolvedProjectVO,
+  BusinessManagerId,
   BusinessShortVO,
   BusinessVO,
   RegistrationNumberState,
@@ -11,6 +12,7 @@ import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
 import { BusinessActionType } from 'business/action';
 import { ApiStatus } from 'components/DataFieldProps';
+import { ProjectShortVO } from 'project/domain';
 
 export interface BusinessState {
   filter?: BusinessQuery;
@@ -23,11 +25,14 @@ export interface BusinessState {
   requestDelete: ApiStatus;
   id?: BusinessId;
   checkRegistrationNumber?: RegistrationNumberState;
+  projectList?: ProjectShortVO[];
+  open?: BusinessManagerId;
 }
 
 const initialState: BusinessState = {
   requestUpsert: 'idle',
   requestDelete: 'idle',
+  projectList: [],
 };
 
 export const businessReducer = createReducer(initialState, {
@@ -90,5 +95,17 @@ export const businessReducer = createReducer(initialState, {
                                                 ) => ({
     ...state,
     checkRegistrationNumber: action.payload
+  }),
+  [BusinessActionType.setProjectListModal]:     (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    open: action.payload
+  }),
+  [BusinessActionType.setProjectList]:          (state,
+                                                 action
+                                                ) => ({
+    ...state,
+    projectList: action.payload
   })
 });

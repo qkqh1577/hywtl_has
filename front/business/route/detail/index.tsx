@@ -18,7 +18,10 @@ import {
   FormikProvider,
   useFormik
 } from 'formik';
-import { BusinessId } from 'business/domain';
+import {
+  BusinessId,
+  BusinessManagerId
+} from 'business/domain';
 import BusinessDetail from 'business/view/Detail';
 import BusinessInvolvedProjectRoute from 'business/route/detail/involvedProject';
 import BusinessRivalStatisticRoute from 'business/route/detail/rivalStatistic';
@@ -30,19 +33,21 @@ import { DialogStatus } from 'dialog/domain';
 import { closeStatus } from 'components/DataFieldProps';
 import { AddressModal } from 'components/AddressModal/AddressModal';
 import { addressModalAction } from 'components/AddressModal/action';
+import ProjectListModal from 'business/view/Detail/Modal/ProjectListModal';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error, confirm, rollback } = useDialog();
-  const { detail, requestDelete, requestUpsert, checkRegistrationNumber } = useSelector((root: RootState) => root.business);
+  const { detail, requestDelete, requestUpsert, checkRegistrationNumber, projectList, open } = useSelector((root: RootState) => root.business);
   const upsert = useCallback((formikProps: BusinessParameter) => {
     dispatch(businessAction.upsert(formikProps));
   }, [dispatch]);
   const deleteOne = useCallback((id: BusinessId) => dispatch(businessAction.deleteOne(id)), [dispatch]);
   const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
-
+  const openProjectListModal = useCallback((businessManagerId: BusinessManagerId) => dispatch(businessAction.setProjectListModal(businessManagerId)), [dispatch]);
+  const closeProjectListModal = useCallback(() => dispatch(businessAction.setProjectListModal(undefined)), [dispatch]);
   const formik = useFormik<BusinessParameter>({
     initialValues: initialBusinessParameter,
     onSubmit:      (values) => {
@@ -99,6 +104,7 @@ function Element() {
         involvedProjectList={<BusinessInvolvedProjectRoute />}
         rivalStatistic={<BusinessRivalStatisticRoute />}
         rivalProjectList={<BusinessRivalProjectListRoute />}
+        openProjectListModal={openProjectListModal}
         onCancel={() => {
           rollback(() => {
             formik.setValues({
@@ -123,7 +129,12 @@ function Element() {
           }
         }}
       />
-      <AddressModal updateByFormik={ {formik : formik, fieldName : ['address', 'zipCode']}}/>
+      <AddressModal updateByFormik={{ formik: formik, fieldName: ['address', 'zipCode'] }} />
+      <ProjectListModal
+        open={open}
+        onClose={closeProjectListModal}
+        projectList={projectList}
+      />
     </FormikProvider>
   );
 }

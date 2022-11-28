@@ -1,11 +1,13 @@
 package com.howoocast.hywtl_has.business.controller;
 
+import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
 import com.howoocast.hywtl_has.business.service.BusinessService;
 import com.howoocast.hywtl_has.business.view.BusinessManagerShortView;
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.business.view.BusinessView;
+import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -38,14 +40,13 @@ public class BusinessController {
         @RequestParam(required = false) String keyword,
         @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
     ) {
-        return BusinessMapper.toShortView(
-            businessService.findAll(
-                new BusinessPredicateBuilder()
-                    .keyword(keywordType, keyword)
-                    .build(),
-                pageable
-            )
+        Page<Business> businessList = businessService.findAll(
+            new BusinessPredicateBuilder()
+                .keyword(keywordType, keyword)
+                .build(),
+            pageable
         );
+        return BusinessMapper.toShortView(businessList);
     }
 
     @GetMapping(value = "/business", params = "registrationNumber")
@@ -83,11 +84,16 @@ public class BusinessController {
             .collect(Collectors.toList());
     }
 
+    @GetMapping("/business/manager/{id}/project-list")
+    public List<ProjectShortView> getProjectList(@PathVariable Long id) {
+        return businessService.getProjectList(id);
+    }
     @PutMapping({"/business", "/business/{id}"})
     public void upsert(
         @PathVariable(required = false) Long id,
         @Valid @RequestBody BusinessParameter parameter
     ) {
+
         businessService.upsert(id, parameter);
     }
 

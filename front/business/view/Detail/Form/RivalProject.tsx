@@ -20,6 +20,7 @@ interface Props {
 }
 
 export default function BusinessRivalProjectListSection(props: Props) {
+  console.log(props.list);
   return (
     <Box sx={{
       display:  'flex',
@@ -75,7 +76,7 @@ export default function BusinessRivalProjectListSection(props: Props) {
                     {project.code}
                   </Td>
                   <Td>
-                    {project.name}
+                    {project.code}
                   </Td>
                   <Td>
                     <DateFormat date={project.bidBeginDate} />
