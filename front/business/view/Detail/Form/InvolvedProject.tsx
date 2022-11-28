@@ -3,8 +3,7 @@ import {
   MenuItem,
   TableBody,
   TableHead,
-  TableRow,
-  Typography
+  TableRow
 } from '@mui/material';
 import React from 'react';
 import TextBox from 'layouts/Text';
@@ -30,7 +29,6 @@ interface Props {
 }
 
 export default function BusinessInvolvedProjectSection(props: Props) {
-  console.log(props.list);
   return (
     <Box sx={{
       display:  'flex',
@@ -102,7 +100,7 @@ export default function BusinessInvolvedProjectSection(props: Props) {
             {(!props.list || props.list.length === 0) && (
               <TableRow>
                 <Td colSpan={8}>
-                  <Typography>참여한 프로젝트가 없습니다.</Typography>
+                  참여한 프로젝트가 없습니다.
                 </Td>
               </TableRow>
             )}
