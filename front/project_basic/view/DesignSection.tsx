@@ -16,6 +16,7 @@ import {
   buildingPurpose2Name,
   BuildingPurpose2Type,
   CityDataVO,
+  NO_DATA,
   ProjectBasicDesignVO
 } from 'project_basic/domain';
 import Button from 'layouts/Button';
@@ -84,14 +85,14 @@ export default function ProjectBasicDesignSection({
           <DataFieldWithLabel label="시/도1">
             <Select
               displayEmpty
-              value={(Array.isArray(city1List) && city1List?.length > 0) ? detail.city1 ?? '' : ''}
+              value={(Array.isArray(city1List) && city1List?.length > 0) ? detail.city1 ?? NO_DATA.NO_OPTION : NO_DATA.NO_OPTION}
               onChange={(e) => {
                 const value = e.target.value as string || undefined;
                 if (detail.city1 !== value) {
-                  onUpdate({ city1: value });
+                  onUpdate({ city1: value, city2: NO_DATA.NO_OPTION });
                 }
               }}>
-              <MenuItem value={''}>
+              <MenuItem value={NO_DATA.NO_OPTION}>
                 선택
               </MenuItem>
               {Array.isArray(city1List) && city1List.map(item => (
@@ -106,14 +107,17 @@ export default function ProjectBasicDesignSection({
           <DataFieldWithLabel label="시/도2">
             <Select
               displayEmpty
-              value={(Array.isArray(city2List) && city2List?.length > 0) ? detail.city2 ?? '' : ''}
+              value={
+                (Array.isArray(city2List) && city2List?.length > 0 && city2List.map(city => city.code)
+                                                                               .includes(detail.city2 ?? ''))
+                  ? detail.city2 ?? NO_DATA.NO_OPTION : NO_DATA.NO_OPTION}
               onChange={(e) => {
                 const value = e.target.value as string || undefined;
                 if (detail.city2 !== value) {
                   onUpdate({ city2: value });
                 }
               }}>
-              <MenuItem value={''}>
+              <MenuItem value={NO_DATA.NO_OPTION}>
                 선택
               </MenuItem>
               {Array.isArray(city2List) && city2List.map(item => (

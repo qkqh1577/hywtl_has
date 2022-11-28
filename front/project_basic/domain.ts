@@ -145,3 +145,7 @@ export interface CityDataVO {
   code: string,
   name: string
 }
+
+export enum NO_DATA {
+  NO_OPTION = 'NO_OPTION',
+}
