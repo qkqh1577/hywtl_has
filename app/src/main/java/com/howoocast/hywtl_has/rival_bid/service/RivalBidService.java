@@ -69,9 +69,7 @@ public class RivalBidService {
         RivalBid instance = this.load(id);
         eventPublisher.publishEvent(ProjectLogEvent.of(
             instance.getProject(),
-            "경쟁 업체 입찰 정보 행 삭제",
-            String.format("%s", instance.getBusiness().getName()),
-            null
+            "경쟁 업체 입찰 정보 행 삭제"
         ));
         instance.delete();
     }
