@@ -16,11 +16,9 @@ import { AddressModal } from 'components/AddressModal/AddressModal';
 
 export default function ProjectBasicDesignRoute() {
   const dispatch = useDispatch();
-  const { id, design, requestUpdateDesign, city1List, city2List, city1Code } = useSelector((root: RootState) => root.projectBasic);
+  const { id, design, requestUpdateDesign, city1List, city2List } = useSelector((root: RootState) => root.projectBasic);
   const onUpdate = useCallback((params: ProjectBasicDesignParameter) => dispatch(projectBasicAction.updateDesign(params)), [dispatch]);
   const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
-  const getCity2List = useCallback((regCode: string) => dispatch(projectBasicAction.getCity2List(regCode)), [dispatch]);
-  const [regCode, setRegCode] = React.useState<string>('');
 
   useEffect(() => {
     closeStatus(requestUpdateDesign, () => {
@@ -30,13 +28,6 @@ export default function ProjectBasicDesignRoute() {
     });
   }, [requestUpdateDesign]);
 
-  useEffect(() => {
-    if (regCode) {
-      getCity2List(regCode);
-    }
-  }, [regCode]);
-
-
   return (
     <>
       <ProjectBasicDesignSection
@@ -45,8 +36,6 @@ export default function ProjectBasicDesignRoute() {
         onAddressModal={openAddressModal}
         city1List={city1List}
         city2List={city2List}
-        setRegCode={setRegCode}
-        regCode={regCode}
       />
       <AddressModal updateByDispatch={{ onUpdate: onUpdate }} />
     </>

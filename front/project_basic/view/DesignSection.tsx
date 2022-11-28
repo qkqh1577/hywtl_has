@@ -28,8 +28,6 @@ interface Props {
   onAddressModal: DefaultFunction;
   city1List?: CityDataVO[];
   city2List?: CityDataVO[];
-  setRegCode: (string) => void;
-  regCode: string;
 }
 
 export default function ProjectBasicDesignSection({
@@ -38,10 +36,7 @@ export default function ProjectBasicDesignSection({
                                                     onAddressModal,
                                                     city1List,
                                                     city2List,
-                                                    setRegCode,
-                                                    regCode
                                                   }: Props) {
-  console.log('detail.city2 : ', detail.city2);
   return (
     <SectionLayout title="설계 개요" modifiedAt={detail.modifiedAt}>
       <Box sx={{
@@ -89,11 +84,10 @@ export default function ProjectBasicDesignSection({
           <DataFieldWithLabel label="시/도1">
             <Select
               displayEmpty
-              value={detail.city1 ?? ''}
+              value={(Array.isArray(city1List) && city1List?.length > 0) ? detail.city1 ?? '' : ''}
               onChange={(e) => {
                 const value = e.target.value as string || undefined;
                 if (detail.city1 !== value) {
-                  setRegCode(value);
                   onUpdate({ city1: value });
                 }
               }}>
@@ -112,7 +106,7 @@ export default function ProjectBasicDesignSection({
           <DataFieldWithLabel label="시/도2">
             <Select
               displayEmpty
-              value={detail.city2 ?? ''}
+              value={(Array.isArray(city2List) && city2List?.length > 0) ? detail.city2 ?? '' : ''}
               onChange={(e) => {
                 const value = e.target.value as string || undefined;
                 if (detail.city2 !== value) {

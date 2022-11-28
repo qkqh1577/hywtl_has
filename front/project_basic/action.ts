@@ -68,7 +68,6 @@ export enum ProjectBasicActionType {
   requestUpdateDesign     = 'project/basic/design/update/request',
   getCity1List            = 'project/basic/design/city1-list/get',
   setCity1List            = 'project/basic/design/city1-list/set',
-  setCity1Code            = 'project/basic/design/city1-code/set',
   getCity2List            = 'project/basic/design/city2-list/get',
   setCity2List            = 'project/basic/design/city2-list/set',
 
@@ -137,7 +136,6 @@ export const projectBasicAction = {
   requestUpdateDesign: createAction(ProjectBasicActionType.requestUpdateDesign)<ApiStatus>(),
   setCity1List:        createAction(ProjectBasicActionType.setCity1List)<CityDataVO[] | undefined>(),
   getCity1List:        createAction(ProjectBasicActionType.getCity1List)(),
-  setCity1Code:        createAction(ProjectBasicActionType.setCity1Code)<string | undefined>(),
   setCity2List:        createAction(ProjectBasicActionType.setCity2List)<CityDataVO[] | undefined>(),
   getCity2List:        createAction(ProjectBasicActionType.getCity2List)<string | undefined>(),
 

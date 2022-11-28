@@ -45,7 +45,6 @@ export interface ProjectBasicState {
   requestDeleteExternal: ApiStatus;
   city1List: CityDataVO[];
   city2List: CityDataVO[];
-  city1Code?: string;
 }
 
 const initial: ProjectBasicState = {
@@ -221,12 +220,6 @@ export const projectBasicReducer = createReducer(initial, {
                                                     ) => ({
     ...state,
     city1List: action.payload,
-  }),
-  [ProjectBasicActionType.setCity1Code]:            (state,
-                                                     action
-                                                    ) => ({
-    ...state,
-    city1Code: action.payload,
   }),
   [ProjectBasicActionType.setCity2List]:            (state,
                                                      action
