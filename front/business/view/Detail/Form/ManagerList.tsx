@@ -19,6 +19,7 @@ import { initialBusinessManagerParameter } from 'business/parameter';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
+import { ColorPalette } from 'assets/theme';
 
 interface Props {
   openProjectListModal: (id:BusinessManagerId) => void;
@@ -97,11 +98,13 @@ export default function BusinessManagerListSection(props: Props) {
               paddingLeft: '50px',
               marginTop:   '15px',
               flexWrap:    'wrap',
+              backgroundColor: `${manager.status === BusinessManagerStatus.RESIGNATION ? ColorPalette._e4e9f2 : 'white'}`,
             }}>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
+              marginTop: '15px',
             }}>
               <DataFieldWithLabel required={edit} label="담당자명">
                 <Input
@@ -121,6 +124,7 @@ export default function BusinessManagerListSection(props: Props) {
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
+              marginTop: '15px',
             }}>
               <DataFieldWithLabel label="소속">
                 <Input
@@ -140,6 +144,7 @@ export default function BusinessManagerListSection(props: Props) {
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
+              marginTop: '15px',
             }}>
               <DataFieldWithLabel label="직위">
                 <Input
