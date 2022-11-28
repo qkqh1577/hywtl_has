@@ -146,3 +146,8 @@ export interface RegistrationNumberState {
   state: RegistrationNumberResultType;
   message: string;
 }
+
+export interface BusinessIdWithManagerId {
+  id?: BusinessId;
+  managerId?: BusinessManagerId;
+}

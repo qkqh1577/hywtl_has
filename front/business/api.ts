@@ -2,6 +2,7 @@ import {
   BusinessId,
   BusinessInvolvedProjectVO,
   BusinessInvolvedType,
+  BusinessManagerVO,
   BusinessShortVO,
   BusinessVO,
   RivalProjectVO
@@ -51,6 +52,11 @@ class BusinessApi {
 
   async delete(id: BusinessId): Promise<void> {
     const { data } = await apiClient.delete(`/business/${id}`);
+    return data;
+  }
+
+  async getManagerList(id: BusinessId): Promise<BusinessManagerVO[]> {
+    const { data } = await apiClient.get(`/business/${id}/manager-list`);
     return data;
   }
 

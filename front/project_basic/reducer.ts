@@ -1,5 +1,6 @@
 import { ProjectId } from 'project/domain';
 import {
+  CityDataVO,
   ProjectBasicBusiness,
   ProjectBasicDesignVO,
   ProjectBasicExternalContributorVO,
@@ -42,6 +43,8 @@ export interface ProjectBasicState {
   requestAddExternal: ApiStatus;
   requestUpdateExternal: ApiStatus;
   requestDeleteExternal: ApiStatus;
+  city1List: CityDataVO[];
+  city2List: CityDataVO[];
 }
 
 const initial: ProjectBasicState = {
@@ -57,6 +60,8 @@ const initial: ProjectBasicState = {
   requestAddExternal:      'idle',
   requestUpdateExternal:   'idle',
   requestDeleteExternal:   'idle',
+  city1List:               [],
+  city2List:               []
 };
 
 export const projectBasicReducer = createReducer(initial, {
@@ -209,5 +214,17 @@ export const projectBasicReducer = createReducer(initial, {
                                                     ) => ({
     ...state,
     requestDeleteExternal: action.payload,
+  }),
+  [ProjectBasicActionType.setCity1List]:            (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    city1List: action.payload,
+  }),
+  [ProjectBasicActionType.setCity2List]:            (state,
+                                                     action
+                                                    ) => ({
+    ...state,
+    city2List: action.payload,
   }),
 });

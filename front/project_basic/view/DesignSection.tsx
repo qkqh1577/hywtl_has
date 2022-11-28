@@ -1,17 +1,43 @@
 import React from 'react';
 import SectionLayout from 'layouts/SectionLayout';
-import { Box } from '@mui/material';
+import {
+  Box,
+  InputAdornment,
+  MenuItem
+} from '@mui/material';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
-import { ProjectBasicDesignVO } from 'project_basic/domain';
+import {
+  buildingPurpose1List,
+  buildingPurpose1Name,
+  BuildingPurpose1Type,
+  buildingPurpose2List,
+  buildingPurpose2Name,
+  BuildingPurpose2Type,
+  CityDataVO,
+  NO_DATA,
+  ProjectBasicDesignVO
+} from 'project_basic/domain';
+import Button from 'layouts/Button';
+import { DefaultFunction } from 'type/Function';
+import Select from 'layouts/Select';
 
 interface Props {
   detail: ProjectBasicDesignVO;
   onUpdate: (params: ProjectBasicDesignParameter) => void;
+  onAddressModal: DefaultFunction;
+  city1List?: CityDataVO[];
+  city2List?: CityDataVO[];
 }
 
-export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
+export default function ProjectBasicDesignSection({
+                                                    detail,
+                                                    onUpdate,
+                                                    onAddressModal,
+                                                    city1List,
+                                                    city2List,
+                                                  }: Props) {
   return (
     <SectionLayout title="설계 개요" modifiedAt={detail.modifiedAt}>
       <Box sx={{
@@ -27,27 +53,25 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
         },
         '& > div.large':       {
           width: 'calc(48% - 10px)',
+        },
+        '& > div.extra-large': {
+          width: 'calc(100% - 10px)',
         }
       }}>
-        <Box>
-          <DataFieldWithLabel label="시/도">
-            <Input
-              key={detail.city}
-              defaultValue={detail.city ?? ''}
-              onBlur={(e) => {
-                const value = e.target.value || undefined;
-                if (detail.city !== value) {
-                  onUpdate({ city: value });
-                }
-              }}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box className="large">
+        <Box
+          className="extra-large"
+        >
           <DataFieldWithLabel label="주소">
             <Input
               key={detail.address}
               defaultValue={detail.address ?? ''}
+              endAdornment={
+                <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                  <Button onClick={onAddressModal}>
+                    주소 검색
+                  </Button>
+                </InputAdornment>
+              }
               onBlur={(e) => {
                 const value = e.target.value || undefined;
                 if (detail.address !== value) {
@@ -55,6 +79,53 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
                 }
               }}
             />
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
+          <DataFieldWithLabel label="시/도1">
+            <Select
+              displayEmpty
+              value={(Array.isArray(city1List) && city1List?.length > 0) ? detail.city1 ?? NO_DATA.NO_OPTION : NO_DATA.NO_OPTION}
+              onChange={(e) => {
+                const value = e.target.value as string || undefined;
+                if (detail.city1 !== value) {
+                  onUpdate({ city1: value, city2: NO_DATA.NO_OPTION });
+                }
+              }}>
+              <MenuItem value={NO_DATA.NO_OPTION}>
+                선택
+              </MenuItem>
+              {Array.isArray(city1List) && city1List.map(item => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
+          <DataFieldWithLabel label="시/도2">
+            <Select
+              displayEmpty
+              value={
+                (Array.isArray(city2List) && city2List?.length > 0 && city2List.map(city => city.code)
+                                                                               .includes(detail.city2 ?? ''))
+                  ? detail.city2 ?? NO_DATA.NO_OPTION : NO_DATA.NO_OPTION}
+              onChange={(e) => {
+                const value = e.target.value as string || undefined;
+                if (detail.city2 !== value) {
+                  onUpdate({ city2: value });
+                }
+              }}>
+              <MenuItem value={NO_DATA.NO_OPTION}>
+                선택
+              </MenuItem>
+              {Array.isArray(city2List) && city2List.map(item => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
           </DataFieldWithLabel>
         </Box>
         <Box>
@@ -73,31 +144,62 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box>
-          <DataFieldWithLabel label="건물용도1">
+          <DataFieldWithLabel label="총 동 수">
             <Input
-              key={detail.purpose1}
-              defaultValue={detail.purpose1 ?? ''}
+              type="number"
+              key={detail.totalBuildingCount}
+              defaultValue={detail.totalBuildingCount ?? ''}
               onBlur={(e) => {
-                const value = e.target.value || undefined;
-                if (detail.purpose1 !== value) {
-                  onUpdate({ purpose1: value });
+                const value = +(e.target.value) || undefined;
+                if (detail.totalBuildingCount !== value) {
+                  onUpdate({ totalBuildingCount: value });
                 }
               }}
             />
           </DataFieldWithLabel>
         </Box>
         <Box>
+          <DataFieldWithLabel label="건물용도1">
+            <Select
+              displayEmpty
+              value={detail.purpose1 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose1Type || undefined;
+                if (detail.purpose1 !== value) {
+                  onUpdate({ purpose1: value });
+                }
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose1List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose1Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
+          </DataFieldWithLabel>
+        </Box>
+        <Box>
           <DataFieldWithLabel label="건물용도2">
-            <Input
-              key={detail.purpose2}
-              defaultValue={detail.purpose2 ?? ''}
-              onBlur={(e) => {
-                const value = e.target.value || undefined;
+            <Select
+              displayEmpty
+              value={detail.purpose2 ?? ''}
+              onChange={(e) => {
+                const value = e.target.value as BuildingPurpose2Type || undefined;
                 if (detail.purpose2 !== value) {
                   onUpdate({ purpose2: value });
                 }
-              }}
-            />
+              }}>
+              <MenuItem value={''}>
+                선택
+              </MenuItem>
+              {buildingPurpose2List.map(item => (
+                <MenuItem key={item} value={item}>
+                  {buildingPurpose2Name(item)}
+                </MenuItem>
+              ))}
+            </Select>
           </DataFieldWithLabel>
         </Box>
         <Box>
@@ -125,21 +227,6 @@ export default function ProjectBasicDesignSection({ detail, onUpdate }: Props) {
                 const value = +(e.target.value) || undefined;
                 if (detail.totalArea !== value) {
                   onUpdate({ totalArea: value });
-                }
-              }}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box>
-          <DataFieldWithLabel label="총 동 수">
-            <Input
-              type="number"
-              key={detail.totalBuildingCount}
-              defaultValue={detail.totalBuildingCount ?? ''}
-              onBlur={(e) => {
-                const value = +(e.target.value) || undefined;
-                if (detail.totalBuildingCount !== value) {
-                  onUpdate({ totalBuildingCount: value });
                 }
               }}
             />

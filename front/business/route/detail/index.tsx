@@ -123,7 +123,7 @@ function Element() {
           }
         }}
       />
-      <AddressModal formik={formik} fieldName={['address', 'zipCode']}/>
+      <AddressModal updateByFormik={ {formik : formik, fieldName : ['address', 'zipCode']}}/>
     </FormikProvider>
   );
 }

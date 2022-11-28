@@ -43,7 +43,8 @@ export interface ProjectBasicFailReasonParameter
 export const initialProjectBasicFailReasonParameter = {} as ProjectBasicFailReasonParameter;
 
 export interface ProjectBasicDesignParameter {
-  city?: string;
+  city1?: string;
+  city2?: string;
   address?: string;
   complexCount?: number;
   purpose1?: string;

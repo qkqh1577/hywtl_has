@@ -4,15 +4,17 @@ import Button from 'layouts/Button';
 import { FormikContextType } from 'formik';
 import { Address } from 'components/AddressModal/domain';
 import { DefaultFunction } from 'type/Function';
+import { ProjectBasicDesignParameter } from 'project_basic/parameter';
 
 interface Props {
-  formik: FormikContextType<any>;
-  fieldName: string | string[];
+  formik?: FormikContextType<any>;
+  fieldName?: string | string[];
   addressValue: Address,
-  detailAddress:string,
+  detailAddress: string,
   onClose: DefaultFunction,
-  setIsSaved:(boolean) => void,
+  setIsSaved: (boolean) => void,
   isSaved: boolean;
+  onUpdate?: (params: ProjectBasicDesignParameter) => void
 }
 
 function Footer({
@@ -22,7 +24,8 @@ function Footer({
                   detailAddress,
                   onClose,
                   setIsSaved,
-                  isSaved
+                  isSaved,
+                  onUpdate
                 }: Props) {
   return (
     <Box sx={{
@@ -37,18 +40,23 @@ function Footer({
           marginRight: '10px',
         }}
         onClick={() => {
-          if (Array.isArray(fieldName)) {
-            fieldName.forEach((name) => {
-              if (name.includes('address')) {
-                formik.setFieldValue(name, `${addressValue.roadAddr} ${detailAddress}`);
-              }
-              else {
-                formik.setFieldValue(name, addressValue.zipNo);
-              }
-            });
+          if (formik && fieldName) {
+            if (Array.isArray(fieldName)) {
+              fieldName.forEach((name) => {
+                if (name.includes('address')) {
+                  formik.setFieldValue(name, `${addressValue.roadAddr} ${detailAddress}`);
+                }
+                else {
+                  formik.setFieldValue(name, addressValue.zipNo);
+                }
+              });
+            }
+            else {
+              formik.setFieldValue(fieldName, `${addressValue.roadAddr} ${detailAddress}`);
+            }
           }
-          else {
-            formik.setFieldValue(fieldName, `${addressValue.roadAddr} ${detailAddress}`);
+          if (onUpdate) {
+            onUpdate({ address: `${addressValue.roadAddr} ${detailAddress}` });
           }
           setIsSaved(!isSaved);
           onClose();

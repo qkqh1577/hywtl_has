@@ -28,13 +28,23 @@ import PaginationSection from 'components/AddressModal/view/Form/PaginationSecti
 import DetailAddressInput from 'components/AddressModal/view/Form/DetailAddressInput';
 import AddressSearchSection from 'components/AddressModal/view/Form/AddressSearchSection';
 import AddressForm from 'components/AddressModal/view/Form/AddressForm';
+import { ProjectBasicDesignParameter } from 'project_basic/parameter';
 
-interface Props {
-  formik: FormikContextType<any>;
+interface UpdateByFormik {
+  formik: FormikContextType<any> | undefined;
   fieldName: string | string[];
 }
+/*TODO: 확장 가능성 있음. 생각해보기*/
+interface UpdateByDispatch {
+  onUpdate: (params: ProjectBasicDesignParameter) => void;
+}
 
-export const AddressModal = ({ formik, fieldName }: Props) => {
+interface Props {
+  updateByFormik?: UpdateByFormik;
+  updateByDispatch?: UpdateByDispatch;
+}
+
+export const AddressModal = ({ updateByFormik, updateByDispatch }: Props) => {
   const dispatch = useDispatch();
   const boxRef = useRef<Address>(initialAddress);
   const { addressModal, list, totalPage } = useSelector((state: RootState) => state.address);
@@ -69,16 +79,17 @@ export const AddressModal = ({ formik, fieldName }: Props) => {
     <ModalLayout
       title="주소 검색"
       width="500px"
-      open={!!addressModal}
+      open={addressModal}
       onClose={onClose}
       footer={<Footer
-        formik={formik}
-        fieldName={fieldName}
+        formik={updateByFormik?.formik ?? undefined}
+        fieldName={updateByFormik?.fieldName ?? undefined}
         addressValue={addressValue}
         detailAddress={detailAddress}
         onClose={onClose}
         setIsSaved={setIsSaved}
         isSaved={isSaved}
+        onUpdate={updateByDispatch?.onUpdate}
       />}
     >
       <Box sx={{

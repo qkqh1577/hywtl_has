@@ -86,8 +86,8 @@ export default function ProjectRivalBidList(props: Props) {
               <DataFieldWithLabel label="타 업체">
                 <BusinessSelector
                   value={item.business?.id}
-                  onChange={(value) => {
-                    props.onUpdate({ id: item.id, businessId: value });
+                  onChange={(business) => {
+                    props.onUpdate({ id: item.id, businessId: business.id });
                   }}
                 />
               </DataFieldWithLabel>

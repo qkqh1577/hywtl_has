@@ -73,11 +73,11 @@ export default function RivalEstimateListSection(props: Props) {
               <DataFieldWithLabel label="타 업체">
                 <BusinessSelector
                   value={item.business?.id ?? ''}
-                  onChange={(value) => {
-                    if (item.business?.id !== value) {
+                  onChange={(business) => {
+                    if (item.business?.id !== business.id) {
                       props.onUpdate({
                         id:         item.id,
-                        businessId: value,
+                        businessId: business.id,
                       });
                     }
                   }}

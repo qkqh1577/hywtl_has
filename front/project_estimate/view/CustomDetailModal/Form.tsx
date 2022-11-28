@@ -99,8 +99,8 @@ export default function () {
             allowMyBusiness
             readOnly={!edit}
             value={formik.values.businessId ?? formik.values.business?.id}
-            onChange={(id) => {
-              formik.setFieldValue('businessId', id);
+            onChange={(business) => {
+              formik.setFieldValue('businessId', business.id);
             }}
           />
         </DataFieldWithLabel>

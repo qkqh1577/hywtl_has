@@ -40,9 +40,9 @@ export default function ProjectBasicFailReasonSection(props: Props) {
             <DataFieldWithLabel label="타 업체">
               <BusinessSelector
                 value={detail.win?.id}
-                onChange={(id) => {
-                  if (detail.win?.id !== id) {
-                    props.onUpdate({ winId: id });
+                onChange={(business) => {
+                  if (detail.win?.id !== business.id) {
+                    props.onUpdate({ winId: business.id });
                   }
                 }}
               />

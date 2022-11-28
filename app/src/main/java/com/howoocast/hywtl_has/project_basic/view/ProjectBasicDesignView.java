@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public class ProjectBasicDesignView {
 
-    private String city;
+    private String city1;
+    private String city2;
     private String address;
     private Integer complexCount;
     private String purpose1;
@@ -23,7 +24,8 @@ public class ProjectBasicDesignView {
 
     public static ProjectBasicDesignView assemble(ProjectBasicDesign source) {
         ProjectBasicDesignView target = new ProjectBasicDesignView();
-        target.city = source.getCity();
+        target.city1 = source.getCity1();
+        target.city2 = source.getCity2();
         target.address = source.getAddress();
         target.complexCount = source.getComplexCount();
         target.purpose1 = source.getPurpose1();

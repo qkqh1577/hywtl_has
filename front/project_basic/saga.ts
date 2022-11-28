@@ -7,6 +7,7 @@ import {
 } from 'redux-saga/effects';
 import { projectBasicAction } from 'project_basic/action';
 import {
+  CityListData,
   ProjectBasicBusiness,
   ProjectBasicDesignVO,
   ProjectBasicExternalContributorVO,
@@ -182,9 +183,15 @@ function* watchDesign() {
     if (id) {
       const detail: ProjectBasicDesignVO = yield call(projectBasicApi.getDesign, id);
       yield put(projectBasicAction.setDesign(detail));
+      yield put(projectBasicAction.getCity1List());
+      if (detail.city1) {
+        yield put(projectBasicAction.getCity2List(detail.city1));
+      }
     }
     else {
       yield put(projectBasicAction.setDesign(undefined));
+      yield put(projectBasicAction.getCity1List());
+      yield put(projectBasicAction.getCity2List(undefined));
     }
   }
 }
@@ -383,6 +390,36 @@ function* watchUpdateFailReason() {
   }
 }
 
+
+function* watchCity1List() {
+  while (true) {
+    try {
+      yield take(projectBasicAction.getCity1List);
+      const data: CityListData = yield call(projectBasicApi.getCityData);
+      yield put(projectBasicAction.setCity1List(data.regcodes));
+    }
+    catch (e) {
+      yield put(dialogAction.openError('시/도1 목록을 불러오는데 실패하였습니다.'));
+    }
+  }
+}
+
+function* watchCity2List() {
+  while (true) {
+    const { payload: regCode } = yield take(projectBasicAction.getCity2List);
+    try {
+      if (regCode) {
+        const data: CityListData = yield call(projectBasicApi.getCityData, regCode);
+        yield put(projectBasicAction.setCity2List(data.regcodes));
+      }
+    }
+    catch (e) {
+      yield put(dialogAction.openError('시/도2 목록을 불러오는데 실패하였습니다.'));
+    }
+  }
+}
+
+
 export default function* projectBasicSaga() {
   yield fork(watchId);
   yield fork(watchInternalList);
@@ -408,4 +445,6 @@ export default function* projectBasicSaga() {
   yield fork(watchUpdateBasic);
   yield fork(watchUpdateDesign);
   yield fork(watchUpdateFailReason);
+  yield fork(watchCity1List);
+  yield fork(watchCity2List);
 }

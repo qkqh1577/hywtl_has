@@ -108,9 +108,9 @@ export default function ProjectBidSection(props: Props) {
               <BusinessSelector
                 allowMyBusiness
                 value={detail?.win?.id ?? ''}
-                onChange={(value) => {
-                  if (detail?.win?.id !== value) {
-                    props.onUpdate({ winId: value });
+                onChange={(business) => {
+                  if (detail?.win?.id !== business.id) {
+                    props.onUpdate({ winId: business.id });
                   }
                 }}
               />

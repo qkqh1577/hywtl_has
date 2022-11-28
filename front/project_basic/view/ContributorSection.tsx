@@ -44,7 +44,6 @@ interface Props {
 }
 
 export default function ProjectBasicContributorSection(props: Props) {
-
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
   useEffect(() => {
@@ -81,7 +80,7 @@ export default function ProjectBasicContributorSection(props: Props) {
         <Box sx={{
           display:        'flex',
           flexWrap:       'wrap',
-          width:          '400px',
+          width:          '49%',
           justifyContent: 'space-between',
           alignContent:   'flex-start',
         }}>
@@ -107,12 +106,13 @@ export default function ProjectBasicContributorSection(props: Props) {
                 <Th sx={{ width: '150px' }}>소속</Th>
                 <Th sx={{ width: '150px' }}>이름</Th>
                 <Th sx={{ width: '100px' }}>기여도(%)</Th>
+                <Th sx={{ width: '70px' }}></Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {(!props.internalList || props.internalList.length === 0) && (
                 <TableRow>
-                  <Td colSpan={3}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={4}>조회 결과가 없습니다.</Td>
                 </TableRow>
               )}
               {props.internalList?.map(item => (
@@ -150,6 +150,11 @@ export default function ProjectBasicContributorSection(props: Props) {
                       }
                     />
                   </Td>
+                  <Td>
+                    <Button shape="basic3" onClick={() => {
+                      props.onDeleteInternal(item.id);
+                    }}>삭제</Button>
+                  </Td>
                 </TableRow>
               ))}
             </TableBody>
@@ -158,7 +163,7 @@ export default function ProjectBasicContributorSection(props: Props) {
         <Box sx={{
           display:        'flex',
           flexWrap:       'wrap',
-          width:          '550px',
+          width:          '50%',
           justifyContent: 'space-between',
           alignContent:   'flex-start',
         }}>
@@ -185,12 +190,13 @@ export default function ProjectBasicContributorSection(props: Props) {
                 <Th sx={{ width: '150px' }}>소속</Th>
                 <Th sx={{ width: '150px' }}>이름</Th>
                 <Th sx={{ width: '100px' }}>기여도(%)</Th>
+                <Th sx={{ width: '70px' }}></Th>
               </TableRow>
             </TableHead>
             <TableBody>
               {(!props.externalList || props.externalList.length === 0) && (
                 <TableRow>
-                  <Td colSpan={4}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={5}>조회 결과가 없습니다.</Td>
                 </TableRow>
               )}
               {props.externalList?.map(item => (
@@ -198,10 +204,12 @@ export default function ProjectBasicContributorSection(props: Props) {
                   <Td>
                     <BusinessSelector
                       variant="outlined"
+                      hasEmployee
+                      withEmployee={item.businessManager?.id ?? undefined}
                       value={item.business?.id}
-                      onChange={(value) => {
-                        if (item.business?.id !== value) {
-                          props.onUpdateExternal({ id: item.id, businessId: value });
+                      onChange={(business) => {
+                        if (item.business?.id !== business.id || item.businessManager?.id !== business.managerId) {
+                          props.onUpdateExternal({ id: item.id, businessId: business.id, businessManagerId: business.managerId });
                         }
                       }}
                     />
@@ -230,6 +238,11 @@ export default function ProjectBasicContributorSection(props: Props) {
                         </InputAdornment>
                       }
                     />
+                  </Td>
+                  <Td>
+                    <Button shape="basic3" onClick={() => {
+                      props.onDeleteExternal(item.id)
+                    }}>삭제</Button>
                   </Td>
                 </TableRow>
               ))}

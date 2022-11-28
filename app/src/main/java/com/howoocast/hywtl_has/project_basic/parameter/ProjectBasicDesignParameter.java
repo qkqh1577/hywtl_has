@@ -7,7 +7,9 @@ import lombok.Setter;
 @Setter
 public class ProjectBasicDesignParameter {
 
-    private String city;
+    private String city1;
+
+    private String city2;
 
     private String address;
 
