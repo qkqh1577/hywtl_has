@@ -1,14 +1,31 @@
 import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
 import {createReducer} from "typesafe-actions";
 import {ProjectDbAction} from "./action";
+import {Dayjs} from "dayjs";
 
 export interface ProjectDbState {
     list: ProjectDbVO[],
     schema: ProjectDbSchemaVO[],
     filter: ProjectDbFilter,
+    search?: ProjectDbSearch,
     preset: ProjectDbPreset[],
     activePreset?: ProjectDbPreset,
     dynamicSelectState?:{}
+}
+
+export interface ProjectDbSearch {
+    condition: ProjectDbSearchCondition,
+    from?: Dayjs,
+    to?: Dayjs,
+}
+
+export interface ProjectDbSearchCondition {
+    [any: string]: ProjectSearchKV[]
+};
+
+export interface ProjectSearchKV {
+    key: string,
+    value: string | number | boolean,
 }
 
 export interface ProjectDbFilter {
@@ -37,6 +54,10 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setFilter]: (state, action) => ({
         ...state,
         filter: action.payload
+    }),
+    [ProjectDbAction.setSearch]: (state, action) => ({
+        ...state,
+        search: action.payload
     }),
     [ProjectDbAction.setPresetList]: (state, action) => ({
         ...state,

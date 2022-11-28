@@ -24,9 +24,8 @@ interface Props {
 }
 
 export default function Filter(props: Props) {
-
-    const {schema} = props;
     const dispatch = useDispatch();
+    const {schema} = props;
     const {filter} = useSelector((root: RootState) => root.projectDb);
 
     const setFilter = useCallback(

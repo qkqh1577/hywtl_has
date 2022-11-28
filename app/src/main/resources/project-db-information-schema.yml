@@ -97,15 +97,19 @@ project-db:
         code:
           type: String
           description: 코드
+          search: true
         type:
           type: String
           description: 유형
+          search: true
         isSent:
           type: Boolean
           description: 제출여부
+          search: true
         confirmed:
           type: Boolean
           description: 확정여부
+          search: true
         recipient:
           type: String
           description: 수신인
@@ -113,6 +117,7 @@ project-db:
         note:
           type: String
           description: 노트
+          search: true
         createdBy:
           type: UserShortView
           description: 작성자
@@ -150,7 +155,7 @@ project-db:
         estimateFigureDifficulty:
           type: String
           description: 난이도
-          search: false
+          search: true
         manager:
           type: UserShortView
           description: 담당자
@@ -200,6 +205,7 @@ project-db:
         bidOrganization:
           type: String
           description: 입찰기관
+          search: true
         bidDate:
           type: LocalDate
           description: 입찰일

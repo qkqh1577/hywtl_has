@@ -5,18 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../services/reducer";
 
 import {projectDbAction} from 'project_db/action';
-import {ProjectDbFilter} from "../reducer";
+import {ProjectDbSearch} from "../reducer";
+import dayjs from "dayjs";
 
 function Element() {
 
     const dispatch = useDispatch();
-    const {schema, filter} = useSelector((root: RootState) => root.projectDb);
+    const {schema, search} = useSelector((root: RootState) => root.projectDb);
 
     useEffect(() => {
-        dispatch(projectDbAction.requestList({
-            filter: {},
-            search: {}
-        }));
         dispatch(projectDbAction.requestSchema());
         dispatch(projectDbAction.requestPresetList());
     }, [dispatch]);
@@ -24,6 +21,13 @@ function Element() {
     useEffect(() => {
         dispatch(projectDbAction.openDefaultPreset());
     }, [schema]);
+
+    useEffect(() => {
+        const initSearch: ProjectDbSearch = search || {
+            condition: {},
+        };
+        dispatch(projectDbAction.requestList(initSearch));
+    }, [search]);
 
     return (
         <ProjectDbPage/>

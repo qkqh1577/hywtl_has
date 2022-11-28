@@ -2,13 +2,13 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Tab, Tabs} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
-import {ProjectDbAction, projectDbAction} from "../../action";
 import PresetRemovalModal from "./presetRemovalModal";
 import {ProjectDbPreset} from "../../domain";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import {withStyles} from "@mui/styles";
 import {ProjectDbFilter} from "../../reducer";
+import {projectDbAction} from "../../action";
 
 const borderStyle = '1px solid #ccc !important';
 const StyledTab = withStyles({

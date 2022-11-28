@@ -18,6 +18,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +66,16 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         BooleanBuilder builder = new BooleanBuilder();
 
         PathBuilder<Project> projectPathBuilder = new PathBuilder<>(Project.class, "project");
+        if (parameter.getSearchFrom() != null && parameter.getSearchTo() != null) {
+            log.debug(String.format("Search condition >>>> %s ~ %s", parameter.getSearchFrom(), parameter.getSearchTo()));
+
+            builder.and(
+                    projectPathBuilder
+                            .getDate("createdAt", LocalDateTime.class)
+                            .between(parameter.getSearchFrom().atStartOfDay(),
+                                    parameter.getSearchTo().atTime(23,59,59)));
+        }
+
         PathBuilder<ProjectEstimate> projectEstimatePathBuilder = new PathBuilder<>(ProjectEstimate.class, "projectEstimate");
         PathBuilder<ProjectComplexSite> projectComplexSitePathBuilder = new PathBuilder<>(ProjectComplexSite.class, "projectComplexSite");
         PathBuilder<ProjectBid> projectBidPathBuilder = new PathBuilder<>(ProjectBid.class, "projectBid");
@@ -122,7 +134,8 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         if (enumType != null) {
             builder.and(pathBuilder.getEnum(attrName, enumType).stringValue().eq(attrValue));
         } else if (attrType.equals("Boolean")) {
-            builder.and(pathBuilder.getBoolean(attrName).stringValue().eq(attrValue));
+            //builder.and(pathBuilder.getBoolean(attrName).stringValue().eq(attrValue));
+            builder.and(pathBuilder.getBoolean(attrName).eq(Boolean.valueOf(attrValue)));
         } else {
             builder.and(pathBuilder.getString(attrName).contains(attrValue));
         }

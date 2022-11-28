@@ -1,14 +1,14 @@
 import {createAction} from "typesafe-actions";
 import {ProjectDbPreset, ProjectDbSchemaVO, ProjectDbVO} from "./domain";
-import {ProjectDbFilter} from "./reducer";
-import {ProjectDbSearch} from "./view/Page/form";
+import {ProjectDbFilter, ProjectDbSearch} from "./reducer";
 
 export enum ProjectDbAction {
     requestList = 'project/db/list/request',
     setList = 'project/db/list/set',
     requestSchema = 'project/db/schema/request',
     setSchema = 'project/db/schema/set',
-    setFilter = 'project/db/filger/set',
+    setFilter = 'project/db/filter/set',
+    setSearch = 'project/db/search',
 
     requestPresetList = 'project/db/preset/request',
     setPresetList = 'project/db/preset/set',
@@ -27,6 +27,7 @@ export const projectDbAction = {
     requestSchema: createAction(ProjectDbAction.requestSchema)(),
     setSchema: createAction(ProjectDbAction.setSchema)<ProjectDbSchemaVO[]>(),
     setFilter: createAction(ProjectDbAction.setFilter)<ProjectDbFilter>(),
+    setSearch: createAction(ProjectDbAction.setSearch)<ProjectDbSearch>(),
 
     requestPresetList: createAction(ProjectDbAction.requestPresetList)(),
     setPresetList: createAction(ProjectDbAction.setPresetList)<ProjectDbPreset[]>(),
