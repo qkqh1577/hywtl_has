@@ -19,6 +19,7 @@ import Select from 'layouts/Select';
 import {
   businessInvolvedTypeList,
   businessInvolvedTypeName,
+  BusinessManagerVO,
   BusinessShortVO,
 } from 'business/domain';
 import {
@@ -27,7 +28,10 @@ import {
   Th
 } from 'layouts/Table';
 import Button from 'layouts/Button';
-import { keywordTypeList } from 'business/query';
+import {
+  keywordTypeList,
+  managerKeywordTypeList
+} from 'business/query';
 import Input from 'layouts/Input';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
 
@@ -37,6 +41,8 @@ interface Props {
   onDelete: DefaultFunction<ProjectBasicBusinessId>;
   onSearch: DefaultFunction;
   businessList: BusinessShortVO[] | undefined;
+  managerList: BusinessManagerVO[] | undefined;
+  onManagerSearch: DefaultFunction;
 }
 
 export default function ProjectBasicBusinessModal(props: Props) {
@@ -45,6 +51,8 @@ export default function ProjectBasicBusinessModal(props: Props) {
   const id = formik.values.id;
   const [business, setBusiness] = useState<BusinessShortVO>();
   const selectedBusinessId = formik.values.businessId;
+  const [manager, setManager] = useState<BusinessManagerVO>();
+  const selectedManagerId = formik.values.managerId;
 
   useEffect(() => {
     if (selectedBusinessId && props.businessList) {
@@ -54,6 +62,15 @@ export default function ProjectBasicBusinessModal(props: Props) {
       setBusiness(undefined);
     }
   }, [selectedBusinessId, props.businessList]);
+
+  useEffect(() => {
+    if (selectedManagerId && props.managerList) {
+      setManager(props.managerList.find(m => m.id === selectedManagerId));
+    }
+    else {
+      setManager(undefined);
+    }
+  }, [selectedManagerId, props.managerList]);
 
   return (
     <ModalLayout
@@ -282,6 +299,76 @@ export default function ProjectBasicBusinessModal(props: Props) {
               </DataFieldWithLabel>
             )}
             {edit && (
+              <Box sx={{
+                width:        '100%',
+                display:      'flex',
+                flexWrap:     'nowrap',
+                marginBottom: '15px',
+              }}>
+                <DataFieldWithLabel label="담당자" labelPosition="top">
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    alignItems:     'center',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Box sx={{
+                      width:      'calc(100% - 75px)',
+                      display:    'flex',
+                      flexWrap:   'nowrap',
+                      alignItems: 'center',
+                    }}>
+                      <Box sx={{
+                        width:    '20%',
+                        display:  'flex',
+                        flexWrap: 'nowrap',
+                      }}>
+                        <Select
+                          variant="outlined"
+                          value={formik.values.keywordTypeOfManager ?? ''}
+                          onChange={(e) => {
+                            const value = e.target.value || undefined;
+                            if (formik.values.keywordTypeOfManager !== value) {
+                              formik.setFieldValue('keywordTypeOfManager', value);
+                            }
+                          }}>
+                          {managerKeywordTypeList.map(item => (
+                            <MenuItem key={item.key} value={item.key}>
+                              {item.text}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Box>
+                      <Box sx={{
+                        width:    '80%',
+                        display:  'flex',
+                        flexWrap: 'nowrap',
+                      }}>
+                        <Input
+                          key={formik.values.keywordOfManager}
+                          variant="outlined"
+                          defaultValue={formik.values.keywordOfManager ?? ''}
+                          onBlur={(e) => {
+                            const value = e.target.value || undefined;
+                            if (formik.values.keywordOfManager !== value) {
+                              console.log('keywordOfManager', value);
+                              formik.setFieldValue('keywordOfManager', value);
+                            }
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                    <Button onClick={() => {
+                      props.onManagerSearch();
+                    }}>
+                      검색
+                    </Button>
+                  </Box>
+                </DataFieldWithLabel>
+              </Box>
+            )}
+            {edit && (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -308,7 +395,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
                       </Td>
                     </TableRow>
                   )}
-                  {business && business.managerList.map(manager => (
+                  {props.managerList && props.managerList.map(manager => (
                     <TableRow key={manager.id}>
                       <Td>
                         <Radio

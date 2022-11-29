@@ -9,7 +9,10 @@ import {
   RivalProjectVO
 } from './domain';
 import apiClient from 'services/api';
-import { BusinessQuery } from 'business/query';
+import {
+  BusinessManagerQuery,
+  BusinessQuery
+} from 'business/query';
 import Page from 'type/Page';
 import { BusinessParameter } from 'business/parameter';
 import { ProjectShortVO } from 'project/domain';
@@ -59,6 +62,13 @@ class BusinessApi {
 
   async getManagerList(id: BusinessId): Promise<BusinessManagerVO[]> {
     const { data } = await apiClient.get(`/business/${id}/manager-list`);
+    return data;
+  }
+
+  async getMangerListAll(id: BusinessId, query: BusinessManagerQuery): Promise<BusinessManagerVO[]> {
+    console.log('id', id);
+    console.log('query', query);
+    const { data } = await apiClient.get(`/business/${id}/manager/all`, query);
     return data;
   }
 
