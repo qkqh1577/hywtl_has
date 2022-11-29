@@ -41,8 +41,6 @@ interface Props {
   onDelete: DefaultFunction<ProjectBasicBusinessId>;
   onSearch: DefaultFunction;
   businessList: BusinessShortVO[] | undefined;
-  managerList: BusinessManagerVO[] | undefined;
-  onManagerSearch: DefaultFunction;
 }
 
 export default function ProjectBasicBusinessModal(props: Props) {
@@ -51,12 +49,11 @@ export default function ProjectBasicBusinessModal(props: Props) {
   const id = formik.values.id;
   const [business, setBusiness] = useState<BusinessShortVO>();
   const selectedBusinessId = formik.values.businessId;
-  const [manager, setManager] = useState<BusinessManagerVO>();
-  const selectedManagerId = formik.values.managerId;
-
+  const [managerList, setManagerList] = useState<BusinessManagerVO[]>(business?.managerList ?? []);
   useEffect(() => {
     if (selectedBusinessId && props.businessList) {
       setBusiness(props.businessList.find(b => b.id === selectedBusinessId));
+      formik.setFieldValue('keywordTypeOfManager', managerKeywordTypeList[0].key as string);
     }
     else {
       setBusiness(undefined);
@@ -64,13 +61,29 @@ export default function ProjectBasicBusinessModal(props: Props) {
   }, [selectedBusinessId, props.businessList]);
 
   useEffect(() => {
-    if (selectedManagerId && props.managerList) {
-      setManager(props.managerList.find(m => m.id === selectedManagerId));
+    if (selectedBusinessId && business) {
+      setManagerList(business.managerList.filter(manager => {
+        if (formik.values.keywordTypeOfManager === 'by_name') {
+          if (formik.values.keywordOfManager) {
+            return manager.name.includes(formik.values.keywordOfManager);
+          }
+          else {
+            return manager;
+          }
+        }
+        else if (formik.values.keywordTypeOfManager === 'by_department') {
+          if (formik.values.keywordOfManager) {
+            if (manager.department) {
+              return manager.department.includes(formik.values.keywordOfManager);
+            }
+          }
+          else {
+            return manager;
+          }
+        }
+      }));
     }
-    else {
-      setManager(undefined);
-    }
-  }, [selectedManagerId, props.managerList]);
+  }, [formik.values.keywordOfManager, formik.values.keywordTypeOfManager, business]);
 
   return (
     <ModalLayout
@@ -326,7 +339,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
                       }}>
                         <Select
                           variant="outlined"
-                          value={formik.values.keywordTypeOfManager ?? ''}
+                          value={formik.values.keywordTypeOfManager ?? managerKeywordTypeList[0].key}
                           onChange={(e) => {
                             const value = e.target.value || undefined;
                             if (formik.values.keywordTypeOfManager !== value) {
@@ -352,7 +365,6 @@ export default function ProjectBasicBusinessModal(props: Props) {
                           onBlur={(e) => {
                             const value = e.target.value || undefined;
                             if (formik.values.keywordOfManager !== value) {
-                              console.log('keywordOfManager', value);
                               formik.setFieldValue('keywordOfManager', value);
                             }
                           }}
@@ -360,7 +372,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
                       </Box>
                     </Box>
                     <Button onClick={() => {
-                      props.onManagerSearch();
+                      console.log('hello');
                     }}>
                       검색
                     </Button>
@@ -388,14 +400,14 @@ export default function ProjectBasicBusinessModal(props: Props) {
                       </Td>
                     </TableRow>
                   )}
-                  {business && business.managerList.length === 0 && (
+                  {business && managerList.length === 0 && (
                     <TableRow>
                       <Td colSpan={6}>
                         조회 결과가 없습니다.
                       </Td>
                     </TableRow>
                   )}
-                  {props.managerList && props.managerList.map(manager => (
+                  {business && managerList.map(manager => (
                     <TableRow key={manager.id}>
                       <Td>
                         <Radio

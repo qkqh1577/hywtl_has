@@ -14,14 +14,11 @@ import {
   useSelector
 } from 'react-redux';
 import { businessApi } from 'business/api';
-import {
-  BusinessManagerVO,
-  BusinessShortVO
-} from 'business/domain';
+import { BusinessShortVO } from 'business/domain';
 import { projectBasicAction } from 'project_basic/action';
 import { RootState } from 'services/reducer';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
-import { BusinessManagerQuery } from 'business/query';
+import { BusinessManagerQuery, } from 'business/query';
 
 interface SearchProps {
   keywordType?: string;
@@ -32,7 +29,6 @@ export default function ProjectBasicBusinessModalRoute() {
   const dispatch = useDispatch();
   const { business } = useSelector((root: RootState) => root.projectBasic);
   const [businessList, setBusinessList] = useState<BusinessShortVO[]>();
-  const [managerList, setManagerList] = useState<BusinessManagerVO[]>();
 
   const onSearch = (query: SearchProps) => {
     businessApi.getListAll(query)
@@ -41,17 +37,7 @@ export default function ProjectBasicBusinessModalRoute() {
                  setBusinessList(undefined);
                });
   };
-  const onManagerSearch = (id,
-                           query: BusinessManagerQuery
-  ) => {
-    if (formik.values.businessId) {
-      businessApi.getMangerListAll(formik.values.businessId, query)
-                 .then(setManagerList)
-                 .catch(() => {
-                   setManagerList(undefined);
-                 });
-    }
-  };
+
   const onClose = useCallback(() => dispatch(projectBasicAction.setBusiness(undefined)), [dispatch]);
   const onAdd = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.addBusiness(params)), [dispatch]);
   const onChange = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.changeBusiness(params)), [dispatch]);
@@ -91,10 +77,6 @@ export default function ProjectBasicBusinessModalRoute() {
     }
   }, [business]);
 
-  useEffect(() => {
-    onManagerSearch(formik.values.businessId, {});
-  }, [formik.values.businessId]);
-
   return (
     <FormikProvider value={formik}>
       <ProjectBasicBusinessModal
@@ -107,14 +89,7 @@ export default function ProjectBasicBusinessModalRoute() {
             keywordType: formik.values.keywordType,
           });
         }}
-        onManagerSearch={() => {
-          onManagerSearch(formik.values.businessId, {
-            keywordTypeOfManager: formik.values.keywordTypeOfManager,
-            keywordOfManager:     formik.values.keywordOfManager
-          });
-        }}
         businessList={businessList}
-        managerList={managerList}
       />
     </FormikProvider>
   );

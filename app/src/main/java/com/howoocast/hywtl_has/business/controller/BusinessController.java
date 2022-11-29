@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.business.controller;
 
 import com.howoocast.hywtl_has.business.domain.Business;
-import com.howoocast.hywtl_has.business.parameter.BusinessManagerPredicateBuilder;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessPredicateBuilder;
 import com.howoocast.hywtl_has.business.service.BusinessService;
@@ -81,20 +80,6 @@ public class BusinessController {
     @GetMapping("/business/{id}/manager-list")
     public List<BusinessManagerShortView> getManagerList(@PathVariable Long id) {
         return businessService.get(id).getManagerList().stream()
-            .map(BusinessManagerShortView::assemble)
-            .collect(Collectors.toList());
-    }
-
-    @GetMapping("/business/{id}/manager/all")
-    public List<BusinessManagerShortView> getManagerList(
-        @PathVariable Long id,
-        @RequestParam(required = false) String keywordTypeOfManager,
-        @RequestParam(required = false) String keywordOfManager
-    ) {
-        return businessService.findAllManager(
-                new BusinessManagerPredicateBuilder()
-                    .keyword(id, keywordTypeOfManager, keywordOfManager).build())
-            .stream()
             .map(BusinessManagerShortView::assemble)
             .collect(Collectors.toList());
     }

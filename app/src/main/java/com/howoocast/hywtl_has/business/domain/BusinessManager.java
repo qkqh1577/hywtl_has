@@ -81,6 +81,7 @@ public class BusinessManager extends CustomEntity {
     public static BusinessManager of(
         String name,
         String jobTitle,
+        String department,
         String mobilePhone,
         String officePhone,
         String email,
@@ -90,6 +91,7 @@ public class BusinessManager extends CustomEntity {
         BusinessManager manager = new BusinessManager();
         manager.name = name;
         manager.jobTitle = jobTitle;
+        manager.department = department;
         manager.mobilePhone = mobilePhone;
         manager.officePhone = officePhone;
         manager.email = email;
@@ -101,6 +103,7 @@ public class BusinessManager extends CustomEntity {
     public void change(
         String name,
         String jobTitle,
+        String department,
         String mobilePhone,
         String officePhone,
         String email,
@@ -109,6 +112,7 @@ public class BusinessManager extends CustomEntity {
         ) {
         this.name = name;
         this.jobTitle = jobTitle;
+        this.department = department;
         this.mobilePhone = mobilePhone;
         this.officePhone = officePhone;
         this.email = email;

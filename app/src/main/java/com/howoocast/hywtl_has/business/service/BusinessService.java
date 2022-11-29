@@ -4,7 +4,6 @@ import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.parameter.BusinessManagerParameter;
 import com.howoocast.hywtl_has.business.parameter.BusinessParameter;
-import com.howoocast.hywtl_has.business.repository.BusinessManagerRepository;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
@@ -34,8 +33,6 @@ public class BusinessService {
 
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
 
-    private final BusinessManagerRepository businessManagerRepository;
-
     @Transactional(readOnly = true)
     public Page<Business> findAll(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
@@ -50,13 +47,6 @@ public class BusinessService {
             .map(p -> repository.findAll(p, pageable))
             .orElse(repository.findAll(pageable))
             .getContent();
-    }
-    @Transactional(readOnly = true)
-    public List<BusinessManager> findAllManager(@Nullable Predicate predicate) {
-        Pageable pageable = Pageable.ofSize(Integer.MAX_VALUE);
-        return Optional.ofNullable(predicate)
-            .map(p -> businessManagerRepository.findAll(p, pageable))
-            .orElse(businessManagerRepository.findAll(pageable)).getContent();
     }
 
     @Transactional(readOnly = true)
@@ -120,6 +110,7 @@ public class BusinessService {
                         managerInstance.change(
                             managerParameter.getName(),
                             managerParameter.getJobTitle(),
+                            managerParameter.getDepartment(),
                             managerParameter.getMobilePhone(),
                             managerParameter.getOfficePhone(),
                             managerParameter.getEmail(),
@@ -185,6 +176,7 @@ public class BusinessService {
         return BusinessManager.of(
             parameter.getName(),
             parameter.getJobTitle(),
+            parameter.getDepartment(),
             parameter.getMobilePhone(),
             parameter.getOfficePhone(),
             parameter.getEmail(),
@@ -194,9 +186,7 @@ public class BusinessService {
     }
 
     public List<ProjectShortView> getProjectList(Long id) {
-        return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream().map(projectBasicBusiness -> {
-            return ProjectShortView.assemble(projectBasicBusiness.getProject());
-        }).collect(Collectors.toList());
+        return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream().map(projectBasicBusiness -> ProjectShortView.assemble(projectBasicBusiness.getProject())).collect(Collectors.toList());
     }
 }
 
