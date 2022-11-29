@@ -5,7 +5,6 @@ import com.howoocast.hywtl_has.business.service.BusinessProjectService;
 import com.howoocast.hywtl_has.business.view.BusinessInvolvedProjectView;
 import com.howoocast.hywtl_has.business.view.BusinessRivalProjectView;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +24,7 @@ public class BusinessProjectController {
         @PathVariable Long businessId,
         @RequestParam(required = false) ProjectInvolvedType type
     ) {
-        return service.getInvolvedList(businessId, type).stream()
-            .map(BusinessInvolvedProjectView::assemble)
-            .collect(Collectors.toList());
+        return service.getInvolvedList(businessId, type);
     }
 
     @GetMapping("/business/{businessId}/rival-project")

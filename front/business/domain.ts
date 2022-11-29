@@ -80,8 +80,9 @@ export interface BusinessInvolvedProjectVO {
   code: string;
   involvedType: BusinessInvolvedType;
   manager: string;
-  beginDate: Date;
-  closeDate: Date;
+  finalEstimateDate: Date;
+  finalContractDate: Date;
+  estimateExpectation: string;
 }
 
 export interface RivalProjectVO {

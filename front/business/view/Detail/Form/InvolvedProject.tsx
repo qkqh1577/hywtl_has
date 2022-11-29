@@ -91,8 +91,8 @@ export default function BusinessInvolvedProjectSection(props: Props) {
               <Th>역할</Th>
               <Th>대표담당자</Th>
               <Th>견적분류</Th>
-              <Th>착수일</Th>
-              <Th>마감일</Th>
+              <Th>견적일</Th>
+              <Th>계약일</Th>
               <Th>상세</Th>
             </TableRow>
           </TableHead>
@@ -124,13 +124,13 @@ export default function BusinessInvolvedProjectSection(props: Props) {
                   {project.manager}
                 </Td>
                 <Td>
-                  {"견적 분류"}
+                  {project.estimateExpectation}
                 </Td>
                 <Td>
-                  <DateFormat date={project.beginDate} />
+                  <DateFormat date={project.finalEstimateDate} />
                 </Td>
                 <Td>
-                  <DateFormat date={project.closeDate} />
+                  <DateFormat date={project.finalContractDate} />
                 </Td>
                 <Td>
                   <Button
