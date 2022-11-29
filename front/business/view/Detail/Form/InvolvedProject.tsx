@@ -99,7 +99,7 @@ export default function BusinessInvolvedProjectSection(props: Props) {
           <TableBody>
             {(!props.list || props.list.length === 0) && (
               <TableRow>
-                <Td colSpan={8}>
+                <Td colSpan={9}>
                   참여한 프로젝트가 없습니다.
                 </Td>
               </TableRow>

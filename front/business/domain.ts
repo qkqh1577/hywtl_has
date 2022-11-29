@@ -88,8 +88,8 @@ export interface RivalProjectVO {
   id?: ProjectId;
   code: string;
   name: string;
-  bidBeginDate: Date;
-  bidCloseDate: Date;
+  beginDate: Date;
+  closeDate: Date;
   win: BusinessShortVO;
 }
 

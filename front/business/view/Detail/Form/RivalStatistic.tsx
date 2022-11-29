@@ -30,8 +30,8 @@ export default function BusinessRivalStatistic(props: StatisticProps) {
           drawCount,
           loseCount,
         } = props;
-  const winRate = count && winCount ? (winCount / count * 100).toFixed(1) : undefined;
-
+  const countListInProgress = (count && count - ((winCount ?? 0) + (drawCount ?? 0) + ((loseCount ?? 0) - (drawCount ?? 0)))) ?? 0;
+  const winRate = count && winCount ? (winCount / (count - countListInProgress) * 100).toFixed(1) : undefined;
   return (
     <Box sx={{
       display:  'flex',
@@ -48,7 +48,7 @@ export default function BusinessRivalStatistic(props: StatisticProps) {
         alignItems:     'center',
         marginBottom:   '10px',
       }}>
-        <TextBox variant="body7">경쟁 현황</TextBox>
+        <TextBox variant="body7">입찰 경쟁 현황</TextBox>
 
       </Box>
       <Box sx={{
@@ -62,19 +62,23 @@ export default function BusinessRivalStatistic(props: StatisticProps) {
               <Th>경쟁 현황</Th>
               <Th>전적</Th>
               <Th>승률</Th>
+              <Th>진행중</Th>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
               <Td>
                 {count ? `${count}회` : '-'}
-                {count && count > 0 ? `(최초: ${minYear}, 최근: ${maxYear})` : ''}
+                {count && count > 0 && minYear && maxYear ? `(최초: ${minYear}, 최근: ${maxYear})` : ''}
               </Td>
               <Td>
-                {count && `${winCount ?? 0}승 ${drawCount ?? 0}무 ${loseCount ?? 0}패`}
+                {count && `${winCount ?? 0}승 ${drawCount ?? 0}무 ${(loseCount ?? 0) - (drawCount ?? 0)}패`}
               </Td>
               <Td>
-                {winRate && `${winRate}%`}
+                {winRate ? `${winRate}%` : '0%'}
+              </Td>
+              <Td>
+                {countListInProgress}회
               </Td>
             </TableRow>
           </TableBody>
