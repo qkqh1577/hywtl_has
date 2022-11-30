@@ -37,6 +37,8 @@ export enum ProjectComplexActionType {
 
   buildingFileModal     = 'project/sales/complex/building/file/modal',
   setTestDetail         = 'project/sales/complex/test/set',
+
+  setPushTestDetail     = 'project/sales/complex/test/push/set',
 }
 
 export const projectComplexAction = {
@@ -63,4 +65,6 @@ export const projectComplexAction = {
 
   buildingFileModal: createAction(ProjectComplexActionType.buildingFileModal)<ProjectComplexBuildingId | undefined>(),
   setTestDetail:     createAction(ProjectComplexActionType.setTestDetail)<ProjectComplexTestVO | undefined>(),
+
+  setPushTestDetail: createAction(ProjectComplexActionType.setPushTestDetail)<ProjectId | undefined>(),
 };

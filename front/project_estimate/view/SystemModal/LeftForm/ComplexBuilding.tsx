@@ -31,6 +31,7 @@ import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import { getRatio } from 'util/NumberUtil';
+import { STANDARD_RATIO } from 'util/CommonConstantVariable';
 
 interface Props {
   openDocumentModal: DefaultFunction<number>;
@@ -358,8 +359,9 @@ export default function (props: Props) {
                     alignItems:     'center',
                   }}>
                     <Checkbox
-                      readOnly={!edit}
-                      checked={!!item.inTest}
+                      disabled={!edit}
+                      readOnly={(getRatio(item.height, item.baseArea) && +getRatio(item.height, item.baseArea) > STANDARD_RATIO) || false}
+                      checked={(getRatio(item.height, item.baseArea) && +getRatio(item.height, item.baseArea) > STANDARD_RATIO) ? true : (item.inTest ?? false)}
                       onChange={() => {
                         formik.setFieldValue(`buildingList.${i}.inTest`, !item.inTest);
                       }}

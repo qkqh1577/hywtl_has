@@ -142,7 +142,6 @@ function* watchUpdateBuilding() {
   while (true) {
     const { payload: params } = yield take(projectComplexAction.updateBuilding);
     try {
-      console.log("params : ", params);
       yield put(projectComplexAction.requestUpdateBuilding('request'));
       yield call(projectComplexApi.updateBuilding, params);
       yield put(projectComplexAction.requestUpdateBuilding('done'));
@@ -174,6 +173,19 @@ function* watchDeleteBuilding() {
   }
 }
 
+function* watchPushTest() {
+  while (true) {
+    const { payload: id } = yield take(projectComplexAction.setPushTestDetail);
+    if (id) {
+      const detail: ProjectComplexTestVO = yield call(projectComplexApi.getTestDetail, id);
+      yield put(projectComplexAction.setTestDetail(detail));
+    }
+    else {
+      yield put(projectComplexAction.setTestDetail(undefined));
+    }
+  }
+}
+
 export default function* projectComplexSaga() {
   yield fork(watchId);
   yield fork(watchSiteList);
@@ -185,4 +197,5 @@ export default function* projectComplexSaga() {
   yield fork(watchPushBuilding);
   yield fork(watchUpdateBuilding);
   yield fork(watchDeleteBuilding);
+  yield fork(watchPushTest);
 }

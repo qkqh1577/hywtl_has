@@ -39,6 +39,13 @@ import {
   testTypeName
 } from 'type/TestType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  ProjectEstimateId,
+  ProjectEstimateType
+} from 'project_estimate/domain';
+import { ProjectContractVO } from 'project_contract/domain';
+import useDialog from 'dialog/hook';
+import { STANDARD_RATIO } from 'util/CommonConstantVariable';
 
 interface Props {
   list: ProjectComplexBuildingVO[] | undefined;
@@ -47,11 +54,14 @@ interface Props {
   onUpdate: DefaultFunction<ProjectComplexBuildingParameter>;
   onDelete: DefaultFunction<ProjectComplexBuildingId>;
   openDocumentModal: DefaultFunction<ProjectComplexBuildingId>;
+  openCustomDetailModal: DefaultFunction<ProjectEstimateId>;
+  openSystemDetailModal: DefaultFunction<ProjectEstimateId>;
+  contract?: ProjectContractVO;
 }
 
 export default function ProjectComplexBuildingSection(props: Props) {
   const { list } = props;
-
+  const { error } = useDialog();
   const [modifiedAt, setModifiedAt] = useState<Date>();
 
   useEffect(() => {
@@ -84,7 +94,21 @@ export default function ProjectComplexBuildingSection(props: Props) {
             }}>
             + 추가
           </Button>
-          <Button shape="small">
+          <Button shape="small"
+            onClick={() => {
+              if (!props.contract || !props.contract.id) {
+                error('최종 선택된 계약서가 없습니다.')
+                return;
+              }
+              if (props.contract.estimate!.type === ProjectEstimateType.SYSTEM) {
+                props.openSystemDetailModal(props.contract.estimate!.id);
+              }
+              else {
+                props.openCustomDetailModal(props.contract.estimate.id);
+              }
+            }
+            }
+          >
             계약에 사용된 견적서 새창열기
           </Button>
         </>
@@ -352,7 +376,8 @@ export default function ProjectComplexBuildingSection(props: Props) {
                     alignItems:     'center',
                   }}>
                     <Checkbox
-                      defaultChecked={item.inTest}
+                      readOnly={!!(item.ratio && item.ratio > STANDARD_RATIO)}
+                      checked={(item.ratio && item.ratio > STANDARD_RATIO) ? true : (item.inTest ?? false)}
                       onChange={() => {
                         props.onUpdate({ id: item.id, inTest: !item.inTest });
                       }}
