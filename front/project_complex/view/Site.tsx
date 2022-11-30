@@ -120,7 +120,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                   </Td>
                   <Td>
                     <Checkbox
-                      checked={item.withEnvironmentTest}
+                      checked={item.withEnvironmentTest ?? false}
                       onChange={() => {
                         props.onUpdate({ id: item.id, withEnvironmentTest: !item.withEnvironmentTest });
                       }}

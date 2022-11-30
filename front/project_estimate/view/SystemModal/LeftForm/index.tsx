@@ -61,6 +61,7 @@ export default function ProjectSystemEstimateModalLeftForm(props: Props) {
           flexWrap:  'wrap',
           minWidth:  '1000px',
           minHeight: '1000px',
+          backfaceVisibility: 'hidden',
         }}>
           <ComplexSite />
           <ComplexBuilding openDocumentModal={props.openDocumentModal} />

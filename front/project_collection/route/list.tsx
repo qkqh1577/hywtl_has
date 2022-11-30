@@ -40,12 +40,6 @@ export default function ProjectCollectionListRoute() {
   }, [contract]);
 
   useEffect(() => {
-    if (contract && !contract.id) {
-      error('최종 계약서를 등록해야 합니다.', () => navigate(-1));
-    }
-  }, [contract && contract.id]);
-
-  useEffect(() => {
     closeStatus(requestUpdateManager, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
     }, () => {
