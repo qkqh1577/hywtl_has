@@ -371,9 +371,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
                         />
                       </Box>
                     </Box>
-                    <Button onClick={() => {
-                      console.log('hello');
-                    }}>
+                    <Button>
                       검색
                     </Button>
                   </Box>

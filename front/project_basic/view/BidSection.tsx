@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
-  console.log(detail?.bidDate);
   return (
     <SectionLayout title="최종 입찰 정보">
       <Box sx={{
