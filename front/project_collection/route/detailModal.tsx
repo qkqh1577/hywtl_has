@@ -32,7 +32,7 @@ export default function ProjectCollectionStageDetailModalRoute() {
   const onChange = useCallback((params: ProjectCollectionChangeStageParameter) => dispatch(projectCollectionAction.changeStage(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.deleteStage(id)), [dispatch]);
   const totalAmount = useMemo(() => {
-    if (!contract || !contract.estimate.plan?.totalAmount) {
+    if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
       return undefined;
     }
     const isLh = contract.estimate.isLh;
