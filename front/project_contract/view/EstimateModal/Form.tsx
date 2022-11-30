@@ -40,7 +40,7 @@ export default function ProjectEstimateFinalModalForm(props: Props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {(!props.list || props.list.length === 0) && (
+        {(!props.list || props.list.filter(item => item.hasExperimentInfo).length === 0) && (
           <TableRow>
             <Td colSpan={8}>
               선택할 수 있는 견적서가 없습니다.

@@ -57,16 +57,16 @@ function Element() {
   return (
     <ProjectContainerRoute>
       <Box sx={{ width: '100%' }}>
+        <ProjectEstimateListRoute />
+        <ProjectCustomEstimateAddModalRoute />
+        <ProjectCustomEstimateDetailModalRoute />
+        <ProjectCustomEstimateExtensionModalRoute />
+        <ProjectSystemEstimateModalRoute />
+        <ProjectEstimateFinalModalRoute />
+        <ProjectContractModalRoute />
         {detail && detail.bidType === ProjectBasicBidType.DEFAULT && (
           <>
-            <ProjectEstimateListRoute />
             <RivalEstimateListRoute />
-            <ProjectCustomEstimateAddModalRoute />
-            <ProjectCustomEstimateDetailModalRoute />
-            <ProjectCustomEstimateExtensionModalRoute />
-            <ProjectSystemEstimateModalRoute />
-            <ProjectEstimateFinalModalRoute />
-            <ProjectContractModalRoute />
           </>
         )}
         {detail && detail.bidType !== ProjectBasicBidType.DEFAULT && (

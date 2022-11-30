@@ -90,7 +90,7 @@ export default function ProjectEstimateListSection(props: Props) {
             <TableBody>
               {(!list || list.length === 0) && (
                 <TableRow>
-                  <Td colSpan={7}>
+                  <Td colSpan={8}>
                     조회 결과가 없습니다.
                   </Td>
                 </TableRow>
