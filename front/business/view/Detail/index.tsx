@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import { DefaultFunction } from 'type/Function';
 import Divider from 'layouts/Divider';
 import BusinessManagerListSection from 'business/view/Detail/Form/ManagerList';
+import { BusinessManagerId } from 'business/domain';
 
 interface Props {
   basic: React.ReactNode;
@@ -14,6 +15,7 @@ interface Props {
   rivalProjectList: React.ReactNode;
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  openProjectListModal: (id:BusinessManagerId) => void;
 }
 
 export default function BusinessDetail(props: Props) {
@@ -32,7 +34,7 @@ export default function BusinessDetail(props: Props) {
           {formik.values.id && props.rivalStatistic}
           {formik.values.id && props.rivalProjectList}
           <Divider />
-          <BusinessManagerListSection />
+          <BusinessManagerListSection openProjectListModal={props.openProjectListModal}/>
         </Box>
       }
       footer={

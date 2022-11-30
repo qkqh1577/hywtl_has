@@ -7,14 +7,18 @@ import dayjs from 'dayjs';
 import BusinessSelector from 'components/BusinessSelector';
 import { ProjectEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
+import {
+  ProjectBasicBidType,
+  ProjectVO
+} from 'project/domain';
 
 interface Props {
+  project: ProjectVO | undefined;
   detail: ProjectEstimateVO | undefined;
   rivalList: RivalEstimateVO[] | undefined;
 }
 
-export default function ProjectBasicEstimateSection({ detail, rivalList }: Props) {
-
+export default function ProjectBasicEstimateSection({ detail, rivalList, project }: Props) {
   return (
     <SectionLayout title="최종 견적 정보">
       <Box sx={{
@@ -93,7 +97,7 @@ export default function ProjectBasicEstimateSection({ detail, rivalList }: Props
             </DataFieldWithLabel>
           </Box>
         </Box>
-        {rivalList?.map(item => (
+        {project && project.bidType === ProjectBasicBidType.DEFAULT && rivalList?.map(item => (
           <Box key={item.id}>
             <Box sx={{ width: '220px' }}>
               <DataFieldWithLabel label="타 업체">

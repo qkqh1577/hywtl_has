@@ -34,7 +34,8 @@ export default function () {
 
   useEffect(() => {
     if (!loginUser) {
-      dispatch(loginAction.requestDetail());
+      //TODO: 로그인 수정사항
+      // dispatch(loginAction.requestDetail());
       dispatch(menuAction.getMenu());
     }
   }, [loginUser]);

@@ -3,8 +3,7 @@ import {
   MenuItem,
   TableBody,
   TableHead,
-  TableRow,
-  Typography
+  TableRow
 } from '@mui/material';
 import React from 'react';
 import TextBox from 'layouts/Text';
@@ -30,7 +29,6 @@ interface Props {
 }
 
 export default function BusinessInvolvedProjectSection(props: Props) {
-
   return (
     <Box sx={{
       display:  'flex',
@@ -92,25 +90,26 @@ export default function BusinessInvolvedProjectSection(props: Props) {
               <Th>프로젝트명</Th>
               <Th>역할</Th>
               <Th>대표담당자</Th>
-              <Th>착수일</Th>
-              <Th>마감일</Th>
+              <Th>견적분류</Th>
+              <Th>견적일</Th>
+              <Th>계약일</Th>
               <Th>상세</Th>
             </TableRow>
           </TableHead>
           <TableBody>
             {(!props.list || props.list.length === 0) && (
               <TableRow>
-                <Td colSpan={8}>
-                  <Typography>참여한 프로젝트가 없습니다.</Typography>
+                <Td colSpan={9}>
+                  참여한 프로젝트가 없습니다.
                 </Td>
               </TableRow>
             )}
             {props.list && props.list.map((project,
-                                           i
+                                           index
             ) => (
-              <TableRow key={project.id}>
+              <TableRow key={`${project.id}_${index}`}>
                 <Td>
-                  {i + 1}
+                  {index + 1}
                 </Td>
                 <Td>
                   {project.code}
@@ -125,13 +124,23 @@ export default function BusinessInvolvedProjectSection(props: Props) {
                   {project.manager}
                 </Td>
                 <Td>
-                  <DateFormat date={project.beginDate} />
+                  {project.estimateExpectation}
                 </Td>
                 <Td>
-                  <DateFormat date={project.closeDate} />
+                  <DateFormat date={project.finalEstimateDate} />
                 </Td>
                 <Td>
-                  <Button shape="small">새 창으로 상세 보기</Button>
+                  <DateFormat date={project.finalContractDate} />
+                </Td>
+                <Td>
+                  <Button
+                    shape="small"
+                    onClick={() => {
+                      window.open(`/project/sales-management/${project.id}/basic`);
+                    }}
+                  >
+                    새 창으로 상세 보기
+                  </Button>
                 </Td>
               </TableRow>
             ))}

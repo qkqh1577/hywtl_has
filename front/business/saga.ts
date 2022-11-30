@@ -20,6 +20,7 @@ import { businessApi } from 'business/api';
 import { dialogAction } from 'dialog/action';
 import { RootState } from 'services/reducer';
 import { getErrorMessage } from 'type/Error';
+import { ProjectShortVO } from 'project/domain';
 
 function* watchFilter() {
   while (true) {
@@ -42,14 +43,14 @@ function* watchRegistrationNumber() {
       const { detail } = yield select((root: RootState) => root.business);
       if (!detail || detail.id !== list[0].id || detail.registrationNumber === list[0].registrationNumber) {
         yield put(businessAction.checkRegistrationNumber({
-          state:  RegistrationNumberResultType.FAIL,
+          state:   RegistrationNumberResultType.FAIL,
           message: '이미 등록되어 있는 사업자번호 입니다.'
         }));
         continue;
       }
     }
     yield put(businessAction.checkRegistrationNumber({
-      state:  RegistrationNumberResultType.SUCCESS,
+      state:   RegistrationNumberResultType.SUCCESS,
       message: '등록 가능한 사업자번호 입니다.'
     }));
   }
@@ -143,6 +144,22 @@ function* watchInvolvedProjectList() {
   }
 }
 
+function* watchProjectListModal() {
+  while (true) {
+    const { payload: id } = yield take(businessAction.setProjectListModal);
+    try {
+      if (id) {
+        const list: ProjectShortVO[] = yield call(businessApi.getProjectList, id);
+        yield put(businessAction.setProjectList(list));
+
+      }
+    }
+    catch (e) {
+
+    }
+  }
+}
+
 export default function* businessSaga() {
   yield fork(watchFilter);
   yield fork(watchRegistrationNumber);
@@ -150,4 +167,5 @@ export default function* businessSaga() {
   yield fork(watchUpsert);
   yield fork(watchDelete);
   yield fork(watchInvolvedProjectList);
+  yield fork(watchProjectListModal);
 };

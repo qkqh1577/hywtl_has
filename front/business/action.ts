@@ -5,6 +5,7 @@ import {
   BusinessId,
   BusinessInvolvedProjectVO,
   BusinessInvolvedType,
+  BusinessManagerId,
   BusinessShortVO,
   BusinessVO,
   RegistrationNumberState,
@@ -12,6 +13,7 @@ import {
 } from 'business/domain';
 import { BusinessParameter } from 'business/parameter';
 import { ApiStatus } from 'components/DataFieldProps';
+import { ProjectShortVO } from 'project/domain';
 
 export enum BusinessActionType {
   setFilter                  = 'business/filter/set',
@@ -27,6 +29,8 @@ export enum BusinessActionType {
   deleteOne                  = 'business/delete',
   requestDelete              = 'business/delete/request',
   checkRegistrationNumber    = 'business/registration-number/check',
+  setProjectListModal        = 'business/manager/detail/project-list-modal',
+  setProjectList             = 'business/manager/detail/project-list',
 }
 
 export const businessAction = {
@@ -43,4 +47,6 @@ export const businessAction = {
   requestUpsert:              createAction(BusinessActionType.requestUpsert)<ApiStatus>(),
   requestDelete:              createAction(BusinessActionType.requestDelete)<ApiStatus>(),
   checkRegistrationNumber:    createAction(BusinessActionType.checkRegistrationNumber)<RegistrationNumberState>(),
+  setProjectListModal:        createAction(BusinessActionType.setProjectListModal)<BusinessManagerId | undefined>(),
+  setProjectList:             createAction(BusinessActionType.setProjectList)<ProjectShortVO[] | undefined>(),
 };

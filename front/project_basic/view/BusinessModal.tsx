@@ -19,6 +19,7 @@ import Select from 'layouts/Select';
 import {
   businessInvolvedTypeList,
   businessInvolvedTypeName,
+  BusinessManagerVO,
   BusinessShortVO,
 } from 'business/domain';
 import {
@@ -27,9 +28,13 @@ import {
   Th
 } from 'layouts/Table';
 import Button from 'layouts/Button';
-import { keywordTypeList } from 'business/query';
+import {
+  keywordTypeList,
+  managerKeywordTypeList
+} from 'business/query';
 import Input from 'layouts/Input';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
+import TextBox from 'layouts/Text';
 
 interface Props {
   open: boolean;
@@ -45,37 +50,63 @@ export default function ProjectBasicBusinessModal(props: Props) {
   const id = formik.values.id;
   const [business, setBusiness] = useState<BusinessShortVO>();
   const selectedBusinessId = formik.values.businessId;
-
+  const [managerList, setManagerList] = useState<BusinessManagerVO[]>(business?.managerList ?? []);
   useEffect(() => {
     if (selectedBusinessId && props.businessList) {
       setBusiness(props.businessList.find(b => b.id === selectedBusinessId));
+      formik.setFieldValue('keywordTypeOfManager', managerKeywordTypeList[0].key as string);
     }
     else {
       setBusiness(undefined);
     }
   }, [selectedBusinessId, props.businessList]);
 
+  useEffect(() => {
+    if (selectedBusinessId && business) {
+      setManagerList(business.managerList.filter(manager => {
+        if (formik.values.keywordTypeOfManager === 'by_name') {
+          if (formik.values.keywordOfManager) {
+            return manager.name.includes(formik.values.keywordOfManager);
+          }
+          else {
+            return manager;
+          }
+        }
+        else if (formik.values.keywordTypeOfManager === 'by_department') {
+          if (formik.values.keywordOfManager) {
+            if (manager.department) {
+              return manager.department.includes(formik.values.keywordOfManager);
+            }
+          }
+          else {
+            return manager;
+          }
+        }
+      }));
+    }
+  }, [formik.values.keywordOfManager, formik.values.keywordTypeOfManager, business]);
+
   return (
     <ModalLayout
-      width="80vw"
+      width={`${!edit ? '40vw' : '80vw'}`}
       open={props.open}
       title={!edit ? '관계사 상세' : (id ? '관계사 수정' : '관계사 등록')}
       onClose={props.onClose}
       children={
         <Box sx={{
           width:          '100%',
-          display:        'flex',
+          display:        `${!edit ? 'block': 'flex'}`,
           flexWrap:       'wrap',
           justifyContent: 'space-between',
         }}>
           <Box sx={{
-            width:        '49%',
+            width:         `${!edit ? '100%': '49%'}`,
             display:      'flex',
             flexWrap:     'wrap',
             alignContent: 'flex-start',
           }}>
             <Box sx={{
-              width:        '50%',
+              width:         `${!edit ? '100%': '50%'}`,
               display:      'flex',
               flexWrap:     'nowrap',
               marginBottom: '10px',
@@ -181,12 +212,16 @@ export default function ProjectBasicBusinessModal(props: Props) {
               }}>
                 <Box sx={{ width: '45%' }}>
                   <DataFieldWithLabel label="업체">
-                    {formik.values.business?.name}
+                    <TextBox variant="body2">
+                      {formik.values.business?.name}
+                    </TextBox>
                   </DataFieldWithLabel>
                 </Box>
                 <Box sx={{ width: '45%' }}>
                   <DataFieldWithLabel label="업체 주소">
-                    {formik.values.business?.address}
+                    <TextBox variant="body2">
+                      {formik.values.business?.address}
+                    </TextBox>
                   </DataFieldWithLabel>
                 </Box>
               </Box>
@@ -234,7 +269,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
             )}
           </Box>
           <Box sx={{
-            width:        '49%',
+            width:         `${!edit ? '100%': '49%'}`,
             display:      'flex',
             flexWrap:     'wrap',
             alignContent: 'flex-start'
@@ -282,6 +317,73 @@ export default function ProjectBasicBusinessModal(props: Props) {
               </DataFieldWithLabel>
             )}
             {edit && (
+              <Box sx={{
+                width:        '100%',
+                display:      'flex',
+                flexWrap:     'nowrap',
+                marginBottom: '15px',
+              }}>
+                <DataFieldWithLabel label="담당자" labelPosition="top">
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    alignItems:     'center',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Box sx={{
+                      width:      'calc(100% - 75px)',
+                      display:    'flex',
+                      flexWrap:   'nowrap',
+                      alignItems: 'center',
+                    }}>
+                      <Box sx={{
+                        width:    '20%',
+                        display:  'flex',
+                        flexWrap: 'nowrap',
+                      }}>
+                        <Select
+                          variant="outlined"
+                          value={formik.values.keywordTypeOfManager ?? managerKeywordTypeList[0].key}
+                          onChange={(e) => {
+                            const value = e.target.value || undefined;
+                            if (formik.values.keywordTypeOfManager !== value) {
+                              formik.setFieldValue('keywordTypeOfManager', value);
+                            }
+                          }}>
+                          {managerKeywordTypeList.map(item => (
+                            <MenuItem key={item.key} value={item.key}>
+                              {item.text}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Box>
+                      <Box sx={{
+                        width:    '80%',
+                        display:  'flex',
+                        flexWrap: 'nowrap',
+                      }}>
+                        <Input
+                          key={formik.values.keywordOfManager}
+                          variant="outlined"
+                          defaultValue={formik.values.keywordOfManager ?? ''}
+                          onBlur={(e) => {
+                            const value = e.target.value || undefined;
+                            if (formik.values.keywordOfManager !== value) {
+                              formik.setFieldValue('keywordOfManager', value);
+                            }
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                    <Button>
+                      검색
+                    </Button>
+                  </Box>
+                </DataFieldWithLabel>
+              </Box>
+            )}
+            {edit && (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -301,14 +403,14 @@ export default function ProjectBasicBusinessModal(props: Props) {
                       </Td>
                     </TableRow>
                   )}
-                  {business && business.managerList.length === 0 && (
+                  {business && managerList.length === 0 && (
                     <TableRow>
                       <Td colSpan={6}>
                         조회 결과가 없습니다.
                       </Td>
                     </TableRow>
                   )}
-                  {business && business.managerList.map(manager => (
+                  {business && managerList.map(manager => (
                     <TableRow key={manager.id}>
                       <Td>
                         <Radio

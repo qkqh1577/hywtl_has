@@ -6,39 +6,57 @@ import BusinessRivalStatisticTable from 'business/view/Detail/Form/RivalStatisti
 import { FormikContext } from 'formik';
 
 export default function BusinessRivalStatisticRoute() {
-
-
   const { id, rivalProjectList } = useSelector((root: RootState) => root.business);
   const count = rivalProjectList?.length || 0;
   const minYear = rivalProjectList && rivalProjectList.length > 0
-    ? rivalProjectList.map((item) =>
-      dayjs(item.bidBeginDate)
-      .year())
+    ? rivalProjectList.map((item) => {
+      return item.beginDate ? dayjs(item.beginDate)
+      .year() : undefined;
+    })
                       .reduce((a,
                                b
-                      ) => a > b ? b : a) : undefined;
+                      ) => ((a && b) && a > b) ? b : a) : undefined;
 
   const maxYear = rivalProjectList && rivalProjectList.length > 0
-    ? rivalProjectList.map((item) =>
-      dayjs(item.bidBeginDate)
-      .year())
+    ? rivalProjectList.map((item) => {
+      return item.beginDate ? dayjs(item.beginDate)
+      .year() : undefined;
+    })
                       .reduce((a,
                                b
-                      ) => a < b ? b : a) : undefined;
+                      ) => ((a && b) && a < b) ? b : a) : undefined;
 
   const winCount = rivalProjectList && rivalProjectList.length > 0
-    ? rivalProjectList.map((item) => item.win)
-                      .filter(win => win.id === 1)
+    ? rivalProjectList.map((item) => {
+      return item.win ? item.win : undefined;
+    })
+                      .filter(win => {
+                        return win ? win.id === 1 : undefined;
+                      })
       .length : undefined;
 
   const drawCount = rivalProjectList && rivalProjectList.length > 0
-    ? rivalProjectList.map(item => item.win)
-                      .filter(win => win.id !== 1 && win.id !== id)
+    ? rivalProjectList.map(item => {
+      return item.win ? item.win : undefined;
+    })
+                      .filter(win => {
+                        if (!win) {
+                          return undefined;
+                        }
+                        return win.id !== 1 && win.id !== id;
+                      })
       .length : undefined;
 
   const loseCount = rivalProjectList && rivalProjectList.length > 0
-    ? rivalProjectList.map(item => item.win)
-                      .filter(win => win.id !== 1)
+    ? rivalProjectList.map(item => {
+      return item.win ? item.win : undefined;
+    })
+                      .filter(win => {
+                        if (!win) {
+                          return undefined;
+                        }
+                        return win.id !== 1;
+                      })
       .length : undefined;
 
   const formik = useContext(FormikContext);

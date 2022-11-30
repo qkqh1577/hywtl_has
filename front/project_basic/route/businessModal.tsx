@@ -18,6 +18,7 @@ import { BusinessShortVO } from 'business/domain';
 import { projectBasicAction } from 'project_basic/action';
 import { RootState } from 'services/reducer';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
+import { BusinessManagerQuery, } from 'business/query';
 
 interface SearchProps {
   keywordType?: string;
@@ -28,6 +29,7 @@ export default function ProjectBasicBusinessModalRoute() {
   const dispatch = useDispatch();
   const { business } = useSelector((root: RootState) => root.projectBasic);
   const [businessList, setBusinessList] = useState<BusinessShortVO[]>();
+
   const onSearch = (query: SearchProps) => {
     businessApi.getListAll(query)
                .then(setBusinessList)
@@ -35,11 +37,13 @@ export default function ProjectBasicBusinessModalRoute() {
                  setBusinessList(undefined);
                });
   };
+
   const onClose = useCallback(() => dispatch(projectBasicAction.setBusiness(undefined)), [dispatch]);
   const onAdd = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.addBusiness(params)), [dispatch]);
   const onChange = useCallback((params: ProjectBasicBusinessParameter) => dispatch(projectBasicAction.changeBusiness(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectBasicBusinessId) => dispatch(projectBasicAction.deleteBusiness(id)), [dispatch]);
-  const formik = useFormik<ProjectBasicBusinessParameter & SearchProps>({
+
+  const formik = useFormik<ProjectBasicBusinessParameter & SearchProps & BusinessManagerQuery>({
     initialValues: {} as ProjectBasicBusinessParameter,
     onSubmit:      (values) => {
       if (values.id) {

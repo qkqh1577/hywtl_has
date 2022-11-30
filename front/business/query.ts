@@ -31,3 +31,20 @@ export const initialBusinessQuery: BusinessQuery = {
   keyword:     '',
   keywordType: keywordTypeList[0].key as string,
 };
+
+export interface BusinessManagerQuery {
+  keywordTypeOfManager?: string;
+  keywordOfManager?: string;
+}
+
+
+export const managerKeywordTypeList: Option[] = [
+  {
+    key:  'by_name',
+    text: '이름',
+  },
+  {
+    key:  'by_department',
+    text: '소속',
+  },
+]

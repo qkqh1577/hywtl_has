@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
-
   return (
     <SectionLayout title="최종 입찰 정보">
       <Box sx={{
@@ -37,7 +36,8 @@ export default function ProjectBasicBidSection({ detail, rivalList }: Props) {
             <DataFieldWithLabel label="입찰 일자">
               <Input
                 readOnly
-                key={detail?.bidDate?.toDateString()}
+                key={detail?.bidDate ? dayjs(detail.bidDate)
+                .format('YYYY-MM-DD') : ''}
                 defaultValue={detail?.bidDate ? dayjs(detail.bidDate)
                 .format('YYYY-MM-DD') : ''}
               />

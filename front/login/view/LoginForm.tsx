@@ -152,7 +152,7 @@ export default function LoginForm() {
                     </Box>
                   </Grid>
                   <Grid item sm={12} sx={{ color: '#700', textAlign: 'center' }}>
-                    초기 관리자 계정: admin / qwe123
+                    초기 관리자 계정 문의: woo@howoocast.com
                   </Grid>
                 </Grid>
               </Form>

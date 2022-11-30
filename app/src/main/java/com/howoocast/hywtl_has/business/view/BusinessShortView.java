@@ -5,9 +5,8 @@ import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.BusinessManagerStatus;
 import java.util.List;
 import java.util.Optional;
-import lombok.Getter;
-
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 @Getter
 public class BusinessShortView {
@@ -36,8 +35,9 @@ public class BusinessShortView {
             .map(BusinessShortView::toView)
             .map(List::size)
             .orElse(0);
-        // TODO: bind project count
-        target.projectCount = 0;
+        target.projectCount = Optional.ofNullable(source.getManagerList())
+            .map(BusinessShortView::count).orElse(0);
+
         target.note = source.getNote();
         target.fax = source.getFax();
         return target;
@@ -48,5 +48,9 @@ public class BusinessShortView {
             .filter(manager -> manager.getStatus() == BusinessManagerStatus.IN_OFFICE)
             .map(BusinessManagerView::assemble)
             .collect(Collectors.toList());
+    }
+
+    private static Integer count(List<BusinessManager> list) {
+        return list.stream().map(manager -> manager.getProjectList().size()).reduce(0, Integer::sum);
     }
 }

@@ -8,6 +8,8 @@ import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.project.view.ProjectShortView;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BusinessService {
 
     private final BusinessRepository repository;
+
+    private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
 
     @Transactional(readOnly = true)
     public Page<Business> findAll(@Nullable Predicate predicate, Pageable pageable) {
@@ -106,6 +110,7 @@ public class BusinessService {
                         managerInstance.change(
                             managerParameter.getName(),
                             managerParameter.getJobTitle(),
+                            managerParameter.getDepartment(),
                             managerParameter.getMobilePhone(),
                             managerParameter.getOfficePhone(),
                             managerParameter.getEmail(),
@@ -171,12 +176,17 @@ public class BusinessService {
         return BusinessManager.of(
             parameter.getName(),
             parameter.getJobTitle(),
+            parameter.getDepartment(),
             parameter.getMobilePhone(),
             parameter.getOfficePhone(),
             parameter.getEmail(),
             parameter.getMeta(),
             parameter.getStatus()
         );
+    }
+
+    public List<ProjectShortView> getProjectList(Long id) {
+        return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream().map(projectBasicBusiness -> ProjectShortView.assemble(projectBasicBusiness.getProject())).collect(Collectors.toList());
     }
 }
 

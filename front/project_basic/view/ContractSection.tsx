@@ -24,7 +24,6 @@ interface Props {
 
 export default function ProjectBasicContractSection({ detail }: Props) {
   const estimate = detail?.estimate ?? {} as ProjectEstimateVO;
-
   return (
     <SectionLayout title="최종 계약 정보">
       <Box sx={{
@@ -109,6 +108,11 @@ export default function ProjectBasicContractSection({ detail }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
+            {!detail?.collection?.stageList && (
+              <TableRow>
+                <Td colSpan={4}>최종 선택된 계약서가 없습니다.</Td>
+              </TableRow>
+            )}
             {detail?.collection?.stageList?.map((item,
                                                  i
             ) => (

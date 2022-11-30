@@ -48,7 +48,9 @@ public class ProjectBasicBusinessService {
         Business business = new CustomFinder<>(businessRepository, Business.class).byId(parameter.getBusinessId());
         BusinessManager businessManager = new CustomFinder<>(businessManagerRepository, BusinessManager.class).byId(
             parameter.getBusinessManagerId());
-
+        List<Project> projects = businessManager.getProjectList();
+        projects.add(project);
+        businessManager.updateProjectCount(projects);
         ProjectBasicBusiness instance = ProjectBasicBusiness.of(
             parameter.getInvolvedType(),
             project,

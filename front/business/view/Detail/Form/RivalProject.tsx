@@ -20,6 +20,7 @@ interface Props {
 }
 
 export default function BusinessRivalProjectListSection(props: Props) {
+
   return (
     <Box sx={{
       display:  'flex',
@@ -37,7 +38,7 @@ export default function BusinessRivalProjectListSection(props: Props) {
         alignItems:     'center',
         marginBottom:   '10px',
       }}>
-        <TextBox variant="body7">경쟁 프로젝트 정보</TextBox>
+        <TextBox variant="body7">입찰 경쟁 프로젝트 정보</TextBox>
       </Box>
       <Box sx={{
         display:  'flex',
@@ -75,18 +76,22 @@ export default function BusinessRivalProjectListSection(props: Props) {
                     {project.code}
                   </Td>
                   <Td>
-                    {project.name}
+                    {project.code}
                   </Td>
                   <Td>
-                    <DateFormat date={project.bidBeginDate} />
-                    ~
-                    <DateFormat date={project.bidCloseDate} />
+                    {project.beginDate && (<DateFormat date={project.beginDate} />)}
+                    {project.beginDate && project.closeDate && ' ~ '}
+                    {project.closeDate && (<DateFormat date={project.closeDate} />)}
                   </Td>
                   <Td>
-                    {project.win.name}
+                    {project.win ? project.win.name : ''}
                   </Td>
                   <Td>
-                    <Button shape="small">새 창으로 상세 보기</Button>
+                    <Button shape="small" onClick={() => {
+                      window.open(`/project/sales-management/${project.id}/basic`);
+                    }}>
+                      새 창으로 상세 보기
+                    </Button>
                   </Td>
                 </TableRow>
               ))}

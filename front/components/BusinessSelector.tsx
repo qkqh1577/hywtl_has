@@ -22,9 +22,11 @@ import {
 } from 'redux-saga/effects';
 import { businessApi } from 'business/api';
 import {
+  BusinessManagerQuery,
   BusinessQuery,
   initialBusinessQuery,
-  keywordTypeList
+  keywordTypeList,
+  managerKeywordTypeList
 } from 'business/query';
 import React, {
   useCallback,
@@ -183,19 +185,24 @@ export function BusinessSelectorModalRoute() {
 
   const dispatch = useDispatch();
   const { modal, list, managerList } = useSelector((root: RootState) => root.businessSelector);
+  const [managers, setManagers] = useState<BusinessManagerVO[]>(managerList ?? []);
+  const [isSearched, setIsSearched] = useState(false);
+
   const onClose = useCallback(() => {
     dispatch(businessSelectorAction.setModal(undefined));
   }, [dispatch]);
   const { error } = useDialog();
-
   const open = !!modal;
   const [business, setBusiness] = useState<BusinessIdWithManagerId>({ id: undefined, managerId: undefined });
 
-
   const setFilter = useCallback((query: BusinessQuery) => dispatch(businessSelectorAction.setFilter(query)), [dispatch]);
   const setId = useCallback((businessId: BusinessId | undefined) => dispatch(businessSelectorAction.setId(businessId)), [dispatch]);
-  const formik = useFormik<BusinessQuery>({
-    initialValues: initialBusinessQuery,
+  const formik = useFormik<BusinessQuery & BusinessManagerQuery>({
+    initialValues: {
+      ...initialBusinessQuery,
+      keywordTypeOfManager: managerKeywordTypeList[0].key as string,
+      keywordOfManager:     '',
+    },
     onSubmit:      (values) => {
       if (!modal) {
         return;
@@ -210,7 +217,6 @@ export function BusinessSelectorModalRoute() {
       if (modal?.withEmployee && modal.id) {
         setId(BusinessId(modal.id));
       }
-
       formik.setValues(initialBusinessQuery);
       setBusiness(prevState => ({ ...prevState, id: modal.id, managerId: modal.withEmployee }));
     }
@@ -224,9 +230,36 @@ export function BusinessSelectorModalRoute() {
     if (modal?.hasEmployee) {
       if (business.id) {
         setId(business.id);
+        formik.setFieldValue('keywordTypeOfManager', managerKeywordTypeList[0].key as string);
+        formik.setFieldValue('keywordOfManager', '');
       }
     }
-  }, [business.id, business.managerId]);
+  }, [business.id]);
+
+  useEffect( () => {
+    if (managerList) {
+      setManagers(managerList.filter(manager => {
+        if (formik.values.keywordTypeOfManager === 'by_name') {
+          if (formik.values.keywordOfManager) {
+            return manager.name.includes(formik.values.keywordOfManager);
+          }
+          else {
+            return manager;
+          }
+        }
+        else if (formik.values.keywordTypeOfManager === 'by_department') {
+          if (formik.values.keywordOfManager) {
+            if (manager.department) {
+              return manager.department.includes(formik.values.keywordOfManager);
+            }
+          }
+          else {
+            return manager;
+          }
+        }
+      }));
+    }
+  }, [business.id, managerList, isSearched]);
 
   return (
     <ModalLayout
@@ -377,57 +410,109 @@ export function BusinessSelectorModalRoute() {
             </Box>
             {modal?.hasEmployee && (
               <Box sx={{
-                width:        '49%',
-                display:      'flex',
-                flexWrap:     'wrap',
-                alignContent: 'flex-start'
+                width: '49%',
               }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <Td>선택</Td>
-                      <Td>소속</Td>
-                      <Td>이름</Td>
-                      <Td>직위</Td>
-                      <Td>핸드폰 번호</Td>
-                      <Td>이메일 주소</Td>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {!business.id && managerList && (
+                <Box sx={{
+                  width:          '100%',
+                  display:        'flex',
+                  flexWrap:       'nowrap',
+                  border:         `1px solid ${ColorPalette._e4e9f2}`,
+                  padding:        '10px 0',
+                  alignItems:     'center',
+                  justifyContent: 'space-around',
+                }}>
+                  <Box sx={{ width: '15%', display: 'flex' }}>
+                    <Select
+                      value={formik.values.keywordTypeOfManager ?? ''}
+                      variant="outlined"
+                      onChange={(e) => {
+                        const value = e.target.value || undefined;
+                        if (formik.values.keywordTypeOfManager !== value) {
+                          formik.setFieldValue('keywordTypeOfManager', value);
+                        }
+                      }}>
+                      {managerKeywordTypeList.map(item => (
+                        <MenuItem key={item.key} value={item.key}>{item.text}</MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                  <Box sx={{ width: '60%', display: 'flex' }}>
+                    <Input
+                      variant="outlined"
+                      value={formik.values.keywordOfManager ?? ''}
+                      placeholder="검색어를 입력하세요"
+                      onChange={(e) => {
+                        const value = e.target.value || undefined;
+                        if (formik.values.keywordOfManager !== value) {
+                          formik.setFieldValue('keywordOfManager', value);
+                        }
+                      }
+                      }
+                    />
+                  </Box>
+                  <Box sx={{ width: '10%', display: 'flex' }}>
+                    <Button
+                      disabled={modal?.allowMyBusiness && business.id === 1 || formik.isSubmitting}
+                      onClick={() => {
+                        setIsSearched(!isSearched);
+                      }}>
+                      검색
+                    </Button>
+                  </Box>
+                </Box>
+                <Box sx={{
+                  width:        '100%',
+                  display:      'flex',
+                  flexWrap:     'wrap',
+                  alignContent: 'flex-start'
+                }}>
+                  <Table>
+                    <TableHead>
                       <TableRow>
-                        <Td colSpan={6}>
-                          업체가 선택되지 않았습니다.
-                        </Td>
+                        <Td>선택</Td>
+                        <Td>소속</Td>
+                        <Td>이름</Td>
+                        <Td>직위</Td>
+                        <Td>핸드폰 번호</Td>
+                        <Td>이메일 주소</Td>
                       </TableRow>
-                    )}
-                    {business.id && managerList.length === 0 && (
-                      <TableRow>
-                        <Td colSpan={6}>
-                          조회 결과가 없습니다.
-                        </Td>
-                      </TableRow>
-                    )}
-                    {managerList.map(manager => (
-                      <TableRow key={manager.id}>
-                        <Td>
-                          <Radio
-                            value={manager.id}
-                            checked={manager.id === business.managerId}
-                            onChange={() => {
-                              setBusiness(prevState => ({ ...prevState, managerId: manager.id }));
-                            }}
-                          />
-                        </Td>
-                        <Td>{manager.department}</Td>
-                        <Td>{manager.name}</Td>
-                        <Td>{manager.jobTitle}</Td>
-                        <Td>{manager.mobilePhone}</Td>
-                        <Td>{manager.email}</Td>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {!business.id && managers && (
+                        <TableRow>
+                          <Td colSpan={6}>
+                            업체가 선택되지 않았습니다.
+                          </Td>
+                        </TableRow>
+                      )}
+                      {business.id && managers.length === 0 && (
+                        <TableRow>
+                          <Td colSpan={6}>
+                            조회 결과가 없습니다.
+                          </Td>
+                        </TableRow>
+                      )}
+                      {managers.map(manager => (
+                        <TableRow key={manager.id}>
+                          <Td>
+                            <Radio
+                              value={manager.id}
+                              checked={manager.id === business.managerId}
+                              onChange={() => {
+                                setBusiness(prevState => ({ ...prevState, managerId: manager.id }));
+                              }}
+                            />
+                          </Td>
+                          <Td>{manager.department}</Td>
+                          <Td>{manager.name}</Td>
+                          <Td>{manager.jobTitle}</Td>
+                          <Td>{manager.mobilePhone}</Td>
+                          <Td>{manager.email}</Td>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
               </Box>
             )}
           </Box>
