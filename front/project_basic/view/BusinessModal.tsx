@@ -34,6 +34,7 @@ import {
 } from 'business/query';
 import Input from 'layouts/Input';
 import { ProjectBasicBusinessId } from 'project_basic/domain';
+import TextBox from 'layouts/Text';
 
 interface Props {
   open: boolean;
@@ -87,25 +88,25 @@ export default function ProjectBasicBusinessModal(props: Props) {
 
   return (
     <ModalLayout
-      width="80vw"
+      width={`${!edit ? '40vw' : '80vw'}`}
       open={props.open}
       title={!edit ? '관계사 상세' : (id ? '관계사 수정' : '관계사 등록')}
       onClose={props.onClose}
       children={
         <Box sx={{
           width:          '100%',
-          display:        'flex',
+          display:        `${!edit ? 'block': 'flex'}`,
           flexWrap:       'wrap',
           justifyContent: 'space-between',
         }}>
           <Box sx={{
-            width:        '49%',
+            width:         `${!edit ? '100%': '49%'}`,
             display:      'flex',
             flexWrap:     'wrap',
             alignContent: 'flex-start',
           }}>
             <Box sx={{
-              width:        '50%',
+              width:         `${!edit ? '100%': '50%'}`,
               display:      'flex',
               flexWrap:     'nowrap',
               marginBottom: '10px',
@@ -211,12 +212,16 @@ export default function ProjectBasicBusinessModal(props: Props) {
               }}>
                 <Box sx={{ width: '45%' }}>
                   <DataFieldWithLabel label="업체">
-                    {formik.values.business?.name}
+                    <TextBox variant="body2">
+                      {formik.values.business?.name}
+                    </TextBox>
                   </DataFieldWithLabel>
                 </Box>
                 <Box sx={{ width: '45%' }}>
                   <DataFieldWithLabel label="업체 주소">
-                    {formik.values.business?.address}
+                    <TextBox variant="body2">
+                      {formik.values.business?.address}
+                    </TextBox>
                   </DataFieldWithLabel>
                 </Box>
               </Box>
@@ -264,7 +269,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
             )}
           </Box>
           <Box sx={{
-            width:        '49%',
+            width:         `${!edit ? '100%': '49%'}`,
             display:      'flex',
             flexWrap:     'wrap',
             alignContent: 'flex-start'
