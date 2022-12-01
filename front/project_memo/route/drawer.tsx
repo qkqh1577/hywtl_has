@@ -40,17 +40,17 @@ export default function ProjectMemoDrawerRoute() {
     dispatch(projectMemoAction.setDrawer(typeof projectId !== 'undefined'));
   }, [projectId]);
   // usePrompt('페이지 이동 또는 새로고침 시, 작성완료 되지 않은 메모는 초기화됩니다. 페이지를 이동하시겠습니까?', !isProjectPage);
-  useEffect(() => {
-    if (projectMemo?.description || projectMemo?.attendanceList) {
-      confirm({
-        children:     '페이지 이동 또는 새로고침 시, 작성완료 되지 않은 메모는 초기화됩니다. 페이지를 이동하시겠습니까?',
-        afterConfirm: () => {
-          navigate(-1);
-        },
-        confirmText:  '확인',
-      });
-    }
-  }, [isProjectPage]);
+  // useEffect(() => {
+  //   if (projectMemo?.description || projectMemo?.attendanceList) {
+  //     confirm({
+  //       children:     '페이지 이동 또는 새로고침 시, 작성완료 되지 않은 메모는 초기화됩니다. 페이지를 이동하시겠습니까?',
+  //       afterConfirm: () => {
+  //         navigate(-1);
+  //       },
+  //       confirmText:  '확인',
+  //     });
+  //   }
+  // }, [isProjectPage]);
 
   if (!isProjectPage || !projectId) {
     return null;
