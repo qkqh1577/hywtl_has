@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -45,6 +46,7 @@ public class ProjectMemo extends CustomEntity {
     @ElementCollection
     private List<Long> attendanceList;
 
+    private Boolean isOpenedAttendanceList;
 
     public static ProjectMemo of(
         Project project,
@@ -59,15 +61,19 @@ public class ProjectMemo extends CustomEntity {
         instance.writer = writer;
         instance.description = description;
         instance.attendanceList = attendanceList;
+        instance.isOpenedAttendanceList = attendanceList != null && attendanceList.size() > 0;
         return instance;
     }
 
     public void change(
         ProjectMemoCategory category,
-        String description
+        String description,
+        @Nullable Boolean isOpenedAttendanceList
     ) {
         this.category = category;
         this.description = description;
+        if (Objects.nonNull(isOpenedAttendanceList)) {
+            this.isOpenedAttendanceList = isOpenedAttendanceList;
+        }
     }
-
 }

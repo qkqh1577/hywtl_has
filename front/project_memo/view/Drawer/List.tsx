@@ -29,13 +29,15 @@ export interface ProjectMemoListProps
   login: LoginVO | undefined;
   list: ProjectMemoVO[];
   onDelete: DefaultFunction<ProjectMemoId>;
+  onChange: DefaultFunction<ProjectMemoChangeParameter>;
 }
 
 export default function ProjectMemoList({
                                           login,
                                           list,
                                           onDelete,
-                                          formik
+                                          formik,
+                                          onChange
                                         }: ProjectMemoListProps) {
 
   return (
@@ -47,6 +49,24 @@ export default function ProjectMemoList({
       alignItems: 'flex-start',
       padding:    '0 10px 15px 10px',
     }}>
+      {list && Array.isArray(list) && list.length === 0 && (
+        <Box
+          sx={{
+            display:         'flex',
+            flexWrap:        'wrap',
+            width:           '100%',
+            border:          `1px solid ${ColorPalette._e4e9f2}`,
+            borderRadius:    '5px',
+            marginTop:       '10px',
+            backgroundColor: ColorPalette._ffffff,
+            padding:         '15px',
+            justifyContent:  'center',
+          }}>
+          <TextBox variant="body2">
+            해당하는 메모가 없습니다.
+          </TextBox>
+        </Box>
+      )}
       {list && list.map((item) => (
         <Box
           key={item.id}
@@ -229,15 +249,81 @@ export default function ProjectMemoList({
             width:          '100%',
             justifyContent: 'flex-start',
           }}>
-            {item.attendanceList?.map((item) => (
-              <UserIcon
-                key={item}
-                user={item}
-                sx={{
-                  marginRight: '4px',
-                }}
-              />
-            ))}
+            {formik.values.id !== item.id && item.isOpenedAttendanceList && (
+              <>
+                {item.attendanceList?.map((item) => (
+                  <UserIcon
+                    key={item}
+                    user={item}
+                    sx={{
+                      marginRight: '4px',
+                    }}
+                  />
+                ))}
+                <Box
+                  onClick={() => {
+                    onChange({
+                      id:                 item.id,
+                      description:       item.description,
+                      category:          item.category,
+                      isOpenedAttendanceList: false,
+                    })
+                  }}
+                  sx={{
+                    display:         'flex',
+                    width:           '25px',
+                    height:          '25px',
+                    justifyContent:  'center',
+                    fontSize:        '18px',
+                    borderRadius:    '25px',
+                    backgroundColor: ColorPalette._386dd6,
+                    color:           ColorPalette._f1f5fc,
+                    border:          `1px solid ${ColorPalette._e4e9f2}`,
+                    overflow:        'hidden',
+                    cursor:          'pointer',
+                    alignItems:      'center',
+                  }}>
+                  <Typography sx={{
+                    fontSize: '10px',
+                  }}>
+                    접기
+                  </Typography>
+                </Box>
+              </>
+            )}
+            {formik.values.id !== item.id
+              && (Array.isArray(item.attendanceList) && item.attendanceList.length > 0)
+              && !item.isOpenedAttendanceList && (
+                <Box
+                  onClick={() => {
+                    onChange({
+                      id:                 item.id,
+                      description:       item.description,
+                      category:          item.category,
+                      isOpenedAttendanceList: true,
+                    })
+                  }}
+                  sx={{
+                    display:         'flex',
+                    width:           '25px',
+                    height:          '25px',
+                    justifyContent:  'center',
+                    fontSize:        '18px',
+                    borderRadius:    '25px',
+                    backgroundColor: ColorPalette._386dd6,
+                    color:           ColorPalette._f1f5fc,
+                    border:          `1px solid ${ColorPalette._e4e9f2}`,
+                    overflow:        'hidden',
+                    cursor:          'pointer',
+                    alignItems:      'center',
+                  }}>
+                  <Typography sx={{
+                    fontSize: '10px',
+                  }}>
+                    열기
+                  </Typography>
+                </Box>
+              )}
           </Box>
         </Box>
       ))}

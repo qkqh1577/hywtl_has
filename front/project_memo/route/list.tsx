@@ -26,7 +26,6 @@ export default function ProjectMemoDrawerListRoute() {
   const { page, requestChange, requestDelete } = useSelector((root: RootState) => root.projectMemo);
   const { detail: loginUser } = useSelector((root: RootState) => root.login);
   const [list, setList] = useState<ProjectMemoVO[]>([]);
-
   const onChange = useCallback((params: ProjectMemoChangeParameter) => dispatch(projectMemoAction.change(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectMemoId) => dispatch(projectMemoAction.deleteOne(id)), [dispatch]);
 
@@ -74,6 +73,7 @@ export default function ProjectMemoDrawerListRoute() {
       list={list}
       onDelete={onDelete}
       formik={formik}
+      onChange={onChange}
     />
   );
 }

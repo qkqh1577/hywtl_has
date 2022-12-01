@@ -62,4 +62,5 @@ export interface ProjectMemoVO {
   createdAt: Date;
   modifiedAt?: Date;
   attendanceList?: UserId[];
+  isOpenedAttendanceList: boolean;
 }

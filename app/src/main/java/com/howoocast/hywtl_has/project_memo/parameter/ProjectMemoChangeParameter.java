@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -15,5 +16,6 @@ public class ProjectMemoChangeParameter {
     private String description;
     @NotNull(message = ProjectMemo.KEY + ".category.not_null")
     private ProjectMemoCategory category;
-
+    @Nullable
+    private Boolean isOpenedAttendanceList;
 }
