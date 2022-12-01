@@ -70,7 +70,7 @@ export default function UserIcon(props: Props) {
       )}
       {user && (
         <Tooltip
-          title={user.name}
+          title={`${user.department.name} ${user.name}`}
           placement="top"
         >
           {user.profile?.id

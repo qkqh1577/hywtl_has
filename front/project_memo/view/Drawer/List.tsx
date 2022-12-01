@@ -23,6 +23,7 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectMemoChangeParameter } from 'project_memo/parameter';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
+import useDialog from 'dialog/hook';
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
@@ -39,7 +40,7 @@ export default function ProjectMemoList({
                                           formik,
                                           onChange
                                         }: ProjectMemoListProps) {
-
+  const { confirm } = useDialog();
   return (
     <Box sx={{
       display:    'flex',
@@ -154,7 +155,13 @@ export default function ProjectMemoList({
                         formik.setValues({} as ProjectMemoChangeParameter);
                       }
                       else {
-                        onDelete(item.id);
+                        confirm({
+                          children:   '해당 메모를 삭제하시겠습니까?',
+                          afterConfirm: () => {
+                            onDelete(item.id);
+                          },
+                          confirmText:  '확인',
+                        });
                       }
                     }}
                   />
@@ -263,11 +270,11 @@ export default function ProjectMemoList({
                 <Box
                   onClick={() => {
                     onChange({
-                      id:                 item.id,
-                      description:       item.description,
-                      category:          item.category,
+                      id:                     item.id,
+                      description:            item.description,
+                      category:               item.category,
                       isOpenedAttendanceList: false,
-                    })
+                    });
                   }}
                   sx={{
                     display:         'flex',
@@ -297,11 +304,11 @@ export default function ProjectMemoList({
                 <Box
                   onClick={() => {
                     onChange({
-                      id:                 item.id,
-                      description:       item.description,
-                      category:          item.category,
+                      id:                     item.id,
+                      description:            item.description,
+                      category:               item.category,
                       isOpenedAttendanceList: true,
-                    })
+                    });
                   }}
                   sx={{
                     display:         'flex',
