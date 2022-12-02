@@ -106,9 +106,11 @@ function* watchUpsert() {
       yield put(businessAction.requestUpsert('done'));
       if (params.id) {
         yield put(dialogAction.openAlert('변경하였습니다.'));
+        yield put(businessAction.checkRegistrationNumber(undefined));
       }
       else {
         yield put(dialogAction.openAlert('등록하였습니다.'));
+        yield put(businessAction.checkRegistrationNumber(undefined));
       }
     }
     catch (e) {
