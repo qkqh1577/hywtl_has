@@ -23,21 +23,25 @@ import { FormikLayoutProps } from 'layouts/PageLayout';
 import { ProjectMemoChangeParameter } from 'project_memo/parameter';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
+import useDialog from 'dialog/hook';
+import Button from 'layouts/Button';
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
   login: LoginVO | undefined;
   list: ProjectMemoVO[];
   onDelete: DefaultFunction<ProjectMemoId>;
+  onChange: DefaultFunction<ProjectMemoChangeParameter>;
 }
 
 export default function ProjectMemoList({
                                           login,
                                           list,
                                           onDelete,
-                                          formik
+                                          formik,
+                                          onChange
                                         }: ProjectMemoListProps) {
-
+  const { confirm } = useDialog();
   return (
     <Box sx={{
       display:    'flex',
@@ -47,6 +51,24 @@ export default function ProjectMemoList({
       alignItems: 'flex-start',
       padding:    '0 10px 15px 10px',
     }}>
+      {list && Array.isArray(list) && list.length === 0 && (
+        <Box
+          sx={{
+            display:         'flex',
+            flexWrap:        'wrap',
+            width:           '100%',
+            border:          `1px solid ${ColorPalette._e4e9f2}`,
+            borderRadius:    '5px',
+            marginTop:       '10px',
+            backgroundColor: ColorPalette._ffffff,
+            padding:         '15px',
+            justifyContent:  'center',
+          }}>
+          <TextBox variant="body2">
+            해당하는 메모가 없습니다.
+          </TextBox>
+        </Box>
+      )}
       {list && list.map((item) => (
         <Box
           key={item.id}
@@ -95,12 +117,13 @@ export default function ProjectMemoList({
             </Box>
             {item.writer.id === (login?.id ?? 1) && (
               <Box sx={{
-                display:  'flex',
-                flexWrap: 'unwrap',
+                display:    'flex',
+                flexWrap:   'unwrap',
+                visibility: formik.values.id === item.id ? 'hidden' : 'visible'
               }}>
-                <Tooltip title={formik.values.id === item.id ? '저장' : '수정'}>
+                <Tooltip title={'수정'}>
                   <FontAwesomeIcon
-                    icon={formik.values.id === item.id ? 'floppy-disk' : 'pen'}
+                    icon={'pen'}
                     style={{
                       cursor:      'pointer',
                       fontSize:    '11px',
@@ -108,20 +131,15 @@ export default function ProjectMemoList({
                       marginRight: '10px',
                     }}
                     onClick={() => {
-                      if (formik.values.id === item.id) {
-                        formik.handleSubmit();
-                      }
-                      else {
-                        formik.setValues({
-                          id:          item.id,
-                          description: item.description,
-                          category:    item.category,
-                        });
-                      }
+                      formik.setValues({
+                        id:          item.id,
+                        description: item.description,
+                        category:    item.category,
+                      });
                     }}
                   />
                 </Tooltip>
-                <Tooltip title={formik.values.id === item.id ? '변경 취소' : '삭제'}>
+                <Tooltip title={'삭제'}>
                   <FontAwesomeIcon
                     icon="trash"
                     style={{
@@ -130,18 +148,34 @@ export default function ProjectMemoList({
                       color:    ColorPalette._9bb6ea,
                     }}
                     onClick={() => {
-                      if (formik.values.id === item.id) {
-                        formik.setValues({} as ProjectMemoChangeParameter);
-                      }
-                      else {
-                        onDelete(item.id);
-                      }
+                      confirm({
+                        children:     '해당 메모를 삭제하시겠습니까?',
+                        afterConfirm: () => {
+                          onDelete(item.id);
+                        },
+                        confirmText:  '확인',
+                      });
                     }}
                   />
                 </Tooltip>
               </Box>
             )}
           </Box>
+          {item.modifiedAt && (
+            <Box sx={{
+              display:    'flex',
+              flexWrap:   'unwrap',
+              alignItems: 'center',
+            }}>
+              <Typography sx={{
+                fontSize:    '11px',
+                fontWeight:  'bold',
+                marginRight: '4px'
+              }}>
+                (<DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" /> 편집됨)
+              </Typography>
+            </Box>
+          )}
           {formik.values.id !== item.id && (
             <Box sx={{
               display:  'flex',
@@ -182,28 +216,10 @@ export default function ProjectMemoList({
             }}>
               <FormikProvider value={formik}>
                 <Box sx={{
-                  display: 'flex',
-                  width:   '50%',
-                }}>
-                  <Select
-                    variant="outlined"
-                    value={formik.values.category ?? ''}
-                    onChange={(e) => {
-                      const value = e.target.value || undefined;
-                      if (formik.values.category !== value) {
-                        formik.setFieldValue('category', value);
-                      }
-                    }}>
-                    {projectMemoCategoryList.map(item => (
-                      <MenuItem key={item} value={item}>
-                        {projectMemoCategoryName(item)}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
-                <Box sx={{
-                  display: 'flex',
-                  width:   '100%',
+                  display:      'flex',
+                  width:        '100%',
+                  border:       `1px solid ${ColorPalette._e4e9f2}`,
+                  marginBottom: '5px'
                 }}>
                   <Input
                     required
@@ -220,6 +236,61 @@ export default function ProjectMemoList({
                     }}
                   />
                 </Box>
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width:   '100%'
+                }}>
+                  <Box sx={{
+                    display: 'flex',
+                    width:   '100%',
+                  }}>
+                    <Select
+                      variant="outlined"
+                      value={formik.values.category ?? ''}
+                      onChange={(e) => {
+                        const value = e.target.value || undefined;
+                        if (formik.values.category !== value) {
+                          formik.setFieldValue('category', value);
+                        }
+                      }}>
+                      {projectMemoCategoryList.map(item => (
+                        <MenuItem key={item} value={item}>
+                          {projectMemoCategoryName(item)}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                  <Box sx={{
+                    display:        'flex',
+                    width:          '100%',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Button
+                      sx={{
+                        margin: '0px 5px'
+                      }}
+                      onClick={() => {
+                        console.log('formik.values.id === item.id : ', formik.values.id, item.id);
+                        if (formik.values.id === item.id) {
+                          formik.handleSubmit();
+                        }
+                      }}
+                    >
+                      저장
+                    </Button>
+                    <Button
+                      shape="basic2"
+                      onClick={() => {
+                        if (formik.values.id === item.id) {
+                          formik.setValues({} as ProjectMemoChangeParameter);
+                        }
+                      }}
+                    >
+                      취소
+                    </Button>
+                  </Box>
+                </Box>
               </FormikProvider>
             </Box>
           )}
@@ -229,15 +300,81 @@ export default function ProjectMemoList({
             width:          '100%',
             justifyContent: 'flex-start',
           }}>
-            {item.attendanceList?.map((item) => (
-              <UserIcon
-                key={item}
-                user={item}
-                sx={{
-                  marginRight: '4px',
-                }}
-              />
-            ))}
+            {formik.values.id !== item.id && item.isOpenedAttendanceList && (
+              <>
+                {item.attendanceList?.map((item) => (
+                  <UserIcon
+                    key={item}
+                    user={item}
+                    sx={{
+                      marginRight: '4px',
+                    }}
+                  />
+                ))}
+                <Box
+                  onClick={() => {
+                    onChange({
+                      id:                     item.id,
+                      description:            item.description,
+                      category:               item.category,
+                      isOpenedAttendanceList: false,
+                    });
+                  }}
+                  sx={{
+                    display:         'flex',
+                    width:           '25px',
+                    height:          '25px',
+                    justifyContent:  'center',
+                    fontSize:        '18px',
+                    borderRadius:    '25px',
+                    backgroundColor: ColorPalette._386dd6,
+                    color:           ColorPalette._f1f5fc,
+                    border:          `1px solid ${ColorPalette._e4e9f2}`,
+                    overflow:        'hidden',
+                    cursor:          'pointer',
+                    alignItems:      'center',
+                  }}>
+                  <Typography sx={{
+                    fontSize: '10px',
+                  }}>
+                    접기
+                  </Typography>
+                </Box>
+              </>
+            )}
+            {formik.values.id !== item.id
+              && (Array.isArray(item.attendanceList) && item.attendanceList.length > 0)
+              && !item.isOpenedAttendanceList && (
+                <Box
+                  onClick={() => {
+                    onChange({
+                      id:                     item.id,
+                      description:            item.description,
+                      category:               item.category,
+                      isOpenedAttendanceList: true,
+                    });
+                  }}
+                  sx={{
+                    display:         'flex',
+                    width:           '25px',
+                    height:          '25px',
+                    justifyContent:  'center',
+                    fontSize:        '18px',
+                    borderRadius:    '25px',
+                    backgroundColor: ColorPalette._386dd6,
+                    color:           ColorPalette._f1f5fc,
+                    border:          `1px solid ${ColorPalette._e4e9f2}`,
+                    overflow:        'hidden',
+                    cursor:          'pointer',
+                    alignItems:      'center',
+                  }}>
+                  <Typography sx={{
+                    fontSize: '10px',
+                  }}>
+                    열기
+                  </Typography>
+                </Box>
+              )}
           </Box>
         </Box>
       ))}

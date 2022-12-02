@@ -26,17 +26,15 @@ import { ProjectId } from 'project/domain';
 function Element() {
   const dispatch = useDispatch();
   const id = useId();
-  const { filter, page } = useSelector((root: RootState) => root.projectLog);
-  const setFilter = useCallback((formikProps: ProjectLogQuery) => dispatch(projectLogAction.setFilter(formikProps)), [dispatch]);
-
+  const { page } = useSelector((root: RootState) => root.projectLog);
+  const setFilter = useCallback((query: ProjectLogQuery) => dispatch(projectLogAction.setFilter(query ?? initialProjectLogQuery)), [dispatch]);
   const formik = useFormik<ProjectLogQuery>({
-    initialValues: filter ?? initialProjectLogQuery,
+    initialValues: initialProjectLogQuery,
     onSubmit:      (values) => {
       setFilter({
         ...values,
         createdAt: values.createdAt ? dayjs(values.createdAt)
         .format('YYYY-MM-DD') : undefined,
-        page:      0
       });
     }
   });

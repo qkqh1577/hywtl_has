@@ -15,6 +15,7 @@ import {
 import { RootState } from 'services/reducer';
 import { dialogAction } from 'dialog/action';
 import { getErrorMessage } from 'type/Error';
+import { initialProjectQuery } from 'project/parameter';
 
 function* watchFilter() {
   while (true) {
@@ -62,11 +63,33 @@ function* watchUpdateStatus() {
       yield put(projectAction.requestUpdateStatus('request'));
       yield call(projectApi.updateStatus, id, params);
       yield put(projectAction.requestUpdateStatus('done'));
+      if (params.progressStatus) {
+        yield put(projectAction.setFilter(initialProjectQuery));
+      }
     }
     catch (e) {
       const message = getErrorMessage(projectAction.updateStatus, e);
       yield put(dialogAction.openError(message));
       yield put(projectAction.requestUpdateStatus(message));
+    }
+  }
+}
+
+function* watchDelete(){
+  while (true) {
+    yield take(projectAction.delete);
+    try {
+      const { id } = yield select((root: RootState) => root.project);
+      yield put(projectAction.requestDelete('request'));
+      // yield call(projectApi.delete, id);
+      yield put(projectAction.requestDelete('done'));
+      yield put(dialogAction.openAlert('삭제하였습니다.'));
+      yield put(projectAction.setFilter(initialProjectQuery));
+    }
+    catch (e) {
+      const message = getErrorMessage(projectAction.delete, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestDelete(message));
     }
   }
 }
@@ -101,4 +124,5 @@ export default function* projectSaga() {
   yield fork(watchAdd);
   yield fork(watchUpdateStatus);
   yield fork(watchAddFailReason);
+  yield fork(watchDelete);
 }

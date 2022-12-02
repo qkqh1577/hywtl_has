@@ -24,7 +24,11 @@ import {
 import { RootState } from 'services/reducer';
 import { closeStatus } from 'components/DataFieldProps';
 
-export default function ProjectMemoDrawerFormRoute() {
+interface Props {
+  setProjectMemo: (projectMemo: ProjectMemoAddParameter) => void;
+}
+
+export default function ProjectMemoDrawerFormRoute(props: Props) {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const { requestAdd } = useSelector((root: RootState) => root.projectMemo);
@@ -39,7 +43,6 @@ export default function ProjectMemoDrawerFormRoute() {
       add(values);
     }
   });
-
   const defaultCategory = getDefaultValue();
 
   useEffect(() => {
@@ -58,6 +61,10 @@ export default function ProjectMemoDrawerFormRoute() {
       dispatch(projectMemoAction.requestAdd('idle'));
     });
   }, [requestAdd]);
+
+  useEffect( () => {
+    props.setProjectMemo(formik.values);
+  }, [formik.values.description, formik.values.attendanceList?.length]);
 
   return (
     <FormikProvider value={formik}>

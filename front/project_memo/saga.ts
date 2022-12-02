@@ -14,6 +14,7 @@ import { dialogAction } from 'dialog/action';
 import { ProjectId } from 'project/domain';
 import { DialogStatus } from 'dialog/domain';
 import { getErrorMessage } from 'type/Error';
+import { userNotificationAction } from 'user_notification/action';
 
 function* watchFilter() {
   while (true) {
@@ -48,7 +49,9 @@ function* watchAdd() {
       yield put(projectMemoAction.requestAdd('request'));
       yield call(projectMemoApi.add, projectId, params);
       yield put(projectMemoAction.requestAdd('done'));
-      yield put(dialogAction.openAlert('등록하였습니다.'));
+      if (params.attendanceList.length > 0) {
+        yield put(userNotificationAction.requestCount());
+      }
     }
     catch (e) {
       const message = getErrorMessage(projectMemoAction.add, e);
@@ -65,7 +68,6 @@ function* watchChange() {
       yield put(projectMemoAction.requestChange('request'));
       yield call(projectMemoApi.change, params.id, params);
       yield put(projectMemoAction.requestChange('done'));
-      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectMemoAction.change, e);

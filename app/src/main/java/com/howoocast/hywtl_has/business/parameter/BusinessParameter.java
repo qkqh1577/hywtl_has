@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.business.parameter;
 
 import com.howoocast.hywtl_has.business.domain.Business;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class BusinessParameter {
 
     private String fax;
 
+    @Valid
     @NotEmpty(message = Business.KEY + ".manager_list.not_empty")
     private List<BusinessManagerParameter> managerList;
 }

@@ -46,7 +46,7 @@ export const businessAction = {
   deleteOne:                  createAction(BusinessActionType.deleteOne)<BusinessId>(),
   requestUpsert:              createAction(BusinessActionType.requestUpsert)<ApiStatus>(),
   requestDelete:              createAction(BusinessActionType.requestDelete)<ApiStatus>(),
-  checkRegistrationNumber:    createAction(BusinessActionType.checkRegistrationNumber)<RegistrationNumberState>(),
+  checkRegistrationNumber:    createAction(BusinessActionType.checkRegistrationNumber)<RegistrationNumberState | undefined>(),
   setProjectListModal:        createAction(BusinessActionType.setProjectListModal)<BusinessManagerId | undefined>(),
   setProjectList:             createAction(BusinessActionType.setProjectList)<ProjectShortVO[] | undefined>(),
 };

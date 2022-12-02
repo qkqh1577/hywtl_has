@@ -20,6 +20,7 @@ export interface ProjectMemoChangeParameter {
   id: ProjectMemoId;
   description: string;
   category: ProjectMemoCategory;
+  isOpenedAttendanceList?: boolean;
 }
 
 export interface ProjectMemoAddParameter {

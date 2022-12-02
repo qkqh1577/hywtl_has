@@ -15,7 +15,7 @@ export function ProjectMemoId(id: number) {
 export enum ProjectMemoCategory {
   /** 기본 정보 */
   BASIC             = 'BASIC',
-  BUILDING          = 'BUILDING',
+  BUILDING          = 'COMPLEX',
   ESTIMATE_CONTRACT = 'ESTIMATE_CONTRACT',
   PROGRESS          = 'PROGRESS',
   DOCUMENT          = 'DOCUMENT',
@@ -62,4 +62,5 @@ export interface ProjectMemoVO {
   createdAt: Date;
   modifiedAt?: Date;
   attendanceList?: UserId[];
+  isOpenedAttendanceList: boolean;
 }

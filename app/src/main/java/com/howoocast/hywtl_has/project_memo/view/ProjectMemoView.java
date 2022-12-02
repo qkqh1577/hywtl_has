@@ -16,6 +16,7 @@ public class ProjectMemoView {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private Boolean isOpenedAttendanceList;
 
     private List<Long> attendanceList;
 
@@ -28,6 +29,7 @@ public class ProjectMemoView {
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = source.getModifiedAt();
         target.attendanceList = source.getAttendanceList();
+        target.isOpenedAttendanceList = source.getIsOpenedAttendanceList();
         return target;
     }
 }

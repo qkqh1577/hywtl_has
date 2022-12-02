@@ -1,13 +1,11 @@
 import React from 'react';
 import LogTable, { ListProps } from 'project_log/view/LogTable';
 import SearchSection from 'project_log/view/SearchSection';
-import Footer, { FooterProps } from 'project_log/view/Footer';
 import { Box } from '@mui/material';
 import { ColorPalette } from 'assets/theme';
 
 interface Props
-  extends ListProps,
-          FooterProps {}
+  extends ListProps {}
 
 export default function ProjectLog(props: Props) {
   return (
@@ -30,7 +28,6 @@ export default function ProjectLog(props: Props) {
         <SearchSection totalElements={props.page?.totalElements ?? 0} />
       </Box>
       <LogTable {...props} />
-      <Footer {...props} />
     </Box>
   );
 };

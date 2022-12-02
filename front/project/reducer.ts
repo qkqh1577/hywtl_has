@@ -25,12 +25,15 @@ export interface ProjectState {
   drawerOpen: boolean;
   filterOpen: boolean;
   filterStatus: ProjectFilterStatus;
+  requestDelete: ApiStatus;
+
 }
 
 const initial: ProjectState = {
   requestAdd:           'idle',
   requestUpdateStatus:  'idle',
   requestAddFailReason: 'idle',
+  requestDelete:        'idle',
   addModal:             false,
   failReasonModal:      false,
   drawerOpen:           true,
@@ -108,6 +111,12 @@ export const projectReducer = createReducer(initial, {
                                             ) => ({
     ...state,
     filterStatus: action.payload,
-  })
+  }),
+  [ProjectActionType.requestDelete]:           (state,
+                                             action
+                                            ) => ({
+    ...state,
+    requestDelete: action.payload,
+  }),
 });
 

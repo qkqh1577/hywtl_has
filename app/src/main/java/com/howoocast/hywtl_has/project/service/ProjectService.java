@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +75,7 @@ public class ProjectService {
                     "reception_manager",
                     parameter.getReceptionManagerId().toString());
             });
-        String code = parameter.getProgressStatus() == ProjectProgressStatus.TEMPORARY ? null : getNextCode();
+        String code = parameter.getProgressStatus() == ProjectProgressStatus.TEMPORARY ? null : getNextCode(null);
 
         Project instance = Project.of(
             code,
@@ -140,7 +141,7 @@ public class ProjectService {
             if (parameter.getProgressStatus() != ProjectProgressStatus.TEMPORARY
                 && Objects.isNull(instance.getBasic().getCode())) {
                 // 프로젝트가 가등록을 벗어나는 경우, 프로젝트 번호 발급
-                instance.getBasic().changeCode(this.getNextCode());
+                instance.getBasic().changeCode(this.getNextCode(instance.getCreatedAt()));
                 eventPublisher.publishEvent(ProjectLogEvent.of(
                     instance,
                     "프로젝트 코드 발급",
@@ -246,12 +247,15 @@ public class ProjectService {
         return String.format("%d-01-01 00:00:00", year);
     }
 
-    private String getNextCode() {
+    private String getNextCode(@Nullable LocalDateTime createdAt) {
         int year = LocalDateTime.now().getYear();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startYear = LocalDateTime.parse(getDateString(year), formatter);
         LocalDateTime endYear = LocalDateTime.parse(getDateString(year + 1), formatter);
         Integer count = repository.countByCreatedAtBetween(startYear, endYear);
+        if (Objects.nonNull(createdAt)) {
+            count = repository.countByCreatedAtBefore(createdAt);
+        }
         return String.format("%d%03d", year, count + 1).substring(2);
     }
 
@@ -259,5 +263,26 @@ public class ProjectService {
         return repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(Project.KEY, id);
         });
+    }
+
+    @Transactional
+    public void delete(Long id, String userName) {
+        Project project = this.load(id);
+        userRepository.findByUsername(userName).ifPresent(user -> {
+            if (project.getCreatedBy() != user.getId()) {
+                throw new IllegalRequestException(
+                    Project.KEY + ".delete.illegal_request",
+                    "프로젝트 생성자만 삭제할 수 있습니다."
+                );
+            }
+        });
+        if (project.getStatus().getProgressStatus() != ProjectProgressStatus.TEMPORARY
+            && Objects.nonNull(project.getBasic().getCode())) {
+            throw new IllegalRequestException(
+                Project.KEY + ".delete.illegal_request",
+                "프로젝트 코드가 생성되지 않은 경우에만 삭제할 수 있습니다."
+            );
+        }
+        project.delete();
     }
 }

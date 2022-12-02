@@ -13,6 +13,7 @@ import com.howoocast.hywtl_has.project_basic.parameter.ProjectBasicFailReasonUpd
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicFailReasonRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +59,7 @@ public class ProjectBasicFailReasonService {
         eventPublisher.publishEvent(ProjectLogEvent.of(
             project,
             "프로젝트 견적 분류 변경",
-            project.getStatus().getEstimateExpectation().getName(),
+            Optional.ofNullable(project.getStatus().getEstimateExpectation()).map(ProjectEstimateExpectation::getName).orElse(null),
             ProjectEstimateExpectation.LOSE.getName()
         ));
         project.getStatus().setEstimateExpectation(ProjectEstimateExpectation.LOSE);

@@ -106,34 +106,32 @@ export default function (props: Props) {
         <DataFieldWithLabel
           label="생년월일"
           labelPosition="top"
-          children={
-            <DatePicker
-              disableFuture
-              value={formik.values.birthDate || null}
-              inputFormat="YYYY-MM-DD"
-              mask="____-__-__"
-              openTo="year"
-              onChange={(e) => {
-                if (e === null) {
-                  formik.setFieldValue('birthDate', undefined);
-                }
-                else {
-                  formik.setFieldValue('birthDate', dayjs(e)
-                  .format('YYYY-MM-DD'));
-                }
-              }}
-              renderInput={(parameter) => (
-                <Input
-                  {...parameter.InputProps}
-                  inputRef={parameter.inputRef}
-                  variant="standard"
-                  value={parameter.value}
-                  inputProps={parameter.inputProps}
-                />
-              )}
-            />
-          }
-        />
+        >
+          <DatePicker
+            value={formik.values.birthDate || null}
+            inputFormat="YYYY-MM-DD"
+            mask="____-__-__"
+            openTo="year"
+            onChange={(e) => {
+              if (e === null) {
+                formik.setFieldValue('birthDate', undefined);
+              }
+              else {
+                formik.setFieldValue('birthDate', dayjs(e)
+                .format('YYYY-MM-DD'));
+              }
+            }}
+            renderInput={(parameter) => (
+              <Input
+                {...parameter.InputProps}
+                inputRef={parameter.inputRef}
+                variant="standard"
+                value={parameter.value}
+                inputProps={parameter.inputProps}
+              />
+            )}
+          />
+        </DataFieldWithLabel>
       </FieldBox>
       <FieldBox>
         <DataFieldWithLabel label="성별" labelPosition="top">

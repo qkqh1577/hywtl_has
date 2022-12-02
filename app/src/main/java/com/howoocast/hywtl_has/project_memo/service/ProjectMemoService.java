@@ -86,7 +86,8 @@ public class ProjectMemoService {
         ProjectMemo instance = this.load(id);
         instance.change(
             parameter.getCategory(),
-            parameter.getDescription()
+            parameter.getDescription(),
+            parameter.getIsOpenedAttendanceList()
         );
     }
 

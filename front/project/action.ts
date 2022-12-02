@@ -35,6 +35,8 @@ export enum ProjectActionType {
   toggleDrawer         = 'project/sales/drawer/toggle',
   toggleFilter         = 'project/sales/filter/toggle',
   setFilterStatus      = 'project/sales/filter/status/set',
+  delete               = 'project/sales/delete',
+  requestDelete        = 'project/sales/delete/request',
 }
 
 export const projectAction = {
@@ -53,4 +55,6 @@ export const projectAction = {
   toggleDrawer:         createAction(ProjectActionType.toggleDrawer)(),
   toggleFilter:         createAction(ProjectActionType.toggleFilter)(),
   setFilterStatus:      createAction(ProjectActionType.setFilterStatus)<ProjectFilterStatus>(),
+  delete:               createAction(ProjectActionType.delete)(),
+  requestDelete:        createAction(ProjectActionType.requestDelete)<ApiStatus>(),
 };
