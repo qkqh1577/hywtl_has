@@ -19,7 +19,7 @@ public enum ProjectEstimateStatus {
     /**
      * 대비 견적
      */
-    CONTRAST("대비 견적");
+    COMPARE("대비 견적");
 
     private final String name;
 

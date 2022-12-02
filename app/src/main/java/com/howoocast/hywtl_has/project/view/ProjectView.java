@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project.view;
 
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
+import com.howoocast.hywtl_has.project.domain.ProjectBidStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectContractStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateStatus;
@@ -30,6 +31,7 @@ public class ProjectView {
     private ProjectEstimateExpectation estimateExpectation;
     private ProjectEstimateStatus estimateStatus;
     private ProjectContractStatus contractStatus;
+    private ProjectBidStatus bidStatus;
     private LocalDateTime modifiedAt;
 
     public static ProjectView assemble(Project source) {
@@ -53,7 +55,7 @@ public class ProjectView {
         target.estimateExpectation = source.getStatus().getEstimateExpectation();
         target.estimateStatus = source.getStatus().getEstimateStatus();
         target.contractStatus = source.getStatus().getContractStatus();
-
+        target.bidStatus = source.getStatus().getBidStatus();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
 
         return target;

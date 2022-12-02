@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,4 +77,9 @@ public class ProjectController {
         service.updateProjectStatus(id, parameter);
     }
 
+    @DeleteMapping("/project/sales/{id}")
+    public void delete(@PathVariable Long id,
+        Authentication authentication) {
+        service.delete(id, UsernameExtractor.get(authentication));
+    }
 }

@@ -42,6 +42,10 @@ class ProjectApi {
     return data;
   }
 
+  async delete(id: ProjectId): Promise<void> {
+    const { data } = await apiClient.delete(`/project/sales/${id}`);
+    return data;
+  }
 }
 
 export const projectApi = new ProjectApi();
