@@ -14,6 +14,7 @@ import { dialogAction } from 'dialog/action';
 import { ProjectId } from 'project/domain';
 import { DialogStatus } from 'dialog/domain';
 import { getErrorMessage } from 'type/Error';
+import { userNotificationAction } from 'user_notification/action';
 
 function* watchFilter() {
   while (true) {
@@ -48,6 +49,9 @@ function* watchAdd() {
       yield put(projectMemoAction.requestAdd('request'));
       yield call(projectMemoApi.add, projectId, params);
       yield put(projectMemoAction.requestAdd('done'));
+      if (params.attendanceList.length > 0) {
+        yield put(userNotificationAction.requestCount());
+      }
     }
     catch (e) {
       const message = getErrorMessage(projectMemoAction.add, e);
