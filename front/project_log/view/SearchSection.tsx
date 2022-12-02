@@ -18,18 +18,19 @@ interface Props {
 
 function SubmitButton() {
 
-  const formikContext = useContext(FormikContext);
+  const formik = useContext(FormikContext);
   const onClick = () => {
-    if (formikContext) {
-      const { handleSubmit } = formikContext;
-      handleSubmit();
+    if (formik) {
+      formik.setFieldValue('page', 0);
+      formik.handleSubmit();
+      formik.setSubmitting(false);
     }
   };
 
   return (
     <Button
       children="검색"
-      disabled={formikContext?.isSubmitting}
+      disabled={formik?.isSubmitting}
       onClick={onClick}
     />
   );
