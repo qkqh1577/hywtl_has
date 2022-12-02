@@ -12,6 +12,7 @@ import ReadButton from 'user_notification/view/Button/ReadButton';
 import DateFormat from 'layouts/DateFormat';
 import { useNavigate } from 'react-router-dom';
 import TextBox from 'layouts/Text';
+import useDialog from 'dialog/hook';
 
 interface Props {
   onDelete: (id: UserNotificationId) => void;
@@ -32,6 +33,7 @@ export default function List(props: Props) {
           onReadAll,
           onClose
         } = props;
+  const { confirm } = useDialog();
   return (
     <>
       <Box
@@ -54,7 +56,13 @@ export default function List(props: Props) {
           <Button
             shape="basic3"
             onClick={() => {
-              onDeleteAll();
+              confirm({
+                children:     '전체 알림 목록을 삭제하시겠습니까?',
+                afterConfirm: () => {
+                  onDeleteAll();
+                },
+                confirmText:  '확인',
+              });
             }}>
             전체 삭제
           </Button>

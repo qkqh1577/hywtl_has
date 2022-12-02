@@ -1,4 +1,7 @@
-import { Box } from '@mui/material';
+import {
+  Box,
+  Tooltip
+} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColorPalette } from 'assets/theme';
 import React from 'react';
@@ -15,14 +18,16 @@ export default function ReadButton(props: Props) {
     <Box sx={{
       marginRight: '5px'
     }}>
-      <FontAwesomeIcon
-        style={{
-          color:  ColorPalette._386dd6,
-          cursor: 'pointer',
-        }}
-        icon={['fab', 'readme']}
-        onClick={onClick}
-      />
+      <Tooltip title='읽음 표시'>
+        <FontAwesomeIcon
+          style={{
+            color:  ColorPalette._386dd6,
+            cursor: 'pointer',
+          }}
+          icon={['fab', 'readme']}
+          onClick={onClick}
+        />
+      </Tooltip>
     </Box>
   );
 }
