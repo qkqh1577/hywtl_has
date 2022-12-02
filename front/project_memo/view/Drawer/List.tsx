@@ -24,6 +24,7 @@ import { ProjectMemoChangeParameter } from 'project_memo/parameter';
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import useDialog from 'dialog/hook';
+import Button from 'layouts/Button';
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
@@ -116,12 +117,13 @@ export default function ProjectMemoList({
             </Box>
             {item.writer.id === (login?.id ?? 1) && (
               <Box sx={{
-                display:  'flex',
-                flexWrap: 'unwrap',
+                display:    'flex',
+                flexWrap:   'unwrap',
+                visibility: formik.values.id === item.id ? 'hidden' : 'visible'
               }}>
-                <Tooltip title={formik.values.id === item.id ? '저장' : '수정'}>
+                <Tooltip title={'수정'}>
                   <FontAwesomeIcon
-                    icon={formik.values.id === item.id ? 'floppy-disk' : 'pen'}
+                    icon={'pen'}
                     style={{
                       cursor:      'pointer',
                       fontSize:    '11px',
@@ -129,20 +131,15 @@ export default function ProjectMemoList({
                       marginRight: '10px',
                     }}
                     onClick={() => {
-                      if (formik.values.id === item.id) {
-                        formik.handleSubmit();
-                      }
-                      else {
-                        formik.setValues({
-                          id:          item.id,
-                          description: item.description,
-                          category:    item.category,
-                        });
-                      }
+                      formik.setValues({
+                        id:          item.id,
+                        description: item.description,
+                        category:    item.category,
+                      });
                     }}
                   />
                 </Tooltip>
-                <Tooltip title={formik.values.id === item.id ? '변경 취소' : '삭제'}>
+                <Tooltip title={'삭제'}>
                   <FontAwesomeIcon
                     icon="trash"
                     style={{
@@ -151,18 +148,13 @@ export default function ProjectMemoList({
                       color:    ColorPalette._9bb6ea,
                     }}
                     onClick={() => {
-                      if (formik.values.id === item.id) {
-                        formik.setValues({} as ProjectMemoChangeParameter);
-                      }
-                      else {
-                        confirm({
-                          children:   '해당 메모를 삭제하시겠습니까?',
-                          afterConfirm: () => {
-                            onDelete(item.id);
-                          },
-                          confirmText:  '확인',
-                        });
-                      }
+                      confirm({
+                        children:     '해당 메모를 삭제하시겠습니까?',
+                        afterConfirm: () => {
+                          onDelete(item.id);
+                        },
+                        confirmText:  '확인',
+                      });
                     }}
                   />
                 </Tooltip>
@@ -209,28 +201,10 @@ export default function ProjectMemoList({
             }}>
               <FormikProvider value={formik}>
                 <Box sx={{
-                  display: 'flex',
-                  width:   '50%',
-                }}>
-                  <Select
-                    variant="outlined"
-                    value={formik.values.category ?? ''}
-                    onChange={(e) => {
-                      const value = e.target.value || undefined;
-                      if (formik.values.category !== value) {
-                        formik.setFieldValue('category', value);
-                      }
-                    }}>
-                    {projectMemoCategoryList.map(item => (
-                      <MenuItem key={item} value={item}>
-                        {projectMemoCategoryName(item)}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
-                <Box sx={{
-                  display: 'flex',
-                  width:   '100%',
+                  display:      'flex',
+                  width:        '100%',
+                  border:       `1px solid ${ColorPalette._e4e9f2}`,
+                  marginBottom: '5px'
                 }}>
                   <Input
                     required
@@ -246,6 +220,61 @@ export default function ProjectMemoList({
                       }
                     }}
                   />
+                </Box>
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width:   '100%'
+                }}>
+                  <Box sx={{
+                    display: 'flex',
+                    width:   '100%',
+                  }}>
+                    <Select
+                      variant="outlined"
+                      value={formik.values.category ?? ''}
+                      onChange={(e) => {
+                        const value = e.target.value || undefined;
+                        if (formik.values.category !== value) {
+                          formik.setFieldValue('category', value);
+                        }
+                      }}>
+                      {projectMemoCategoryList.map(item => (
+                        <MenuItem key={item} value={item}>
+                          {projectMemoCategoryName(item)}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                  <Box sx={{
+                    display:        'flex',
+                    width:          '100%',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Button
+                      sx={{
+                        margin: '0px 5px'
+                      }}
+                      onClick={() => {
+                        console.log('formik.values.id === item.id : ', formik.values.id, item.id);
+                        if (formik.values.id === item.id) {
+                          formik.handleSubmit();
+                        }
+                      }}
+                    >
+                      저장
+                    </Button>
+                    <Button
+                      shape="basic2"
+                      onClick={() => {
+                        if (formik.values.id === item.id) {
+                          formik.setValues({} as ProjectMemoChangeParameter);
+                        }
+                      }}
+                    >
+                      취소
+                    </Button>
+                  </Box>
                 </Box>
               </FormikProvider>
             </Box>

@@ -11,7 +11,7 @@ public enum ProjectMemoCategory {
     /**
      * 단지 정보
      */
-    BUILDING,
+    COMPLEX,
     /**
      * 견적/계약
      */
