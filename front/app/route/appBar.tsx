@@ -10,7 +10,6 @@ import {
   AppBar as MuiAppBar,
   Box
 } from '@mui/material';
-import Input from 'layouts/Input';
 
 export default function AppBarRoute() {
 
@@ -51,18 +50,19 @@ export default function AppBarRoute() {
           alignItems:  'center',
           marginRight: '10px',
         }}>
-          <Input
-            variant="outlined"
-            placeholder="통합 검색"
-            sx={{
-              width:        '240px',
-              paddingLeft:  '10px',
-              paddingRight: '10px',
-              border:       '1px solid #44527b',
-              borderRadius: '8px',
-              color:        '#fff',
-            }}
-          />
+          {/*TODO: 화면정의서에 없은 통합 검색창 삭제*/}
+          {/*<Input*/}
+          {/*  variant="outlined"*/}
+          {/*  placeholder="통합 검색"*/}
+          {/*  sx={{*/}
+          {/*    width:        '240px',*/}
+          {/*    paddingLeft:  '10px',*/}
+          {/*    paddingRight: '10px',*/}
+          {/*    border:       '1px solid #44527b',*/}
+          {/*    borderRadius: '8px',*/}
+          {/*    color:        '#fff',*/}
+          {/*  }}*/}
+          {/*/>*/}
           <NotificationButtonRoute />
           <AccountButtonRoute />
           <LogoutButtonRoute />
