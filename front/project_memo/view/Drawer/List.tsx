@@ -161,6 +161,21 @@ export default function ProjectMemoList({
               </Box>
             )}
           </Box>
+          {item.modifiedAt && (
+            <Box sx={{
+              display:    'flex',
+              flexWrap:   'unwrap',
+              alignItems: 'center',
+            }}>
+              <Typography sx={{
+                fontSize:    '11px',
+                fontWeight:  'bold',
+                marginRight: '4px'
+              }}>
+                (<DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" /> 편집됨)
+              </Typography>
+            </Box>
+          )}
           {formik.values.id !== item.id && (
             <Box sx={{
               display:  'flex',
