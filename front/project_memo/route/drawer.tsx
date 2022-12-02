@@ -39,6 +39,7 @@ export default function ProjectMemoDrawerRoute() {
   useEffect(() => {
     dispatch(projectMemoAction.setDrawer(typeof projectId !== 'undefined'));
   }, [projectId]);
+  // TODO: 페이지 이탈 막는 로직
   // usePrompt('페이지 이동 또는 새로고침 시, 작성완료 되지 않은 메모는 초기화됩니다. 페이지를 이동하시겠습니까?', !isProjectPage);
   // useEffect(() => {
   //   if (projectMemo?.description || projectMemo?.attendanceList) {
