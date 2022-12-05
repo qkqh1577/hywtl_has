@@ -139,11 +139,19 @@ export default function List(props: Props) {
                   }
                   onClick={() => {
                     if (!notification.projectName) {
+                      onRead(notification.id);
                       error('삭제된 프로젝트 알림입니다.');
                       return;
                     }
-                    navigate(notification.forwardUrl!);
-                    onClose();
+                    confirm({
+                      children:     '해당 프로젝트로 이동하시겠습니까?',
+                      afterConfirm: () => {
+                        onRead(notification.id);
+                        navigate(notification.forwardUrl!);
+                        onClose();
+                      },
+                      confirmText:  '확인',
+                    });
                   }}
                 />
               )}
