@@ -21,4 +21,5 @@ public interface UserNotificationRepository extends CustomRepository<UserNotific
     @Query("update UserNotification n set n.deletedAt = current_timestamp, n.deletedBy = n.user.id where n.user.id = ?1 and n.deletedAt is null")
     void deleteByUser_Id(Long userId);
 
+    List<UserNotification> findByProject_Id(Long id);
 }

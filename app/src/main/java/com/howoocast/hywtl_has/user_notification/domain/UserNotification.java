@@ -83,5 +83,8 @@ public class UserNotification extends CustomEntity {
         this.readAt = LocalDateTime.now();
     }
 
+    public static void update(UserNotification userNotification) {
+        userNotification.project = null;
+    }
 
 }

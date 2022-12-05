@@ -33,7 +33,7 @@ export default function List(props: Props) {
           onReadAll,
           onClose
         } = props;
-  const { confirm } = useDialog();
+  const { confirm, error } = useDialog();
   return (
     <>
       <Box
@@ -134,8 +134,14 @@ export default function List(props: Props) {
             }}>
               {notification.forwardUrl && (
                 <TextLink
-                  children={`[${notification.projectCode || '가등록'}] ${notification.projectName}`}
+                  children={
+                    !notification.projectName ? '삭제된 프로젝트 알림입니다.' : `[${notification.projectCode || '가등록'}] ${notification.projectName}`
+                  }
                   onClick={() => {
+                    if (!notification.projectName) {
+                      error('삭제된 프로젝트 알림입니다.');
+                      return;
+                    }
                     navigate(notification.forwardUrl!);
                     onClose();
                   }}

@@ -55,7 +55,6 @@ public class Project extends CustomEntity {
         return instance;
     }
 
-
     public void update(Boolean isFavorite) {
         this.isFavorite = isFavorite;
     }

@@ -28,13 +28,14 @@ import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexBuilding
 import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexSiteRepository;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
-import com.howoocast.hywtl_has.project_log.repository.ProjectLogRepository;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.howoocast.hywtl_has.project_memo.repository.ProjectMemoRepository;
 import com.howoocast.hywtl_has.project_schedule.repository.ProjectScheduleRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import com.howoocast.hywtl_has.user_notification.domain.UserNotification;
+import com.howoocast.hywtl_has.user_notification.repository.UserNotificationRepository;
 import com.querydsl.core.types.Predicate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -58,7 +59,6 @@ public class ProjectService {
     private final ProjectRepository repository;
     private final UserRepository userRepository;
     private final ProjectMemoRepository projectMemoRepository;
-    private final ProjectLogRepository projectLogRepository;
     private final ProjectScheduleRepository projectScheduleRepository;
     private final ProjectDocumentRepository projectDocumentRepository;
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
@@ -70,6 +70,7 @@ public class ProjectService {
     private final ProjectCollectionRepository projectCollectionRepository;
     private final ProjectComplexBuildingRepository projectComplexBuildingRepository;
     private final ProjectComplexSiteRepository projectComplexSiteRepository;
+    private final UserNotificationRepository userNotificationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -317,7 +318,6 @@ public class ProjectService {
 
     private void deleteAllCascadedByProjectId(Long id) {
         projectMemoRepository.findByProject_Id(id).forEach(CustomEntity::delete);
-        projectLogRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectScheduleRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectDocumentRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectBasicBusinessRepository.findByProject_Id(id).forEach(CustomEntity::delete);
@@ -329,6 +329,7 @@ public class ProjectService {
         projectCollectionRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
         projectComplexBuildingRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectComplexSiteRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        userNotificationRepository.findByProject_Id(id).forEach(UserNotification::update);
         //        TODO: 프로젝트 진행정보 soft delete 처리
     }
 }
