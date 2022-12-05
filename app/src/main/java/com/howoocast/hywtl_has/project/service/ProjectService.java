@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project.service;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
@@ -16,10 +17,22 @@ import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicDesignRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicExternalContributorRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicFailReasonRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicInternalContributorRepository;
+import com.howoocast.hywtl_has.project_bid.repository.ProjectBidRepository;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
+import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexBuildingRepository;
+import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexSiteRepository;
+import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
+import com.howoocast.hywtl_has.project_log.repository.ProjectLogRepository;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemo;
 import com.howoocast.hywtl_has.project_memo.domain.ProjectMemoCategory;
 import com.howoocast.hywtl_has.project_memo.repository.ProjectMemoRepository;
+import com.howoocast.hywtl_has.project_schedule.repository.ProjectScheduleRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
@@ -44,9 +57,19 @@ public class ProjectService {
 
     private final ProjectRepository repository;
     private final UserRepository userRepository;
-
     private final ProjectMemoRepository projectMemoRepository;
-
+    private final ProjectLogRepository projectLogRepository;
+    private final ProjectScheduleRepository projectScheduleRepository;
+    private final ProjectDocumentRepository projectDocumentRepository;
+    private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
+    private final ProjectBasicDesignRepository projectBasicDesignRepository;
+    private final ProjectBasicExternalContributorRepository projectBasicExternalContributorRepository;
+    private final ProjectBasicInternalContributorRepository projectBasicInternalContributorRepository;
+    private final ProjectBasicFailReasonRepository projectBasicFailReasonRepository;
+    private final ProjectBidRepository projectBidRepository;
+    private final ProjectCollectionRepository projectCollectionRepository;
+    private final ProjectComplexBuildingRepository projectComplexBuildingRepository;
+    private final ProjectComplexSiteRepository projectComplexSiteRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -284,5 +307,21 @@ public class ProjectService {
             );
         }
         project.delete();
+        projectMemoRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectLogRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectScheduleRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectDocumentRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectBasicBusinessRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectBasicDesignRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
+        projectBasicExternalContributorRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectBasicInternalContributorRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectBasicFailReasonRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
+        projectBidRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
+        projectCollectionRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
+        projectComplexBuildingRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectComplexSiteRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+
+//        TODO: 프로젝트 진행정보 soft delete 처리
+
     }
 }

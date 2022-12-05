@@ -81,7 +81,7 @@ function* watchDelete(){
     try {
       const { id } = yield select((root: RootState) => root.project);
       yield put(projectAction.requestDelete('request'));
-      // yield call(projectApi.delete, id);
+      yield call(projectApi.delete, id);
       yield put(projectAction.requestDelete('done'));
       yield put(dialogAction.openAlert('삭제하였습니다.'));
       yield put(projectAction.setFilter(initialProjectQuery));

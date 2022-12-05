@@ -10,4 +10,6 @@ public interface ProjectScheduleRepository extends CustomRepository<ProjectSched
     QuerydslPredicateExecutor<ProjectSchedule> {
 
     List<ProjectSchedule> findAll(Predicate predicate);
+
+    List<ProjectSchedule> findByProject_Id(Long id);
 }
