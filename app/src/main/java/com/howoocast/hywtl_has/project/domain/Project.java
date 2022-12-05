@@ -31,6 +31,8 @@ public class Project extends CustomEntity {
     @Embedded
     private ProjectStatus status;
 
+    private Boolean isFavorite = false;
+
     public static Project of(
             @Nullable String code,
             String name,
@@ -54,4 +56,7 @@ public class Project extends CustomEntity {
     }
 
 
+    public void update(Boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
 }

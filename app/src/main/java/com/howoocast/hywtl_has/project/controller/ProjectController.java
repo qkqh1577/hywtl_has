@@ -77,6 +77,14 @@ public class ProjectController {
         service.updateProjectStatus(id, parameter);
     }
 
+    @PatchMapping("/project/sales/{id}/favorite")
+    public void updateFavorite(
+        @PathVariable Long id,
+        @RequestBody ProjectUpdateParameter parameter
+    ) {
+        service.updateFavorite(id, parameter);
+    }
+
     @DeleteMapping("/project/sales/{id}")
     public void delete(@PathVariable Long id,
         Authentication authentication) {

@@ -102,6 +102,22 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
               <TableCell colSpan={3} children="결과가 없습니다." />
             </TableRow>
           )}
+          {list && list.filter((item) => item.isFavorite).map((item) => (
+            <TableRow
+              hover
+              key={item.id}
+              role="button"
+              selected
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                onRowClick(item);
+              }}
+            >
+              <TableCell>{item.code}</TableCell>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{projectProgressStatusName(item.progressStatus)}</TableCell>
+            </TableRow>
+          ))}
           {list && list.map((item) => (
             <TableRow
               hover

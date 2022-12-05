@@ -254,6 +254,11 @@ public class ProjectService {
         }
     }
 
+    @Transactional
+    public void updateFavorite(Long id, ProjectUpdateParameter parameter) {
+        Project instance = this.load(id);
+        instance.update(parameter.getIsFavorite());
+    }
 
     private void checkName(String name) {
         List<Project> list = repository.findByBasic_Name(name);
@@ -307,6 +312,10 @@ public class ProjectService {
             );
         }
         project.delete();
+        deleteAllCascadedByProjectId(id);
+    }
+
+    private void deleteAllCascadedByProjectId(Long id) {
         projectMemoRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectLogRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectScheduleRepository.findByProject_Id(id).forEach(CustomEntity::delete);
@@ -320,8 +329,6 @@ public class ProjectService {
         projectCollectionRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
         projectComplexBuildingRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectComplexSiteRepository.findByProject_Id(id).forEach(CustomEntity::delete);
-
-//        TODO: 프로젝트 진행정보 soft delete 처리
-
+        //        TODO: 프로젝트 진행정보 soft delete 처리
     }
 }

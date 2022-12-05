@@ -65,8 +65,8 @@ function RoundIconButton(props: Props) {
 
   return (
     <MuiIconButton
+      disabled={disabled}
       sx={{
-        ...sx,
         fontSize:        size ? `calc(${size} - 5px) ` : '11px',
         width:           size ?? '22px',
         height:          size ?? '22px',
@@ -74,9 +74,9 @@ function RoundIconButton(props: Props) {
         backgroundColor: ColorPalette._4c9eeb,
         '&:hover':       {
           backgroundColor: ColorPalette._0047d3,
-        }
+        },
+        ...sx,
       }}
-      disabled={disabled}
       onClick={onClick}
       children={children}
     />

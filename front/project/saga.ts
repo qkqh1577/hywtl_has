@@ -75,7 +75,7 @@ function* watchUpdateStatus() {
   }
 }
 
-function* watchDelete(){
+function* watchDelete() {
   while (true) {
     yield take(projectAction.delete);
     try {
@@ -118,6 +118,27 @@ function* watchAddFailReason() {
   }
 }
 
+function* watchUpdateFavorite() {
+  while (true) {
+    const { payload: params } = yield take(projectAction.updateFavorite);
+    const { id } = yield select((root: RootState) => root.project);
+    try {
+      if (id) {
+        yield put(projectAction.requestUpdateStatus('request'));
+        yield call(projectApi.updateFavorite, id, params);
+        yield put(projectAction.requestUpdateStatus('done'));
+        yield put(projectAction.setFilter(initialProjectQuery));
+        yield put(projectAction.setId(id));
+      }
+    }
+    catch (e) {
+      const message = getErrorMessage(projectAction.updateStatus, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectAction.requestUpdateStatus(message));
+    }
+  }
+}
+
 export default function* projectSaga() {
   yield fork(watchFilter);
   yield fork(watchId);
@@ -125,4 +146,5 @@ export default function* projectSaga() {
   yield fork(watchUpdateStatus);
   yield fork(watchAddFailReason);
   yield fork(watchDelete);
+  yield fork(watchUpdateFavorite);
 }

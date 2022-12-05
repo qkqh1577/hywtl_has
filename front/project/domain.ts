@@ -20,6 +20,7 @@ export interface ProjectVO
   requestedMonth?: Date;
   isLh?: boolean;
   modifiedAt?: Date;
+  isFavorite?: boolean;
 }
 
 export interface ProjectShortVO {
@@ -28,6 +29,7 @@ export interface ProjectShortVO {
   name: string;
   progressStatus: ProjectProgressStatus;
   alias: string;
+  isFavorite: boolean;
 }
 
 /**

@@ -27,4 +27,6 @@ public class ProjectUpdateParameter {
     private LocalDate requestedMonth;
 
     private Boolean isLh;
+
+    private Boolean isFavorite;
 }
