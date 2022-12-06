@@ -21,6 +21,8 @@ public interface ProjectCollectionStageRepository extends CustomRepository<Proje
         + " on c.id = s.project_collection_id "
         + " where "
         + " c.project_id = ?1 "
+        + " and "
+        + " s.deleted_at is null "
         , nativeQuery = true)
     Integer findNextSeq(Long projectId);
 }

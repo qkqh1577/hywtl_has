@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -166,21 +167,48 @@ public class ProjectContractService {
     }
 
     private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
-            throw new NotFoundException(Project.KEY, projectId);
-        });
-        ProjectCollection projectCollection = projectCollectionRepository.save(ProjectCollection.of(project));
-        List<ProjectCollectionStage> collectionStageList = instance.getCollection().getStageList().stream()
-            .map(stage -> {
-                return stageRepository.save(ProjectCollectionStage.of(
-                    projectCollection,
-                    stage.getName(),
-                    stage.getAmount(),
-                    stage.getExpectedDate(),
-                    stage.getNote(),
-                    this.getNextSeq(projectId)
-                ));
-            }).collect(Collectors.toList());
+        ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
+        if (!Objects.nonNull(projectCollection)) {
+            projectCollection = projectCollectionRepository.save(
+                ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
+                    throw new NotFoundException(Project.KEY, projectId);
+                })));
+        }
+        List<ProjectCollectionStage> collectionStageList = stageRepository
+            .findByProjectCollection_Id(projectCollection.getId());
+        if (collectionStageList.isEmpty()) {
+            ProjectCollection finalProjectCollection = projectCollection;
+            collectionStageList = instance.getCollection()
+                .getStageList()
+                .stream()
+                .map(stage -> {
+                    return stageRepository.save(ProjectCollectionStage.of(
+                        finalProjectCollection,
+                        stage.getName(),
+                        stage.getAmount(),
+                        stage.getExpectedDate(),
+                        stage.getNote(),
+                        this.getNextSeq(projectId)
+                    ));
+                }).collect(Collectors.toList());
+        } else {
+            stageRepository.findByProjectCollection_Id(projectCollection.getId())
+                .forEach(CustomEntity::delete);
+            ProjectCollection finalProjectCollection1 = projectCollection;
+            collectionStageList = instance.getCollection()
+                .getStageList()
+                .stream()
+                .map(stage -> {
+                    return stageRepository.save(ProjectCollectionStage.of(
+                        finalProjectCollection1,
+                        stage.getName(),
+                        stage.getAmount(),
+                        stage.getExpectedDate(),
+                        stage.getNote(),
+                        this.getNextSeq(projectId)
+                    ));
+                }).collect(Collectors.toList());
+        }
         projectCollection.setStageList(collectionStageList);
     }
 
