@@ -61,7 +61,7 @@ export default function (props: Props) {
         <TableBody>
           {versionList.length === 0 && (
             <TableRow>
-              <Td colSpan={6}>조회 결과가 없습니다</Td>
+              <Td colSpan={7}>조회 결과가 없습니다</Td>
             </TableRow>
           )}
           {versionList.map(item => {

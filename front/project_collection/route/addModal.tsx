@@ -28,7 +28,7 @@ export default function ProjectCollectionStageAddModalRoute() {
     if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
       return undefined;
     }
-    const isLh = contract.estimate.isLh;
+    const isLh = contract.estimate.plan.isLh;
 
     const value = contract.estimate.plan.totalAmount ?? 0;
 

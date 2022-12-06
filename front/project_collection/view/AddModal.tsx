@@ -88,6 +88,7 @@ export default function ProjectCollectionStageAddModal(props: Props) {
                   const value = toAmount(e.target.value) || undefined;
                   if (amount !== value) {
                     formik.setFieldValue('amount', value);
+                    formik.setFieldValue('rate', rate?.toFixed(1) ?? 0);
                   }
                 }}
               />

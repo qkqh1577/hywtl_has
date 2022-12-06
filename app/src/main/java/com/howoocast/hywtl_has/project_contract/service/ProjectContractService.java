@@ -9,6 +9,10 @@ import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionStageRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
@@ -45,11 +49,10 @@ public class ProjectContractService {
     private final ProjectContractRepository repository;
     private final ProjectEstimateRepository estimateRepository;
     private final UserRepository userRepository;
-
     private final ProjectRepository projectRepository;
-
+    private final ProjectCollectionRepository projectCollectionRepository;
+    private final ProjectCollectionStageRepository stageRepository;
     private final FileItemService fileItemService;
-
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -159,6 +162,26 @@ public class ProjectContractService {
             Optional.ofNullable(prev).map(ProjectContract::getCode).orElse(null),
             instance.getCode()
         ));
+        setProjectCollectionInformationByFinalContract(projectId, instance);
+    }
+
+    private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> {
+            throw new NotFoundException(Project.KEY, projectId);
+        });
+        ProjectCollection projectCollection = projectCollectionRepository.save(ProjectCollection.of(project));
+        List<ProjectCollectionStage> collectionStageList = instance.getCollection().getStageList().stream()
+            .map(stage -> {
+                return stageRepository.save(ProjectCollectionStage.of(
+                    projectCollection,
+                    stage.getName(),
+                    stage.getAmount(),
+                    stage.getExpectedDate(),
+                    stage.getNote(),
+                    this.getNextSeq(projectId)
+                ));
+            }).collect(Collectors.toList());
+        projectCollection.setStageList(collectionStageList);
     }
 
     private ProjectContract load(Long id) {
@@ -226,4 +249,9 @@ public class ProjectContractService {
             throw new RuntimeException(e);
         }
     }
+
+    private Integer getNextSeq(Long projectId) {
+        return stageRepository.findNextSeq(projectId);
+    }
+
 }
