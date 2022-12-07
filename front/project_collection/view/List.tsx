@@ -12,7 +12,7 @@ import {
   Th
 } from 'layouts/Table';
 import SectionLayout from 'layouts/SectionLayout';
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ProjectCollectionStageId,
   ProjectCollectionVO
@@ -23,6 +23,7 @@ import { UserId } from 'user/domain';
 import DateFormat from 'layouts/DateFormat';
 import TextLink from 'layouts/TextLink';
 import { cut10000 } from 'util/NumberUtil';
+import useDialog from 'dialog/hook';
 
 interface Props {
   totalAmount: number | undefined;
@@ -33,14 +34,26 @@ interface Props {
 }
 
 export default function ProjectCollectionList(props: Props) {
+  const { error } = useDialog();
   const stageList = props.detail?.stageList;
   const totalAmount = props.totalAmount;
+  const amountBySum = useMemo(() => stageList && stageList.map(stage => stage.amount)
+                                           .reduce((prev,
+                                                    curr
+                                           ) => prev + curr, 0), [stageList]);
 
   return (
     <SectionLayout
       title="기성 정보"
       titleRightComponent={
-        <Button shape="small" onClick={props.openAddModal}>
+        <Button shape="small" onClick={() => {
+          if ((totalAmount && amountBySum) && totalAmount <= amountBySum) {
+            error('총 기성 비율이 100%를 초과합니다. 기존 기성 비율을 변경하시기 바랍니다.');
+            return;
+          }
+          props.openAddModal();
+        }
+        }>
           + 기성 추가
         </Button>
       }>
