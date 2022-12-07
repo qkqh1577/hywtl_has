@@ -34,6 +34,10 @@ export default function ({
       error('비율이 필요합니다.');
       return;
     }
+    if (!item.expectedDate) {
+      console.error('예정일이 필요합니다.');
+    }
+
     formik.setFieldValue('collection.stageList', [...stageList, item]);
     setItem({} as ProjectContractCollectionStageParameter);
   };
