@@ -166,6 +166,12 @@ public class ProjectContractService {
         setProjectCollectionInformationByFinalContract(projectId, instance);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        ProjectContract instance = this.load(id);
+        instance.delete();
+    }
+
     private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
         ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
         if (!Objects.nonNull(projectCollection)) {
