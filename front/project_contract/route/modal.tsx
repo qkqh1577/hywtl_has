@@ -45,6 +45,7 @@ export default function ProjectContractModalRoute() {
           conditionList,
           requestAdd,
           requestChange,
+          requestDelete,
           detailBasedEstimate
         } = useSelector((root: RootState) => root.projectContract);
   const { list: estimateList } = useSelector((root: RootState) => root.projectEstimate);
@@ -151,6 +152,16 @@ export default function ProjectContractModalRoute() {
     });
   }, [requestChange]);
 
+  useEffect(() => {
+    closeStatus(requestDelete, () => {
+      dispatch(projectContractAction.setModal(undefined));
+      dispatch(projectContractAction.setProjectId(projectId));
+    }, () => {
+      formik.setSubmitting(false);
+      dispatch(projectContractAction.requestDelete('idle'));
+    });
+  }, [requestDelete]);
+
   return (
     <>
       <FormikProvider value={formik}>
@@ -190,7 +201,7 @@ export default function ProjectContractModalRoute() {
           getEstimate={getEstimate}
         />
       </FormikProvider>
-      <Progress/>
+      <Progress />
     </>
   );
 }

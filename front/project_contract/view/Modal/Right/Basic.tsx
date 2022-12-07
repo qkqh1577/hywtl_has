@@ -26,7 +26,7 @@ export default function () {
   const plan = formik.values.estimate?.plan ?? {};
   const basic = formik.values.basic ?? {};
   const collection = formik.values.collection ?? {};
-  const isLh = formik.values.isLh;
+  const isLh = plan.isLh;
   const totalAmount = useMemo(() => {
     const amount: number = plan.totalAmount || 0;
     if (isLh) {

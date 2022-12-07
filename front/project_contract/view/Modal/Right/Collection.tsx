@@ -33,9 +33,9 @@ export default function () {
   const edit = formik.values.edit;
   const collection = formik.values.collection ?? {};
   const stageList = collection.stageList ?? [];
-
   const plan = formik.values.estimate?.plan ?? {};
-  const isLh = formik.values.isLh;
+  const isLh = plan.isLh;
+
   const totalAmount = useMemo(() => {
     const amount: number = plan.totalAmount || 0;
     if (isLh) {

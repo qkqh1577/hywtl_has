@@ -13,8 +13,6 @@ import { projectCollectionAction } from 'project_collection/action';
 import { ProjectCollectionStageId } from 'project_collection/domain';
 import { UserId } from 'user/domain';
 import { closeStatus } from 'components/DataFieldProps';
-import useDialog from 'dialog/hook';
-import { useNavigate } from 'react-router-dom';
 
 export default function ProjectCollectionListRoute() {
 
@@ -24,8 +22,6 @@ export default function ProjectCollectionListRoute() {
   const updateManager = useCallback((userId: UserId | undefined) => dispatch(projectCollectionAction.updateManager(userId)), [dispatch]);
   const openAddModal = useCallback(() => dispatch(projectCollectionAction.stageAddModal(true)), [dispatch]);
   const openDetailModal = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.stageDetailModal(id)), [dispatch]);
-  const { error } = useDialog();
-  const navigate = useNavigate();
 
   const totalAmount = useMemo(() => {
 
@@ -33,10 +29,8 @@ export default function ProjectCollectionListRoute() {
       return undefined;
     }
     const isLh = contract.estimate.plan.isLh;
-
     const value = contract.estimate.plan.totalAmount ?? 0;
-
-    return value * (isLh ? 1.0 : 1.1);
+    return Number((value * (isLh ? 1.0 : 1.1)).toFixed(0));
   }, [contract]);
 
   useEffect(() => {
