@@ -121,12 +121,13 @@ class ProjectEstimateData {
     return jobList.filter(job => job.isRepresentative)[0].jobClass;
   };
 
-  mapToContentList = (contentList: string[],
+  mapToContentList = (contentList: string[] | ProjectEstimateContentListToMap[],
                       variableList: EstimateContentVariableVO[]
   ): ProjectEstimateContentListToMap[] => {
     return contentList.map(content => {
+      const contentStr = typeof content === 'string' ? content : content.content;
       return {
-        content: this.convertFromVariableToValue(content, variableList),
+        content: this.convertFromVariableToValue(contentStr, variableList),
       };
     });
   };
