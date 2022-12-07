@@ -9,7 +9,8 @@ import { ContractConditionVariableVO, } from 'admin/contract/condition/domain';
 
 class ProjectContractData {
 
-  setData = async (values: ProjectContractParameter, variableList: ContractConditionVariableVO[]
+  setData = async (values: ProjectContractParameter,
+                   variableList: ContractConditionVariableVO[]
   ) => {
     values.conditionList = this.getMappedConditions(values.conditionList, variableList);
     return {
@@ -49,7 +50,9 @@ class ProjectContractData {
     });
   }
 
-  getMappedConditions(conditionList: ProjectContractConditionParameter[], variableList: ContractConditionVariableVO[]): ProjectContractConditionParameter[] {
+  getMappedConditions(conditionList: ProjectContractConditionParameter[],
+                      variableList: ContractConditionVariableVO[]
+  ): ProjectContractConditionParameter[] {
     return conditionList.map((condition) => {
       return {
         title:           condition.title,
@@ -58,10 +61,13 @@ class ProjectContractData {
     });
   }
 
-  getMappedDescriptionList(descriptionList: string[], variableList: ContractConditionVariableVO[]): ProjectContractConditionDescriptionToMap[] {
+  getMappedDescriptionList(descriptionList: string[] | ProjectContractConditionDescriptionToMap[],
+                           variableList: ContractConditionVariableVO[]
+  ): ProjectContractConditionDescriptionToMap[] {
     return descriptionList.map((description) => {
+      let descriptionStr = typeof description === 'string' ? description : description.description;
       return {
-        description: this.convertFromVariableToValue(description, variableList),
+        description: this.convertFromVariableToValue(descriptionStr as string, variableList),
       };
     });
   }
