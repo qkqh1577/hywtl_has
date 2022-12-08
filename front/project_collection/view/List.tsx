@@ -24,6 +24,8 @@ import DateFormat from 'layouts/DateFormat';
 import TextLink from 'layouts/TextLink';
 import { cut10000 } from 'util/NumberUtil';
 import useDialog from 'dialog/hook';
+import IconButton from 'layouts/IconButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
   totalAmount: number | undefined;
@@ -31,6 +33,8 @@ interface Props {
   openAddModal: DefaultFunction;
   openDetailModal: DefaultFunction<ProjectCollectionStageId>;
   onUpdate: (userId: UserId | undefined) => void;
+
+  changeSeq: DefaultFunction<ProjectCollectionStageId[]>;
 }
 
 export default function ProjectCollectionList(props: Props) {
@@ -38,9 +42,9 @@ export default function ProjectCollectionList(props: Props) {
   const stageList = props.detail?.stageList;
   const totalAmount = props.totalAmount;
   const amountBySum = useMemo(() => stageList && stageList.map(stage => stage.amount)
-                                           .reduce((prev,
-                                                    curr
-                                           ) => prev + curr, 0), [stageList]);
+                                                          .reduce((prev,
+                                                                   curr
+                                                          ) => prev + curr, 0), [stageList]);
 
   return (
     <SectionLayout
@@ -97,6 +101,7 @@ export default function ProjectCollectionList(props: Props) {
                 <Th>청구일</Th>
                 <Th>수금일</Th>
                 <Th>수금 비율(%)</Th>
+                <Th>순서</Th>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -110,7 +115,9 @@ export default function ProjectCollectionList(props: Props) {
                   <Td colSpan={7}>조회 결과가 없습니다.</Td>
                 </TableRow>
               )}
-              {totalAmount && stageList?.map(item => (
+              {totalAmount && stageList?.map((item,
+                                              i
+              ) => (
                 <TableRow key={item.id}>
                   <Td>
                     <TextLink onClick={() => {
@@ -133,6 +140,56 @@ export default function ProjectCollectionList(props: Props) {
                   </Td>
                   <Td>
                     {item.collectedRate?.toFixed(2)}
+                  </Td>
+                  <Td>
+                    <Box sx={{
+                      display:        'flex',
+                      width:          '100%',
+                      justifyContent: 'center',
+                    }}>
+                      <IconButton
+                        shape="square"
+                        tooltip="순서 올리기"
+                        disabled={i === 0}
+                        children={<FontAwesomeIcon icon="angle-up" />}
+                        onClick={() => {
+                          const prevList = stageList?.filter((t,
+                                                              k
+                          ) => k != i);
+
+                          const result: ProjectCollectionStageId[] = [];
+                          for (let k = 0; k < prevList.length; k++) {
+                            if (result.length === i - 1) {
+                              result.push(item.id);
+                            }
+                            result.push(prevList[k].id);
+                          }
+                          props.changeSeq(result);
+                        }}
+                        sx={{
+                          marginRight: '10px',
+                        }}
+                      />
+                      <IconButton
+                        shape="square"
+                        tooltip="순서 내리기"
+                        disabled={i === stageList.length - 1}
+                        children={<FontAwesomeIcon icon="angle-down" />}
+                        onClick={() => {
+                          const prevList = stageList?.filter((t,
+                                                              k
+                          ) => k != i);
+                          const result: ProjectCollectionStageId[] = [];
+                          for (let k = 0; k < prevList.length; k++) {
+                            result.push(prevList[k].id);
+                            if (result.length === i + 1) {
+                              result.push(item.id);
+                            }
+                          }
+                          props.changeSeq(result);
+                        }}
+                      />
+                    </Box>
                   </Td>
                 </TableRow>
               ))}

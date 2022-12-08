@@ -18,13 +18,12 @@ export default function ProjectCollectionListRoute() {
 
   const dispatch = useDispatch();
   const { contract } = useSelector((root: RootState) => root.projectBasic);
-  const { projectId, detail, requestUpdateManager } = useSelector((root: RootState) => root.projectCollection);
+  const { projectId, detail, requestUpdateManager, requestChangeStageSeq } = useSelector((root: RootState) => root.projectCollection);
   const updateManager = useCallback((userId: UserId | undefined) => dispatch(projectCollectionAction.updateManager(userId)), [dispatch]);
   const openAddModal = useCallback(() => dispatch(projectCollectionAction.stageAddModal(true)), [dispatch]);
   const openDetailModal = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.stageDetailModal(id)), [dispatch]);
-
+  const changeSeq = useCallback((idList: ProjectCollectionStageId[]) => dispatch(projectCollectionAction.changeStageSeq(idList)), [dispatch]);
   const totalAmount = useMemo(() => {
-
     if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
       return undefined;
     }
@@ -41,6 +40,14 @@ export default function ProjectCollectionListRoute() {
     });
   }, [requestUpdateManager]);
 
+  useEffect(() => {
+    closeStatus(requestChangeStageSeq, () => {
+      dispatch(projectCollectionAction.setProjectId(projectId));
+    }, () => {
+      dispatch(projectCollectionAction.requestChangeStageSeq('idle'));
+    })
+  }, [requestChangeStageSeq])
+
   return (
     <ProjectCollectionList
       totalAmount={totalAmount}
@@ -48,6 +55,7 @@ export default function ProjectCollectionListRoute() {
       onUpdate={updateManager}
       openAddModal={openAddModal}
       openDetailModal={openDetailModal}
+      changeSeq={changeSeq}
     />
   );
 }

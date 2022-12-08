@@ -66,7 +66,6 @@ function* watchChangeStageSeq() {
       yield put(projectCollectionAction.requestChangeStageSeq('request'));
       yield call(projectCollectionApi.changeStageSeq, projectId, idList);
       yield put(projectCollectionAction.requestChangeStageSeq('done'));
-      yield put(dialogAction.openAlert('변경하였습니다.'));
     }
     catch (e) {
       const message = getErrorMessage(projectCollectionAction.changeStageSeq, e);
