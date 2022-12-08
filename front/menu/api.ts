@@ -3,6 +3,7 @@ import { Menu } from 'menu/domain';
 const defaultMenuList: Menu[] = [{
   title: 'Gantt Chart',
   icon:  'chart-gantt',
+  path:  '/gantt',
 }, {
   title:    '프로젝트',
   icon:     'file-powerpoint',

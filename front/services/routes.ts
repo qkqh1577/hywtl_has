@@ -28,6 +28,7 @@ import projectScheduleRoute from 'project_schedule/route';
 import userDetailRoute from 'user/route/detail';
 import userPageRoute from 'user/route/page';
 import salesDbPageRoute from "../project_db/route/page";
+import ganttPageRoute from "../gantt/route/page";
 
 export interface AppRoute
   extends PathRouteProps {
@@ -60,6 +61,7 @@ const Routes = () => {
     userDetailRoute,
     userPageRoute,
     salesDbPageRoute,
+    ganttPageRoute,
   ];
 
   return useRoutes(routes as RouteObject[]);
