@@ -36,6 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -183,39 +184,29 @@ public class ProjectContractService {
         List<ProjectCollectionStage> collectionStageList = stageRepository
             .findByProjectCollection_Id(projectCollection.getId());
         if (collectionStageList.isEmpty()) {
-            ProjectCollection finalProjectCollection = projectCollection;
-            collectionStageList = instance.getCollection()
-                .getStageList()
-                .stream()
-                .map(stage -> {
-                    return stageRepository.save(ProjectCollectionStage.of(
-                        finalProjectCollection,
-                        stage.getName(),
-                        stage.getAmount(),
-                        stage.getExpectedDate(),
-                        stage.getNote(),
-                        this.getNextSeq(projectId)
-                    ));
-                }).collect(Collectors.toList());
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
         } else {
             stageRepository.findByProjectCollection_Id(projectCollection.getId())
                 .forEach(CustomEntity::delete);
-            ProjectCollection finalProjectCollection1 = projectCollection;
-            collectionStageList = instance.getCollection()
-                .getStageList()
-                .stream()
-                .map(stage -> {
-                    return stageRepository.save(ProjectCollectionStage.of(
-                        finalProjectCollection1,
-                        stage.getName(),
-                        stage.getAmount(),
-                        stage.getExpectedDate(),
-                        stage.getNote(),
-                        this.getNextSeq(projectId)
-                    ));
-                }).collect(Collectors.toList());
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
         }
         projectCollection.setStageList(collectionStageList);
+    }
+
+    @NotNull
+    private List<ProjectCollectionStage> getCollectionStageList(Long projectId, ProjectContract instance,
+        ProjectCollection finalProjectCollection) {
+        return instance.getCollection()
+            .getStageList()
+            .stream()
+            .map(stage -> stageRepository.save(ProjectCollectionStage.of(
+                finalProjectCollection,
+                stage.getName(),
+                stage.getAmount(),
+                stage.getExpectedDate(),
+                stage.getNote(),
+                this.getNextSeq(projectId)
+            ))).collect(Collectors.toList());
     }
 
     private ProjectContract load(Long id) {
