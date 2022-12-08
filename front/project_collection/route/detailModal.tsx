@@ -63,9 +63,14 @@ export default function ProjectCollectionStageDetailModalRoute() {
   useEffect(() => {
     closeStatus(requestChangeStage, () => {
       dispatch(projectCollectionAction.setProjectId(projectId));
-      onClose();
     }, () => {
       formik.setSubmitting(false);
+      if (stage) {
+        formik.setValues({
+          ...stage,
+          edit: false
+        } as unknown as ProjectCollectionChangeStageParameter);
+      }
       dispatch(projectCollectionAction.requestChangeStage('idle'));
     });
   }, [requestChangeStage]);

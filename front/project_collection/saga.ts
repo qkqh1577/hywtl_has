@@ -28,16 +28,20 @@ function* watchProjectId() {
   }
 }
 
+function* getStage(id) {
+  if (id) {
+    const detail: ProjectCollectionStageVO = yield call(projectCollectionApi.getStage, id);
+    yield put(projectCollectionAction.setStage(detail));
+  }
+  else {
+    yield put(projectCollectionAction.setStage(undefined));
+  }
+}
+
 function* watchId() {
   while (true) {
     const { payload: id } = yield take(projectCollectionAction.stageDetailModal);
-    if (id) {
-      const detail: ProjectCollectionStageVO = yield call(projectCollectionApi.getStage, id);
-      yield put(projectCollectionAction.setStage(detail));
-    }
-    else {
-      yield put(projectCollectionAction.setStage(undefined));
-    }
+    yield call(getStage, id);
   }
 }
 
@@ -107,6 +111,7 @@ function* watchChangeStage() {
       yield call(projectCollectionApi.changeStage, params);
       yield put(projectCollectionAction.requestChangeStage('done'));
       yield put(dialogAction.openAlert('변경하였습니다.'));
+      yield call(getStage, params.id);
     }
     catch (e) {
       const message = getErrorMessage(projectCollectionAction.changeStage, e);
