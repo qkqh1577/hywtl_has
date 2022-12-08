@@ -12,6 +12,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionStageRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
@@ -191,6 +192,16 @@ public class ProjectContractService {
             collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
         }
         projectCollection.setStageList(collectionStageList);
+        setInitVersion(projectCollection);
+    }
+
+    private void setInitVersion(ProjectCollection projectCollection) {
+        projectCollection.getStageList().forEach(stage -> stage.updateVersionList(ProjectCollectionStageVersion.of(
+            stage.getName(),
+            stage.getAmount(),
+            stage.getExpectedDate(),
+            stage.getNote(),
+            null)));
     }
 
     @NotNull

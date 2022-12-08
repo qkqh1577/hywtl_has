@@ -11,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -52,7 +54,6 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     /**
      * 기성행 변경 사유
      */
-    @NotBlank
     @Column(nullable = false)
     private String reason;
 
@@ -62,14 +63,18 @@ public class ProjectCollectionStageVersion extends CustomEntity {
         Long amount,
         LocalDate expectedDate,
         String note,
-        String reason
+        @Nullable String reason
     ) {
         ProjectCollectionStageVersion instance = new ProjectCollectionStageVersion();
         instance.name = name;
         instance.amount = amount;
         instance.expectedDate = expectedDate;
         instance.note = note;
-        instance.reason = reason;
+        if(StringUtils.isEmpty(reason)) {
+            instance.reason = "-";
+        } else {
+            instance.reason = reason;
+        }
         return instance;
     }
 

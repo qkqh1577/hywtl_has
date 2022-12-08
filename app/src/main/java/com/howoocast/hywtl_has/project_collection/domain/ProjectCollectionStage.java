@@ -86,6 +86,13 @@ public class ProjectCollectionStage extends CustomEntity {
         return instance;
     }
 
+    public void updateVersionList(ProjectCollectionStageVersion version) {
+        if (Objects.isNull(this.versionList)) {
+            this.versionList = new ArrayList<>();
+        }
+        this.versionList.add(version);
+    }
+
     public List<EventEntity> change(
         @Nullable Boolean dirty,
         String name,
