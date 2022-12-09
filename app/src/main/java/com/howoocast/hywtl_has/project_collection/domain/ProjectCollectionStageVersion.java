@@ -2,8 +2,11 @@ package com.howoocast.hywtl_has.project_collection.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -57,6 +60,11 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     @Column(nullable = false)
     private String reason;
 
+    /**
+     * 수금 현황 리스트
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ProjectCollectionStageStatus> statusList;
 
     public static ProjectCollectionStageVersion of(
         String name,
@@ -80,7 +88,8 @@ public class ProjectCollectionStageVersion extends CustomEntity {
 
     public static ProjectCollectionStageVersion of(
         ProjectCollectionStage prevInstance,
-        String reason
+        String reason,
+        List<ProjectCollectionStageStatus> statusList
     ) {
         ProjectCollectionStageVersion instance = new ProjectCollectionStageVersion();
         instance.name = prevInstance.getName();
@@ -88,6 +97,7 @@ public class ProjectCollectionStageVersion extends CustomEntity {
         instance.expectedDate = prevInstance.getExpectedDate();
         instance.note = prevInstance.getNote();
         instance.reason = reason;
+        instance.statusList = statusList;
         return instance;
     }
 }

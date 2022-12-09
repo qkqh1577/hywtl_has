@@ -14,6 +14,7 @@ import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionSt
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -101,8 +102,28 @@ public class ProjectCollectionService {
                 .collect(Collectors.toList()))
             .orElse(Collections.emptyList());
 
-        deleteExistedStageStatus(instance);
-        changeExpectedDate(instance, statusList);
+//        deleteExistedStageStatus(instance);
+//        changeExpectedDate(instance, statusList);
+
+        ProjectCollectionStageStatus projectCollectionStageStatus = statusList.stream()
+            .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER
+                && Objects.nonNull(status.getDelayedDate()))
+            .max(Comparator.comparing(ProjectCollectionStageStatus::getDelayedDate)).get();
+        if (Objects.nonNull(projectCollectionStageStatus.getDelayedDate())
+            && projectCollectionStageStatus.getType() == ProjectCollectionStageStatusType.CARRYOVER) {
+            List<EventEntity> eventList = instance.change(
+                Boolean.TRUE,
+                projectCollectionStageStatus.getDelayedDate(),
+                "예정일 변경",
+                statusList
+            );
+            setEventList(eventList, instance.getProjectCollection());
+        }
+
+        if (!instance.getAmount().equals(parameter.getAmount())) {
+            statusList = new ArrayList<>();
+        }
+
         List<EventEntity> eventList = instance.change(
             parameter.getDirty(),
             parameter.getName(),
@@ -114,7 +135,6 @@ public class ProjectCollectionService {
         );
         setEventList(eventList, instance.getProjectCollection());
     }
-
 
     @Transactional
     public void changeStageSeq(
@@ -169,7 +189,8 @@ public class ProjectCollectionService {
                 List<EventEntity> eventList = instance.change(
                     Boolean.TRUE,
                     collectionStageStatus.getDelayedDate(),
-                    "예정일 변경"
+                    "예정일 변경",
+                    statusList
                 );
                 setEventList(eventList, instance.getProjectCollection());
             }

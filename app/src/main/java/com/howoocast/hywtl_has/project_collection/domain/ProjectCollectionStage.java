@@ -136,7 +136,7 @@ public class ProjectCollectionStage extends CustomEntity {
                 ));
                 this.note = note;
             }
-            ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason);
+            ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason, statusList);
             if (Objects.isNull(this.versionList)) {
                 this.versionList = new ArrayList<>();
             }
@@ -154,7 +154,8 @@ public class ProjectCollectionStage extends CustomEntity {
     public List<EventEntity> change(
         @Nullable Boolean dirty,
         LocalDate expectedDate,
-        String reason
+        String reason,
+        List<ProjectCollectionStageStatus> statusList
     ) {
         List<EventEntity> eventList = new ArrayList<>();
         if (Boolean.TRUE.equals(dirty)) {
@@ -166,7 +167,7 @@ public class ProjectCollectionStage extends CustomEntity {
                 ));
                 this.expectedDate = expectedDate;
 
-                ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason);
+                ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason, statusList);
                 if (Objects.isNull(this.versionList)) {
                     this.versionList = new ArrayList<>();
                 }
