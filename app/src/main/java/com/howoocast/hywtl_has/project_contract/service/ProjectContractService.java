@@ -176,7 +176,7 @@ public class ProjectContractService {
 
     private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
         ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
-        if (!Objects.nonNull(projectCollection)) {
+        if (Objects.isNull(projectCollection)) {
             projectCollection = projectCollectionRepository.save(
                 ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
                     throw new NotFoundException(Project.KEY, projectId);

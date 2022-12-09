@@ -10,7 +10,6 @@ import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { toAmount } from 'util/NumberUtil';
-import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 interface Detail {
@@ -163,43 +162,6 @@ export default function ({ totalAmount }: Props) {
               type="number"
               key={rate}
               defaultValue={rate?.toFixed(1) ?? ''}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box sx={{
-          display:      'flex',
-          flexWrap:     'nowrap',
-          width:        '47%',
-          marginBottom: '15px',
-        }}>
-          <DataFieldWithLabel required={edit} label="예정일" labelPosition="top">
-            <DatePicker
-              openTo="year"
-              inputFormat="YYYY-MM-DD"
-              mask="____-__-__"
-              readOnly={!edit}
-              value={formik.values.expectedDate ? dayjs(formik.values.expectedDate)
-              .format('YYYY-MM-DD') : null}
-              onChange={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e ? dayjs(e)
-                .format('YYYY-MM-DD') : undefined;
-                const formikValue = formik.values.expectedDate ? dayjs(formik.values.expectedDate)
-                .format('YYYY-MM-DD') : undefined;
-                if (formikValue !== value) {
-                  formik.setFieldValue('expectedDate', value);
-                }
-              }}
-              renderInput={(parameter) => (
-                <Input
-                  {...parameter.InputProps}
-                  inputRef={parameter.inputRef}
-                  value={parameter.value}
-                  inputProps={parameter.inputProps}
-                />
-              )}
             />
           </DataFieldWithLabel>
         </Box>

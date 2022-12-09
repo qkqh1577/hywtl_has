@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
-import { FormikContext } from 'formik';
 import {
+  FormikContext,
+  FormikContextType
+} from 'formik';
+import {
+  ProjectCollectionStageStatusType,
   projectCollectionStageStatusTypeList,
   projectCollectionStageStatusTypeName,
 } from 'project_collection/domain';
@@ -23,6 +27,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { toAmount } from 'util/NumberUtil';
 import TextBox from 'layouts/Text';
+import { ProjectCollectionChangeStageParameter } from 'project_collection/parameter';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -58,7 +63,7 @@ export default function () {
         }}>
           {edit && (
             <Button shape="small" onClick={() => {
-              formik.setFieldValue('statusList', [...statusList, {}]);
+              formik.setFieldValue('statusList', [...statusList, { expectedDate: initExpectedData(formik) ?? formik.values.expectedDate }]);
             }}>
               등록
             </Button>
@@ -68,8 +73,10 @@ export default function () {
       <Table>
         <TableHead>
           <TableRow>
+            <Th>예정일</Th>
             <Th>유형</Th>
             <Th>일자</Th>
+            <Th>변경 예정일</Th>
             <Th>금액</Th>
             <Th>비고</Th>
             {edit && (<Th>삭제</Th>)}
@@ -78,13 +85,49 @@ export default function () {
         <TableBody>
           {!edit && statusList.length === 0 && (
             <TableRow>
-              <Td colSpan={4}>조회 결과가 없습니다.</Td>
+              <Td colSpan={6}>조회 결과가 없습니다.</Td>
+            </TableRow>
+          )}
+          {edit && statusList.length === 0 && (
+            <TableRow>
+              <Td colSpan={7}>수금 현황 데이터가 없습니다.</Td>
             </TableRow>
           )}
           {statusList.map((item,
                            i
           ) => (
             <TableRow key={i}>
+              <Td>
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  readOnly={!edit}
+                  disabled={formik.values.statusList[i].type === ProjectCollectionStageStatusType.CARRYOVER}
+                  value={getExpectedDate(item, formik, i)}
+                  onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = item.expectedDate ? dayjs(item.expectedDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`statusList.${i}.expectedDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="outlined"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </Td>
               <Td>
                 <Select
                   variant="outlined"
@@ -98,6 +141,13 @@ export default function () {
                     const value = e.target.value || undefined;
                     if (item.type !== value) {
                       formik.setFieldValue(`statusList.${i}.type`, value);
+                      if(value === ProjectCollectionStageStatusType.CARRYOVER) {
+                        formik.setFieldValue(`statusList.${i}.expectedDate`, '')
+                      }else{
+                        formik.setFieldValue(`statusList.${i}.expectedDate`, formik.values.statusList[i].expectedDate)
+                      }
+                      formik.setFieldValue(`statusList.${i}.requestedDate`, '')
+                      formik.setFieldValue(`statusList.${i}.delayedDate`, '')
                     }
                   }}>
                   {projectCollectionStageStatusTypeList.map(type => (
@@ -113,8 +163,8 @@ export default function () {
                   inputFormat="YYYY-MM-DD"
                   mask="____-__-__"
                   readOnly={!edit}
-                  value={item.requestedDate ? dayjs(item.requestedDate)
-                  .format('YYYY-MM-DD') : null}
+                  disabled={formik.values.statusList[i].type === ProjectCollectionStageStatusType.CARRYOVER}
+                  value={getRequestedDate(item, formik, i)}
                   onChange={(e) => {
                     if (!edit) {
                       return;
@@ -125,6 +175,37 @@ export default function () {
                     .format('YYYY-MM-DD') : undefined;
                     if (formikValue !== value) {
                       formik.setFieldValue(`statusList.${i}.requestedDate`, value);
+                    }
+                  }}
+                  renderInput={(parameter) => (
+                    <Input
+                      {...parameter.InputProps}
+                      inputRef={parameter.inputRef}
+                      variant="outlined"
+                      value={parameter.value}
+                      inputProps={parameter.inputProps}
+                    />
+                  )}
+                />
+              </Td>
+              <Td>
+                <DatePicker
+                  openTo="year"
+                  inputFormat="YYYY-MM-DD"
+                  mask="____-__-__"
+                  readOnly={!edit}
+                  disabled={formik.values.statusList[i].type !== ProjectCollectionStageStatusType.CARRYOVER}
+                  value={getDelayedDate(item, formik, i)}
+                  onChange={(e) => {
+                    if (!edit) {
+                      return;
+                    }
+                    const value = e ? dayjs(e)
+                    .format('YYYY-MM-DD') : undefined;
+                    const formikValue = item.delayedDate ? dayjs(item.delayedDate)
+                    .format('YYYY-MM-DD') : undefined;
+                    if (formikValue !== value) {
+                      formik.setFieldValue(`statusList.${i}.delayedDate`, value);
                     }
                   }}
                   renderInput={(parameter) => (
@@ -196,6 +277,57 @@ export default function () {
         </TableBody>
       </Table>
     </Box>
-
   );
+}
+
+function getExpectedDate(item,
+                         formik: FormikContextType<ProjectCollectionChangeStageParameter>,
+                         index: number
+) {
+  if (!formik) {
+    return;
+  }
+  if (formik.values.statusList && formik.values.statusList[index].type === ProjectCollectionStageStatusType.CARRYOVER) {
+    return null;
+  }
+  return item.expectedDate ? dayjs(item.expectedDate)
+  .format('YYYY-MM-DD') : (formik.values.expectedDate ? dayjs(formik.values.expectedDate)
+  .format('YYYY-MM-DD') : null);
+}
+
+function getRequestedDate(item,
+                          formik: FormikContextType<ProjectCollectionChangeStageParameter>,
+                          index: number
+) {
+  if (!formik) {
+    return;
+  }
+  if (formik.values.statusList && formik.values.statusList[index].type === ProjectCollectionStageStatusType.CARRYOVER) {
+    return null;
+  }
+
+  return item.requestedDate ? dayjs(item.requestedDate)
+  .format('YYYY-MM-DD') : null;
+}
+
+function getDelayedDate(item,
+                        formik: FormikContextType<ProjectCollectionChangeStageParameter>,
+                        index: number) {
+  if (!formik) {
+    return;
+  }
+  if (formik.values.statusList && formik.values.statusList[index].type !== ProjectCollectionStageStatusType.CARRYOVER) {
+    return null;
+  }
+  return item.delayedDate ? dayjs(item.delayedDate)
+  .format('YYYY-MM-DD') : null;
+}
+
+function initExpectedData(formik: FormikContextType<ProjectCollectionChangeStageParameter>) {
+  if(!Array.isArray(formik.values.statusList)) {
+    return;
+  }
+  const status = formik.values.statusList.filter(item => item.delayedDate);
+  console.log(status);
+  return status.length > 0 ? status[status.length - 1].delayedDate : null;
 }

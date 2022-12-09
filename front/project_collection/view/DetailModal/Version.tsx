@@ -43,7 +43,7 @@ export default function (props: Props) {
           flexWrap:   'nowrap',
           alignItems: 'center',
         }}>
-          <TextBox variant="body7" sx={{ marginRight: '20px' }}>기본 정보 변경 이력</TextBox>
+          <TextBox variant="body7" sx={{ marginRight: '20px' }}>기본 정보 이력</TextBox>
         </Box>
       </Box>
       <Table>
@@ -54,8 +54,8 @@ export default function (props: Props) {
             <Th>금액</Th>
             <Th>비율(%)</Th>
             <Th>예정일</Th>
+            <Th>기성 조건</Th>
             <Th>비고</Th>
-            <Th>변경 사유</Th>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,12 +64,12 @@ export default function (props: Props) {
               <Td colSpan={7}>조회 결과가 없습니다</Td>
             </TableRow>
           )}
-          {versionList.map(item => {
+          {versionList.map((item, index) => {
             const rate: number | undefined = props.totalAmount ? (item.amount / props.totalAmount * 100) : undefined;
             const modifiedAt = dayjs(item.modifiedAt)
             .format('YYYY-MM-DD HH:mm:ss');
             return (
-              <TableRow key={modifiedAt}>
+              <TableRow key={`${modifiedAt}_${index}`}>
                 <Td>
                   <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
                 </Td>
