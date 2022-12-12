@@ -13,14 +13,17 @@ import {
 import dayjs from 'dayjs';
 import DateFormat from 'layouts/DateFormat';
 import TextBox from 'layouts/Text';
-import { ProjectCollectionStageVersionVO } from 'project_collection/domain';
+import {
+  ProjectCollectionStageStatusVO,
+  ProjectCollectionStageVersionVO
+} from 'project_collection/domain';
 import TextLink from 'layouts/TextLink';
 import { DefaultFunction } from 'type/Function';
 
 interface Props {
   totalAmount: number | undefined;
   versionList: ProjectCollectionStageVersionVO[] | undefined;
-  onOpenStageStatusModal: DefaultFunction;
+  onOpenStageStatusModal: DefaultFunction<ProjectCollectionStageStatusVO[]>;
 }
 
 export default function (props: Props) {

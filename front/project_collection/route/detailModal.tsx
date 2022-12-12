@@ -36,6 +36,7 @@ export default function ProjectCollectionStageDetailModalRoute() {
   const onChange = useCallback((params: ProjectCollectionChangeStageParameter) => dispatch(projectCollectionAction.changeStage(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.deleteStage(id)), [dispatch]);
   const onOpenStageStatusModal = useCallback((list: ProjectCollectionStageStatusVO[]) => dispatch(projectCollectionAction.stageStatusModal(list)), [dispatch]);
+  const onCloseStageStatusModal = useCallback(() => dispatch(projectCollectionAction.stageStatusModal(undefined)), [dispatch]);
   const totalAmount = useMemo(() => {
     if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
       return undefined;
@@ -121,7 +122,7 @@ export default function ProjectCollectionStageDetailModalRoute() {
       <ListModal
         open={!!stageStatusModal}
         list={stageStatusModal}
-        onClose={onOpenStageStatusModal}
+        onClose={onCloseStageStatusModal}
       />
     </FormikProvider>
   );

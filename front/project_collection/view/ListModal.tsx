@@ -16,11 +16,12 @@ import {
   ProjectCollectionStageStatusVO
 } from 'project_collection/domain';
 import { DefaultFunction } from 'type/Function';
+import DateFormat from 'layouts/DateFormat';
 
 interface Props {
   open: boolean;
   onClose: DefaultFunction;
-  list: ProjectCollectionStageStatusVO[];
+  list?: ProjectCollectionStageStatusVO[];
 }
 
 function ListModal(props : Props) {
@@ -29,9 +30,7 @@ function ListModal(props : Props) {
       title="수금 현황 이력"
       width="50vw"
       open={props.open}
-      onClose={() => {
-        props.onClose(undefined);
-      }}
+      onClose={props.onClose}
       children={
         <Box sx={{
           width:    '100%',
@@ -52,12 +51,18 @@ function ListModal(props : Props) {
                 props.list.length > 0 ? (props.list.map((item, index) => {
                 return (
                   <TableRow key={`${item.type}_${index}`}>
-                    <Td>{item.expectedDate ?? '-'}</Td>
+                    <Td>
+                      <DateFormat date={item.expectedDate} />
+                    </Td>
                     <Td>{projectCollectionStageStatusTypeName(item.type)}</Td>
-                    <Td>{item.requestedDate ?? '-'}</Td>
-                    <Td>{item.delayedDate ?? '-'}</Td>
-                    <Td>{item.amount.toLocaleString()}</Td>
-                    <Td>{item.reason}</Td>
+                    <Td>
+                      <DateFormat date={item.requestedDate} />
+                    </Td>
+                    <Td>
+                      <DateFormat date={item.delayedDate} />
+                    </Td>
+                    <Td>{item.amount && item.amount.toLocaleString()}</Td>
+                    <Td>{item.note}</Td>
                   </TableRow>
                 )})) : (
                   <TableRow>

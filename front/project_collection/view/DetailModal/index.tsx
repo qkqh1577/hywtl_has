@@ -6,7 +6,10 @@ import Footer from './Footer';
 import Form from './Form';
 import Version from './Version';
 import Status from './Status';
-import { ProjectCollectionStageVersionVO } from 'project_collection/domain';
+import {
+  ProjectCollectionStageStatusVO,
+  ProjectCollectionStageVersionVO
+} from 'project_collection/domain';
 
 
 interface Props {
@@ -16,7 +19,7 @@ interface Props {
   onCancel: DefaultFunction;
   totalAmount: number | undefined;
   versionList: ProjectCollectionStageVersionVO[] | undefined;
-  onOpenStageStatusModal: DefaultFunction;
+  onOpenStageStatusModal: DefaultFunction<ProjectCollectionStageStatusVO[]>;
 }
 
 export default function ProjectCollectionStageDetailModal(props: Props) {

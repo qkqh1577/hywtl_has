@@ -66,5 +66,5 @@ export const projectCollectionAction = {
   stageAddModal:    createAction(ProjectCollectionActionType.stageAddModal)<boolean>(),
   stageDetailModal: createAction(ProjectCollectionActionType.stageDetailModal)<ProjectCollectionStageId | undefined>(),
 
-  stageStatusModal: createAction(ProjectCollectionActionType.stageStatusModal)<ProjectCollectionStageStatusVO[]>(),
+  stageStatusModal: createAction(ProjectCollectionActionType.stageStatusModal)<ProjectCollectionStageStatusVO[] | undefined>(),
 };
