@@ -328,6 +328,5 @@ function initExpectedData(formik: FormikContextType<ProjectCollectionChangeStage
     return;
   }
   const status = formik.values.statusList.filter(item => item.delayedDate);
-  console.log(status);
   return status.length > 0 ? status[status.length - 1].delayedDate : null;
 }
