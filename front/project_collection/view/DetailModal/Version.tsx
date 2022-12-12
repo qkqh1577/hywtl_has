@@ -14,10 +14,13 @@ import dayjs from 'dayjs';
 import DateFormat from 'layouts/DateFormat';
 import TextBox from 'layouts/Text';
 import { ProjectCollectionStageVersionVO } from 'project_collection/domain';
+import TextLink from 'layouts/TextLink';
+import { DefaultFunction } from 'type/Function';
 
 interface Props {
   totalAmount: number | undefined;
   versionList: ProjectCollectionStageVersionVO[] | undefined;
+  onOpenStageStatusModal: DefaultFunction;
 }
 
 export default function (props: Props) {
@@ -64,7 +67,9 @@ export default function (props: Props) {
               <Td colSpan={7}>조회 결과가 없습니다</Td>
             </TableRow>
           )}
-          {versionList.map((item, index) => {
+          {versionList.map((item,
+                            index
+          ) => {
             const rate: number | undefined = props.totalAmount ? (item.amount / props.totalAmount * 100) : undefined;
             const modifiedAt = dayjs(item.modifiedAt)
             .format('YYYY-MM-DD HH:mm:ss');
@@ -73,7 +78,13 @@ export default function (props: Props) {
                 <Td>
                   <DateFormat date={item.modifiedAt} format="YYYY-MM-DD HH:mm" />
                 </Td>
-                <Td>{item.name}</Td>
+                <Td>
+                  <TextLink onClick={() => {
+                    props.onOpenStageStatusModal(item.statusList);
+                  }}>
+                    {item.name}
+                  </TextLink>
+                </Td>
                 <Td align="right">{item.amount.toLocaleString()}</Td>
                 <Td>{rate?.toFixed(1)}</Td>
                 <Td>

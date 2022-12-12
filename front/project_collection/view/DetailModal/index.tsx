@@ -16,6 +16,7 @@ interface Props {
   onCancel: DefaultFunction;
   totalAmount: number | undefined;
   versionList: ProjectCollectionStageVersionVO[] | undefined;
+  onOpenStageStatusModal: DefaultFunction;
 }
 
 export default function ProjectCollectionStageDetailModal(props: Props) {
@@ -36,6 +37,7 @@ export default function ProjectCollectionStageDetailModal(props: Props) {
           <Version
             versionList={props.versionList}
             totalAmount={props.totalAmount}
+            onOpenStageStatusModal={props.onOpenStageStatusModal}
           />
           <Status />
         </Box>

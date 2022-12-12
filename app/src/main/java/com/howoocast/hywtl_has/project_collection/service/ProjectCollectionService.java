@@ -108,8 +108,9 @@ public class ProjectCollectionService {
         ProjectCollectionStageStatus projectCollectionStageStatus = statusList.stream()
             .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER
                 && Objects.nonNull(status.getDelayedDate()))
-            .max(Comparator.comparing(ProjectCollectionStageStatus::getDelayedDate)).get();
-        if (Objects.nonNull(projectCollectionStageStatus.getDelayedDate())
+            .max(Comparator.comparing(ProjectCollectionStageStatus::getDelayedDate)).orElse(null);
+        if (Objects.nonNull(projectCollectionStageStatus) &&
+            Objects.nonNull(projectCollectionStageStatus.getDelayedDate())
             && projectCollectionStageStatus.getType() == ProjectCollectionStageStatusType.CARRYOVER) {
             List<EventEntity> eventList = instance.change(
                 Boolean.TRUE,

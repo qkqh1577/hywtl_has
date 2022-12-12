@@ -11,7 +11,10 @@ import React, {
   useMemo
 } from 'react';
 import { projectCollectionAction } from 'project_collection/action';
-import { ProjectCollectionStageId } from 'project_collection/domain';
+import {
+  ProjectCollectionStageId,
+  ProjectCollectionStageStatusVO
+} from 'project_collection/domain';
 import {
   initialProjectCollectionChangeStageParameter,
   ProjectCollectionChangeStageParameter
@@ -21,16 +24,18 @@ import {
   useFormik
 } from 'formik';
 import { closeStatus } from 'components/DataFieldProps';
+import ListModal from 'project_collection/view/ListModal';
 
 export default function ProjectCollectionStageDetailModalRoute() {
 
   const dispatch = useDispatch();
   const { error, rollback } = useDialog();
   const { contract } = useSelector((root: RootState) => root.projectBasic);
-  const { projectId, stage, requestChangeStage, requestDeleteStage } = useSelector((root: RootState) => root.projectCollection);
+  const { projectId, stage, requestChangeStage, requestDeleteStage, stageStatusModal } = useSelector((root: RootState) => root.projectCollection);
   const onClose = useCallback(() => dispatch(projectCollectionAction.stageDetailModal(undefined)), [dispatch]);
   const onChange = useCallback((params: ProjectCollectionChangeStageParameter) => dispatch(projectCollectionAction.changeStage(params)), [dispatch]);
   const onDelete = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.deleteStage(id)), [dispatch]);
+  const onOpenStageStatusModal = useCallback((list: ProjectCollectionStageStatusVO[]) => dispatch(projectCollectionAction.stageStatusModal(list)), [dispatch]);
   const totalAmount = useMemo(() => {
     if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
       return undefined;
@@ -90,6 +95,7 @@ export default function ProjectCollectionStageDetailModalRoute() {
         totalAmount={totalAmount}
         versionList={stage?.versionList}
         open={typeof stage !== 'undefined'}
+        onOpenStageStatusModal={onOpenStageStatusModal}
         onClose={onClose}
         onDelete={() => {
           if (!stage) {
@@ -111,6 +117,11 @@ export default function ProjectCollectionStageDetailModalRoute() {
             }
           });
         }}
+      />
+      <ListModal
+        open={!!stageStatusModal}
+        list={stageStatusModal}
+        onClose={onOpenStageStatusModal}
       />
     </FormikProvider>
   );

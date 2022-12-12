@@ -2,6 +2,7 @@ import { createAction } from 'typesafe-actions';
 import { ProjectId } from 'project/domain';
 import {
   ProjectCollectionStageId,
+  ProjectCollectionStageStatusVO,
   ProjectCollectionStageVO,
   ProjectCollectionVO
 } from 'project_collection/domain';
@@ -37,6 +38,7 @@ export enum ProjectCollectionActionType {
   stageAddModal         = 'project/sales/collection/stage/add-modal',
   stageDetailModal      = 'project/sales/collection/stage/detail-modal',
 
+  stageStatusModal      = 'project/sales/collection/stage/status-modal',
 }
 
 export const projectCollectionAction = {
@@ -63,4 +65,6 @@ export const projectCollectionAction = {
   stageSeqModal:    createAction(ProjectCollectionActionType.stageSeqModal)<boolean>(),
   stageAddModal:    createAction(ProjectCollectionActionType.stageAddModal)<boolean>(),
   stageDetailModal: createAction(ProjectCollectionActionType.stageDetailModal)<ProjectCollectionStageId | undefined>(),
+
+  stageStatusModal: createAction(ProjectCollectionActionType.stageStatusModal)<ProjectCollectionStageStatusVO[]>(),
 };
