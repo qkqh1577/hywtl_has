@@ -19,6 +19,8 @@ import {
   ProjectDocumentType
 } from 'project_document/domain';
 import { ProjectId } from 'project/domain';
+import useDialog from 'dialog/hook';
+import { useNavigate } from 'react-router-dom';
 
 export type OnAddModalOpen = (type: ProjectDocumentType) => void;
 export type OnDetailModalOpen = (id: ProjectDocumentId) => void;
@@ -26,6 +28,9 @@ export type OnDetailModalOpen = (id: ProjectDocumentId) => void;
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
+  const { error } = useDialog();
+  const navigate = useNavigate();
+  const { detail } = useSelector((root: RootState) => root.project);
   const {
           receivedList,
           sentList,
@@ -48,6 +53,12 @@ function Element() {
   const onDetailModalOpen: OnDetailModalOpen = useCallback(
     (id) => dispatch(projectDocumentAction.setId(id)),
     [dispatch]);
+
+  useEffect(() => {
+    if (detail && !detail.code) {
+      error('프로젝트 진행 현황을 등록으로 변경해 주시기 바랍니다.', () => navigate(-1));
+    }
+  }, [detail && detail.code]);
 
   return (
     <ProjectContainer>
