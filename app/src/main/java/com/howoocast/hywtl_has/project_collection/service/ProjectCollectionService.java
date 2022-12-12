@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatus;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatusType;
 import com.howoocast.hywtl_has.project_collection.parameter.ProjectCollectionAddStageParameter;
 import com.howoocast.hywtl_has.project_collection.parameter.ProjectCollectionChangeStageParameter;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
@@ -13,7 +14,9 @@ import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionSt
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,9 +35,7 @@ public class ProjectCollectionService {
 
     private final ProjectCollectionRepository repository;
     private final ProjectCollectionStageRepository stageRepository;
-
     private final UserRepository userRepository;
-
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
@@ -56,9 +57,7 @@ public class ProjectCollectionService {
         ProjectCollection instance = this.load(projectId);
         User user = new CustomFinder<>(userRepository, User.class).byIdIfExists(userId);
         List<EventEntity> eventList = instance.updateManager(user);
-        eventList.stream()
-            .map(event -> ProjectLogEvent.of(instance.getProject(), event))
-            .forEach(eventPublisher::publishEvent);
+        setEventList(eventList, instance);
     }
 
     @Transactional
@@ -97,9 +96,32 @@ public class ProjectCollectionService {
                     statusParameter.getType(),
                     statusParameter.getRequestedDate(),
                     statusParameter.getAmount(),
-                    statusParameter.getNote()))
+                    statusParameter.getNote(),
+                    statusParameter.getDelayedDate(),
+                    statusParameter.getExpectedDate()))
                 .collect(Collectors.toList()))
             .orElse(Collections.emptyList());
+
+        ProjectCollectionStageStatus projectCollectionStageStatus = statusList.stream()
+            .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER
+                && Objects.nonNull(status.getDelayedDate()))
+            .max(Comparator.comparing(ProjectCollectionStageStatus::getDelayedDate)).orElse(null);
+        if (Objects.nonNull(projectCollectionStageStatus) &&
+            Objects.nonNull(projectCollectionStageStatus.getDelayedDate())
+            && projectCollectionStageStatus.getType() == ProjectCollectionStageStatusType.CARRYOVER) {
+            List<EventEntity> eventList = instance.change(
+                Boolean.TRUE,
+                projectCollectionStageStatus.getDelayedDate(),
+                "예정일 변경",
+                statusList
+            );
+            setEventList(eventList, instance.getProjectCollection());
+        }
+
+        if (!instance.getAmount().equals(parameter.getAmount())) {
+            statusList = new ArrayList<>();
+        }
+
         List<EventEntity> eventList = instance.change(
             parameter.getDirty(),
             parameter.getName(),
@@ -109,9 +131,7 @@ public class ProjectCollectionService {
             parameter.getReason(),
             statusList
         );
-        eventList.stream()
-            .map(event -> ProjectLogEvent.of(instance.getProjectCollection().getProject(), event))
-            .forEach(eventPublisher::publishEvent);
+        setEventList(eventList, instance.getProjectCollection());
     }
 
     @Transactional
@@ -149,7 +169,14 @@ public class ProjectCollectionService {
                 null
             )
         );
+
         instance.delete();
+    }
+
+    private void setEventList(List<EventEntity> eventList, ProjectCollection instance) {
+        eventList.stream()
+            .map(event -> ProjectLogEvent.of(instance.getProject(), event))
+            .forEach(eventPublisher::publishEvent);
     }
 
     private Integer getNextSeq(Long projectId) {

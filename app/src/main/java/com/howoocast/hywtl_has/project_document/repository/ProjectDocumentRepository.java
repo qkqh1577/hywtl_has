@@ -19,4 +19,6 @@ public interface ProjectDocumentRepository extends CustomRepository<ProjectDocum
     List<ProjectDocument> findByProject_IdOrderByCode(Long projectId);
 
     List<ProjectDocument> findByProject_IdAndTypeOrderByCode(Long projectId, ProjectDocumentType type);
+
+    List<ProjectDocument> findByProject_Id(Long id);
 }

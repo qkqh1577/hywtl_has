@@ -2,8 +2,11 @@ package com.howoocast.hywtl_has.project_collection.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,7 +14,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -52,30 +57,39 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     /**
      * 기성행 변경 사유
      */
-    @NotBlank
-    @Column(nullable = false)
+    @Column
     private String reason;
 
+    /**
+     * 수금 현황 리스트
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ProjectCollectionStageStatus> statusList;
 
     public static ProjectCollectionStageVersion of(
         String name,
         Long amount,
         LocalDate expectedDate,
         String note,
-        String reason
+        @Nullable String reason
     ) {
         ProjectCollectionStageVersion instance = new ProjectCollectionStageVersion();
         instance.name = name;
         instance.amount = amount;
         instance.expectedDate = expectedDate;
         instance.note = note;
-        instance.reason = reason;
+        if(StringUtils.isEmpty(reason)) {
+            instance.reason = "-";
+        } else {
+            instance.reason = reason;
+        }
         return instance;
     }
 
     public static ProjectCollectionStageVersion of(
         ProjectCollectionStage prevInstance,
-        String reason
+        String reason,
+        List<ProjectCollectionStageStatus> statusList
     ) {
         ProjectCollectionStageVersion instance = new ProjectCollectionStageVersion();
         instance.name = prevInstance.getName();
@@ -83,6 +97,7 @@ public class ProjectCollectionStageVersion extends CustomEntity {
         instance.expectedDate = prevInstance.getExpectedDate();
         instance.note = prevInstance.getNote();
         instance.reason = reason;
+        instance.statusList = statusList;
         return instance;
     }
 }

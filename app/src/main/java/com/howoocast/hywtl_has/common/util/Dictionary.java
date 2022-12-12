@@ -144,6 +144,7 @@ public class Dictionary extends HashMap<String, String> {
         this.put("project_basic", "프로젝트 기본 정보");
         this.put("project_basic.name", "프로젝트명");
         this.put("project_basic.status", "프로젝트 상태");
+        this.put("project_collection_stage_status", "수금현황");
         this.put("project_memo", "프로젝트 메모");
         this.put("project_schedule", "프로젝트 일정 정보");
         this.put("qualified", "승인");

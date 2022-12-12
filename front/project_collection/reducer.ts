@@ -1,6 +1,7 @@
 import { ProjectId } from 'project/domain';
 import {
   ProjectCollectionStageId,
+  ProjectCollectionStageStatusVO,
   ProjectCollectionStageVO,
   ProjectCollectionVO
 } from 'project_collection/domain';
@@ -20,6 +21,7 @@ export interface ProjectCollectionState {
   requestAddStage: ApiStatus;
   requestChangeStage: ApiStatus;
   requestDeleteStage: ApiStatus;
+  stageStatusModal?: ProjectCollectionStageStatusVO[];
 }
 
 const initial: ProjectCollectionState = {
@@ -98,5 +100,11 @@ export const projectCollectionReducer = createReducer(initial, {
                                                        ) => ({
     ...state,
     detailModal: action.payload,
+  }),
+  [ProjectCollectionActionType.stageStatusModal]:      (state,
+                                                        action
+                                                       ) => ({
+    ...state,
+    stageStatusModal: action.payload,
   }),
 });

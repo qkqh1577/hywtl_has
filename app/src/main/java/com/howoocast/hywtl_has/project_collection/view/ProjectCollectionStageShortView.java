@@ -1,11 +1,15 @@
 package com.howoocast.hywtl_has.project_collection.view;
 
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatus;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatusType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -33,28 +37,63 @@ public class ProjectCollectionStageShortView {
         target.expectedDate = source.getExpectedDate();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         if (Objects.nonNull(source.getStatusList())) {
-            source.getStatusList().stream()
+            List<ProjectCollectionStageStatus> askedList = source.getStatusList().stream()
                 .filter(status -> status.getType() == ProjectCollectionStageStatusType.ASKED)
-                .findFirst()
-                .ifPresent((status) -> {
+                .collect(Collectors.toList());
+            if (!askedList.isEmpty()) {
+                Collections.reverse(askedList);
+                Optional<Long> askedAmount = askedList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
+                    .reduce(Long::sum);
+                askedList.stream().findFirst().ifPresent(status -> {
                     target.askedDate = status.getRequestedDate();
-                    target.askedAmount = source.getAmount();
+                    target.askedAmount = askedAmount.orElse(0L);
                 });
-            source.getStatusList().stream()
+            }
+            List<ProjectCollectionStageStatus> collectedList = source.getStatusList()
+                .stream()
                 .filter(status -> status.getType() == ProjectCollectionStageStatusType.COLLECTED)
-                .findFirst()
-                .ifPresent((status) -> {
+                .collect(Collectors.toList());
+            if (!collectedList.isEmpty()) {
+                Collections.reverse(collectedList);
+                Optional<Long> collectedAmount = collectedList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
+                    .reduce(Long::sum);
+                collectedList.stream().findFirst().ifPresent(status -> {
                     target.collectedDate = status.getRequestedDate();
-                    target.collectedAmount = source.getAmount();
+                    target.collectedAmount = collectedAmount.orElse(0L);
                 });
-            source.getStatusList().stream()
+            }
+            List<ProjectCollectionStageStatus> carryOverList = source.getStatusList().stream()
                 .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER)
-                .findFirst()
-                .ifPresent((status) -> {
+                .collect(Collectors.toList());
+            if (!carryOverList.isEmpty()) {
+                Collections.reverse(carryOverList);
+                Optional<Long> carryOverAmount = carryOverList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
+                    .reduce(Long::sum);
+                carryOverList.stream().findFirst().ifPresent(status -> {
                     target.carryoverDate = status.getRequestedDate();
-                    target.carryoverAmount = source.getAmount();
+                    target.carryoverAmount = carryOverAmount.orElse(0L);
                 });
+            }
         }
+
         if (Objects.nonNull(target.collectedAmount) && Objects.nonNull(target.amount) && target.amount > 0) {
             target.collectedRate = 1.0 * target.collectedAmount / target.amount * 100;
         }

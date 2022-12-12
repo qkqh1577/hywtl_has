@@ -6,7 +6,7 @@ import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLog;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
-import com.howoocast.hywtl_has.project_log.repository.ProjectLogRepository;
+import com.howoocast.hywtl_has.project_log.repository.ProjectLogSearchRepository;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
@@ -30,7 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @RequiredArgsConstructor
 public class ProjectLogService {
 
-    private final ProjectLogRepository repository;
+    private final ProjectLogSearchRepository repository;
     private final UserRepository userRepository;
 
 

@@ -86,6 +86,13 @@ public class ProjectCollectionStage extends CustomEntity {
         return instance;
     }
 
+    public void updateVersionList(ProjectCollectionStageVersion version) {
+        if (Objects.isNull(this.versionList)) {
+            this.versionList = new ArrayList<>();
+        }
+        this.versionList.add(version);
+    }
+
     public List<EventEntity> change(
         @Nullable Boolean dirty,
         String name,
@@ -97,11 +104,6 @@ public class ProjectCollectionStage extends CustomEntity {
     ) {
         List<EventEntity> eventList = new ArrayList<>();
         if (Boolean.TRUE.equals(dirty)) {
-            ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason);
-            if (Objects.isNull(this.versionList)) {
-                this.versionList = new ArrayList<>();
-            }
-            this.versionList.add(version);
             if (!Objects.equals(this.name, name)) {
                 eventList.add(EventEntity.of(
                     "기성명 변경",
@@ -134,6 +136,11 @@ public class ProjectCollectionStage extends CustomEntity {
                 ));
                 this.note = note;
             }
+            ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason, statusList);
+            if (Objects.isNull(this.versionList)) {
+                this.versionList = new ArrayList<>();
+            }
+            this.versionList.add(version);
         }
         this.statusList = statusList;
         eventList.add(EventEntity.of(
@@ -141,6 +148,32 @@ public class ProjectCollectionStage extends CustomEntity {
             "복합 내용은 일시 정보만 기록함",
             "복합 내용은 일시 정보만 기록함"
         ));
+        return eventList;
+    }
+
+    public List<EventEntity> change(
+        @Nullable Boolean dirty,
+        LocalDate expectedDate,
+        String reason,
+        List<ProjectCollectionStageStatus> statusList
+    ) {
+        List<EventEntity> eventList = new ArrayList<>();
+        if (Boolean.TRUE.equals(dirty)) {
+            if (!Objects.equals(this.expectedDate, expectedDate)) {
+                eventList.add(EventEntity.of(
+                    "예정일 변경",
+                    this.expectedDate,
+                    expectedDate
+                ));
+                this.expectedDate = expectedDate;
+
+                ProjectCollectionStageVersion version = ProjectCollectionStageVersion.of(this, reason, statusList);
+                if (Objects.isNull(this.versionList)) {
+                    this.versionList = new ArrayList<>();
+                }
+                this.versionList.add(version);
+            }
+        }
         return eventList;
     }
 

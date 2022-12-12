@@ -11,8 +11,9 @@ import lombok.Getter;
 public class ProjectCollectionStageStatusView {
 
     private ProjectCollectionStageStatusType type;
-
     private LocalDate requestedDate;
+    private LocalDate delayedDate;
+    private LocalDate expectedDate;
     private Long amount;
     private String note;
 
@@ -22,6 +23,8 @@ public class ProjectCollectionStageStatusView {
         ProjectCollectionStageStatusView target = new ProjectCollectionStageStatusView();
         target.type = source.getType();
         target.requestedDate = source.getRequestedDate();
+        target.delayedDate = source.getDelayedDate();
+        target.expectedDate = source.getExpectedDate();
         target.amount = source.getAmount();
         target.note = source.getNote();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());

@@ -10,7 +10,6 @@ import TextBox from 'layouts/Text';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import { toAmount } from 'util/NumberUtil';
-import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 interface Detail {
@@ -169,43 +168,6 @@ export default function ({ totalAmount }: Props) {
         <Box sx={{
           display:      'flex',
           flexWrap:     'nowrap',
-          width:        '47%',
-          marginBottom: '15px',
-        }}>
-          <DataFieldWithLabel required={edit} label="예정일" labelPosition="top">
-            <DatePicker
-              openTo="year"
-              inputFormat="YYYY-MM-DD"
-              mask="____-__-__"
-              readOnly={!edit}
-              value={formik.values.expectedDate ? dayjs(formik.values.expectedDate)
-              .format('YYYY-MM-DD') : null}
-              onChange={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = e ? dayjs(e)
-                .format('YYYY-MM-DD') : undefined;
-                const formikValue = formik.values.expectedDate ? dayjs(formik.values.expectedDate)
-                .format('YYYY-MM-DD') : undefined;
-                if (formikValue !== value) {
-                  formik.setFieldValue('expectedDate', value);
-                }
-              }}
-              renderInput={(parameter) => (
-                <Input
-                  {...parameter.InputProps}
-                  inputRef={parameter.inputRef}
-                  value={parameter.value}
-                  inputProps={parameter.inputProps}
-                />
-              )}
-            />
-          </DataFieldWithLabel>
-        </Box>
-        <Box sx={{
-          display:      'flex',
-          flexWrap:     'nowrap',
           width:        '100%',
           marginBottom: '15px',
         }}>
@@ -233,7 +195,7 @@ export default function ({ totalAmount }: Props) {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required label="변경 사유" labelPosition="top">
+            <DataFieldWithLabel label="비고" labelPosition="top">
               <Input
                 key={formik.values.reason}
                 defaultValue={formik.values.reason ?? ''}

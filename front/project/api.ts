@@ -8,7 +8,8 @@ import apiClient from 'services/api';
 import {
   ProjectAddParameter,
   ProjectQuery,
-  ProjectStatusParameter
+  ProjectStatusParameter,
+  ProjectUpdateParameter
 } from 'project/parameter';
 import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 
@@ -32,6 +33,11 @@ class ProjectApi {
                      params: ProjectStatusParameter
   ): Promise<void> {
     const { data } = await apiClient.patch(`/project/sales/${id}/status`, params);
+    return data;
+  }
+
+  async updateFavorite(id: ProjectId, params: ProjectUpdateParameter): Promise<void> {
+    const {data} = await apiClient.patch(`/project/sales/${id}/favorite`, params);
     return data;
   }
 

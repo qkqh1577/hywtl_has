@@ -55,13 +55,17 @@ public class BusinessProjectService {
         }
         return projectBasicBusinessRepository.findByBusiness_Id(businessId).stream().map(
             projectBasicBusiness -> {
-                ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness);
-                ProjectContract projectContract = getProjectContract(projectBasicBusiness);
-                return BusinessInvolvedProjectView.assemble(
-                    projectBasicBusiness,
-                    projectEstimate,
-                    projectContract
-                );
+                if (Objects.nonNull(projectBasicBusiness)) {
+                    ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness);
+                    ProjectContract projectContract = getProjectContract(projectBasicBusiness);
+                    return BusinessInvolvedProjectView.assemble(
+                        projectBasicBusiness,
+                        projectEstimate,
+                        projectContract
+                    );
+                }else{
+                    return null;
+                }
             }).collect(Collectors.toList());
     }
 

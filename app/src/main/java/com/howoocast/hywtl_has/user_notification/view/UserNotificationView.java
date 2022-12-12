@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.user_notification.view;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user_notification.domain.UserNotification;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.Getter;
 
 @Getter
@@ -28,8 +29,10 @@ public class UserNotificationView {
         target.forwardUrl = source.getForwardUrl();
         target.readAt = source.getReadAt();
         target.sender = UserShortView.assemble(source.getSender());
-        target.projectCode = source.getProject().getBasic().getCode();
-        target.projectName = source.getProject().getBasic().getName();
+        if(Objects.nonNull(source.getProject())) {
+            target.projectName = source.getProject().getBasic().getName();
+            target.projectCode = source.getProject().getBasic().getCode();
+        }
         target.createdAt = source.getCreatedAt();
         return target;
     }

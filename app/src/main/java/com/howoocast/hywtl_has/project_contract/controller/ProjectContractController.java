@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,5 +92,12 @@ public class ProjectContractController {
         @Valid @ModelAttribute FileItemParameter parameter
     ) {
         service.changePdfFile(id, parameter);
+    }
+
+    @DeleteMapping("/project/sales/contract/{id}")
+    public void delete(
+        @PathVariable Long id
+    ) {
+        service.delete(id);
     }
 }

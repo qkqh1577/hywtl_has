@@ -61,6 +61,7 @@ export default function ProjectStatusRoute() {
         }}
       />
       <ProjectStatusRightBar
+        id={id}
         targetTest={test?.targetTest}
         testAmount={contract?.estimate?.plan?.testAmount}
         reviewAmount={contract?.estimate?.plan?.reviewAmount}

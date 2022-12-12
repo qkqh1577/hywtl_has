@@ -17,6 +17,7 @@ interface Props {
   open: boolean;
   onClose: DefaultFunction;
   totalAmount: number | undefined;
+  amountBySum: number | undefined;
 }
 
 export default function ProjectCollectionStageAddModal(props: Props) {
@@ -24,7 +25,12 @@ export default function ProjectCollectionStageAddModal(props: Props) {
   const formik = useContext(FormikContext);
   const amount: number | undefined = formik.values.amount;
   const totalAmount = props.totalAmount;
-
+  const handleAmountCalculate = (rate) => {
+    if (totalAmount && props.amountBySum) {
+      formik.setFieldValue('amount', totalAmount - props.amountBySum);
+      formik.setFieldValue('rate', rate?.toFixed(1) ?? 0);
+    }
+  }
   const rate = useMemo(() => {
     if (!amount || !totalAmount) {
       return undefined;
@@ -47,7 +53,6 @@ export default function ProjectCollectionStageAddModal(props: Props) {
           '& > div':    {
             width:        '100%',
             marginBottom: '15px',
-            paddingRight: '20%',
           }
         }}>
           <Box>
@@ -78,7 +83,10 @@ export default function ProjectCollectionStageAddModal(props: Props) {
               />
             </DataFieldWithLabel>
           </Box>
-          <Box>
+          <Box sx={{
+            display:      'flex',
+            alignItems:   'flex-end',
+          }}>
             <DataFieldWithLabel required label="금액" labelPosition="top">
               <Input
                 isAmount
@@ -88,10 +96,20 @@ export default function ProjectCollectionStageAddModal(props: Props) {
                   const value = toAmount(e.target.value) || undefined;
                   if (amount !== value) {
                     formik.setFieldValue('amount', value);
+                    formik.setFieldValue('rate', rate?.toFixed(1) ?? 0);
                   }
                 }}
               />
             </DataFieldWithLabel>
+            <Button sx={{
+              marginLeft: '10px',
+            }}
+              onClick={() => {
+                handleAmountCalculate(rate)}
+              }
+            >
+              금액자동계산
+            </Button>
           </Box>
           <Box>
             <DataFieldWithLabel required label="비율" labelPosition="top">

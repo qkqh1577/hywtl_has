@@ -33,7 +33,9 @@ export function projectCollectionStageStatusTypeName(type: ProjectCollectionStag
 
 export interface ProjectCollectionStageStatusVO {
   type: ProjectCollectionStageStatusType;
-  requestedDate: Date;
+  requestedDate?: Date;
+  expectedDate?:Date;
+  delayedDate?:Date;
   amount?: number;
   note?: string;
   modifiedAt: Date;
@@ -47,6 +49,7 @@ export interface ProjectCollectionStageVersionVO {
   expectedDate: Date;
   reason: string;
   modifiedAt: Date;
+  statusList: ProjectCollectionStageStatusVO[];
 }
 
 export interface ProjectCollectionStageShortVO {

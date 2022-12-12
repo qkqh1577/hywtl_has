@@ -4,7 +4,7 @@ import {
 } from 'react-redux';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
 } from 'react';
 import { RootState } from 'services/reducer';
 import ProjectContainerTitle from 'project/view/Container/Title';
@@ -19,6 +19,7 @@ import ProjectContainerTab from 'project/view/Container/Tab';
 import { projectBasicAction } from 'project_basic/action';
 import { projectCollectionAction } from 'project_collection/action';
 import { useNavigate } from 'react-router-dom';
+import { ProjectUpdateParameter } from 'project/parameter';
 
 export function Title() {
   const { detail } = useSelector((root: RootState) => root.project);
@@ -38,8 +39,10 @@ interface Props {
 export default function ProjectContainerRoute(props: Props) {
   const id = useId();
   const dispatch = useDispatch();
+  const { detail } = useSelector((root: RootState) => root.project);
   const navigate = useNavigate();
   const onDelete = useCallback(() => dispatch(projectAction.delete()), [dispatch]);
+  const onUpdate = useCallback((params: ProjectUpdateParameter) => dispatch(projectAction.updateFavorite(params)), [dispatch]);
 
   useEffect(() => {
     const projectId = id ? ProjectId(id) : undefined;
@@ -54,6 +57,8 @@ export default function ProjectContainerRoute(props: Props) {
       titleRightComponent={
         <ProjectContainerTitleButtonBar
           onDelete={onDelete}
+          onUpdate={onUpdate}
+          isFavorite={detail?.isFavorite ?? false}
         />}
       filter={
         <Box sx={{

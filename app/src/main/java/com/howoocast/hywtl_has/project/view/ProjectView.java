@@ -27,6 +27,7 @@ public class ProjectView {
     private LocalDate expectedMonth;
     private LocalDate requestedMonth;
     private Boolean isLh;
+    private Boolean isFavorite;
     private ProjectProgressStatus progressStatus;
     private ProjectEstimateExpectation estimateExpectation;
     private ProjectEstimateStatus estimateStatus;
@@ -51,6 +52,7 @@ public class ProjectView {
         target.expectedMonth = source.getBasic().getExpectedMonth();
         target.requestedMonth = source.getBasic().getRequestedMonth();
         target.isLh = source.getBasic().getIsLh();
+        target.isFavorite = source.getIsFavorite();
         target.progressStatus = source.getStatus().getProgressStatus();
         target.estimateExpectation = source.getStatus().getEstimateExpectation();
         target.estimateStatus = source.getStatus().getEstimateStatus();

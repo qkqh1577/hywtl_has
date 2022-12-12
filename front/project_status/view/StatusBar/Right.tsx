@@ -6,9 +6,11 @@ import Input from 'layouts/Input';
 import { cut10000 } from 'util/NumberUtil';
 import { ProjectCollectionStageShortVO } from 'project_collection/domain';
 import dayjs from 'dayjs';
+import { ProjectId } from 'project/domain';
 
 interface CollectionBoxProps {
   stageList: ProjectCollectionStageShortVO[] | undefined;
+  onClick?: () => void;
 }
 
 interface Props
@@ -16,10 +18,12 @@ interface Props
   targetTest: string | undefined;
   testAmount: number | undefined;
   reviewAmount: number | undefined;
+
+  id: ProjectId | undefined;
 }
 
 
-function CollectionBox({ stageList }: CollectionBoxProps) {
+function CollectionBox({ stageList, onClick }: CollectionBoxProps) {
   const title = useMemo(() => {
     if (!stageList || stageList.length === 0) {
       return '최근 수금';
@@ -80,14 +84,15 @@ function CollectionBox({ stageList }: CollectionBoxProps) {
   }, [latestStage]);
 
   return (
-    <DataBox title={title} width="220px">
+    <DataBox title={title} width="220px" onClick={onClick}>
       <Box sx={{
         width:          '100%',
         display:        'flex',
         flexWrap:       'nowrap',
         justifyContent: 'space-between',
         alignItems:     'center',
-      }}>
+      }}
+      >
         <Box sx={{
           width: '23%'
         }}>
@@ -161,7 +166,14 @@ export default function ProjectStatusRightBar(props: Props) {
           defaultValue={amount}
         />
       </DataBox>
-      <CollectionBox stageList={props.stageList} />
+      <CollectionBox
+        onClick={() => {
+          if (props.id) {
+            window.open(`/project/sales-management/${props.id}/progress`, '_self');
+          }
+        }}
+        stageList={props.stageList}
+      />
     </Box>
   );
 }

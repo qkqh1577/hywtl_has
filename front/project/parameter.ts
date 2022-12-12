@@ -15,6 +15,10 @@ export interface ProjectAddParameter {
   memo?: string;
 }
 
+export interface ProjectUpdateParameter {
+  isFavorite?: boolean;
+}
+
 export interface ProjectStatusParameter
   extends ProjectStatus {
 }

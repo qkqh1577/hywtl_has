@@ -14,6 +14,8 @@ export interface ProjectCollectionAddStageParameter {
 export interface ProjectCollectionStageStatusParameter {
   type: ProjectCollectionStageStatusType;
   requestedDate: string;
+  delayedDate: string;
+  expectedDate: string;
   amount?: number;
   note?: string;
 }

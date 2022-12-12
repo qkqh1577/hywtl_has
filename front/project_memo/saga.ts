@@ -49,7 +49,7 @@ function* watchAdd() {
       yield put(projectMemoAction.requestAdd('request'));
       yield call(projectMemoApi.add, projectId, params);
       yield put(projectMemoAction.requestAdd('done'));
-      if (params.attendanceList.length > 0) {
+      if (Array.isArray(params.attendanceList) && params.attendanceList.length > 0) {
         yield put(userNotificationAction.requestCount());
       }
     }

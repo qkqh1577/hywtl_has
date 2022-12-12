@@ -31,13 +31,23 @@ public class ProjectCollectionStageStatus extends CustomEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectCollectionStageStatusType type;
+    /**
+     * 예정일
+     */
+    @Column
+    private LocalDate expectedDate;
 
     /**
      * 요청 일자
      */
-    @NotNull
-    @Column(nullable = false)
+    @Column
     private LocalDate requestedDate;
+
+    /**
+     * 변경 예정일
+     */
+    @Column
+    private LocalDate delayedDate;
 
     /**
      * 금액
@@ -53,13 +63,17 @@ public class ProjectCollectionStageStatus extends CustomEntity {
         ProjectCollectionStageStatusType type,
         LocalDate requestedDate,
         Long amount,
-        String note
+        String note,
+        LocalDate delayedDate,
+        LocalDate expectedDate
     ) {
         ProjectCollectionStageStatus instance = new ProjectCollectionStageStatus();
         instance.type = type;
         instance.requestedDate = requestedDate;
         instance.amount = amount;
         instance.note = note;
+        instance.delayedDate = delayedDate;
+        instance.expectedDate = expectedDate;
         return instance;
     }
 }

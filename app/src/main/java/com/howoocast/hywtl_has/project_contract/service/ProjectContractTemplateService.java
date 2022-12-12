@@ -180,6 +180,9 @@ public class ProjectContractTemplateService {
             return 0L;
         }
         Long totalAmount = estimate.getPlan().getTotalAmount();
+        if (!estimate.getPlan().getIsLh()) {
+            totalAmount= (long) (totalAmount + (totalAmount * 0.1));
+        }
         return (long) Math.floor(rate * totalAmount / 100);
     }
 

@@ -4,6 +4,7 @@ import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class ProjectCollectionChangeStageParameter {
 
     private Boolean dirty;
 
+    @Valid
     private List<ProjectCollectionStageStatusParameter> statusList;
 }

@@ -3,7 +3,8 @@ import Page from 'type/Page';
 import {
   ProjectAddParameter,
   ProjectQuery,
-  ProjectStatusParameter
+  ProjectStatusParameter,
+  ProjectUpdateParameter
 } from 'project/parameter';
 import {
   ProjectId,
@@ -37,6 +38,7 @@ export enum ProjectActionType {
   setFilterStatus      = 'project/sales/filter/status/set',
   delete               = 'project/sales/delete',
   requestDelete        = 'project/sales/delete/request',
+  updateFavorite       = 'project/sales/favorite/update',
 }
 
 export const projectAction = {
@@ -57,4 +59,5 @@ export const projectAction = {
   setFilterStatus:      createAction(ProjectActionType.setFilterStatus)<ProjectFilterStatus>(),
   delete:               createAction(ProjectActionType.delete)(),
   requestDelete:        createAction(ProjectActionType.requestDelete)<ApiStatus>(),
+  updateFavorite:       createAction(ProjectActionType.updateFavorite)<ProjectUpdateParameter>(),
 };

@@ -82,7 +82,7 @@ export default function ProjectContractModalTopForm(props: Props) {
         justifyContent: 'flex-end',
         alignItems:     'center',
       }}>
-        {!edit && (
+        {!formik.values.confirmed && !edit && (
           <Button
             shape="basic2"
             onClick={props.onDelete}
@@ -92,7 +92,7 @@ export default function ProjectContractModalTopForm(props: Props) {
             삭제
           </Button>
         )}
-        {!edit && (
+        {!formik.values.confirmed && !edit && (
           <Button
             onClick={() => {
               formik.setFieldValue('edit', true);
