@@ -195,7 +195,7 @@ export default function ({ totalAmount }: Props) {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required label="변경 사유" labelPosition="top">
+            <DataFieldWithLabel label="비고" labelPosition="top">
               <Input
                 key={formik.values.reason}
                 defaultValue={formik.values.reason ?? ''}

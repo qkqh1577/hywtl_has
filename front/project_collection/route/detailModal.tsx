@@ -71,12 +71,6 @@ export default function ProjectCollectionStageDetailModalRoute() {
       dispatch(projectCollectionAction.setProjectId(projectId));
     }, () => {
       formik.setSubmitting(false);
-      if (stage) {
-        formik.setValues({
-          ...stage,
-          edit: false
-        } as unknown as ProjectCollectionChangeStageParameter);
-      }
       dispatch(projectCollectionAction.requestChangeStage('idle'));
     });
   }, [requestChangeStage]);

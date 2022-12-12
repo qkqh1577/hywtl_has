@@ -42,7 +42,13 @@ public class ProjectCollectionStageShortView {
                 .collect(Collectors.toList());
             if (!askedList.isEmpty()) {
                 Collections.reverse(askedList);
-                Optional<Long> askedAmount = askedList.stream().map(ProjectCollectionStageStatus::getAmount)
+                Optional<Long> askedAmount = askedList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
                     .reduce(Long::sum);
                 askedList.stream().findFirst().ifPresent(status -> {
                     target.askedDate = status.getRequestedDate();
@@ -55,7 +61,13 @@ public class ProjectCollectionStageShortView {
                 .collect(Collectors.toList());
             if (!collectedList.isEmpty()) {
                 Collections.reverse(collectedList);
-                Optional<Long> collectedAmount = collectedList.stream().map(ProjectCollectionStageStatus::getAmount)
+                Optional<Long> collectedAmount = collectedList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
                     .reduce(Long::sum);
                 collectedList.stream().findFirst().ifPresent(status -> {
                     target.collectedDate = status.getRequestedDate();
@@ -67,7 +79,13 @@ public class ProjectCollectionStageShortView {
                 .collect(Collectors.toList());
             if (!carryOverList.isEmpty()) {
                 Collections.reverse(carryOverList);
-                Optional<Long> carryOverAmount = carryOverList.stream().map(ProjectCollectionStageStatus::getAmount)
+                Optional<Long> carryOverAmount = carryOverList.stream().map(status -> {
+                        if (Objects.nonNull(status.getAmount())) {
+                            return status.getAmount();
+                        } else {
+                            return 0L;
+                        }
+                    })
                     .reduce(Long::sum);
                 carryOverList.stream().findFirst().ifPresent(status -> {
                     target.carryoverDate = status.getRequestedDate();

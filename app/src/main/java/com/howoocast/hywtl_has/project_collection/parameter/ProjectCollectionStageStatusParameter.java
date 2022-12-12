@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ProjectCollectionStageStatusParameter {
 
-    @NotNull(message = ProjectCollectionStageStatus.KEY + ".type.not_null")
+    @NotNull(message = ProjectCollectionStageStatus.KEY + ".category.not_null")
     private ProjectCollectionStageStatusType type;
     private LocalDate requestedDate;
     private LocalDate delayedDate;

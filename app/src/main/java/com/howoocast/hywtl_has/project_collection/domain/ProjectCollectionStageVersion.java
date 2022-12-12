@@ -57,7 +57,7 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     /**
      * 기성행 변경 사유
      */
-    @Column(nullable = false)
+    @Column
     private String reason;
 
     /**
