@@ -102,9 +102,6 @@ public class ProjectCollectionService {
                 .collect(Collectors.toList()))
             .orElse(Collections.emptyList());
 
-//        deleteExistedStageStatus(instance);
-//        changeExpectedDate(instance, statusList);
-
         ProjectCollectionStageStatus projectCollectionStageStatus = statusList.stream()
             .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER
                 && Objects.nonNull(status.getDelayedDate()))
@@ -174,32 +171,6 @@ public class ProjectCollectionService {
         );
 
         instance.delete();
-    }
-
-    private void changeExpectedDate(ProjectCollectionStage instance, List<ProjectCollectionStageStatus> statusList) {
-        List<ProjectCollectionStageStatus> projectCollectionStageStatus = statusList
-            .stream()
-            .filter(status -> status.getType() == ProjectCollectionStageStatusType.CARRYOVER
-                && Objects.nonNull(status.getDelayedDate()))
-            .sorted(Comparator.comparing(ProjectCollectionStageStatus::getDelayedDate))
-            .collect(Collectors.toList());
-
-        for (ProjectCollectionStageStatus collectionStageStatus : projectCollectionStageStatus) {
-            if (Objects.nonNull(collectionStageStatus.getDelayedDate())
-                && collectionStageStatus.getType() == ProjectCollectionStageStatusType.CARRYOVER) {
-                List<EventEntity> eventList = instance.change(
-                    Boolean.TRUE,
-                    collectionStageStatus.getDelayedDate(),
-                    "예정일 변경",
-                    statusList
-                );
-                setEventList(eventList, instance.getProjectCollection());
-            }
-        }
-    }
-
-    private static void deleteExistedStageStatus(ProjectCollectionStage instance) {
-        instance.getStatusList().forEach(ProjectCollectionStageStatus::delete);
     }
 
     private void setEventList(List<EventEntity> eventList, ProjectCollection instance) {
