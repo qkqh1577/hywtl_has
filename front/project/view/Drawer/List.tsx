@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import { ColorPalette } from 'assets/theme';
 import {
+  ProjectId,
   projectProgressStatusName,
   ProjectShortVO
 } from 'project/domain';
@@ -18,9 +19,10 @@ export interface ListProps {
   openMenu: boolean;
   onRowClick: (item: ProjectShortVO) => void;
   searchFormRef: React.RefObject<HTMLDivElement>;
+  id: ProjectId;
 }
 
-export default function ({ list, openMenu: open, onRowClick, searchFormRef }: ListProps) {
+export default function ({ list, openMenu: open, onRowClick, searchFormRef, id: projectId }: ListProps) {
 
   const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
 
@@ -107,8 +109,10 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
               hover
               key={item.id}
               role="button"
-              selected
-              sx={{ cursor: 'pointer' }}
+              sx={{
+                cursor: 'pointer',
+                backgroundColor: ColorPalette._d2e7fa,
+              }}
               onClick={() => {
                 onRowClick(item);
               }}
@@ -121,6 +125,7 @@ export default function ({ list, openMenu: open, onRowClick, searchFormRef }: Li
           {list && list.map((item) => (
             <TableRow
               hover
+              selected={item.id === projectId}
               key={item.id}
               role="button"
               sx={{ cursor: 'pointer' }}
