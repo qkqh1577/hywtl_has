@@ -268,7 +268,11 @@ export default function (props: SearchFormProps) {
         <Button
           sx={{
             width: '100%'
-          }}>
+          }}
+          onClick={() => {
+            formik.handleSubmit();
+          }}
+        >
           검색
         </Button>
       </ItemBox>

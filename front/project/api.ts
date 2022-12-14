@@ -15,7 +15,7 @@ import { ProjectBasicFailReasonParameter } from 'project_basic/parameter';
 
 class ProjectApi {
   async getPage(query: ProjectQuery): Promise<Page<ProjectShortVO>> {
-    const { data } = await apiClient.get('/project/sales', query);
+    const { data } = await apiClient.post('/project/sales/page', query);
     return data;
   }
 

@@ -2,7 +2,7 @@ package com.howoocast.hywtl_has.project.controller;
 
 import com.howoocast.hywtl_has.common.util.UsernameExtractor;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
-import com.howoocast.hywtl_has.project.parameter.ProjectPredicateBuilder;
+import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.service.ProjectService;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -32,18 +31,12 @@ public class ProjectController {
 
     private final ProjectService service;
 
-    @GetMapping("/project/sales")
+    @PostMapping("/project/sales/page")
     public Page<ProjectShortView> page(
-        @RequestParam(required = false) String keyword,
+        @RequestBody ProjectSearchParameter parameter,
         Pageable pageable
     ) {
-        return ProjectMapper.toShortView(
-            service.page(
-                new ProjectPredicateBuilder()
-                    .keyword(keyword)
-                    .build(),
-                pageable
-            ));
+        return ProjectMapper.toShortView(service.page(parameter, pageable));
     }
 
 
