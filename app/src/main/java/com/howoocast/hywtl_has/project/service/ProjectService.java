@@ -46,8 +46,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,8 +75,8 @@ public class ProjectService {
 
 
     @Transactional(readOnly = true)
-    public Page<Project> page(ProjectSearchParameter parameter, Pageable pageable) {
-        return projectSearchRepository.search(parameter, pageable);
+    public List<Project> getList(ProjectSearchParameter parameter) {
+        return projectSearchRepository.search(parameter);
     }
 
     @Transactional(readOnly = true)

@@ -13,7 +13,6 @@ import {
   projectProgressStatusName,
   ProjectStatus,
 } from 'project/domain';
-import { pageSizeList } from 'type/Page';
 import { Option } from 'components/DataFieldProps';
 
 export interface ProjectAddParameter {
@@ -101,8 +100,6 @@ export interface ProjectQuery {
   keywordOfProject: string;
   keywordOfProjectDetail: string[];
   projectStatusSearchList: ProjectStatusOption[];
-  page: number;
-  size: number;
 }
 
 export const initialProjectQuery: ProjectQuery = {
@@ -112,8 +109,6 @@ export const initialProjectQuery: ProjectQuery = {
     projectOption:    '',
     projectSubOption: '',
   }],
-  page:                    0,
-  size:                    pageSizeList[0]
 };
 
 export function getSubOptionByOption(option: ProjectStatusSearchOption) {

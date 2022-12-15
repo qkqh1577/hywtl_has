@@ -7,6 +7,7 @@ import static com.howoocast.hywtl_has.project_basic.domain.QProjectBasicBusiness
 import static com.howoocast.hywtl_has.user.domain.QUser.user;
 
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectBidStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectContractStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
@@ -17,14 +18,11 @@ import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter.ProjectStatusSearchParameter;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.EntityManager;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -38,46 +36,21 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
     }
 
     @Override
-    public Page<Project> search(ProjectSearchParameter parameter, Pageable pageable) {
-        JPAQuery<Project> contentQuery = queryFactory
+    public List<Project> search(ProjectSearchParameter parameter) {
+        return queryFactory
             .selectFrom(project)
             .leftJoin(project.basic.projectManager, user)
             .leftJoin(project.basic.receptionManager, user)
             .leftJoin(project.basic.salesManager, user)
             .leftJoin(projectBasicBusiness)
             .on(project.id.eq(projectBasicBusiness.project.id))
-            .leftJoin(business)
-            .on(business.id.eq(projectBasicBusiness.business.id))
-            .leftJoin(businessManager)
-            .on(businessManager.id.eq(projectBasicBusiness.businessManager.id))
+            .leftJoin(projectBasicBusiness.business, business)
+            .leftJoin(projectBasicBusiness.businessManager, businessManager)
             .where(
                 projectNameContains(parameter.getKeywordOfProject()),
                 projectInformationStatusEq(parameter.getProjectStatusSearchList()),
                 projectDetailEq(parameter.getKeywordOfProjectDetail())
-            )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize());
-        List<Project> content = contentQuery.fetch();
-
-        JPAQuery<Long> countQuery = queryFactory
-            .select(project.count())
-            .from(project)
-            .leftJoin(project.basic.projectManager, user)
-            .leftJoin(project.basic.receptionManager, user)
-            .leftJoin(project.basic.salesManager, user)
-            .leftJoin(projectBasicBusiness)
-            .on(project.id.eq(projectBasicBusiness.project.id))
-            .leftJoin(business)
-            .on(business.id.eq(projectBasicBusiness.business.id))
-            .leftJoin(businessManager)
-            .on(businessManager.id.eq(projectBasicBusiness.businessManager.id))
-            .where(
-                projectNameContains(parameter.getKeywordOfProject()),
-                projectInformationStatusEq(parameter.getProjectStatusSearchList()),
-                projectDetailEq(parameter.getKeywordOfProjectDetail())
-            );
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+            ).fetch();
     }
 
     private BooleanExpression projectNameContains(String keywordOfProject) {
@@ -123,20 +96,45 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
         for (String detail : keywordOfProjectDetail) {
             if (StringUtils.hasText(detail)) {
                 booleanBuilder.and(
-                    project.basic.name.eq(detail)
-                        .or(project.basic.code.eq(detail))
+                    project.basic.name.contains(detail)
+                        .or(project.basic.code.contains(detail))
+                        .or(project.basic.alias.contains(detail))
                         .or(project.basic.receptionManager.name.eq(detail))
                         .or(project.basic.projectManager.name.eq(detail))
                         .or(project.basic.salesManager.name.eq(detail))
-//                    .or(project.basic.requestedMonth.eq(LocalDate.parse(detail)))
+                        .or(isMatchedBidType(detail) ? project.basic.bidType.eq(getBidType(detail)) : null)
+                        .or(project.basic.isLh.eq(convertStringToBoolean(detail)))
+//                    .or(project.basic.requestedMonth.eq(detail))
 //                    .or(project.basic.expectedMonth.eq(LocalDate.parse(detail)))
                         .or(projectBasicBusiness.business.name.eq(detail))
                         .or(projectBasicBusiness.businessManager.name.eq(detail))
                         .or(projectBasicBusiness.businessManager.mobilePhone.eq(detail))
                         .or(projectBasicBusiness.businessManager.jobTitle.eq(detail))
+                        .or(projectBasicBusiness.businessManager.department.eq(detail))
                 );
             }
         }
         return booleanBuilder;
+    }
+
+    private Boolean convertStringToBoolean(String detail) {
+        if (detail.equals("lh-예")) {
+            return true;
+        } else if (detail.equals("lh-아니요")) {
+            return false;
+        }
+        return null;
+    }
+
+    private ProjectBasicBidType getBidType(String detail) {
+        return Arrays.stream(ProjectBasicBidType.values())
+            .filter(bidType -> bidType.getName().startsWith(detail))
+            .findFirst()
+            .get();
+    }
+
+    private Boolean isMatchedBidType(String detail) {
+        return Arrays.stream(ProjectBasicBidType.values())
+            .anyMatch(bidType -> bidType.getName().startsWith(detail));
     }
 }

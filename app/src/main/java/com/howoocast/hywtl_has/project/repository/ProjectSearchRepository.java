@@ -2,9 +2,8 @@ package com.howoocast.hywtl_has.project.repository;
 
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 public interface ProjectSearchRepository {
-    Page<Project> search(ProjectSearchParameter parameter, Pageable pageable);
+    List<Project> search(ProjectSearchParameter parameter);
 }

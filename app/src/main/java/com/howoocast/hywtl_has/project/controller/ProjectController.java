@@ -8,11 +8,10 @@ import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.service.ProjectService;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project.view.ProjectView;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,11 +31,10 @@ public class ProjectController {
     private final ProjectService service;
 
     @PostMapping("/project/sales/page")
-    public Page<ProjectShortView> page(
-        @RequestBody ProjectSearchParameter parameter,
-        Pageable pageable
+    public List<ProjectShortView> page(
+        @RequestBody ProjectSearchParameter parameter
     ) {
-        return ProjectMapper.toShortView(service.page(parameter, pageable));
+        return ProjectMapper.toShortView(service.getList(parameter));
     }
 
 

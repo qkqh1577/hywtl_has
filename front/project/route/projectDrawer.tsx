@@ -65,12 +65,7 @@ export default function ProjectDrawerRoute() {
         setFilter(initialProjectQuery);
       }
       else {
-        if (page.number === 0) {
-          setList(page.content);
-        }
-        else {
-          setList([...list, ...page.content]);
-        }
+        setList([...page]);
       }
     }
   }, [page]);

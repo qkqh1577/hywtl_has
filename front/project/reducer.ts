@@ -1,4 +1,3 @@
-import Page from 'type/Page';
 import { createReducer } from 'typesafe-actions';
 import {
   ProjectActionType,
@@ -15,7 +14,7 @@ import { ProjectQuery } from 'project/parameter';
 export interface ProjectState {
   filter?: ProjectQuery;
   id?: ProjectId;
-  page?: Page<ProjectShortVO>;
+  page?: ProjectShortVO[];
   detail?: ProjectVO;
   requestAdd: ApiStatus;
   requestUpdateStatus: ApiStatus;
