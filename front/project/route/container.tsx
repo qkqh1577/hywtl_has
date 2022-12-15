@@ -19,7 +19,11 @@ import ProjectContainerTab from 'project/view/Container/Tab';
 import { projectBasicAction } from 'project_basic/action';
 import { projectCollectionAction } from 'project_collection/action';
 import { useNavigate } from 'react-router-dom';
-import { ProjectUpdateParameter } from 'project/parameter';
+import {
+  initialProjectQuery,
+  ProjectUpdateParameter
+} from 'project/parameter';
+import { closeStatus } from 'components/DataFieldProps';
 
 export function Title() {
   const { detail } = useSelector((root: RootState) => root.project);
@@ -39,7 +43,7 @@ interface Props {
 export default function ProjectContainerRoute(props: Props) {
   const id = useId();
   const dispatch = useDispatch();
-  const { detail } = useSelector((root: RootState) => root.project);
+  const { detail, requestDelete } = useSelector((root: RootState) => root.project);
   const navigate = useNavigate();
   const onDelete = useCallback(() => dispatch(projectAction.delete()), [dispatch]);
   const onUpdate = useCallback((params: ProjectUpdateParameter) => dispatch(projectAction.updateFavorite(params)), [dispatch]);
@@ -50,6 +54,18 @@ export default function ProjectContainerRoute(props: Props) {
     dispatch(projectBasicAction.setId(projectId));
     dispatch(projectCollectionAction.setProjectId(projectId));
   }, [id]);
+
+  useEffect(() => {
+    closeStatus(requestDelete,
+      () => {
+        dispatch(projectAction.setId(undefined));
+        dispatch(projectAction.setFilter(initialProjectQuery));
+        navigate('/project/sales-management');
+      },
+      () => {
+        dispatch(projectAction.requestDelete('idle'));
+      });
+  }, [requestDelete]);
 
   return (
     <PageLayout
