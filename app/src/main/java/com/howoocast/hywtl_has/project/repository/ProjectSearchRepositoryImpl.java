@@ -19,6 +19,7 @@ import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter.ProjectS
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -103,9 +104,8 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
                         .or(project.basic.projectManager.name.eq(detail))
                         .or(project.basic.salesManager.name.eq(detail))
                         .or(isMatchedBidType(detail) ? project.basic.bidType.eq(getBidType(detail)) : null)
-                        .or(project.basic.isLh.eq(convertStringToBoolean(detail)))
-//                    .or(project.basic.requestedMonth.eq(detail))
-//                    .or(project.basic.expectedMonth.eq(LocalDate.parse(detail)))
+                        .or(isParsedToLocalDate(detail) ? project.basic.requestedMonth.eq(LocalDate.parse(detail)) : null)
+                        .or(isParsedToLocalDate(detail) ? project.basic.expectedMonth.eq(LocalDate.parse(detail)) : null)
                         .or(projectBasicBusiness.business.name.eq(detail))
                         .or(projectBasicBusiness.businessManager.name.eq(detail))
                         .or(projectBasicBusiness.businessManager.mobilePhone.eq(detail))
@@ -117,13 +117,8 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
         return booleanBuilder;
     }
 
-    private Boolean convertStringToBoolean(String detail) {
-        if (detail.equals("lh-예")) {
-            return true;
-        } else if (detail.equals("lh-아니요")) {
-            return false;
-        }
-        return null;
+    private boolean isParsedToLocalDate(String detail) {
+        return detail.matches("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
     }
 
     private ProjectBasicBidType getBidType(String detail) {
