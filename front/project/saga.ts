@@ -126,8 +126,6 @@ function* watchUpdateFavorite() {
         yield put(projectAction.requestUpdateStatus('request'));
         yield call(projectApi.updateFavorite, id, params);
         yield put(projectAction.requestUpdateStatus('done'));
-        yield put(projectAction.setFilter(initialProjectQuery));
-        yield put(projectAction.setId(id));
       }
     }
     catch (e) {

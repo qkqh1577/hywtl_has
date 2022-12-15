@@ -43,7 +43,7 @@ interface Props {
 export default function ProjectContainerRoute(props: Props) {
   const id = useId();
   const dispatch = useDispatch();
-  const { detail, requestDelete } = useSelector((root: RootState) => root.project);
+  const { detail, requestDelete, requestUpdateStatus, filter, id: projectId } = useSelector((root: RootState) => root.project);
   const navigate = useNavigate();
   const onDelete = useCallback(() => dispatch(projectAction.delete()), [dispatch]);
   const onUpdate = useCallback((params: ProjectUpdateParameter) => dispatch(projectAction.updateFavorite(params)), [dispatch]);
@@ -66,6 +66,19 @@ export default function ProjectContainerRoute(props: Props) {
         dispatch(projectAction.requestDelete('idle'));
       });
   }, [requestDelete]);
+
+  useEffect(() => {
+    closeStatus(requestUpdateStatus,
+      () => {
+        if (filter) {
+          dispatch(projectAction.setFilter(filter));
+          dispatch(projectAction.setId(projectId));
+        }
+      },
+      () => {
+        dispatch(projectAction.requestUpdateStatus('idle'));
+      })
+  }, [requestUpdateStatus])
 
   return (
     <PageLayout
