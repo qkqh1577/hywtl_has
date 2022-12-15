@@ -261,6 +261,7 @@ export default function (props: SearchFormProps) {
           shape="basic2"
           onClick={() => {
             formik.resetForm();
+            formik.handleSubmit();
           }}
         >
           초기화
