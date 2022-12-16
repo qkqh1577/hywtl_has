@@ -75,9 +75,14 @@ public class Dictionary extends HashMap<String, String> {
         this.put("eng", "영문");
         this.put("eng_name", "영문명");
         this.put("estimate", "견적");
+        this.put("estimate_date", "견적 일자");
         this.put("estimate_content", "견적서 내용");
+        this.put("estimate_isLh", "LH 여부");
         this.put("expected", "예상");
+        this.put("expected_service_date", "착수 가능일");
         this.put("expected_start_month", "착수 가능");
+        this.put("expected_final_report_deadline", "최종 보고서 납품 가능 주");
+        this.put("expected_test_deadline", "설풍 납품 가능 주");
         this.put("expiry_period", "유효 기간");
         this.put("extra", "기타");
         this.put("fail_reason", "수주 실패 원인");

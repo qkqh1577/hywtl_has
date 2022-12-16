@@ -33,7 +33,7 @@ export default function () {
         <DataFieldWithLabel required label="송부 여부" labelPosition="top">
           <Select
             displayEmpty
-            value={typeof formik.values.isSent === 'boolean' ? (formik.values.isSent ? 'Y' : 'N') : ''}
+            value={formik.values.isSent ? 'Y' : 'N'}
             onChange={(e) => {
               const value = e.target.value || undefined;
               if (value === 'Y') {

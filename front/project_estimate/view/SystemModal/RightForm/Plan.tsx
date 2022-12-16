@@ -130,7 +130,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box>
-        <DataFieldWithLabel label="견적 담당자1" labelPosition="top" required={edit}>
+        <DataFieldWithLabel label="견적 담당자1" labelPosition="top">
           <UserSelector
             readOnly={!edit}
             value={plan.manager1Id ?? plan.manager1?.id}
@@ -144,7 +144,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box>
-        <DataFieldWithLabel label="견적 담당자2" labelPosition="top" required={edit}>
+        <DataFieldWithLabel label="견적 담당자2" labelPosition="top">
           <UserSelector
             readOnly={!edit}
             value={plan.manager2Id ?? plan.manager2?.id}

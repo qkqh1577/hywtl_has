@@ -12,9 +12,11 @@ import {
   TestType,
   testUnitName
 } from 'type/TestType';
-import { PersonnelJobVO } from 'personnel/domain';
+import {
+  PersonnelJobVO,
+  PersonnelVO
+} from 'personnel/domain';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
-
 
 class ProjectEstimateData {
 
@@ -23,8 +25,8 @@ class ProjectEstimateData {
                    project: ProjectVO
   ) => {
     const estimateNumber = this.getEstimateNumber(project.code!, await documentDataApi.getSequenceNumber(project.id));
-    const manager1 = await personnelApi.getOne(values.plan.manager1Id) ?? undefined;
-    const manager2 = await personnelApi.getOne(values.plan.manager2Id) ?? undefined;
+    const manager1 = values.plan.manager1Id ? await personnelApi.getOne(values.plan.manager1Id) ?? undefined : undefined;
+    const manager2 = values.plan.manager2Id ? await personnelApi.getOne(values.plan.manager2Id) ?? undefined : undefined;
     values.contentList = this.mapToContentList(values.contentList as unknown as string[], variableList);
     values.templateList = this.getMappedServiceList(values.templateList);
     const templateListWithOutReview = values.templateList.filter(template => template.testType !== TestType.REVIEW);
@@ -35,14 +37,14 @@ class ProjectEstimateData {
       estimateDate:        values.plan.estimateDate,
       estimateNumber:      estimateNumber ?? '',
       expectedServiceDate: values.plan.expectedServiceDate,
-      manager1_jobClass:   this.getJobClass(manager1?.jobList) ?? '',
-      manager1_name:       manager1.name ?? '',
-      manager1_phone:      manager1.basic?.phone ?? '',
-      manager1_email:      manager1.email ?? '',
-      manager2_jobClass:   this.getJobClass(manager2.jobList) ?? '',
-      manager2_name:       manager2.name ?? '',
-      manager2_phone:      manager2.basic?.phone ?? '',
-      manager2_email:      manager2.email ?? '',
+      manager1_jobClass:   this.getJobClass(getManagerJobList(manager1)) ?? '',
+      manager1_name:       getManagerName(manager1) ?? '',
+      manager1_phone:      getManagerPhone(manager1) ?? '',
+      manager1_email:      getManagerEmail(manager1) ?? '',
+      manager2_jobClass:   this.getJobClass(getManagerJobList(manager2)) ?? '',
+      manager2_name:       getManagerName(manager2) ?? '',
+      manager2_phone:      getManagerPhone(manager2) ?? '',
+      manager2_email:      getManagerEmail(manager2) ?? '',
       totalAmount:         values.plan.totalAmount.toLocaleString(),
       totalAmountKor:      toAmountKor(values.plan?.totalAmount ?? 0),
       discountAmount:      values.plan.discountAmount ? values.plan.discountAmount.toLocaleString() : 0,
@@ -84,9 +86,12 @@ class ProjectEstimateData {
 
   getMappedTitleList = (list: string[]): ProjectEstimateTemplateDetailTitleListToMap[] => {
     return list.map((title) => {
-      return {
-        title: title,
-      };
+      if(typeof title === 'string') {
+        return {
+          title: title,
+        };
+      }
+      return title;
     });
   };
 
@@ -118,6 +123,9 @@ class ProjectEstimateData {
   };
 
   getJobClass = (jobList: PersonnelJobVO[]): String | undefined => {
+    if (!jobList || jobList.length === 0) {
+      return '';
+    }
     return jobList.filter(job => job.isRepresentative)[0].jobClass;
   };
 
@@ -145,4 +153,31 @@ class ProjectEstimateData {
 
 }
 
+function getManagerName(manager: PersonnelVO | undefined) {
+  if (!manager) {
+    return '';
+  }
+  return manager.name;
+}
+
+function getManagerPhone(manager: PersonnelVO | undefined) {
+  if (!manager || !manager.basic) {
+    return '';
+  }
+  return manager.basic.phone;
+}
+
+function getManagerEmail(manager: PersonnelVO | undefined) {
+  if(!manager){
+    return '';
+  }
+  return manager.email;
+}
+
+function getManagerJobList(manager: PersonnelVO | undefined) {
+  if(!manager){
+    return [];
+  }
+  return manager.jobList;
+}
 export const projectEstimateData = new ProjectEstimateData();
