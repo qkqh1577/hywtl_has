@@ -19,7 +19,8 @@ export class ProjectContractVariable {
   public static list(list: ContractConditionVariableVO[] = [],
                      values?: ProjectContractParameter
   ) {
-    if (list.length === 0) {
+
+    if (list.length === 0 || !values?.estimate) {
       return [];
     }
     return list.map((item) => {

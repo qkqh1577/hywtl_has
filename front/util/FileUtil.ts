@@ -31,15 +31,19 @@ export const generateFile = ({
 
       if (type === 'estimate') {
         const data = await projectEstimateData.setData(values as ProjectSystemEstimateParameter, variableList, project as ProjectVO);
-        doc.setData(data);
-        doc.render(data);
-        values.file = fileToView(blobToFile(getBlob(doc), `견적서-${data.projectName}-${data.estimateNumber}.docx`));
+        if (data) {
+          doc.setData(data);
+          doc.render(data);
+          values.file = fileToView(blobToFile(getBlob(doc), `견적서-${data.projectName}-${data.estimateNumber}.docx`));
+        }
       }
       else {
         const data = await projectContractData.setData(values as ProjectContractParameter, variableList);
-        doc.setData(data);
-        doc.render(data);
-        values.file = fileToView(blobToFile(getBlob(doc), `계약서-${data.serviceName}.docx`));
+        if (data) {
+          doc.setData(data);
+          doc.render(data);
+          values.file = fileToView(blobToFile(getBlob(doc), `계약서-${data.serviceName}.docx`));
+        }
       }
       callback && callback(values);
     }

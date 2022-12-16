@@ -35,7 +35,8 @@ export default function ({
       return;
     }
     if (!item.expectedDate) {
-      console.error('예정일이 필요합니다.');
+      error('예정일이 필요합니다.');
+      return;
     }
 
     formik.setFieldValue('collection.stageList', [...stageList, item]);
