@@ -75,7 +75,7 @@ export default function CareerForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={!edit}
+                required={edit}
                 label="근무처명"
                 labelPosition="top"
               >
@@ -100,7 +100,7 @@ export default function CareerForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={!edit}
+                required={edit}
                 label="직급 및 담당업무"
                 labelPosition="top"
               >

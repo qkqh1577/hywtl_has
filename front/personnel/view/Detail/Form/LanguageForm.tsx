@@ -127,7 +127,6 @@ export default function LanguageForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="급수, 종류"
                 labelPosition="top"
               >

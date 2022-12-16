@@ -75,7 +75,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="직책" labelPosition="top">
+              <DataFieldWithLabel required={edit} label="교육기관명" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.academyName}
@@ -138,7 +138,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel label="재적상태" labelPosition="top">
+              <DataFieldWithLabel required={edit} label="재적상태" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.state}

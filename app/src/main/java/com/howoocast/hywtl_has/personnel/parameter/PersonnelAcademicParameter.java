@@ -5,16 +5,18 @@ import com.howoocast.hywtl_has.personnel.domain.PersonnelAcademic;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Getter
 @Setter
 public class PersonnelAcademicParameter extends CustomParameter<PersonnelAcademic> {
 
     @NotBlank(message = PersonnelAcademic.KEY + ".academy_name.not_blank")
     private String academyName;
 
-    @NotBlank(message = PersonnelAcademic.KEY + ".major.not_blank")
+    @NotBlank(message = PersonnelAcademic.KEY + ".academic_major.not_blank")
     private String major;
 
     private String degree;
