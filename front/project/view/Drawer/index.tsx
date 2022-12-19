@@ -9,10 +9,12 @@ import SearchForm, { SearchFormProps } from 'project/view/Drawer/SearchForm';
 import List, { ListProps } from 'project/view/Drawer/List';
 import { ColorPalette } from 'assets/theme';
 import { ProjectQuery } from 'project/parameter';
+import { ProjectId } from 'project/domain';
 
 export interface ProjectDrawerProps
   extends Omit<SearchFormProps & ListProps, |'searchFormRef'>,
           FormikLayoutProps<ProjectQuery> {
+  id: ProjectId
 }
 
 export default function ProjectDrawer(props: ProjectDrawerProps) {

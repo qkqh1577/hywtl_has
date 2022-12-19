@@ -146,12 +146,22 @@ public class ProjectContractService {
     public void confirm(Long projectId, ProjectContractConfirmedParameter parameter) {
         List<ProjectContract> list = repository.findByProject_Id(projectId);
         ProjectContract instance = this.load(parameter.getContractId());
+        validate(list, instance);
+        setConfirmedEstimate(instance);
+        updateHistory(list, instance);
+        setProjectCollectionInformationByFinalContract(projectId, instance);
+    }
+
+    private static void validate(List<ProjectContract> list, ProjectContract instance) {
         if (list.isEmpty()) {
             throw new IllegalRequestException(ProjectContract.KEY + ".is_empty", "선택할 수 있는 계약서가 없습니다.");
         }
         if (instance.getConfirmed()) {
             throw new IllegalRequestException(ProjectContract.KEY + ".already_confirmed", "이미 확정된 계약서입니다.");
         }
+    }
+
+    private void updateHistory(List<ProjectContract> list, ProjectContract instance) {
         ProjectContract prev = list.stream()
             .filter(ProjectContract::getConfirmed)
             .findFirst().orElse(null);
@@ -165,7 +175,17 @@ public class ProjectContractService {
             Optional.ofNullable(prev).map(ProjectContract::getCode).orElse(null),
             instance.getCode()
         ));
-        setProjectCollectionInformationByFinalContract(projectId, instance);
+    }
+
+    private void setConfirmedEstimate(ProjectContract instance) {
+        estimateRepository.findById(instance.getEstimate().getId()).ifPresent(estimateByContract -> {
+            estimateRepository.findByProject_IdAndConfirmed(instance.getProject().getId(), Boolean.TRUE).ifPresentOrElse(estimate -> {
+                if (!estimate.getId().equals(estimateByContract.getId())) {
+                    estimateByContract.changeConfirmed(Boolean.TRUE);
+                    estimate.changeConfirmed(Boolean.FALSE);
+                }
+            }, () -> estimateByContract.changeConfirmed(Boolean.TRUE));
+        });
     }
 
     @Transactional

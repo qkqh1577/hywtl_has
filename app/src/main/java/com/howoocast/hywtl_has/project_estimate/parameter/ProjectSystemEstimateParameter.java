@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project_estimate.parameter;
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class ProjectSystemEstimateParameter {
 
     private Boolean isLh;
 
+    @Valid
     @NotNull(message = ProjectSystemEstimate.KEY + ".plan.not_null")
     private ProjectEstimatePlanParameter plan;
 
@@ -32,6 +34,7 @@ public class ProjectSystemEstimateParameter {
     @NotEmpty(message = ProjectSystemEstimate.KEY + ".building_list.not_empty")
     private List<ProjectEstimateComplexBuildingParameter> buildingList;
 
+    @Valid
     @NotEmpty(message = ProjectSystemEstimate.KEY + ".template_list.not_empty")
     private List<ProjectEstimateTemplateParameter> templateList;
 

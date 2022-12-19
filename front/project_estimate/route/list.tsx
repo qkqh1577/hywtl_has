@@ -1,5 +1,8 @@
 import ProjectEstimateListSection from 'project_estimate/view/EstimateList';
-import React, { useCallback, } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+} from 'react';
 import {
   useDispatch,
   useSelector
@@ -21,6 +24,20 @@ export default function ProjectEstimateListRoute() {
   const openSystemAddModal = useCallback(() => dispatch(projectEstimateAction.setSystemModal(null)), [dispatch]);
   const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectEstimateAction.setFinalModal(true)), [dispatch]);
+
+  useEffect(() => {
+    if (localStorage.getItem('custom')) {
+      openCustomDetailModal(ProjectEstimateId(Number(localStorage.getItem('custom'))));
+      localStorage.removeItem('custom');
+    }
+  }, [localStorage.getItem('custom')])
+
+  useEffect(() => {
+    if (localStorage.getItem('system')) {
+      openSystemDetailModal(ProjectEstimateId(Number(localStorage.getItem('system'))));
+      localStorage.removeItem('system');
+    }
+  }, [localStorage.getItem('system')])
 
   return (
     <ProjectEstimateListSection

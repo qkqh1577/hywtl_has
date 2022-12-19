@@ -13,8 +13,6 @@ import { ProjectComplexBuildingParameter, } from 'project_complex/parameter';
 import { ProjectComplexBuildingId, } from 'project_complex/domain';
 import { projectBasicAction } from 'project_basic/action';
 import { closeStatus } from 'components/DataFieldProps';
-import { ProjectEstimateId } from 'project_estimate/domain';
-import { projectEstimateAction } from 'project_estimate/action';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
 import ProjectSystemEstimateModalRoute from 'project_estimate/route/systemModal';
 
@@ -34,8 +32,7 @@ export default function ProjectComplexBuildingRoute() {
   const update = useCallback((params: ProjectComplexBuildingParameter) => dispatch(projectComplexAction.updateBuilding(params)), [dispatch]);
   const deleteBuilding = useCallback((id: ProjectComplexBuildingId) => dispatch(projectComplexAction.deleteBuilding(id)), [dispatch]);
   const openDocumentModal = useCallback((id: ProjectComplexBuildingId | undefined) => dispatch(projectComplexAction.buildingFileModal(id)), [dispatch]);
-  const openCustomDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
-  const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
+  const toEstimateAndContractTab = useCallback(() => window.open(`/project/sales-management/${id}/estimate_contract`), [id]);
 
   useEffect(() => {
     closeStatus(requestPushBuilding, () => {
@@ -73,9 +70,8 @@ export default function ProjectComplexBuildingRoute() {
         onUpdate={update}
         onDelete={deleteBuilding}
         openDocumentModal={openDocumentModal}
-        openCustomDetailModal={openCustomDetailModal}
-        openSystemDetailModal={openSystemDetailModal}
         contract={contract}
+        toEstimateAndContractTab={toEstimateAndContractTab}
       />
       <ProjectCustomEstimateDetailModalRoute />
       <ProjectSystemEstimateModalRoute />

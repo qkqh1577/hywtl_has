@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Embeddable
@@ -26,9 +27,9 @@ public class ContractBasicContractor {
     private String ceoName;
 
     public static ContractBasicContractor of(
-        String address,
-        String companyName,
-        String ceoName
+        @Nullable String address,
+        @Nullable String companyName,
+        @Nullable String ceoName
     ) {
         ContractBasicContractor instance = new ContractBasicContractor();
         instance.address = address;

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -52,9 +53,9 @@ public class ContractBasic extends CustomEntity {
         String collectionStageNote,
         String outcome,
         String description,
-        String contractorAddress,
-        String contractorCompanyName,
-        String contractorCeoName
+        @Nullable String contractorAddress,
+        @Nullable String contractorCompanyName,
+        @Nullable String contractorCeoName
     ) {
         this.serviceDuration = serviceDuration;
         this.collectionStageNote = collectionStageNote;

@@ -82,7 +82,7 @@ public class ProjectBasic {
     /**
      * LH 여부
      */
-    private Boolean isLh;
+    private Boolean isLh = false;
 
     public static ProjectBasic of(
         @Nullable String code,

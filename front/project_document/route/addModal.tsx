@@ -43,9 +43,10 @@ export default function ProjectDocumentAddModalRoute() {
   useEffect(() => {
     closeStatus(requestAdd, () => {
       dispatch(projectDocumentAction.setProjectId(projectId));
+      dispatch(projectDocumentAction.addModal(undefined));
     }, () => {
       formik.setSubmitting(false);
-      dispatch(projectDocumentAction.addModal(undefined));
+      dispatch(projectDocumentAction.requestAdd('idle'));
     });
   }, [requestAdd]);
 

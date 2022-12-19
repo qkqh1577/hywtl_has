@@ -84,7 +84,6 @@ function* watchDelete() {
       yield call(projectApi.delete, id);
       yield put(projectAction.requestDelete('done'));
       yield put(dialogAction.openAlert('삭제하였습니다.'));
-      yield put(projectAction.setFilter(initialProjectQuery));
     }
     catch (e) {
       const message = getErrorMessage(projectAction.delete, e);
@@ -127,8 +126,6 @@ function* watchUpdateFavorite() {
         yield put(projectAction.requestUpdateStatus('request'));
         yield call(projectApi.updateFavorite, id, params);
         yield put(projectAction.requestUpdateStatus('done'));
-        yield put(projectAction.setFilter(initialProjectQuery));
-        yield put(projectAction.setId(id));
       }
     }
     catch (e) {

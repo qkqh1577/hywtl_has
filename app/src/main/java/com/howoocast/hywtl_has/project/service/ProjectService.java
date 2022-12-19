@@ -14,9 +14,11 @@ import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateStatus;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.parameter.ProjectAddParameter;
+import com.howoocast.hywtl_has.project.parameter.ProjectSearchParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectStatusUpdateParameter;
 import com.howoocast.hywtl_has.project.parameter.ProjectUpdateParameter;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project.repository.ProjectSearchRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicDesignRepository;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicExternalContributorRepository;
@@ -36,7 +38,6 @@ import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user_notification.domain.UserNotification;
 import com.howoocast.hywtl_has.user_notification.repository.UserNotificationRepository;
-import com.querydsl.core.types.Predicate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -45,8 +46,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectService {
 
     private final ProjectRepository repository;
+    private final ProjectSearchRepository projectSearchRepository;
     private final UserRepository userRepository;
     private final ProjectMemoRepository projectMemoRepository;
     private final ProjectScheduleRepository projectScheduleRepository;
@@ -73,12 +73,10 @@ public class ProjectService {
     private final UserNotificationRepository userNotificationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+
     @Transactional(readOnly = true)
-    public Page<Project> page(
-        Predicate predicate,
-        Pageable pageable
-    ) {
-        return repository.findAll(predicate, pageable);
+    public List<Project> getList(ProjectSearchParameter parameter) {
+        return projectSearchRepository.search(parameter);
     }
 
     @Transactional(readOnly = true)

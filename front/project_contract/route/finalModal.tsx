@@ -19,6 +19,7 @@ import {
 } from 'project_contract/parameter';
 import ProjectContractFinalModal from 'project_contract/view/FinalModal';
 import { closeStatus } from 'components/DataFieldProps';
+import { projectEstimateAction } from 'project_estimate/action';
 
 export default function ProjectContractFinalModalRoute() {
 
@@ -48,6 +49,7 @@ export default function ProjectContractFinalModalRoute() {
   useEffect(() => {
     closeStatus(requestSetFinal, () => {
       dispatch(projectContractAction.setProjectId(projectId));
+      dispatch(projectEstimateAction.setProjectId(projectId));
       onClose();
     }, () => {
       formik.setSubmitting(false);

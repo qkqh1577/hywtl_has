@@ -12,6 +12,9 @@ class ProjectContractData {
   setData = async (values: ProjectContractParameter,
                    variableList: ContractConditionVariableVO[]
   ) => {
+    if (!values.estimate || !values.basic) {
+      return;
+    }
     values.conditionList = this.getMappedConditions(values.conditionList, variableList);
     return {
       serviceName:                 values.basic.serviceName,

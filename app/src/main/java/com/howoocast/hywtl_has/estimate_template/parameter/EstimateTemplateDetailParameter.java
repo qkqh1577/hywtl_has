@@ -18,7 +18,7 @@ public class EstimateTemplateDetailParameter {
     @NotEmpty(message = EstimateTemplateDetail.KEY + ".title_list.not_empty")
     private List<String> titleList;
 
-    @NotNull(message = EstimateTemplateDetail.KEY + ".unit.note_null")
+    @NotNull(message = EstimateTemplateDetail.KEY + ".unit.not_null")
     private EstimateUnit unit;
 
     @NotNull(message = EstimateTemplateDetail.KEY + ".unit_amount.not_null")

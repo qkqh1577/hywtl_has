@@ -29,7 +29,7 @@ export default function ProjectDrawerRoute() {
   const { pathname } = useLocation();
 
   const isProjectPage = useMemo(() => pathname.startsWith('/project/'), [pathname]);
-  const { drawerOpen, filterOpen, filterStatus } = useSelector((root: RootState) => root.project);
+  const { drawerOpen, filterOpen, filterStatus, id } = useSelector((root: RootState) => root.project);
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const { page } = useSelector((root: RootState) => root.project);
   const setFilter = useCallback((query: ProjectQuery) => dispatch(projectAction.setFilter(query)), [dispatch]);
@@ -65,12 +65,7 @@ export default function ProjectDrawerRoute() {
         setFilter(initialProjectQuery);
       }
       else {
-        if (page.number === 0) {
-          setList(page.content);
-        }
-        else {
-          setList([...list, ...page.content]);
-        }
+        setList([...page]);
       }
     }
   }, [page]);
@@ -87,6 +82,7 @@ export default function ProjectDrawerRoute() {
       list={list}
       onRowClick={onRowClick}
       formik={formik}
+      id={id!}
     />
   );
 }

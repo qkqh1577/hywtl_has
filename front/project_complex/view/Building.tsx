@@ -39,10 +39,7 @@ import {
   testTypeName
 } from 'type/TestType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  ProjectEstimateId,
-  ProjectEstimateType
-} from 'project_estimate/domain';
+import { ProjectEstimateType } from 'project_estimate/domain';
 import { ProjectContractVO } from 'project_contract/domain';
 import useDialog from 'dialog/hook';
 import { STANDARD_RATIO } from 'util/CommonConstantVariable';
@@ -54,9 +51,8 @@ interface Props {
   onUpdate: DefaultFunction<ProjectComplexBuildingParameter>;
   onDelete: DefaultFunction<ProjectComplexBuildingId>;
   openDocumentModal: DefaultFunction<ProjectComplexBuildingId>;
-  openCustomDetailModal: DefaultFunction<ProjectEstimateId>;
-  openSystemDetailModal: DefaultFunction<ProjectEstimateId>;
   contract?: ProjectContractVO;
+  toEstimateAndContractTab: DefaultFunction;
 }
 
 export default function ProjectComplexBuildingSection(props: Props) {
@@ -94,20 +90,24 @@ export default function ProjectComplexBuildingSection(props: Props) {
             }}>
             + 추가
           </Button>
-          <Button shape="small"
+          <Button
+            sx={{
+              display: `${!props.contract || !props.contract.id ? 'none' : 'block'}`
+            }}
+            shape="small"
             onClick={() => {
               if (!props.contract || !props.contract.id) {
-                error('최종 선택된 계약서가 없습니다.')
+                error('최종 선택된 계약서가 없습니다.');
                 return;
               }
               if (props.contract.estimate!.type === ProjectEstimateType.SYSTEM) {
-                props.openSystemDetailModal(props.contract.estimate!.id);
+                localStorage.setItem('system', '' + props.contract.estimate!.id);
               }
               else {
-                props.openCustomDetailModal(props.contract.estimate.id);
+                localStorage.setItem('custom', '' + props.contract.estimate!.id);
               }
-            }
-            }
+              props.toEstimateAndContractTab();
+            }}
           >
             계약에 사용된 견적서 새창열기
           </Button>

@@ -30,7 +30,7 @@ public class ProjectContractParameter {
     @NotNull(message = ProjectContract.KEY + ".collection.not_null")
     private ProjectContractCollectionParameter collection;
 
-    @NotEmpty(message = ProjectContract.KEY + ".condition_list.not_empty")
+    @NotEmpty(message = ProjectContract.KEY + ".contract_condition.not_empty")
     private List<ProjectContractConditionParameter> conditionList;
 
     private FileItemParameter file;
