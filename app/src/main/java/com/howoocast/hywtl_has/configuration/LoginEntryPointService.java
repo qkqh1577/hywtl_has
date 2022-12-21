@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.configuration;
 
-import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,6 @@ public class LoginEntryPointService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().name())
                 .build()
-        ).orElseThrow(() -> new NotFoundException("user", String.format("username: %s", username)));
+        ).orElseThrow(() -> new UsernameNotFoundException("Username not found exception"));
     }
 }

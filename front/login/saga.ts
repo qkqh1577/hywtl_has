@@ -22,9 +22,10 @@ function* watchLogin() {
       yield put(loginAction.requestLogin('done'));
     }
     catch (e) {
-      const message = getErrorMessage(loginAction.login, e);
-      yield put(dialogAction.openError(message || '로그인에 실패하였습니다.'));
-      yield put(loginAction.requestLogin(message));
+      yield put(loginAction.loginError({
+        code:    getErrorCode(loginAction.login, e) ?? '',
+        message: getErrorMessage(loginAction.login, e) ?? '로그인에 실패하였습니다.'
+      }));
     }
   }
 }

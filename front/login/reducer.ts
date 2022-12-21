@@ -1,4 +1,7 @@
-import { LoginVO } from 'login/domain';
+import {
+  LoginError,
+  LoginVO
+} from 'login/domain';
 import { createReducer } from 'typesafe-actions';
 import { LoginActionType } from 'login/action';
 import { ApiStatus } from 'components/DataFieldProps';
@@ -12,6 +15,7 @@ export interface LoginState {
   changeModal: boolean;
   passwordChangeModal: boolean;
   passwordValidation?: PasswordValidation;
+  loginError?: LoginError;
 }
 
 const initial: LoginState = {
@@ -64,5 +68,11 @@ export const loginReducer = createReducer(initial, {
                                          ) => ({
     ...state,
     passwordValidation: action.payload
+  }),
+  [LoginActionType.loginError]: (state,
+                                         action
+                                        ) => ({
+    ...state,
+    loginError: action.payload
   })
 });

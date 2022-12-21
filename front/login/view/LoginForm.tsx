@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   FormControl,
-  Grid,
   Input,
   InputLabel,
 } from '@mui/material';
@@ -17,7 +16,6 @@ import {
   Formik,
   FormikHelpers
 } from 'formik';
-import PageLayout from 'layouts/PageLayout';
 import {
   useDispatch,
   useSelector
@@ -26,10 +24,11 @@ import { loginAction } from 'login/action';
 import { LoginParameter } from 'login/parameter';
 import { RootState } from 'services/reducer';
 import { closeStatus } from 'components/DataFieldProps';
+import TextBox from 'layouts/Text';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
-  const { requestLogin } = useSelector((root: RootState) => root.login);
+  const { requestLogin, loginError } = useSelector((root: RootState) => root.login);
   const login = useCallback((params: LoginParameter) => dispatch(loginAction.login(params)), [dispatch]);
 
   const handler = {
@@ -67,6 +66,7 @@ export default function LoginForm() {
         password
       };
       login(parameter);
+      setSubmitting(false);
     },
   };
 
@@ -74,93 +74,101 @@ export default function LoginForm() {
     closeStatus(requestLogin, () => {
       dispatch(loginAction.requestDetail());
     }, () => {
+      dispatch(loginAction.loginError(undefined));
       dispatch(loginAction.requestLogin('idle'));
     });
   }, [requestLogin]);
 
   return (
-    <PageLayout
-      body={
-        <Box sx={{
-          display:        'flex',
-          width:          '100%',
-          height:         '100%',
-          justifyContent: 'center',
-          flexWrap:       'wrap',
+    <Box sx={{
+      display:        'flex',
+      width:          '100%',
+      height:         '50%',
+      justifyContent: 'space-between',
+      alignItems:     'center',
+      flexWrap:       'wrap',
+      flexDirection:  'column',
+      marginTop:      '40vh',
+    }}>
+      <Formik
+        onSubmit={handler.submit}
+        initialValues={{
+          username: '',
+          password: '',
         }}>
-          <Box sx={{
-            display:        'flex',
-            justifyContent: 'center',
-            width:          '100%',
-            height:         '50px',
-            mb:             '40px',
-          }}>
-            <h2>로그인</h2>
-          </Box>
-          <Formik
-            onSubmit={handler.submit}
-            initialValues={{
-              username: '',
-              password: '',
+        {({ values, isSubmitting, handleChange, handleSubmit, setSubmitting }) => (
+          <Form
+            style={{
+              width: '25%'
             }}>
-            {({ values, isSubmitting, handleChange, handleSubmit }) => (
-              <Form>
-                <Grid container spacing={2}>
-                  <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-username">아이디</InputLabel>
-                      <Input required
-                        type="text"
-                        id="params-username"
-                        name="username"
-                        value={values.username}
-                        onChange={handleChange}
-                      />
-                      <ErrorMessage name="username" />
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={12}>
-                    <FormControl variant="standard" fullWidth>
-                      <InputLabel htmlFor="params-password">비밀번호</InputLabel>
-                      <Input required
-                        type="password"
-                        id="params-password"
-                        name="password"
-                        value={values.password}
-                        onChange={handleChange}
-                        onKeyDown={(e) => {
-                          handler.keyDown(e, handleSubmit);
-                        }}
-                      />
-                      <ErrorMessage name="password" />
-                    </FormControl>
-                  </Grid>
-                  <Grid item sm={12}>
-                    <Box sx={{
-                      display:        'flex',
-                      justifyContent: 'space-between',
-                      width:          '100%',
-                      mt:             '40px',
-                    }}>
-                      <Button
-                        disabled={isSubmitting}
-                        onClick={() => {
-                          handleSubmit();
-                        }}>
-                        {isSubmitting ? ' 로그인 중' : '로그인'}
-                      </Button>
-                    </Box>
-                  </Grid>
-                  <Grid item sm={12} sx={{ color: '#700', textAlign: 'center' }}>
-                    초기 관리자 계정 문의: woo@howoocast.com
-                  </Grid>
-                </Grid>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      }
-    />
+            <h2>로그인</h2>
+            <Box>
+              <FormControl variant="standard" fullWidth>
+                <InputLabel htmlFor="params-username">아이디</InputLabel>
+                <Input required
+                  type="text"
+                  id="params-username"
+                  name="username"
+                  value={values.username}
+                  onChange={handleChange}
+                />
+                <ErrorMessage name="username" />
+              </FormControl>
+            </Box>
+            <Box>
+              <FormControl variant="standard" fullWidth>
+                <InputLabel htmlFor="params-password">비밀번호</InputLabel>
+                <Input required
+                  type="password"
+                  id="params-password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onKeyDown={(e) => {
+                    handler.keyDown(e, handleSubmit);
+                    setSubmitting(false);
+                  }}
+                />
+                <ErrorMessage name="password" />
+              </FormControl>
+            </Box>
+            {loginError &&
+              (<TextBox
+                sx={{
+                  display:        'flex',
+                  justifyContent: 'center',
+                  marginTop:      '10px',
+                }}
+                variant="body20">
+                {loginError?.message}
+              </TextBox>)}
+            <Box>
+              <Button
+                sx={{
+                  width:     '100%',
+                  marginTop: '10px'
+                }}
+                disabled={isSubmitting}
+                onClick={() => {
+                  handleSubmit();
+                }}>
+                {isSubmitting ? ' 로그인 중' : '로그인'}
+              </Button>
+            </Box>
+          </Form>
+        )}
+      </Formik>
+      <Box sx={{
+        display:        'flex',
+        flexDirection:  'column',
+        alignItems:     'center',
+        justifyContent: 'center',
+      }}>
+        <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
+        <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
+        <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
+      </Box>;
+    </Box>
   );
 }
 
