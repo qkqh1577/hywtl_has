@@ -36,15 +36,21 @@ public class PasswordReset extends CustomEntity {
     @Column(nullable = false, updatable = false)
     private String name; // 이름
 
+    @NotBlank
+    @Column(nullable = false, updatable = false)
+    private String username; // 아이디
+
     //////////////////////////////////
     //// constructor
     //////////////////////////////////
     protected PasswordReset(
         String email,
-        String name
+        String name,
+        String username
     ) {
         this.email = email;
         this.name = name;
+        this.username = username;
     }
 
     //////////////////////////////////
@@ -52,11 +58,12 @@ public class PasswordReset extends CustomEntity {
     //////////////////////////////////
     public String getAuthKey() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(this.getRawKey());
+        String encode = passwordEncoder.encode(this.getRawKey());
+        return encode;
     }
 
     private String getRawKey() {
-        return this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
+        return this.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss="))
             + this.email;
     }
 
@@ -65,11 +72,13 @@ public class PasswordReset extends CustomEntity {
     //////////////////////////////////
     public static PasswordReset of(
         String email,
-        String name
+        String name,
+        String username
     ) {
         return new PasswordReset(
             email,
-            name
+            name,
+            username
         );
     }
 

@@ -52,10 +52,22 @@ function* watchChange() {
   }
 }
 
+function* watchSendEmail() {
+  while (true) {
+    const { payload: params } = yield take(userAction.requestEmailToChangePassword);
+    try {
+      yield call(userApi.requestChangePasswordEmail, params);
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+}
 
 export default function* userSaga() {
   yield fork(getPage);
   yield fork(watchId);
   yield fork(watchChange);
+  yield fork(watchSendEmail);
 }
 

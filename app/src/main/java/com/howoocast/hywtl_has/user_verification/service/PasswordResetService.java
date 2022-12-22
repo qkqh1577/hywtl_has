@@ -4,9 +4,11 @@ import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
+import com.howoocast.hywtl_has.user_verification.domain.PasswordResetToken;
 import com.howoocast.hywtl_has.user_verification.event.PasswordResetRequestEvent;
 import com.howoocast.hywtl_has.user_verification.parameter.PasswordResetParameter;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetTokenRepository;
 import com.howoocast.hywtl_has.user_verification.view.PasswordResetView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,8 @@ public class PasswordResetService {
     private final UserRepository userRepository;
 
     private final PasswordResetRepository repository;
+
+    private final PasswordResetTokenRepository tokenRepository;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -60,10 +64,18 @@ public class PasswordResetService {
         user.lock();
         PasswordReset passwordReset = PasswordReset.of(
             email,
-            user.getName()
+            user.getName(),
+            user.getUsername()
         );
+        repository.save(passwordReset);
+
+        PasswordResetToken token = PasswordResetToken.of(
+            passwordReset.getAuthKey(),
+            user.getId()
+        );
+        tokenRepository.save(token);
 
         // 메일 발송 이벤트 등록
-        eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset));
+        eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset, token));
     }
 }

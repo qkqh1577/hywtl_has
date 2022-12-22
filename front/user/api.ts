@@ -5,7 +5,10 @@ import {
   UserId,
   UserVO
 } from 'user/domain';
-import { UserChangeParameter } from 'user/parameter';
+import {
+  UserChangeParameter,
+  UserPasswordChangeParameter
+} from 'user/parameter';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -29,6 +32,10 @@ class UserApi {
     return data;
   }
 
+  async requestChangePasswordEmail(params: UserPasswordChangeParameter): Promise<void> {
+    const { data } = await apiClient.post(`/user-verification/password-reset`, params);
+    return data;
+  }
 }
 
 export const userApi = new UserApi();

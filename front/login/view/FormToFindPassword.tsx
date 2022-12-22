@@ -1,16 +1,10 @@
-import React, {
-  KeyboardEvent,
-  useCallback,
-  useEffect
-} from 'react';
+import React, { KeyboardEvent } from 'react';
 import {
-  Box,
-  Button,
-  FormControl,
-  Input,
-  InputLabel,
-  Link,
-} from '@mui/material';
+  useDispatch,
+  useSelector
+} from 'react-redux';
+import { RootState } from 'services/reducer';
+import { passwordToFindByEmailParameter } from 'login/parameter';
 import {
   ErrorMessage,
   Form,
@@ -18,20 +12,19 @@ import {
   FormikHelpers
 } from 'formik';
 import {
-  useDispatch,
-  useSelector
-} from 'react-redux';
-import { loginAction } from 'login/action';
-import { LoginParameter } from 'login/parameter';
-import { RootState } from 'services/reducer';
-import { closeStatus } from 'components/DataFieldProps';
+  Box,
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  Link
+} from '@mui/material';
 import TextBox from 'layouts/Text';
 import { ColorPalette } from 'assets/theme';
 
-export default function LoginForm() {
+export default function FormToFindPassword(props) {
   const dispatch = useDispatch();
-  const { requestLogin, loginError } = useSelector((root: RootState) => root.login);
-  const login = useCallback((params: LoginParameter) => dispatch(loginAction.login(params)), [dispatch]);
+  const { loginError } = useSelector((root: RootState) => root.login);
 
   const handler = {
     keyDown: (e: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -52,34 +45,19 @@ export default function LoginForm() {
         errors.username = '아이디를 입력해 주세요.';
       }
 
-      const password: string = values.password;
-      if (!password) {
-        errors.password = '비밀번호를 입력해 주세요.';
-      }
-
       if (Object.keys(errors).length > 0) {
         setErrors(errors);
         setSubmitting(false);
         return;
       }
 
-      const parameter: LoginParameter = {
+      const parameter: passwordToFindByEmailParameter = {
         username,
-        password
       };
-      login(parameter);
+      // TODO: 비밀번호 찾기 위한 이메일 전송
       setSubmitting(false);
     },
   };
-
-  useEffect(() => {
-    closeStatus(requestLogin, () => {
-      dispatch(loginAction.requestDetail());
-    }, () => {
-      dispatch(loginAction.loginError(undefined));
-      dispatch(loginAction.requestLogin('idle'));
-    });
-  }, [requestLogin]);
 
   return (
     <Box sx={{
@@ -103,7 +81,16 @@ export default function LoginForm() {
             style={{
               width: '25%'
             }}>
-            <h2>로그인</h2>
+            <h2>비밀번호 찾기</h2>
+            <Box sx={{
+              display:        'flex',
+              flexDirection:  'column',
+              alignItems:     'center',
+              justifyContent: 'center',
+            }}>
+              <TextBox variant="body12">등록된 이메일로 비밀번호 재설정 링크 메일이 발송됩니다.</TextBox>
+              <TextBox variant="body12">메일이 오지 않을 경우, 관리자에게 문의주시기 바랍니다.</TextBox>
+            </Box>
             <Box>
               <FormControl variant="standard" fullWidth>
                 <InputLabel htmlFor="params-username">아이디</InputLabel>
@@ -113,25 +100,12 @@ export default function LoginForm() {
                   name="username"
                   value={values.username}
                   onChange={handleChange}
-                />
-                <ErrorMessage name="username" />
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="params-password">비밀번호</InputLabel>
-                <Input required
-                  type="password"
-                  id="params-password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
                   onKeyDown={(e) => {
                     handler.keyDown(e, handleSubmit);
                     setSubmitting(false);
                   }}
                 />
-                <ErrorMessage name="password" />
+                <ErrorMessage name="username" />
               </FormControl>
             </Box>
             {loginError &&
@@ -154,41 +128,30 @@ export default function LoginForm() {
                 onClick={() => {
                   handleSubmit();
                 }}>
-                {isSubmitting ? ' 로그인 중' : '로그인'}
+                {isSubmitting ? ' 로그인 중' : '확인'}
               </Button>
             </Box>
             <Box sx={{
               display:        'flex',
               justifyContent: 'flex-end',
-              marginTop: '10px'
+              marginTop:      '10px'
             }}>
               <Link
                 onClick={() => {
-                  window.open('/login/forgot', '_self');
+                  window.open('/login', '_self');
                 }}
                 sx={{
-                  color:     ColorPalette._386dd6,
-                  fontSize:  '12px',
+                  color:    ColorPalette._386dd6,
+                  fontSize: '12px',
                 }}
-                underline='none'
+                underline="none"
               >
-                비밀번호 찾기
+                로그인으로 돌아가기
               </Link>
             </Box>
           </Form>
         )}
       </Formik>
-      <Box sx={{
-        display:        'flex',
-        flexDirection:  'column',
-        alignItems:     'center',
-        justifyContent: 'center',
-      }}>
-        <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
-        <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
-        <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
-      </Box>
     </Box>
   );
 }
-

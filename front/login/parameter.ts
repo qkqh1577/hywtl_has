@@ -50,3 +50,7 @@ export interface PasswordValidation {
   code: string,
   message: string,
 }
+
+export interface passwordToFindByEmailParameter {
+  username: string;
+}
