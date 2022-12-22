@@ -28,6 +28,9 @@ public class PasswordResetEventHandler {
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
+    @Value("${application.mail.expire-time}")
+    private String expirationTime;
+
     private final MailService mailService;
 
     @TransactionalEventListener(
@@ -53,16 +56,15 @@ public class PasswordResetEventHandler {
                 + "<br>"
                 + "[새 비밀번호 설정하기]"
                 + "<br>"
-                + "<a href=\"%s/user/password-reset?email=%s&authKey=%s\">"
+                + "<a href=\"%s/user/password-reset?token=%s\">"
                 + " 비밀번호 변경 페이지로 가기 </a>"
                 + "<br>"
                 + "<h5>해당 주소는 %s까지 유효합니다.</h5>",
             URLDecoder.decode(data.getName(), StandardCharsets.UTF_8),
             URLEncoder.encode(data.getUsername(), StandardCharsets.UTF_8),
             frontUrl,
-            URLEncoder.encode(data.getEmail(), StandardCharsets.UTF_8),
             URLEncoder.encode(token.getToken(), StandardCharsets.UTF_8),
-            token.getCreatedAt().plus(Duration.parse(invalidateDuration)).format(formatter)
+            token.getCreatedAt().plus(Duration.parse(expirationTime)).format(formatter)
         );
         mailService.send(
             data.getEmail(),

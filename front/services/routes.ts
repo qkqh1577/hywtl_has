@@ -29,7 +29,9 @@ import userDetailRoute from 'user/route/detail';
 import userPageRoute from 'user/route/page';
 import salesDbPageRoute from '../project_db/route/page';
 import ganttPageRoute from '../gantt/route/page';
-import loginForgotRoute from 'login/route/password';
+import loginForgotRoute from 'login/route/passwordForgotten';
+import passwordToChangeRoute from 'login/route/passwordToChange';
+import passwordInvalidRoute from 'login/route/passwordInvalid';
 
 export interface AppRoute
   extends PathRouteProps {
@@ -64,6 +66,8 @@ const Routes = () => {
     userPageRoute,
     salesDbPageRoute,
     ganttPageRoute,
+    passwordToChangeRoute,
+    passwordInvalidRoute
   ];
 
   return useRoutes(routes as RouteObject[]);

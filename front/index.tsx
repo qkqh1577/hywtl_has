@@ -91,26 +91,28 @@ const render = () => {
     <React.StrictMode>
       <Router>
         <Routes>
-          <Route path="*" element={
-            <Provider store={store}>
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-                <ThemeProvider theme={mainTheme}>
-                  <CssBaseline />
-                  <Box sx={{
-                    display:    'flex',
-                    width:      '100%',
-                    height:     '100vh',
-                    fontFamily: 'Noto Sans KR'
-                  }}>
-                    <App />
-                  </Box>
-                  <AlertRoute />
-                  <ConfirmRoute />
-                  <BusinessSelectorModalRoute />
-                </ThemeProvider>
-              </LocalizationProvider>
-            </Provider>
-          }
+          <Route
+            path="*"
+            element={
+              <Provider store={store}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+                  <ThemeProvider theme={mainTheme}>
+                    <CssBaseline />
+                    <Box sx={{
+                      display:    'flex',
+                      width:      '100%',
+                      height:     '100vh',
+                      fontFamily: 'Noto Sans KR'
+                    }}>
+                      <App />
+                    </Box>
+                    <AlertRoute />
+                    <ConfirmRoute />
+                    <BusinessSelectorModalRoute />
+                  </ThemeProvider>
+                </LocalizationProvider>
+              </Provider>
+            }
           />
         </Routes>
       </Router>

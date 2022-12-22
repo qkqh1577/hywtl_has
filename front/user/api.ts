@@ -9,6 +9,7 @@ import {
   UserChangeParameter,
   UserPasswordChangeParameter
 } from 'user/parameter';
+import { UrlValidateParameter } from 'login/parameter';
 
 class UserApi {
   async getPage(query: UserQuery): Promise<Page<UserVO>> {
@@ -34,6 +35,11 @@ class UserApi {
 
   async requestChangePasswordEmail(params: UserPasswordChangeParameter): Promise<void> {
     const { data } = await apiClient.post(`/user-verification/password-reset`, params);
+    return data;
+  }
+
+  async validateUrlForPasswordReset(params: UrlValidateParameter): Promise<void> {
+    const { data } = await apiClient.get(`/user-verification/password-reset/validate`, params);
     return data;
   }
 }

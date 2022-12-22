@@ -70,3 +70,9 @@ export const sexCategoryList: SexCategory[] = [
   SexCategory.MALE,
   SexCategory.FEMALE
 ];
+
+export interface UserError {
+  code: string;
+  message: string;
+}
+

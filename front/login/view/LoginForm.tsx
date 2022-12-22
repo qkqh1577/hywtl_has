@@ -27,6 +27,7 @@ import { RootState } from 'services/reducer';
 import { closeStatus } from 'components/DataFieldProps';
 import TextBox from 'layouts/Text';
 import { ColorPalette } from 'assets/theme';
+import logo from 'assets/loginLogo.png';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -82,58 +83,64 @@ export default function LoginForm() {
   }, [requestLogin]);
 
   return (
-    <Box sx={{
-      display:        'flex',
-      width:          '100%',
-      height:         '50%',
-      justifyContent: 'space-between',
-      alignItems:     'center',
-      flexWrap:       'wrap',
-      flexDirection:  'column',
-      marginTop:      '40vh',
-    }}>
-      <Formik
-        onSubmit={handler.submit}
-        initialValues={{
-          username: '',
-          password: '',
-        }}>
-        {({ values, isSubmitting, handleChange, handleSubmit, setSubmitting }) => (
-          <Form
-            style={{
-              width: '25%'
+    <Formik
+      onSubmit={handler.submit}
+      initialValues={{
+        username: '',
+        password: '',
+      }}>
+      {({ values, isSubmitting, handleChange, handleSubmit, setSubmitting }) => (
+        <Form
+          style={{
+            display:        'flex',
+            width:          '100%',
+            height:         '100%',
+            justifyContent: 'center',
+            alignItems:     'center',
+            flexWrap:       'wrap',
+            flexDirection:  'column',
+          }}>
+          <Box
+            sx={{
+              display:        'flex',
+              alignItems:     'center',
+              justifyContent: 'center',
+              flexWrap:       'wrap',
+              flexDirection:  'column',
+              width:          '25%'
             }}>
-            <h2>로그인</h2>
-            <Box>
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="params-username">아이디</InputLabel>
-                <Input required
-                  type="text"
-                  id="params-username"
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                />
-                <ErrorMessage name="username" />
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="params-password">비밀번호</InputLabel>
-                <Input required
-                  type="password"
-                  id="params-password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onKeyDown={(e) => {
-                    handler.keyDown(e, handleSubmit);
-                    setSubmitting(false);
-                  }}
-                />
-                <ErrorMessage name="password" />
-              </FormControl>
-            </Box>
+
+            <img
+              src={logo}
+              width="auto"
+              alt="한양풍동실험연구소_로고"
+            />
+            <FormControl variant="standard" fullWidth>
+              <InputLabel htmlFor="params-username">아이디</InputLabel>
+              <Input required
+                type="text"
+                id="params-username"
+                name="username"
+                value={values.username}
+                onChange={handleChange}
+              />
+              <ErrorMessage name="username" />
+            </FormControl>
+            <FormControl variant="standard" fullWidth>
+              <InputLabel htmlFor="params-password">비밀번호</InputLabel>
+              <Input required
+                type="password"
+                id="params-password"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onKeyDown={(e) => {
+                  handler.keyDown(e, handleSubmit);
+                  setSubmitting(false);
+                }}
+              />
+              <ErrorMessage name="password" />
+            </FormControl>
             {loginError &&
               (<TextBox
                 sx={{
@@ -144,51 +151,50 @@ export default function LoginForm() {
                 variant="body20">
                 {loginError?.message}
               </TextBox>)}
-            <Box>
-              <Button
-                sx={{
-                  width:     '100%',
-                  marginTop: '10px'
-                }}
-                disabled={isSubmitting}
-                onClick={() => {
-                  handleSubmit();
-                }}>
-                {isSubmitting ? ' 로그인 중' : '로그인'}
-              </Button>
-            </Box>
+            <Button
+              sx={{
+                width:     '100%',
+                marginTop: '10px'
+              }}
+              disabled={isSubmitting}
+              onClick={() => {
+                handleSubmit();
+              }}>
+              {isSubmitting ? ' 로그인 중' : '로그인'}
+            </Button>
             <Box sx={{
-              display:        'flex',
-              justifyContent: 'flex-end',
-              marginTop: '10px'
+              display:    'block',
+              marginLeft: 'auto',
+              marginTop:  '10px'
             }}>
               <Link
                 onClick={() => {
                   window.open('/login/forgot', '_self');
                 }}
                 sx={{
-                  color:     ColorPalette._386dd6,
-                  fontSize:  '12px',
+                  color:    ColorPalette._386dd6,
+                  fontSize: '12px',
                 }}
-                underline='none'
+                underline="none"
               >
                 비밀번호 찾기
               </Link>
             </Box>
-          </Form>
-        )}
-      </Formik>
-      <Box sx={{
-        display:        'flex',
-        flexDirection:  'column',
-        alignItems:     'center',
-        justifyContent: 'center',
-      }}>
-        <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
-        <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
-        <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
-      </Box>
-    </Box>
+          </Box>
+          <Box sx={{
+            display:        'flex',
+            flexDirection:  'column',
+            alignItems:     'center',
+            justifyContent: 'center',
+            marginTop:      '10px'
+          }}>
+            <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
+            <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
+            <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
+          </Box>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

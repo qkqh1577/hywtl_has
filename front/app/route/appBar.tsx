@@ -15,8 +15,9 @@ export default function AppBarRoute() {
 
   const { pathname } = useLocation();
   const isLoginPage = pathname.startsWith('/login');
+  const isPasswordResetPage = pathname.startsWith('/user/password-reset')
 
-  if (isLoginPage) {
+  if (isLoginPage || isPasswordResetPage) {
     return null;
   }
 
@@ -50,19 +51,6 @@ export default function AppBarRoute() {
           alignItems:  'center',
           marginRight: '10px',
         }}>
-          {/*TODO: 화면정의서에 없은 통합 검색창 삭제*/}
-          {/*<Input*/}
-          {/*  variant="outlined"*/}
-          {/*  placeholder="통합 검색"*/}
-          {/*  sx={{*/}
-          {/*    width:        '240px',*/}
-          {/*    paddingLeft:  '10px',*/}
-          {/*    paddingRight: '10px',*/}
-          {/*    border:       '1px solid #44527b',*/}
-          {/*    borderRadius: '8px',*/}
-          {/*    color:        '#fff',*/}
-          {/*  }}*/}
-          {/*/>*/}
           <NotificationButtonRoute />
           <AccountButtonRoute />
           <LogoutButtonRoute />

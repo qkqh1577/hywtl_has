@@ -10,6 +10,9 @@ import com.howoocast.hywtl_has.user_verification.parameter.PasswordResetParamete
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetTokenRepository;
 import com.howoocast.hywtl_has.user_verification.view.PasswordResetView;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +28,8 @@ public class PasswordResetService {
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
 
+    @Value("${application.mail.expire-time}")
+    private String expirationTime;
     private final UserRepository userRepository;
 
     private final PasswordResetRepository repository;
@@ -45,25 +50,25 @@ public class PasswordResetService {
 
     @Transactional
     public void reset(PasswordResetParameter parameter) {
-        this.resetByEmail(parameter.getEmail());
+        this.resetByUsername(parameter.getUsername());
     }
 
     public void reset(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException(User.KEY, userId));
-        this.resetByEmail(user.getEmail());
+        this.resetByUsername(user.getUsername());
     }
 
-    private void resetByEmail(String email) {
+    private void resetByUsername(String username) {
         // 기존 코드 무효화
-        repository.findByEmail(email)
+        repository.findByUsername(username)
             .ifPresent(PasswordReset::delete);
 
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException(User.KEY, "email", email));
+        User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException(User.KEY, username));
         user.lock();
         PasswordReset passwordReset = PasswordReset.of(
-            email,
+            user.getEmail(),
             user.getName(),
             user.getUsername()
         );
@@ -71,11 +76,22 @@ public class PasswordResetService {
 
         PasswordResetToken token = PasswordResetToken.of(
             passwordReset.getAuthKey(),
-            user.getId()
+            user.getId(),
+            passwordReset,
+            LocalDateTime.now().plus(Duration.parse(expirationTime))
         );
         tokenRepository.save(token);
 
         // 메일 발송 이벤트 등록
         eventPublisher.publishEvent(new PasswordResetRequestEvent(passwordReset, token));
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean validate(String token) {
+        PasswordResetToken instance = tokenRepository.findByToken(token).orElse(null);
+        if(Objects.isNull(instance)) {
+            return false;
+        }
+        return tokenRepository.existsByExpirationGreaterThanEqual(instance.getExpiration());
     }
 }

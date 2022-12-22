@@ -17,5 +17,5 @@ export const initialUserParameter = {
 } as unknown as UserChangeParameter;
 
 export interface UserPasswordChangeParameter {
-  email: string;
+  username: string;
 }

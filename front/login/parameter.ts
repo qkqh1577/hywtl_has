@@ -51,6 +51,10 @@ export interface PasswordValidation {
   message: string,
 }
 
-export interface passwordToFindByEmailParameter {
+export interface PasswordToFindByEmailParameter {
   username: string;
+}
+
+export interface UrlValidateParameter {
+  token: string;
 }

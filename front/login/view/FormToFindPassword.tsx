@@ -1,10 +1,13 @@
-import React, { KeyboardEvent } from 'react';
+import React, {
+  KeyboardEvent,
+  useCallback,
+  useEffect
+} from 'react';
 import {
   useDispatch,
   useSelector
 } from 'react-redux';
 import { RootState } from 'services/reducer';
-import { passwordToFindByEmailParameter } from 'login/parameter';
 import {
   ErrorMessage,
   Form,
@@ -21,10 +24,19 @@ import {
 } from '@mui/material';
 import TextBox from 'layouts/Text';
 import { ColorPalette } from 'assets/theme';
+import logo from 'assets/loginLogo.png';
+import { PasswordToFindByEmailParameter } from 'login/parameter';
+import { UserPasswordChangeParameter } from 'user/parameter';
+import { userAction } from 'user/action';
+import useDialog from 'dialog/hook';
+import { closeStatus } from 'components/DataFieldProps';
+import { Progress } from 'components/Progress';
 
 export default function FormToFindPassword(props) {
   const dispatch = useDispatch();
-  const { loginError } = useSelector((root: RootState) => root.login);
+  const { userError, requestFindPasswordByUsername } = useSelector((root: RootState) => root.user);
+  const sendEmail = useCallback((email: UserPasswordChangeParameter) => dispatch(userAction.requestEmailToChangePassword(email)), [dispatch]);
+  const { confirm } = useDialog();
 
   const handler = {
     keyDown: (e: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -35,7 +47,7 @@ export default function FormToFindPassword(props) {
       }
     },
     submit:  (values: any,
-              { setSubmitting, setErrors }: FormikHelpers<any>
+              { setSubmitting, setErrors, resetForm }: FormikHelpers<any>
              ) => {
 
       const errors: any = {};
@@ -51,47 +63,72 @@ export default function FormToFindPassword(props) {
         return;
       }
 
-      const parameter: passwordToFindByEmailParameter = {
+      const parameter: PasswordToFindByEmailParameter = {
         username,
       };
-      // TODO: 비밀번호 찾기 위한 이메일 전송
+      confirm({
+        children:     '이메일을 전송하시겠습니까?',
+        confirmText:  '확인',
+        afterConfirm: () => {
+          sendEmail(parameter);
+        }
+      });
       setSubmitting(false);
     },
   };
+  useEffect(() => {
+    closeStatus(requestFindPasswordByUsername,
+      () => {
 
+      },
+      () => {
+        dispatch(userAction.userError(undefined));
+        dispatch(userAction.requestFindPasswordByUsername('idle'));
+      });
+  }, [requestFindPasswordByUsername]);
   return (
-    <Box sx={{
-      display:        'flex',
-      width:          '100%',
-      height:         '50%',
-      justifyContent: 'space-between',
-      alignItems:     'center',
-      flexWrap:       'wrap',
-      flexDirection:  'column',
-      marginTop:      '40vh',
-    }}>
+    <>
       <Formik
         onSubmit={handler.submit}
         initialValues={{
           username: '',
-          password: '',
         }}>
         {({ values, isSubmitting, handleChange, handleSubmit, setSubmitting }) => (
-          <Form
-            style={{
-              width: '25%'
-            }}>
-            <h2>비밀번호 찾기</h2>
-            <Box sx={{
-              display:        'flex',
-              flexDirection:  'column',
-              alignItems:     'center',
-              justifyContent: 'center',
-            }}>
-              <TextBox variant="body12">등록된 이메일로 비밀번호 재설정 링크 메일이 발송됩니다.</TextBox>
-              <TextBox variant="body12">메일이 오지 않을 경우, 관리자에게 문의주시기 바랍니다.</TextBox>
-            </Box>
-            <Box>
+          <Form style={{
+            display:        'flex',
+            width:          '100%',
+            height:         '100%',
+            alignItems:     'center',
+            justifyContent: 'center',
+            flexWrap:       'wrap',
+            flexDirection:  'column',
+          }}>
+            <Box
+              sx={{
+                display:        'flex',
+                alignItems:     'center',
+                justifyContent: 'center',
+                flexWrap:       'wrap',
+                flexDirection:  'column',
+                width:          '25%'
+              }}>
+              <img
+                src={logo}
+                width="auto"
+                alt="한양풍동실험연구소_로고"
+              />
+              <TextBox variant="heading1">
+                비밀번호 찾기
+              </TextBox>
+              <Box sx={{
+                display:        'flex',
+                flexDirection:  'column',
+                alignItems:     'center',
+                justifyContent: 'center',
+              }}>
+                <TextBox variant="body12">등록된 이메일로 비밀번호 재설정 링크 메일이 발송됩니다.</TextBox>
+                <TextBox variant="body12">메일이 오지 않을 경우, 관리자에게 문의주시기 바랍니다.</TextBox>
+              </Box>
               <FormControl variant="standard" fullWidth>
                 <InputLabel htmlFor="params-username">아이디</InputLabel>
                 <Input required
@@ -107,18 +144,16 @@ export default function FormToFindPassword(props) {
                 />
                 <ErrorMessage name="username" />
               </FormControl>
-            </Box>
-            {loginError &&
-              (<TextBox
-                sx={{
-                  display:        'flex',
-                  justifyContent: 'center',
-                  marginTop:      '10px',
-                }}
-                variant="body20">
-                {loginError?.message}
-              </TextBox>)}
-            <Box>
+              {userError &&
+                (<TextBox
+                  sx={{
+                    display:        'flex',
+                    justifyContent: 'center',
+                    marginTop:      '10px',
+                  }}
+                  variant="body20">
+                  {userError?.message}
+                </TextBox>)}
               <Button
                 sx={{
                   width:     '100%',
@@ -128,30 +163,32 @@ export default function FormToFindPassword(props) {
                 onClick={() => {
                   handleSubmit();
                 }}>
-                {isSubmitting ? ' 로그인 중' : '확인'}
+                확인
               </Button>
-            </Box>
-            <Box sx={{
-              display:        'flex',
-              justifyContent: 'flex-end',
-              marginTop:      '10px'
-            }}>
-              <Link
-                onClick={() => {
-                  window.open('/login', '_self');
-                }}
-                sx={{
-                  color:    ColorPalette._386dd6,
-                  fontSize: '12px',
-                }}
-                underline="none"
-              >
-                로그인으로 돌아가기
-              </Link>
+              <Box sx={{
+                display:    'block',
+                marginLeft: 'auto',
+                marginTop:  '10px'
+              }}>
+                <Link
+                  onClick={() => {
+                    window.open('/login', '_self');
+                  }}
+                  sx={{
+                    color:    ColorPalette._386dd6,
+                    fontSize: '12px',
+                  }}
+                  underline="none"
+                >
+                  로그인으로 돌아가기
+                </Link>
+              </Box>
             </Box>
           </Form>
         )}
       </Formik>
-    </Box>
-  );
+      <Progress />
+    </>
+  )
+    ;
 }

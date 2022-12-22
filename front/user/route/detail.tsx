@@ -92,8 +92,8 @@ function Element() {
             children:     '비밀번호 변경 안내 메일을 발송하겠습니까?',
             confirmText:  '발송',
             afterConfirm: () => {
-              if (detail && detail.email) {
-                sendEmail({ email: detail.email });
+              if (detail && detail.username) {
+                sendEmail({ username: detail.username });
               }
             }
           });
