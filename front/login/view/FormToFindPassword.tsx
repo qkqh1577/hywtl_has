@@ -110,14 +110,14 @@ export default function FormToFindPassword(props) {
                 justifyContent: 'center',
                 flexWrap:       'wrap',
                 flexDirection:  'column',
-                width:          '25%'
+                width:          '460px'
               }}>
               <img
                 src={logo}
                 width="auto"
                 alt="한양풍동실험연구소_로고"
               />
-              <TextBox variant="heading1">
+              <TextBox variant="heading1" sx={{mt: 2}}>
                 비밀번호 찾기
               </TextBox>
               <Box sx={{
@@ -125,11 +125,12 @@ export default function FormToFindPassword(props) {
                 flexDirection:  'column',
                 alignItems:     'center',
                 justifyContent: 'center',
+                mt: 2
               }}>
                 <TextBox variant="body12">등록된 이메일로 비밀번호 재설정 링크 메일이 발송됩니다.</TextBox>
                 <TextBox variant="body12">메일이 오지 않을 경우, 관리자에게 문의주시기 바랍니다.</TextBox>
               </Box>
-              <FormControl variant="standard" fullWidth>
+              <FormControl variant="standard" fullWidth sx={{mt: 2}}>
                 <InputLabel htmlFor="params-username">아이디</InputLabel>
                 <Input required
                   type="text"
@@ -157,7 +158,7 @@ export default function FormToFindPassword(props) {
               <Button
                 sx={{
                   width:     '100%',
-                  marginTop: '10px'
+                  mt: 3
                 }}
                 disabled={isSubmitting}
                 onClick={() => {

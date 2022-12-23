@@ -40,7 +40,7 @@ function FormToChangePassword({ passwordValidation }: Props) {
         display:       'flex',
         flexDirection: 'column',
         flexWrap:      'nowrap',
-        width:         '25%',
+        width:         '460px',
         marginBottom:  '40px',
       }}>
         <DataFieldWithLabel
@@ -79,7 +79,7 @@ function FormToChangePassword({ passwordValidation }: Props) {
         display:       'flex',
         flexDirection: 'column',
         flexWrap:      'nowrap',
-        width:         '25%',
+        width:         '460px',
       }}>
         <DataFieldWithLabel
           label="신규 비밀번호 확인"
@@ -113,7 +113,7 @@ function FormToChangePassword({ passwordValidation }: Props) {
         )}
       </Box>
       <Box sx={{
-        width:     '25%',
+        width:     '460px',
       }}>
         <Button
           sx={{

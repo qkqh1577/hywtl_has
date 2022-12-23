@@ -107,7 +107,7 @@ export default function LoginForm() {
               justifyContent: 'center',
               flexWrap:       'wrap',
               flexDirection:  'column',
-              width:          '25%'
+              width:          '460px'
             }}>
 
             <img
@@ -115,7 +115,7 @@ export default function LoginForm() {
               width="auto"
               alt="한양풍동실험연구소_로고"
             />
-            <FormControl variant="standard" fullWidth>
+            <FormControl variant="standard" fullWidth sx={{mt: 2}}>
               <InputLabel htmlFor="params-username">아이디</InputLabel>
               <Input required
                 type="text"
@@ -126,7 +126,7 @@ export default function LoginForm() {
               />
               <ErrorMessage name="username" />
             </FormControl>
-            <FormControl variant="standard" fullWidth>
+            <FormControl variant="standard" fullWidth sx={{mt: 2}}>
               <InputLabel htmlFor="params-password">비밀번호</InputLabel>
               <Input required
                 type="password"
@@ -154,7 +154,7 @@ export default function LoginForm() {
             <Button
               sx={{
                 width:     '100%',
-                marginTop: '10px'
+                mt: 3
               }}
               disabled={isSubmitting}
               onClick={() => {
@@ -180,17 +180,17 @@ export default function LoginForm() {
                 비밀번호 찾기
               </Link>
             </Box>
-          </Box>
-          <Box sx={{
-            display:        'flex',
-            flexDirection:  'column',
-            alignItems:     'center',
-            justifyContent: 'center',
-            marginTop:      '10px'
-          }}>
-            <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
-            <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
-            <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
+            <Box sx={{
+              display:        'flex',
+              flexDirection:  'column',
+              alignItems:     'center',
+              justifyContent: 'center',
+              marginTop:      '10px'
+            }}>
+              <TextBox variant="body12">임직원을 위한 시스템으로서 인가된 분만 사용할 수 있습니다.</TextBox>
+              <TextBox variant="body12">불법으로 사용시에는 법적 제재를 받을 수가 있습니다.</TextBox>
+              <TextBox variant="body12">Only authorized personnel can access this web site.</TextBox>
+            </Box>
           </Box>
         </Form>
       )}
