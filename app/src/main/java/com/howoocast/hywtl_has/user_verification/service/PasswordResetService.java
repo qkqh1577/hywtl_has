@@ -9,7 +9,6 @@ import com.howoocast.hywtl_has.user_verification.event.PasswordResetRequestEvent
 import com.howoocast.hywtl_has.user_verification.parameter.PasswordResetParameter;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
 import com.howoocast.hywtl_has.user_verification.repository.PasswordResetTokenRepository;
-import com.howoocast.hywtl_has.user_verification.view.PasswordResetView;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,26 +26,12 @@ public class PasswordResetService {
 
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
-
     @Value("${application.mail.expire-time}")
     private String expirationTime;
     private final UserRepository userRepository;
-
     private final PasswordResetRepository repository;
-
     private final PasswordResetTokenRepository tokenRepository;
-
     private final ApplicationEventPublisher eventPublisher;
-
-    @Transactional(readOnly = true)
-    public PasswordResetView authenticate(String email, String authKey) {
-        PasswordReset instance = repository.findByEmail(email)
-            .orElseThrow(
-                () -> new NotFoundException("user_verification.password_reset", "email", email)
-            );
-        instance.checkValid(invalidateDuration, authKey);
-        return PasswordResetView.assemble(instance);
-    }
 
     @Transactional
     public void reset(PasswordResetParameter parameter) {
