@@ -51,7 +51,9 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
                 projectNameContains(parameter.getKeywordOfProject()),
                 projectInformationStatusEq(parameter.getProjectStatusSearchList()),
                 projectDetailEq(parameter.getKeywordOfProjectDetail())
-            ).fetch();
+            )
+            .orderBy(project.basic.code.asc())
+            .fetch();
     }
 
     private BooleanExpression projectNameContains(String keywordOfProject) {
