@@ -62,7 +62,11 @@ public class PasswordResetService {
     private void resetByUsername(String username) {
         // 기존 코드 무효화
         repository.findByUsername(username)
-            .ifPresent(PasswordReset::delete);
+            .ifPresent(pr -> {
+                pr.delete();
+                tokenRepository.findByPasswordReset(pr)
+                    .ifPresent(PasswordResetToken::delete);
+            });
 
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new NotFoundException(User.KEY, username));
@@ -89,9 +93,9 @@ public class PasswordResetService {
     @Transactional(readOnly = true)
     public Boolean validate(String token) {
         PasswordResetToken instance = tokenRepository.findByToken(token).orElse(null);
-        if(Objects.isNull(instance)) {
+        if (Objects.isNull(instance)) {
             return false;
         }
-        return tokenRepository.existsByExpirationGreaterThanEqual(instance.getExpiration());
+        return tokenRepository.existsByExpirationGreaterThanEqual(LocalDateTime.now());
     }
 }

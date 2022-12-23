@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.user_verification.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -30,7 +31,7 @@ public class PasswordResetToken extends CustomEntity {
 
     private LocalDateTime expiration;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private PasswordReset passwordReset;
 
     protected PasswordResetToken(

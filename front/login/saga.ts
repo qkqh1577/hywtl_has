@@ -107,10 +107,30 @@ function* watchPasswordChange() {
   }
 }
 
+function* watchResetPassword(){
+  while (true) {
+    const { payload: params } = yield take(loginAction.reset);
+    try {
+      yield put(loginAction.requestReset('request'));
+      yield call(loginApi.resetPassword, params);
+      yield put(loginAction.requestReset('done'));
+    }
+    catch (e) {
+      const message = getErrorMessage(loginAction.reset, e);
+      const code = getErrorCode(loginAction.reset, e);
+      yield put(loginAction.passwordValidation({
+        code:    code,
+        message: message
+      }));
+      yield put(loginAction.requestReset(message));
+    }
+  }
+}
 export default function* loginSaga() {
   yield fork(watchLogin);
   yield fork(watchLogout);
   yield fork(watchDetail);
   yield fork(watchChange);
   yield fork(watchPasswordChange);
+  yield fork(watchResetPassword);
 }

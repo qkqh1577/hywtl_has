@@ -27,6 +27,12 @@ export interface PasswordChangeParameter {
   newPasswordConfirm: string;
 }
 
+export interface PasswordResetParameter {
+  newPassword: string;
+  newPasswordConfirm: string;
+  token: string;
+}
+
 export const initialPasswordParameter = {
   id:                 undefined,
   nowPassword:        '',

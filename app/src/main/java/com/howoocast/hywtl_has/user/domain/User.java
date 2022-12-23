@@ -217,17 +217,37 @@ public class User extends CustomEntity {
         }
 
         String pattern = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$";
-        if(!Pattern.matches(pattern, newPassword)){
+        if (!Pattern.matches(pattern, newPassword)) {
             throw new PasswordException(PasswordExceptionType.WEAK);
         }
 
         if (passwordEncoder.matches(newPassword, this.password)) {
             throw new PasswordException(PasswordExceptionType.SAME);
         }
-        if(!newPassword.equals(newPasswordConfirm)) {
+        if (!newPassword.equals(newPasswordConfirm)) {
             throw new PasswordException(PasswordExceptionType.NOT_EQUAL_NEW_PASSWORD);
         }
         this.setPassword(newPassword);
+    }
+
+    public void resetPassword(
+        String NewPassword,
+        String NewPasswordConfirm
+    ) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        String pattern = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$";
+        if (!Pattern.matches(pattern, NewPassword)) {
+            throw new PasswordException(PasswordExceptionType.WEAK);
+        }
+
+        if (passwordEncoder.matches(NewPassword, this.password)) {
+            throw new PasswordException(PasswordExceptionType.SAME);
+        }
+        if (!NewPassword.equals(NewPasswordConfirm)) {
+            throw new PasswordException(PasswordExceptionType.NOT_EQUAL_NEW_PASSWORD);
+        }
+        this.setPassword(NewPassword);
     }
 
     public void login(

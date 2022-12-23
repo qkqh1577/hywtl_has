@@ -11,6 +11,7 @@ import {
 } from 'login/parameter';
 import TextBox from 'layouts/Text';
 import { FormikContext } from 'formik';
+import logo from 'assets/loginLogo.png';
 
 interface Props {
   passwordValidation?: PasswordValidation;
@@ -29,6 +30,11 @@ function FormToChangePassword({ passwordValidation }: Props) {
       flexDirection: 'column',
       marginTop:     '40vh',
     }}>
+      <img
+        src={logo}
+        width="auto"
+        alt="한양풍동실험연구소_로고"
+      />
       <h2>비밀번호 재설정</h2>
       <Box sx={{
         display:       'flex',
@@ -115,6 +121,7 @@ function FormToChangePassword({ passwordValidation }: Props) {
             marginTop: '10px'
           }}
           onClick={() => {
+            formik.handleSubmit();
           }}>
           확인
         </Button>

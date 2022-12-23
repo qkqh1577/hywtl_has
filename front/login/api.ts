@@ -4,6 +4,7 @@ import {
   LoginChangeParameter,
   LoginParameter,
   PasswordChangeParameter,
+  PasswordResetParameter,
 } from 'login/parameter';
 
 class LoginApi {
@@ -29,6 +30,11 @@ class LoginApi {
 
   async changePassword(params: PasswordChangeParameter): Promise<void> {
     const { data } = await apiClient.patch(`/admin/user/${params.id}/password`, params);
+    return data;
+  }
+
+  async resetPassword(params: PasswordResetParameter): Promise<void> {
+    const { data } = await apiClient.patch(`/admin/user/password`, params);
     return data;
   }
 }
