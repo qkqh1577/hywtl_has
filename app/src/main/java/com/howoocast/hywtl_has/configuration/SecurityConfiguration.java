@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout()
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login")
+            .invalidateHttpSession(true)
             .and()
             .anonymous()
             .and()
@@ -53,11 +54,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 HttpMethod.GET,
                 "/",
                 "/user-verification/user-invitation/authenticate",
-                "/user-verification/password-reset/authenticate",
+                "/user-verification/password-reset/validate",
                 "/user/authenticate",
                 "/user/password-reset",
                 "/user/login",
                 "/login",
+                "/login/forgot",
                 "/static/**"
             )
             .permitAll()
@@ -68,14 +70,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/user/password-validate"
             )
             .permitAll()
-            .antMatchers("/**")
-            // TODO: 권한 및 url 체계 확정 후 denyAll 전환
-            .permitAll();
+            .antMatchers(HttpMethod.PATCH,
+                "/admin/user/password")
+            .permitAll()
+            .anyRequest()
+            .authenticated();
+//            .antMatchers("/**")
+//            // TODO: 권한 및 url 체계 확정 후 denyAll 전환
+//            .permitAll();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
+
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
@@ -88,6 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(userDetailsService());
         return provider;
     }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new LoginEntryPointService(userRepository);
