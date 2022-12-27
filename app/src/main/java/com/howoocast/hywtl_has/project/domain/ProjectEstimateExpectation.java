@@ -4,22 +4,25 @@ package com.howoocast.hywtl_has.project.domain;
  * 견적 분류
  */
 public enum ProjectEstimateExpectation {
+
     /**
-     * 가능성 낮음
+     * 구조물
      */
-    LOW("가능성 낮음"),
+    STRUCTURE("구조물"),
+
     /**
-     * 가능성 보통
+     * 일반
      */
-    AVERAGE("가능성 보통"),
+    NORMAL("일반"),
+
     /**
      * 가능성 높음
      */
     HIGH("가능성 높음"),
     /**
-     * 계약 직전
+     * 수주 직전
      */
-    NEARLY("계약 직전"),
+    NEARLY("수주 직전"),
     /**
      * 수주 성공
      */
