@@ -7,6 +7,7 @@ import { DefaultFunction } from 'type/Function';
 import Divider from 'layouts/Divider';
 import BusinessManagerListSection from 'business/view/Detail/Form/ManagerList';
 import { BusinessManagerId } from 'business/domain';
+import { UpdateByFormik } from 'components/AddressModal/AddressModal';
 
 interface Props {
   basic: React.ReactNode;
@@ -16,6 +17,8 @@ interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   openProjectListModal: (id:BusinessManagerId) => void;
+  onAddressModal: DefaultFunction;
+  setAddress: DefaultFunction<UpdateByFormik>;
 }
 
 export default function BusinessDetail(props: Props) {
@@ -34,7 +37,11 @@ export default function BusinessDetail(props: Props) {
           {formik.values.id && props.rivalStatistic}
           {formik.values.id && props.rivalProjectList}
           <Divider />
-          <BusinessManagerListSection openProjectListModal={props.openProjectListModal}/>
+          <BusinessManagerListSection
+            openProjectListModal={props.openProjectListModal}
+            onAddressModal={props.onAddressModal}
+            setAddress={props.setAddress}
+          />
         </Box>
       }
       footer={

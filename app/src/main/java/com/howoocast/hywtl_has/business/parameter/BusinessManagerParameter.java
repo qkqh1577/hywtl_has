@@ -29,6 +29,8 @@ public class BusinessManagerParameter {
 
     private String email;
 
+    private String address;
+
     private List<String> meta;
     @Valid
     @NotNull(message = BusinessManager.KEY + ".status.not_null")

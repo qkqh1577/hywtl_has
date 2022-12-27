@@ -30,12 +30,12 @@ import AddressSearchSection from 'components/AddressModal/view/Form/AddressSearc
 import AddressForm from 'components/AddressModal/view/Form/AddressForm';
 import { ProjectBasicDesignParameter } from 'project_basic/parameter';
 
-interface UpdateByFormik {
+export interface UpdateByFormik {
   formik: FormikContextType<any> | undefined;
   fieldName: string | string[];
 }
 /*TODO: 확장 가능성 있음. 생각해보기*/
-interface UpdateByDispatch {
+export interface UpdateByDispatch {
   onUpdate: (params: ProjectBasicDesignParameter) => void;
 }
 

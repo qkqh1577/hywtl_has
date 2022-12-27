@@ -115,7 +115,8 @@ public class BusinessService {
                             managerParameter.getOfficePhone(),
                             managerParameter.getEmail(),
                             managerParameter.getMeta(),
-                            managerParameter.getStatus()
+                            managerParameter.getStatus(),
+                            managerParameter.getAddress()
                         );
                         managerList.add(managerInstance);
                     }, () -> {
@@ -181,7 +182,8 @@ public class BusinessService {
             parameter.getOfficePhone(),
             parameter.getEmail(),
             parameter.getMeta(),
-            parameter.getStatus()
+            parameter.getStatus(),
+            parameter.getAddress()
         );
     }
 

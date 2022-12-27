@@ -15,6 +15,7 @@ public class BusinessManagerView {
     private String department;
     private String officePhone;
     private String email;
+    private String address;
     private List<String> meta;
     private BusinessManagerStatus status;
     private Integer projectCount;
@@ -29,6 +30,7 @@ public class BusinessManagerView {
         target.mobilePhone = businessManager.getMobilePhone();
         target.officePhone = businessManager.getOfficePhone();
         target.email = businessManager.getEmail();
+        target.address = businessManager.getAddress();
         target.meta = businessManager.getMeta();
         target.status = businessManager.getStatus();
         target.projectCount = businessManager.getProjectList().size();

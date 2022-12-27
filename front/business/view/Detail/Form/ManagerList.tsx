@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import {
   Box,
   FormControlLabel,
+  InputAdornment,
   Radio,
   RadioGroup
 } from '@mui/material';
@@ -20,12 +21,16 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import Divider from 'layouts/Divider';
 import { ColorPalette } from 'assets/theme';
+import { DefaultFunction } from 'type/Function';
+import { UpdateByFormik } from 'components/AddressModal/AddressModal';
 
 interface Props {
-  openProjectListModal: (id:BusinessManagerId) => void;
+  onAddressModal: DefaultFunction;
+  setAddress: DefaultFunction<UpdateByFormik>;
+  openProjectListModal: (id: BusinessManagerId) => void;
 }
 
-const spaceCount = 3;
+const spaceCount = 4;
 export default function BusinessManagerListSection(props: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
@@ -93,18 +98,18 @@ export default function BusinessManagerListSection(props: Props) {
           <Box
             key={i}
             sx={{
-              display:     'flex',
-              width:       '100%',
-              paddingLeft: '50px',
-              marginTop:   '15px',
-              flexWrap:    'wrap',
+              display:         'flex',
+              width:           '100%',
+              paddingLeft:     '50px',
+              marginTop:       '15px',
+              flexWrap:        'wrap',
               backgroundColor: `${manager.status === BusinessManagerStatus.RESIGNATION ? ColorPalette._e4e9f2 : 'white'}`,
             }}>
             <Box sx={{
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
-              marginTop: '15px',
+              marginTop:    '15px',
             }}>
               <DataFieldWithLabel required={edit} label="담당자명">
                 <Input
@@ -124,7 +129,7 @@ export default function BusinessManagerListSection(props: Props) {
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
-              marginTop: '15px',
+              marginTop:    '15px',
             }}>
               <DataFieldWithLabel label="소속">
                 <Input
@@ -144,7 +149,7 @@ export default function BusinessManagerListSection(props: Props) {
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
-              marginTop: '15px',
+              marginTop:    '15px',
             }}>
               <DataFieldWithLabel label="직위">
                 <Input
@@ -164,6 +169,7 @@ export default function BusinessManagerListSection(props: Props) {
               width:        `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight:  '30px',
               marginBottom: '15px',
+              marginTop:    '15px',
             }}>
               <DataFieldWithLabel label="핸드폰 번호">
                 <Input
@@ -240,6 +246,30 @@ export default function BusinessManagerListSection(props: Props) {
                       formik.setFieldValue(`managerList.${i}.email`, value);
                     }
                   }}
+                />
+              </DataFieldWithLabel>
+            </Box>
+            <Box sx={{
+              width:        `calc((100% - ${100 + (15 * spaceCount)}px) / ${spaceCount})`,
+              marginRight:  '30px',
+              marginBottom: '15px',
+            }}>
+              <DataFieldWithLabel label="주소">
+                <Input
+                  readOnly={!edit}
+                  key={manager.address}
+                  value={manager.address ?? ''}
+                  endAdornment={
+                    <InputAdornment position="end" sx={{ marginRight: '10px' }}>
+                      <Button disabled={!edit} onClick={() => {
+                        props.onAddressModal()
+                        props.setAddress({formik: formik, fieldName: `managerList.${i}.address`})
+                      }
+                      }>
+                        주소 검색
+                      </Button>
+                    </InputAdornment>
+                  }
                 />
               </DataFieldWithLabel>
             </Box>

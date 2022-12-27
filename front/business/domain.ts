@@ -43,6 +43,7 @@ export interface BusinessManagerVO {
   mobilePhone?: string;
   officePhone?: string;
   email?: string;
+  address?: string;
   meta?: string[];
   status: BusinessManagerStatus;
 }

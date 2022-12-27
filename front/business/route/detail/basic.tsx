@@ -8,10 +8,12 @@ import { businessAction } from 'business/action';
 import { useDispatch } from 'react-redux';
 import { DefaultFunction } from 'type/Function';
 import { RegistrationNumberState } from 'business/domain';
+import { UpdateByFormik } from 'components/AddressModal/AddressModal';
 
 interface Props {
   onAddressModal: DefaultFunction;
   checkRegistrationNumber?: RegistrationNumberState;
+  setAddress: DefaultFunction<UpdateByFormik>;
 }
 
 export default function BusinessBasicRoute(props: Props) {
@@ -26,6 +28,7 @@ export default function BusinessBasicRoute(props: Props) {
     <BusinessBasicSection
       inputRef={inputRef}
       onAddressModal={props.onAddressModal}
+      setAddress={props.setAddress}
       checkRegistrationNumber={props.checkRegistrationNumber}
       checkButton={
         <RegistrationNumberCheckButton
