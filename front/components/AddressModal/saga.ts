@@ -18,6 +18,10 @@ function* watchFilter() {
     try {
       const data = yield call(addressModalApi.searchAddress, query);
       const common = data.results.common;
+      if(common.totalCount == 0) {
+        yield put(dialogAction.openError('검색된 결과가 없습니다.'));
+        continue;
+      }
       if (common.totalCount > SEARCH_RESULT_LIMIT_COUNT) {
         yield put(dialogAction.openError('주소를 상세히 입력해 주시기 바랍니다.'));
         continue;
