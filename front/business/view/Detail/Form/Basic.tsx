@@ -14,12 +14,14 @@ import {
   RegistrationNumberState
 } from 'business/domain';
 import { ColorPalette } from 'assets/theme';
+import { UpdateByFormik } from 'components/AddressModal/AddressModal';
 
 interface Props {
   checkButton: React.ReactNode;
   inputRef: React.RefObject<HTMLInputElement>;
   onAddressModal: DefaultFunction;
   checkRegistrationNumber?: RegistrationNumberState;
+  setAddress: DefaultFunction<UpdateByFormik>;
 }
 
 export default function BusinessBasicSection(props: Props) {
@@ -122,9 +124,10 @@ export default function BusinessBasicSection(props: Props) {
               justifyContent: 'flex-end',
             }}>
               <TextBox variant="body7"
-                sx={{ color: `${props.checkRegistrationNumber.state === RegistrationNumberResultType.SUCCESS ? `${ColorPalette._4c9eeb}` : `${ColorPalette._eb4c4c}` }`,
+                sx={{
+                  color:      `${props.checkRegistrationNumber.state === RegistrationNumberResultType.SUCCESS ? `${ColorPalette._4c9eeb}` : `${ColorPalette._eb4c4c}`}`,
                   marginLeft: '10px'
-              }}>
+                }}>
                 {props.checkRegistrationNumber.message}
               </TextBox>
             </Box>
@@ -189,7 +192,11 @@ export default function BusinessBasicSection(props: Props) {
               value={formik.values.address ?? ''}
               endAdornment={
                 <InputAdornment position="end" sx={{ marginRight: '10px' }}>
-                  <Button disabled={!edit} onClick={props.onAddressModal}>
+                  <Button disabled={!edit} onClick={() => {
+                    props.setAddress({ formik: formik, fieldName: ['address', 'zipCode'] });
+                    props.onAddressModal()
+                  }
+                  }>
                     주소 검색
                   </Button>
                 </InputAdornment>

@@ -61,6 +61,12 @@ public class BusinessManager extends CustomEntity {
      */
     private String email;
 
+
+    /**
+     * 주소
+     */
+    private String address;
+
     /**
      * 메타
      */
@@ -86,7 +92,8 @@ public class BusinessManager extends CustomEntity {
         String officePhone,
         String email,
         List<String> meta,
-        BusinessManagerStatus status
+        BusinessManagerStatus status,
+        String address
     ) {
         BusinessManager manager = new BusinessManager();
         manager.name = name;
@@ -97,6 +104,7 @@ public class BusinessManager extends CustomEntity {
         manager.email = email;
         manager.meta = meta;
         manager.status = status;
+        manager.address = address;
         return manager;
     }
 
@@ -108,7 +116,8 @@ public class BusinessManager extends CustomEntity {
         String officePhone,
         String email,
         List<String> meta,
-        BusinessManagerStatus status
+        BusinessManagerStatus status,
+        String address
         ) {
         this.name = name;
         this.jobTitle = jobTitle;
@@ -118,6 +127,7 @@ public class BusinessManager extends CustomEntity {
         this.email = email;
         this.meta = meta;
         this.status = status;
+        this.address = address;
     }
 
     public void updateProjectCount(List<Project> projectList

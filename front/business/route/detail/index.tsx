@@ -7,7 +7,8 @@ import { RootState } from 'services/reducer';
 import useId from 'services/useId';
 import React, {
   useCallback,
-  useEffect
+  useEffect,
+  useState
 } from 'react';
 import {
   BusinessParameter,
@@ -31,7 +32,10 @@ import { useNavigate } from 'react-router-dom';
 import BusinessBasicRoute from 'business/route/detail/basic';
 import { DialogStatus } from 'dialog/domain';
 import { closeStatus } from 'components/DataFieldProps';
-import { AddressModal } from 'components/AddressModal/AddressModal';
+import {
+  AddressModal,
+  UpdateByFormik
+} from 'components/AddressModal/AddressModal';
 import { addressModalAction } from 'components/AddressModal/action';
 import ProjectListModal from 'business/view/Detail/Modal/ProjectListModal';
 
@@ -48,6 +52,7 @@ function Element() {
   const openAddressModal = useCallback(() => dispatch(addressModalAction.addressModal(true)), [dispatch]);
   const openProjectListModal = useCallback((businessManagerId: BusinessManagerId) => dispatch(businessAction.setProjectListModal(businessManagerId)), [dispatch]);
   const closeProjectListModal = useCallback(() => dispatch(businessAction.setProjectListModal(undefined)), [dispatch]);
+  const [address, setAddress] = useState<UpdateByFormik>({} as UpdateByFormik);
   const formik = useFormik<BusinessParameter>({
     initialValues: initialBusinessParameter,
     onSubmit:      (values) => {
@@ -98,6 +103,7 @@ function Element() {
     <FormikProvider value={formik}>
       <BusinessDetail
         basic={<BusinessBasicRoute
+          setAddress={setAddress}
           onAddressModal={openAddressModal}
           checkRegistrationNumber={checkRegistrationNumber}
         />}
@@ -105,6 +111,8 @@ function Element() {
         rivalStatistic={<BusinessRivalStatisticRoute />}
         rivalProjectList={<BusinessRivalProjectListRoute />}
         openProjectListModal={openProjectListModal}
+        onAddressModal={openAddressModal}
+        setAddress={setAddress}
         onCancel={() => {
           rollback(() => {
             formik.setValues({
@@ -129,7 +137,7 @@ function Element() {
           }
         }}
       />
-      <AddressModal updateByFormik={{ formik: formik, fieldName: ['address', 'zipCode'] }} />
+      <AddressModal updateByFormik={address} />
       <ProjectListModal
         open={open}
         onClose={closeProjectListModal}
