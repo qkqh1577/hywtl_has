@@ -15,7 +15,6 @@ import {
 import { RootState } from 'services/reducer';
 import { dialogAction } from 'dialog/action';
 import { getErrorMessage } from 'type/Error';
-import { initialProjectQuery } from 'project/parameter';
 
 function* watchFilter() {
   while (true) {
@@ -63,9 +62,6 @@ function* watchUpdateStatus() {
       yield put(projectAction.requestUpdateStatus('request'));
       yield call(projectApi.updateStatus, id, params);
       yield put(projectAction.requestUpdateStatus('done'));
-      if (params.progressStatus) {
-        yield put(projectAction.setFilter(initialProjectQuery));
-      }
     }
     catch (e) {
       const message = getErrorMessage(projectAction.updateStatus, e);

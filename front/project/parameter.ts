@@ -156,12 +156,12 @@ export const projectProgressStatusSearchList: Option[] = [
 
 export const projectEstimateExpectationSearchList: Option[] = [
   {
-    key:  ProjectEstimateExpectation.LOW,
-    text: projectEstimateExpectationName(ProjectEstimateExpectation.LOW),
+    key:  ProjectEstimateExpectation.STRUCTURE,
+    text: projectEstimateExpectationName(ProjectEstimateExpectation.STRUCTURE),
   },
   {
-    key:  ProjectEstimateExpectation.AVERAGE,
-    text: projectEstimateExpectationName(ProjectEstimateExpectation.AVERAGE),
+    key:  ProjectEstimateExpectation.NORMAL,
+    text: projectEstimateExpectationName(ProjectEstimateExpectation.NORMAL),
   },
   {
     key:  ProjectEstimateExpectation.HIGH,

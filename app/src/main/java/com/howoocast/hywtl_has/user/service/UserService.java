@@ -2,20 +2,27 @@ package com.howoocast.hywtl_has.user.service;
 
 import com.howoocast.hywtl_has.common.exception.DuplicatedValueException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import com.howoocast.hywtl_has.common.exception.TokenExpiredException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.department.domain.Department;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.login.parameter.UserPasswordChangeParameter;
+import com.howoocast.hywtl_has.login.parameter.UserPasswordResetParameter;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import com.howoocast.hywtl_has.user.view.UserView;
+import com.howoocast.hywtl_has.user_verification.domain.PasswordReset;
+import com.howoocast.hywtl_has.user_verification.domain.PasswordResetToken;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetRepository;
+import com.howoocast.hywtl_has.user_verification.repository.PasswordResetTokenRepository;
 import com.howoocast.hywtl_has.user_verification.repository.UserInvitationRepository;
 import com.howoocast.hywtl_has.user_verification.service.PasswordResetService;
 import com.querydsl.core.types.Predicate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,17 +43,14 @@ public class UserService {
 
     @Value("${application.mail.invalidate-duration}")
     private String invalidateDuration;
-
     private final UserRepository repository;
-
     private final UserInvitationRepository userInvitationRepository;
-
     private final DepartmentRepository departmentRepository;
-
     private final PasswordResetService passwordResetService;
-
-
     private final ApplicationEventPublisher eventPublisher;
+    private final PasswordResetTokenRepository tokenRepository;
+    private final PasswordResetRepository passwordResetRepository;
+
 
     @Transactional(readOnly = true)
     public Page<UserShortView> page(
@@ -115,7 +119,11 @@ public class UserService {
     @Transactional
     public void changePassword(Long id, UserPasswordChangeParameter parameter) {
         User instance = this.load(id);
-        instance.changePassword(parameter.getNowPassword(), parameter.getNewPassword(), parameter.getNewPasswordConfirm());
+        instance.changePassword(
+            parameter.getNowPassword(),
+            parameter.getNewPassword(),
+            parameter.getNewPasswordConfirm()
+        );
     }
 
     @Transactional
@@ -149,5 +157,24 @@ public class UserService {
                 throw new DuplicatedValueException(User.KEY, "username", username);
             }
         });
+    }
+
+    @Transactional
+    public void resetPasswordByToken(UserPasswordResetParameter params) {
+        if (!tokenRepository.existsByExpirationGreaterThanEqual(LocalDateTime.now())) {
+            throw new TokenExpiredException(PasswordResetToken.KEY, "token");
+        }
+
+        tokenRepository.findByToken(params.getToken())
+            .ifPresentOrElse(
+                t -> {
+                    this.load(t.getUserId()).resetPassword(params.getNewPassword(), params.getNewPasswordConfirm());
+                    t.delete();
+                    passwordResetRepository.findById(t.getPasswordReset().getId()).ifPresent(PasswordReset::delete);
+                },
+                () -> {
+                    throw new NotFoundException(PasswordResetToken.KEY, "token");
+                }
+            );
     }
 }

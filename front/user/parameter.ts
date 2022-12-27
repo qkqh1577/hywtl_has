@@ -15,3 +15,7 @@ export interface UserChangeParameter
 export const initialUserParameter = {
   edit: false
 } as unknown as UserChangeParameter;
+
+export interface UserPasswordChangeParameter {
+  username: string;
+}

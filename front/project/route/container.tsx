@@ -95,7 +95,9 @@ export default function ProjectContainerRoute(props: Props) {
           flexWrap: 'wrap',
           width:    '100%',
         }}>
-          <ProjectStatusRoute />
+          <ProjectStatusRoute
+            filter={filter}
+          />
           <ProjectContainerTab />
         </Box>
       }

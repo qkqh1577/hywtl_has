@@ -61,14 +61,14 @@ project-db:
           search: true
           prefix: status
           option: [ "TEMPORARY","UNDER_CONTRACT","BEFORE_SERVICE","SERVICE_ON_GOING","SERVICE_COMPLETE","SERVICE_HOLDING"]
-          optionLabel: [ "가등록","등록","용역 개시 전","용역 진행 중","용역 완료","용역 홀딩"]
+          optionLabel: [ "가등록","등록","업무 개시 전","업무 진행 중","업무 완료","업무 홀딩"]
         estimateExpectation:
           type: ProjectEstimateExpectation
           description: 예상확도
           search: true
           prefix: status
-          option: ["LOW","AVERAGE","HIGH","NEARLY","WIN","LOSE"]
-          optionLabel: ["가능성 낮음","가능성 보통","가능성 높음","계약 직전","수주 성공","수주 실패"]
+          option: ["STRUCTURE","NORMAL","HIGH","NEARLY","WIN","LOSE"]
+          optionLabel: ["구조물","일반","가능성 높음","수주 직전","수주 성공","수주 실패"]
         estimateStatus:
           type: ProjectEstimateStatus
           description: 견적상태

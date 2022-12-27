@@ -40,13 +40,13 @@ export enum ProjectProgressStatus {
   TEMPORARY        = 'TEMPORARY',
   /** 등록 */
   UNDER_CONTRACT   = 'UNDER_CONTRACT',
-  /** 용역 개시 전 */
+  /** 업무 개시 전 */
   BEFORE_SERVICE   = 'BEFORE_SERVICE',
-  /** 용역 진행 중 */
+  /** 업무 진행 중 */
   SERVICE_ON_GOING = 'SERVICE_ON_GOING',
-  /** 용역 완료 */
+  /** 업무 완료 */
   SERVICE_COMPLETE = 'SERVICE_COMPLETE',
-  /** 용역 홀딩 */
+  /** 업무 홀딩 */
   SERVICE_HOLDING  = 'SERVICE_HOLDING',
 }
 
@@ -57,13 +57,13 @@ export function projectProgressStatusName(status: ProjectProgressStatus | '') {
     case ProjectProgressStatus.UNDER_CONTRACT:
       return '등록';
     case ProjectProgressStatus.BEFORE_SERVICE:
-      return '용역개시전';
+      return '업무개시전';
     case ProjectProgressStatus.SERVICE_ON_GOING:
-      return '용역진행중';
+      return '업무진행중';
     case ProjectProgressStatus.SERVICE_COMPLETE:
-      return '용역완료';
+      return '업무완료';
     case ProjectProgressStatus.SERVICE_HOLDING:
-      return '용역홀딩';
+      return '업무홀딩';
     default:
       return '-';
   }
@@ -113,13 +113,13 @@ export const projectBasicBidTypeList: ProjectBasicBidType[] = [
  * 견적 분류
  */
 export enum ProjectEstimateExpectation {
-  /** 가능성 낮음 */
-  LOW     = 'LOW',
-  /** 가능성 보통 */
-  AVERAGE = 'AVERAGE',
+  /** 구조물 */
+  STRUCTURE     = 'STRUCTURE',
+  /** 일반 */
+  NORMAL = 'NORMAL',
   /** 가능성 높음 */
   HIGH    = 'HIGH',
-  /** 계약 직전 */
+  /** 수주 직전 */
   NEARLY  = 'NEARLY',
   /** 수주 성공 */
   WIN     = 'WIN',
@@ -129,14 +129,14 @@ export enum ProjectEstimateExpectation {
 
 export function projectEstimateExpectationName(status: ProjectEstimateExpectation) {
   switch (status) {
-    case ProjectEstimateExpectation.LOW:
-      return '가능성 낮음';
-    case ProjectEstimateExpectation.AVERAGE:
-      return '가능성 보통';
+    case ProjectEstimateExpectation.STRUCTURE:
+      return '구조물';
+    case ProjectEstimateExpectation.NORMAL:
+      return '일반';
     case ProjectEstimateExpectation.HIGH:
       return '가능성 높음';
     case ProjectEstimateExpectation.NEARLY:
-      return '계약 직전';
+      return '수주 직전';
     case ProjectEstimateExpectation.WIN:
       return '수주 성공';
     case ProjectEstimateExpectation.LOSE:
@@ -147,8 +147,8 @@ export function projectEstimateExpectationName(status: ProjectEstimateExpectatio
 }
 
 export const projectEstimateExpectationList: ProjectEstimateExpectation[] = [
-  ProjectEstimateExpectation.LOW,
-  ProjectEstimateExpectation.AVERAGE,
+  ProjectEstimateExpectation.STRUCTURE,
+  ProjectEstimateExpectation.NORMAL,
   ProjectEstimateExpectation.HIGH,
   ProjectEstimateExpectation.NEARLY,
   ProjectEstimateExpectation.WIN,

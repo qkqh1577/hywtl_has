@@ -30,7 +30,7 @@ public class LoginController {
     @GetMapping("/user/login")
     public UserView getLogin(Authentication authentication) {
         try {
-            return UserView.assemble(service.get(UsernameExtractor.get(authentication)));
+            return UserView.assemble(service.get(authentication.getName()));
         } catch (Exception e) {
             throw new UserLoginException(UserLoginExceptionType.NOT_AUTHENTICATED);
         }

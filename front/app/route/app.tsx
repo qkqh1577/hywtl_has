@@ -31,6 +31,7 @@ export default function () {
   const { detail: loginUser, requestLogin } = useSelector((root: RootState) => root.login);
   const { error } = useDialog();
   const isLoginPage = pathname.startsWith('/login');
+  const isPageRelationWithPassword = pathname.startsWith('/user/password-reset');
 
   useEffect(() => {
     if (!loginUser) {
@@ -61,14 +62,15 @@ export default function () {
       <AppBarRoute />
       <MenuDrawerRoute />
       <ProjectDrawerRoute />
-      <Box component="main"
+      <Box
+        component="main"
         sx={{
           flexGrow:     1,
           height:       '100vh',
           overflow:     'hidden',
           paddingLeft:  0,
           paddingRight: 0,
-          paddingTop:   !isLoginPage ? '50px' : 0,
+          paddingTop:   !(isLoginPage || isPageRelationWithPassword) ? '50px' : 0,
         }}>
         <ReactRouter />
       </Box>
@@ -79,5 +81,4 @@ export default function () {
       <UserNotificationModalRoute />
     </Box>
   );
-
 }

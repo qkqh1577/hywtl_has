@@ -22,9 +22,10 @@ function* watchLogin() {
       yield put(loginAction.requestLogin('done'));
     }
     catch (e) {
-      const message = getErrorMessage(loginAction.login, e);
-      yield put(dialogAction.openError(message || '로그인에 실패하였습니다.'));
-      yield put(loginAction.requestLogin(message));
+      yield put(loginAction.loginError({
+        code:    getErrorCode(loginAction.login, e) ?? '',
+        message: getErrorMessage(loginAction.login, e) ?? '로그인에 실패하였습니다.'
+      }));
     }
   }
 }
@@ -106,10 +107,30 @@ function* watchPasswordChange() {
   }
 }
 
+function* watchResetPassword(){
+  while (true) {
+    const { payload: params } = yield take(loginAction.reset);
+    try {
+      yield put(loginAction.requestReset('request'));
+      yield call(loginApi.resetPassword, params);
+      yield put(loginAction.requestReset('done'));
+    }
+    catch (e) {
+      const message = getErrorMessage(loginAction.reset, e);
+      const code = getErrorCode(loginAction.reset, e);
+      yield put(loginAction.passwordValidation({
+        code:    code,
+        message: message
+      }));
+      yield put(loginAction.requestReset(message));
+    }
+  }
+}
 export default function* loginSaga() {
   yield fork(watchLogin);
   yield fork(watchLogout);
   yield fork(watchDetail);
   yield fork(watchChange);
   yield fork(watchPasswordChange);
+  yield fork(watchResetPassword);
 }

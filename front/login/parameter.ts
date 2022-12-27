@@ -27,6 +27,12 @@ export interface PasswordChangeParameter {
   newPasswordConfirm: string;
 }
 
+export interface PasswordResetParameter {
+  newPassword: string;
+  newPasswordConfirm: string;
+  token: string;
+}
+
 export const initialPasswordParameter = {
   id:                 undefined,
   nowPassword:        '',
@@ -49,4 +55,12 @@ export enum PasswordValidationCode {
 export interface PasswordValidation {
   code: string,
   message: string,
+}
+
+export interface PasswordToFindByEmailParameter {
+  username: string;
+}
+
+export interface UrlValidateParameter {
+  token: string;
 }

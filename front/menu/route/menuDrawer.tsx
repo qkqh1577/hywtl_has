@@ -9,8 +9,9 @@ export default function MenuDrawerRoute() {
   const { open, list } = useSelector((root: RootState) => root.menu);
   const { pathname } = useLocation();
   const isLoginPage = pathname.startsWith('/login');
+  const isPasswordResetPage = pathname.startsWith('/user/password-reset')
 
-  if (isLoginPage) {
+  if (isLoginPage || isPasswordResetPage) {
     return null;
   }
 

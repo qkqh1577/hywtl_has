@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.user.controller;
 
 import com.howoocast.hywtl_has.login.parameter.UserPasswordChangeParameter;
+import com.howoocast.hywtl_has.login.parameter.UserPasswordResetParameter;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.parameter.UserAddParameter;
 import com.howoocast.hywtl_has.user.parameter.UserChangeParameter;
@@ -93,5 +94,10 @@ public class UserController {
     @DeleteMapping("/admin/user/{id}")
     public void delete(@PathVariable Long id) {
         userService.delete(id);
+    }
+
+    @PatchMapping("/admin/user/password")
+    public void resetPassword(@Valid @RequestBody UserPasswordResetParameter params) {
+        userService.resetPasswordByToken(params);
     }
 }

@@ -17,8 +17,13 @@ import {
 import { projectAction } from 'project/action';
 import ProjectBasicFailReasonModalRoute from 'project_status/route/failReasonModal';
 import { closeStatus } from 'components/DataFieldProps';
+import { ProjectQuery } from 'project/parameter';
 
-export default function ProjectStatusRoute() {
+interface Props {
+  filter?: ProjectQuery;
+}
+
+export default function ProjectStatusRoute({ filter }: Props) {
 
   const dispatch = useDispatch();
   const { id, detail, requestUpdateStatus } = useSelector((root: RootState) => root.project);
@@ -30,7 +35,10 @@ export default function ProjectStatusRoute() {
 
   useEffect(() => {
     closeStatus(requestUpdateStatus, () => {
-      dispatch(projectAction.setId(id));
+      if (filter) {
+        dispatch(projectAction.setFilter(filter));
+        dispatch(projectAction.setId(id));
+      }
     }, () => {
       dispatch(projectAction.requestUpdateStatus('idle'));
     });

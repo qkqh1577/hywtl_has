@@ -13,6 +13,7 @@ import Page from 'type/Page';
 import { userApi } from 'user/api';
 import { dialogAction } from 'dialog/action';
 import { getErrorMessage } from 'type/Error';
+import { progressAction } from 'components/Progress/action';
 
 function* getPage() {
   while (true) {
@@ -52,10 +53,45 @@ function* watchChange() {
   }
 }
 
+function* watchSendEmail() {
+  while (true) {
+    const { payload: params } = yield take(userAction.requestEmailToChangePassword);
+    try {
+      yield put(progressAction.progress(true));
+      yield put(userAction.requestFindPasswordByUsername('request'));
+      yield call(userApi.requestChangePasswordEmail, params);
+      yield put(userAction.requestFindPasswordByUsername('done'));
+      yield put(progressAction.progress(false));
+      yield put(dialogAction.openAlert('이메일을 발송했습니다.'));
+    }
+    catch (e) {
+      yield put(progressAction.progress(false));
+      const message = getErrorMessage(userAction.requestEmailToChangePassword, e);
+      yield put(userAction.userError({
+        code: 'NotFoundException',
+        message: message,
+      }))
+    }
+  }
+}
+
+function* watchValidateUrlForPasswordChange() {
+  while (true) {
+    const { payload: params } = yield take(userAction.validateUrlForPasswordReset);
+    try {
+      const result: boolean = yield call(userApi.validateUrlForPasswordReset, params);
+      yield put(userAction.setUrlValidatedResult(result));
+    }catch (e) {
+      console.log(e);
+    }
+  }
+}
 
 export default function* userSaga() {
   yield fork(getPage);
   yield fork(watchId);
   yield fork(watchChange);
+  yield fork(watchSendEmail);
+  yield fork(watchValidateUrlForPasswordChange)
 }
 

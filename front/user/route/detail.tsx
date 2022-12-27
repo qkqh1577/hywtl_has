@@ -21,7 +21,8 @@ import {
 import { userAction } from 'user/action';
 import {
   initialUserParameter,
-  UserChangeParameter
+  UserChangeParameter,
+  UserPasswordChangeParameter
 } from 'user/parameter';
 import { RootState } from 'services/reducer';
 import { closeStatus } from 'components/DataFieldProps';
@@ -32,7 +33,7 @@ function Element() {
   const { detail, requestChange } = useSelector((root: RootState) => root.user);
   const { confirm, rollback, alert } = useDialog();
   const change = useCallback((formikProps: UserChangeParameter) => dispatch(userAction.change(formikProps)), [dispatch]);
-
+  const sendEmail = useCallback((email: UserPasswordChangeParameter) => dispatch(userAction.requestEmailToChangePassword(email)), [dispatch]);
   const formik = useFormik<UserChangeParameter>({
     initialValues: initialUserParameter,
     onSubmit:      (values) => {
@@ -91,7 +92,9 @@ function Element() {
             children:     '비밀번호 변경 안내 메일을 발송하겠습니까?',
             confirmText:  '발송',
             afterConfirm: () => {
-              console.log('TODO: reset password');
+              if (detail && detail.username) {
+                sendEmail({ username: detail.username });
+              }
             }
           });
         }}

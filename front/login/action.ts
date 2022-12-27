@@ -1,10 +1,14 @@
 import { createAction } from 'typesafe-actions';
 import { ApiStatus } from 'components/DataFieldProps';
-import { LoginVO } from 'login/domain';
+import {
+  LoginError,
+  LoginVO
+} from 'login/domain';
 import {
   LoginChangeParameter,
   LoginParameter,
   PasswordChangeParameter,
+  PasswordResetParameter,
   PasswordValidation
 } from 'login/parameter';
 
@@ -21,6 +25,9 @@ export enum LoginActionType {
   passwordChangeModal = 'login/password-change-modal',
   changePassword      = 'login/change-password',
   passwordValidation  = 'login/password-validation',
+  loginError          = 'login/error',
+  reset               = 'login/password/reset',
+  requestReset        = 'login/password/reset/request',
 }
 
 export const loginAction = {
@@ -36,4 +43,7 @@ export const loginAction = {
   passwordChangeModal: createAction(LoginActionType.passwordChangeModal)<boolean>(),
   changePassword:      createAction(LoginActionType.changePassword)<PasswordChangeParameter>(),
   passwordValidation:  createAction(LoginActionType.passwordValidation)<PasswordValidation | undefined>(),
+  loginError:          createAction(LoginActionType.loginError)<LoginError | undefined>(),
+  reset:               createAction(LoginActionType.reset)<PasswordResetParameter>(),
+  requestReset:        createAction(LoginActionType.requestReset)<ApiStatus>(),
 };
