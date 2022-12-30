@@ -25,6 +25,7 @@ public class BusinessDataToMigrateService {
 
     @Transactional
     public void migrate() {
+
         em.persist(Business.of(
             "한양풍동실험연구소",
             "000-000-0000000",

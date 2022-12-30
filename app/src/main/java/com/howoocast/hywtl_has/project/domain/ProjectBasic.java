@@ -32,8 +32,7 @@ public class ProjectBasic {
     /**
      * 프로젝트 닉네임
      */
-    @NotBlank
-    @Column(nullable = false)
+    @Column
     private String alias;
 
     /**
@@ -192,5 +191,28 @@ public class ProjectBasic {
         }
 
         return eventList;
+    }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param code
+     * @param name
+     * @param bidType
+     * @param receptionManager
+     * @return
+     */
+
+    public static ProjectBasic of(
+        @Nullable String code,
+        String name,
+        ProjectBasicBidType bidType,
+        User receptionManager
+    ) {
+        ProjectBasic instance = new ProjectBasic();
+        instance.name = name;
+        instance.code = code;
+        instance.bidType = bidType;
+        instance.receptionManager = receptionManager;
+        return instance;
     }
 }

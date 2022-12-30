@@ -58,4 +58,32 @@ public class Project extends CustomEntity {
     public void update(Boolean isFavorite) {
         this.isFavorite = isFavorite;
     }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param code
+     * @param name
+     * @param bidType
+     * @param receptionManager
+     * @param status
+     * @return
+     */
+    public static Project of(
+        @Nullable String code,
+        String name,
+        ProjectBasicBidType bidType,
+        User receptionManager,
+        ProjectStatus status
+    ) {
+        Project instance = new Project();
+        instance.basic = ProjectBasic.of(
+            code,
+            name,
+            bidType,
+            receptionManager
+        );
+        instance.status = status;
+        return instance;
+    }
+
 }

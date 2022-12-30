@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Embeddable
@@ -52,6 +53,28 @@ public class ProjectStatus {
     ) {
         ProjectStatus instance = new ProjectStatus();
         instance.progressStatus = progressStatus;
+        return instance;
+    }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param progressStatus
+     * @param estimateExpectation
+     * @param estimateStatus
+     * @param contractStatus
+     * @return
+     */
+    public static ProjectStatus of(
+        ProjectProgressStatus progressStatus,
+        ProjectEstimateExpectation estimateExpectation,
+        @Nullable ProjectEstimateStatus estimateStatus,
+        ProjectContractStatus contractStatus
+    ) {
+        ProjectStatus instance = new ProjectStatus();
+        instance.progressStatus = progressStatus;
+        instance.estimateExpectation = estimateExpectation;
+        instance.estimateStatus = estimateStatus;
+        instance.contractStatus = contractStatus;
         return instance;
     }
 

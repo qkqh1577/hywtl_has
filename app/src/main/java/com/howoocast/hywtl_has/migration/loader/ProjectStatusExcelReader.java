@@ -1,6 +1,6 @@
 package com.howoocast.hywtl_has.migration.loader;
 
-import com.howoocast.hywtl_has.migration.enums.BusinessHeader;
+import com.howoocast.hywtl_has.migration.enums.ProjectStatusHeader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -13,20 +13,19 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.StringUtils;
 
 /**
- * HAS-DB-관계사.xlsx
+ * HAS-DB-분류.xlsx
  */
-public class BusinessExcelReader {
+public class ProjectStatusExcelReader {
 
     public static List<Map<String, String>> excelReader() {
-        List<Map<String, String>> businessList = new ArrayList<>();
+        List<Map<String, String>> projectStatusList = new ArrayList<>();
         try {
-            File excelFile = new ClassPathResource("migration/HAS-DB-관계사.xlsx").getFile();
+            File excelFile = new ClassPathResource("migration/HAS-DB-분류.xlsx").getFile();
             FileInputStream file = new FileInputStream(excelFile);
             XSSFWorkbook workbook = new XSSFWorkbook(file);
-            XSSFSheet sheet = workbook.getSheetAt(1);
+            XSSFSheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
             List<String> headers = new ArrayList<>();
 
@@ -40,24 +39,27 @@ public class BusinessExcelReader {
                     if (row.getRowNum() == 0) {
                         headers.add(String.valueOf(row.getCell(cell.getColumnIndex())));
                     } else {
-                        if (headers.get(cell.getColumnIndex())
-                            .equals(BusinessHeader.BUSINESS_REGISTRATION_NUMBER.getName())
-                            && !StringUtils.hasText(String.valueOf(row.getCell(cell.getColumnIndex())))) {
-                            body.put(headers.get(cell.getColumnIndex()), "000-00-00000");
-                        } else {
-                            body.put(headers.get(cell.getColumnIndex()),
-                                String.valueOf(row.getCell(cell.getColumnIndex())));
+
+                        if (String.valueOf(row.getCell(cell.getColumnIndex())).equals("18051.0")) {
+                            boolean test = headers.get(cell.getColumnIndex()).equals(ProjectStatusHeader.NAME.getName())
+                                && row.getCell(cell.getColumnIndex()) == null;
+                            if (test) {
+                                body.put(headers.get(cell.getColumnIndex()), "프로젝트명 없음");
+                            } else {
+                                body.put(headers.get(cell.getColumnIndex()),
+                                    String.valueOf(row.getCell(cell.getColumnIndex())));
+                            }
                         }
                     }
                 }
                 if (row.getRowNum() != 0) {
-                    businessList.add(body);
+                    projectStatusList.add(body);
                 }
             }
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return businessList;
+        return projectStatusList;
     }
 }
