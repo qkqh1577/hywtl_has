@@ -11,7 +11,6 @@ public class DataToMigrate {
     private final DepartmentInitDataService departmentInitDataService;
     private final UserInitDataService userInitDataService;
     private final BusinessDataToMigrateService businessDataToMigrateService;
-
     private final ProjectStatusDataToMigrateService projectStatusDataToMigrateService;
     @PostConstruct
     public void init() {

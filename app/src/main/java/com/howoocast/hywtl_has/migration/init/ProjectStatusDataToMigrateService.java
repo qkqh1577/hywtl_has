@@ -31,14 +31,15 @@ public class ProjectStatusDataToMigrateService {
 
     @Transactional
     public void migrate() {
-
         userRepository.findByUsername("admin").ifPresent(a -> {
             List<Map<String, String>> prjectStatusList = ProjectStatusExcelReader.excelReader();
             prjectStatusList.forEach(projectStatusMap -> {
-
                 // 프로젝트 코드 .0 제거 및 코드-(번호) 형식있어서 수정
                 String value = projectStatusMap.get(ProjectStatusHeader.CODE.getName());
                 String code = value;
+                if (value == null) {
+                    return;
+                }
                 if (!value.contains("-")) {
                     code = value.substring(0, value.length() - 2);
                 }
@@ -49,14 +50,31 @@ public class ProjectStatusDataToMigrateService {
                     convertStringToBasicBidType(projectStatusMap.get(ProjectStatusHeader.BASIC_BID_TYPE.getName())),
                     a,
                     ProjectStatus.of(
-                        ProjectProgressStatus.UNDER_CONTRACT,
-                        convertStringToEstimateExpectation(
-                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
+                        convertStringToProgressStatus(projectStatusMap.get(ProjectStatusHeader.PROGRESS_STATUS.getName())),
+                        convertStringToEstimateExpectation(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
                         convertStringToEstimateStatus(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
                         convertStringToContractStatus(projectStatusMap.get(ProjectStatusHeader.CONTRACT_STATUS.getName())))
                 ));
             });
         });
+    }
+
+    private ProjectProgressStatus convertStringToProgressStatus(String value) {
+        // 데이터 이름 안 맞는거 수정
+        value = getString(value);
+        String finalValue = value;
+        return Arrays.stream(ProjectProgressStatus.values())
+            .filter(progressStatus -> progressStatus.getName().replaceAll(" ", "").equals(
+                finalValue.replaceAll(" ", "")))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("해당하는 기본입찰방식이 없습니다."));
+    }
+
+    private static String getString(String value) {
+        if (value.equals("업무 착수전")) {
+            value = "업무 개시 전";
+        }
+        return value;
     }
 
     private ProjectBasicBidType convertStringToBasicBidType(String value) {
@@ -74,8 +92,14 @@ public class ProjectStatusDataToMigrateService {
     }
 
     private ProjectEstimateStatus convertStringToEstimateStatus(String value) {
+        // 입찰 상태인 경우 문제
+        if (value.equals("대비입찰")) {
+            value = "대비견적";
+        }
+        String finalValue = value;
         return Arrays.stream(ProjectEstimateStatus.values())
-            .filter(estimateStatus -> estimateStatus.getName().replaceAll(" ", "").equals(value.replaceAll(" ", "")))
+            .filter(estimateStatus -> estimateStatus.getName().replaceAll(" ", "").equals(
+                finalValue.replaceAll(" ", "")))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("해당하는 견적상태가 없습니다."));
     }

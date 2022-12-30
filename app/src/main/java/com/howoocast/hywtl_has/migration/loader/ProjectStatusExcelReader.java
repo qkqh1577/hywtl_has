@@ -9,10 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StringUtils;
 
 /**
  * HAS-DB-분류.xlsx
@@ -39,16 +41,23 @@ public class ProjectStatusExcelReader {
                     if (row.getRowNum() == 0) {
                         headers.add(String.valueOf(row.getCell(cell.getColumnIndex())));
                     } else {
-
-                        if (String.valueOf(row.getCell(cell.getColumnIndex())).equals("18051.0")) {
-                            boolean test = headers.get(cell.getColumnIndex()).equals(ProjectStatusHeader.NAME.getName())
-                                && row.getCell(cell.getColumnIndex()) == null;
-                            if (test) {
-                                body.put(headers.get(cell.getColumnIndex()), "프로젝트명 없음");
-                            } else {
-                                body.put(headers.get(cell.getColumnIndex()),
-                                    String.valueOf(row.getCell(cell.getColumnIndex())));
-                            }
+                        /* row.cellIterator에 프로젝트명이 없음. */
+                        if (headers.get(cell.getColumnIndex())
+                            .equals(ProjectStatusHeader.CODE.getName())
+                            && (
+                            String.valueOf(row.getCell(cell.getColumnIndex())).equals("18017.0")
+                                || String.valueOf(row.getCell(cell.getColumnIndex())).equals("18051.0")
+                                || String.valueOf(row.getCell(cell.getColumnIndex())).equals("18217.0")
+                                || String.valueOf(row.getCell(cell.getColumnIndex())).equals("18219.0")
+                                || String.valueOf(row.getCell(cell.getColumnIndex())).equals("21151.0")
+                            )
+                        ) {
+                            body.put(headers.get(0),
+                                String.valueOf(row.getCell(0)));
+                            body.put(headers.get(1), "프로젝트명 없음");
+                        } else {
+                            body.put(headers.get(cell.getColumnIndex()),
+                                String.valueOf(row.getCell(cell.getColumnIndex())));
                         }
                     }
                 }
