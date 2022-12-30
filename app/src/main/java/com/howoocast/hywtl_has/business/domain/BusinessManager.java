@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -105,6 +106,27 @@ public class BusinessManager extends CustomEntity {
         manager.meta = meta;
         manager.status = status;
         manager.address = address;
+        return manager;
+    }
+
+    public static BusinessManager of(
+        String name,
+        @Nullable String department,
+        @Nullable String jobTitle,
+        @Nullable String officePhone,
+        @Nullable String mobilePhone,
+        @Nullable String email,
+        @Nullable String address
+    ) {
+        BusinessManager manager = new BusinessManager();
+        manager.name = name;
+        manager.department = department;
+        manager.jobTitle = jobTitle;
+        manager.officePhone = officePhone;
+        manager.mobilePhone = mobilePhone;
+        manager.email = email;
+        manager.address = address;
+        manager.status = BusinessManagerStatus.IN_OFFICE;
         return manager;
     }
 
