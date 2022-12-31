@@ -40,8 +40,10 @@ public class ProjectDesignDataToMigrateService {
             }
             projectRepository.findByBasic_Code(code).ifPresent(project -> {
                 //alias(프로젝트 풀네임으로 변경될 것)
-                if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()))) {
-                    project.getBasic().updateAlias(projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()));
+                if (StringUtils.hasText(
+                    projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()))) {
+                    project.getBasic()
+                        .updateAlias(projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()));
                 }
                 //동개수에 따른 동먼저 만들고.
                 setComplexBuilding(projectDesignMap, project);
@@ -64,13 +66,12 @@ public class ProjectDesignDataToMigrateService {
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.ADDRESS.getName()))) {
             design.updateAddress(projectDesignMap.get(ProjectDesignHeader.ADDRESS.getName()));
         }
-        if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.COMPLEX_COUNT.getName()))) {
+        if (StringUtils.hasText(
+            projectDesignMap.get(ProjectDesignHeader.COMPLEX_COUNT.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.COMPLEX_COUNT.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateComplexCount(Integer.parseInt(value.substring(0, value.length() - 2)));
             }
-            design.updateComplexCount(
-                Integer.parseInt(value.substring(0, value.length() - 2)));
         }
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.PURPOSE1.getName()))) {
             design.updatePurpose1(projectDesignMap.get(ProjectDesignHeader.PURPOSE1.getName()));
@@ -80,48 +81,46 @@ public class ProjectDesignDataToMigrateService {
         }
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.LOT_AREA.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.LOT_AREA.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateLotArea(Double.parseDouble(value));
             }
-            System.out.println("value check = " + value);
-            design.updateLotArea(Double.parseDouble(value));
         }
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.TOTAL_AREA.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.TOTAL_AREA.getName());
-            if (value.equals("-") || value.equals("124.072.2284")) {
-                return;
+            if (!(value.equals("-") || value.equals("124.072.2284"))) {
+                design.updateTotalArea(Double.parseDouble(value));
             }
-            design.updateTotalArea(
-                Double.parseDouble(value));
         }
-        if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.TOTAL_BUILDING_COUNT.getName()))) {
+        if (StringUtils.hasText(
+            projectDesignMap.get(ProjectDesignHeader.TOTAL_BUILDING_COUNT.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.TOTAL_BUILDING_COUNT.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateTotalBuildingCount(
+                    Integer.parseInt(value.substring(0, value.length() - 2)));
             }
-            design.updateTotalBuildingCount(Integer.parseInt(value.substring(0, value.length() - 2)));
         }
-        if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.HOUSEHOLD_COUNT.getName()))) {
+        if (StringUtils.hasText(
+            projectDesignMap.get(ProjectDesignHeader.HOUSEHOLD_COUNT.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.HOUSEHOLD_COUNT.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateHouseholdCount(
+                    Integer.parseInt(value.substring(0, value.length() - 2)));
             }
-            design.updateHouseholdCount(Integer.parseInt(value.substring(0, value.length() - 2)));
         }
-        if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.MAXIMUM_FLOOR.getName()))) {
+        if (StringUtils.hasText(
+            projectDesignMap.get(ProjectDesignHeader.MAXIMUM_FLOOR.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.MAXIMUM_FLOOR.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateMaximumFloor(Integer.parseInt(value.substring(0, value.length() - 2)));
             }
-            design.updateMaximumFloor(Integer.parseInt(value.substring(0, value.length() - 2)));
         }
-        if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.MAXIMUM_HEIGHT.getName()))) {
+        if (StringUtils.hasText(
+            projectDesignMap.get(ProjectDesignHeader.MAXIMUM_HEIGHT.getName()))) {
             String value = projectDesignMap.get(ProjectDesignHeader.MAXIMUM_HEIGHT.getName());
-            if (value.equals("-")) {
-                return;
+            if (!value.equals("-")) {
+                design.updateMaximumHeight(
+                    Double.parseDouble(value));
             }
-            design.updateMaximumHeight(
-                Double.parseDouble(value));
         }
         em.persist(design);
     }
