@@ -179,4 +179,123 @@ public class ProjectBasicDesign extends CustomEntity {
         }
         return eventList;
     }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param city1
+     */
+    public ProjectBasicDesign updateCity1(
+        String city1) {
+        this.city1 = city1;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param city2
+     */
+    public ProjectBasicDesign updateCity2(
+        String city2) {
+        this.city2 = city2;
+        return this;
+    }
+    /**
+     * @migration 마이그레이션 용
+     * @param address
+     */
+    public ProjectBasicDesign updateAddress(
+        String address) {
+        this.address = address;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param complexCount
+     */
+    public ProjectBasicDesign updateComplexCount(
+        Integer complexCount) {
+        this.complexCount = complexCount;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param purpose1
+     */
+    public ProjectBasicDesign updatePurpose1(
+        String purpose1) {
+        this.purpose1 = purpose1;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param purpose2
+     */
+    public ProjectBasicDesign updatePurpose2(
+        String purpose2) {
+        this.purpose2 = purpose2;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param lotArea
+     */
+    public ProjectBasicDesign updateLotArea(
+        Double lotArea) {
+        this.lotArea = lotArea;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param totalArea
+     */
+    public ProjectBasicDesign updateTotalArea(
+        Double totalArea) {
+        this.totalArea = totalArea;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param totalBuildingCount
+     */
+    public ProjectBasicDesign updateTotalBuildingCount(
+        Integer totalBuildingCount) {
+        this.totalBuildingCount = totalBuildingCount;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param householdCount
+     */
+    public ProjectBasicDesign updateHouseholdCount(
+        Integer householdCount) {
+        this.householdCount = householdCount;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param maximumFloor
+     */
+    public ProjectBasicDesign updateMaximumFloor(
+        Integer maximumFloor) {
+        this.maximumFloor = maximumFloor;
+        return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용
+     * @param maximumHeight
+     */
+    public ProjectBasicDesign updateMaximumHeight(
+        Double maximumHeight) {
+        this.maximumHeight = maximumHeight;
+        return this;
+    }
 }

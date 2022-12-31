@@ -12,11 +12,13 @@ public class DataToMigrate {
     private final UserInitDataService userInitDataService;
     private final BusinessDataToMigrateService businessDataToMigrateService;
     private final ProjectStatusDataToMigrateService projectStatusDataToMigrateService;
+    private final ProjectDesignDataToMigrateService projectDesignDataToMigrateService;
     @PostConstruct
     public void init() {
         departmentInitDataService.init();
         userInitDataService.init();
         businessDataToMigrateService.migrate();
         projectStatusDataToMigrateService.migrate();
+        projectDesignDataToMigrateService.migrate();
     }
 }

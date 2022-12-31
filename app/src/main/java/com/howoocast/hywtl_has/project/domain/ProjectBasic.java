@@ -215,4 +215,14 @@ public class ProjectBasic {
         instance.receptionManager = receptionManager;
         return instance;
     }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param fullName
+     * @return
+     */
+    public ProjectBasic updateAlias(String fullName) {
+        this.alias = fullName;
+        return this;
+    }
 }
