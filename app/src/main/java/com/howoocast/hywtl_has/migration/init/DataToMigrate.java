@@ -13,6 +13,7 @@ public class DataToMigrate {
     private final BusinessDataToMigrateService businessDataToMigrateService;
     private final ProjectStatusDataToMigrateService projectStatusDataToMigrateService;
     private final ProjectDesignDataToMigrateService projectDesignDataToMigrateService;
+    private final ComparedEstimateDataToMigrateService comparedEstimateDataToMigrateService;
     @PostConstruct
     public void init() {
         departmentInitDataService.init();
@@ -20,5 +21,6 @@ public class DataToMigrate {
         businessDataToMigrateService.migrate();
         projectStatusDataToMigrateService.migrate();
         projectDesignDataToMigrateService.migrate();
+        comparedEstimateDataToMigrateService.migrate();
     }
 }

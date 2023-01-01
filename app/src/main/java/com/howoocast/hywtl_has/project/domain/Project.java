@@ -86,4 +86,24 @@ public class Project extends CustomEntity {
         return instance;
     }
 
+    public static Project of(
+        @Nullable String code,
+        String name,
+        ProjectBasicBidType bidType,
+        User receptionManager,
+        ProjectProgressStatus progressStatus
+    ) {
+        Project instance = new Project();
+        instance.basic = ProjectBasic.of(
+            code,
+            name,
+            bidType,
+            receptionManager
+        );
+        instance.status = ProjectStatus.of(
+            progressStatus
+        );
+        return instance;
+    }
+
 }

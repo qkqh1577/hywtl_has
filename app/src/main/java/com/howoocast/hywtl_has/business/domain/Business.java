@@ -149,7 +149,12 @@ public class Business extends CustomEntity {
         return this.managerList.stream().filter(manager -> manager.getId().equals(managerId)).findFirst();
     }
 
+    /**
+     * @migration
+     * @param manager
+     */
     public void addBusinessManager(BusinessManager manager) {
         this.managerList.add(manager);
     }
+
 }

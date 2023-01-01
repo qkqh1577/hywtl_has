@@ -35,7 +35,8 @@ public class ProjectEstimateShortView {
         target.createdBy = UserShortView.assemble(source.getWriter());
         target.createdAt = source.getCreatedAt();
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
-        target.business = BusinessShortView.assemble(source.getBusiness());
+        // migration상 로직 변경 필요.
+        target.business = Optional.ofNullable(source.getBusiness()).map(BusinessShortView::assemble).orElse(null);
         target.hasExperimentInfo = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getHasExperimentInfo).orElse(false);
         return target;
     }

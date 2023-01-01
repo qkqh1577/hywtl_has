@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -85,6 +86,64 @@ public class ProjectCustomEstimate extends ProjectEstimate {
             recipient,
             isLh,
             note,
+            business
+        );
+    }
+
+
+    /**
+     * @migration
+     * @param code
+     * @param type
+     * @param isSent
+     * @param recipient
+     * @param writer
+     * @param project
+     * @param business
+     */
+    protected ProjectCustomEstimate(
+        String code,
+        ProjectEstimateType type,
+        Boolean isSent,
+        String recipient,
+        User writer,
+        Project project,
+        @Nullable Business business
+    ) {
+        super(
+            code,
+            type,
+            isSent,
+            recipient,
+            writer,
+            project,
+            business
+        );
+    }
+
+    /**
+     * @migration
+     * @param dto
+     * @param type
+     * @param isSent
+     * @param recipient
+     * @param business
+     * @return
+     */
+    public static ProjectCustomEstimate of(
+        ProjectEstimate dto,
+        ProjectEstimateType type,
+        Boolean isSent,
+        String recipient,
+        @Nullable Business business
+    ) {
+        return new ProjectCustomEstimate(
+            dto.getCode(),
+            type,
+            isSent,
+            recipient,
+            dto.getWriter(),
+            dto.getProject(),
             business
         );
     }

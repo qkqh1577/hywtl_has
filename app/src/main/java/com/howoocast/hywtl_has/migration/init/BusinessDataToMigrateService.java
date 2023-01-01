@@ -28,7 +28,7 @@ public class BusinessDataToMigrateService {
 
         em.persist(Business.of(
             "한양풍동실험연구소",
-            "000-000-0000000",
+            "000-00-00000",
             "경기도 안산시 상록구 한양대학로55, 한양대학교 풍환경실험관 2층",
             "031-400-4095",
             "이종원"

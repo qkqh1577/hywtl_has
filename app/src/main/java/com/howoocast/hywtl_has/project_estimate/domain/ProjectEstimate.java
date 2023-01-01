@@ -283,4 +283,34 @@ public abstract class ProjectEstimate extends CustomEntity {
     public void changeConfirmed(Boolean confirmed) {
         this.confirmed = confirmed;
     }
+
+    /**
+     * @migration 마이그레이션 용도
+     * @param code
+     * @param type
+     * @param isSent
+     * @param recipient
+     * @param note
+     * @param writer
+     * @param project
+     * @param business
+     */
+    protected ProjectEstimate(
+        String code,
+        ProjectEstimateType type,
+        Boolean isSent,
+        String recipient,
+        User writer,
+        Project project,
+        @Nullable Business business
+    ) {
+        this.project = project;
+        this.code = code;
+        this.type = type.name();
+        this.recipient = recipient;
+        this.writer = writer;
+        this.isSent = isSent;
+        this.confirmed = false;
+        this.business = business;
+    }
 }
