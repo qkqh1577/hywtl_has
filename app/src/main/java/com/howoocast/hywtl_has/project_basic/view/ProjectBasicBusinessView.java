@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.business.view.BusinessManagerShortView;
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicBusiness;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -22,7 +23,13 @@ public class ProjectBasicBusinessView {
         target.id = source.getId();
         target.involvedType = source.getInvolvedType();
         target.business = BusinessShortView.assemble(source.getBusiness());
-        target.businessManager = BusinessManagerShortView.assemble(source.getBusinessManager());
+        /**
+         * @migration
+         * 비즈니스 매니저 null 체크하는 로직
+         */
+        if (Objects.nonNull(source.getBusinessManager())) {
+            target.businessManager = BusinessManagerShortView.assemble(source.getBusinessManager());
+        }
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         return target;
     }
