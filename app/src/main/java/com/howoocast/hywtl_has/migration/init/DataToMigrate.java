@@ -1,5 +1,14 @@
 package com.howoocast.hywtl_has.migration.init;
 
+import com.howoocast.hywtl_has.migration.service.BusinessDataToMigrateService;
+import com.howoocast.hywtl_has.migration.service.ComparedEstimateDataToMigrateService;
+import com.howoocast.hywtl_has.migration.service.ContractBasicInitDataService;
+import com.howoocast.hywtl_has.migration.service.ContractCollectionInitDataService;
+import com.howoocast.hywtl_has.migration.service.ContractConditionInitDataService;
+import com.howoocast.hywtl_has.migration.service.DepartmentInitDataService;
+import com.howoocast.hywtl_has.migration.service.ProjectDesignDataToMigrateService;
+import com.howoocast.hywtl_has.migration.service.ProjectStatusDataToMigrateService;
+import com.howoocast.hywtl_has.migration.service.UserInitDataService;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,6 +23,11 @@ public class DataToMigrate {
     private final ProjectStatusDataToMigrateService projectStatusDataToMigrateService;
     private final ProjectDesignDataToMigrateService projectDesignDataToMigrateService;
     private final ComparedEstimateDataToMigrateService comparedEstimateDataToMigrateService;
+    private final ContractBasicInitDataService contractBasicInitDataService;
+    private final ContractCollectionInitDataService contractCollectionInitDataService;
+    private final ContractConditionInitDataService contractConditionInitDataService;
+
+
     @PostConstruct
     public void init() {
         departmentInitDataService.init();
@@ -22,5 +36,8 @@ public class DataToMigrate {
         projectStatusDataToMigrateService.migrate();
         projectDesignDataToMigrateService.migrate();
         comparedEstimateDataToMigrateService.migrate();
+        contractBasicInitDataService.init();
+        contractCollectionInitDataService.init();
+        contractConditionInitDataService.init();
     }
 }

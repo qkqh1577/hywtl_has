@@ -34,8 +34,6 @@ public class ProjectDesignExcelReader {
                     if (row.getRowNum() == 0) {
                         headers.add(String.valueOf(row.getCell(cell.getColumnIndex())));
                     } else {
-                        System.out.println("row.getCell(cell.getColumnIndex() : " + row.getCell(
-                            cell.getColumnIndex()));
                         body.put(headers.get(cell.getColumnIndex()),
                             String.valueOf(row.getCell(cell.getColumnIndex())));
                     }

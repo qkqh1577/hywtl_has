@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.migration.init;
+package com.howoocast.hywtl_has.migration.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

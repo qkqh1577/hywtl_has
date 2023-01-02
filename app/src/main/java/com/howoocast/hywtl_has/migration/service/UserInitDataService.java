@@ -1,4 +1,4 @@
-package com.howoocast.hywtl_has.migration.init;
+package com.howoocast.hywtl_has.migration.service;
 
 import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;

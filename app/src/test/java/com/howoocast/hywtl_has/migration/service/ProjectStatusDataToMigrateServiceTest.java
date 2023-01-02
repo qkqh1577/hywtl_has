@@ -1,6 +1,4 @@
-package com.howoocast.hywtl_has.migration.init;
-
-import static org.junit.jupiter.api.Assertions.*;
+package com.howoocast.hywtl_has.migration.service;
 
 import org.junit.jupiter.api.Test;
 
