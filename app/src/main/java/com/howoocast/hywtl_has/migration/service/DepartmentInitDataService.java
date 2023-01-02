@@ -27,7 +27,7 @@ public class DepartmentInitDataService {
 
         Department headquarter = Department.of();
         headquarter.change(
-            "본사",
+            "기술본부",
             DepartmentCategory.HQ,
             null,
             1,
@@ -35,6 +35,64 @@ public class DepartmentInitDataService {
         );
         em.persist(headquarter);
 
-        //TODO: Team, Part 추가
+        Department technicalTeam = Department.of();
+        technicalTeam.change(
+            "기술팀",
+            DepartmentCategory.TEAM,
+            headquarter,
+            2,
+            null
+        );
+        em.persist(technicalTeam);
+
+        Department salesTeam = Department.of();
+        salesTeam.change(
+            "영업팀",
+            DepartmentCategory.TEAM,
+            headquarter,
+            2,
+            null
+        );
+        em.persist(salesTeam);
+
+        Department modelingTeam = Department.of();
+        modelingTeam.change(
+            "모형팀",
+            DepartmentCategory.TEAM,
+            headquarter,
+            2,
+            null
+        );
+        em.persist(modelingTeam);
+
+        Department technicalPart = Department.of();
+        technicalPart.change(
+            "기술부",
+            DepartmentCategory.PART,
+            technicalTeam,
+            3,
+            null
+        );
+        em.persist(technicalPart);
+
+        Department experimentPart = Department.of();
+        experimentPart.change(
+            "실험부",
+            DepartmentCategory.PART,
+            technicalTeam,
+            3,
+            null
+        );
+        em.persist(experimentPart);
+
+        Department editPart = Department.of();
+        editPart.change(
+            "편집부",
+            DepartmentCategory.PART,
+            technicalTeam,
+            3,
+            null
+        );
+        em.persist(editPart);
     }
 }
