@@ -52,6 +52,7 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository {
                 projectInformationStatusEq(parameter.getProjectStatusSearchList()),
                 projectDetailEq(parameter.getKeywordOfProjectDetail())
             )
+            .distinct()
             .orderBy(project.basic.code.asc())
             .fetch();
     }
