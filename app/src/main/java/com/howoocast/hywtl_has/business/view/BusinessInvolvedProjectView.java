@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.business.view;
 
+import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.ProjectInvolvedType;
 import com.howoocast.hywtl_has.project.domain.ProjectEstimateExpectation;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicBusiness;
@@ -32,7 +33,10 @@ public class BusinessInvolvedProjectView {
         target.code = source.getProject().getBasic().getCode();
         target.name = source.getProject().getBasic().getName();
         target.involvedType = source.getInvolvedType();
-        target.manager = source.getBusinessManager().getName();
+        /**
+         * @migration -> 마이그레이션시 manager가 없는 경우 데이터를 넣어서 생기는 문제.
+         */
+        target.manager = Optional.ofNullable(source.getBusinessManager()).map(BusinessManager::getName).orElse("");
         target.estimateExpectation = Optional.ofNullable(source.getProject().getStatus().getEstimateExpectation()).map(
             ProjectEstimateExpectation::getName).orElse("");
         if (Objects.nonNull(estimate)) {
