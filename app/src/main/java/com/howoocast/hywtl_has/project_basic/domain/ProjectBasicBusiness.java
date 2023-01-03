@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -49,7 +50,8 @@ public class ProjectBasicBusiness extends CustomEntity {
         ProjectInvolvedType involvedType,
         Project project,
         Business business,
-        BusinessManager businessManager
+//        @migration nullable 추가
+        @Nullable BusinessManager businessManager
     ) {
         ProjectBasicBusiness instance = new ProjectBasicBusiness();
         instance.involvedType = involvedType;
@@ -84,6 +86,41 @@ public class ProjectBasicBusiness extends CustomEntity {
         ));
         this.businessManager = businessManager;
         return eventList;
+    }
+
+    /**
+     * @param involvedType
+     * @param project
+     * @param business
+     * @return
+     * @migration
+     */
+    public static ProjectBasicBusiness of(
+        ProjectInvolvedType involvedType,
+        Project project,
+        Business business
+    ) {
+        ProjectBasicBusiness instance = new ProjectBasicBusiness();
+        instance.involvedType = involvedType;
+        instance.project = project;
+        instance.business = business;
+        return instance;
+    }
+
+
+    /**
+     * @migration
+     * @param involvedType
+     * @param business
+     * @return
+     */
+    public ProjectBasicBusiness update(
+        ProjectInvolvedType involvedType,
+        Business business
+        ) {
+        this.involvedType = involvedType;
+        this.business = business;
+        return this;
     }
 
 }

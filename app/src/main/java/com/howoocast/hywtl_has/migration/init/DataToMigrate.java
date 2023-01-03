@@ -10,6 +10,7 @@ import com.howoocast.hywtl_has.migration.service.EstimateContentInitDataService;
 import com.howoocast.hywtl_has.migration.service.EstimateTemplateInitDataService;
 import com.howoocast.hywtl_has.migration.service.ProjectDesignDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.ProjectStatusDataToMigrateService;
+import com.howoocast.hywtl_has.migration.service.SalesDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.UserInitDataService;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class DataToMigrate {
     private final ContractConditionInitDataService contractConditionInitDataService;
     private final EstimateContentInitDataService estimateContentInitDataService;
     private final EstimateTemplateInitDataService estimateTemplateInitDataService;
+    private final SalesDataToMigrateService salesDataToMigrateService;
 
     @PostConstruct
     public void init() {
@@ -44,5 +46,6 @@ public class DataToMigrate {
         contractConditionInitDataService.init();
         estimateContentInitDataService.init();
         estimateTemplateInitDataService.init();
+        salesDataToMigrateService.migrate();
     }
 }

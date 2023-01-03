@@ -109,6 +109,17 @@ public class BusinessManager extends CustomEntity {
         return manager;
     }
 
+    /**
+     * @migration
+     * @param name
+     * @param department
+     * @param jobTitle
+     * @param officePhone
+     * @param mobilePhone
+     * @param email
+     * @param address
+     * @return
+     */
     public static BusinessManager of(
         String name,
         @Nullable String department,
@@ -126,6 +137,32 @@ public class BusinessManager extends CustomEntity {
         manager.mobilePhone = mobilePhone;
         manager.email = email;
         manager.address = address;
+        manager.status = BusinessManagerStatus.IN_OFFICE;
+        return manager;
+    }
+
+    /**
+     * @migration
+     * @param name
+     * @param department
+     * @param jobTitle
+     * @param mobilePhone
+     * @param email
+     * @return
+     */
+    public static BusinessManager of(
+        String name,
+        @Nullable String department,
+        @Nullable String jobTitle,
+        @Nullable String mobilePhone,
+        @Nullable String email
+    ) {
+        BusinessManager manager = new BusinessManager();
+        manager.name = name;
+        manager.department = department;
+        manager.jobTitle = jobTitle;
+        manager.mobilePhone = mobilePhone;
+        manager.email = email;
         manager.status = BusinessManagerStatus.IN_OFFICE;
         return manager;
     }
@@ -150,6 +187,19 @@ public class BusinessManager extends CustomEntity {
         this.meta = meta;
         this.status = status;
         this.address = address;
+    }
+
+    public BusinessManager change(
+        String jobTitle,
+        String department,
+        String mobilePhone,
+        String email
+    ) {
+        this.jobTitle = jobTitle;
+        this.department = department;
+        this.mobilePhone = mobilePhone;
+        this.email = email;
+        return this;
     }
 
     public void updateProjectCount(List<Project> projectList
