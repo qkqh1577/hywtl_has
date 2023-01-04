@@ -142,7 +142,6 @@ export default function List(props: Props) {
 
     const assignColumnValues = (prefix: string, entity: any, columns: Column[]) => {
         Object.keys(entity).forEach(attrName => {
-            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
             const newAttrName = `${prefix}_${attrName}`;
             const column: Column = {
@@ -233,11 +232,6 @@ export default function List(props: Props) {
     const prepareGridData = () => {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
-
-        list && list.length > 0 && Object.keys(list[0]).forEach((entityName) => {
-            const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
-            list[0][entityName] && assignColumnValues(entityNameReal, list[0][entityName], newColumns);
-        });
 
         Object.keys(schema).reverse().map((entityName, index) => {
             const entityInfo = schema[entityName];
