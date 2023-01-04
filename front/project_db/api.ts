@@ -30,6 +30,7 @@ class ProjectDbApi {
             projectEstimate: true,
             projectBid: true,
             projectComplexSite: true,
+            projectContract: true,
             projectMemo: false,
             search: searchState.condition,
             searchFrom: searchState.from?.format("YYYY-MM-DD"),

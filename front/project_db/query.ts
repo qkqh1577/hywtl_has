@@ -5,6 +5,7 @@ export interface ProjectDbQuery {
     projectComplexSite?: boolean,
     projectEstimate?: boolean,
     projectMemo?: boolean,
+    projectContract?: boolean,
     search?: ProjectDbSearchCondition,
     searchFrom?: string,
     searchTo?: string,

@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.project_db.repository;
 import com.howoocast.hywtl_has.project.domain.*;
 import com.howoocast.hywtl_has.project_bid.domain.ProjectBid;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexSite;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_db.configuration.ProjectDbInformationSchema;
 import com.howoocast.hywtl_has.project_db.parameter.ProjectDbParameter;
 import com.howoocast.hywtl_has.project_db.view.ProjectDbView;
@@ -31,6 +32,7 @@ import static com.howoocast.hywtl_has.project_complex.domain.QProjectComplexSite
 import static com.howoocast.hywtl_has.project_estimate.domain.QProjectEstimate.projectEstimate;
 import static com.howoocast.hywtl_has.project_bid.domain.QProjectBid.projectBid;
 import static com.howoocast.hywtl_has.project_memo.domain.QProjectMemo.projectMemo;
+import static com.howoocast.hywtl_has.project_contract.domain.QProjectContract.projectContract;
 
 @Slf4j
 @Repository
@@ -51,6 +53,7 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
             if (parameter.getProjectComplexSite()) add(projectComplexSite);
             if (parameter.getProjectBid()) add(projectBid);
             if (parameter.getProjectMemo()) add(projectMemo);
+            if (parameter.getProjectContract()) add(projectContract);
         }};
 
         JPAQuery<Tuple> query = jpaQueryFactory.select(classes.toArray(new Expression[classes.size()])).from(project);
@@ -62,6 +65,8 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
             query = query.leftJoin(projectBid).on(project.id.eq(projectBid.project.id));
         if (parameter.getProjectMemo())
             query = query.leftJoin(projectMemo).on(project.id.eq(projectMemo.project.id));
+        if(parameter.getProjectContract())
+            query = query.leftJoin(projectContract).on(project.id.eq(projectContract.project.id));
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -80,6 +85,7 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         PathBuilder<ProjectComplexSite> projectComplexSitePathBuilder = new PathBuilder<>(ProjectComplexSite.class, "projectComplexSite");
         PathBuilder<ProjectBid> projectBidPathBuilder = new PathBuilder<>(ProjectBid.class, "projectBid");
         PathBuilder<ProjectMemo> projectMemoPathBuilder = new PathBuilder<>(ProjectMemo.class, "projectMemo");
+        PathBuilder<ProjectContract> projectContractPathBuilder = new PathBuilder<>(ProjectContract.class, "projectContract");
 
         Map<String, ProjectDbInformationSchema.InformationSchema> entityMap = schema.getEntities();
 
@@ -113,6 +119,8 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
                     addCriteria(attrType, attrName, attrValue, builder, projectBidPathBuilder);
                 } else if ("ProjectMemoView".equals(entityName)) {
                     addCriteria(attrType, attrName, attrValue, builder, projectMemoPathBuilder);
+                } else if ("ProjectContractView".equals(entityName)) {
+                    addCriteria(attrType, attrName, attrValue, builder, projectContractPathBuilder);
                 }
             }
         }
