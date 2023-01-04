@@ -239,6 +239,11 @@ export default function List(props: Props) {
             list[0][entityName] && assignColumnValues(entityNameReal, list[0][entityName], newColumns);
         });
 
+        Object.keys(schema).reverse().map((entityName, index) => {
+            const entityInfo = schema[entityName];
+            assignColumnValues(entityName, entityInfo.attributes, newColumns);
+        });
+
         //// filter support
         const newFilter = {...filters};
         newColumns.forEach((col)=>{
