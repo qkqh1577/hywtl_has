@@ -60,19 +60,19 @@ public enum SalesHeader {
     /**
      * 풍환경수량
      */
-    WIND_ENVIRONMENT_AMOUNT("풍환경 수량"),
+    WIND_ENVIRONMENT_AMOUNT("풍환경수량"),
     /**
      * 공기력수량
      */
-    AIR_AMOUNT("공기력 수량"),
+    AIR_AMOUNT("공기력수량"),
     /**
      * 빌딩풍수량
      */
-    BUILDING_AMOUNT("빌딩풍 수량"),
+    BUILDING_AMOUNT("빌딩풍수량"),
     /**
      * 구검수량
      */
-    INSPECTION_AMOUNT("구검 수량"),
+    INSPECTION_AMOUNT("구검수량"),
     /**
      * 공동단가
      */

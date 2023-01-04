@@ -285,12 +285,84 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     /**
+     * @migration
+     * @param code
+     * @param type
+     * @param isSent
+     * @param recipient
+     * @param writer
+     * @param project
+     * @param business
+     */
+    protected ProjectEstimate(
+        String code,
+        ProjectEstimateType type,
+        Boolean isSent,
+        String recipient,
+        User writer,
+        Project project,
+        Business business,
+        ProjectEstimatePlan plan
+    ) {
+        this.project = project;
+        this.code = code;
+        this.type = type.name();
+        this.recipient = recipient;
+        this.writer = writer;
+        this.isSent = isSent;
+        this.confirmed = false;
+        this.business = business;
+        this.plan = plan;
+    }
+
+    /**
+     * @migration
+     * @param code
+     * @param writer
+     * @param project
+     * @param plan
+     */
+    private ProjectEstimate(
+        String code,
+        User writer,
+        Project project,
+        ProjectEstimatePlan plan
+    ) {
+        this.project = project;
+        this.code = code;
+        this.writer = writer;
+        this.plan = plan;
+    }
+
+    /**
+     * @migration
+     * @param code
+     * @param writer
+     * @param project
+     * @param plan
+     * @return
+     */
+    public static ProjectEstimate of(
+        String code,
+        User writer,
+        Project project,
+        ProjectEstimatePlan plan
+    ) {
+        return new ProjectEstimate(
+            code,
+            writer,
+            project,
+            plan
+        ) {
+        };
+    }
+
+    /**
      * @migration 마이그레이션 용도
      * @param code
      * @param type
      * @param isSent
      * @param recipient
-     * @param note
      * @param writer
      * @param project
      * @param business
@@ -312,5 +384,9 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.isSent = isSent;
         this.confirmed = false;
         this.business = business;
+    }
+
+    public void updatePlan() {
+
     }
 }

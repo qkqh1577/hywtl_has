@@ -2,8 +2,10 @@ package com.howoocast.hywtl_has.project.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDate;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -16,7 +18,9 @@ import org.springframework.lang.Nullable;
 @Slf4j
 @Getter
 @Entity
-@Table(name = Project.KEY)
+@Table(name = Project.KEY, indexes = {
+    @Index(name = "idx_project_code", columnList = "code", unique = true)
+})
 @Where(clause = "deleted_at is null")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project extends CustomEntity {
@@ -106,4 +110,13 @@ public class Project extends CustomEntity {
         return instance;
     }
 
+    /**
+     * @migration
+     * @param date
+     * @return
+     */
+    public Project updateCreatedAt(LocalDate date) {
+        super.setCreatedAt(date);
+        return this;
+    }
 }

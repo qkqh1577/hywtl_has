@@ -78,4 +78,9 @@ public class ProjectStatus {
         return instance;
     }
 
+    public ProjectStatus updateContractStatus(ProjectContractStatus contractStatus) {
+        this.contractStatus = contractStatus;
+        return this;
+    }
+
 }

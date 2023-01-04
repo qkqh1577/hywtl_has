@@ -129,4 +129,32 @@ public class ProjectEstimatePlan {
         instance.hasExperimentInfo = hasExperimentInfo;
         return instance;
     }
+
+    /**
+     * @migration
+     * @param estimateDate
+     * @param expectedTestDeadline
+     * @param expectedFinalReportDeadline
+     * @param testAmount
+     * @param reviewAmount
+     * @param totalAmount
+     * @return
+     */
+    public static ProjectEstimatePlan of(
+        @Nullable LocalDate estimateDate,
+        @Nullable Integer expectedTestDeadline,
+        @Nullable Integer expectedFinalReportDeadline,
+        @Nullable Long testAmount,
+        @Nullable Long reviewAmount,
+        @Nullable Long totalAmount
+    ) {
+        ProjectEstimatePlan instance = new ProjectEstimatePlan();
+        instance.estimateDate = estimateDate;
+        instance.expectedTestDeadline = expectedTestDeadline;
+        instance.expectedFinalReportDeadline = expectedFinalReportDeadline;
+        instance.testAmount = testAmount;
+        instance.reviewAmount = reviewAmount;
+        instance.totalAmount = totalAmount;
+        return instance;
+    }
 }

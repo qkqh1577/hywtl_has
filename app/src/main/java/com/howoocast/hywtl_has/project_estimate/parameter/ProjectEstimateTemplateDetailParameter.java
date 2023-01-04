@@ -29,5 +29,16 @@ public class ProjectEstimateTemplateDetailParameter {
     @Setter
     public static class Title {
         private String title;
+
+        /**
+         * @migration
+         * @param title
+         * @return
+         */
+        public static Title of(String title) {
+            Title result = new Title();
+            result.title = title;
+            return result;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.common.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.EntityListeners;
@@ -59,4 +60,7 @@ public abstract class CustomEntity {
         this.deletedAt = LocalDateTime.now();
     }
 
+    protected void setCreatedAt(LocalDate date) {
+        this.createdAt = date.atStartOfDay();
+    }
 }

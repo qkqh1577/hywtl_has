@@ -225,4 +225,14 @@ public class ProjectBasic {
         this.alias = fullName;
         return this;
     }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param isLh
+     * @return
+     */
+    public ProjectBasic updateIsLh(Boolean isLh) {
+        this.isLh = isLh;
+        return this;
+    }
 }
