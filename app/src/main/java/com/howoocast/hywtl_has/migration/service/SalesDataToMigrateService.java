@@ -176,18 +176,23 @@ public class SalesDataToMigrateService {
         ContractCollection contractCollection,
         List<ContractCondition> contractConditionList
     ) {
+        // 견적서 코드 생성
         String estimateCode = getEstimateCode(project);
+        // 견적서 기본 정보 생성
         ProjectEstimatePlan plan = getProjectEstimatePlan(salesMap);
 
+        // 견적서(부모) 생성
         ProjectEstimate estimate = ProjectEstimate.of(
             estimateCode,
             a,
             project,
             plan
         );
+        // 견적서(자식) 생성
         ProjectSystemEstimate projectSystemEstimate = getProjectSystemEstimate(
             salesMap, estimateTemplateList, estimate);
 
+        // Row 구분이 C인 경우 계약서가 존재한다.
         persistProjectContract(
             a,
             salesMap,
@@ -209,6 +214,9 @@ public class SalesDataToMigrateService {
         ProjectEstimate estimate,
         ProjectSystemEstimate projectSystemEstimate
     ) {
+        // 구분이 C인 경우
+        // 계약일이 있는 경우
+        // 총기성 공급 가액이 있는 경우.
         if (StringUtils.hasText(salesMap.get(SalesHeader.CONFIRM.getName()))
             && salesMap.get(SalesHeader.CONFIRM.getName()).equals("C")
             && StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_CONSTRUCTION_SUPPLY_AMOUNT.getName()))
@@ -325,7 +333,7 @@ public class SalesDataToMigrateService {
                 Boolean.TRUE,
                 "요청사 불분명(확인 후 업데이트)",
                 ProjectContractBasic.of(
-                    null,
+                    project.getBasic().getName(),
                     contractBasic.getServiceDuration(),
                     contractBasic.getOutcome(),
                     contractBasic.getDescription(),
@@ -333,9 +341,9 @@ public class SalesDataToMigrateService {
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null
+                    contractBasic.getContractor().getAddress(),
+                    contractBasic.getContractor().getCompanyName(),
+                    contractBasic.getContractor().getCeoName()
                 ),
                 ProjectContractCollection.of(
                     "다음의 기성단계 별 해당금액을 현금으로 지급",
@@ -348,10 +356,11 @@ public class SalesDataToMigrateService {
             );
 
             em.persist(finalContract);
-
-            finalContract.changeConfirmed(Boolean.TRUE);
-
-            em.persist(finalContract);
+            em.flush();
+            // 최종 계약될 데이터가 너무 많아서 일단 승인 보류
+//            finalContract.changeConfirmed(Boolean.TRUE);
+//
+//            em.persist(finalContract);
         }
     }
 
@@ -372,7 +381,7 @@ public class SalesDataToMigrateService {
 
         return ProjectContractCollectionStage.of(
             title,
-            Double.parseDouble(salesMap.get(rateKey)),
+            Double.parseDouble(salesMap.get(rateKey)) * 100,
             amount,
             salesMap.get(timeKey),
             null
