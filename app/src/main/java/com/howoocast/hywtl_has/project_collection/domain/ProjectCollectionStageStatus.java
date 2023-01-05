@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -59,13 +60,14 @@ public class ProjectCollectionStageStatus extends CustomEntity {
      */
     private String note;
 
+    // @migration @Nullable 추가
     public static ProjectCollectionStageStatus of(
         ProjectCollectionStageStatusType type,
-        LocalDate requestedDate,
+        @Nullable LocalDate requestedDate,
         Long amount,
-        String note,
-        LocalDate delayedDate,
-        LocalDate expectedDate
+        @Nullable String note,
+        @Nullable LocalDate delayedDate,
+        @Nullable LocalDate expectedDate
     ) {
         ProjectCollectionStageStatus instance = new ProjectCollectionStageStatus();
         instance.type = type;

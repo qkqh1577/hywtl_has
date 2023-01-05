@@ -56,8 +56,9 @@ public class ProjectCollectionStage extends CustomEntity {
     /**
      * 예정일
      */
-    @NotNull
-    @Column(nullable = false)
+    //@migration : 예상일이 없는 데이터가 많습니다.
+//    @NotNull
+//    @Column(nullable = false)
     private LocalDate expectedDate;
 
     private Integer seq;
@@ -72,7 +73,8 @@ public class ProjectCollectionStage extends CustomEntity {
         ProjectCollection projectCollection,
         String name,
         Long amount,
-        LocalDate expectedDate,
+        //@migration expectedDate nullable로 들어감.
+        @Nullable LocalDate expectedDate,
         String note,
         Integer seq
     ) {
@@ -181,4 +183,9 @@ public class ProjectCollectionStage extends CustomEntity {
         this.seq = seq;
     }
 
+
+    public ProjectCollectionStage updateCollectionStageStatusList(List<ProjectCollectionStageStatus> projectCollectionStageStatusList) {
+        this.statusList = projectCollectionStageStatusList;
+        return this;
+    }
 }

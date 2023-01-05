@@ -23,6 +23,11 @@ import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicBusiness;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatus;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatusType;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
@@ -326,6 +331,12 @@ public class SalesDataToMigrateService {
                     RoundingMode.FLOOR).toPlainString());
 
             ProjectEstimate projectEstimate = em.find(ProjectEstimate.class, projectSystemEstimate.getId());
+            ProjectContractCollection projectContractCollection = ProjectContractCollection.of(
+                "다음의 기성단계 별 해당금액을 현금으로 지급",
+                stageList,
+                contractCollection.getTotalAmountNote(),
+                totalAmount
+            );
             ProjectContract finalContract = ProjectContract.of(
                 project,
                 projectEstimate,
@@ -345,12 +356,7 @@ public class SalesDataToMigrateService {
                     contractBasic.getContractor().getCompanyName(),
                     contractBasic.getContractor().getCeoName()
                 ),
-                ProjectContractCollection.of(
-                    "다음의 기성단계 별 해당금액을 현금으로 지급",
-                    stageList,
-                    contractCollection.getTotalAmountNote(),
-                    totalAmount
-                ),
+                projectContractCollection,
                 projectContractConditionList,
                 a
             );
@@ -358,10 +364,185 @@ public class SalesDataToMigrateService {
             em.persist(finalContract);
             em.flush();
             // 최종 계약될 데이터가 너무 많아서 일단 승인 보류
-//            finalContract.changeConfirmed(Boolean.TRUE);
-//
-//            em.persist(finalContract);
+            finalContract.changeConfirmed(Boolean.TRUE);
+
+            em.persist(finalContract);
+
+            // 진행정보 수금 데이터 시작
+
+            ProjectCollection projectCollection = ProjectCollection.of(project);
+            em.persist(projectCollection);
+
+            List<ProjectCollectionStage> collectionStageList = new ArrayList<>();
+
+            // 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가.
+            for (int index = 0; index < projectContractCollection.getStageList().size(); index++) {
+                ProjectCollectionStage projectCollectionStage = ProjectCollectionStage.of(
+                    projectCollection,
+                    projectContractCollection.getStageList().get(index).getName(),
+                    projectContractCollection.getStageList().get(index).getAmount(),
+                    projectContractCollection.getStageList().get(index).getExpectedDate(),
+                    projectContractCollection.getStageList().get(index).getNote(),
+                    index + 1
+                );
+                em.persist(projectCollectionStage);
+                em.flush();
+
+                ProjectCollectionStageVersion projectCollectionStageVersion = ProjectCollectionStageVersion.of(
+                    projectCollectionStage.getName(),
+                    projectCollectionStage.getAmount(),
+                    null,
+                    projectCollectionStage.getNote(),
+                    null
+                );
+                projectCollectionStage.updateVersionList(projectCollectionStageVersion);
+
+                List<ProjectCollectionStageStatus> projectCollectionStageStatusList = new ArrayList<>();
+                if (projectCollectionStage.getName().equals("계약금")) {
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.ADVANCE_DEPOSIT_VAT_DATE,
+                        SalesHeader.ADVANCE_DEPOSIT_VAT_AMOUNT,
+                        projectCollectionStageStatusList,
+                        SalesHeader.ADVANCE_DEPOSIT_DATE,
+                        SalesHeader.ADVANCE_DEPOSIT_AMOUNT
+                    );
+                } else if (projectCollectionStage.getName().equals("중도금1")) {
+                    //중도금1
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_1,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_1,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_1,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_1
+                    );
+                } else if (projectCollectionStage.getName().equals("중도금2")) {
+                    //중도금2
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_2,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_2,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_2,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_2
+                    );
+                } else if (projectCollectionStage.getName().equals("중도금3")) {
+                    //중도금3
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_3,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_3,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_3,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_3
+                    );
+                } else if (projectCollectionStage.getName().equals("잔금")) {
+                    //잔금
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_DATE,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_AMOUNT,
+                        projectCollectionStageStatusList,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_DATE,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_AMOUNT
+                    );
+                } else {
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.ADVANCE_DEPOSIT_VAT_DATE,
+                        SalesHeader.ADVANCE_DEPOSIT_VAT_AMOUNT,
+                        projectCollectionStageStatusList,
+                        SalesHeader.ADVANCE_DEPOSIT_DATE,
+                        SalesHeader.ADVANCE_DEPOSIT_AMOUNT
+                    );
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_1,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_1,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_1,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_1
+                    );
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_2,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_2,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_2,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_2
+                    );
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_3,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_3,
+                        projectCollectionStageStatusList,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_DATE_3,
+                        SalesHeader.MIDDLE_DEPOSIT_VAT_AMOUNT_3
+                    );
+                    setProjectCollectionStatus(
+                        salesMap,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_DATE,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_AMOUNT,
+                        projectCollectionStageStatusList,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_DATE,
+                        SalesHeader.BALANCE_COLLECTION_DEPOSIT_AMOUNT
+                    );
+                }
+
+                projectCollectionStage.updateCollectionStageStatusList(projectCollectionStageStatusList);
+                em.persist(projectCollectionStage);
+                em.flush();
+
+                collectionStageList.add(
+                    projectCollectionStage
+                );
+            }
+            projectCollection.setStageList(collectionStageList);
+            em.persist(projectCollection);
         }
+    }
+
+    private void setProjectCollectionStatus(
+        Map<String, String> salesMap,
+        SalesHeader requestDate,
+        SalesHeader expectedAmount,
+        List<ProjectCollectionStageStatus> projectCollectionStageStatusList,
+        SalesHeader requestAmountDate,
+        SalesHeader amount
+    ) {
+        if (StringUtils.hasText(salesMap.get(requestDate.getName()))
+            && StringUtils.hasText(salesMap.get(expectedAmount.getName()))) {
+            projectCollectionStageStatusList.add(
+                ProjectCollectionStageStatus.of(
+                    ProjectCollectionStageStatusType.ASKED,
+                    getDate(salesMap, requestDate.getName()),
+                    getAmount(salesMap, expectedAmount.getName()),
+                    null,
+                    null,
+                    null
+                )
+            );
+        }
+        if (StringUtils.hasText(salesMap.get(requestAmountDate.getName()))
+            && StringUtils.hasText(salesMap.get(amount.getName()))) {
+            projectCollectionStageStatusList.add(
+                ProjectCollectionStageStatus.of(
+                    ProjectCollectionStageStatusType.COLLECTED,
+                    getDate(salesMap, requestAmountDate.getName()),
+                    getAmount(salesMap, amount.getName()),
+                    null,
+                    null,
+                    null
+                )
+            );
+        }
+    }
+
+    private Long getAmount(Map<String, String> salesMap, String amountKey) {
+        return Long.parseLong(
+            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.FLOOR)
+                .toPlainString());
     }
 
     @NotNull
@@ -552,8 +733,9 @@ public class SalesDataToMigrateService {
     }
 
     private static LocalDate getDate(Map<String, String> salesMap, String type) {
-        System.out.println("salesMap.get(type) = " + salesMap.get(type));
+        System.out.println("code : " + salesMap.get(SalesHeader.CODE.getName()));
         System.out.println("type = " + type);
+        System.out.println("salesMap.get(type) = " + salesMap.get(type));
         String[] splitDate = salesMap.get(type).split("-");
         String year = splitDate[2];
         String month = String.format("%02d", Integer.parseInt(splitDate[1].split("월")[0]));

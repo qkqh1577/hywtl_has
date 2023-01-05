@@ -50,8 +50,9 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     /**
      * 예정일
      */
-    @NotNull
-    @Column(nullable = false)
+    //@migration : 예상일이 없는 데이터가 많습니다.
+//    @NotNull
+//    @Column(nullable = false)
     private LocalDate expectedDate;
 
     /**
@@ -69,7 +70,8 @@ public class ProjectCollectionStageVersion extends CustomEntity {
     public static ProjectCollectionStageVersion of(
         String name,
         Long amount,
-        LocalDate expectedDate,
+        //@migration @Nullable 추가
+        @Nullable LocalDate expectedDate,
         String note,
         @Nullable String reason
     ) {
