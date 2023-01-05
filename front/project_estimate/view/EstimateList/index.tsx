@@ -44,7 +44,7 @@ export default function ProjectEstimateListSection(props: Props) {
           openSystemDetailModal,
         } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
-
+  console.log("list : ", list);
   useEffect(() => {
     if (!list || list.length === 0) {
       setModifiedAt(undefined);
@@ -129,7 +129,7 @@ export default function ProjectEstimateListSection(props: Props) {
                   <Td>
                     {projectEstimateTypeName(item.type)}
                   </Td>
-                  <Td>{item.business.name}</Td>
+                  <Td>{item.business ? item.business.name : ""}</Td>
                   <Td>{item.confirmed ? 'Y' : 'N'}</Td>
                   <Td>
                     <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
