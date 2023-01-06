@@ -207,7 +207,6 @@ public class SalesDataToMigrateService {
             contractBasic,
             contractCollection,
             contractConditionList,
-            estimate,
             projectSystemEstimate);
     }
 
@@ -218,7 +217,6 @@ public class SalesDataToMigrateService {
         ContractBasic contractBasic,
         ContractCollection contractCollection,
         List<ContractCondition> contractConditionList,
-        ProjectEstimate estimate,
         ProjectSystemEstimate projectSystemEstimate
     ) {
         // 구분이 C인 경우
@@ -344,7 +342,8 @@ public class SalesDataToMigrateService {
                 projectEstimate,
                 getContractCode(project),
                 Boolean.TRUE,
-                "요청사 불분명(확인 후 업데이트)",
+                StringUtils.hasText(salesMap.get(SalesHeader.ESTIMATE_COMPANY_NAME_1.getName())) ? salesMap.get(
+                    SalesHeader.ESTIMATE_COMPANY_NAME_1.getName()) : "요청사 불분명(확인 후 업데이트)",
                 ProjectContractBasic.of(
                     project.getBasic().getName(),
                     contractBasic.getServiceDuration(),
@@ -723,7 +722,8 @@ public class SalesDataToMigrateService {
         ProjectSystemEstimate projectSystemEstimate = ProjectSystemEstimate.of(
             estimate,
             Boolean.TRUE,
-            "요청사 불분명(확인 후 업데이트)",
+            StringUtils.hasText(salesMap.get(SalesHeader.ESTIMATE_COMPANY_NAME_1.getName())) ? salesMap.get(
+                SalesHeader.ESTIMATE_COMPANY_NAME_1.getName()) : "요청사 불분명(확인 후 업데이트)",
             projectEstimateTemplateList,
             null,
             new CustomFinder<>(businessRepository, Business.class).byId(1L) // 견적업체 : 한양풍동연구소.
@@ -988,7 +988,7 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type)
                 );
             }
-            if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+            if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
                 System.out.println("hello world");
             }
             // 관계사 있는지 먼저 확인.
@@ -1008,7 +1008,7 @@ public class SalesDataToMigrateService {
                             project,
                             getProjectInvolvedType(type)
                         ).isEmpty()) {
-                        if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+                        if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
                             System.out.println("hello world");
                         }
 
@@ -1078,7 +1078,7 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type)
                 );
             }
-            if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+            if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
                 System.out.println("hello world");
             }
             if (projectBasicBusinessList.isEmpty()) {

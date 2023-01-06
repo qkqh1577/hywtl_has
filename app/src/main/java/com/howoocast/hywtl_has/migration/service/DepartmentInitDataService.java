@@ -94,5 +94,8 @@ public class DepartmentInitDataService {
             null
         );
         em.persist(editPart);
+
+        em.flush();
+        em.clear();
     }
 }
