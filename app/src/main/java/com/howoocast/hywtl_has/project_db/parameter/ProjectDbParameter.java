@@ -31,6 +31,7 @@ public class ProjectDbParameter {
     private Boolean projectComplexSite = Boolean.FALSE;
     private Boolean projectMemo = Boolean.FALSE;
     private Boolean projectBid = Boolean.FALSE;
+    private Boolean projectContract = Boolean.FALSE;
     private Map<String, List<String>> keys = new HashMap<>();
     private Map<String, List<String>> values = new HashMap<>();
 

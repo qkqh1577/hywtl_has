@@ -65,7 +65,9 @@ public class ProjectEstimateView {
             source.getSiteList(),
             source.getBuildingList()
         );
-        this.business = BusinessShortView.assemble(source.getBusiness());
+        if(source.getBusiness()!=null){
+            this.business = BusinessShortView.assemble(source.getBusiness());
+        }
     }
 
     public static ProjectEstimateView assemble(@Nullable ProjectEstimate source) {

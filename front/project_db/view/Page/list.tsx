@@ -109,12 +109,26 @@ export default function List(props: Props) {
             const attrInfo = schema[entityName].attributes[attrName];
             let result = entity[attrName];
 
+            if(attrInfo.prefix){
+                console.debug(attrInfo.prefix);
+                result = entity[attrInfo.prefix][attrName];
+            }
+
             if ('option' in attrInfo) {
                 Object.keys(attrInfo.option).forEach(k => {
                     const attrCode = attrInfo.option[k];
-                    if (attrCode === entity[attrName]) {
-                        result = attrInfo.optionLabel[k];
-                        return false;
+
+                    if(attrInfo.prefix){
+                        console.debug(attrCode, entity[attrInfo.prefix][attrName]);
+                        if (attrCode === entity[attrInfo.prefix][attrName]) {
+                            result = attrInfo.optionLabel[k];
+                            return false;
+                        }
+                    } else {
+                        if (attrCode === entity[attrName]) {
+                            result = attrInfo.optionLabel[k];
+                            return false;
+                        }
                     }
                 });
             }
@@ -125,24 +139,35 @@ export default function List(props: Props) {
 
             return result;
         } catch (e) {
-            console.debug(e);
+            console.debug(e, schema[entityName].attributes[attrName]);
+
             console.warn(`Cannot find human readable value name for [${entityName}_${attrName}]`);
             return entity[attrName];
         }
     }
 
-    const assignRowValues = (prefix: string, entity: any, row: Row) => {
+    const assignRowValues = (entityName: string, entity: any, row: Row) => {
+        const entityInfo = schema[entityName];
         Object.keys(entity).forEach(attrName => {
-            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
-            if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
-            const newAttrName = `${prefix}_${attrName}`;
-            row[newAttrName] = getHumanReadableAttrValue(entity, prefix, attrName);
+            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) {
+                //console.debug(attrName, entity[attrName], entityInfo);
+                console.debug('filtered@1',attrName);
+                return true;
+            }
+            if (!isVisibleAttr(entityName, attrName) && entityName !== '') {
+                console.debug('filtered@2',attrName);
+                return true;
+            }
+
+            console.debug('accepted@',attrName);
+
+            const newAttrName = `${entityName}_${attrName}`;
+            row[newAttrName] = getHumanReadableAttrValue(entity, entityName, attrName);
         });
     }
 
     const assignColumnValues = (prefix: string, entity: any, columns: Column[]) => {
         Object.keys(entity).forEach(attrName => {
-            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) return true;
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
             const newAttrName = `${prefix}_${attrName}`;
             const column: Column = {
@@ -234,9 +259,9 @@ export default function List(props: Props) {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
 
-        list && list.length > 0 && Object.keys(list[0]).forEach((entityName) => {
-            const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
-            list[0][entityName] && assignColumnValues(entityNameReal, list[0][entityName], newColumns);
+        Object.keys(schema).reverse().map((entityName, index) => {
+            const entityInfo = schema[entityName];
+            assignColumnValues(entityName, entityInfo.attributes, newColumns);
         });
 
         //// filter support
@@ -251,10 +276,31 @@ export default function List(props: Props) {
 
         list && list.forEach((entities, index) => {
             const row: Row = {id: index};
-            Object.keys(entities).forEach((entityName) => {
-                const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
-                entities[entityName] && assignRowValues(entityNameReal, entities[entityName], row);
+            // Object.keys(entities).forEach((entityName) => {
+            //     const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
+            //     entities[entityName] && assignRowValues(entityNameReal, entities[entityName], row);
+            // });
+
+            Object.keys(schema).reverse().map((entityName, index) => {
+                const entityInfo = schema[entityName];
+                const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View','');
+                const viewData = entities[viewAttrName];
+                if(!viewData) return true;
+
+                Object.keys(entityInfo.attributes).forEach(attrName => {
+                    if (!isVisibleAttr(entityName, attrName) && entityName !== '') return true;
+                    const attrInfo = entityInfo.attributes[attrName];
+                    const newAttrName = `${entityName}_${attrName}`;
+                    if(attrInfo.prefix){
+                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                    } else {
+                        if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) return true;
+                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                    }
+
+                });
             });
+
             newRows.push(row);
         });
         setRows(newRows);

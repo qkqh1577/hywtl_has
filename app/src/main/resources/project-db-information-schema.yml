@@ -12,22 +12,18 @@ project-db:
           type: String
           description: 코드
           search: true
-          prefix: basic
         name:
           type: String
           description: 프로젝트명
           search: true
-          prefix: basic
         alias:
           type: String
           description: 별칭
           search: true
-          prefix: basic
         bidType:
           type: ProjectBasicBidType
           description: 입찰유형
           search: true
-          prefix: basic
           option: ["DEFAULT","G2B","COMPANY"]
           optionLabel: ["일반","나라장터 입찰","기업 입찰"]
         receptionManager:
@@ -54,33 +50,28 @@ project-db:
           type: Boolean
           description: LH여부
           search: true
-          prefix: basic
         progressStatus:
           type: ProjectProgressStatus
           description: 진행상태
           search: true
-          prefix: status
           option: [ "TEMPORARY","UNDER_CONTRACT","BEFORE_SERVICE","SERVICE_ON_GOING","SERVICE_COMPLETE","SERVICE_HOLDING"]
           optionLabel: [ "가등록","등록","업무 개시 전","업무 진행 중","업무 완료","업무 홀딩"]
         estimateExpectation:
           type: ProjectEstimateExpectation
           description: 예상확도
           search: true
-          prefix: status
           option: ["STRUCTURE","NORMAL","HIGH","NEARLY","WIN","LOSE"]
           optionLabel: ["구조물","일반","가능성 높음","수주 직전","수주 성공","수주 실패"]
         estimateStatus:
           type: ProjectEstimateStatus
           description: 견적상태
           search: true
-          prefix: status
           option: ["ORAL","BEFORE","COMPLETE","CONTRAST"]
           optionLabel: ["구두 견적","견적 전","견적 완료","대비 견적"]
         contractStatus:
           type: ProjectContractStatus
           description: 계약상태
           search: false
-          prefix: status,
           option: ["BEFORE","COMPLETE","CHANGE"]
           optionLabel: ["계약 전","계약 완료","변경 계약 중"]
         modifiedAt:
@@ -102,6 +93,46 @@ project-db:
           type: String
           description: 유형
           search: true
+        estimateDate:
+          type: Date
+          description: 견적일자
+          search: true
+          prefix: plan
+        expectedServiceDate:
+          type: Date
+          description: 예상착수일자
+          search: true
+          prefix: plan
+        expectedTestDeadline:
+          type: Long
+          description: 예상작업마감주
+          search: true
+          prefix: plan
+        expectedFinalReportDeadline:
+          type: Long
+          description: 예상최종보고서마감주
+          search: true
+          prefix: plan
+        testAmount:
+          type: Long
+          description: 풍동금액
+          search: true
+          prefix: plan
+        reviewAmount:
+          type: Long
+          description: 구검금액
+          search: true
+          prefix: plan
+        discountAmount:
+          type: Long
+          description: 특별할인금액
+          search: true
+          prefix: plan
+        totalAmount:
+          type: Long
+          description: 총액
+          search: true
+          prefix: plan
         isSent:
           type: Boolean
           description: 제출여부
@@ -224,3 +255,68 @@ project-db:
         modifiedAt:
           type: LocalDateTime
           description: 수정일시
+    ProjectContractView:
+      type: ProjectContractView
+      description: 계약정보
+      attributes:
+        confirmed:
+          type: Boolean
+          description: 최종여부
+          search: true
+        isSent:
+          type: Boolean
+          description: 발송여부
+          search: true
+        recipient:
+          type: String
+          description: 송부처
+          search: true
+        note:
+          type: String
+          description: 비고
+          search: true
+        serviceDuration:
+          type: String
+          description: 용역기간
+          search: true
+          prefix: basic
+        outcome:
+          type: String
+          description: 성과품
+          search: true
+          prefix: basic
+        contractDate:
+          type: Date
+          description: 계약날짜
+          search: true
+          prefix: basic
+        ordererAddress:
+          type: String
+          description: 발주자소재
+          search: true
+          prefix: basic
+        ordererCompanyName:
+          type: String
+          description: 발주자상호
+          search: true
+          prefix: basic
+        ordererCeoName:
+          type: String
+          description: 발주자대표명
+          search: true
+          prefix: basic
+        contractorAddress:
+          type: String
+          description: 수급자소재
+          search: true
+          prefix: basic
+        contractorCompanyName:
+          type: String
+          description: 수급자상호
+          search: true
+          prefix: basic
+        contractorCeoName:
+          type: String
+          description: 수급자대표명
+          search: true
+          prefix: basic
