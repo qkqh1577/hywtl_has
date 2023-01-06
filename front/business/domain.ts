@@ -107,8 +107,12 @@ export enum BusinessInvolvedType {
   STRUCTURAL    = 'STRUCTURAL',
   /** 시행사 */
   ENFORCER      = 'ENFORCER',
+  /** 조합 */
+  ASSOCIATION   = 'ASSOCIATION',
   /** 소개자 */
   RECOMMENDER   = 'RECOMMENDER',
+  /** 기타 */
+  ETC   = 'ETC',
 }
 
 export const businessInvolvedTypeList: BusinessInvolvedType[] = [
@@ -117,7 +121,9 @@ export const businessInvolvedTypeList: BusinessInvolvedType[] = [
   BusinessInvolvedType.ARCHITECTURAL,
   BusinessInvolvedType.STRUCTURAL,
   BusinessInvolvedType.ENFORCER,
+  BusinessInvolvedType.ASSOCIATION,
   BusinessInvolvedType.RECOMMENDER,
+  BusinessInvolvedType.ETC,
 ];
 
 export function businessInvolvedTypeName(type: BusinessInvolvedType | '') {
@@ -132,8 +138,12 @@ export function businessInvolvedTypeName(type: BusinessInvolvedType | '') {
       return '구조설계사무소';
     case BusinessInvolvedType.ENFORCER:
       return '시행사';
+    case BusinessInvolvedType.ASSOCIATION:
+      return '조합';
     case BusinessInvolvedType.RECOMMENDER:
       return '소개자';
+    case BusinessInvolvedType.ETC:
+      return '기타';
     default:
       return '-';
   }

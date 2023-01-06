@@ -382,9 +382,9 @@ public class SalesDataToMigrateService {
             List<ProjectContractCollectionStage> stageList2 = new ArrayList<>();
             getStageList(salesMap, stageList2);
             /*
-            * 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가하지만
-            * 엑셀 데이터상 비교하기 힘들어서 가짜 데이터를 만들어서 처리(필요없는 데이터 하드코딩으로 넣음)
-            * */
+             * 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가하지만
+             * 엑셀 데이터상 비교하기 힘들어서 가짜 데이터를 만들어서 처리(필요없는 데이터 하드코딩으로 넣음)
+             * */
 
             ProjectContractCollection projectContractCollectionData = ProjectContractCollection.of(
                 "다음의 기성단계 별 해당금액을 현금으로 지급",
@@ -394,7 +394,8 @@ public class SalesDataToMigrateService {
             );
 
             // 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가.
-            setProjectCollectionStageList(salesMap, projectCollection, collectionStageList, projectContractCollectionData);
+            setProjectCollectionStageList(salesMap, projectCollection, collectionStageList,
+                projectContractCollectionData);
 
             projectCollection.setStageList(collectionStageList);
             em.persist(projectCollection);
@@ -681,18 +682,19 @@ public class SalesDataToMigrateService {
                     )
                 );
             }
+            // 빌딩풍 제외
             // 빌딩풍 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.BUILDING_AMOUNT.getName()))
-                && StringUtils.hasText(salesMap.get(SalesHeader.BUILDING_UNIT_PRICE.getName()))) {
-                projectEstimateTemplateList.add(
-                    getProjectEstimateTemplate(
-                        salesMap,
-                        estimateTemplate,
-                        SalesHeader.BUILDING_AMOUNT.getName(),
-                        SalesHeader.BUILDING_UNIT_PRICE.getName()
-                    )
-                );
-            }
+//            if (StringUtils.hasText(salesMap.get(SalesHeader.BUILDING_AMOUNT.getName()))
+//                && StringUtils.hasText(salesMap.get(SalesHeader.BUILDING_UNIT_PRICE.getName()))) {
+//                projectEstimateTemplateList.add(
+//                    getProjectEstimateTemplate(
+//                        salesMap,
+//                        estimateTemplate,
+//                        SalesHeader.BUILDING_AMOUNT.getName(),
+//                        SalesHeader.BUILDING_UNIT_PRICE.getName()
+//                    )
+//                );
+//            }
             // 구검 수량
             if (StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_UNIT_PRICE.getName()))) {
@@ -972,19 +974,23 @@ public class SalesDataToMigrateService {
             // 업체관리에서 담당자를 찾아서 넣어준다.
 
             if (Objects.nonNull(manager)) {
+                // 담당자가 있는 경우.
                 projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProjectAndInvolvedTypeAndBusinessManager(
                     salesMap.get(type + i + "업체명").replaceAll(" ", ""),
                     project,
                     getProjectInvolvedType(type),
                     manager);
             } else {
+                // 담당자가 없는 경우
                 projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProjectAndInvolvedType(
                     salesMap.get(type + i + "업체명").replaceAll(" ", ""),
                     project,
                     getProjectInvolvedType(type)
                 );
             }
-
+            if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+                System.out.println("hello world");
+            }
             // 관계사 있는지 먼저 확인.
             if (projectBasicBusinessRepository
                 .findByBusiness_NameAndProjectAndInvolvedTypeAndBusinessManager_Name(
@@ -993,13 +999,34 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type),
                     salesMap.get(type + i + "담당자")
                 ).isEmpty()) {
-                // 담당자가 없는 경우 projectBasicBusiness 추가
-                em.persist(ProjectBasicBusiness.of(
-                    getProjectInvolvedType(type),
-                    project,
-                    b,
-                    manager
-                ));
+
+                if (!StringUtils.hasText(salesMap.get(type + i + "담당자"))) {
+                    // 담당자가 없는 경우
+                    if (projectBasicBusinessRepository
+                        .findByBusiness_NameAndProjectAndInvolvedType(
+                            salesMap.get(type + i + "업체명").replaceAll(" ", ""),
+                            project,
+                            getProjectInvolvedType(type)
+                        ).isEmpty()) {
+                        if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+                            System.out.println("hello world");
+                        }
+
+                        em.persist(ProjectBasicBusiness.of(
+                            getProjectInvolvedType(type),
+                            project,
+                            b
+                        ));
+                    }
+                } else {
+                    // 담당자가 없는 경우 projectBasicBusiness 추가
+                    em.persist(ProjectBasicBusiness.of(
+                        getProjectInvolvedType(type),
+                        project,
+                        b,
+                        manager
+                    ));
+                }
             } else {
                 projectBasicBusinessList.forEach(pbb -> {
                     pbb.update(
@@ -1051,13 +1078,16 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type)
                 );
             }
-
+            if(salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")){
+                System.out.println("hello world");
+            }
             if (projectBasicBusinessList.isEmpty()) {
                 // 관계사에 없을 경우 새로 생성한다.
                 em.persist(ProjectBasicBusiness.of(
                     getProjectInvolvedType(type),
                     project,
-                    business
+                    business,
+                    manager
                 ));
             } else {
                 // 관계사에 있을 경우 기존 데이터에 덮어씌운다.
@@ -1089,14 +1119,14 @@ public class SalesDataToMigrateService {
 
         businessRepository.findByName(salesMap.get(SalesHeader.COMPANY_NAME.getName()).replaceAll(" ", ""))
             .ifPresentOrElse(business -> {
-                // 관계사에 이미 존재하는 데이터인지 확인 후, 없는 경우 추가.
-                List<ProjectBasicBusiness> projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProject(
-                    salesMap.get(SalesHeader.COMPANY_NAME.getName()).replaceAll(" ", ""), project);
-                if (!projectBasicBusinessList.isEmpty()) {
-                    projectBasicBusinessList.forEach(pbb -> {
-                        updateProjectBasicBusiness(salesMap, business, pbb);
-                    });
-                } else {
+                // 업체 구분
+                if (!StringUtils.hasText(salesMap.get(SalesHeader.COMPANY_TYPE.getName()))) {
+                    return;
+                }
+
+                List<ProjectBasicBusiness> projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProjectAndInvolvedType(
+                    business.getName(), project, getType(salesMap));
+                if (projectBasicBusinessList.isEmpty()) {
                     setProjectBasicBusiness(salesMap, project, business);
                 }
             }, () -> {
@@ -1110,17 +1140,39 @@ public class SalesDataToMigrateService {
                         null
                     );
                     em.persist(business);
-                    List<ProjectBasicBusiness> projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProject(
-                        salesMap.get(SalesHeader.COMPANY_NAME.getName()).replaceAll(" ", ""), project);
-                    if (!projectBasicBusinessList.isEmpty()) {
-                        projectBasicBusinessList.forEach(pbb -> {
-                            updateProjectBasicBusiness(salesMap, business, pbb);
-                        });
-                    } else {
+                    // 업체 구분
+                    if (!StringUtils.hasText(salesMap.get(SalesHeader.COMPANY_TYPE.getName()))) {
+                        return;
+                    }
+
+                    List<ProjectBasicBusiness> projectBasicBusinessList = projectBasicBusinessRepository.findByBusiness_NameAndProjectAndInvolvedType(
+                        business.getName(), project, getType(salesMap));
+                    if (projectBasicBusinessList.isEmpty()) {
                         setProjectBasicBusiness(salesMap, project, business);
                     }
+
                 }
             });
+    }
+
+
+    private ProjectInvolvedType getType(Map<String, String> salesMap) {
+        // 업체구분
+        if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("시행사")) {
+            return ProjectInvolvedType.ENFORCER;
+        } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).startsWith("건축")) {
+            return ProjectInvolvedType.ARCHITECTURAL;
+        } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).startsWith("구조")) {
+            return ProjectInvolvedType.STRUCTURAL;
+        } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("건설사")) {
+            return ProjectInvolvedType.BUILDER;
+        } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("기타")) {
+            return ProjectInvolvedType.ETC;
+        } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("조합")) {
+            return ProjectInvolvedType.ASSOCIATION;
+        } else {
+            throw new IllegalArgumentException("업체구분이 잘못되었습니다.");
+        }
     }
 
     private void updateProjectBasicBusiness(Map<String, String> salesMap, Business business, ProjectBasicBusiness b) {
@@ -1144,21 +1196,25 @@ public class SalesDataToMigrateService {
                 ProjectInvolvedType.STRUCTURAL,
                 business
             );
+            em.persist(b);
         } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("건설사")) {
             b.update(
                 ProjectInvolvedType.BUILDER,
                 business
             );
+            em.persist(b);
         } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("기타")) {
             b.update(
-                ProjectInvolvedType.RECOMMENDER,
+                ProjectInvolvedType.ETC,
                 business
             );
+            em.persist(b);
         } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("조합")) {
             b.update(
-                ProjectInvolvedType.RECOMMENDER,
+                ProjectInvolvedType.ASSOCIATION,
                 business
             );
+            em.persist(b);
         }
     }
 
@@ -1192,13 +1248,13 @@ public class SalesDataToMigrateService {
             ));
         } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("기타")) {
             em.persist(ProjectBasicBusiness.of(
-                ProjectInvolvedType.RECOMMENDER,
+                ProjectInvolvedType.ETC,
                 project,
                 business
             ));
         } else if (salesMap.get(SalesHeader.COMPANY_TYPE.getName()).equals("조합")) {
             em.persist(ProjectBasicBusiness.of(
-                ProjectInvolvedType.RECOMMENDER,
+                ProjectInvolvedType.ASSOCIATION,
                 project,
                 business
             ));
