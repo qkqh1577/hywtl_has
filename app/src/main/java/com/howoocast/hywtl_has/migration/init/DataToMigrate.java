@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.migration.init;
 
+import com.howoocast.hywtl_has.migration.service.BidDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.BusinessDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.ComparedEstimateDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.ContractBasicInitDataService;
@@ -32,6 +33,7 @@ public class DataToMigrate {
     private final EstimateContentInitDataService estimateContentInitDataService;
     private final EstimateTemplateInitDataService estimateTemplateInitDataService;
     private final SalesDataToMigrateService salesDataToMigrateService;
+    private final BidDataToMigrateService bidDataToMigrateService;
 
     @PostConstruct
     public void init() {
@@ -47,5 +49,6 @@ public class DataToMigrate {
         estimateContentInitDataService.init();
         estimateTemplateInitDataService.init();
         salesDataToMigrateService.migrate();
+        bidDataToMigrateService.migrate();
     }
 }

@@ -125,4 +125,27 @@ public class ProjectBid extends BidDTO {
         }
         return eventList;
     }
+
+    /**
+     * @migration
+     * @param date
+     */
+    public ProjectBid updateBidDate(LocalDate date) {
+        this.beginDate = date;
+        this.closeDate = date;
+        return this;
+    }
+
+    /**
+     * @migration
+     * @param business
+     */
+    public ProjectBid updateWin(Business business) {
+        this.win = business;
+        return this;
+    }
+
+    public void updateTotalAmount(Long amount) {
+        super.updateTotalAmount(amount);
+    }
 }

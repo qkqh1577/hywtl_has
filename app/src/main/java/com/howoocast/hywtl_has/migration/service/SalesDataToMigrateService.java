@@ -147,6 +147,7 @@ public class SalesDataToMigrateService {
                             ProjectProgressStatus.UNDER_CONTRACT
                         );
                         em.persist(project);
+
                         setProjectBusiness(salesMap, project);
                         setAnotherProjectBusiness(salesMap, project);
                         setIsLh(salesMap, project);
@@ -160,6 +161,7 @@ public class SalesDataToMigrateService {
                             contractBasic,
                             contractCollection,
                             contractConditionList);
+                        em.clear();
                     });
             });
         });
@@ -365,8 +367,8 @@ public class SalesDataToMigrateService {
             em.flush();
             // 최종 계약될 데이터가 너무 많아서 일단 승인 보류
             finalContract.changeConfirmed(Boolean.TRUE);
-
             em.persist(finalContract);
+            em.flush();
 
             // 진행정보 수금 데이터 시작
 
