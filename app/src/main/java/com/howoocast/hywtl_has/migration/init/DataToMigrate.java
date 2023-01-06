@@ -9,6 +9,7 @@ import com.howoocast.hywtl_has.migration.service.ContractConditionInitDataServic
 import com.howoocast.hywtl_has.migration.service.DepartmentInitDataService;
 import com.howoocast.hywtl_has.migration.service.EstimateContentInitDataService;
 import com.howoocast.hywtl_has.migration.service.EstimateTemplateInitDataService;
+import com.howoocast.hywtl_has.migration.service.PersonnelInitDataService;
 import com.howoocast.hywtl_has.migration.service.ProjectDesignDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.ProjectStatusDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.SalesDataToMigrateService;
@@ -34,11 +35,13 @@ public class DataToMigrate {
     private final EstimateTemplateInitDataService estimateTemplateInitDataService;
     private final SalesDataToMigrateService salesDataToMigrateService;
     private final BidDataToMigrateService bidDataToMigrateService;
+    private final PersonnelInitDataService personnelInitDataService;
 
     @PostConstruct
     public void init() {
         departmentInitDataService.init();
         userInitDataService.init();
+        personnelInitDataService.init();
         businessDataToMigrateService.migrate();
         projectStatusDataToMigrateService.migrate();
         projectDesignDataToMigrateService.migrate();
