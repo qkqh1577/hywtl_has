@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -17,18 +18,26 @@ public class AddressInitDataService {
 
     @PersistenceContext
     private EntityManager em;
+
     @Transactional
     public void init() {
         List<Map<String, String>> addressMapList = AddressExcelReader.excelReader();
         addressMapList.forEach(addressMap -> {
-            System.out.println("addressMap = " + addressMap.get(AddressHeader.CODE.getName()));
-            System.out.println("addressMap = " + addressMap.get(AddressHeader.CITY1.getName()));
-            System.out.println("addressMap = " + addressMap.get(AddressHeader.CITY2.getName()));
-            em.persist(Address.of(
-                addressMap.get(AddressHeader.CODE.getName()),
-                addressMap.get(AddressHeader.CITY1.getName()),
-                addressMap.get(AddressHeader.CITY2.getName())
-            ));
+            if (StringUtils.hasText(addressMap.get(AddressHeader.CODE.getName()))
+                && StringUtils.hasText(addressMap.get(AddressHeader.CITY1.getName()))
+                && StringUtils.hasText(addressMap.get(AddressHeader.CITY2.getName()))) {
+                em.persist(Address.of(
+                    addressMap.get(AddressHeader.CODE.getName()),
+                    addressMap.get(AddressHeader.CITY1.getName()),
+                    addressMap.get(AddressHeader.CITY2.getName())
+                ));
+            } else {
+                em.persist(Address.of(
+                    addressMap.get(AddressHeader.CODE.getName()),
+                    addressMap.get(AddressHeader.CITY1.getName()),
+                    null
+                ));
+            }
             em.flush();
             em.clear();
         });

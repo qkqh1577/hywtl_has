@@ -1,5 +1,7 @@
 package com.howoocast.hywtl_has.migration.service;
 
+import com.howoocast.hywtl_has.address.domain.Address;
+import com.howoocast.hywtl_has.address.repository.AddressRepository;
 import com.howoocast.hywtl_has.migration.enums.ProjectDesignHeader;
 import com.howoocast.hywtl_has.migration.loader.ProjectDesignExcelReader;
 import com.howoocast.hywtl_has.project.domain.Project;
@@ -25,6 +27,8 @@ public class ProjectDesignDataToMigrateService {
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+
+    private final AddressRepository addressRepository;
 
     @Transactional
     public void migrate() {
@@ -58,10 +62,10 @@ public class ProjectDesignDataToMigrateService {
     private void setDesign(Map<String, String> projectDesignMap, Project project) {
         ProjectBasicDesign design = ProjectBasicDesign.of(project);
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.CITY1.getName()))) {
-            design.updateCity1(projectDesignMap.get(ProjectDesignHeader.CITY1.getName()));
+            design.updateCity1(getCity1Code(projectDesignMap));
         }
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.CITY2.getName()))) {
-            design.updateCity2(projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
+            design.updateCity2(getCity2Code(projectDesignMap));
         }
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.ADDRESS.getName()))) {
             design.updateAddress(projectDesignMap.get(ProjectDesignHeader.ADDRESS.getName()));
@@ -123,6 +127,20 @@ public class ProjectDesignDataToMigrateService {
             }
         }
         em.persist(design);
+    }
+
+    private String getCity1Code(Map<String, String> projectDesignMap) {
+        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY1.getName()) = " + projectDesignMap.get(
+            ProjectDesignHeader.CITY1.getName()));
+        Address test = addressRepository.findByDepth1AndDepth2IsNull(
+            projectDesignMap.get(ProjectDesignHeader.CITY1.getName()));
+        return test.getCode();
+    }
+
+    private String getCity2Code(Map<String, String> projectDesignMap) {
+        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY2.getName()) = " + projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
+        Address test = addressRepository.findByDepth1AndDepth2(projectDesignMap.get(ProjectDesignHeader.CITY1.getName()), projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
+        return test.getCode();
     }
 
     private void setComplexBuilding(Map<String, String> projectDesignMap,
