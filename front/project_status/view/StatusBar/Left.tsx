@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Box,
   MenuItem,
@@ -34,46 +34,6 @@ interface Props {
   estimateStatus: ProjectEstimateStatus | undefined;
   contractStatus: ProjectContractStatus | undefined;
   bidStatus: ProjectBidStatus | undefined;
-}
-
-function BidDataBox(props: Pick<Props,
-  | 'onUpdate'
-  | 'bidType'
-  | 'estimateStatus'
-  | 'bidStatus'>) {
-
-  const {
-          onUpdate,
-          bidType,
-          estimateStatus,
-          bidStatus,
-        } = props;
-
-  const isBid = useMemo(() => bidType === ProjectBasicBidType.COMPANY || bidType === ProjectBasicBidType.G2B, [bidType]);
-  const prevValue = isBid ? bidStatus : estimateStatus;
-
-  return (
-    <DataBox title={isBid ? '입찰 상태' : '견적 상태'}>
-      <Select
-        displayEmpty
-        variant="outlined"
-        value={prevValue ?? ''}
-        onChange={(e) => {
-          const value = e.target.value || undefined;
-          if (value && prevValue !== value) {
-            onUpdate({ [(isBid ? 'bidStatus' : 'estimateStatus')]: value });
-          }
-        }}>
-        {!prevValue && (<MenuItem value="">선택</MenuItem>)}
-        {(isBid ? projectBidStatusList : projectEstimateStatusList).map((item) => (
-          <MenuItem key={item} value={item}>
-            {isBid && projectBidStatusName(item as ProjectBidStatus)}
-            {!isBid && projectEstimateStatusName(item as ProjectEstimateStatus)}
-          </MenuItem>
-        ))}
-      </Select>
-    </DataBox>
-  );
 }
 
 export default function ProjectStatusLeftBar({
@@ -131,13 +91,46 @@ export default function ProjectStatusLeftBar({
           ))}
         </Select>
       </DataBox>
-      <BidDataBox
-        key={bidType}
-        bidType={bidType}
-        bidStatus={bidStatus}
-        estimateStatus={estimateStatus}
-        onUpdate={onUpdate}
-      />
+      <DataBox title="견적 상태">
+        <Select
+          displayEmpty
+          variant="outlined"
+          value={estimateStatus ?? ''}
+          onChange={(e) => {
+            const value = e.target.value as ProjectEstimateStatus || undefined;
+            if (value && estimateStatus !== value) {
+              onUpdate({ estimateStatus: value });
+            }
+          }}>
+          {!estimateStatus && (<MenuItem value="">선택</MenuItem>)}
+          {projectEstimateStatusList.map((item) => (
+            <MenuItem key={item} value={item}>
+              {projectEstimateStatusName(item as ProjectEstimateStatus)}
+            </MenuItem>
+          ))}
+        </Select>
+      </DataBox>
+      {bidType && (
+        <DataBox title="입찰 상태">
+          <Select
+            displayEmpty
+            variant="outlined"
+            value={bidStatus ?? ''}
+            onChange={(e) => {
+              const value = e.target.value as ProjectBidStatus || undefined;
+              if (value && bidStatus !== value) {
+                onUpdate({ bidStatus: value });
+              }
+            }}>
+            {!bidStatus && (<MenuItem value="">선택</MenuItem>)}
+            {projectBidStatusList.map((item) => (
+              <MenuItem key={item} value={item}>
+                {projectBidStatusName(item as ProjectBidStatus)}
+              </MenuItem>
+            ))}
+          </Select>
+        </DataBox>
+      )}
       <DataBox title="계약 상태">
         <Select
           displayEmpty
