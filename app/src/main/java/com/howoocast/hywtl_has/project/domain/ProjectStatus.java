@@ -68,12 +68,14 @@ public class ProjectStatus {
         ProjectProgressStatus progressStatus,
         ProjectEstimateExpectation estimateExpectation,
         @Nullable ProjectEstimateStatus estimateStatus,
+        @Nullable ProjectBidStatus bidStatus,
         ProjectContractStatus contractStatus
     ) {
         ProjectStatus instance = new ProjectStatus();
         instance.progressStatus = progressStatus;
         instance.estimateExpectation = estimateExpectation;
         instance.estimateStatus = estimateStatus;
+        instance.bidStatus = bidStatus;
         instance.contractStatus = contractStatus;
         return instance;
     }
