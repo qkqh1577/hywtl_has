@@ -23,6 +23,8 @@ import { Box } from '@mui/material';
 import { closeStatus } from 'components/DataFieldProps';
 import PasswordChangeModalRoute from 'login/route/passwordChangeModal';
 
+const MemoizedProjectDrawerRoute = React.memo(ProjectDrawerRoute);
+
 export default function () {
 
   const { pathname } = useLocation();
@@ -61,7 +63,7 @@ export default function () {
     }}>
       <AppBarRoute />
       <MenuDrawerRoute />
-      <ProjectDrawerRoute />
+      <MemoizedProjectDrawerRoute />
       <Box
         component="main"
         sx={{
