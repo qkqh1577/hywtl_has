@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.migration.init;
 
+import com.howoocast.hywtl_has.migration.service.AddressInitDataService;
 import com.howoocast.hywtl_has.migration.service.BidDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.BusinessDataToMigrateService;
 import com.howoocast.hywtl_has.migration.service.ComparedEstimateDataToMigrateService;
@@ -36,22 +37,24 @@ public class DataToMigrate {
     private final SalesDataToMigrateService salesDataToMigrateService;
     private final BidDataToMigrateService bidDataToMigrateService;
     private final PersonnelInitDataService personnelInitDataService;
+    private final AddressInitDataService addressInitDataService;
 
     @PostConstruct
     public void init() {
+        addressInitDataService.init();
         departmentInitDataService.init();
         userInitDataService.init();
         personnelInitDataService.init();
-        businessDataToMigrateService.migrate();
-        projectStatusDataToMigrateService.migrate();
-        projectDesignDataToMigrateService.migrate();
-        comparedEstimateDataToMigrateService.migrate();
+//        businessDataToMigrateService.migrate();
+//        projectStatusDataToMigrateService.migrate();
+//        projectDesignDataToMigrateService.migrate();
+//        comparedEstimateDataToMigrateService.migrate();
         contractBasicInitDataService.init();
         contractCollectionInitDataService.init();
         contractConditionInitDataService.init();
         estimateContentInitDataService.init();
         estimateTemplateInitDataService.init();
-        salesDataToMigrateService.migrate();
-        bidDataToMigrateService.migrate();
+//        salesDataToMigrateService.migrate();
+//        bidDataToMigrateService.migrate();
     }
 }

@@ -7,7 +7,7 @@ import {
 } from 'redux-saga/effects';
 import { projectBasicAction } from 'project_basic/action';
 import {
-  CityListData,
+  CityDataVO,
   ProjectBasicBusiness,
   ProjectBasicDesignVO,
   ProjectBasicExternalContributorVO,
@@ -395,8 +395,8 @@ function* watchCity1List() {
   while (true) {
     try {
       yield take(projectBasicAction.getCity1List);
-      const data: CityListData = yield call(projectBasicApi.getCityData);
-      yield put(projectBasicAction.setCity1List(data.regcodes));
+      const data: CityDataVO[] = yield call(projectBasicApi.getCityData);
+      yield put(projectBasicAction.setCity1List(data));
     }
     catch (e) {
       yield put(dialogAction.openError('시/도1 목록을 불러오는데 실패하였습니다.'));
@@ -409,8 +409,8 @@ function* watchCity2List() {
     const { payload: regCode } = yield take(projectBasicAction.getCity2List);
     try {
       if (regCode) {
-        const data: CityListData = yield call(projectBasicApi.getCityData, regCode);
-        yield put(projectBasicAction.setCity2List(data.regcodes));
+        const data: CityDataVO[] = yield call(projectBasicApi.getCityData, regCode);
+        yield put(projectBasicAction.setCity2List(data));
       }
     }
     catch (e) {

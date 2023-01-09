@@ -150,7 +150,7 @@ class ProjectBasicApi {
   }
 
   async getCityData(code?: string): Promise<void> {
-    const { data } = await apiClient.get(`https://grpc-proxy-server-mkvo6j4wsq-du.a.run.app/v1/regcodes?regcode_pattern=${code ? `${code.slice(0, 2)}*000000` : '*00000000'}`);
+    const { data } = await apiClient.get(`/address?code=${code ? `${code.slice(0, 2)}00000000` : '00000000'}`);
     return data;
   }
 
