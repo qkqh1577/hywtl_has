@@ -44,17 +44,27 @@ public class ProjectStatusDataToMigrateService {
                     code = value.substring(0, value.length() - 2);
                 }
 
-                em.persist(Project.of(
+                Project project = Project.of(
                     code,
+                    projectStatusMap.get(ProjectStatusHeader.NAME.getName()),
                     projectStatusMap.get(ProjectStatusHeader.NAME.getName()),
                     convertStringToBasicBidType(projectStatusMap.get(ProjectStatusHeader.BASIC_BID_TYPE.getName())),
                     a,
                     ProjectStatus.of(
-                        convertStringToProgressStatus(projectStatusMap.get(ProjectStatusHeader.PROGRESS_STATUS.getName())),
-                        convertStringToEstimateExpectation(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
-                        convertStringToEstimateStatus(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
-                        convertStringToContractStatus(projectStatusMap.get(ProjectStatusHeader.CONTRACT_STATUS.getName())))
-                ));
+                        convertStringToProgressStatus(
+                            projectStatusMap.get(ProjectStatusHeader.PROGRESS_STATUS.getName())),
+                        convertStringToEstimateExpectation(
+                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
+                        convertStringToEstimateStatus(
+                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
+                        convertStringToContractStatus(
+                            projectStatusMap.get(ProjectStatusHeader.CONTRACT_STATUS.getName())))
+                );
+                project.updateCreatedBy(a);
+                em.persist(project);
+
+                em.flush();
+                em.clear();
             });
         });
     }

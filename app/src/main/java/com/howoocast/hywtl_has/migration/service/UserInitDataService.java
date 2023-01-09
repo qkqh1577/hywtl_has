@@ -42,7 +42,8 @@ public class UserInitDataService {
                     UserRole.MASTER
                 )
             );
-
+            em.flush();
+            em.clear();
         });
     }
 }

@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_basic.domain.ProjectBasicDesign;
 import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
+import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Map;
@@ -33,33 +34,37 @@ public class ProjectDesignDataToMigrateService {
     @Transactional
     public void migrate() {
         List<Map<String, String>> projectDesignList = ProjectDesignExcelReader.excelReader();
-        projectDesignList.forEach(projectDesignMap -> {
-            String value = projectDesignMap.get(ProjectDesignHeader.CODE.getName());
-            String code = value;
-            if (value == null) {
-                return;
-            }
-            if (!value.contains("-")) {
-                code = value.substring(0, value.length() - 2);
-            }
-            projectRepository.findByBasic_Code(code).ifPresent(project -> {
-                //alias(프로젝트 풀네임으로 변경될 것)
-                if (StringUtils.hasText(
-                    projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()))) {
-                    project.getBasic()
-                        .updateAlias(projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()));
+        userRepository.findByUsername("admin").ifPresent(admin -> {
+            projectDesignList.forEach(projectDesignMap -> {
+                String value = projectDesignMap.get(ProjectDesignHeader.CODE.getName());
+                String code = value;
+                if (value == null) {
+                    return;
                 }
-                //동개수에 따른 동먼저 만들고.
-                setComplexBuilding(projectDesignMap, project);
+                if (!value.contains("-")) {
+                    code = value.substring(0, value.length() - 2);
+                }
+                projectRepository.findByBasic_Code(code).ifPresent(project -> {
+                    //alias(프로젝트 풀네임으로 변경될 것)
+                    if (StringUtils.hasText(
+                        projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()))) {
+                        project.getBasic()
+                            .updateName(projectDesignMap.get(ProjectDesignHeader.FULL_NAME.getName()));
+                    }
+                    //동개수에 따른 동먼저 만들고.
+                    setComplexBuilding(projectDesignMap, project, admin);
 
-                // design 정보 담고
-                setDesign(projectDesignMap, project);
+                    // design 정보 담고
+                    setDesign(projectDesignMap, project, admin);
+
+                    em.flush();
+                    em.clear();
+                });
             });
         });
-
     }
 
-    private void setDesign(Map<String, String> projectDesignMap, Project project) {
+    private void setDesign(Map<String, String> projectDesignMap, Project project, User admin) {
         ProjectBasicDesign design = ProjectBasicDesign.of(project);
         if (StringUtils.hasText(projectDesignMap.get(ProjectDesignHeader.CITY1.getName()))) {
             design.updateCity1(getCity1Code(projectDesignMap));
@@ -126,6 +131,7 @@ public class ProjectDesignDataToMigrateService {
                     Double.parseDouble(value));
             }
         }
+        design.updateCreatedBy(admin);
         em.persist(design);
     }
 
@@ -138,13 +144,16 @@ public class ProjectDesignDataToMigrateService {
     }
 
     private String getCity2Code(Map<String, String> projectDesignMap) {
-        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY2.getName()) = " + projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
-        Address test = addressRepository.findByDepth1AndDepth2(projectDesignMap.get(ProjectDesignHeader.CITY1.getName()), projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
+        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY2.getName()) = " + projectDesignMap.get(
+            ProjectDesignHeader.CITY2.getName()));
+        Address test = addressRepository.findByDepth1AndDepth2(
+            projectDesignMap.get(ProjectDesignHeader.CITY1.getName()),
+            projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));
         return test.getCode();
     }
 
     private void setComplexBuilding(Map<String, String> projectDesignMap,
-        Project project) {
+        Project project, User admin) {
         for (int i = 1; i <= 50; i++) {
             ProjectComplexBuilding complexBuilding = ProjectComplexBuilding.of(
                 project
@@ -154,6 +163,7 @@ public class ProjectDesignDataToMigrateService {
                 complexBuilding.updateName(
                     projectDesignMap.get("동명칭" + i)
                 );
+                complexBuilding.updateCreatedBy(admin);
                 em.persist(complexBuilding);
             }
 
@@ -161,6 +171,7 @@ public class ProjectDesignDataToMigrateService {
                 complexBuilding.updateShape(
                     projectDesignMap.get("평면형상" + i)
                 );
+                complexBuilding.updateCreatedBy(admin);
                 em.persist(complexBuilding);
             }
         }

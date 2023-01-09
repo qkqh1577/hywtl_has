@@ -75,6 +75,7 @@ public class Project extends CustomEntity {
     public static Project of(
         @Nullable String code,
         String name,
+        String alias,
         ProjectBasicBidType bidType,
         User receptionManager,
         ProjectStatus status
@@ -83,6 +84,7 @@ public class Project extends CustomEntity {
         instance.basic = ProjectBasic.of(
             code,
             name,
+            alias,
             bidType,
             receptionManager
         );
