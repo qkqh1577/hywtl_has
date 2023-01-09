@@ -259,4 +259,24 @@ public class ProjectComplexBuilding extends CustomEntity {
         }
         return eventList;
     }
+
+    /**
+     * @migration
+     * @param name
+     * @return
+     */
+    public ProjectComplexBuilding updateName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * @migration
+     * @param shape
+     * @return
+     */
+    public ProjectComplexBuilding updateShape(String shape) {
+        this.shape = shape;
+        return this;
+    }
 }

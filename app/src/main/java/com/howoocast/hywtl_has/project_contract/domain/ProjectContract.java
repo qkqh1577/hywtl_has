@@ -290,4 +290,43 @@ public class ProjectContract extends CustomEntity {
         this.collection = after;
         return eventList;
     }
+
+
+    /**
+     * @migration
+     * @param project
+     * @param estimate
+     * @param code
+     * @param isSent
+     * @param recipient
+     * @param basic
+     * @param collection
+     * @param conditionList
+     * @param writer
+     * @return
+     */
+    public static ProjectContract of(
+        Project project,
+        ProjectEstimate estimate,
+        String code,
+        Boolean isSent,
+        String recipient,
+        ProjectContractBasic basic,
+        ProjectContractCollection collection,
+        List<ProjectContractCondition> conditionList,
+        User writer
+    ) {
+        ProjectContract instance = new ProjectContract();
+        instance.project = project;
+        instance.estimate = estimate;
+        instance.code = code;
+        instance.isSent = isSent;
+        instance.recipient = recipient;
+        instance.basic = basic;
+        instance.collection = collection;
+        instance.conditionList = conditionList;
+        instance.writer = writer;
+        instance.confirmed = Boolean.FALSE;
+        return instance;
+    }
 }

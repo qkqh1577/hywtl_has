@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -113,5 +114,72 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         this.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
 
         return eventList;
+    }
+
+    /**
+     * @migration
+     * @param code
+     * @param isSent
+     * @param recipient
+     * @param writer
+     * @param project
+     */
+    protected ProjectSystemEstimate(
+        String code,
+        Boolean isSent,
+        String recipient,
+        User writer,
+        Project project,
+        Business business,
+        ProjectEstimatePlan plan
+    ) {
+        super(
+            code,
+            ProjectEstimateType.SYSTEM,
+            isSent,
+            recipient,
+            writer,
+            project,
+            business,
+            plan
+        );
+    }
+
+    /**
+     * @migration
+     * @param dto
+     * @param isSent
+     * @param recipient
+     * @param templateList
+     * @param contentList
+     * @return
+     */
+
+    public static ProjectSystemEstimate of(
+        ProjectEstimate dto,
+        Boolean isSent,
+        String recipient,
+        List<ProjectEstimateTemplate> templateList,
+        @Nullable List<Content> contentList,
+        Business business
+    ) {
+        ProjectSystemEstimate instance = new ProjectSystemEstimate(
+            dto.getCode(),
+            isSent,
+            recipient,
+            dto.getWriter(),
+            dto.getProject(),
+            business,
+            dto.getPlan()
+        );
+
+        instance.templateList = templateList;
+        /**
+         * @migration
+         */
+        if (Objects.nonNull(contentList)) {
+            instance.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
+        }
+        return instance;
     }
 }

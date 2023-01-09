@@ -32,6 +32,12 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
 
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
+
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

@@ -75,4 +75,13 @@ public abstract class BidDTO extends CustomEntity {
         }
         return eventList;
     }
+
+    /**
+     * @migration
+     * @param amount
+     */
+    protected void updateTotalAmount(Long amount) {
+        this.totalAmount = amount;
+    }
+
 }

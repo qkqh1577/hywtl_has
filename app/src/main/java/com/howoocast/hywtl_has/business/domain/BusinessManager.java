@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -108,6 +109,64 @@ public class BusinessManager extends CustomEntity {
         return manager;
     }
 
+    /**
+     * @migration
+     * @param name
+     * @param department
+     * @param jobTitle
+     * @param officePhone
+     * @param mobilePhone
+     * @param email
+     * @param address
+     * @return
+     */
+    public static BusinessManager of(
+        String name,
+        @Nullable String department,
+        @Nullable String jobTitle,
+        @Nullable String officePhone,
+        @Nullable String mobilePhone,
+        @Nullable String email,
+        @Nullable String address
+    ) {
+        BusinessManager manager = new BusinessManager();
+        manager.name = name;
+        manager.department = department;
+        manager.jobTitle = jobTitle;
+        manager.officePhone = officePhone;
+        manager.mobilePhone = mobilePhone;
+        manager.email = email;
+        manager.address = address;
+        manager.status = BusinessManagerStatus.IN_OFFICE;
+        return manager;
+    }
+
+    /**
+     * @migration
+     * @param name
+     * @param department
+     * @param jobTitle
+     * @param mobilePhone
+     * @param email
+     * @return
+     */
+    public static BusinessManager of(
+        String name,
+        @Nullable String department,
+        @Nullable String jobTitle,
+        @Nullable String mobilePhone,
+        @Nullable String email
+    ) {
+        BusinessManager manager = new BusinessManager();
+        manager.name = name;
+        manager.department = department;
+        manager.jobTitle = jobTitle;
+        manager.mobilePhone = mobilePhone;
+        manager.email = email;
+        manager.status = BusinessManagerStatus.IN_OFFICE;
+        return manager;
+    }
+
     public void change(
         String name,
         String jobTitle,
@@ -128,6 +187,19 @@ public class BusinessManager extends CustomEntity {
         this.meta = meta;
         this.status = status;
         this.address = address;
+    }
+
+    public BusinessManager change(
+        String jobTitle,
+        String department,
+        String mobilePhone,
+        String email
+    ) {
+        this.jobTitle = jobTitle;
+        this.department = department;
+        this.mobilePhone = mobilePhone;
+        this.email = email;
+        return this;
     }
 
     public void updateProjectCount(List<Project> projectList

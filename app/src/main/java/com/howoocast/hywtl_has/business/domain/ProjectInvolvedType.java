@@ -25,9 +25,17 @@ public enum ProjectInvolvedType {
      */
     ENFORCER("시행사"),
     /**
+     * 조합
+     */
+    ASSOCIATION("조합"),
+    /**
      * 소개자
      */
-    RECOMMENDER("소개자");
+    RECOMMENDER("소개자"),
+    /**
+     * 기타
+     */
+    ETC("기타");
 
     private final String name;
 

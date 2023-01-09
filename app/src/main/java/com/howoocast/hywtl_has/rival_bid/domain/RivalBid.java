@@ -68,4 +68,30 @@ public class RivalBid extends BidDTO {
         }
         return eventList;
     }
+
+    /**
+     * @migration
+     * @param project
+     * @param business
+     * @return
+     */
+    public static RivalBid of(
+        Project project,
+        Business business
+    ) {
+
+        RivalBid instance = new RivalBid();
+        instance.project = project;
+        instance.business = business;
+        return instance;
+    }
+
+
+    /**
+     * @migration 마이그레이션 작업용
+     * @param amount
+     */
+    public void updateTotalAmount(Long amount) {
+        super.updateTotalAmount(amount);
+    }
 }

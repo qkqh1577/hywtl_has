@@ -74,13 +74,27 @@ export interface ProjectBasicFailReasonVO {
  */
 export enum BuildingPurpose1Type {
   /**
-   * 정비 사업
+   * LH
    */
-  MAINTENANCE_BUSINESS = 'MAINTENANCE_BUSINESS',
+  LH     = 'LH',
+  /**
+   * 기타
+   */
+  ETC     = '기타',
+
   /**
    * 일반 건축
    */
-  GENERAL_ARCHITECTURE = 'GENERAL_ARCHITECTURE',
+  GENERAL_ARCHITECTURE = '일반건축',
+
+  /**
+   * 정비 사업
+   */
+  MAINTENANCE_BUSINESS = '정비사업',
+  /**
+   * 지역주택조합
+   */
+  REGIONAL_HOUSING_COOPERATIVE = '지역주택조합',
 }
 
 /**
@@ -88,28 +102,46 @@ export enum BuildingPurpose1Type {
  */
 export enum BuildingPurpose2Type {
   /**
-   * 공동 주택
+   * 아파트
    */
-  APARTMENT_HOUSE                 = 'APARTMENT_HOUSE',
+  APARTMENT_HOUSE  = '아파트',
+  /**
+   * 주거복합
+   */
+  RESIDENTIAL_COMPLEX = '주거복합',
+  /**
+   * 일반건축
+   */
+  GENERAL_ARCHITECTURE = '일반건축',
   /**
    * 오피스텔
    */
-  OFFICE_TEL                      = 'OFFICE_TEL',
+  OFFICE_TEL = '오피스텔',
   /**
    * 주상복합
    */
-  RESIDENTIAL_COMMERCIAL_BUILDING = 'RESIDENTIAL_COMMERCIAL_BUILDING',
-};
+  RESIDENTIAL_COMMERCIAL_BUILDING = '주상복합',
+  /**
+   * 기타
+   */
+  ETC   = '기타'
+}
 
 export const buildingPurpose1List: BuildingPurpose1Type[] = [
   BuildingPurpose1Type.MAINTENANCE_BUSINESS,
   BuildingPurpose1Type.GENERAL_ARCHITECTURE,
+  BuildingPurpose1Type.REGIONAL_HOUSING_COOPERATIVE,
+  BuildingPurpose1Type.LH,
+  BuildingPurpose1Type.ETC
 ];
 
 export const buildingPurpose2List: BuildingPurpose2Type[] = [
   BuildingPurpose2Type.APARTMENT_HOUSE,
   BuildingPurpose2Type.OFFICE_TEL,
-  BuildingPurpose2Type.RESIDENTIAL_COMMERCIAL_BUILDING
+  BuildingPurpose2Type.RESIDENTIAL_COMMERCIAL_BUILDING,
+  BuildingPurpose2Type.RESIDENTIAL_COMPLEX,
+  BuildingPurpose2Type.GENERAL_ARCHITECTURE,
+  BuildingPurpose2Type.ETC
 ];
 
 export function buildingPurpose1Name(type: BuildingPurpose1Type | '') {
@@ -118,6 +150,12 @@ export function buildingPurpose1Name(type: BuildingPurpose1Type | '') {
       return '정비사업';
     case BuildingPurpose1Type.GENERAL_ARCHITECTURE:
       return '일반건축';
+    case BuildingPurpose1Type.REGIONAL_HOUSING_COOPERATIVE:
+      return '지역주택조합';
+    case BuildingPurpose1Type.LH:
+      return 'LH';
+    case BuildingPurpose1Type.ETC:
+      return '기타';
     default:
       return '-';
   }
@@ -126,11 +164,17 @@ export function buildingPurpose1Name(type: BuildingPurpose1Type | '') {
 export function buildingPurpose2Name(type: BuildingPurpose2Type | '') {
   switch (type) {
     case BuildingPurpose2Type.APARTMENT_HOUSE:
-      return '공동주택';
+      return '아파트';
     case BuildingPurpose2Type.OFFICE_TEL:
       return '오피스텔';
     case BuildingPurpose2Type.RESIDENTIAL_COMMERCIAL_BUILDING:
       return '주상복합';
+    case BuildingPurpose2Type.RESIDENTIAL_COMPLEX:
+      return '주거복합';
+    case BuildingPurpose2Type.GENERAL_ARCHITECTURE:
+      return '일반주택';
+    case BuildingPurpose2Type.ETC:
+      return '기타';
     default:
       return '-';
   }

@@ -84,7 +84,9 @@ export default function ProjectBasicBusinessSection(props: Props) {
                     </Td>
                   </TableRow>
                 )}
-                {Array.isArray(props.businessList) && props.businessList.map(item => (
+                {Array.isArray(props.businessList) && props.businessList.sort((a, b) => {
+                  return a.involvedType.length < b.involvedType.length ? -1 : 1;
+                }).map(item => (
                   <TableRow key={item.id}>
                     <Td>
                       {businessInvolvedTypeName(item.involvedType)}

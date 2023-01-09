@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.business.domain;
 
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 /**
  * 업체
@@ -74,7 +76,7 @@ public class Business extends CustomEntity {
     private String fax;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<BusinessManager> managerList;
+    private List<BusinessManager> managerList = new ArrayList<>();
 
     public static Business of(
         String name,
@@ -99,6 +101,22 @@ public class Business extends CustomEntity {
             fax,
             managerList
         );
+        return instance;
+    }
+
+    public static Business of(
+        String name,
+        String registrationNumber,
+        @Nullable String address,
+        @Nullable String officePhone,
+        @Nullable String ceoName
+    ){
+        Business instance = new Business();
+        instance.name = name;
+        instance.registrationNumber = registrationNumber;
+        instance.address = address;
+        instance.officePhone = officePhone;
+        instance.ceoName = ceoName;
         return instance;
     }
 
@@ -130,4 +148,13 @@ public class Business extends CustomEntity {
         }
         return this.managerList.stream().filter(manager -> manager.getId().equals(managerId)).findFirst();
     }
+
+    /**
+     * @migration
+     * @param manager
+     */
+    public void addBusinessManager(BusinessManager manager) {
+        this.managerList.add(manager);
+    }
+
 }

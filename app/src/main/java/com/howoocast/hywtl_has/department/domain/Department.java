@@ -78,7 +78,7 @@ public class Department extends CustomEntity {
         DepartmentCategory category,
         @Nullable Department parent,
         Integer seq,
-        String note
+        @Nullable String note
     ) {
         this.name = name;
         this.category = category;
