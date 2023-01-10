@@ -46,15 +46,15 @@ public class DataToMigrate {
         userInitDataService.init();
         personnelInitDataService.init();
         businessDataToMigrateService.migrate();
-        projectStatusDataToMigrateService.migrate();
-        projectDesignDataToMigrateService.migrate();
-        comparedEstimateDataToMigrateService.migrate();
+//        projectStatusDataToMigrateService.migrate();
+//        projectDesignDataToMigrateService.migrate();
+//        comparedEstimateDataToMigrateService.migrate();
         contractBasicInitDataService.init();
         contractCollectionInitDataService.init();
         contractConditionInitDataService.init();
         estimateContentInitDataService.init();
         estimateTemplateInitDataService.init();
         salesDataToMigrateService.migrate();
-        bidDataToMigrateService.migrate();
+//        bidDataToMigrateService.migrate();
     }
 }

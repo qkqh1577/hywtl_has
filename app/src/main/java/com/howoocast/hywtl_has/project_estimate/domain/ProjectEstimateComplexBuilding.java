@@ -105,4 +105,11 @@ public class ProjectEstimateComplexBuilding extends CustomEntity {
         return instance;
     }
 
+    /**
+     * @migration
+     * @param list
+     */
+    public void updateTestTypeList(List<TestType> list) {
+        this.testTypeList = list;
+    }
 }
