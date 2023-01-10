@@ -182,6 +182,11 @@ public class SalesDataToMigrateService {
         ContractCollection contractCollection,
         List<ContractCondition> contractConditionList
     ) {
+        // E, C가 아닌 다른 구분은 데이터에서 제외.
+        if (!StringUtils.hasText(salesMap.get(SalesHeader.CONFIRM.getName()))
+            || !(salesMap.get(SalesHeader.CONFIRM.getName()).equals("C") || salesMap.get(SalesHeader.CONFIRM.getName()).equals("E"))) {
+            return;
+        }
         // 견적서 코드 생성
         String estimateCode = getEstimateCode(project);
         // 견적서 기본 정보 생성
@@ -189,6 +194,7 @@ public class SalesDataToMigrateService {
 
         // 대지 모형 리스트 생성
         // 풍환경 수량 개수 만큼 생성.
+        // TODO: 공동 단가 관련한 문제 수정 필요.
         List<ProjectEstimateComplexSite> siteList = new ArrayList<>();
         if (StringUtils.hasText(salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))
             && !salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()).equals("0")) {
@@ -235,8 +241,10 @@ public class SalesDataToMigrateService {
 
         if (buildingCountList.size() > 0) {
             Long buildingSize = Collections.max(buildingCountList);
+            if (salesMap.get(SalesHeader.CODE.getName()).equals("18075.0")) {
             System.out.println("buildingSize = " + buildingSize);
             System.out.println("helo");
+            }
             List<ProjectEstimateComplexBuilding> complexBuildingList = new ArrayList<>();
             for (int i = 0; i < buildingSize; i++) {
                 ProjectEstimateComplexBuilding complexBuilding = ProjectEstimateComplexBuilding.of(
@@ -269,16 +277,16 @@ public class SalesDataToMigrateService {
                         testTypeList.add(TestType.F);
                     }
                 }
-//                if (Objects.nonNull(buildingInfo.get("공기력수량"))) {
-//                    if (k < buildingInfo.get("공기력수량")) {
-//                        testTypeList.add(TestType.A);
-//                    }
-//                }
-                if (Objects.nonNull(buildingInfo.get("구검수량"))) {
-                    if (k < buildingInfo.get("구검수량")) {
-                        testTypeList.add(TestType.REVIEW);
+                if (Objects.nonNull(buildingInfo.get("공기력수량"))) {
+                    if (k < buildingInfo.get("공기력수량")) {
+                        testTypeList.add(TestType.A);
                     }
                 }
+//                if (Objects.nonNull(buildingInfo.get("구검수량"))) {
+//                    if (k < buildingInfo.get("구검수량")) {
+//                        testTypeList.add(TestType.REVIEW);
+//                    }
+//                }
                 if (Objects.nonNull(buildingInfo.get("풍압수량"))) {
                     if (k < buildingInfo.get("풍압수량")) {
                         testTypeList.add(TestType.P);
@@ -899,6 +907,12 @@ public class SalesDataToMigrateService {
                     RoundingMode.FLOOR).toPlainString()
             );
         }
+        Boolean isLh = Boolean.FALSE;
+        if (StringUtils.hasText(salesMap.get(SalesHeader.LH.getName()))) {
+            if (salesMap.get(SalesHeader.LH.getName()).equals("Y")) {
+                isLh = Boolean.TRUE;
+            }
+        }
         Long testAmount = null;
         if (StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName()))) {
             testAmount = Long.parseLong(
@@ -925,7 +939,8 @@ public class SalesDataToMigrateService {
             expectedFinalReportDeadline,
             testAmount,
             reviewAmount,
-            totalAmount
+            totalAmount,
+            isLh
         );
     }
 
@@ -1019,6 +1034,9 @@ public class SalesDataToMigrateService {
                 project.getBasic().updateIsLh(Boolean.TRUE);
                 em.persist(project);
             }
+        }else {
+            project.getBasic().updateIsLh(Boolean.FALSE);
+            em.persist(project);
         }
     }
 

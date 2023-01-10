@@ -138,6 +138,7 @@ public class ProjectEstimatePlan {
      * @param testAmount
      * @param reviewAmount
      * @param totalAmount
+     * @param isLh
      * @return
      */
     public static ProjectEstimatePlan of(
@@ -146,7 +147,8 @@ public class ProjectEstimatePlan {
         @Nullable Integer expectedFinalReportDeadline,
         @Nullable Long testAmount,
         @Nullable Long reviewAmount,
-        @Nullable Long totalAmount
+        @Nullable Long totalAmount,
+        @Nullable Boolean isLh
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -155,6 +157,7 @@ public class ProjectEstimatePlan {
         instance.testAmount = testAmount;
         instance.reviewAmount = reviewAmount;
         instance.totalAmount = totalAmount;
+        instance.isLh = isLh;
         return instance;
     }
 }
