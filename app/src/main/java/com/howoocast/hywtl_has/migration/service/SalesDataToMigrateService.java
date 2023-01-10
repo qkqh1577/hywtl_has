@@ -194,7 +194,7 @@ public class SalesDataToMigrateService {
             && !salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()).equals("0")) {
             for (int i = 0; i < getAmount(salesMap, SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()); i++) {
                 siteList.add(ProjectEstimateComplexSite.of(
-                    "임의",
+                    "임의" + (i + 1),
                     Boolean.TRUE,
                     null,
                     null,
@@ -269,11 +269,11 @@ public class SalesDataToMigrateService {
                         testTypeList.add(TestType.F);
                     }
                 }
-                if (Objects.nonNull(buildingInfo.get("공기력수량"))) {
-                    if (k < buildingInfo.get("공기력수량")) {
-                        testTypeList.add(TestType.A);
-                    }
-                }
+//                if (Objects.nonNull(buildingInfo.get("공기력수량"))) {
+//                    if (k < buildingInfo.get("공기력수량")) {
+//                        testTypeList.add(TestType.A);
+//                    }
+//                }
                 if (Objects.nonNull(buildingInfo.get("구검수량"))) {
                     if (k < buildingInfo.get("구검수량")) {
                         testTypeList.add(TestType.REVIEW);
@@ -295,6 +295,7 @@ public class SalesDataToMigrateService {
                 siteList,
                 complexBuildingList
             );
+
             // 견적서(자식) 생성
             ProjectSystemEstimate projectSystemEstimate = getProjectSystemEstimate(
                 salesMap,
