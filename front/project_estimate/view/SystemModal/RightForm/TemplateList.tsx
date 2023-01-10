@@ -215,23 +215,6 @@ export default function () {
       buildingList.length;
     }
 
-    if (testType === TestType.REVIEW
-      && unit === TestUnit.SITE) {
-
-      return siteList.length;
-    }
-    if (testType === TestType.REVIEW
-      && unit === TestUnit.BUILDING) {
-
-      return buildingList.length;
-    }
-
-    if (testType === TestType.E
-      && unit === TestUnit.SITE) {
-
-      return siteList.filter(site => site.withEnvironmentTest).length;
-    }
-
     if (testType === TestType.F
       && unit === TestUnit.BUILDING) {
 
@@ -403,7 +386,18 @@ function getTemplateRow(templateList,
             {/* 수량  */}
             {k === 0 && (
               <Td rowSpan={detail.titleList.length}>
-                {getTestCount(template.testType, detail.unit)}
+                <Input
+                  key={detail.testCount}
+                  readOnly={!edit}
+                  variant="outlined"
+                  defaultValue={detail.testCount ?? getTestCount(template.testType, detail.unit)}
+                  onBlur={(e) => {
+                    const value = e.target.value || 0;
+                    if (detail.testCount !== value) {
+                      formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.testCount`, value);
+                    }
+                  }}
+                />
               </Td>
             )}
             {/* 단가 */}
