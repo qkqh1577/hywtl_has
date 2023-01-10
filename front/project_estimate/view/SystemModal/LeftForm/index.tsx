@@ -59,7 +59,7 @@ export default function ProjectSystemEstimateModalLeftForm(props: Props) {
         <Box sx={{
           display:   'flex',
           flexWrap:  'wrap',
-          minWidth:  '1000px',
+          // minWidth:  '1000px',
           minHeight: '1000px',
           backfaceVisibility: 'hidden',
         }}>
