@@ -23,7 +23,7 @@ import { closeStatus } from 'components/DataFieldProps';
 
 export default function ProjectMemoDrawerListRoute() {
   const dispatch = useDispatch();
-  const { page, requestChange, requestDelete } = useSelector((root: RootState) => root.projectMemo);
+  const { loading, page, requestChange, requestDelete } = useSelector((root: RootState) => root.projectMemo);
   const { detail: loginUser } = useSelector((root: RootState) => root.login);
   const [list, setList] = useState<ProjectMemoVO[]>([]);
   const onChange = useCallback((params: ProjectMemoChangeParameter) => dispatch(projectMemoAction.change(params)), [dispatch]);
@@ -70,6 +70,7 @@ export default function ProjectMemoDrawerListRoute() {
   return (
     <ProjectMemoList
       login={loginUser}
+      loading={loading}
       list={list}
       onDelete={onDelete}
       formik={formik}

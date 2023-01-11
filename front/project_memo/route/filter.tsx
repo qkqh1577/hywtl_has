@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useEffect,
 } from 'react';
 import ProjectMemoDrawerFilter from 'project_memo/view/Drawer/Filter';
 import {
@@ -12,15 +11,11 @@ import {
   ProjectMemoQuery
 } from 'project_memo/parameter';
 import {
-  useDispatch,
-  useSelector
+  useDispatch
 } from 'react-redux';
 import { projectMemoAction } from 'project_memo/action';
-import { RootState } from 'services/reducer';
 
 export default function ProjectMemoDrawerFilterRoute() {
-
-  const { projectId } = useSelector((root: RootState) => root.projectMemo);
   const dispatch = useDispatch();
   const setFilter = useCallback(
     (formikProps: ProjectMemoQuery) =>
@@ -33,12 +28,6 @@ export default function ProjectMemoDrawerFilterRoute() {
       setFilter({ ...values, page: 0 });
     }
   });
-
-  useEffect(() => {
-    if (projectId) {
-      dispatch(projectMemoAction.setFilter(initialProjectMemoQuery));
-    }
-  }, [projectId]);
 
   return (
     <FormikProvider value={formik}>
