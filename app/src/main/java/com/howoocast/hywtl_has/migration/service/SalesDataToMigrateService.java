@@ -282,11 +282,6 @@ public class SalesDataToMigrateService {
                         testTypeList.add(TestType.A);
                     }
                 }
-//                if (Objects.nonNull(buildingInfo.get("구검수량"))) {
-//                    if (k < buildingInfo.get("구검수량")) {
-//                        testTypeList.add(TestType.REVIEW);
-//                    }
-//                }
                 if (Objects.nonNull(buildingInfo.get("풍압수량"))) {
                     if (k < buildingInfo.get("풍압수량")) {
                         testTypeList.add(TestType.P);

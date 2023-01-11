@@ -52,8 +52,11 @@ function TotalAmountCell(props: TotalAmountCellProps) {
   const { testType, detail, fieldName, getTestCount } = props;
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+  console.log("detail.testCount : ", detail.testCount);
+  console.log("getTestCount(testType, detail.unit) : ", getTestCount(testType, detail.unit));
 
-  const testCount = getTestCount(testType, detail.unit);
+  const testCount = detail.testCount || getTestCount(testType, detail.unit);
+  console.log("testCount : ", testCount);
   const totalAmount = useMemo(() => {
     if (!detail || !detail.unitAmount) {
       return undefined;
@@ -136,7 +139,9 @@ function TotalAmountCell(props: TotalAmountCellProps) {
       <Box sx={{ width: '80%', height: '30px' }}>
         {edit && detail.inUse && (
           <Button shape="small" onClick={() => {
-            const testCount = getTestCount(testType, detail.unit);
+            console.log("detail.testCount : ", detail.testCount);
+            const testCount = detail.testCount ?? getTestCount(testType, detail.unit);
+            console.log(testCount);
             const totalAmount = detail && detail.unitAmount ? testCount * detail.unitAmount : 0;
             formik.setFieldValue(`${fieldName}.totalAmount`, totalAmount);
           }}>
@@ -166,10 +171,10 @@ export default function () {
       return 0;
     }
     const onlyUse = templateListWithOutReview.map(template => template.detailList)
-                                                    .reduce((a,
-                                                             b
-                                                    ) => [...a, ...b])
-                                                    .filter(detail => detail.inUse);
+                                             .reduce((a,
+                                                      b
+                                             ) => [...a, ...b])
+                                             .filter(detail => detail.inUse);
 
     if (!Array.isArray(onlyUse) || onlyUse.length === 0) {
       return 0;
@@ -205,30 +210,22 @@ export default function () {
   const getTestCount: getTestCount = useCallback((testType,
                                                   unit
   ) => {
-    if (testType === TestType.COMMON
+    if (testType === TestType.E
       && unit === TestUnit.SITE) {
-      return siteList.length;
-    }
-
-    if (testType === TestType.COMMON
-      && unit === TestUnit.BUILDING) {
-      buildingList.length;
+      return siteList.filter(site => site.withEnvironmentTest).length;
     }
 
     if (testType === TestType.F
       && unit === TestUnit.BUILDING) {
-
       return buildingList.filter(building => !!building.testTypeList?.find(testType => testType === TestType.F)).length;
     }
 
     if (testType === TestType.P
       && unit === TestUnit.BUILDING) {
-
       return buildingList.filter(building => !!building.testTypeList?.find(testType => testType === TestType.P)).length;
     }
     if (testType === TestType.A
       && unit === TestUnit.BUILDING) {
-
       return buildingList.filter(building => !!building.testTypeList?.find(testType => testType === TestType.A)).length;
     }
     return 0;
@@ -390,10 +387,11 @@ function getTemplateRow(templateList,
                   key={detail.testCount}
                   readOnly={!edit}
                   variant="outlined"
-                  defaultValue={detail.testCount ?? getTestCount(template.testType, detail.unit)}
+                  defaultValue={detail.testCount ?? 0}
                   onBlur={(e) => {
                     const value = e.target.value || 0;
                     if (detail.testCount !== value) {
+                      console.log("value : ", value)
                       formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.testCount`, value);
                     }
                   }}
