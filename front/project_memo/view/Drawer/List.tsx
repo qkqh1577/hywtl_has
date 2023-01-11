@@ -72,9 +72,9 @@ export default function ProjectMemoList({
             padding:         '15px',
             justifyContent:  'center',
           }}>
-          <TextBox variant="body2" sx={{minHeight:'40px', lineHeight:'40px'}}>
+          <TextBox variant="body2" sx={{minHeight:'30px', lineHeight:'30px'}}>
             {loading && (
-              <CircularProgress/>
+              <CircularProgress size={30}/>
             )}
             {!loading && (
               <>해당하는 메모가 없습니다.</>
