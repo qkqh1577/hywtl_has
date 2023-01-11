@@ -5,6 +5,7 @@ import {ProjectDbFilter, ProjectDbSearch} from "./reducer";
 export enum ProjectDbAction {
     requestList = 'project/db/list/request',
     setList = 'project/db/list/set',
+    setLoading = 'project/db/loading',
     requestSchema = 'project/db/schema/request',
     setSchema = 'project/db/schema/set',
     setFilter = 'project/db/filter/set',
@@ -24,6 +25,7 @@ export enum ProjectDbAction {
 export const projectDbAction = {
     requestList: createAction(ProjectDbAction.requestList)<ProjectDbSearch>(),
     setList: createAction(ProjectDbAction.setList)<ProjectDbVO[]>(),
+    setLoading: createAction(ProjectDbAction.setLoading)<boolean>(),
     requestSchema: createAction(ProjectDbAction.requestSchema)(),
     setSchema: createAction(ProjectDbAction.setSchema)<ProjectDbSchemaVO[]>(),
     setFilter: createAction(ProjectDbAction.setFilter)<ProjectDbFilter>(),

@@ -5,9 +5,14 @@ import {projectDbApi} from "./api";
 
 function* watchList() {
     while (true) {
-        const {payload: searchState} = yield take(projectDbAction.requestList);
-        const list: ProjectDbVO[] = yield call(projectDbApi.getList, searchState);
-        yield put(projectDbAction.setList(list));
+        try{
+            const {payload: searchState} = yield take(projectDbAction.requestList);
+            yield  put(projectDbAction.setLoading(true));
+            const list: ProjectDbVO[] = yield call(projectDbApi.getList, searchState);
+            yield put(projectDbAction.setList(list));
+        } finally {
+            yield  put(projectDbAction.setLoading(false));
+        }
     }
 }
 

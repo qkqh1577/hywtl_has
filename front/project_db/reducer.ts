@@ -5,6 +5,7 @@ import {Dayjs} from "dayjs";
 
 export interface ProjectDbState {
     list: ProjectDbVO[],
+    loading: boolean,
     schema: ProjectDbSchemaVO[],
     filter: ProjectDbFilter,
     search?: ProjectDbSearch,
@@ -36,6 +37,7 @@ export interface ProjectDbFilter {
 
 const initialState: ProjectDbState = {
     list: [],
+    loading: false,
     schema: [],
     filter: {},
     preset: [],
@@ -46,6 +48,10 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setList]: (state, action) => ({
         ...state,
         list: action.payload
+    }),
+    [ProjectDbAction.setLoading]: (state, action) => ({
+        ...state,
+        loading: action.payload
     }),
     [ProjectDbAction.setSchema]: (state, action) => ({
         ...state,
