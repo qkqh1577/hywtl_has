@@ -36,7 +36,11 @@ export default function ProjectDrawerRoute() {
   const toggleFilter = useCallback(() => dispatch(projectAction.toggleFilter()), [dispatch]);
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
-    navigate(`/project/sales-management/${item.id}/basic`);
+    navigate(`/project/sales-management/${item.id}/basic`,{
+      state:{
+        initialize: true
+      }
+    });
   };
 
   const formik = useFormik({

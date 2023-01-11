@@ -18,12 +18,15 @@ import { Box } from '@mui/material';
 import ProjectContainerTab from 'project/view/Container/Tab';
 import { projectBasicAction } from 'project_basic/action';
 import { projectCollectionAction } from 'project_collection/action';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {
   initialProjectQuery,
   ProjectUpdateParameter
 } from 'project/parameter';
 import { closeStatus } from 'components/DataFieldProps';
+import {projectComplexAction} from "../../project_complex/action";
+import {projectMemoAction} from "../../project_memo/action";
+import {initialPage} from "../../type/Page";
 
 export function Title() {
   const { detail } = useSelector((root: RootState) => root.project);
@@ -41,8 +44,18 @@ interface Props {
 }
 
 export default function ProjectContainerRoute(props: Props) {
+
+  const location = useLocation();
   const id = useId();
   const dispatch = useDispatch();
+
+  if(location.state?.initialize){
+    dispatch(projectComplexAction.setSiteList(undefined));
+    dispatch(projectComplexAction.setBuildingList(undefined));
+    dispatch(projectComplexAction.setTestDetail(undefined));
+    dispatch(projectMemoAction.setPage(initialPage));
+  }
+
   const { detail, requestDelete, requestUpdateStatus, filter, id: projectId } = useSelector((root: RootState) => root.project);
   const navigate = useNavigate();
   const onDelete = useCallback(() => dispatch(projectAction.delete()), [dispatch]);
