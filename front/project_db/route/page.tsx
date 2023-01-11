@@ -7,11 +7,16 @@ import {RootState} from "../../services/reducer";
 import {projectDbAction} from 'project_db/action';
 import {ProjectDbSearch} from "../reducer";
 import dayjs from "dayjs";
+import {progressAction} from "../../components/Progress/action";
 
 function Element() {
 
     const dispatch = useDispatch();
-    const {schema, search} = useSelector((root: RootState) => root.projectDb);
+    const {schema, search, loading} = useSelector((root: RootState) => root.projectDb);
+
+    useEffect(()=>{
+        dispatch(progressAction.progress(loading));
+    },[loading]);
 
     useEffect(() => {
         dispatch(projectDbAction.requestSchema());

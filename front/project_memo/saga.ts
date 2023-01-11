@@ -3,7 +3,8 @@ import {
   fork,
   put,
   select,
-  take
+  take,
+  delay
 } from 'redux-saga/effects';
 import { projectMemoAction } from 'project_memo/action';
 import Page from 'type/Page';
@@ -19,6 +20,7 @@ import { userNotificationAction } from 'user_notification/action';
 function* watchFilter() {
   while (true) {
     const { payload: query } = yield take(projectMemoAction.setFilter);
+    yield put(projectMemoAction.setLoading(true));
     try {
       const projectId = yield call(getProjectId);
       const page: Page<ProjectMemoVO> = yield call(projectMemoApi.getPage, projectId, query);
@@ -29,6 +31,9 @@ function* watchFilter() {
         status:   DialogStatus.ERROR,
         children: e as string,
       }));
+    } finally {
+      yield delay(200);
+      yield put(projectMemoAction.setLoading(false));
     }
   }
 }

@@ -8,6 +8,7 @@ import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectMemoState {
   open: boolean;
+  loading: boolean,
   projectId?: ProjectId;
   filter?: ProjectMemoQuery;
   page?: Page<ProjectMemoVO>;
@@ -19,6 +20,7 @@ export interface ProjectMemoState {
 
 const initial: ProjectMemoState = {
   open:          true,
+  loading:       false,
   requestAdd:    'idle',
   requestChange: 'idle',
   requestDelete: 'idle',
@@ -29,6 +31,12 @@ export const projectMemoReducer = createReducer(initial, {
                                      ) => ({
     ...state,
     open: action.payload,
+  }),
+  [ProjectMemoAction.setLoading]:     (state,
+                                      action
+  ) => ({
+    ...state,
+    loading: action.payload,
   }),
   [ProjectMemoAction.setProjectId]:  (state,
                                       action

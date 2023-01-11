@@ -53,6 +53,7 @@ import { faReadme, } from '@fortawesome/free-brands-svg-icons';
 import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 import AlertRoute from 'dialog/route/alert';
 import ConfirmRoute from 'dialog/route/confirm';
+import {Progress} from "./components/Progress";
 
 library.add(
   faAddressCard,
@@ -109,6 +110,7 @@ const render = () => {
                     <AlertRoute />
                     <ConfirmRoute />
                     <BusinessSelectorModalRoute />
+                    <Progress/>
                   </ThemeProvider>
                 </LocalizationProvider>
               </Provider>

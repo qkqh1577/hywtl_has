@@ -53,7 +53,7 @@ export default function UserSelector({ onChange, ...props }: Props) {
         readOnly
         value={user?.name ?? ''}
         onClick={() => {
-          if (props.readOnly || props.disabled) {
+          if (props.readOnly || props.disabled || !props.value) {
             return;
           }
           confirm({

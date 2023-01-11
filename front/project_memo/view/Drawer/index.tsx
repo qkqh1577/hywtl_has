@@ -65,6 +65,7 @@ export default function ProjectMemoDrawer(props: Props) {
         <Box sx={{
           display:         'flex',
           width:           '100%',
+          height:          '100%',
           flexWrap:        'wrap',
           backgroundColor: props.open ? 'inherit' : 'transparent',
         }}>

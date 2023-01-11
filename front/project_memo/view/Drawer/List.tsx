@@ -25,9 +25,11 @@ import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import useDialog from 'dialog/hook';
 import Button from 'layouts/Button';
+import CircularProgress from "../../../components/CircularProgress";
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
+  loading: boolean,
   login: LoginVO | undefined;
   list: ProjectMemoVO[];
   onDelete: DefaultFunction<ProjectMemoId>;
@@ -35,6 +37,7 @@ export interface ProjectMemoListProps
 }
 
 export default function ProjectMemoList({
+                                          loading,
                                           login,
                                           list,
                                           onDelete,
@@ -42,14 +45,19 @@ export default function ProjectMemoList({
                                           onChange
                                         }: ProjectMemoListProps) {
   const { confirm } = useDialog();
+  const siblingHeight = 330;
   return (
-    <Box sx={{
-      display:    'flex',
-      flexWrap:   'wrap',
-      width:      '100%',
-      flex:       1,
-      alignItems: 'flex-start',
-      padding:    '0 10px 15px 10px',
+    <Box
+      className="scroll-bar-holder"
+      sx={{
+        display:    'flex',
+        width:      '100%',
+        height:     `calc(100% - ${siblingHeight}px)`,
+        flexWrap:   'nowrap',
+        flexDirection: 'column',
+        overflowY:  'scroll',
+        alignItems: 'flex-start',
+        padding:    '0 10px 15px 10px',
     }}>
       {list && Array.isArray(list) && list.length === 0 && (
         <Box
@@ -64,8 +72,13 @@ export default function ProjectMemoList({
             padding:         '15px',
             justifyContent:  'center',
           }}>
-          <TextBox variant="body2">
-            해당하는 메모가 없습니다.
+          <TextBox variant="body2" sx={{minHeight:'30px', lineHeight:'30px'}}>
+            {loading && (
+              <CircularProgress size={30}/>
+            )}
+            {!loading && (
+              <>해당하는 메모가 없습니다.</>
+            )}
           </TextBox>
         </Box>
       )}
