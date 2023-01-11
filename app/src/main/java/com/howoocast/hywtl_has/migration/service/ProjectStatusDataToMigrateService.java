@@ -44,17 +44,29 @@ public class ProjectStatusDataToMigrateService {
                     code = value.substring(0, value.length() - 2);
                 }
 
-                em.persist(Project.of(
+                Project project = Project.of(
                     code,
+                    projectStatusMap.get(ProjectStatusHeader.NAME.getName()),
                     projectStatusMap.get(ProjectStatusHeader.NAME.getName()),
                     convertStringToBasicBidType(projectStatusMap.get(ProjectStatusHeader.BASIC_BID_TYPE.getName())),
                     a,
                     ProjectStatus.of(
-                        convertStringToProgressStatus(projectStatusMap.get(ProjectStatusHeader.PROGRESS_STATUS.getName())),
-                        convertStringToEstimateExpectation(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
-                        convertStringToEstimateStatus(projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
-                        convertStringToContractStatus(projectStatusMap.get(ProjectStatusHeader.CONTRACT_STATUS.getName())))
-                ));
+                        convertStringToProgressStatus(
+                            projectStatusMap.get(ProjectStatusHeader.PROGRESS_STATUS.getName())),
+                        convertStringToEstimateExpectation(
+                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_EXPECTATION.getName())),
+                        convertStringToEstimateStatus(
+                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
+                        convertStringToBidStatus(
+                            projectStatusMap.get(ProjectStatusHeader.ESTIMATE_STATUS.getName())),
+                        convertStringToContractStatus(
+                            projectStatusMap.get(ProjectStatusHeader.CONTRACT_STATUS.getName())))
+                );
+                project.updateCreatedBy(a);
+                em.persist(project);
+
+                em.flush();
+                em.clear();
             });
         });
     }
@@ -86,7 +98,8 @@ public class ProjectStatusDataToMigrateService {
 
     private ProjectEstimateExpectation convertStringToEstimateExpectation(String value) {
         return Arrays.stream(ProjectEstimateExpectation.values())
-            .filter(estimateExpectation -> estimateExpectation.getName().replaceAll(" ", "").equals(value.replaceAll(" ", "")))
+            .filter(estimateExpectation -> estimateExpectation.getName().replaceAll(" ", "")
+                .equals(value.replaceAll(" ", "")))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("해당하는 견적분류가 없습니다."));
     }
@@ -94,7 +107,7 @@ public class ProjectStatusDataToMigrateService {
     private ProjectEstimateStatus convertStringToEstimateStatus(String value) {
         // 입찰 상태인 경우 문제
         if (value.equals("대비입찰")) {
-            value = "대비견적";
+            return null;
         }
         String finalValue = value;
         return Arrays.stream(ProjectEstimateStatus.values())
@@ -112,10 +125,13 @@ public class ProjectStatusDataToMigrateService {
     }
 
     private ProjectBidStatus convertStringToBidStatus(String value) {
-        return Arrays.stream(ProjectBidStatus.values())
-            .filter(bidStatus -> bidStatus.getName().replaceAll(" ", "").equals(value.replaceAll(" ", "")))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("해당하는 입찰상태가 없습니다."));
+        if (value.equals("대비입찰")) {
+            return Arrays.stream(ProjectBidStatus.values())
+                .filter(bidStatus -> bidStatus.getName().replaceAll(" ", "").equals(value.replaceAll(" ", "")))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 입찰상태가 없습니다."));
+        }
+        return null;
     }
 
 }

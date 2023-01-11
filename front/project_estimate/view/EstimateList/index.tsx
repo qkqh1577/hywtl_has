@@ -44,7 +44,7 @@ export default function ProjectEstimateListSection(props: Props) {
           openSystemDetailModal,
         } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
-  console.log("list : ", list);
+
   useEffect(() => {
     if (!list || list.length === 0) {
       setModifiedAt(undefined);

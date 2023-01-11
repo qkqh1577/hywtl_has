@@ -131,7 +131,9 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         User writer,
         Project project,
         Business business,
-        ProjectEstimatePlan plan
+        ProjectEstimatePlan plan,
+        List<ProjectEstimateComplexSite> siteList,
+        List<ProjectEstimateComplexBuilding> buildingList
     ) {
         super(
             code,
@@ -141,7 +143,9 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             writer,
             project,
             business,
-            plan
+            plan,
+            siteList,
+            buildingList
         );
     }
 
@@ -170,7 +174,9 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             dto.getWriter(),
             dto.getProject(),
             business,
-            dto.getPlan()
+            dto.getPlan(),
+            dto.getSiteList(),
+            dto.getBuildingList()
         );
 
         instance.templateList = templateList;

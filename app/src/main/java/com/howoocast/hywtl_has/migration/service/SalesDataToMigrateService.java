@@ -36,6 +36,8 @@ import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCondition;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractConditionParameter.Description;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectContractRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSite;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateTemplateDetail;
@@ -48,6 +50,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -66,9 +70,7 @@ public class SalesDataToMigrateService {
 
     @PersistenceContext
     private EntityManager em;
-
     private final UserRepository userRepository;
-
     private final ProjectRepository projectRepository;
     private final BusinessRepository businessRepository;
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
@@ -86,7 +88,6 @@ public class SalesDataToMigrateService {
     public void migrate() {
         userRepository.findByUsername("admin").ifPresent(a -> {
             List<Map<String, String>> salesMapList = SalesExcelReader.excelReader();
-            List<EstimateTemplate> estimateTemplateList = estimateTemplateRepository.findAll();
             ContractBasic contractBasic = contractBasicRepository.findTop1By().orElse(ContractBasic.of());
             ContractCollection contractCollection = contractCollectionRepository.findTop1By()
                 .orElse(ContractCollection.of());
@@ -120,7 +121,6 @@ public class SalesDataToMigrateService {
                             a,
                             salesMap,
                             project,
-                            estimateTemplateList,
                             contractBasic,
                             contractCollection,
                             contractConditionList
@@ -133,6 +133,7 @@ public class SalesDataToMigrateService {
                         em.clear();
                     },
                     () -> {
+                        List<EstimateTemplate> estimateTemplateList = estimateTemplateRepository.findAll();
                         // 프로젝트 없는 경우.
                         String projectName = "프로젝트명 없음";
                         if (StringUtils.hasText(salesMap.get(SalesHeader.NAME.getName()))) {
@@ -157,7 +158,6 @@ public class SalesDataToMigrateService {
                             a,
                             salesMap,
                             project,
-                            estimateTemplateList,
                             contractBasic,
                             contractCollection,
                             contractConditionList);
@@ -178,36 +178,166 @@ public class SalesDataToMigrateService {
         User a,
         Map<String, String> salesMap,
         Project project,
-        List<EstimateTemplate> estimateTemplateList,
         ContractBasic contractBasic,
         ContractCollection contractCollection,
         List<ContractCondition> contractConditionList
     ) {
+        // E, C가 아닌 다른 구분은 데이터에서 제외.
+        if (!StringUtils.hasText(salesMap.get(SalesHeader.CONFIRM.getName()))
+            || !(salesMap.get(SalesHeader.CONFIRM.getName()).equals("C") || salesMap.get(SalesHeader.CONFIRM.getName()).equals("E"))) {
+            return;
+        }
         // 견적서 코드 생성
         String estimateCode = getEstimateCode(project);
         // 견적서 기본 정보 생성
         ProjectEstimatePlan plan = getProjectEstimatePlan(salesMap);
 
-        // 견적서(부모) 생성
-        ProjectEstimate estimate = ProjectEstimate.of(
-            estimateCode,
-            a,
-            project,
-            plan
-        );
-        // 견적서(자식) 생성
-        ProjectSystemEstimate projectSystemEstimate = getProjectSystemEstimate(
-            salesMap, estimateTemplateList, estimate);
+        // 대지 모형 리스트 생성
+        // 풍환경 수량 개수 만큼 생성.
+        // TODO: 공동 단가 관련한 문제 수정 필요.
+        List<ProjectEstimateComplexSite> siteList = new ArrayList<>();
+        if (StringUtils.hasText(salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))
+            && !salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()).equals("0")) {
+            for (int i = 0; i < getAmount(salesMap, SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()); i++) {
+                siteList.add(ProjectEstimateComplexSite.of(
+                    "임의" + (i + 1),
+                    Boolean.TRUE,
+                    null,
+                    null,
+                    null
+                ));
+            }
+        }
 
-        // Row 구분이 C인 경우 계약서가 존재한다.
-        persistProjectContract(
-            a,
-            salesMap,
-            project,
-            contractBasic,
-            contractCollection,
-            contractConditionList,
-            projectSystemEstimate);
+        // 동 생성
+        // 풍력, 풍압, 공기력, 구검 수량 개수가 얼마나 많은지 파악
+
+        List<Long> buildingCountList = new ArrayList<>();
+        Map<String, Long> buildingInfo = new HashMap<>();
+        // 동 개수 찾기
+        if (StringUtils.hasText(salesMap.get(SalesHeader.WINDMILL_AMOUNT.getName()))
+            && !salesMap.get(SalesHeader.WINDMILL_AMOUNT.getName()).equals("0")) {
+            buildingInfo.put("풍력수량", getAmount(salesMap, SalesHeader.WINDMILL_AMOUNT.getName()));
+            buildingCountList.add(getAmount(salesMap, SalesHeader.WINDMILL_AMOUNT.getName()));
+        }
+
+        if (StringUtils.hasText(salesMap.get(SalesHeader.AIR_AMOUNT.getName()))
+            && !salesMap.get(SalesHeader.AIR_AMOUNT.getName()).equals("0")) {
+            buildingInfo.put("공기력수량", getAmount(salesMap, SalesHeader.AIR_AMOUNT.getName()));
+            buildingCountList.add(getAmount(salesMap, SalesHeader.AIR_AMOUNT.getName()));
+        }
+
+        if (StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_AMOUNT.getName()))
+            && !salesMap.get(SalesHeader.INSPECTION_AMOUNT.getName()).equals("0")) {
+            buildingInfo.put("구검수량", getAmount(salesMap, SalesHeader.INSPECTION_AMOUNT.getName()));
+            buildingCountList.add(getAmount(salesMap, SalesHeader.INSPECTION_AMOUNT.getName()));
+        }
+
+        if (StringUtils.hasText(salesMap.get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()))
+            && !salesMap.get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()).equals("0")) {
+            buildingInfo.put("풍압수량", getAmount(salesMap, SalesHeader.WIND_PRESSURE_AMOUNT.getName()));
+            buildingCountList.add(getAmount(salesMap, SalesHeader.WIND_PRESSURE_AMOUNT.getName()));
+        }
+
+        if (buildingCountList.size() > 0) {
+            Long buildingSize = Collections.max(buildingCountList);
+            if (salesMap.get(SalesHeader.CODE.getName()).equals("18075.0")) {
+            System.out.println("buildingSize = " + buildingSize);
+            System.out.println("helo");
+            }
+            List<ProjectEstimateComplexBuilding> complexBuildingList = new ArrayList<>();
+            for (int i = 0; i < buildingSize; i++) {
+                ProjectEstimateComplexBuilding complexBuilding = ProjectEstimateComplexBuilding.of(
+                    "임의" + (i + 1),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                );
+                em.persist(complexBuilding);
+                em.flush();
+                complexBuildingList.add(
+                    complexBuilding
+                );
+            }
+
+            for (int k = 0; k < complexBuildingList.size(); k++) {
+                List<TestType> testTypeList = new ArrayList<>();
+                if (Objects.nonNull(buildingInfo.get("풍력수량"))) {
+                    if (k < buildingInfo.get("풍력수량")) {
+                        testTypeList.add(TestType.F);
+                    }
+                }
+                if (Objects.nonNull(buildingInfo.get("공기력수량"))) {
+                    if (k < buildingInfo.get("공기력수량")) {
+                        testTypeList.add(TestType.A);
+                    }
+                }
+                if (Objects.nonNull(buildingInfo.get("풍압수량"))) {
+                    if (k < buildingInfo.get("풍압수량")) {
+                        testTypeList.add(TestType.P);
+                    }
+                }
+                complexBuildingList.get(k).updateTestTypeList(testTypeList);
+            }
+            // 견적서(부모) 생성
+            ProjectEstimate estimate = ProjectEstimate.of(
+                estimateCode,
+                a,
+                project,
+                plan,
+                siteList,
+                complexBuildingList
+            );
+
+            // 견적서(자식) 생성
+            ProjectSystemEstimate projectSystemEstimate = getProjectSystemEstimate(
+                salesMap,
+                estimate);
+
+            // Row 구분이 C인 경우 계약서가 존재한다.
+            persistProjectContract(
+                a,
+                salesMap,
+                project,
+                contractBasic,
+                contractCollection,
+                contractConditionList,
+                projectSystemEstimate);
+        } else {
+            // 견적서(부모) 생성
+            ProjectEstimate estimate = ProjectEstimate.of(
+                estimateCode,
+                a,
+                project,
+                plan,
+                null,
+                null
+            );
+            // 견적서(자식) 생성
+            ProjectSystemEstimate projectSystemEstimate = getProjectSystemEstimate(
+                salesMap,
+                estimate);
+
+            // Row 구분이 C인 경우 계약서가 존재한다.
+            persistProjectContract(
+                a,
+                salesMap,
+                project,
+                contractBasic,
+                contractCollection,
+                contractConditionList,
+                projectSystemEstimate);
+        }
     }
 
     private void persistProjectContract(
@@ -628,13 +758,14 @@ public class SalesDataToMigrateService {
     @NotNull
     private ProjectSystemEstimate getProjectSystemEstimate(
         Map<String, String> salesMap,
-        List<EstimateTemplate> estimateTemplateList,
         ProjectEstimate estimate) {
+        List<EstimateTemplate> estimateTemplateList = estimateTemplateRepository.findAll();
         List<ProjectEstimateTemplate> projectEstimateTemplateList = new ArrayList<>();
-
         estimateTemplateList.forEach(estimateTemplate -> {
             // 풍력 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.WINDMILL_AMOUNT.getName()))
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.WINDMILL_AMOUNT.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.WINDMILL_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.WINDMILL_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
@@ -646,7 +777,9 @@ public class SalesDataToMigrateService {
                 );
             }
             // 풍압 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()))
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.WIND_PRESSURE_AMOUNT.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.WIND_PRESSURE_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
@@ -658,7 +791,9 @@ public class SalesDataToMigrateService {
                 );
             }
             // 풍환경 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.WIND_ENVIRONMENT_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
@@ -670,7 +805,9 @@ public class SalesDataToMigrateService {
                 );
             }
             // 공기력 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.AIR_AMOUNT.getName()))
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.AIR_AMOUNT.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.AIR_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.AIR_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
@@ -695,7 +832,9 @@ public class SalesDataToMigrateService {
 //                );
 //            }
             // 구검 수량
-            if (StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_AMOUNT.getName()))
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.INSPECTION_AMOUNT.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_AMOUNT.getName()))
                 && StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
@@ -707,7 +846,9 @@ public class SalesDataToMigrateService {
                 );
             }
             // 공동 단가
-            if (StringUtils.hasText(salesMap.get(SalesHeader.COMMON_UNIT_PRICE.getName()))) {
+            if (estimateTemplate.getTestType()
+                .equals(getProjectEstimateTemplateTestType(SalesHeader.COMMON_UNIT_PRICE.getName()))
+                && StringUtils.hasText(salesMap.get(SalesHeader.COMMON_UNIT_PRICE.getName()))) {
                 projectEstimateTemplateList.add(
                     getProjectEstimateTemplate(
                         salesMap,
@@ -729,6 +870,7 @@ public class SalesDataToMigrateService {
             new CustomFinder<>(businessRepository, Business.class).byId(1L) // 견적업체 : 한양풍동연구소.
         );
         em.persist(projectSystemEstimate);
+        em.flush();
         return projectSystemEstimate;
     }
 
@@ -760,6 +902,12 @@ public class SalesDataToMigrateService {
                     RoundingMode.FLOOR).toPlainString()
             );
         }
+        Boolean isLh = Boolean.FALSE;
+        if (StringUtils.hasText(salesMap.get(SalesHeader.LH.getName()))) {
+            if (salesMap.get(SalesHeader.LH.getName()).equals("Y")) {
+                isLh = Boolean.TRUE;
+            }
+        }
         Long testAmount = null;
         if (StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName()))) {
             testAmount = Long.parseLong(
@@ -786,7 +934,8 @@ public class SalesDataToMigrateService {
             expectedFinalReportDeadline,
             testAmount,
             reviewAmount,
-            totalAmount
+            totalAmount,
+            isLh
         );
     }
 
@@ -807,37 +956,35 @@ public class SalesDataToMigrateService {
         String typeCountKey,
         String unitPriceKey
     ) {
-
         List<ProjectEstimateTemplateDetail> projectEstimateTemplateDetailList = new ArrayList<>();
+
         estimateTemplate.getDetailList().forEach(estimateTemplateDetail -> {
             List<Title> titleList = estimateTemplateDetail.getTitleList().stream().map(
                 Title::of).collect(Collectors.toList());
-            if (estimateTemplate.getTestType().equals(getProjectEstimateTemplateTestType(typeCountKey))) {
-                Long count = null;
-                // 공동수량 없어서 추가된 코드
-                if (typeCountKey.equals("1")) {
-                    count = Long.parseLong("1");
-                } else {
-                    count = Long.parseLong(
-                        new BigDecimal(salesMap.get(typeCountKey)).setScale(0, RoundingMode.FLOOR)
-                            .toPlainString()
-                    );
-                }
-                Long price = Long.parseLong(
-                    new BigDecimal(salesMap.get(unitPriceKey)).setScale(0, RoundingMode.FLOOR)
+            Long count = null;
+            // 공동수량 없어서 추가된 코드
+            if (typeCountKey.startsWith("1")) {
+                count = Long.parseLong("1");
+            } else {
+                count = Long.parseLong(
+                    new BigDecimal(salesMap.get(typeCountKey)).setScale(0, RoundingMode.FLOOR)
                         .toPlainString()
                 );
-                projectEstimateTemplateDetailList.add(ProjectEstimateTemplateDetail.of(
-                    titleList,
-                    estimateTemplateDetail.getUnit().getName(),
-                    count,
-                    price,
-                    count * price,
-                    estimateTemplateDetail.getInUse(),
-                    estimateTemplateDetail.getNote()
-                ));
             }
-            ;
+            Long price = Long.parseLong(
+                new BigDecimal(salesMap.get(unitPriceKey)).setScale(0, RoundingMode.FLOOR)
+                    .toPlainString()
+            );
+
+            projectEstimateTemplateDetailList.add(ProjectEstimateTemplateDetail.of(
+                titleList,
+                estimateTemplateDetail.getUnit().name(),
+                count,
+                price,
+                count * price,
+                estimateTemplateDetail.getInUse(),
+                estimateTemplateDetail.getNote()
+            ));
         });
 
         return ProjectEstimateTemplate.of(
@@ -849,6 +996,7 @@ public class SalesDataToMigrateService {
 
     @NotNull
     private static TestType getProjectEstimateTemplateTestType(String typeCountKey) {
+        System.out.println("typeCountKey = " + typeCountKey);
         if (typeCountKey.equals(SalesHeader.WINDMILL_AMOUNT.getName())) {
             return TestType.F;
         } else if (typeCountKey.equals(SalesHeader.WIND_PRESSURE_AMOUNT.getName())) {
@@ -881,6 +1029,9 @@ public class SalesDataToMigrateService {
                 project.getBasic().updateIsLh(Boolean.TRUE);
                 em.persist(project);
             }
+        }else {
+            project.getBasic().updateIsLh(Boolean.FALSE);
+            em.persist(project);
         }
     }
 

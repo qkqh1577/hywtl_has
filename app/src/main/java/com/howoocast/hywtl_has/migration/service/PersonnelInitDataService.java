@@ -20,7 +20,8 @@ public class PersonnelInitDataService {
         userRepository.findByUsername("admin").ifPresent(a -> {
             Personnel admin = Personnel.of(a);
             em.persist(admin);
-
+            em.flush();
+            em.clear();
         });
     }
 

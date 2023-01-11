@@ -221,8 +221,8 @@ public class ProjectBasic {
      * @param fullName
      * @return
      */
-    public ProjectBasic updateAlias(String fullName) {
-        this.alias = fullName;
+    public ProjectBasic updateName(String name) {
+        this.name = name;
         return this;
     }
 

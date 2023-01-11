@@ -293,6 +293,9 @@ public abstract class ProjectEstimate extends CustomEntity {
      * @param writer
      * @param project
      * @param business
+     * @param plan
+     * @param siteList
+     * @param buildingList
      */
     protected ProjectEstimate(
         String code,
@@ -302,7 +305,9 @@ public abstract class ProjectEstimate extends CustomEntity {
         User writer,
         Project project,
         Business business,
-        ProjectEstimatePlan plan
+        ProjectEstimatePlan plan,
+        List<ProjectEstimateComplexSite> siteList,
+        List<ProjectEstimateComplexBuilding> buildingList
     ) {
         this.project = project;
         this.code = code;
@@ -313,6 +318,8 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.confirmed = false;
         this.business = business;
         this.plan = plan;
+        this.siteList = siteList;
+        this.buildingList = buildingList;
     }
 
     /**
@@ -326,12 +333,16 @@ public abstract class ProjectEstimate extends CustomEntity {
         String code,
         User writer,
         Project project,
-        ProjectEstimatePlan plan
+        ProjectEstimatePlan plan,
+        @Nullable List<ProjectEstimateComplexSite> siteList,
+        @Nullable List<ProjectEstimateComplexBuilding> buildingList
     ) {
         this.project = project;
         this.code = code;
         this.writer = writer;
         this.plan = plan;
+        this.siteList = siteList;
+        this.buildingList = buildingList;
     }
 
     /**
@@ -346,13 +357,17 @@ public abstract class ProjectEstimate extends CustomEntity {
         String code,
         User writer,
         Project project,
-        ProjectEstimatePlan plan
+        ProjectEstimatePlan plan,
+        @Nullable List<ProjectEstimateComplexSite> siteList,
+        @Nullable List<ProjectEstimateComplexBuilding> buildingList
     ) {
         return new ProjectEstimate(
             code,
             writer,
             project,
-            plan
+            plan,
+            siteList,
+            buildingList
         ) {
         };
     }

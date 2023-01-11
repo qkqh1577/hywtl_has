@@ -93,6 +93,7 @@ public class ComparedEstimateDataToMigrateService {
                         estimateMap.get(ComparedEstimateHeader.RECIPIENT.getName()),
                         business
                     );
+                    comparedEstimate.updateCreatedBy(a);
                     em.persist(comparedEstimate);
                 },
                 () -> {
@@ -110,6 +111,7 @@ public class ComparedEstimateDataToMigrateService {
                             null,
                             null
                         );
+                        business.updateCreatedBy(a);
                         em.persist(business);
 
                         ProjectEstimate estimate = ProjectEstimate.of(
@@ -132,6 +134,7 @@ public class ComparedEstimateDataToMigrateService {
                             recipient,
                             business
                         );
+                        comparedEstimate.updateCreatedBy(a);
                         em.persist(comparedEstimate);
                     } else {
                         ProjectEstimate estimate = ProjectEstimate.of(
@@ -154,6 +157,7 @@ public class ComparedEstimateDataToMigrateService {
                             recipient,
                             null
                         );
+                        comparedEstimate.updateCreatedBy(a);
                         em.persist(comparedEstimate);
                     }
                 }
