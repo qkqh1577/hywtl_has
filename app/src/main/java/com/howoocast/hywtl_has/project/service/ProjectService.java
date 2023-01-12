@@ -324,7 +324,7 @@ public class ProjectService {
         projectBasicInternalContributorRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectBasicFailReasonRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
         projectBidRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
-        projectCollectionRepository.findByProject_Id(id).forEach(CustomEntity::delete);
+        projectCollectionRepository.findByProject_Id(id).ifPresent(CustomEntity::delete);
         projectComplexBuildingRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         projectComplexSiteRepository.findByProject_Id(id).forEach(CustomEntity::delete);
         userNotificationRepository.findByProject_Id(id).forEach(UserNotification::update);

@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -178,7 +179,6 @@ public class ProjectContractService {
 
     private void setConfirmedEstimate(ProjectContract instance) {
         estimateRepository.findById(instance.getEstimate().getId()).ifPresent(estimateByContract -> {
-            //TODO: 계약서 복수 선택 가능함에 따라 바뀌는 로직
             List<ProjectEstimate> byProjectIdAndConfirmed = estimateRepository.findByProject_IdAndConfirmed(
                 instance.getProject().getId(), Boolean.TRUE);
             if (!byProjectIdAndConfirmed.isEmpty()) {
@@ -201,24 +201,24 @@ public class ProjectContractService {
     }
 
     private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
-        List<ProjectCollection> projectCollectionList = projectCollectionRepository.findByProject_Id(projectId);
-//        if (projectCollectionList.isEmpty()) {
-//            projectCollection = projectCollectionRepository.save(
-//                ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
-//                    throw new NotFoundException(Project.KEY, projectId);
-//                })));
-//        }
-//        List<ProjectCollectionStage> collectionStageList = stageRepository
-//            .findByProjectCollection_Id(projectCollection.getId());
-//        if (collectionStageList.isEmpty()) {
-//            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
-//        } else {
-//            stageRepository.findByProjectCollection_Id(projectCollection.getId())
-//                .forEach(CustomEntity::delete);
-//            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
-//        }
-//        projectCollection.setStageList(collectionStageList);
-//        setInitVersion(projectCollection);
+        ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
+        if (Objects.isNull(projectCollection)) {
+            projectCollection = projectCollectionRepository.save(
+                ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
+                    throw new NotFoundException(Project.KEY, projectId);
+                })));
+        }
+        List<ProjectCollectionStage> collectionStageList = stageRepository
+            .findByProjectCollection_Id(projectCollection.getId());
+        if (collectionStageList.isEmpty()) {
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
+        } else {
+            stageRepository.findByProjectCollection_Id(projectCollection.getId())
+                .forEach(CustomEntity::delete);
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
+        }
+        projectCollection.setStageList(collectionStageList);
+        setInitVersion(projectCollection);
     }
 
     private void setInitVersion(ProjectCollection projectCollection) {
