@@ -28,6 +28,7 @@ import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatus;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatusType;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -80,6 +82,7 @@ public class SalesDataToMigrateService {
     private final ContractBasicRepository contractBasicRepository;
     private final ContractCollectionRepository contractCollectionRepository;
     private final ContractConditionRepository contractConditionRepository;
+    private final ProjectCollectionRepository projectCollectionRepository;
 
 
     private static long lastTimeStamp = System.currentTimeMillis();
@@ -104,7 +107,65 @@ public class SalesDataToMigrateService {
                 }
 
                 String finalCode = code.trim();
-                System.out.println("finalCode = " + finalCode);
+//                System.out.println("finalCode = " + finalCode);
+
+                if (
+                    (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.COMMON_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.COMMON_UNIT_PRICE.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.WINDMILL_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.WINDMILL_UNIT_PRICE.getName()).startsWith("-"))
+                        || (StringUtils.hasText(
+                        salesMapList.get(rowNum).get(SalesHeader.WIND_PRESSURE_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.WIND_PRESSURE_UNIT_PRICE.getName()).startsWith("-"))
+                        || (StringUtils.hasText(
+                        salesMapList.get(rowNum).get(SalesHeader.WIND_ENVIRONMENT_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.WIND_ENVIRONMENT_UNIT_PRICE.getName())
+                        .startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.AIR_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.AIR_UNIT_PRICE.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.BUILDING_UNIT_PRICE.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.BUILDING_UNIT_PRICE.getName()).startsWith("-"))
+                        || (
+                        StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.INSPECTION_UNIT_PRICE.getName()))
+                            && salesMapList.get(rowNum).get(SalesHeader.INSPECTION_UNIT_PRICE.getName())
+                            .startsWith("-"))
+                        || (
+                        StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName()))
+                            && salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName())
+                            .startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.ADVANCE_AMOUNT.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.ADVANCE_AMOUNT.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_1.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_1.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_2.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_2.getName()).startsWith("-"))
+                        || (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_3.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.MIDDLE_AMOUNT_3.getName()).startsWith("-"))
+                        || (StringUtils.hasText(
+                        salesMapList.get(rowNum).get(SalesHeader.BALANCE_COLLECTION_AMOUNT.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.BALANCE_COLLECTION_AMOUNT.getName())
+                        .startsWith("-"))
+                        || (StringUtils.hasText(
+                        salesMapList.get(rowNum).get(SalesHeader.TOTAL_CONSTRUCTION_SUPPLY_AMOUNT.getName()))
+                        && salesMapList.get(rowNum).get(SalesHeader.TOTAL_CONSTRUCTION_SUPPLY_AMOUNT.getName())
+                        .startsWith("-"))
+                        || (
+                        StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_CONSTRUCTION_SUM.getName()))
+                            && salesMapList.get(rowNum).get(SalesHeader.TOTAL_CONSTRUCTION_SUM.getName())
+                            .startsWith("-"))
+                ) {
+                    System.out.println("제외원인 : 음수값" + finalCode);
+                    continue;
+                }
+
+                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()))
+                    && (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("P")
+                    || salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("Q"))) {
+                    System.out.println("제외원인 : 구분 C, Q아닌 경우" + finalCode);
+                }
+
                 projectRepository.findByBasic_Code(finalCode).ifPresentOrElse(project -> {
                         // 기존 프로젝트가 있는 경우
                         setProjectBusiness(salesMapList.get(rowNum), project);
@@ -121,7 +182,7 @@ public class SalesDataToMigrateService {
                         if (!StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()))) {
                             return;
                         }
-                        System.out.println("salesMapList.size() = " + salesMapList.size());
+
                         if ((salesMapList.size() - 1) > rowNum
                             && StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()))
                             && StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CODE.getName()))
@@ -137,7 +198,7 @@ public class SalesDataToMigrateService {
                             );
                         }
                         // 타임스템프 찍는 방법.
-                        System.out.println(System.currentTimeMillis() - lastTimeStamp);
+//                        System.out.println(System.currentTimeMillis() - lastTimeStamp);
                         lastTimeStamp = System.currentTimeMillis();
 
                         em.clear();
@@ -382,7 +443,7 @@ public class SalesDataToMigrateService {
         if (StringUtils.hasText(salesMap.get(SalesHeader.CONFIRM.getName()))
             && salesMap.get(SalesHeader.CONFIRM.getName()).equals("C")
             && StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_CONSTRUCTION_SUPPLY_AMOUNT.getName()))
-            && StringUtils.hasText(salesMap.get(SalesHeader.CONTRACT_DATE.getName()))) {
+        ) {
 
             // 해당 견적서 최종 승인
             projectSystemEstimate.changeConfirmed(Boolean.TRUE);
@@ -494,6 +555,12 @@ public class SalesDataToMigrateService {
                 contractCollection.getTotalAmountNote(),
                 totalAmount
             );
+
+            LocalDate finalDate = getDate(salesMap, SalesHeader.ORDER_DATE.getName());
+            if (StringUtils.hasText(salesMap.get(SalesHeader.CONTRACT_DATE.getName()))) {
+                finalDate = getDate(salesMap, SalesHeader.CONTRACT_DATE.getName());
+            }
+
             ProjectContract finalContract = ProjectContract.of(
                 project,
                 projectEstimate,
@@ -506,7 +573,7 @@ public class SalesDataToMigrateService {
                     contractBasic.getServiceDuration(),
                     contractBasic.getOutcome(),
                     contractBasic.getDescription(),
-                    getDate(salesMap, SalesHeader.CONTRACT_DATE.getName()),
+                    finalDate,
                     null,
                     null,
                     null,
@@ -527,37 +594,48 @@ public class SalesDataToMigrateService {
             em.flush();
 
             // 진행정보 수금 데이터 시작
-
-            // 진행정보 수금 생성
-            ProjectCollection projectCollection = ProjectCollection.of(project);
-            em.persist(projectCollection);
-
-            List<ProjectCollectionStage> collectionStageList = new ArrayList<>();
-
-            // 수금 단계에 맞는 가짜 contractCollection List 생성
-            List<ProjectContractCollectionStage> stageList2 = new ArrayList<>();
-            getStageList(salesMap, stageList2);
-            /*
-             * 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가하지만
-             * 엑셀 데이터상 비교하기 힘들어서 가짜 데이터를 만들어서 처리(필요없는 데이터 하드코딩으로 넣음)
-             * */
-
-            ProjectContractCollection projectContractCollectionData = ProjectContractCollection.of(
-                "다음의 기성단계 별 해당금액을 현금으로 지급",
-                stageList2,
-                contractCollection.getTotalAmountNote(),
-                totalAmount
-            );
-
-            // 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가.
-            setProjectCollectionStageList(salesMap, projectCollection, collectionStageList,
-                projectContractCollectionData);
-
-            projectCollection.setStageList(collectionStageList);
-            em.persist(projectCollection);
-        }else {
-            System.out.println("salesMap.get(SalesHeader.CODE.getName()) = " + salesMap.get(SalesHeader.CODE.getName()));
+            persistProjectCollection(salesMap, project, contractCollection, totalAmount);
+        } else {
+//            System.out.println("salesMap.get(SalesHeader.CODE.getName()) = " + salesMap.get(SalesHeader.CODE.getName()));
         }
+    }
+
+    private void persistProjectCollection(Map<String, String> salesMap, Project project,
+        ContractCollection contractCollection,
+        Long totalAmount) {
+        Optional<ProjectCollection> projectCollectionExisted = projectCollectionRepository.findByProject_Id(
+            project.getId());
+        if (projectCollectionExisted.isPresent()) {
+            return;
+        }
+
+        // 진행정보 수금 생성
+        ProjectCollection projectCollection = ProjectCollection.of(project);
+        em.persist(projectCollection);
+
+        List<ProjectCollectionStage> collectionStageList = new ArrayList<>();
+
+        // 수금 단계에 맞는 가짜 contractCollection List 생성
+        List<ProjectContractCollectionStage> stageList2 = new ArrayList<>();
+        getStageList(salesMap, stageList2);
+        /*
+         * 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가하지만
+         * 엑셀 데이터상 비교하기 힘들어서 가짜 데이터를 만들어서 처리(필요없는 데이터 하드코딩으로 넣음)
+         * */
+
+        ProjectContractCollection projectContractCollectionData = ProjectContractCollection.of(
+            "다음의 기성단계 별 해당금액을 현금으로 지급",
+            stageList2,
+            contractCollection.getTotalAmountNote(),
+            totalAmount
+        );
+
+        // 계약서 기반으로 수금 단계 만들고 -> 엑셀에서 더 데이터가 있는 경우 수금단계를 만들고 추가.
+        setProjectCollectionStageList(salesMap, projectCollection, collectionStageList,
+            projectContractCollectionData);
+
+        projectCollection.setStageList(collectionStageList);
+        em.persist(projectCollection);
     }
 
     private void setProjectCollectionStageList(Map<String, String> salesMap, ProjectCollection projectCollection,
@@ -748,8 +826,6 @@ public class SalesDataToMigrateService {
         String amountKey,
         String timeKey
     ) {
-        System.out.println("amountKey = " + amountKey);
-        System.out.println("salesMap.get(amountKey) = " + salesMap.get(amountKey));
         Long amount = Long.parseLong(
             new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.FLOOR)
                 .toPlainString()
@@ -901,25 +977,12 @@ public class SalesDataToMigrateService {
             null,
             new CustomFinder<>(businessRepository, Business.class).byId(1L) // 견적업체 : 한양풍동연구소.
         );
-        if (salesMapList.get(rowNum).get(SalesHeader.CODE.getName()).equals("22152.0")) {
-            System.out.println("salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()) = " + salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()));
-            System.out.println("salesMapList.get(rowNum + 1).get(SalesHeader.ESTIMATE_ORDER.getName()) = " + salesMapList.get(rowNum + 1).get(SalesHeader.ESTIMATE_ORDER.getName()));
-            System.out.println("salesMapList.get(rowNum).get(SalesHeader.CODE.getName()) = " + salesMapList.get(rowNum).get(SalesHeader.CODE.getName()));
-            System.out.println("salesMapList.get(rowNum + 1).get(SalesHeader.CODE.getName()) = " + salesMapList.get(rowNum + 1).get(SalesHeader.CODE.getName()));
-            System.out.println("salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()) = " + salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()));
-            System.out.println("salesMapList.get(rowNum + 1).get(SalesHeader.CONFIRM.getName()) = " + salesMapList.get(rowNum + 1).get(SalesHeader.CONFIRM.getName()));
-            System.out.println("condition1 = " + salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()).equals(
-                salesMapList.get(rowNum + 1).get(SalesHeader.ESTIMATE_ORDER.getName())));
-            System.out.println("condition2 = " + salesMapList.get(rowNum).get(SalesHeader.CODE.getName()).equals(
-                salesMapList.get(rowNum + 1).get(SalesHeader.CODE.getName())));
-            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
-        }
 
         if (salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()).equals(
             salesMapList.get(rowNum + 1).get(SalesHeader.ESTIMATE_ORDER.getName()))
             && salesMapList.get(rowNum).get(SalesHeader.CODE.getName()).equals(
             salesMapList.get(rowNum + 1).get(SalesHeader.CODE.getName()))) {
-            if(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("C")) {
+            if (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("C")) {
                 em.persist(projectSystemEstimate);
                 em.flush();
                 return projectSystemEstimate;
@@ -997,9 +1060,6 @@ public class SalesDataToMigrateService {
     }
 
     private static LocalDate getDate(Map<String, String> salesMap, String type) {
-        System.out.println("code : " + salesMap.get(SalesHeader.CODE.getName()));
-        System.out.println("type = " + type);
-        System.out.println("salesMap.get(type) = " + salesMap.get(type));
         String[] splitDate = salesMap.get(type).split("-");
         String year = splitDate[2];
         String month = String.format("%02d", Integer.parseInt(splitDate[1].split("월")[0]));
@@ -1053,7 +1113,6 @@ public class SalesDataToMigrateService {
 
     @NotNull
     private static TestType getProjectEstimateTemplateTestType(String typeCountKey) {
-        System.out.println("typeCountKey = " + typeCountKey);
         if (typeCountKey.equals(SalesHeader.WINDMILL_AMOUNT.getName())) {
             return TestType.F;
         } else if (typeCountKey.equals(SalesHeader.WIND_PRESSURE_AMOUNT.getName())) {
@@ -1196,9 +1255,7 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type)
                 );
             }
-            if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
-                System.out.println("hello world");
-            }
+
             // 관계사 있는지 먼저 확인.
             if (projectBasicBusinessRepository
                 .findByBusiness_NameAndProjectAndInvolvedTypeAndBusinessManager_Name(
@@ -1216,10 +1273,6 @@ public class SalesDataToMigrateService {
                             project,
                             getProjectInvolvedType(type)
                         ).isEmpty()) {
-                        if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
-                            System.out.println("hello world");
-                        }
-
                         em.persist(ProjectBasicBusiness.of(
                             getProjectInvolvedType(type),
                             project,
@@ -1286,9 +1339,7 @@ public class SalesDataToMigrateService {
                     getProjectInvolvedType(type)
                 );
             }
-            if (salesMap.get(SalesHeader.CODE.getName()).equals("18091.0")) {
-                System.out.println("hello world");
-            }
+
             if (projectBasicBusinessList.isEmpty()) {
                 // 관계사에 없을 경우 새로 생성한다.
                 em.persist(ProjectBasicBusiness.of(
