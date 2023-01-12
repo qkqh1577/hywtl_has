@@ -46,7 +46,7 @@ public class ContractCollectionInitDataService {
             ));
 
             ContractCollection contractCollection = ContractCollection.of();
-            contractCollection.change(contractCollectionStageList, "VAT 포함");
+            contractCollection.change(contractCollectionStageList);
             contractCollection.updateCreatedBy(a);
             em.persist(contractCollection);
         });

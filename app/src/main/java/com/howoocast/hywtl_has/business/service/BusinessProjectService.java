@@ -44,8 +44,8 @@ public class BusinessProjectService {
         if (Objects.nonNull(involvedType)) {
             projectBasicBusinessRepository.findByBusiness_IdAndInvolvedType(businessId, involvedType).stream().map(
                 projectBasicBusiness -> {
-                    ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness);
-                    ProjectContract projectContract = getProjectContract(projectBasicBusiness);
+                    ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness).stream().findFirst().orElse(null);
+                    ProjectContract projectContract = getProjectContract(projectBasicBusiness).stream().findFirst().orElse(null);
                     return BusinessInvolvedProjectView.assemble(
                         projectBasicBusiness,
                         projectEstimate,
@@ -56,8 +56,8 @@ public class BusinessProjectService {
         return projectBasicBusinessRepository.findByBusiness_Id(businessId).stream().map(
             projectBasicBusiness -> {
                 if (Objects.nonNull(projectBasicBusiness)) {
-                    ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness);
-                    ProjectContract projectContract = getProjectContract(projectBasicBusiness);
+                    ProjectEstimate projectEstimate = getProjectEstimate(projectBasicBusiness).stream().findFirst().orElse(null);
+                    ProjectContract projectContract = getProjectContract(projectBasicBusiness).stream().findFirst().orElse(null);
                     return BusinessInvolvedProjectView.assemble(
                         projectBasicBusiness,
                         projectEstimate,
@@ -82,18 +82,18 @@ public class BusinessProjectService {
             .collect(Collectors.toList());
     }
 
-    private ProjectContract getProjectContract(ProjectBasicBusiness projectBasicBusiness) {
-        ProjectContract projectContract = projectContractRepository.findByProject_IdAndConfirmed(
+    private List<ProjectContract> getProjectContract(ProjectBasicBusiness projectBasicBusiness) {
+        List<ProjectContract> projectContractList = projectContractRepository.findByProject_IdAndConfirmed(
             projectBasicBusiness.getProject().getId(),
-            Boolean.TRUE).orElse(null);
-        return projectContract;
+            Boolean.TRUE);
+        return projectContractList;
     }
 
-    private ProjectEstimate getProjectEstimate(ProjectBasicBusiness projectBasicBusiness) {
-        ProjectEstimate projectEstimate = projectEstimateRepository.findByProject_IdAndConfirmed(
+    private List<ProjectEstimate> getProjectEstimate(ProjectBasicBusiness projectBasicBusiness) {
+        List<ProjectEstimate> projectEstimateList = projectEstimateRepository.findByProject_IdAndConfirmed(
             projectBasicBusiness.getProject().getId(),
-            Boolean.TRUE).orElse(null);
-        return projectEstimate;
+            Boolean.TRUE);
+        return projectEstimateList;
     }
 
 }

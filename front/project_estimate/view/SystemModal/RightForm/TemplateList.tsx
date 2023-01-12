@@ -52,11 +52,8 @@ function TotalAmountCell(props: TotalAmountCellProps) {
   const { testType, detail, fieldName, getTestCount } = props;
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  console.log("detail.testCount : ", detail.testCount);
-  console.log("getTestCount(testType, detail.unit) : ", getTestCount(testType, detail.unit));
 
-  const testCount = detail.testCount || getTestCount(testType, detail.unit);
-  console.log("testCount : ", testCount);
+  const testCount = detail.testCount ?? 0;
   const totalAmount = useMemo(() => {
     if (!detail || !detail.unitAmount) {
       return undefined;
@@ -139,9 +136,7 @@ function TotalAmountCell(props: TotalAmountCellProps) {
       <Box sx={{ width: '80%', height: '30px' }}>
         {edit && detail.inUse && (
           <Button shape="small" onClick={() => {
-            console.log("detail.testCount : ", detail.testCount);
-            const testCount = detail.testCount ?? getTestCount(testType, detail.unit);
-            console.log(testCount);
+            const testCount = detail.testCount || 0;
             const totalAmount = detail && detail.unitAmount ? testCount * detail.unitAmount : 0;
             formik.setFieldValue(`${fieldName}.totalAmount`, totalAmount);
           }}>
@@ -391,7 +386,6 @@ function getTemplateRow(templateList,
                   onBlur={(e) => {
                     const value = e.target.value || 0;
                     if (detail.testCount !== value) {
-                      console.log("value : ", value)
                       formik.setFieldValue(`templateList.${templateListWithoutReviewLength + i}.detailList.${j}.testCount`, value);
                     }
                   }}

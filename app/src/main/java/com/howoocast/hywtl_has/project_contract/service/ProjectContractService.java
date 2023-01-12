@@ -70,8 +70,8 @@ public class ProjectContractService {
 
     @Transactional(readOnly = true)
     @Nullable
-    public ProjectContract getFinal(Long projectId) {
-        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE).orElse(null);
+    public List<ProjectContract> getFinal(Long projectId) {
+        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE);
     }
 
     @Transactional
@@ -179,12 +179,18 @@ public class ProjectContractService {
 
     private void setConfirmedEstimate(ProjectContract instance) {
         estimateRepository.findById(instance.getEstimate().getId()).ifPresent(estimateByContract -> {
-            estimateRepository.findByProject_IdAndConfirmed(instance.getProject().getId(), Boolean.TRUE).ifPresentOrElse(estimate -> {
-                if (!estimate.getId().equals(estimateByContract.getId())) {
-                    estimateByContract.changeConfirmed(Boolean.TRUE);
-                    estimate.changeConfirmed(Boolean.FALSE);
-                }
-            }, () -> estimateByContract.changeConfirmed(Boolean.TRUE));
+            List<ProjectEstimate> byProjectIdAndConfirmed = estimateRepository.findByProject_IdAndConfirmed(
+                instance.getProject().getId(), Boolean.TRUE);
+            if (!byProjectIdAndConfirmed.isEmpty()) {
+                byProjectIdAndConfirmed.stream().findFirst().ifPresent(estimate -> {
+                    if (!estimate.getId().equals(estimateByContract.getId())) {
+                        estimateByContract.changeConfirmed(Boolean.TRUE);
+                        estimate.changeConfirmed(Boolean.FALSE);
+                    }
+                });
+            }else {
+                estimateByContract.changeConfirmed(Boolean.TRUE);
+            }
         });
     }
 

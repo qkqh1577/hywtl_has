@@ -8,6 +8,7 @@ import com.howoocast.hywtl_has.project_contract.service.ProjectContractService;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractShortView;
 import com.howoocast.hywtl_has.project_contract.view.ProjectContractView;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,10 +51,10 @@ public class ProjectContractController {
     }
 
     @GetMapping("/project/sales/{projectId}/basic/contract")
-    public ProjectContractView getFinal(
+    public List<ProjectContractView> getFinal(
         @PathVariable Long projectId
     ) {
-        return ProjectContractView.assemble(service.getFinal(projectId));
+        return Objects.requireNonNull(service.getFinal(projectId)).stream().map(ProjectContractView::assemble).collect(Collectors.toList());
     }
 
 

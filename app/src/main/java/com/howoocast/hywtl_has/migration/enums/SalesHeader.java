@@ -10,6 +10,10 @@ public enum SalesHeader {
      */
     CONFIRM("구분"),
     /**
+     * 견적차수
+     */
+    ESTIMATE_ORDER("견적차수"),
+    /**
      * LH
      */
     LH("LH"),

@@ -112,7 +112,7 @@ public class DepartmentService {
     @Transactional
     public void delete(Long id) {
         Department instance = this.load(id);
-        if (!instance.getChildrenList().isEmpty()) {
+        if (Objects.nonNull(instance.getChildrenList()) && !instance.getChildrenList().isEmpty()) {
             throw new IllegalRequestException("department.children_list.not_empty", "하위 조직이 있는 경우 삭제할 수 없습니다.");
         }
         if (!userRepository.findByDepartment_Id(id).isEmpty()

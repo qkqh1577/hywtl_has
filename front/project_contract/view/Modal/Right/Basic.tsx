@@ -28,14 +28,8 @@ export default function () {
   const collection = formik.values.collection ?? {};
   const isLh = plan.isLh;
   const totalAmount = useMemo(() => {
-    const amount: number = plan.totalAmount || 0;
-    if (isLh) {
-      return amount;
-    }
-
-    return +(amount * 1.1).toFixed(0);
-
-  }, [plan.totalAmount, isLh]);
+    return plan.totalAmount || 0;
+  }, [plan.totalAmount]);
 
   return (
     <Table variant="cross">
