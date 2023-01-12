@@ -37,13 +37,8 @@ export default function () {
   const isLh = plan.isLh;
 
   const totalAmount = useMemo(() => {
-    const amount: number = plan.totalAmount || 0;
-    if (isLh) {
-      return amount;
-    }
-
-    return +(amount * 1.1).toFixed(0);
-  }, [plan.totalAmount, isLh]);
+    return plan.totalAmount || 0;
+  }, [plan.totalAmount]);
 
   const totalRate = useMemo(() =>
       stageList.map(stage => stage.rate ?? 0)
