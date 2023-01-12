@@ -3,14 +3,13 @@ package com.howoocast.hywtl_has.project_estimate.repository;
 import com.howoocast.hywtl_has.common.repository.CustomRepository;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ProjectEstimateRepository extends CustomRepository<ProjectEstimate> {
 
     List<ProjectEstimate> findByProject_Id(Long projectId);
 
-    Optional<ProjectEstimate> findByProject_IdAndConfirmed(Long projectId, Boolean confirmed);
+    List<ProjectEstimate> findByProject_IdAndConfirmed(Long projectId, Boolean confirmed);
 
     @Query(
         value = "select count(*) + 1 from "

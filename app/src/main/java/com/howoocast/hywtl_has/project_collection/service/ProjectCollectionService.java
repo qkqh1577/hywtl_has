@@ -41,10 +41,7 @@ public class ProjectCollectionService {
     @Transactional(readOnly = true)
     @Nullable
     public ProjectCollection get(Long projectId) {
-        return repository.findByProject_Id(projectId).map(instance -> {
-            instance.setStageList(stageRepository.findByProjectCollection_Id(instance.getId()));
-            return instance;
-        }).orElse(null);
+        return repository.findByProject_Id(projectId).stream().peek(instance -> instance.setStageList(stageRepository.findByProjectCollection_Id(instance.getId()))).findFirst().orElse(null);
     }
 
     @Transactional(readOnly = true)
@@ -184,9 +181,11 @@ public class ProjectCollectionService {
     }
 
     private ProjectCollection load(Long projectId) {
-        return repository.findByProject_Id(projectId).orElseThrow(() -> {
+        List<ProjectCollection> projectCollectionList = repository.findByProject_Id(projectId);
+        if (projectCollectionList.isEmpty()) {
             throw new NotFoundException(ProjectCollection.KEY, projectId);
-        });
+        }
+        return projectCollectionList.stream().findFirst().get();
     }
 
     private ProjectCollectionStage loadStage(Long id) {

@@ -60,11 +60,10 @@ public class ProjectEstimateService {
 
     @Transactional(readOnly = true)
     @Nullable
-    public ProjectEstimate getFinal(
+    public List<ProjectEstimate> getFinal(
         Long projectId
     ) {
-        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE)
-            .orElse(null);
+        return repository.findByProject_IdAndConfirmed(projectId, Boolean.TRUE);
     }
 
     @Transactional
