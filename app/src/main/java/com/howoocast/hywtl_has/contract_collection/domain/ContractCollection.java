@@ -48,4 +48,14 @@ public class ContractCollection extends CustomEntity {
         this.totalAmountNote = totalAmountNote;
     }
 
+    /**
+     * @migration
+     * @param stageList
+     */
+    public void change(
+        List<ContractCollectionStage> stageList
+    ) {
+        this.stageList = stageList;
+    }
+
 }
