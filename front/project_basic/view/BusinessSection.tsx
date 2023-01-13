@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import SectionLayout from 'layouts/SectionLayout';
 import {
-  Box,
+  Box, Fade,
   TableBody,
   TableContainer,
   TableHead,
@@ -21,6 +21,7 @@ import { DefaultFunction } from 'type/Function';
 import dayjs from 'dayjs';
 import { businessInvolvedTypeName } from 'business/domain';
 import TextLink from 'layouts/TextLink';
+import CircularProgress from "../../components/CircularProgress";
 
 interface Props {
   businessList: ProjectBasicBusiness[] | undefined;
@@ -68,19 +69,28 @@ export default function ProjectBasicBusinessSection(props: Props) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <Th />
-                  <Th>업체명</Th>
-                  <Th>소속</Th>
-                  <Th>이름</Th>
-                  <Th>직위</Th>
-                  <Th>핸드폰번호</Th>
+                  <Th width="10%" />
+                  <Th width="25%">업체명</Th>
+                  <Th width="15%">소속</Th>
+                  <Th width="10%">이름</Th>
+                  <Th width="10%">직위</Th>
+                  <Th width="20%">핸드폰번호</Th>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(!Array.isArray(props.businessList) || props.businessList.length === 0) && (
+                {(!props.businessList) && (
+                  <TableRow>
+                    <Td colSpan={6} sx={{minHeight: '38px'}}>
+                      <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                    </Td>
+                  </TableRow>
+                )}
+                {(props.businessList?.length === 0) && (
                   <TableRow>
                     <Td colSpan={6}>
-                      조회 결과가 없습니다.
+                      <Fade in={true}>
+                        <Box>조회 결과가 없습니다</Box>
+                      </Fade>
                     </Td>
                   </TableRow>
                 )}
