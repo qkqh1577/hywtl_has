@@ -15,11 +15,22 @@ export interface ProjectBasicParameter {
   name?: string;
   alias?: string;
   bidType?: ProjectBasicBidType;
+
   receptionManagerId?: UserId;
+  resetReceptionManagerId?: boolean,
+
   salesManager?: UserId;
+  resetSalesManager?: boolean;
+
   projectManager?: UserId;
+  resetProjectManager?: boolean;
+
   expectedMonth?: string;
+  resetExpectedMonth?: boolean;
+
   requestedMonth?: string;
+  resetRequestedMonth?: boolean;
+
   isLh?: boolean;
 }
 

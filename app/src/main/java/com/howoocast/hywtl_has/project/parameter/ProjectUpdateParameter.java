@@ -17,14 +17,19 @@ public class ProjectUpdateParameter {
     private ProjectBasicBidType bidType;
 
     private Long receptionManagerId;
+    private Boolean resetReceptionManagerId;
 
     private Long salesManagerId;
+    private Boolean resetSalesManagerId;
 
     private Long projectManagerId;
+    private Boolean resetProjectManagerId;
 
     private LocalDate expectedMonth;
+    private Boolean resetExpectedMonth;
 
     private LocalDate requestedMonth;
+    private Boolean resetRequestedMonth;
 
     private Boolean isLh;
 

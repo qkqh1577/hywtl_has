@@ -108,10 +108,15 @@ public class ProjectBasic {
         @Nullable String alias,
         @Nullable ProjectBasicBidType bidType,
         @Nullable User receptionManager,
+        @Nullable Boolean resetReceptionManager,
         @Nullable User salesManager,
+        @Nullable Boolean resetSalesManager,
         @Nullable User projectManager,
+        @Nullable Boolean resetProjectManager,
         @Nullable LocalDate expectedMonth,
+        @Nullable Boolean resetExpectedMonth,
         @Nullable LocalDate requestedMonth,
+        @Nullable Boolean resetRequestedMonth,
         @Nullable Boolean isLh
     ) {
         List<EventEntity> eventList = new ArrayList<>();
@@ -139,7 +144,7 @@ public class ProjectBasic {
             ));
             this.bidType = bidType;
         }
-        if (Objects.nonNull(receptionManager)) {
+        if (Objects.nonNull(receptionManager) || Boolean.TRUE.equals(resetReceptionManager)) {
             eventList.add(EventEntity.of(
                 "문의 접수자 변경",
                 this.receptionManager,
@@ -147,7 +152,7 @@ public class ProjectBasic {
             ));
             this.receptionManager = receptionManager;
         }
-        if (Objects.nonNull(salesManager)) {
+        if (Objects.nonNull(salesManager) || Boolean.TRUE.equals(resetSalesManager)) {
             eventList.add(EventEntity.of(
                 "영업 담당자 변경",
                 this.salesManager,
@@ -155,7 +160,7 @@ public class ProjectBasic {
             ));
             this.salesManager = salesManager;
         }
-        if (Objects.nonNull(projectManager)) {
+        if (Objects.nonNull(projectManager) || Boolean.TRUE.equals(resetProjectManager)) {
             eventList.add(EventEntity.of(
                 "담당 PM 변경",
                 this.projectManager,
@@ -163,7 +168,7 @@ public class ProjectBasic {
             ));
             this.projectManager = projectManager;
         }
-        if (Objects.nonNull(expectedMonth)) {
+        if (Objects.nonNull(expectedMonth) || Boolean.TRUE.equals(resetExpectedMonth)) {
             eventList.add(EventEntity.of(
                 "예상 착수 시기 변경",
                 this.expectedMonth,
@@ -172,7 +177,7 @@ public class ProjectBasic {
             ));
             this.expectedMonth = expectedMonth;
         }
-        if (Objects.nonNull(requestedMonth)) {
+        if (Objects.nonNull(requestedMonth) || Boolean.TRUE.equals(resetRequestedMonth)) {
             eventList.add(EventEntity.of(
                 "요청 일정 변경",
                 this.requestedMonth,

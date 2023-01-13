@@ -42,7 +42,9 @@ public class ProjectView {
         target.name = source.getBasic().getName();
         target.alias = source.getBasic().getAlias();
         target.bidType = source.getBasic().getBidType();
-        target.receptionManager = UserShortView.assemble(source.getBasic().getReceptionManager());
+        Optional.ofNullable(source.getBasic().getReceptionManager()).ifPresent((user) ->
+            target.receptionManager = UserShortView.assemble(user)
+        );
         Optional.ofNullable(source.getBasic().getSalesManager()).ifPresent((user) ->
             target.salesManager = UserShortView.assemble(user)
         );

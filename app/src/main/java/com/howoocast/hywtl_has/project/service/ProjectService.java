@@ -138,10 +138,15 @@ public class ProjectService {
             parameter.getAlias(),
             parameter.getBidType(),
             receptionManager,
+            parameter.getResetReceptionManagerId(),
             salesManager,
+            parameter.getResetSalesManagerId(),
             projectManager,
+            parameter.getResetProjectManagerId(),
             parameter.getExpectedMonth(),
+            parameter.getResetExpectedMonth(),
             parameter.getRequestedMonth(),
+            parameter.getResetRequestedMonth(),
             parameter.getIsLh()
         );
 
