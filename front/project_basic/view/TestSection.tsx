@@ -1,6 +1,6 @@
 import SectionLayout from 'layouts/SectionLayout';
 import {
-  Box,
+  Box, Fade,
   TableBody,
   TableHead,
   TableRow
@@ -15,6 +15,7 @@ import {
 import { ProjectComplexTestVO } from 'project_complex/domain';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
+import CircularProgress from "../../components/CircularProgress";
 
 interface Props {
   detail: ProjectComplexTestVO | undefined;
@@ -80,9 +81,20 @@ export default function ProjectBasicTestSection({ detail }: Props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(!detail?.testList || detail?.testList.length === 0) && (
+              {(!detail?.testList) && (
                 <TableRow>
-                  <Td colSpan={3}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={3} sx={{minHeight: '38px'}}>
+                    <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                  </Td>
+                </TableRow>
+              )}
+              {(detail?.testList.length === 0) && (
+                <TableRow>
+                  <Td colSpan={3}>
+                    <Fade in={true}>
+                      <Box>조회 결과가 없습니다</Box>
+                    </Fade>
+                  </Td>
                 </TableRow>
               )}
               {detail?.testList && detail?.testList.map((item) => (
