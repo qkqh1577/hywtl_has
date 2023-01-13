@@ -18,7 +18,6 @@ import {
   CssBaseline
 } from '@mui/material';
 import {
-  IconDefinition,
   library
 } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -54,6 +53,7 @@ import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 import AlertRoute from 'dialog/route/alert';
 import ConfirmRoute from 'dialog/route/confirm';
 import {Progress} from "./components/Progress";
+import Snackbar from "./components/Snackbar";
 
 library.add(
   faAddressCard,
@@ -77,7 +77,7 @@ library.add(
   faMinus,
   faPen,
   faPlus,
-  faReadme as IconDefinition,
+  faReadme,
   faStar,
   faTimes,
   faTrash,
@@ -111,6 +111,7 @@ const render = () => {
                     <ConfirmRoute />
                     <BusinessSelectorModalRoute />
                     <Progress/>
+                    <Snackbar/>
                   </ThemeProvider>
                 </LocalizationProvider>
               </Provider>
