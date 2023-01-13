@@ -4,7 +4,7 @@ import React, {
   useState
 } from 'react';
 import {
-  Box,
+  Box, Fade,
   InputAdornment,
   TableBody,
   TableHead,
@@ -29,8 +29,9 @@ import {
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import Button from 'layouts/Button';
-import { DefaultFunction } from 'type/Function';
+import {DefaultFunction} from 'type/Function';
 import BusinessSelector from 'components/BusinessSelector';
+import CircularProgress from "../../components/CircularProgress";
 
 interface Props {
   internalList: ProjectBasicInternalContributorVO[] | undefined;
@@ -61,37 +62,37 @@ export default function ProjectBasicContributorSection(props: Props) {
     }
 
     setModifiedAt(list.map(item => dayjs(item.modifiedAt))
-                      .reduce((a,
-                               b
-                      ) => a.isAfter(b) ? a : b)
-                      .toDate());
+      .reduce((a,
+               b
+      ) => a.isAfter(b) ? a : b)
+      .toDate());
 
   }, [props.internalList, props.externalList]);
 
   return (
     <SectionLayout title="수주 기여자" modifiedAt={modifiedAt}>
       <Box sx={{
-        display:        'flex',
-        flexWrap:       'nowrap',
-        width:          '100%',
+        display: 'flex',
+        flexWrap: 'nowrap',
+        width: '100%',
         justifyContent: 'space-between',
-        alignContent:   'flex-start',
+        alignContent: 'flex-start',
       }}>
         <Box sx={{
-          display:        'flex',
-          flexWrap:       'wrap',
-          width:          '49%',
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '49%',
           justifyContent: 'space-between',
-          alignContent:   'flex-start',
+          alignContent: 'flex-start',
         }}>
           <Box sx={{
-            display:        'flex',
-            width:          '100%',
-            flexWrap:       'nowrap',
+            display: 'flex',
+            width: '100%',
+            flexWrap: 'nowrap',
             justifyContent: 'space-between',
-            alignItems:     'center',
-            marginBottom:   '10px',
-            '& > *':        {
+            alignItems: 'center',
+            marginBottom: '10px',
+            '& > *': {
               width: '80px'
             }
           }}>
@@ -103,16 +104,27 @@ export default function ProjectBasicContributorSection(props: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <Th sx={{ width: '150px' }}>소속</Th>
-                <Th sx={{ width: '150px' }}>이름</Th>
-                <Th sx={{ width: '100px' }}>기여도(%)</Th>
-                <Th sx={{ width: '70px' }}></Th>
+                <Th sx={{width: '150px'}}>소속</Th>
+                <Th sx={{width: '140px'}}>이름</Th>
+                <Th sx={{width: '90px'}}>기여도(%)</Th>
+                <Th sx={{width: '90px'}}></Th>
               </TableRow>
             </TableHead>
             <TableBody>
-              {(!props.internalList || props.internalList.length === 0) && (
+              {(!props.internalList) && (
                 <TableRow>
-                  <Td colSpan={4}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={4} sx={{minHeight: '38px'}}>
+                    <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                  </Td>
+                </TableRow>
+              )}
+              {(props.internalList?.length === 0) && (
+                <TableRow>
+                  <Td colSpan={4}>
+                    <Fade in={true}>
+                      <Box>조회 결과가 없습니다</Box>
+                    </Fade>
+                  </Td>
                 </TableRow>
               )}
               {props.internalList?.map(item => (
@@ -126,7 +138,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                       value={item.user?.id}
                       onChange={(value) => {
                         if (item.user?.id !== value) {
-                          props.onUpdateInternal({ id: item.id, userId: value });
+                          props.onUpdateInternal({id: item.id, userId: value});
                         }
                       }}
                     />
@@ -140,7 +152,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                       onBlur={(e) => {
                         const value = +(e.target.value) || undefined;
                         if (item.rate !== value) {
-                          props.onUpdateInternal({ id: item.id, rate: value });
+                          props.onUpdateInternal({id: item.id, rate: value});
                         }
                       }}
                       endAdornment={
@@ -161,20 +173,20 @@ export default function ProjectBasicContributorSection(props: Props) {
           </Table>
         </Box>
         <Box sx={{
-          display:        'flex',
-          flexWrap:       'wrap',
-          width:          '50%',
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '50%',
           justifyContent: 'space-between',
-          alignContent:   'flex-start',
+          alignContent: 'flex-start',
         }}>
           <Box sx={{
-            display:        'flex',
-            width:          '100%',
-            flexWrap:       'nowrap',
+            display: 'flex',
+            width: '100%',
+            flexWrap: 'nowrap',
             justifyContent: 'space-between',
-            alignItems:     'center',
-            marginBottom:   '10px',
-            '& > *':        {
+            alignItems: 'center',
+            marginBottom: '10px',
+            '& > *': {
               width: '80px'
             }
           }}>
@@ -186,17 +198,28 @@ export default function ProjectBasicContributorSection(props: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <Th sx={{ width: '150px' }}>업체명</Th>
-                <Th sx={{ width: '150px' }}>소속</Th>
-                <Th sx={{ width: '150px' }}>이름</Th>
-                <Th sx={{ width: '100px' }}>기여도(%)</Th>
-                <Th sx={{ width: '70px' }}></Th>
+                <Th sx={{width: '150px'}}>업체명</Th>
+                <Th sx={{width: '150px'}}>소속</Th>
+                <Th sx={{width: '140px'}}>이름</Th>
+                <Th sx={{width: '90px'}}>기여도(%)</Th>
+                <Th sx={{width: '90px'}}></Th>
               </TableRow>
             </TableHead>
             <TableBody>
-              {(!props.externalList || props.externalList.length === 0) && (
+              {(!props.externalList) && (
                 <TableRow>
-                  <Td colSpan={5}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={5} sx={{minHeight: '38px'}}>
+                    <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                  </Td>
+                </TableRow>
+              )}
+              {(props.externalList?.length === 0) && (
+                <TableRow>
+                  <Td colSpan={5}>
+                    <Fade in={true}>
+                      <Box>조회 결과가 없습니다</Box>
+                    </Fade>
+                  </Td>
                 </TableRow>
               )}
               {props.externalList?.map(item => (
@@ -209,7 +232,11 @@ export default function ProjectBasicContributorSection(props: Props) {
                       value={item.business?.id}
                       onChange={(business) => {
                         if (item.business?.id !== business.id || item.businessManager?.id !== business.managerId) {
-                          props.onUpdateExternal({ id: item.id, businessId: business.id, businessManagerId: business.managerId });
+                          props.onUpdateExternal({
+                            id: item.id,
+                            businessId: business.id,
+                            businessManagerId: business.managerId
+                          });
                         }
                       }}
                     />
@@ -229,7 +256,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                       onBlur={(e) => {
                         const value = +(e.target.value) || undefined;
                         if (item.rate !== value) {
-                          props.onUpdateExternal({ id: item.id, rate: value });
+                          props.onUpdateExternal({id: item.id, rate: value});
                         }
                       }}
                       endAdornment={
