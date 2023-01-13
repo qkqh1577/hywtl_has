@@ -136,16 +136,12 @@ public class ProjectDesignDataToMigrateService {
     }
 
     private String getCity1Code(Map<String, String> projectDesignMap) {
-        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY1.getName()) = " + projectDesignMap.get(
-            ProjectDesignHeader.CITY1.getName()));
         Address test = addressRepository.findByDepth1AndDepth2IsNull(
             projectDesignMap.get(ProjectDesignHeader.CITY1.getName()));
         return test.getCode();
     }
 
     private String getCity2Code(Map<String, String> projectDesignMap) {
-        System.out.println("projectDesignMap.get(ProjectDesignHeader.CITY2.getName()) = " + projectDesignMap.get(
-            ProjectDesignHeader.CITY2.getName()));
         Address test = addressRepository.findByDepth1AndDepth2(
             projectDesignMap.get(ProjectDesignHeader.CITY1.getName()),
             projectDesignMap.get(ProjectDesignHeader.CITY2.getName()));

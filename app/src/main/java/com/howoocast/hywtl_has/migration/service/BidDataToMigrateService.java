@@ -49,12 +49,10 @@ public class BidDataToMigrateService {
                 if (value == null) {
                     return;
                 }
-                System.out.println("code : " + code);
                 if (!value.contains("-")) {
                     code = value.substring(0, value.length() - 2);
                 }
                 String finalCode = code.trim();
-                System.out.println("finalCode = " + finalCode);
                 projectRepository.findByBasic_Code(finalCode).ifPresentOrElse(project -> {
                         getBid(bidMap, project);
                         getRivalBid(bidMap, project);
@@ -219,16 +217,12 @@ public class BidDataToMigrateService {
     }
 
     private Long getAmount(Map<String, String> map, String amountKey) {
-        System.out.println("type = " + amountKey);
-        System.out.println("salesMap.get(type) = " + map.get(amountKey));
         return Long.parseLong(
             new BigDecimal(map.get(amountKey)).setScale(0, RoundingMode.FLOOR)
                 .toPlainString());
     }
 
     private LocalDate getDate(Map<String, String> map, String type) {
-        System.out.println("type = " + type);
-        System.out.println("salesMap.get(type) = " + map.get(type));
         String[] splitDate = map.get(type).split("-");
         String year = splitDate[2];
         String month = String.format("%02d", Integer.parseInt(splitDate[1].split("월")[0]));

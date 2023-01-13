@@ -107,7 +107,6 @@ public class SalesDataToMigrateService {
                 }
 
                 String finalCode = code.trim();
-//                System.out.println("finalCode = " + finalCode);
 
                 if (
                     (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT.getName()))
@@ -156,15 +155,46 @@ public class SalesDataToMigrateService {
                             && salesMapList.get(rowNum).get(SalesHeader.TOTAL_CONSTRUCTION_SUM.getName())
                             .startsWith("-"))
                 ) {
-                    System.out.println("제외원인 : 음수값" + finalCode);
+//                    System.out.println("제외원인 : 음수값 " + finalCode);
                     continue;
                 }
 
-                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()))
-                    && (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("P")
-                    || salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("Q"))) {
-                    System.out.println("제외원인 : 구분 C, Q아닌 경우" + finalCode);
-                }
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()))
+//                    && (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("P")
+//                    || salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("Q"))) {
+//                    // 프로젝트는 구성하기 위해서 continue 처리 안함.
+//                    System.out.println("제외원인 : 구분 C, Q아닌 경우 " + finalCode);
+//                }
+//
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.WINDMILL_AMOUNT.getName()))) {
+//                    if (!salesMapList.get(rowNum).get(SalesHeader.WINDMILL_AMOUNT.getName()).endsWith(".0")) {
+//                        System.out.println("제외원인 : 풍력 수량 소수점 처리 " + finalCode);
+//                    }
+//                }
+//
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()))) {
+//                    if (!salesMapList.get(rowNum).get(SalesHeader.WIND_PRESSURE_AMOUNT.getName()).endsWith(".0")) {
+//                        System.out.println("제외원인 : 풍압 수량 소수점 처리 " + finalCode);
+//                    }
+//                }
+//
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()))) {
+//                    if (!salesMapList.get(rowNum).get(SalesHeader.WIND_ENVIRONMENT_AMOUNT.getName()).endsWith(".0")) {
+//                        System.out.println("제외원인 : 풍환경 수량 소수점 처리 " + finalCode);
+//                    }
+//                }
+//
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.AIR_AMOUNT.getName()))) {
+//                    if (!salesMapList.get(rowNum).get(SalesHeader.AIR_AMOUNT.getName()).endsWith(".0")) {
+//                        System.out.println("제외원인 : 공기력 수량 소수점 처리 " + finalCode);
+//                    }
+//                }
+//
+//                if (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.INSPECTION_AMOUNT.getName()))) {
+//                    if (!salesMapList.get(rowNum).get(SalesHeader.INSPECTION_AMOUNT.getName()).endsWith(".0")) {
+//                        System.out.println("제외원인 : 구검 수량 소수점 처리 " + finalCode);
+//                    }
+//                }
 
                 projectRepository.findByBasic_Code(finalCode).ifPresentOrElse(project -> {
                         // 기존 프로젝트가 있는 경우
@@ -546,7 +576,7 @@ public class SalesDataToMigrateService {
 
             Long totalAmount = Long.parseLong(
                 new BigDecimal(salesMap.get(SalesHeader.TOTAL_CONSTRUCTION_SUPPLY_AMOUNT.getName())).setScale(0,
-                    RoundingMode.FLOOR).toPlainString());
+                    RoundingMode.HALF_UP).toPlainString());
 
             ProjectEstimate projectEstimate = em.find(ProjectEstimate.class, projectSystemEstimate.getId());
             ProjectContractCollection projectContractCollection = ProjectContractCollection.of(
@@ -814,7 +844,7 @@ public class SalesDataToMigrateService {
 
     private Long getAmount(Map<String, String> salesMap, String amountKey) {
         return Long.parseLong(
-            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.FLOOR)
+            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.HALF_UP)
                 .toPlainString());
     }
 
@@ -827,7 +857,7 @@ public class SalesDataToMigrateService {
         String timeKey
     ) {
         Long amount = Long.parseLong(
-            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.FLOOR)
+            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.HALF_UP)
                 .toPlainString()
         );
 
@@ -847,7 +877,7 @@ public class SalesDataToMigrateService {
         String amountKey
     ) {
         Long amount = Long.parseLong(
-            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.FLOOR)
+            new BigDecimal(salesMap.get(amountKey)).setScale(0, RoundingMode.HALF_UP)
                 .toPlainString()
         );
 
@@ -1007,7 +1037,7 @@ public class SalesDataToMigrateService {
                 testDeadLine = testDeadLine.replace("주", "").trim();
             }
             expectedTestDeadLine = Integer.parseInt(
-                new BigDecimal(testDeadLine).setScale(0, RoundingMode.FLOOR)
+                new BigDecimal(testDeadLine).setScale(0, RoundingMode.HALF_UP)
                     .toPlainString());
         }
         Integer expectedFinalReportDeadline = null;
@@ -1019,7 +1049,7 @@ public class SalesDataToMigrateService {
             expectedFinalReportDeadline = Integer.parseInt(
                 new BigDecimal(finalReport).setScale(
                     0,
-                    RoundingMode.FLOOR).toPlainString()
+                    RoundingMode.HALF_UP).toPlainString()
             );
         }
         Boolean isLh = Boolean.FALSE;
@@ -1032,19 +1062,19 @@ public class SalesDataToMigrateService {
         if (StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName()))) {
             testAmount = Long.parseLong(
                 new BigDecimal(salesMap.get(SalesHeader.TOTAL_AMOUNT_OF_HANYANG.getName())).setScale(0,
-                    RoundingMode.FLOOR).toPlainString());
+                    RoundingMode.HALF_UP).toPlainString());
         }
         Long reviewAmount = null;
         if (StringUtils.hasText(salesMap.get(SalesHeader.INSPECTION_PRICE.getName()))) {
             reviewAmount = Long.parseLong(
                 new BigDecimal(salesMap.get(SalesHeader.INSPECTION_PRICE.getName())).setScale(0,
-                    RoundingMode.FLOOR).toPlainString());
+                    RoundingMode.HALF_UP).toPlainString());
         }
         Long totalAmount = null;
         if (StringUtils.hasText(salesMap.get(SalesHeader.TOTAL_AMOUNT.getName()))) {
             totalAmount = Long.parseLong(
                 new BigDecimal(salesMap.get(SalesHeader.TOTAL_AMOUNT.getName())).setScale(0,
-                    RoundingMode.FLOOR).toPlainString()
+                    RoundingMode.HALF_UP).toPlainString()
             );
         }
 
@@ -1084,12 +1114,12 @@ public class SalesDataToMigrateService {
                 count = Long.parseLong("1");
             } else {
                 count = Long.parseLong(
-                    new BigDecimal(salesMap.get(typeCountKey)).setScale(0, RoundingMode.FLOOR)
+                    new BigDecimal(salesMap.get(typeCountKey)).setScale(0, RoundingMode.HALF_UP)
                         .toPlainString()
                 );
             }
             Long price = Long.parseLong(
-                new BigDecimal(salesMap.get(unitPriceKey)).setScale(0, RoundingMode.FLOOR)
+                new BigDecimal(salesMap.get(unitPriceKey)).setScale(0, RoundingMode.HALF_UP)
                     .toPlainString()
             );
 
