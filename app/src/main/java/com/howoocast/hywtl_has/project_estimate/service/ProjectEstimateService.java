@@ -4,10 +4,13 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
+import com.howoocast.hywtl_has.file.domain.FileItem;
+import com.howoocast.hywtl_has.file.repository.FileItemRepository;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
 import com.howoocast.hywtl_has.project_document.domain.ProjectDocument;
 import com.howoocast.hywtl_has.project_document.repository.ProjectDocumentRepository;
+import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexBuilding;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSite;
@@ -15,6 +18,7 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexBuildingParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexSiteParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimatePlanParameter;
+import com.howoocast.hywtl_has.project_estimate.repository.ProjectCustomEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
@@ -40,9 +44,9 @@ public class ProjectEstimateService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ProjectDocumentRepository documentRepository;
-
     private final ApplicationEventPublisher eventPublisher;
-
+    private final FileItemRepository fileItemRepository;
+    private final ProjectCustomEstimateRepository customEstimateRepository;
 
     @Transactional(readOnly = true)
     public ProjectEstimate get(Long id) {
@@ -196,5 +200,15 @@ public class ProjectEstimateService {
         code += String.format("%02d", nextSeq);
 
         return code;
+    }
+
+    @Transactional(readOnly = true)
+    public FileItem getFile(Long id) {
+        ProjectCustomEstimate projectCustomEstimate = customEstimateRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(ProjectEstimate.KEY, id);
+        });
+        return fileItemRepository.findById(projectCustomEstimate.getFile().getId()).orElseThrow(() -> {
+            throw new NotFoundException(FileItem.KEY, projectCustomEstimate.getFile().getId());
+        });
     }
 }

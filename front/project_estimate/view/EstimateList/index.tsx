@@ -119,7 +119,7 @@ export default function ProjectEstimateListSection(props: Props) {
                       <IconButton
                         shape="square"
                         onClick={() => {
-                          window.open(item.type !== ProjectEstimateType.SYSTEM ? `/file-item/${item.id}` : `/file-item?projectEstimateId=${item.id}`,
+                          window.open(item.type !== ProjectEstimateType.SYSTEM ? `/project/sales/estimate/${item.id}/file` : `/file-item?projectEstimateId=${item.id}`,
                             '_blank');
                         }}
                         children={<FontAwesomeIcon icon="download" />}
