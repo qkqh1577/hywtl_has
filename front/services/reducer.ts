@@ -122,6 +122,7 @@ import {
   addressReducer,
   AddressState
 } from 'components/AddressModal/reducer';
+import {snackbarReducer, SnackbarState} from "../components/Snackbar/reducer";
 
 export interface RootState {
   business: BusinessState;
@@ -153,6 +154,7 @@ export interface RootState {
   userNotification: UserNotificationState;
   projectDb: ProjectDbState;
   progress: ProgressState;
+  snackbar: SnackbarState;
   address: AddressState;
 }
 
@@ -186,6 +188,7 @@ const reducer = combineReducers<RootState>({
   userNotification:   userNotificationReducer,
   projectDb:          projectDbReducer,
   progress:           progressReducer,
+  snackbar:           snackbarReducer,
   address:            addressReducer
 });
 

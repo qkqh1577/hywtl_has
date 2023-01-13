@@ -34,6 +34,7 @@ import userSaga from 'user/saga';
 import { businessSelectorSaga } from 'components/BusinessSelector';
 import projectDbSaga from 'project_db/saga';
 import addressModalSaga from 'components/AddressModal/saga';
+import snackbarSaga from "../components/Snackbar/saga";
 
 const middleware = createSagaMiddleware();
 
@@ -66,7 +67,8 @@ function* saga() {
     userNotificationSaga(),
     userSaga(),
     projectDbSaga(),
-    addressModalSaga()
+    addressModalSaga(),
+    snackbarSaga()
   ]);
 }
 
