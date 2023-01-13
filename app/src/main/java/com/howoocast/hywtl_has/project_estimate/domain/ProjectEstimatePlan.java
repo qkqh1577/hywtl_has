@@ -102,9 +102,9 @@ public class ProjectEstimatePlan {
 
     public static ProjectEstimatePlan of(
         LocalDate estimateDate,
-        LocalDate expectedServiceDate,
-        Integer expectedTestDeadline,
-        Integer expectedFinalReportDeadline,
+        @Nullable LocalDate expectedServiceDate,
+        @Nullable Integer expectedTestDeadline,
+        @Nullable Integer expectedFinalReportDeadline,
         Long testAmount,
         Long reviewAmount,
         Long discountAmount,
@@ -139,6 +139,7 @@ public class ProjectEstimatePlan {
      * @param reviewAmount
      * @param totalAmount
      * @param isLh
+     * @param hasExperimentInfo
      * @return
      */
     public static ProjectEstimatePlan of(
@@ -148,7 +149,8 @@ public class ProjectEstimatePlan {
         @Nullable Long testAmount,
         @Nullable Long reviewAmount,
         @Nullable Long totalAmount,
-        @Nullable Boolean isLh
+        @Nullable Boolean isLh,
+        Boolean hasExperimentInfo
     ) {
         ProjectEstimatePlan instance = new ProjectEstimatePlan();
         instance.estimateDate = estimateDate;
@@ -158,6 +160,7 @@ public class ProjectEstimatePlan {
         instance.reviewAmount = reviewAmount;
         instance.totalAmount = totalAmount;
         instance.isLh = isLh;
+        instance.hasExperimentInfo = hasExperimentInfo;
         return instance;
     }
 }

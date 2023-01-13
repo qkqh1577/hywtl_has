@@ -85,7 +85,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box>
-        <DataFieldWithLabel label="착수 가능일" labelPosition="top" required={edit}>
+        <DataFieldWithLabel label="착수 가능일" labelPosition="top">
           <DatePicker
             readOnly={!edit}
             value={plan.expectedServiceDate ? dayjs(plan.expectedServiceDate)
@@ -158,7 +158,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box>
-        <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top" required={edit}>
+        <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top">
           <Input
             key={plan.expectedTestDeadline}
             type="number"
@@ -179,7 +179,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box>
-        <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top" required={edit}>
+        <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top">
           <Input
             key={plan.expectedFinalReportDeadline}
             type="number"

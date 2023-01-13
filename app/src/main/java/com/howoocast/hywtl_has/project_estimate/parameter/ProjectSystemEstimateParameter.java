@@ -28,10 +28,8 @@ public class ProjectSystemEstimateParameter {
     @NotNull(message = ProjectSystemEstimate.KEY + ".plan.not_null")
     private ProjectEstimatePlanParameter plan;
 
-    @NotEmpty(message = ProjectSystemEstimate.KEY + ".site_list.not_empty")
     private List<ProjectEstimateComplexSiteParameter> siteList;
 
-    @NotEmpty(message = ProjectSystemEstimate.KEY + ".building_list.not_empty")
     private List<ProjectEstimateComplexBuildingParameter> buildingList;
 
     @Valid

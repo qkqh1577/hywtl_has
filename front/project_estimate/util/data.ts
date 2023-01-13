@@ -34,9 +34,9 @@ class ProjectEstimateData {
     return {
       recipient:           values.recipient!,
       projectName:         project.name,
-      estimateDate:        values.plan.estimateDate,
+      estimateDate:        values.plan.estimateDate ?? '',
       estimateNumber:      estimateNumber ?? '',
-      expectedServiceDate: values.plan.expectedServiceDate,
+      expectedServiceDate: values.plan.expectedServiceDate ?? '',
       manager1_jobClass:   this.getJobClass(getManagerJobList(manager1)) ?? '',
       manager1_name:       getManagerName(manager1) ?? '',
       manager1_phone:      getManagerPhone(manager1) ?? '',

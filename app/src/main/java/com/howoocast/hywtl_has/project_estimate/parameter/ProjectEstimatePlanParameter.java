@@ -14,12 +14,9 @@ public class ProjectEstimatePlanParameter {
     @NotNull(message = ProjectSystemEstimate.KEY + ".estimate_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate estimateDate;
-    @NotNull(message = ProjectSystemEstimate.KEY + ".expected_service_date.not_null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expectedServiceDate;
-    @NotNull(message = ProjectSystemEstimate.KEY + ".expected_test_deadline.not_null")
     private Integer expectedTestDeadline;
-    @NotNull(message = ProjectSystemEstimate.KEY + ".expected_final_report_deadline.not_null")
     private Integer expectedFinalReportDeadline;
 
     private Long testAmount;

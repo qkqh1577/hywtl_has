@@ -115,7 +115,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box className="firstLine">
-          <DataFieldWithLabel label="착수 가능일" labelPosition="top" required>
+          <DataFieldWithLabel label="착수 가능일" labelPosition="top">
             <DatePicker
               value={plan.expectedServiceDate ? dayjs(plan.expectedServiceDate)
               .format('YYYY-MM-DD') : null}
@@ -159,7 +159,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box className="firstLine">
-          <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top" required>
+          <DataFieldWithLabel label="설풍 납품 가능 주" labelPosition="top">
             <Input
               key={plan.expectedTestDeadline}
               type="number"
@@ -179,7 +179,7 @@ export default function ProjectCustomEstimateExtensionModalForm(props: Props) {
           </DataFieldWithLabel>
         </Box>
         <Box className="firstLine">
-          <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top" required>
+          <DataFieldWithLabel label="최종 보고서 납품 가능 주" labelPosition="top">
             <Input
               key={plan.expectedFinalReportDeadline}
               type="number"

@@ -118,15 +118,6 @@ public class EstimateTemplateInitDataService {
                             15000000L,
                             Boolean.TRUE,
                             "개선방안 요구 시"
-                        ),
-                        EstimateTemplateDetail.of(
-                            new ArrayList<>(List.of(
-                                "풍쾌적도 및 풍안전도 개선 평가(최대 2회)"
-                            )),
-                            EstimateUnit.SITE,
-                            15000000L,
-                            Boolean.TRUE,
-                            "개선방안 요구 시"
                         )
                     ))
                 ),
