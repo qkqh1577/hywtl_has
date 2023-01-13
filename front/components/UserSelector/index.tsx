@@ -57,6 +57,7 @@ export default function UserSelector({onChange, ...props}: Props) {
         return;
       }
       confirm({
+        title: '유저 제외',
         children: '해당 유저를 제외하겠습니까?',
         confirmText: '제외',
         afterConfirm: () => {
