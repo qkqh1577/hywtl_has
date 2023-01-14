@@ -462,17 +462,15 @@
 }
 
 .scroll-bar-holder::-webkit-scrollbar {
-    width: 14px;
+    width:           10px;
+    height:          10px;
+    backgroundColor: #e4e9f2;
 }
 
 .scroll-bar-holder::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    background-clip: padding-box;
-    border: 2px solid transparent;
+    backgroundColor: #697183;
 }
 
 .scroll-bar-holder::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
+    background-color: #697183;
 }
