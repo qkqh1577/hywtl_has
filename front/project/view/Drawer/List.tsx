@@ -5,7 +5,7 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import React, {CSSProperties, memo} from 'react';
+import React, {CSSProperties, useCallback} from 'react';
 import {ColorPalette} from 'assets/theme';
 import {
     ProjectId,
@@ -13,10 +13,11 @@ import {
     ProjectShortVO
 } from 'project/domain';
 import AutoSizer from "react-virtualized-auto-sizer";
-import {areEqual, FixedSizeList as List} from "react-window";
+import {FixedSizeList} from "react-window";
 import {makeStyles} from "@mui/styles";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
+import CircularProgress from "../../../components/CircularProgress";
 
 export interface ListProps {
     list: ProjectShortVO[];
@@ -24,6 +25,7 @@ export interface ListProps {
     onRowClick: (item: ProjectShortVO) => void;
     searchFormRef: React.RefObject<HTMLDivElement>;
     id: ProjectId;
+    loading: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +49,10 @@ const useStyles = makeStyles((theme) => ({
         display: "flex !important",
         width: "100%",
         "& div": {
-            justifyContent: "center"
+            justifyContent: "center",
+            "&:nth-child(2)": {
+                maxWidth: "160px"
+            },
         }
     },
     tbody: {
@@ -99,16 +104,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function ({list, openMenu: open, onRowClick, searchFormRef, id: projectId}: ListProps) {
+export default function List({list, openMenu: open, onRowClick, searchFormRef, id: projectId, loading}: ListProps) {
     const classes = useStyles();
 
     //TODO: 폼 접고/펼치는 타이밍에 offsetHeight 값이 일치하지 않는 문제
     const LIST_HEIGHT_OFFSET = 40;
     const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
     const listWithFavorites = [...list.filter((item) => item.isFavorite), ...list];
-    const {filterOpen, id} = useSelector((root: RootState) => root.project);
+    const {id} = useSelector((root: RootState) => root.project);
 
-    const TableRowWrap = memo((props: any) => {
+    const TableRowWrap = useCallback((props: any) => {
         const index: number = props.index;
         const item = props.data[index];
         const style: CSSProperties = {...props.style};
@@ -140,7 +145,7 @@ export default function ({list, openMenu: open, onRowClick, searchFormRef, id: p
                 </TableCell>
             </TableRow>
         );
-    }, areEqual);
+    }, []);
 
     return (
         <div
@@ -172,17 +177,24 @@ export default function ({list, openMenu: open, onRowClick, searchFormRef, id: p
                     </TableRow>
                 </TableHead>
                 <TableBody component="div" className={classes.tbody}>
-                    {(!listWithFavorites || listWithFavorites.length === 0) && (
+                    {loading && (
+                      <TableRow component="div" className={classes.no_result}>
+                          <TableCell
+                            component="div"
+                            colSpan={3} children={<CircularProgress size={30}/>}/>
+                      </TableRow>
+                    )}
+                    {!loading && (!listWithFavorites || listWithFavorites.length === 0) && (
                         <TableRow component="div" className={classes.no_result}>
                             <TableCell
                                 component="div"
                                 colSpan={3} children="결과가 없습니다."/>
                         </TableRow>
                     )}
-                    {(listWithFavorites && listWithFavorites.length > 0) && (
+                    {!loading && (listWithFavorites && listWithFavorites.length > 0) && (
                         <AutoSizer>
                             {({height, width}) => (
-                                <List
+                                <FixedSizeList
                                     overscanCount={20}
                                     height={height - LIST_HEIGHT_OFFSET}
                                     itemCount={listWithFavorites && listWithFavorites.length}
@@ -192,7 +204,7 @@ export default function ({list, openMenu: open, onRowClick, searchFormRef, id: p
                                     className="scroll-bar-holder"
                                 >
                                     {TableRowWrap as any}
-                                </List>
+                                </FixedSizeList>
                             )}
                         </AutoSizer>
                     )}
