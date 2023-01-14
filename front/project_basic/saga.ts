@@ -24,6 +24,7 @@ import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
 import { dialogAction } from 'dialog/action';
 import { getErrorMessage } from 'type/Error';
+import {ProjectBasicBusinessParameter} from "./parameter";
 
 function* watchId() {
   while (true) {
@@ -160,6 +161,27 @@ function* watchDeleteExternal() {
       const message = getErrorMessage(projectBasicAction.deleteExternal, e);
       yield put(dialogAction.openError(message));
       yield put(projectBasicAction.requestDeleteExternal(message));
+    }
+  }
+}
+
+function* watchBusiness() {
+  while (true) {
+    const { payload: id } = yield take(projectBasicAction.getBusiness);
+    if (id) {
+      const item: ProjectBasicBusiness = yield call(projectBasicApi.getBusiness, id);
+      yield put(projectBasicAction.setBusiness({
+        id:                item.id,
+        business:          item.business,
+        businessManager:   item.businessManager,
+        businessId:        item.business?.id,
+        businessManagerId: item.businessManager?.id,
+        involvedType:      item.involvedType,
+        edit:              false,
+      } as ProjectBasicBusinessParameter));
+    }
+    else {
+      yield put(projectBasicAction.setBusinessList(undefined));
     }
   }
 }
@@ -430,6 +452,7 @@ export default function* projectBasicSaga() {
   yield fork(watchAddExternal);
   yield fork(watchUpdateExternal);
   yield fork(watchDeleteExternal);
+  yield fork(watchBusiness);
   yield fork(watchBusinessList);
   yield fork(watchDesign);
   yield fork(watchTest);

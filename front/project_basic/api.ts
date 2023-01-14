@@ -23,6 +23,7 @@ import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
+import {BusinessId} from "../business/domain";
 
 class ProjectBasicApi {
 
@@ -33,6 +34,11 @@ class ProjectBasicApi {
 
   async getExternalList(id: ProjectId): Promise<ProjectBasicExternalContributorVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/basic/contributor/external`);
+    return data;
+  }
+
+  async getBusiness(id: BusinessId): Promise<ProjectBasicBusiness> {
+    const { data } = await apiClient.get(`/project/sales/basic/business/${id}`);
     return data;
   }
 
