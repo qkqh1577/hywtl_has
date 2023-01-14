@@ -110,7 +110,7 @@ export default function List({list, openMenu: open, onRowClick, searchFormRef, i
     //TODO: 폼 접고/펼치는 타이밍에 offsetHeight 값이 일치하지 않는 문제
     const LIST_HEIGHT_OFFSET = 40;
     const searchFormHeight = searchFormRef.current?.offsetHeight ?? 180;
-    const listWithFavorites = [...list.filter((item) => item.isFavorite), ...list];
+    const listWithFavorites = [...list.filter((item) => item.isFavorite), ...list].reverse();
     const {id} = useSelector((root: RootState) => root.project);
 
     const TableRowWrap = useCallback((props: any) => {
