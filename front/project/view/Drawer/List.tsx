@@ -5,7 +5,7 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import React, {CSSProperties, useCallback} from 'react';
+import React, {CSSProperties, memo, useCallback} from 'react';
 import {ColorPalette} from 'assets/theme';
 import {
     ProjectId,
@@ -13,7 +13,7 @@ import {
     ProjectShortVO
 } from 'project/domain';
 import AutoSizer from "react-virtualized-auto-sizer";
-import {FixedSizeList} from "react-window";
+import {areEqual, FixedSizeList} from "react-window";
 import {makeStyles} from "@mui/styles";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
@@ -113,7 +113,7 @@ export default function List({list, openMenu: open, onRowClick, searchFormRef, i
     const listWithFavorites = [...list.filter((item) => item.isFavorite), ...list].reverse();
     const {id} = useSelector((root: RootState) => root.project);
 
-    const TableRowWrap = useCallback((props: any) => {
+    const TableRowWrap = memo((props: any) => {
         const index: number = props.index;
         const item = props.data[index];
         const style: CSSProperties = {...props.style};
@@ -145,7 +145,7 @@ export default function List({list, openMenu: open, onRowClick, searchFormRef, i
                 </TableCell>
             </TableRow>
         );
-    }, []);
+    }, areEqual);
 
     return (
         <div
