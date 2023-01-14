@@ -29,6 +29,8 @@ export default function Alert(props: Props) {
     <Dialog
       open={props.open}
       onClose={props.onClose}
+      fullWidth={true}
+      maxWidth="sm"
       sx={{
         '& .MuiDialog-paper': {
           borderRadius: 0,
@@ -38,7 +40,6 @@ export default function Alert(props: Props) {
         display:         'flex',
         alignItems:      'center',
         justifyContent:  'space-between',
-        minWidth:        '25vw',
         backgroundColor: ColorPalette._2d3a54,
         color:           ColorPalette._ffffff,
         height:          '50px',
