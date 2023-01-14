@@ -21,6 +21,7 @@ export enum ProjectFilterStatus {
 }
 
 export enum ProjectActionType {
+  setLoading           = 'project/sales/loading/set',
   setFilter            = 'project/sales/filter/set',
   setPage              = 'project/sales/page/set',
   setId                = 'project/sales/id/set',
@@ -42,6 +43,7 @@ export enum ProjectActionType {
 }
 
 export const projectAction = {
+  setLoading:           createAction(ProjectActionType.setLoading)<boolean>(),
   setFilter:            createAction(ProjectActionType.setFilter)<ProjectQuery>(),
   setPage:              createAction(ProjectActionType.setPage)<Page<ProjectShortVO> | undefined>(),
   setOne:               createAction(ProjectActionType.setOne)<ProjectVO | undefined>(),

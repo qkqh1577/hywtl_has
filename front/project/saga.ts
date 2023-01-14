@@ -3,7 +3,8 @@ import {
   fork,
   put,
   select,
-  take
+  take,
+  delay
 } from 'redux-saga/effects';
 import { projectAction } from 'project/action';
 import Page from 'type/Page';
@@ -19,8 +20,14 @@ import { getErrorMessage } from 'type/Error';
 function* watchFilter() {
   while (true) {
     const { payload: query } = yield take(projectAction.setFilter);
-    const page: Page<ProjectShortVO> = yield call(projectApi.getPage, query);
-    yield put(projectAction.setPage(page));
+    yield put(projectAction.setLoading(true));
+    try {
+      const page: Page<ProjectShortVO> = yield call(projectApi.getPage, query);
+      yield put(projectAction.setPage(page));
+    } finally {
+      yield delay(500);
+      yield put(projectAction.setLoading(false));
+    }
   }
 }
 

@@ -12,6 +12,7 @@ import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectQuery } from 'project/parameter';
 
 export interface ProjectState {
+  loading: boolean,
   filter?: ProjectQuery;
   id?: ProjectId;
   page?: ProjectShortVO[];
@@ -29,6 +30,7 @@ export interface ProjectState {
 }
 
 const initial: ProjectState = {
+  loading:              false,
   requestAdd:           'idle',
   requestUpdateStatus:  'idle',
   requestAddFailReason: 'idle',
@@ -41,6 +43,12 @@ const initial: ProjectState = {
 };
 
 export const projectReducer = createReducer(initial, {
+  [ProjectActionType.setLoading]:            (state,
+                                             action
+  ) => ({
+    ...state,
+    loading: action.payload,
+  }),
   [ProjectActionType.setFilter]:            (state,
                                              action
                                             ) => ({

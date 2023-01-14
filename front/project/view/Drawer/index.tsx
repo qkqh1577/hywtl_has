@@ -14,7 +14,8 @@ import { ProjectId } from 'project/domain';
 export interface ProjectDrawerProps
   extends Omit<SearchFormProps & ListProps, |'searchFormRef'>,
           FormikLayoutProps<ProjectQuery> {
-  id: ProjectId
+  id: ProjectId,
+  loading: boolean
 }
 
 export default function ProjectDrawer(props: ProjectDrawerProps) {
