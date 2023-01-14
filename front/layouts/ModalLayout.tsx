@@ -56,8 +56,8 @@ export default function ModalLayout({
           display:         'flex',
           justifyContent:  'space-between',
           width:           '100%',
-          height:          '50px',
           padding:         '0 20px',
+          height:          '50px',
           alignItems:      'center',
           backgroundColor: ColorPalette._2d3a54,
           color:           ColorPalette._ffffff,
@@ -83,25 +83,25 @@ export default function ModalLayout({
           <Box sx={{
             display:                      'flex',
             width:                        '100%',
-            padding:                      '20px',
             flexWrap:                     'wrap',
-            overflowY:                    'scroll',
-            '&::-webkit-scrollbar':       {
-              width:           '10px',
-              height:          '10px',
-              backgroundColor: ColorPalette._e4e9f2,
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: ColorPalette._697183,
-            }
           }}>
-
             <Box
               sx={{
                 display:        'flex',
                 justifyContent: 'center',
                 flexWrap:       'wrap',
                 width:          '100%',
+                height:         footer? 'calc(100% - 80px)' : '100%',
+                padding:                      '20px',
+                overflowY:                    'auto',
+                '&::-webkit-scrollbar':       {
+                  width:           '10px',
+                  height:          '10px',
+                  backgroundColor: ColorPalette._e4e9f2,
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: ColorPalette._697183,
+                }
               }}>
               {children}
             </Box>
@@ -109,11 +109,11 @@ export default function ModalLayout({
               <Box
                 sx={{
                   width:          '100%',
+                  height:         '80px',
                   justifyContent: 'center',
                   display:        'flex',
                   alignItems:     'center',
                   flex:           1,
-                  paddingTop:     '20px',
                 }}
                 children={footer}
               />

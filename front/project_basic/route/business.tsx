@@ -8,10 +8,9 @@ import {
 } from 'react-redux';
 import ProjectBasicBusinessSection from 'project_basic/view/BusinessSection';
 import { RootState } from 'services/reducer';
-import { projectBasicAction } from 'project_basic/action';
+import {projectBasicAction} from 'project_basic/action';
 import {
-  initialProjectBasicBusinessParameter,
-  ProjectBasicBusinessParameter
+  initialProjectBasicBusinessParameter
 } from 'project_basic/parameter';
 import { ProjectBasicBusiness } from 'project_basic/domain';
 import { closeStatus } from 'components/DataFieldProps';
@@ -19,18 +18,10 @@ import { closeStatus } from 'components/DataFieldProps';
 export default function ProjectBasicBusinessRoute() {
   const dispatch = useDispatch();
   const { id, businessList, requestAddBusiness, requestChangeBusiness, requestDeleteBusiness } = useSelector((root: RootState) => root.projectBasic);
-
   const openAddModal = useCallback(() => dispatch(projectBasicAction.setBusiness(initialProjectBasicBusinessParameter)), [dispatch]);
-  const openChangeModal = useCallback((item: ProjectBasicBusiness) => dispatch(projectBasicAction.setBusiness({
-    id:                item.id,
-    business:          item.business,
-    businessManager:   item.businessManager,
-    businessId:        item.business?.id,
-    businessManagerId: item.businessManager?.id,
-    involvedType:      item.involvedType,
-    edit:              false,
-  } as ProjectBasicBusinessParameter)), [dispatch]);
-
+  const openChangeModal = useCallback((item: ProjectBasicBusiness) => {
+    dispatch(projectBasicAction.getBusiness(item.id));
+  }, [dispatch]);
 
   useEffect(() => {
     closeStatus(requestAddBusiness, () => {
