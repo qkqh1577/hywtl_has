@@ -32,6 +32,7 @@ import ganttPageRoute from '../gantt/route/page';
 import loginForgotRoute from 'login/route/passwordForgotten';
 import passwordToChangeRoute from 'login/route/passwordToChange';
 import passwordInvalidRoute from 'login/route/passwordInvalid';
+import departmentTreeRoute from "../department_tree/route/page";
 
 export interface AppRoute
   extends PathRouteProps {
@@ -47,6 +48,7 @@ const Routes = () => {
     contractConditionTemplateRoute,
     departmentDetailRoute,
     departmentPageRoute,
+    departmentTreeRoute,
     estimateContentDetailRoute,
     estimateContentListRoute,
     estimateTemplateDetailRoute,

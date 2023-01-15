@@ -35,6 +35,7 @@ import { businessSelectorSaga } from 'components/BusinessSelector';
 import projectDbSaga from 'project_db/saga';
 import addressModalSaga from 'components/AddressModal/saga';
 import snackbarSaga from "../components/Snackbar/saga";
+import departmentTreeSaga from "../department_tree/saga";
 
 const middleware = createSagaMiddleware();
 
@@ -46,6 +47,7 @@ function* saga() {
     contractCollectionSaga(),
     contractConditionSaga(),
     departmentSaga(),
+    departmentTreeSaga(),
     estimateContentSaga(),
     estimateTemplateSaga(),
     loginSaga(),

@@ -123,6 +123,7 @@ import {
   AddressState
 } from 'components/AddressModal/reducer';
 import {snackbarReducer, SnackbarState} from "../components/Snackbar/reducer";
+import departmentTreeReducer, {DepartmentTreeState} from "../department_tree/reducer";
 
 export interface RootState {
   business: BusinessState;
@@ -131,6 +132,7 @@ export interface RootState {
   contractCollection: ContractCollectionState;
   contractCondition: ContractConditionState;
   department: DepartmentState;
+  departmentTree: DepartmentTreeState;
   dialog: DialogState;
   estimateContent: EstimateContentState;
   estimateTemplate: EstimateTemplateState;
@@ -165,6 +167,7 @@ const reducer = combineReducers<RootState>({
   contractCollection: contractCollectionReducer,
   contractCondition:  contractConditionReducer,
   department:         departmentReducer,
+  departmentTree:     departmentTreeReducer,
   dialog:             dialogReducer,
   estimateContent:    estimateContentReducer,
   estimateTemplate:   estimateTemplateReducer,
