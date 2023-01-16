@@ -25,15 +25,17 @@ export default function BusinessDetail(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
 
+  console.debug(edit)
+
   return (
     <PageLayout
       title={formik.values.id ? '업체 정보 상세' : '업체 등록'}
       body={
         <Box sx={{ width: '100%' }}>
           {props.basic}
-          {!edit && (<Divider />)}
+          {formik.values.id && !edit && (<Divider />)}
           {formik.values.id && props.involvedProjectList}
-          {!edit && (<Divider />)}
+          {formik.values.id && !edit && (<Divider />)}
           {formik.values.id && props.rivalStatistic}
           {formik.values.id && props.rivalProjectList}
           <Divider />
