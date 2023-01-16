@@ -33,7 +33,6 @@ public class ProjectEstimateView {
     private List<ProjectEstimateComplexSiteView> siteList;
     private List<ProjectEstimateComplexBuildingView> buildingList;
     private BusinessShortView business;
-
     private ProjectEstimateTestView test;
 
     protected ProjectEstimateView(

@@ -75,6 +75,11 @@ export interface ProjectEstimateShortVO {
   modifiedAt?: Date;
   business: BusinessShortVO;
   hasExperimentInfo: boolean;
+  estimateDate: Date;
+  targetTest: string;
+  testAmount: number;
+  reviewAmount: number;
+  totalAmount: number;
 }
 
 export interface ProjectEstimatePlanVO {

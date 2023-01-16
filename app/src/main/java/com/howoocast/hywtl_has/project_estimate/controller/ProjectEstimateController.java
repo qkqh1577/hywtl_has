@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_estimate.controller;
 
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateConfirmParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectFinalEstimateUpdateParameter;
 import com.howoocast.hywtl_has.project_estimate.service.ProjectEstimateService;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateShortView;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +49,14 @@ public class ProjectEstimateController {
         @PathVariable Long projectId
     ) {
         return Objects.requireNonNull(service.getFinal(projectId)).stream().map(ProjectEstimateView::assemble).collect(Collectors.toList());
+    }
+
+    @PatchMapping("/project/sales/{projectId}/estimate/final-confirm")
+    public void update(
+        @PathVariable Long projectId,
+        @Valid @RequestBody ProjectFinalEstimateUpdateParameter parameter
+    ){
+        service.update(projectId, parameter);
     }
 
     @PostMapping("/project/sales/{projectId}/estimate/confirmed")

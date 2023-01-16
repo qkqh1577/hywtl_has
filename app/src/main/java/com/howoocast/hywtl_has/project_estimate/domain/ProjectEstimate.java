@@ -59,11 +59,16 @@ public abstract class ProjectEstimate extends CustomEntity {
     private Boolean isSent;
 
     /**
-     * 최종 여부
+     * 확정 여부
      */
     @NotNull
     @Column(nullable = false)
     private Boolean confirmed;
+
+    /**
+     * 최종 여부
+     */
+    private Boolean finalConfirmed;
 
     /**
      * 송신처
