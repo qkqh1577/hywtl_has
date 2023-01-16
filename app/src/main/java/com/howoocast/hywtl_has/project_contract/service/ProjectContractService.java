@@ -32,6 +32,7 @@ import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -145,11 +146,33 @@ public class ProjectContractService {
     @Transactional
     public void confirm(Long projectId, ProjectContractConfirmedParameter parameter) {
         List<ProjectContract> list = repository.findByProject_Id(projectId);
-        ProjectContract instance = this.load(parameter.getContractId());
-        validate(list, instance);
-        setConfirmedEstimate(instance);
-        updateHistory(list, instance);
-        setProjectCollectionInformationByFinalContract(projectId, instance);
+        List<ProjectContract> confirmedList = new ArrayList<>();
+        list.forEach(c -> {
+            parameter.getContractIdList().forEach(fc -> {
+                if(c.getId().equals(fc)){
+                    confirmedList.add(c);
+                }
+            });
+        });
+
+        List<ProjectContract> unconfirmedList = list.stream().filter(c -> !confirmedList.contains(c)).collect(Collectors.toList());
+
+        confirmedList.forEach(fc -> {
+            fc.changeConfirmed(Boolean.TRUE);
+        });
+
+        unconfirmedList.forEach(uc -> {
+            uc.changeConfirmed(Boolean.FALSE);
+        });
+
+
+//        parameter.getContractIdList().forEach(id -> {
+//            ProjectContract instance = this.load(id);
+//            validate(list, instance);
+//            setConfirmedEstimate(instance);
+//            updateHistory(list, instance);
+//            setProjectCollectionInformationByFinalContract(projectId, instance);
+//        });
     }
 
     private static void validate(List<ProjectContract> list, ProjectContract instance) {
@@ -162,6 +185,13 @@ public class ProjectContractService {
     }
 
     private void updateHistory(List<ProjectContract> list, ProjectContract instance) {
+        // 프로젝트 안에 있는 계약서들
+        // 인스턴스는 현재 -> 최종 계약서로 선택된 것.
+        list.forEach(contract -> {
+            if (contract.getId().equals(instance.getId())) {
+                contract.changeConfirmed(Boolean.TRUE);
+            }
+        });
         ProjectContract prev = list.stream()
             .filter(ProjectContract::getConfirmed)
             .findFirst().orElse(null);
@@ -188,7 +218,7 @@ public class ProjectContractService {
                         estimate.changeConfirmed(Boolean.FALSE);
                     }
                 });
-            }else {
+            } else {
                 estimateByContract.changeConfirmed(Boolean.TRUE);
             }
         });

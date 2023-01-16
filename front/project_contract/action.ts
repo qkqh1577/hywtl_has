@@ -48,7 +48,7 @@ export const projectContractAction = {
   requestDelete:    createAction(ProjectContractActionType.requestDelete)<ApiStatus>(),
   requestSetFinal:  createAction(ProjectContractActionType.requestSetFinal)<ApiStatus>(),
   setDetail:        createAction(ProjectContractActionType.setDetail)<ProjectContractVO | undefined>(),
-  setFinal:         createAction(ProjectContractActionType.setFinal)<ProjectContractId>(),
+  setFinal:         createAction(ProjectContractActionType.setFinal)<ProjectContractId[]>(),
   setFinalModal:    createAction(ProjectContractActionType.setFinalModal)<boolean>(),
   setList:          createAction(ProjectContractActionType.setList)<ProjectContractShortVO[] | undefined>(),
   setModal:         createAction(ProjectContractActionType.setModal)<ProjectContractId | null | undefined | ProjectSystemEstimateVO | ProjectCustomEstimateVO>(),

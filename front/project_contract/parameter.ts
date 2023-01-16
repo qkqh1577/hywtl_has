@@ -6,7 +6,7 @@ import { ProjectContractId } from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
 
 export interface ProjectContractFinalParameter {
-  id: ProjectContractId;
+  idList: ProjectContractId[];
 }
 
 export const initialProjectContractFinalParameter = {} as ProjectContractFinalParameter;

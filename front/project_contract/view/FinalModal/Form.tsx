@@ -6,13 +6,13 @@ import {
   Th
 } from 'layouts/Table';
 import {
-  Radio,
   TableBody,
   TableHead,
   TableRow
 } from '@mui/material';
 import DateFormat from 'layouts/DateFormat';
 import { ProjectContractShortVO } from 'project_contract/domain';
+import Checkbox from 'layouts/Checkbox';
 
 interface Props {
   list: ProjectContractShortVO[] | undefined;
@@ -20,7 +20,6 @@ interface Props {
 
 export default function ProjectContractFinalModalForm(props: Props) {
   const formik = useContext(FormikContext);
-
   return (
     <Table>
       <TableHead>
@@ -45,11 +44,12 @@ export default function ProjectContractFinalModalForm(props: Props) {
         {props.list && props.list.map(item => (
           <TableRow key={item.id}>
             <Td>
-              <Radio
-                value={item.id}
-                checked={item.id === formik.values.id}
+              <Checkbox
+                checked={formik.values.idList.includes(item.id)}
                 onChange={() => {
-                  formik.setFieldValue('id', item.id);
+                  const contactId = item.id;
+                  const checked = formik.values.idList.includes(contactId);
+                  formik.setFieldValue('idList',  checked ? formik.values.idList.filter(id => id !== contactId) : [...formik.values.idList, item.id]);
                 }}
               />
             </Td>
