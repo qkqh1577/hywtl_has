@@ -49,11 +49,11 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { faReadme, } from '@fortawesome/free-brands-svg-icons';
-import { BusinessSelectorModalRoute } from 'components/BusinessSelector';
 import AlertRoute from 'dialog/route/alert';
 import ConfirmRoute from 'dialog/route/confirm';
 import {Progress} from "./components/Progress";
 import Snackbar from "./components/Snackbar";
+import {BusinessSelectorModalRoute} from "./components/BusinessSelector/route/BusinessSelectorModalRoute";
 
 library.add(
   faAddressCard,

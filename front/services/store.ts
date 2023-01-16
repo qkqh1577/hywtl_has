@@ -31,11 +31,11 @@ import rivalBidSaga from 'rival_bid/saga';
 import rivalEstimateSaga from 'rival_estimate/saga';
 import userNotificationSaga from 'user_notification/saga';
 import userSaga from 'user/saga';
-import { businessSelectorSaga } from 'components/BusinessSelector';
 import projectDbSaga from 'project_db/saga';
 import addressModalSaga from 'components/AddressModal/saga';
 import snackbarSaga from "../components/Snackbar/saga";
 import departmentTreeSaga from "../department_tree/saga";
+import {businessSelectorSaga} from "../components/BusinessSelector/saga";
 
 const middleware = createSagaMiddleware();
 

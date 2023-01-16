@@ -13,6 +13,7 @@ export interface ModalLayoutProps {
   open: boolean;
   title: string;
   width?: string | number;
+  height?: string | number;
   onClose: DefaultFunction;
   children: React.ReactNode;
   footer?: React.ReactNode;
@@ -22,6 +23,7 @@ export default function ModalLayout({
                                       open,
                                       title,
                                       width = '80vw',
+                                      height = 'inherit',
                                       onClose,
                                       children,
                                       footer,
@@ -47,6 +49,7 @@ export default function ModalLayout({
           left:         '50%',
           transform:    'translate(-50%, -50%)',
           borderRadius: 0,
+          minHeight:    height,
           maxWidth:     '1850px',
           overflow:     'hidden',
           bgColor:      ColorPalette._b2b4b7,

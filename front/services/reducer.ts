@@ -51,10 +51,6 @@ import {
   ProjectContractState,
 } from 'project_contract/reducer';
 import {
-  businessSelectorReducer,
-  BusinessSelectorState
-} from 'components/BusinessSelector';
-import {
   contractBasicReducer,
   ContractBasicState
 } from 'admin/contract/basic/reducer';
@@ -124,6 +120,7 @@ import {
 } from 'components/AddressModal/reducer';
 import {snackbarReducer, SnackbarState} from "../components/Snackbar/reducer";
 import departmentTreeReducer, {DepartmentTreeState} from "../department_tree/reducer";
+import {businessSelectorReducer, BusinessSelectorState} from "../components/BusinessSelector/reducer";
 
 export interface RootState {
   business: BusinessState;
