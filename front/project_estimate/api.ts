@@ -66,9 +66,9 @@ class ProjectEstimateApi {
   }
 
   async setFinal(projectId: ProjectId,
-                 id: ProjectEstimateId
+                 estimateIdList: ProjectEstimateId
   ): Promise<void> {
-    const { data } = await apiClient.post(`/project/sales/${projectId}/estimate/confirmed`, { estimateId: id });
+    const { data } = await apiClient.post(`/project/sales/${projectId}/estimate/confirmed`, { estimateIdList });
     return data;
   }
 

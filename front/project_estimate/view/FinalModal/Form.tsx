@@ -10,12 +10,12 @@ import {
   Th
 } from 'layouts/Table';
 import {
-  Radio,
   TableBody,
   TableHead,
   TableRow
 } from '@mui/material';
 import DateFormat from 'layouts/DateFormat';
+import Checkbox from 'layouts/Checkbox';
 
 interface Props {
   list: ProjectEstimateVO[] | undefined;
@@ -48,11 +48,12 @@ export default function ProjectEstimateFinalModalForm(props: Props) {
         {props.list && props.list.map(item => (
           <TableRow key={item.id}>
             <Td>
-              <Radio
-                value={item.id}
-                checked={item.id === formik.values.id}
+              <Checkbox
+                checked={formik.values.idList.includes(item.id)}
                 onChange={() => {
-                  formik.setFieldValue('id', item.id);
+                  const estimateId = item.id;
+                  const checked = formik.values.idList.includes(estimateId);
+                  formik.setFieldValue('idList',  checked ? formik.values.idList.filter(id => id !== estimateId) : [...formik.values.idList, item.id]);
                 }}
               />
             </Td>

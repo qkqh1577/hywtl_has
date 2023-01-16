@@ -70,7 +70,7 @@ export default function () {
         </DataFieldWithLabel>
       </Box>
       <Box sx={{ width: '45%' }}>
-        <DataFieldWithLabel label="최종 여부" labelPosition="top">
+        <DataFieldWithLabel label="확정 여부" labelPosition="top">
           <Input
             readOnly
             key={formik.values.confirmed}

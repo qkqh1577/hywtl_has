@@ -17,26 +17,26 @@ class ProjectContractData {
     }
     values.conditionList = this.getMappedConditions(values.conditionList, variableList);
     return {
-      serviceName:                 values.basic.serviceName,
-      serviceDuration:             values.basic.serviceDuration,
-      expectedTestDeadLine:        values.estimate.plan ? values.estimate.plan.expectedTestDeadline : '',
-      expectedFinalReportDeadLine: values.estimate.plan ? values.estimate.plan.expectedFinalReportDeadline : '',
-      stageNote:                   values.collection.stageNote,
-      collections:                 this.getCollections(values.collection.stageList),
-      stagePercent:                this.getSumPercent(values.collection.stageList),
+      serviceName:                 values.basic.serviceName ?? '',
+      serviceDuration:             values.basic.serviceDuration ?? '',
+      expectedTestDeadLine:        values.estimate.plan ? values.estimate.plan.expectedTestDeadline ?? '-' : '-',
+      expectedFinalReportDeadLine: values.estimate.plan ? values.estimate.plan.expectedFinalReportDeadline ?? '-' : '-',
+      stageNote:                   values.collection.stageNote ?? '',
+      collections:                 this.getCollections(values.collection.stageList) ?? '',
+      stagePercent:                this.getSumPercent(values.collection.stageList) ?? '',
       totalAmountKor:              toAmountKor(values.collection.totalAmount ?? 0),
       totalAmount:                 values.collection.totalAmount.toLocaleString() ?? 0,
-      totalAmountNote:             values.collection.totalAmountNote,
-      outcome:                     values.basic.outcome,
-      description:                 values.basic.description,
-      contractDate:                values.basic.contractDate,
+      totalAmountNote:             values.collection.totalAmountNote ?? '',
+      outcome:                     values.basic.outcome ?? '',
+      description:                 values.basic.description ?? '',
+      contractDate:                values.basic.contractDate ?? '',
       contractorAddress:           values.basic.contractorAddress ?? '',
       contractorCompanyName:       values.basic.contractorCompanyName ?? '',
       contractorCeoName:           values.basic.contractorCeoName ?? '',
       ordererAddress:              values.basic.ordererAddress ?? '',
       ordererCompanyName:          values.basic.ordererCompanyName ?? '',
       ordererCeoName:              values.basic.ordererCeoName ?? '',
-      conditionList:               values.conditionList,
+      conditionList:               values.conditionList ?? '',
     };
   };
 

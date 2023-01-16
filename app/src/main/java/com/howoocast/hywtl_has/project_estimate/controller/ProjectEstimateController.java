@@ -7,6 +7,7 @@ import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,15 @@ public class ProjectEstimateController {
     ) {
         service.confirm(
             projectId,
-            parameter.getEstimateId()
+            parameter
         );
     }
 
+    @GetMapping("/project/sales/estimate/{id}/file")
+    public void download(
+        @PathVariable Long id,
+        HttpServletResponse response
+    ) {
+        service.getFile(id).download(response);
+    }
 }

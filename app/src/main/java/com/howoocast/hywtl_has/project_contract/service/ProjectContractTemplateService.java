@@ -121,13 +121,24 @@ public class ProjectContractTemplateService {
         if (Objects.isNull(estimate)) {
             return null;
         }
+        if (!Objects.nonNull(estimate.getPlan().getExpectedServiceDate())) {
+            return null;
+        }
+
         if (dateType == ContractCollectionStageExpectedDateType.CONTRACT_DAY) {
             return estimate.getPlan().getExpectedServiceDate();
         }
         if (dateType == ContractCollectionStageExpectedDateType.DAY_TO_DELIVER_THOUGH_SNOW_AND_WIND) {
-            return estimate.getPlan().getExpectedServiceDate().plusWeeks(estimate.getPlan().getExpectedTestDeadline());
+            if (!Objects.nonNull(estimate.getPlan().getExpectedTestDeadline())) {
+                return null;
+            }
+            return estimate.getPlan().getExpectedServiceDate()
+                .plusWeeks(estimate.getPlan().getExpectedTestDeadline());
         }
         if (dateType == ContractCollectionStageExpectedDateType.DAY_TO_DELIVER_FOE_FINAL_REPORT) {
+            if (!Objects.nonNull(estimate.getPlan().getExpectedFinalReportDeadline())) {
+                return null;
+            }
             return estimate.getPlan().getExpectedServiceDate()
                 .plusWeeks(estimate.getPlan().getExpectedFinalReportDeadline());
         }

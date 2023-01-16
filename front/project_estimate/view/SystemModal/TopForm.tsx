@@ -56,7 +56,7 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
             </DataFieldWithLabel>
           </Box>
           <Box sx={{ width: '30%' }}>
-            <DataFieldWithLabel label="최종 여부">
+            <DataFieldWithLabel label="확정 여부">
               <Input
                 disabled
                 value={formik.values.confirmed ? 'Y' : 'N'}

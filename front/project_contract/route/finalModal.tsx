@@ -26,19 +26,19 @@ export default function ProjectContractFinalModalRoute() {
   const dispatch = useDispatch();
   const { projectId, list, finalModal, requestSetFinal } = useSelector((root: RootState) => root.projectContract);
   const onClose = useCallback(() => dispatch(projectContractAction.setFinalModal(false)), [dispatch]);
-  const setFinal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setFinal(id)), [dispatch]);
+  const setFinal = useCallback((idList: ProjectContractId[]) => dispatch(projectContractAction.setFinal(idList)), [dispatch]);
 
   const formik = useFormik<ProjectContractFinalParameter>({
     initialValues: initialProjectContractFinalParameter,
     onSubmit:      (values) => {
-      setFinal(values.id);
+      setFinal(values.idList);
     }
   });
 
   useEffect(() => {
     if (list) {
       formik.setValues({
-        id: list.find(item => item.confirmed)?.id,
+        idList: list.filter(item => item.confirmed).length > 0 ? [...list.filter(item => item.confirmed).map(item => item.id)] : [],
       } as ProjectContractFinalParameter);
     }
     else {

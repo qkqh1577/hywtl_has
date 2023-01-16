@@ -13,7 +13,7 @@ import {
 import { ProjectDocumentId } from 'project_document/domain';
 
 export interface ProjectEstimateFinalParameter {
-  id: ProjectEstimateId;
+  idList: ProjectEstimateId[];
 }
 
 export const initialProjectEstimateFinalParameter = {} as ProjectEstimateFinalParameter;

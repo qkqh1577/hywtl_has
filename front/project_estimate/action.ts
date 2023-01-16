@@ -63,7 +63,7 @@ export const projectEstimateAction = {
   setCustomDetail:         createAction(ProjectEstimateActionType.setCustomDetail)<ProjectCustomEstimateVO | undefined>(),
   setCustomDetailModal:    createAction(ProjectEstimateActionType.setCustomDetailModal)<ProjectEstimateId | undefined>(),
   setCustomExtensionModal: createAction(ProjectEstimateActionType.setCustomExtensionModal)<ProjectEstimateId | undefined>(),
-  setFinal:                createAction(ProjectEstimateActionType.setFinal)<ProjectEstimateId>(),
+  setFinal:                createAction(ProjectEstimateActionType.setFinal)<ProjectEstimateId[]>(),
   setFinalModal:           createAction(ProjectEstimateActionType.setFinalModal)<boolean>(),
   setList:                 createAction(ProjectEstimateActionType.setList)<ProjectEstimateVO[] | undefined>(),
   setProjectId:            createAction(ProjectEstimateActionType.setProjectId)<ProjectId | undefined>(),

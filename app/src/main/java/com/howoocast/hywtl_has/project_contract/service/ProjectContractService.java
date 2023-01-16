@@ -32,9 +32,9 @@ import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -144,12 +144,44 @@ public class ProjectContractService {
 
     @Transactional
     public void confirm(Long projectId, ProjectContractConfirmedParameter parameter) {
-        List<ProjectContract> list = repository.findByProject_Id(projectId);
-        ProjectContract instance = this.load(parameter.getContractId());
-        validate(list, instance);
-        setConfirmedEstimate(instance);
-        updateHistory(list, instance);
-        setProjectCollectionInformationByFinalContract(projectId, instance);
+        List<ProjectContract> projectContractlist = repository.findByProject_Id(projectId);
+        List<ProjectEstimate> projectEstimateList = estimateRepository.findByProject_Id(projectId);
+        // custom api가 [], 0, undefined을 막는 로직이 존재.
+        if (Objects.isNull(parameter.getContractIdList())) {
+            projectContractlist.forEach(c -> c.changeConfirmed(Boolean.FALSE));
+            projectEstimateList.forEach(e -> e.changeConfirmed(Boolean.FALSE));
+            return;
+        }
+
+        List<ProjectContract> confirmedList = new ArrayList<>();
+        projectContractlist.forEach(c -> parameter.getContractIdList().forEach(fc -> {
+            if (c.getId().equals(fc)) {
+                confirmedList.add(c);
+            }
+        }));
+
+        List<ProjectContract> unconfirmedList = projectContractlist.stream().filter(c -> !confirmedList.contains(c))
+            .collect(Collectors.toList());
+
+        confirmedList.forEach(fc -> {
+            updateHistory(confirmedList, fc, Boolean.TRUE);
+        });
+        unconfirmedList.forEach(uc -> {
+            updateHistory(unconfirmedList, uc, Boolean.FALSE);
+        });
+
+        List<Long> confirmedEstimateList = confirmedList.stream().map(c -> c.getEstimate().getId()).distinct()
+            .collect(Collectors.toList());
+        List<Long> unconfirmedEstimateList = unconfirmedList.stream().filter(uc-> !confirmedEstimateList.contains(uc.getEstimate().getId())).map(uc -> uc.getEstimate().getId()).distinct()
+            .collect(Collectors.toList());
+
+        if (!confirmedList.isEmpty()) {
+            setConfirmedEstimate(confirmedEstimateList, Boolean.TRUE);
+        }
+
+        if (!unconfirmedList.isEmpty()) {
+            setConfirmedEstimate(unconfirmedEstimateList, Boolean.FALSE);
+        }
     }
 
     private static void validate(List<ProjectContract> list, ProjectContract instance) {
@@ -161,36 +193,33 @@ public class ProjectContractService {
         }
     }
 
-    private void updateHistory(List<ProjectContract> list, ProjectContract instance) {
+    private void updateHistory(List<ProjectContract> list, ProjectContract instance, Boolean value) {
         ProjectContract prev = list.stream()
-            .filter(ProjectContract::getConfirmed)
+            .filter(c -> c.getId().equals(instance.getId()))
             .findFirst().orElse(null);
-        if (Objects.nonNull(prev)) {
-            prev.changeConfirmed(Boolean.FALSE);
+        if (Objects.isNull(prev)) {
+            throw new NotFoundException(ProjectContract.KEY + ".is_empty", "해당하는 계약서가 존재하지 않습니다.");
         }
-        instance.changeConfirmed(Boolean.TRUE);
+        Boolean prevIsConfirmed = prev.getConfirmed();
+        instance.changeConfirmed(value);
+
+        if (instance.getConfirmed().equals(prevIsConfirmed)) {
+            return;
+        }
+
         eventPublisher.publishEvent(ProjectLogEvent.of(
             instance.getProject(),
             "확정 여부 변경",
-            Optional.ofNullable(prev).map(ProjectContract::getCode).orElse(null),
-            instance.getCode()
+            prevIsConfirmed ? "계약서 확정" : "계약서 미확정",
+            instance.getConfirmed() ? "계약서 확정" : "계약서 미확정"
         ));
     }
 
-    private void setConfirmedEstimate(ProjectContract instance) {
-        estimateRepository.findById(instance.getEstimate().getId()).ifPresent(estimateByContract -> {
-            List<ProjectEstimate> byProjectIdAndConfirmed = estimateRepository.findByProject_IdAndConfirmed(
-                instance.getProject().getId(), Boolean.TRUE);
-            if (!byProjectIdAndConfirmed.isEmpty()) {
-                byProjectIdAndConfirmed.stream().findFirst().ifPresent(estimate -> {
-                    if (!estimate.getId().equals(estimateByContract.getId())) {
-                        estimateByContract.changeConfirmed(Boolean.TRUE);
-                        estimate.changeConfirmed(Boolean.FALSE);
-                    }
-                });
-            }else {
-                estimateByContract.changeConfirmed(Boolean.TRUE);
-            }
+    private void setConfirmedEstimate(List<Long> list, Boolean isConfirmed) {
+        list.forEach(id -> {
+            estimateRepository.findById(id).ifPresent(estimateByContract -> {
+                estimateByContract.changeConfirmed(isConfirmed);
+            });
         });
     }
 

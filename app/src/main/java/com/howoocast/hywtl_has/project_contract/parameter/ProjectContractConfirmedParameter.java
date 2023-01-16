@@ -1,14 +1,14 @@
 package com.howoocast.hywtl_has.project_contract.parameter;
 
-import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProjectContractConfirmedParameter {
 
-    @NotNull(message = ProjectContract.KEY + ".contract_id.not_null")
-    private Long contractId;
+    private List<Long> contractIdList;
 }
