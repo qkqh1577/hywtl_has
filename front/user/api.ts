@@ -6,6 +6,8 @@ import {
   UserVO
 } from 'user/domain';
 import {
+  UserAddParameter,
+  UserInviteParameter,
   UserChangeParameter,
   UserPasswordChangeParameter
 } from 'user/parameter';
@@ -30,6 +32,24 @@ class UserApi {
   async change(parameter: UserChangeParameter): Promise<void> {
     const { id, ...rest } = parameter;
     const { data } = await apiClient.put(`/admin/user/${id}`, rest);
+    return data;
+  }
+
+  async add(parameter: UserAddParameter): Promise<UserVO> {
+    const { ...rest } = parameter;
+    const { data } = await apiClient.post('/user', rest);
+    return data;
+  }
+
+  async authenticateInvitation(parameter: UserInviteParameter): Promise<UserVO> {
+    const { email, authKey } = parameter;
+    const { data } = await apiClient.get(`/user-verification/user-invitation/authenticate`, { email, authKey });
+    return data;
+  }
+
+  async invite(parameter: UserInviteParameter): Promise<void> {
+    const { ...rest } = parameter;
+    const { data } = await apiClient.post(`/user-verification/user-invitation`, rest);
     return data;
   }
 

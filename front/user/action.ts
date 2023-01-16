@@ -7,7 +7,7 @@ import {
   UserVO
 } from 'user/domain';
 import {
-  UserChangeParameter,
+  UserChangeParameter, UserInviteParameter,
   UserPasswordChangeParameter,
 } from 'user/parameter';
 import Page from 'type/Page';
@@ -20,6 +20,7 @@ export enum UserActionType {
   setId                         = 'user/id/set',
   setOne                        = 'user/one/set',
   change                        = 'user/change',
+  invite                        = 'user/invite',
   requestChange                 = 'user/change/request',
   requestEmailToChangePassword  = 'user/change/password/request',
   validateUrlForPasswordReset   = 'user/reset/password/validate',
@@ -28,12 +29,18 @@ export enum UserActionType {
   requestFindPasswordByUsername = 'user/find/password/request',
 }
 
+interface InviteProps {
+  parameter: UserInviteParameter,
+  callback: () => {}
+}
+
 export const userAction = {
   setFilter:                     createAction(UserActionType.setFilter)<UserQuery>(),
   setPage:                       createAction(UserActionType.setPage)<Page<UserShortVO>>(),
   setOne:                        createAction(UserActionType.setOne)<UserVO | undefined>(),
   setId:                         createAction(UserActionType.setId)<UserId | undefined>(),
   change:                        createAction(UserActionType.change)<UserChangeParameter>(),
+  invite:                        createAction(UserActionType.invite)<InviteProps>(),
   requestChange:                 createAction(UserActionType.requestChange)<ApiStatus>(),
   requestEmailToChangePassword:  createAction(UserActionType.requestEmailToChangePassword)<UserPasswordChangeParameter>(),
   validateUrlForPasswordReset:   createAction(UserActionType.validateUrlForPasswordReset)<UrlValidateParameter>(),

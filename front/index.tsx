@@ -54,6 +54,7 @@ import ConfirmRoute from 'dialog/route/confirm';
 import {Progress} from "./components/Progress";
 import Snackbar from "./components/Snackbar";
 import {BusinessSelectorModalRoute} from "./components/BusinessSelector/route/BusinessSelectorModalRoute";
+import UserAuthenticationForm from "./user/view/Page/UserAuthenticationForm";
 
 library.add(
   faAddressCard,
@@ -92,6 +93,10 @@ const render = () => {
     <React.StrictMode>
       <Router>
         <Routes>
+          <Route
+            path="/user/authenticate"
+            element={<UserAuthenticationForm/>}
+          />
           <Route
             path="*"
             element={

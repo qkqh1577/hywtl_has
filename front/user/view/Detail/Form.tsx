@@ -18,6 +18,7 @@ import Select from 'layouts/Select';
 export default function () {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
+  const isNew = !formik.values.id;
 
   return (
     <Box sx={{
@@ -59,7 +60,8 @@ export default function () {
           }}>
             <DataFieldWithLabel label="아이디">
               <Input
-                readOnly
+                readOnly={true}
+                placeholder={isNew?'초대 메일을 통해 설정할 수 있습니다':'수정불가'}
                 key={formik.values.username}
                 defaultValue={formik.values.username ?? ''}
               />
@@ -71,13 +73,13 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="이름">
+            <DataFieldWithLabel required={edit || isNew} label="이름">
               <Input
-                readOnly={!edit}
+                readOnly={!edit && !isNew}
                 key={formik.values.name}
                 defaultValue={formik.values.name ?? ''}
                 onBlur={(e) => {
-                  if (!edit) {
+                  if (!edit && !isNew) {
                     return;
                   }
                   const value = e.target.value || undefined;
@@ -94,13 +96,13 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="이메일">
+            <DataFieldWithLabel required={edit || isNew} label="이메일">
               <Input
-                readOnly={!edit}
+                readOnly={!edit && !isNew}
                 key={formik.values.email}
                 defaultValue={formik.values.email ?? ''}
                 onBlur={(e) => {
-                  if (!edit) {
+                  if (!edit && !isNew) {
                     return;
                   }
                   const value = e.target.value || undefined;
@@ -117,12 +119,12 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="권한">
+            <DataFieldWithLabel required={edit || isNew} label="권한">
               <Select
-                readOnly={!edit}
+                readOnly={!edit && !isNew}
                 value={formik.values.role ?? ''}
                 onChange={(e) => {
-                  if (!edit) {
+                  if (!edit && !isNew) {
                     return;
                   }
                   const value = e.target.value || undefined;
@@ -142,12 +144,12 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="소속 조직">
+            <DataFieldWithLabel required={edit || isNew} label="소속 조직">
               <DepartmentSelector
-                readOnly={!edit}
+                readOnly={!edit && !isNew}
                 value={formik.values.departmentId ?? ''}
                 onChange={(e) => {
-                  if (!edit) {
+                  if (!edit && !isNew) {
                     return;
                   }
                   const value = e.target.value || undefined;

@@ -4,6 +4,7 @@ import {
   fork,
   put,
   take,
+  delay
 } from 'redux-saga/effects';
 import {
   UserShortVO,
@@ -53,6 +54,25 @@ function* watchChange() {
   }
 }
 
+function* watchInvite() {
+  while (true) {
+    const { payload: {parameter, callback} } = yield take(userAction.invite);
+    yield put(progressAction.progress(true));
+    try {
+      yield call(userApi.invite, parameter);
+      yield delay(500);
+      yield call(callback);
+    }
+    catch (e) {
+      const message = getErrorMessage(userAction.change, e);
+      yield put(dialogAction.openError(message));
+      yield put(userAction.requestChange(message));
+    } finally {
+      yield put(progressAction.progress(false));
+    }
+  }
+}
+
 function* watchSendEmail() {
   while (true) {
     const { payload: params } = yield take(userAction.requestEmailToChangePassword);
@@ -91,6 +111,7 @@ export default function* userSaga() {
   yield fork(getPage);
   yield fork(watchId);
   yield fork(watchChange);
+  yield fork(watchInvite);
   yield fork(watchSendEmail);
   yield fork(watchValidateUrlForPasswordChange)
 }
