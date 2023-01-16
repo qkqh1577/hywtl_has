@@ -458,12 +458,12 @@ export default function ProjectBasicBusinessModal(props: Props) {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <Td>선택</Td>
-                      <Td>소속</Td>
-                      <Td>이름</Td>
-                      <Td>직위</Td>
-                      <Td>핸드폰 번호</Td>
-                      <Td>이메일 주소</Td>
+                      <Td width="10%">선택</Td>
+                      <Td width="20%">소속</Td>
+                      <Td width="10%">이름</Td>
+                      <Td width="10%">직위</Td>
+                      <Td width="20%">핸드폰 번호</Td>
+                      <Td width="30%">이메일 주소</Td>
                     </TableRow>
                   </TableHead>
                   <TableBody>

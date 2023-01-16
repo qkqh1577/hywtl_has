@@ -99,7 +99,6 @@ export default function ProjectBasicBusinessModalRoute() {
       } as ProjectBasicBusinessParameter);
 
       if(business.id){
-        console.debug(business);
         // 수정 시에는 전체 목록을 가져올 필요가 없음
         formik.setFieldValue('keyword', business.business?.name);
         formik.setFieldValue('keywordType', 'by_name');
