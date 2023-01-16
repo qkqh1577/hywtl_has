@@ -146,27 +146,27 @@ export default function ProjectBasicBusinessModal(props: Props) {
 
   return (
     <ModalLayout
-      width={`${!edit ? '50vw' : '80vw'}`}
+      width={`${edit ? '80vw' : '50vw'}`}
       open={props.open}
-      title={!edit ? '관계사 상세' : (id ? '관계사 수정' : '관계사 등록')}
+      title={edit ? (id ? '관계사 수정' : '관계사 등록') : '관계사 상세'}
       onClose={props.onClose}
       children={
         <Box sx={{
           width: '100%',
           height: 'calc(80vh - 120px)',
-          display: `${!edit ? 'block' : 'flex'}`,
+          display: `${edit ? 'flex' : 'block'}`,
           flexWrap: 'wrap',
           justifyContent: 'space-between',
         }}>
           <Box sx={{
-            width: `${!edit ? '100%' : '49%'}`,
-            height: `${!edit ? 'auto' : '100%'}`,
+            width: `${edit ? '49%' : '100%'}`,
+            height: `${edit ? '100%' : 'auto'}`,
             display: 'flex',
             flexWrap: 'wrap',
             alignContent: 'flex-start',
           }}>
             <Box sx={{
-              width: `${!edit ? '100%' : '50%'}`,
+              width: `${edit ? '50%' : '100%'}`,
               display: 'flex',
               flexWrap: 'nowrap',
               marginBottom: '10px',
@@ -309,7 +309,7 @@ export default function ProjectBasicBusinessModal(props: Props) {
             )}
           </Box>
           <Box sx={{
-            width: `${!edit ? '100%' : '49%'}`,
+            width: `${edit ? '49%' : '100%'}`,
             display: 'flex',
             flexWrap: 'wrap',
             alignContent: 'flex-start'
