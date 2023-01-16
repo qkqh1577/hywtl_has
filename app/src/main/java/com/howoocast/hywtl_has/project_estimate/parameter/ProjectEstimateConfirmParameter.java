@@ -1,14 +1,14 @@
 package com.howoocast.hywtl_has.project_estimate.parameter;
 
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ProjectEstimateConfirmParameter {
 
-    @NotNull(message = ProjectEstimate.KEY + ".estimate_id.not_null")
-    private Long estimateId;
+    private List<Long> estimateIdList;
 }

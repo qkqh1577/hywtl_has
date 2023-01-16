@@ -37,7 +37,6 @@ export default function ProjectContractFinalModalRoute() {
 
   useEffect(() => {
     if (list) {
-      console.log(list.filter(item => item.confirmed).map(item => item.id));
       formik.setValues({
         idList: list.filter(item => item.confirmed).length > 0 ? [...list.filter(item => item.confirmed).map(item => item.id)] : [],
       } as ProjectContractFinalParameter);

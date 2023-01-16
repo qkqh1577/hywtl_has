@@ -80,7 +80,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 <Th>견적 번호</Th>
                 <Th>견적 구분</Th>
                 <Th>견적 업체</Th>
-                <Th>최종 여부</Th>
+                <Th>확정 여부</Th>
                 <Th>등록 일시</Th>
                 <Th>등록자</Th>
                 <Th>송부 여부</Th>

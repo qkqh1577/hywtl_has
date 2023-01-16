@@ -1,7 +1,6 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
 import com.howoocast.hywtl_has.common.domain.EventEntity;
-import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
@@ -17,12 +16,14 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimateComplexSit
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimatePlan;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexBuildingParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexSiteParameter;
+import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateConfirmParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimatePlanParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectCustomEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -71,34 +72,28 @@ public class ProjectEstimateService {
     }
 
     @Transactional
-    public void confirm(Long projectId, Long estimateId) {
-        List<ProjectEstimate> estimateList = repository.findByProject_Id(projectId);
-        ProjectEstimate instance = repository.findById(estimateId).orElseThrow(() -> {
-            throw new NotFoundException(ProjectEstimate.KEY, estimateId);
-        });
+    public void confirm(Long projectId, ProjectEstimateConfirmParameter parameter) {
+        List<ProjectEstimate> projectEstimateList = repository.findByProject_Id(projectId);
 
-        if (estimateList.isEmpty()) {
-            throw new IllegalRequestException(ProjectEstimate.KEY + ".is_empty", "선택할 수 있는 견적서가 없습니다.");
-        }
-        if (instance.getConfirmed()) {
-            throw new IllegalRequestException(ProjectEstimate.KEY + ".already_confirmed", "이미 확정된 견적서입니다.");
-        }
-        // 이전 삭제
-        ProjectEstimate prev = estimateList.stream()
-            .filter(ProjectEstimate::getConfirmed)
-            .findFirst().orElse(null);
-        if (Objects.nonNull(prev)) {
-            prev.changeConfirmed(Boolean.FALSE);
+        if (Objects.isNull(parameter.getEstimateIdList())) {
+            projectEstimateList.forEach(e -> e.changeConfirmed(Boolean.FALSE));
+            return;
         }
 
-        // 현재 등록
-        instance.changeConfirmed(Boolean.TRUE);
-        eventPublisher.publishEvent(ProjectLogEvent.of(
-            instance.getProject(),
-            "확정 여부 변경",
-            Optional.ofNullable(prev).map(ProjectEstimate::getCode).orElse(null),
-            instance.getCode()
-        ));
+        List<ProjectEstimate> confirmedList = new ArrayList<>();
+        projectEstimateList.forEach(e -> parameter.getEstimateIdList().forEach(fe -> {
+            if (e.getId().equals(fe)) {
+                confirmedList.add(e);
+            }
+        }));
+
+        List<ProjectEstimate> unconfirmedList = projectEstimateList.stream()
+            .filter(e -> !confirmedList.contains(e))
+            .collect(Collectors.toList());
+
+        confirmedList.forEach(fe -> updateHistory(confirmedList, fe, Boolean.TRUE));
+
+        unconfirmedList.forEach(ue -> updateHistory(unconfirmedList, ue, Boolean.FALSE));
     }
 
     protected ProjectEstimate of(
@@ -210,5 +205,27 @@ public class ProjectEstimateService {
         return fileItemRepository.findById(projectCustomEstimate.getFile().getId()).orElseThrow(() -> {
             throw new NotFoundException(FileItem.KEY, projectCustomEstimate.getFile().getId());
         });
+    }
+
+    private void updateHistory(List<ProjectEstimate> list, ProjectEstimate instance, Boolean value) {
+        ProjectEstimate prev = list.stream()
+            .filter(c -> c.getId().equals(instance.getId()))
+            .findFirst().orElse(null);
+        if (Objects.isNull(prev)) {
+            throw new NotFoundException(ProjectEstimate.KEY + ".is_empty", "해당하는 견적서가 존재하지 않습니다.");
+        }
+        Boolean prevIsConfirmed = prev.getConfirmed();
+        instance.changeConfirmed(value);
+
+        if (instance.getConfirmed().equals(prevIsConfirmed)) {
+            return;
+        }
+
+        eventPublisher.publishEvent(ProjectLogEvent.of(
+            instance.getProject(),
+            "확정 여부 변경",
+            prevIsConfirmed ? "견적서 확정" : "견적서 미확정",
+            instance.getConfirmed() ? "견적서 확정" : "견적서 미확정"
+        ));
     }
 }

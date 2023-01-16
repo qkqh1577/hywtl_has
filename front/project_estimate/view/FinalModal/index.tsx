@@ -33,7 +33,7 @@ export default function ProjectEstimateFinalModal(props: Props) {
           alignItems:     'center',
         }}>
           <Button
-            disabled={!formik.values.id || !props.list || props.list.length === 0}
+            disabled={!formik.values.idList || !props.list || props.list.length === 0}
             sx={{
               marginRight: '10px',
             }}

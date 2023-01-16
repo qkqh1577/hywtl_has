@@ -158,11 +158,11 @@ function* watchChangeSystem() {
 
 function* watchFinal() {
   while (true) {
-    const { payload: estimateId } = yield take(projectEstimateAction.setFinal);
+    const { payload: estimateIdList } = yield take(projectEstimateAction.setFinal);
     try {
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
       yield put(projectEstimateAction.requestSetFinal('request'));
-      yield call(projectEstimateApi.setFinal, projectId, estimateId);
+      yield call(projectEstimateApi.setFinal, projectId, estimateIdList);
       yield put(projectEstimateAction.requestSetFinal('done'));
       yield put(dialogAction.openAlert('변경하였습니다.'));
     }

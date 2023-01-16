@@ -143,11 +143,11 @@ function* watchDelete() {
 
 function* watchFinal() {
   while (true) {
-    const { payload: contractId } = yield take(projectContractAction.setFinal);
+    const { payload: contractIdList } = yield take(projectContractAction.setFinal);
     try {
       const { projectId } = yield select((root: RootState) => root.projectContract);
       yield put(projectContractAction.requestSetFinal('request'));
-      yield call(projectContractApi.setFinal, projectId, contractId);
+      yield call(projectContractApi.setFinal, projectId, contractIdList);
       yield put(projectContractAction.requestSetFinal('done'));
       yield put(dialogAction.openAlert('변경하였습니다.'));
     }

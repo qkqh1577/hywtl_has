@@ -68,7 +68,7 @@ export default function ProjectContractListSection(props: Props) {
           <TableHead>
             <TableRow>
               <Th>계약 번호</Th>
-              <Th>최종 여부</Th>
+              <Th>확정 여부</Th>
               <Th>견적 번호</Th>
               <Th>Word</Th>
               <Th>PDF</Th>

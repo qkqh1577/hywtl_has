@@ -45,7 +45,7 @@ export default function ProjectContractModalTopForm(props: Props) {
             </DataFieldWithLabel>
           </Box>
           <Box sx={{ width: '17%' }}>
-            <DataFieldWithLabel label="최종 여부">
+            <DataFieldWithLabel label="확정 여부">
               <Input
                 readOnly
                 key={formik.values.confirmed}

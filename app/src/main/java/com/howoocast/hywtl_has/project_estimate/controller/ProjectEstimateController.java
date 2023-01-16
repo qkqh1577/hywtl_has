@@ -56,7 +56,7 @@ public class ProjectEstimateController {
     ) {
         service.confirm(
             projectId,
-            parameter.getEstimateId()
+            parameter
         );
     }
 

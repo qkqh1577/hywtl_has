@@ -24,20 +24,20 @@ export default function ProjectEstimateFinalModalRoute() {
 
   const dispatch = useDispatch();
   const { projectId, list, finalModal, requestSetFinal } = useSelector((root: RootState) => root.projectEstimate);
-  const setFinal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setFinal(id)), [dispatch]);
+  const setFinal = useCallback((idList: ProjectEstimateId[]) => dispatch(projectEstimateAction.setFinal(idList)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectEstimateAction.setFinalModal(false)), [dispatch]);
 
   const formik = useFormik<ProjectEstimateFinalParameter>({
     initialValues: initialProjectEstimateFinalParameter,
     onSubmit:      (values) => {
-      setFinal(values.id);
+      setFinal(values.idList);
     }
   });
 
   useEffect(() => {
     if (list) {
       formik.setValues({
-        id: list.find(item => item.confirmed)?.id,
+        idList: list.filter(item => item.confirmed).length > 0 ? [...list.filter(item => item.confirmed).map(item => item.id)] : [],
       } as ProjectEstimateFinalParameter);
     }
     else {
