@@ -159,7 +159,7 @@ public class DepartmentInitDataService {
 
         Department design1Part = Department.of();
         design1Part.change(
-            "마케팅 부서",
+            "디자인 1부서",
             DepartmentCategory.PART,
             modelingTeam,
             5,
