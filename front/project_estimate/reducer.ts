@@ -28,6 +28,7 @@ export interface ProjectEstimateState {
   requestSetFinal: ApiStatus;
   systemDetail?: ProjectSystemEstimateVO;
   systemModal?: ProjectEstimateId | null;
+
 }
 
 const initial: ProjectEstimateState = {

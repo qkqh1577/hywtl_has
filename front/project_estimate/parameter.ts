@@ -142,3 +142,27 @@ export interface ProjectEstimateContentListToMap {
 export interface ProjectEstimateTemplateDetailTitleListToMap {
   title: string;
 }
+
+export interface ProjectFinalEstimateParameter {
+  estimateDate?: string;
+  resetEstimateDate?: boolean;
+  code?: string;
+  resetCode?: boolean;
+  targetTest?: string;
+  resetTargetTest?: boolean;
+  testAmount?: number;
+  resetTestAmount?: boolean;
+  reviewAmount?: number;
+  resetReviewAmount?: boolean;
+  totalAmount?: number;
+  resetTotalAmount?: boolean;
+  type?: ProjectEstimateType;
+  resetType?: boolean;
+  recipientId?: BusinessId;
+  registerId?: UserId;
+  resetRegisterId?: boolean;
+  isSent?: boolean;
+  resetIsSent?: boolean;
+  note?: string;
+  resetNote?: boolean;
+}
