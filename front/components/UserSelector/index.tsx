@@ -31,17 +31,18 @@ interface Props
 }
 
 export default function UserSelector({onChange, ...props}: Props) {
-
+  const {confirm} = useDialog();
+  const value: UserId | undefined = props.value;
   const [open, setOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<UserVO>();
+
   const onOpen = () => {
     setOpen(true);
   };
   const onClose = useCallback(() => {
     setOpen(false);
   }, [open]);
-  const {confirm} = useDialog();
-  const value: UserId | undefined = props.value;
-  const [user, setUser] = useState<UserVO>();
+
   useEffect(() => {
     if (value) {
       userApi.getOne(value)
@@ -146,6 +147,7 @@ export default function UserSelector({onChange, ...props}: Props) {
         open={open}
         onClose={onClose}
         value={value}
+        departmentId={user?.department.id}
         onChange={onChange}
       />
     </>
