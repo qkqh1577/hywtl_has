@@ -11,6 +11,11 @@ export interface UserQuery {
   role: UserRole[] | undefined;
 }
 
+export interface UserWithDepartmentIdQuery {
+  keyword?: string,
+  departmentId?: number
+}
+
 export const keywordTypeList: Option[] = [{
   key:  'by_username',
   text: '아이디'

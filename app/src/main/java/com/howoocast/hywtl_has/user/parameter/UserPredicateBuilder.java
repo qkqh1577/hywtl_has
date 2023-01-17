@@ -49,6 +49,15 @@ public class UserPredicateBuilder {
         return this;
     }
 
+    public UserPredicateBuilder department(@Nullable String departmentId) {
+        if (Objects.isNull(departmentId) || departmentId.trim().isEmpty()) {
+            return this;
+        }
+        final String departmentIdStr = departmentId.trim();
+        criteria.or(user.department.id.eq(Long.parseLong(departmentIdStr)));
+        return this;
+    }
+
     @Nullable
     public Predicate build() {
         return criteria;

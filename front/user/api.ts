@@ -1,6 +1,6 @@
 import apiClient from 'services/api';
 import Page from 'type/Page';
-import { UserQuery } from 'user/query';
+import {UserQuery, UserWithDepartmentIdQuery} from 'user/query';
 import {
   UserId,
   UserVO
@@ -21,6 +21,11 @@ class UserApi {
 
   async getList(keyword?: string): Promise<UserVO[]> {
     const { data } = await apiClient.get('/user', { keyword });
+    return data;
+  }
+
+  async getListByDepartmentId(query: UserWithDepartmentIdQuery): Promise<UserVO[]> {
+    const { data } = await apiClient.get('/user', query);
     return data;
   }
 

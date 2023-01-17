@@ -53,11 +53,13 @@ public class UserController {
 
     @GetMapping("/user")
     public List<UserShortView> getAll(
-        @RequestParam(required = false) String keyword
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String departmentId
     ) {
         return userService.getAll(
                 new UserPredicateBuilder()
                     .keyword(keyword)
+                    .department(departmentId)
                     .build())
             .stream()
             .map(UserShortView::assemble)
