@@ -23,6 +23,7 @@ import {
 import TextLink from 'layouts/TextLink';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
+import DateFormat from 'layouts/DateFormat';
 
 interface Props {
   list: ProjectContractShortVO[] | undefined;
@@ -53,6 +54,7 @@ export default function ProjectContractListSection(props: Props) {
       );
     }
   }, [list]);
+  console.log('list : ', list);
   return (
     <SectionLayout
       title="계약서"
@@ -67,12 +69,23 @@ export default function ProjectContractListSection(props: Props) {
         <Table>
           <TableHead>
             <TableRow>
-              <Th>계약 번호</Th>
+              <Th>No.</Th>
               <Th>확정 여부</Th>
+              <Th>계약 일자</Th>
+              <Th>계약 분류</Th>
+              <Th>계약 번호</Th>
               <Th>견적 번호</Th>
               <Th>Word</Th>
               <Th>PDF</Th>
               <Th>날인본 PDF</Th>
+              <Th>실험 정보</Th>
+              <Th>풍동 금액</Th>
+              <Th>구검</Th>
+              <Th>총액</Th>
+              <Th>일정</Th>
+              <Th>기성</Th>
+              <Th>발주처</Th>
+              <Th>비고</Th>
               <Th>등록자</Th>
               <Th>송부 여부</Th>
             </TableRow>
@@ -85,8 +98,18 @@ export default function ProjectContractListSection(props: Props) {
                 </Td>
               </TableRow>
             )}
-            {list && list.map((item) => (
+            {list && list.map((item,
+                               index
+            ) => (
               <TableRow key={item.id} selected={item.confirmed}>
+                <Td>
+                  {index + 1}
+                </Td>
+                <Td>{item.confirmed ? 'Y' : 'N'}</Td>
+                <Td>
+                  <DateFormat date={item.contractDate} format="YYYY-MM-DD" />
+                </Td>
+                <Td>계약 분류</Td>
                 <Td>
                   <Box sx={{
                     width:          '100%',
@@ -103,7 +126,6 @@ export default function ProjectContractListSection(props: Props) {
                     </TextLink>
                   </Box>
                 </Td>
-                <Td>{item.confirmed ? 'Y' : 'N'}</Td>
                 <Td>{item.estimateCode}</Td>
                 <Td>
                   <Button shape="small" onClick={() => {window.open(`/file-item?projectContractId=${item.id}&type=word`, '_blank');}}>다운로드</Button>
@@ -120,8 +142,16 @@ export default function ProjectContractListSection(props: Props) {
                     </Button>
                   )}
                 </Td>
-                <Td>{item.createdBy.name}</Td>
+                <Td>{item.targetTest}</Td>
+                <Td>{item.testAmount.toLocaleString()}</Td>
+                <Td>{item.reviewAmount.toLocaleString()}</Td>
+                <Td>{item.totalAmount.toLocaleString()}</Td>
+                <Td>일정</Td>
+                <Td>{item.collectionRate}</Td>
+                <Td>{item.orderer}</Td>
                 <Td>{item.note ?? '-'}</Td>
+                <Td>{item.createdBy.name}</Td>
+                <Td>{item.isSent ? 'Y' : 'N'}</Td>
               </TableRow>
             ))}
           </TableBody>

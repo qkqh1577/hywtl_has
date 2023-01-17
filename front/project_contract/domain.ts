@@ -20,6 +20,13 @@ export interface ProjectContractShortVO {
   createdAt: Date;
   modifiedAt?: Date;
   contractDate?: Date;
+  targetTest: string;
+  testAmount: number;
+  reviewAmount: number;
+  totalAmount: number;
+  collection: ProjectContractCollectionVO;
+  orderer: string;
+  collectionRate: string;
 }
 
 export interface ProjectContractVO
