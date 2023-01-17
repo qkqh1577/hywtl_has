@@ -7,7 +7,7 @@ import {
 } from './parameter';
 import Department, {ListDepartment} from "./entity";
 
-export class DepartmentApi {
+export class DepartmentTreeApi {
   async getAll(): Promise<ListDepartment[]> {
     const {data} = await axios.get('/department/all');
     return data;
@@ -58,5 +58,5 @@ export class DepartmentApi {
   }
 }
 
-const departmentApi = new DepartmentApi();
-export default departmentApi;
+const departmentTreeApi = new DepartmentTreeApi();
+export default departmentTreeApi;

@@ -1,29 +1,29 @@
 import { ActionType } from 'typesafe-actions';
 import { put, takeLatest } from 'redux-saga/effects';
-import departmentApi from './api';
+import departmentTreeApi from './api';
 import Department, { ListDepartment } from './entity';
 import Page from 'type/Page';
 import { departmentTreeActions, DepartmentActionType } from './action';
 
 function* getAll() {
-  const list: ListDepartment[] = yield departmentApi.getAll();
+  const list: ListDepartment[] = yield departmentTreeApi.getAll();
   yield put(departmentTreeActions.setAll(list));
 }
 
 function* getPage(action: ActionType<typeof departmentTreeActions.getPage>) {
-  const page: Page<ListDepartment> = yield departmentApi.getPage(action.payload);
+  const page: Page<ListDepartment> = yield departmentTreeApi.getPage(action.payload);
   yield put(departmentTreeActions.setPage(page));
 }
 
 function* getOne(action: ActionType<typeof departmentTreeActions.getOne>) {
-  const data: Department = yield departmentApi.getOne(action.payload);
+  const data: Department = yield departmentTreeApi.getOne(action.payload);
   yield put(departmentTreeActions.setOne(data));
 }
 
 function* add(action: ActionType<typeof departmentTreeActions.add>) {
   const { params, callback } = action.payload;
   try {
-    const data: Department = yield departmentApi.add(params);
+    const data: Department = yield departmentTreeApi.add(params);
     yield put(departmentTreeActions.setOne(data));
     callback(data);
   } catch (e) {
@@ -34,7 +34,7 @@ function* add(action: ActionType<typeof departmentTreeActions.add>) {
 function* change(action: ActionType<typeof departmentTreeActions.change>) {
   const { params, callback } = action.payload;
   try {
-    const data: Department = yield departmentApi.change(params);
+    const data: Department = yield departmentTreeApi.change(params);
     yield put(departmentTreeActions.setOne(data));
     callback(data);
   } catch (e) {
@@ -45,7 +45,7 @@ function* change(action: ActionType<typeof departmentTreeActions.change>) {
 function* changeTree(action: ActionType<typeof departmentTreeActions.changeTree>) {
   const { params, callback } = action.payload;
   try {
-    const list: ListDepartment[] = yield departmentApi.changeTree(params);
+    const list: ListDepartment[] = yield departmentTreeApi.changeTree(params);
     yield put(departmentTreeActions.setAll(list));
     yield put(departmentTreeActions.getAll());
     callback(true);
