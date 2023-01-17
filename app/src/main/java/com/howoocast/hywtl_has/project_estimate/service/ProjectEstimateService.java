@@ -18,7 +18,6 @@ import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplex
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateComplexSiteParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimateConfirmParameter;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectEstimatePlanParameter;
-import com.howoocast.hywtl_has.project_estimate.parameter.ProjectFinalEstimateUpdateParameter;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectCustomEstimateRepository;
 import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
@@ -228,10 +227,5 @@ public class ProjectEstimateService {
             prevIsConfirmed ? "견적서 확정" : "견적서 미확정",
             instance.getConfirmed() ? "견적서 확정" : "견적서 미확정"
         ));
-    }
-
-    @Transactional
-    public void update(Long projectId, ProjectFinalEstimateUpdateParameter parameter) {
-        projectRepository.findById(projectId);
     }
 }

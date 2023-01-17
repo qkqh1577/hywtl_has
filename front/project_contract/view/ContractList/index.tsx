@@ -54,7 +54,7 @@ export default function ProjectContractListSection(props: Props) {
       );
     }
   }, [list]);
-  console.log('list : ', list);
+
   return (
     <SectionLayout
       title="계약서"
@@ -93,7 +93,7 @@ export default function ProjectContractListSection(props: Props) {
           <TableBody>
             {(!list || list.length === 0) && (
               <TableRow>
-                <Td colSpan={8}>
+                <Td colSpan={19}>
                   조회 결과가 없습니다.
                 </Td>
               </TableRow>

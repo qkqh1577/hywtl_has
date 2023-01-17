@@ -4,7 +4,9 @@ import {
   ProjectEstimateId,
   ProjectEstimateShortVO,
   ProjectEstimateType,
+  projectEstimateTypeList,
   projectEstimateTypeName,
+  ProjectFinalEstimateVO,
 } from 'project_estimate/domain';
 import React, {
   useEffect,
@@ -33,17 +35,17 @@ import Input from 'layouts/Input';
 import UserSelector from 'components/UserSelector';
 import BusinessSelector from 'components/BusinessSelector';
 import Select from 'layouts/Select';
-import {
-  expectedDateTypeList,
-  expectedDateTypeName
-} from 'admin/contract/collection/domain';
 import { DatePicker } from '@mui/x-date-pickers';
+import { ProjectFinalEstimateParameter } from 'project_estimate/parameter';
 
 interface Props
   extends ProjectEstimateListButtonProps {
   list?: ProjectEstimateShortVO[];
   openCustomDetailModal: DefaultFunction<ProjectEstimateId>;
   openSystemDetailModal: DefaultFunction<ProjectEstimateId>;
+  onUpdate: (params: ProjectFinalEstimateParameter) => void;
+  finalEstimate?: ProjectFinalEstimateVO;
+  codeList?: string[];
 }
 
 export default function ProjectEstimateListSection(props: Props) {
@@ -71,7 +73,7 @@ export default function ProjectEstimateListSection(props: Props) {
       );
     }
   }, [list]);
-  const date = Date.now();
+
   return (
     <SectionLayout
       title="견적서"
@@ -109,12 +111,14 @@ export default function ProjectEstimateListSection(props: Props) {
             <TableBody>
               {(!list || list.length === 0) && (
                 <TableRow>
-                  <Td colSpan={8}>
+                  <Td colSpan={15}>
                     조회 결과가 없습니다.
                   </Td>
                 </TableRow>
               )}
-              {list && list.map((item, index) => (
+              {list && list.map((item,
+                                 index
+              ) => (
                 <TableRow key={item.id} selected={item.confirmed}>
                   <Td>{index + 1}</Td>
                   <Td>{item.confirmed ? 'Y' : 'N'}</Td>
@@ -178,17 +182,14 @@ export default function ProjectEstimateListSection(props: Props) {
                     openTo="year"
                     inputFormat="YYYY-MM-DD"
                     mask="____-__-__"
-                    value={dayjs(date).format('YYYY-MM-DD')}
-                    // value={stage.expectedDate ? dayjs(stage.expectedDate)
-                    // .format('YYYY-MM-DD') : null}
+                    value={props.finalEstimate ?
+                      dayjs(props.finalEstimate.estimateDate)
+                      .format('YYYY-MM-DD')
+                      : null}
                     onChange={(e) => {
-                      // const value = e ? dayjs(e)
-                      // .format('YYYY-MM-DD') : undefined;
-                      // const formikValue = stage.expectedDate ? dayjs(stage.expectedDate)
-                      // .format('YYYY-MM-DD') : undefined;
-                      // if (formikValue !== value) {
-                      //   formik.setFieldValue(`collection.stageList.${i}.expectedDate`, value);
-                      // }
+                      const value = e ? dayjs(e)
+                      .format('YYYY-MM-DD') : undefined;
+                      props.onUpdate({ estimateDate: value });
                     }}
                     renderInput={(parameter) => (
                       <Input
@@ -204,15 +205,18 @@ export default function ProjectEstimateListSection(props: Props) {
                 <Td>
                   <Select
                     displayEmpty
-                    // value={item.expectedDate ?? ''}
+                    value={props.finalEstimate?.code ?? ''}
                     variant="outlined"
                     onChange={(e) => {
-
+                      const value = e.target.value as string || undefined;
+                      if (props.finalEstimate?.code !== value) {
+                        props.onUpdate({ code: value });
+                      }
                     }}>
                     <MenuItem value="">선택</MenuItem>
-                    {expectedDateTypeList.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {expectedDateTypeName(type)}
+                    {props.codeList && props.codeList.map((code) => (
+                        <MenuItem key={code} value={code}>
+                          {code}
                         </MenuItem>
                       )
                     )}
@@ -220,56 +224,74 @@ export default function ProjectEstimateListSection(props: Props) {
                 </Td>
                 <Td>
                   <Input
-                    // key={}
-                    defaultValue={''}
+                    key={props.finalEstimate?.targetTest}
+                    defaultValue={props.finalEstimate?.targetTest ?? ''}
                     variant="outlined"
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
+                      if (props.finalEstimate?.targetTest !== value) {
+                        props.onUpdate({ targetTest: value });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
                   <Input
-                    // key={}
-                    defaultValue={''}
+                    type="number"
+                    key={props.finalEstimate?.testAmount}
+                    defaultValue={props.finalEstimate?.testAmount ?? ''}
                     variant="outlined"
                     onBlur={(e) => {
-                      const value = e.target.value || undefined;
+                      const value = +e.target.value as number || undefined;
+                      if (props.finalEstimate?.testAmount !== value) {
+                        props.onUpdate({ testAmount: value });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
                   <Input
-                    // key={}
-                    defaultValue={''}
+                    type="number"
+                    key={props.finalEstimate?.reviewAmount}
+                    defaultValue={props.finalEstimate?.reviewAmount ?? ''}
                     variant="outlined"
                     onBlur={(e) => {
-                      const value = e.target.value || undefined;
+                      const value = +e.target.value as number || undefined;
+                      if (props.finalEstimate?.reviewAmount !== value) {
+                        props.onUpdate({ reviewAmount: value });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
                   <Input
-                    // key={}
-                    defaultValue={''}
+                    type="number"
+                    key={props.finalEstimate?.totalAmount}
+                    defaultValue={props.finalEstimate?.totalAmount ?? ''}
                     variant="outlined"
                     onBlur={(e) => {
-                      const value = e.target.value || undefined;
+                      const value = +e.target.value as number || undefined;
+                      if (props.finalEstimate?.totalAmount !== value) {
+                        props.onUpdate({ totalAmount: value });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
                   <Select
                     displayEmpty
-                    // value={item.expectedDate ?? ''}
+                    value={props.finalEstimate?.type ?? ''}
                     variant="outlined"
                     onChange={(e) => {
-
+                      const value = e.target.value as string || undefined;
+                      if (props.finalEstimate?.type !== value) {
+                        props.onUpdate({ type: value });
+                      }
                     }}>
                     <MenuItem value="">선택</MenuItem>
-                    {expectedDateTypeList.map((type) => (
+                    {projectEstimateTypeList.map((type) => (
                         <MenuItem key={type} value={type}>
-                          {expectedDateTypeName(type)}
+                          {projectEstimateTypeName(type)}
                         </MenuItem>
                       )
                     )}
@@ -277,59 +299,63 @@ export default function ProjectEstimateListSection(props: Props) {
                 </Td>
                 <Td>
                   <BusinessSelector
-                    // value={item.business?.id ?? ''}
+                    value={props.finalEstimate?.business?.id ?? ''}
                     onChange={(business) => {
-                      // if (item.business?.id !== business.id) {
-                      //   props.onUpdate({
-                      //     id:         item.id,
-                      //     businessId: business.id,
-                      //   });
-                      // }
+                      if (props.finalEstimate?.business?.id !== business.id) {
+                        props.onUpdate({
+                          businessId: business.id
+                        });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
-
+                  <DateFormat date={props.finalEstimate?.createdAt} format="YYYY-MM-DD hh:mm" />
                 </Td>
                 <Td>
                   <UserSelector
                     variant="outlined"
-                    // value={item.user?.id}
+                    value={props.finalEstimate?.createdBy?.id}
                     onChange={(value) => {
-                      // if (item.user?.id !== value) {
-                      //   props.onUpdateInternal({id: item.id, userId: value});
-                      // }
+                      if (props.finalEstimate?.createdBy?.id !== value) {
+                        props.onUpdate({ writerId: value });
+                      }
                     }}
                   />
                 </Td>
                 <Td>
                   <Select
                     displayEmpty
-                    // value={item.expectedDate ?? ''}
+                    value={props.finalEstimate?.isSent ?
+                      'Y' : (props.finalEstimate?.isSent == null ? '' : 'N')}
                     variant="outlined"
                     onChange={(e) => {
-
+                      const value = e.target.value || undefined;
+                      if (props.finalEstimate?.isSent !== value && value === 'Y') {
+                        props.onUpdate({ isSent: true });
+                      }
+                      else {
+                        props.onUpdate({ isSent: false });
+                      }
                     }}>
                     <MenuItem value="">선택</MenuItem>
-                    {expectedDateTypeList.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {expectedDateTypeName(type)}
-                        </MenuItem>
-                      )
-                    )}
+                    <MenuItem value="Y">Y</MenuItem>
+                    <MenuItem value="N">N</MenuItem>
                   </Select>
                 </Td>
-                <Td>
+                <Td colSpan={2}>
                   <Input
-                    // key={}
-                    defaultValue={''}
+                    key={props.finalEstimate?.note}
+                    defaultValue={props.finalEstimate?.note ?? ''}
                     variant="outlined"
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
+                      if (props.finalEstimate?.note !== value) {
+                        props.onUpdate({ note: value });
+                      }
                     }}
                   />
                 </Td>
-                <Td></Td>
               </TableRow>
             </TableBody>
           </Table>

@@ -66,11 +66,6 @@ public abstract class ProjectEstimate extends CustomEntity {
     private Boolean confirmed;
 
     /**
-     * 최종 여부
-     */
-    private Boolean finalConfirmed;
-
-    /**
      * 송신처
      */
     @NotBlank
@@ -404,9 +399,5 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.isSent = isSent;
         this.confirmed = false;
         this.business = business;
-    }
-
-    public void updatePlan() {
-
     }
 }

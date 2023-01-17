@@ -156,11 +156,12 @@ export interface ProjectFinalEstimateParameter {
   resetReviewAmount?: boolean;
   totalAmount?: number;
   resetTotalAmount?: boolean;
-  type?: ProjectEstimateType;
+  type?: string;
   resetType?: boolean;
-  recipientId?: BusinessId;
-  registerId?: UserId;
-  resetRegisterId?: boolean;
+  businessId?: BusinessId;
+  resetBusinessId?: boolean;
+  writerId?: UserId;
+  resetWriterId?: boolean;
   isSent?: boolean;
   resetIsSent?: boolean;
   note?: string;

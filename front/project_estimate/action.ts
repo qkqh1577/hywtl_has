@@ -5,6 +5,7 @@ import {
   ProjectEstimateId,
   ProjectEstimateType,
   ProjectEstimateVO,
+  ProjectFinalEstimateVO,
   ProjectSystemEstimateVO,
 } from 'project_estimate/domain';
 import {
@@ -44,6 +45,8 @@ export enum ProjectEstimateActionType {
   setSystemModal             = 'project/sales/system-estimate/modal',
   update                     = 'project/sales/final-estimate/update',
   requestFinalEstimateUpdate = 'project/sales/final-estimate/update/request',
+  getFinalEstimate           = 'project/sales/final-estimate/get',
+  setFinalEstimate           = 'project/sales/final-estimate/set',
 }
 
 export const projectEstimateAction = {
@@ -74,4 +77,6 @@ export const projectEstimateAction = {
   setSystemModal:             createAction(ProjectEstimateActionType.setSystemModal)<ProjectEstimateId | null | undefined>(),
   update:                     createAction(ProjectEstimateActionType.update)<ProjectFinalEstimateParameter>(),
   requestFinalEstimateUpdate: createAction(ProjectEstimateActionType.requestFinalEstimateUpdate)<ApiStatus>(),
+  getFinalEstimate:           createAction(ProjectEstimateActionType.getFinalEstimate)<ProjectId>(),
+  setFinalEstimate:           createAction(ProjectEstimateActionType.setFinalEstimate)<ProjectFinalEstimateVO | undefined>(),
 };

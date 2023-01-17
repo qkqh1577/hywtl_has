@@ -4,6 +4,7 @@ import {
   ProjectEstimateId,
   ProjectEstimateShortVO,
   ProjectEstimateType,
+  ProjectFinalEstimateVO,
   ProjectSystemEstimateVO,
 } from 'project_estimate/domain';
 import { createReducer } from 'typesafe-actions';
@@ -28,19 +29,22 @@ export interface ProjectEstimateState {
   requestSetFinal: ApiStatus;
   systemDetail?: ProjectSystemEstimateVO;
   systemModal?: ProjectEstimateId | null;
+  requestUpdateFinalEstimate: ApiStatus;
+  finalEstimate?: ProjectFinalEstimateVO;
 
 }
 
 const initial: ProjectEstimateState = {
-  finalModal:             false,
-  requestAddCustom:       'idle',
-  requestAddSystem:       'idle',
-  requestChangeCustom:    'idle',
-  requestChangeSystem:    'idle',
-  requestExtensionCustom: 'idle',
-  requestSetFinal:        'idle',
-  requestDeleteCustom:    'idle',
-  requestDeleteSystem:    'idle',
+  finalModal:                 false,
+  requestAddCustom:           'idle',
+  requestAddSystem:           'idle',
+  requestChangeCustom:        'idle',
+  requestChangeSystem:        'idle',
+  requestExtensionCustom:     'idle',
+  requestSetFinal:            'idle',
+  requestDeleteCustom:        'idle',
+  requestDeleteSystem:        'idle',
+  requestUpdateFinalEstimate: 'idle',
 };
 
 export const projectEstimateReducer = createReducer(initial, {
@@ -75,76 +79,87 @@ export const projectEstimateReducer = createReducer(initial, {
     customAddModal: action.payload,
   }),
 
-  [ProjectEstimateActionType.setCustomDetailModal]:    (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.setCustomDetailModal]:       (state,
+                                                           action
+                                                          ) => ({
     ...state,
     customDetailModal: action.payload
   }),
-  [ProjectEstimateActionType.setCustomExtensionModal]: (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.setCustomExtensionModal]:    (state,
+                                                           action
+                                                          ) => ({
     ...state,
     customExtensionModal: action.payload
   }),
-  [ProjectEstimateActionType.requestAddCustom]:        (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestAddCustom]:           (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestAddCustom: action.payload
   }),
-  [ProjectEstimateActionType.requestChangeCustom]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestChangeCustom]:        (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestChangeCustom: action.payload,
   }),
-  [ProjectEstimateActionType.requestAddSystem]:        (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestAddSystem]:           (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestAddSystem: action.payload
   }),
-  [ProjectEstimateActionType.requestChangeSystem]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestChangeSystem]:        (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestChangeSystem: action.payload,
   }),
-  [ProjectEstimateActionType.requestExtensionCustom]:  (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestExtensionCustom]:     (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestExtensionCustom: action.payload,
   }),
-  [ProjectEstimateActionType.requestSetFinal]:         (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestSetFinal]:            (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestSetFinal: action.payload,
   }),
-  [ProjectEstimateActionType.setSystemModal]:          (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.setSystemModal]:             (state,
+                                                           action
+                                                          ) => ({
     ...state,
     systemModal: action.payload,
   }),
-  [ProjectEstimateActionType.setFinalModal]:           (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.setFinalModal]:              (state,
+                                                           action
+                                                          ) => ({
     ...state,
     finalModal: action.payload,
   }),
-  [ProjectEstimateActionType.requestDeleteCustom]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestDeleteCustom]:        (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestDeleteCustom: action.payload,
   }),
-  [ProjectEstimateActionType.requestDeleteSystem]:     (state,
-                                                        action
-                                                       ) => ({
+  [ProjectEstimateActionType.requestDeleteSystem]:        (state,
+                                                           action
+                                                          ) => ({
     ...state,
     requestDeleteSystem: action.payload,
+  }),
+  [ProjectEstimateActionType.requestFinalEstimateUpdate]: (state,
+                                                           action
+                                                          ) => ({
+    ...state,
+    requestUpdateFinalEstimate: action.payload,
+  }),
+  [ProjectEstimateActionType.setFinalEstimate]:                      (state,
+                                                                      action) => ({
+    ...state,
+    finalEstimate: action.payload,
   })
 });

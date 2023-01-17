@@ -17,6 +17,13 @@ export enum ProjectEstimateType {
   SUB_CONTRACTOR = 'SUB_CONTRACTOR',
 }
 
+export const projectEstimateTypeList = [
+  ProjectEstimateType.CUSTOM,
+  ProjectEstimateType.SYSTEM,
+  ProjectEstimateType.COMPARISON,
+  ProjectEstimateType.SUB_CONTRACTOR,
+];
+
 export function projectEstimateTypeName(type: ProjectEstimateType) {
   switch (type) {
     case ProjectEstimateType.CUSTOM:
@@ -80,6 +87,10 @@ export interface ProjectEstimateShortVO {
   testAmount: number;
   reviewAmount: number;
   totalAmount: number;
+}
+
+export interface ProjectFinalEstimateVO extends ProjectEstimateShortVO{
+
 }
 
 export interface ProjectEstimatePlanVO {
