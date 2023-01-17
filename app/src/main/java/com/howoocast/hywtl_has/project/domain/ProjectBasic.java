@@ -223,7 +223,7 @@ public class ProjectBasic {
 
     /**
      * @migration 마이그레이션 용도 한정
-     * @param fullName
+     * @param name
      * @return
      */
     public ProjectBasic updateName(String name) {

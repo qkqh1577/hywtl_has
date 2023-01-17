@@ -9,6 +9,7 @@ import {
   ProjectFinalEstimateVO,
 } from 'project_estimate/domain';
 import React, {
+  useCallback,
   useEffect,
   useState
 } from 'react';
@@ -19,7 +20,8 @@ import {
   TableBody,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
+  TextFieldProps
 } from '@mui/material';
 import {
   Table,
@@ -37,6 +39,12 @@ import BusinessSelector from 'components/BusinessSelector';
 import Select from 'layouts/Select';
 import { DatePicker } from '@mui/x-date-pickers';
 import { ProjectFinalEstimateParameter } from 'project_estimate/parameter';
+import {
+  snackbarAction,
+  SnackbarSeverityType
+} from 'components/Snackbar/action';
+import { Simulate } from 'react-dom/test-utils';
+import { useDispatch } from 'react-redux';
 
 interface Props
   extends ProjectEstimateListButtonProps {
@@ -56,6 +64,12 @@ export default function ProjectEstimateListSection(props: Props) {
           openSystemDetailModal,
         } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
+  const dispatch = useDispatch();
+  const openSnackbar = useCallback((message,
+                                    severity: SnackbarSeverityType = SnackbarSeverityType.warning
+  ) => {
+    dispatch(snackbarAction.show({ message, severity }));
+  }, [dispatch]);
 
   useEffect(() => {
     if (!list || list.length === 0) {
@@ -189,17 +203,20 @@ export default function ProjectEstimateListSection(props: Props) {
                     onChange={(e) => {
                       const value = e ? dayjs(e)
                       .format('YYYY-MM-DD') : undefined;
-                      props.onUpdate({ estimateDate: value });
+                      const error = !value || !isValidDate(value);
+                      if (value) {
+                        if (error) {
+                          openSnackbar('올바르지 않은 날짜 형식입니다.');
+                        }
+                        else {
+                          props.onUpdate({ estimateDate: value });
+                        }
+                      }
+                      else {
+                        props.onUpdate({ resetEstimateDate: true });
+                      }
                     }}
-                    renderInput={(parameter) => (
-                      <Input
-                        {...parameter.InputProps}
-                        inputRef={parameter.inputRef}
-                        variant="outlined"
-                        value={parameter.value}
-                        inputProps={parameter.inputProps}
-                      />
-                    )}
+                    renderInput={renderDateInput}
                   />
                 </Td>
                 <Td>
@@ -210,7 +227,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onChange={(e) => {
                       const value = e.target.value as string || undefined;
                       if (props.finalEstimate?.code !== value) {
-                        props.onUpdate({ code: value });
+                        if (value) {
+                          props.onUpdate({ code: value });
+                        }
+                        else {
+                          props.onUpdate({ resetCode: true });
+                        }
                       }
                     }}>
                     <MenuItem value="">선택</MenuItem>
@@ -230,7 +252,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
                       if (props.finalEstimate?.targetTest !== value) {
-                        props.onUpdate({ targetTest: value });
+                        if (value) {
+                          props.onUpdate({ targetTest: value });
+                        }
+                        else {
+                          props.onUpdate({ resetTargetTest: true });
+                        }
                       }
                     }}
                   />
@@ -244,7 +271,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
                       if (props.finalEstimate?.testAmount !== value) {
-                        props.onUpdate({ testAmount: value });
+                        if (value) {
+                          props.onUpdate({ testAmount: value });
+                        }
+                        else {
+                          props.onUpdate({ resetTestAmount: true });
+                        }
                       }
                     }}
                   />
@@ -258,7 +290,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
                       if (props.finalEstimate?.reviewAmount !== value) {
-                        props.onUpdate({ reviewAmount: value });
+                        if (value) {
+                          props.onUpdate({ reviewAmount: value });
+                        }
+                        else {
+                          props.onUpdate({ resetReviewAmount: true });
+                        }
                       }
                     }}
                   />
@@ -272,7 +309,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
                       if (props.finalEstimate?.totalAmount !== value) {
-                        props.onUpdate({ totalAmount: value });
+                        if (value) {
+                          props.onUpdate({ totalAmount: value });
+                        }
+                        else {
+                          props.onUpdate({ resetTotalAmount: true });
+                        }
                       }
                     }}
                   />
@@ -285,7 +327,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onChange={(e) => {
                       const value = e.target.value as string || undefined;
                       if (props.finalEstimate?.type !== value) {
-                        props.onUpdate({ type: value });
+                        if (value) {
+                          props.onUpdate({ type: value });
+                        }
+                        else {
+                          props.onUpdate({ resetType: true });
+                        }
                       }
                     }}>
                     <MenuItem value="">선택</MenuItem>
@@ -302,9 +349,11 @@ export default function ProjectEstimateListSection(props: Props) {
                     value={props.finalEstimate?.business?.id ?? ''}
                     onChange={(business) => {
                       if (props.finalEstimate?.business?.id !== business.id) {
-                        props.onUpdate({
-                          businessId: business.id
-                        });
+                        if (business.id) {
+                          props.onUpdate({ businessId: business.id });
+                        }else {
+                          props.onUpdate({ resetBusinessId: true });
+                        }
                       }
                     }}
                   />
@@ -318,7 +367,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     value={props.finalEstimate?.createdBy?.id}
                     onChange={(value) => {
                       if (props.finalEstimate?.createdBy?.id !== value) {
-                        props.onUpdate({ writerId: value });
+                        if (value) {
+                          props.onUpdate({ writerId: value });
+                        }
+                        else {
+                          props.onUpdate({ resetWriterId: true });
+                        }
                       }
                     }}
                   />
@@ -335,7 +389,12 @@ export default function ProjectEstimateListSection(props: Props) {
                         props.onUpdate({ isSent: true });
                       }
                       else {
-                        props.onUpdate({ isSent: false });
+                        if (value) {
+                          props.onUpdate({ isSent: false });
+                        }
+                        else {
+                          props.onUpdate({ resetIsSent: true });
+                        }
                       }
                     }}>
                     <MenuItem value="">선택</MenuItem>
@@ -351,7 +410,12 @@ export default function ProjectEstimateListSection(props: Props) {
                     onBlur={(e) => {
                       const value = e.target.value || undefined;
                       if (props.finalEstimate?.note !== value) {
-                        props.onUpdate({ note: value });
+                        if (value) {
+                          props.onUpdate({ note: value });
+                        }
+                        else {
+                          props.onUpdate({ resetNote: true });
+                        }
                       }
                     }}
                   />
@@ -362,5 +426,24 @@ export default function ProjectEstimateListSection(props: Props) {
         </TableContainer>
       </Box>
     </SectionLayout>
+  );
+}
+
+function isValidDate(strDate: string) {
+  return strDate && ((dayjs(strDate, 'YYYY-MM-DD', true)
+  .isValid()));
+}
+
+function renderDateInput(parameter: TextFieldProps) {
+  const value = parameter.inputProps?.value;
+  const error = value != '' && !isValidDate(value);
+  return (
+    <Input
+      {...parameter.InputProps}
+      inputRef={parameter.inputRef}
+      variant="standard"
+      inputProps={parameter.inputProps}
+      error={error}
+    />
   );
 }

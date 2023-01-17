@@ -88,20 +88,31 @@ public class ProjectFinalEstimate extends CustomEntity {
 
     public List<EventEntity> update(
         @Nullable LocalDate estimateDate,
+        @Nullable Boolean resetEstimateDate,
         @Nullable String code,
+        @Nullable Boolean resetCode,
         @Nullable String targetTest,
+        @Nullable Boolean resetTargetTest,
         @Nullable Long testAmount,
+        @Nullable Boolean resetTestAmount,
         @Nullable Long reviewAmount,
+        @Nullable Boolean resetReviewAmount,
         @Nullable Long totalAmount,
+        @Nullable Boolean resetTotalAmount,
         @Nullable String type,
+        @Nullable Boolean resetType,
         @Nullable Business business,
+        @Nullable Boolean resetBusiness,
         @Nullable User writer,
+        @Nullable Boolean resetWriter,
         @Nullable Boolean isSent,
-        @Nullable String note
+        @Nullable Boolean resetIsSent,
+        @Nullable String note,
+        @Nullable Boolean resetNote
     ) {
         List<EventEntity> eventList = new ArrayList<>();
 
-        if (Objects.nonNull(estimateDate)) {
+        if (Objects.nonNull(estimateDate) || Boolean.TRUE.equals(resetEstimateDate)) {
             eventList.add(EventEntity.of(
                 "견적 일자",
                 this.estimateDate,
@@ -110,7 +121,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.estimateDate = estimateDate;
         }
 
-        if (Objects.nonNull(code)) {
+        if (Objects.nonNull(code) || Boolean.TRUE.equals(resetCode)) {
             eventList.add(EventEntity.of(
                 "견적 번호",
                 this.code,
@@ -119,7 +130,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.code = code;
         }
 
-        if (Objects.nonNull(targetTest)) {
+        if (Objects.nonNull(targetTest) || Boolean.TRUE.equals(resetTargetTest)) {
             eventList.add(EventEntity.of(
                 "실험 정보",
                 this.targetTest,
@@ -128,7 +139,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.targetTest = targetTest;
         }
 
-        if (Objects.nonNull(testAmount)) {
+        if (Objects.nonNull(testAmount) || Boolean.TRUE.equals(resetTestAmount)) {
             eventList.add(EventEntity.of(
                 "풍동 금액",
                 this.testAmount,
@@ -137,7 +148,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.testAmount = testAmount;
         }
 
-        if (Objects.nonNull(reviewAmount)) {
+        if (Objects.nonNull(reviewAmount) || Boolean.TRUE.equals(resetReviewAmount)) {
             eventList.add(EventEntity.of(
                 "구검",
                 this.reviewAmount,
@@ -146,7 +157,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.reviewAmount = reviewAmount;
         }
 
-        if (Objects.nonNull(totalAmount)) {
+        if (Objects.nonNull(totalAmount) || Boolean.TRUE.equals(resetTotalAmount)) {
             eventList.add(EventEntity.of(
                 "총액",
                 this.totalAmount,
@@ -155,7 +166,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.totalAmount = totalAmount;
         }
 
-        if (Objects.nonNull(type)) {
+        if (Objects.nonNull(type) || Boolean.TRUE.equals(resetType)) {
             eventList.add(EventEntity.of(
                 "견적 구분",
                 this.type,
@@ -163,7 +174,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             ));
             this.type = type;
         }
-        if (Objects.nonNull(business)) {
+        if (Objects.nonNull(business) || Boolean.TRUE.equals(resetBusiness)) {
             eventList.add(EventEntity.of(
                 "견적 업체",
                 this.business,
@@ -172,7 +183,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.business = business;
         }
 
-        if (Objects.nonNull(writer)) {
+        if (Objects.nonNull(writer) || Boolean.TRUE.equals(resetWriter)) {
             eventList.add(EventEntity.of(
                 "등록자",
                 this.writer,
@@ -181,7 +192,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.writer = writer;
         }
 
-        if (Objects.nonNull(isSent)) {
+        if (Objects.nonNull(isSent) || Boolean.TRUE.equals(resetIsSent)) {
             eventList.add(EventEntity.of(
                 "송부 여부",
                 this.isSent,
@@ -190,7 +201,7 @@ public class ProjectFinalEstimate extends CustomEntity {
             this.isSent = isSent;
         }
 
-        if (Objects.nonNull(note)) {
+        if (Objects.nonNull(note) || Boolean.TRUE.equals(resetNote)) {
             eventList.add(EventEntity.of(
                 "비고",
                 this.note,

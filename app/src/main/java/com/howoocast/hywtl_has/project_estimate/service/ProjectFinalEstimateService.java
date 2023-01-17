@@ -42,20 +42,31 @@ public class ProjectFinalEstimateService {
 
         List<EventEntity> eventList = instance.update(
             parameter.getEstimateDate(),
+            parameter.getResetEstimateDate(),
             parameter.getCode(),
+            parameter.getResetCode(),
             parameter.getTargetTest(),
+            parameter.getResetTargetTest(),
             parameter.getTestAmount(),
+            parameter.getResetTestAmount(),
             parameter.getReviewAmount(),
+            parameter.getResetReviewAmount(),
             parameter.getTotalAmount(),
+            parameter.getResetTotalAmount(),
             parameter.getType(),
+            parameter.getResetType(),
             Objects.nonNull(parameter.getBusinessId())
                 ? businessRepository.findById(parameter.getBusinessId())
                 .orElse(null) : null,
+            parameter.getResetBusinessId(),
             Objects.nonNull(parameter.getWriterId())
                 ? userRepository.findById(parameter.getWriterId()).orElse(null)
                 : null,
+            parameter.getResetWriterId(),
             parameter.getIsSent(),
-            parameter.getNote()
+            parameter.getResetIsSent(),
+            parameter.getNote(),
+            parameter.getResetNote()
         );
         if(Objects.isNull(instance.getId())) {
             repository.save(instance);
