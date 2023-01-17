@@ -17,12 +17,16 @@ public class PersonnelInitDataService {
     private final UserRepository userRepository;
     @Transactional
     public void init() {
-        userRepository.findByUsername("admin").ifPresent(a -> {
-            Personnel admin = Personnel.of(a);
-            em.persist(admin);
-            em.flush();
-            em.clear();
-        });
+        final int userCount = 100;
+        for(int i=0;i<userCount;i++) {
+            String userId   = i==0? "admin" : String.format("user%d",i);
+            userRepository.findByUsername(userId).ifPresent(a -> {
+                Personnel personnel = Personnel.of(a);
+                em.persist(personnel);
+                em.flush();
+                em.clear();
+            });
+        }
     }
 
 }
