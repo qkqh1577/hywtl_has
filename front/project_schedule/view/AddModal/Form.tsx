@@ -14,7 +14,6 @@ import {
 } from '@mui/x-date-pickers';
 import UserSelector from 'components/UserSelector';
 import TextBox from 'layouts/Text';
-import MultiUserSelector from 'components/MultipleUserSelector';
 
 export default function () {
   const formik = useContext(FormikContext);
@@ -304,7 +303,8 @@ export default function () {
         marginBottom: '10px',
       }}>
         <DataFieldWithLabel label="일정 공유 대상" labelPosition="top">
-          <MultiUserSelector
+          <UserSelector
+            multi
             value={formik.values.attendanceIdList}
             onChange={(list) => {
               formik.setFieldValue('attendanceIdList', list);

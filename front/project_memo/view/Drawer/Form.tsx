@@ -15,7 +15,7 @@ import Button from 'layouts/Button';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
 import Select from 'layouts/Select';
-import MultiUserSelector from 'components/MultipleUserSelector';
+import UserSelector from "../../../components/UserSelector";
 
 export interface ProjectMemoFormProps {
   setOpen: (open: boolean) => void;
@@ -87,7 +87,8 @@ export default function ProjectMemoForm({ setOpen }: ProjectMemoFormProps) {
           justifyContent: 'flex-start',
           padding:        '10px',
         }}>
-          <MultiUserSelector
+          <UserSelector
+            multi
             value={formik.values.attendanceList}
             onChange={(value) => {
               formik.setFieldValue('attendanceList', value);
