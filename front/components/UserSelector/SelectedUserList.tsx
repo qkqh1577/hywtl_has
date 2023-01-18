@@ -2,7 +2,7 @@ import React from 'react';
 import {UserVO} from "../../user/domain";
 import TextBox from "../../layouts/Text";
 import CircularProgress from "../CircularProgress";
-import {Box, Tooltip} from "@mui/material";
+import {Badge, Box} from "@mui/material";
 import UserIcon from "../../layouts/UserIcon";
 
 interface SelectedUserListProps {
@@ -36,23 +36,28 @@ export default function SelectedUserList(props: SelectedUserListProps) {
             width: '100%',
             alignItems: 'center',
             flexWrap: 'nowrap',
+            cursor: 'pointer'
           }}>
-          <Tooltip
-            title="클릭 시 목록에서 제외"
-            placement="top"
-            >
             <Box sx={{
               display: 'flex',
               flexWrap: 'nowrap',
               alignItems: 'center',
               padding: '0 0 16px 0',
             }}>
-              <UserIcon
-                user={item}
-                sx={{
-                  marginRight: '10px'
-                }}
-              />
+              <Badge
+                anchorOrigin={{vertical:'bottom', horizontal:'left'}}
+                badgeContent="X"
+                color="error"
+                overlap="rectangular"
+                sx={{ "& .MuiBadge-badge": { fontSize: '0.6rem', height: '0.7rem', minWidth: '0.7rem', padding:'0.3rem' } }}
+              >
+                <UserIcon
+                  user={item}
+                  sx={{
+                    marginRight: '10px'
+                  }}
+                />
+              </Badge>
               <TextBox
                 variant="body2"
                 sx={{
@@ -61,8 +66,7 @@ export default function SelectedUserList(props: SelectedUserListProps) {
                 {item.name}
               </TextBox>
             </Box>
-          </Tooltip>
-          {/*<TextBox variant="body2">{item.department.name}</TextBox>*/}
+
         </Box>
       ))}
     </Box>
