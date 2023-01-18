@@ -5,7 +5,7 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
 import BusinessSelector from 'components/BusinessSelector';
-import { ProjectEstimateVO } from 'project_estimate/domain';
+import { ProjectFinalEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import {
   ProjectBasicBidType,
@@ -14,11 +14,12 @@ import {
 
 interface Props {
   project: ProjectVO | undefined;
-  detail: ProjectEstimateVO | undefined;
+  detail: ProjectFinalEstimateVO | undefined;
   rivalList: RivalEstimateVO[] | undefined;
 }
 
 export default function ProjectBasicEstimateSection({ detail, rivalList, project }: Props) {
+
   return (
     <SectionLayout title="최종 견적 정보">
       <Box sx={{
@@ -41,9 +42,9 @@ export default function ProjectBasicEstimateSection({ detail, rivalList, project
             <DataFieldWithLabel label="견적 일자">
               <Input
                 readOnly
-                key={detail?.plan?.estimateDate ? dayjs(detail.plan.estimateDate)
+                key={detail?.estimateDate ? dayjs(detail?.estimateDate)
                 .format('YYYY-MM-DD') : undefined}
-                defaultValue={detail?.plan?.estimateDate ? dayjs(detail?.plan?.estimateDate)
+                defaultValue={detail?.estimateDate ? dayjs(detail?.estimateDate)
                 .format('YYYY-MM-DD') : ''}
               />
             </DataFieldWithLabel>
@@ -62,8 +63,8 @@ export default function ProjectBasicEstimateSection({ detail, rivalList, project
               <Input
                 readOnly
                 isAmount
-                key={detail?.plan?.testAmount}
-                defaultValue={detail?.plan?.testAmount?.toLocaleString() ?? ''}
+                key={detail?.testAmount}
+                defaultValue={detail?.testAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -72,8 +73,8 @@ export default function ProjectBasicEstimateSection({ detail, rivalList, project
               <Input
                 readOnly
                 isAmount
-                key={detail?.plan?.reviewAmount}
-                defaultValue={detail?.plan?.reviewAmount?.toLocaleString() ?? ''}
+                key={detail?.reviewAmount}
+                defaultValue={detail?.reviewAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -82,8 +83,8 @@ export default function ProjectBasicEstimateSection({ detail, rivalList, project
               <Input
                 readOnly
                 isAmount
-                key={detail?.plan?.totalAmount}
-                defaultValue={detail?.plan?.totalAmount?.toLocaleString() ?? ''}
+                key={detail?.totalAmount}
+                defaultValue={detail?.totalAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -91,8 +92,8 @@ export default function ProjectBasicEstimateSection({ detail, rivalList, project
             <DataFieldWithLabel label="일정">
               <Input
                 readOnly
-                key={`${detail?.plan?.expectedTestDeadline ?? '-'}주/${detail?.plan?.expectedFinalReportDeadline ?? '-'}주`}
-                defaultValue={`${detail?.plan?.expectedTestDeadline ?? '-'}주/${detail?.plan?.expectedFinalReportDeadline ?? '-'}주`}
+                key={detail?.schedule}
+                defaultValue={detail?.schedule}
               />
             </DataFieldWithLabel>
           </Box>

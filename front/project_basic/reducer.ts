@@ -11,11 +11,11 @@ import { createReducer } from 'typesafe-actions';
 import { ProjectBasicActionType } from 'project_basic/action';
 import { ApiStatus } from 'components/DataFieldProps';
 import { ProjectComplexTestVO } from 'project_complex/domain';
-import { ProjectEstimateVO } from 'project_estimate/domain';
+import { ProjectFinalEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { RivalBidVO } from 'rival_bid/domain';
-import { ProjectContractVO } from 'project_contract/domain';
+import { ProjectFinalContractVO } from 'project_contract/domain';
 
 export interface ProjectBasicState {
   id?: ProjectId;
@@ -25,11 +25,11 @@ export interface ProjectBasicState {
   business?: ProjectBasicBusiness;
   design?: ProjectBasicDesignVO;
   test?: ProjectComplexTestVO;
-  estimate?: ProjectEstimateVO;
+  estimate?: ProjectFinalEstimateVO;
   rivalEstimateList?: RivalEstimateVO[];
   bid?: ProjectBidVO;
   rivalBidList?: RivalBidVO[];
-  contract?: ProjectContractVO;
+  contract?: ProjectFinalContractVO;
   failReason?: ProjectBasicFailReasonVO;
   requestUpdateBasic: ApiStatus;
   requestAddBusiness: ApiStatus;

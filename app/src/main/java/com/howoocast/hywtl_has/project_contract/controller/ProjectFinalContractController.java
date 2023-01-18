@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ProjectFinalContractController {
+
     private final ProjectFinalContractService service;
 
     @GetMapping("/project/sales/{projectId}/contract/final")
@@ -26,6 +27,13 @@ public class ProjectFinalContractController {
         return ProjectFinalContractShortView.assemble(
             service.getFinalContract(projectId)
         );
+    }
+
+    @GetMapping("/project/sales/{projectId}/basic/contract/final")
+    public ProjectFinalContractShortView getFinal(
+        @PathVariable Long projectId
+    ) {
+        return ProjectFinalContractShortView.assemble(service.getFinalContract(projectId));
     }
 
     @PatchMapping("/project/sales/{projectId}/contract/final")

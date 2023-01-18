@@ -28,6 +28,13 @@ public class ProjectFinalEstimateController {
         );
     }
 
+    @GetMapping("/project/sales/{projectId}/basic/estimate/final")
+    public ProjectFinalShortView getFinal(
+        @PathVariable Long projectId
+    ) {
+        return ProjectFinalShortView.assemble(service.getFinalEstimate(projectId));
+    }
+
     @PatchMapping("/project/sales/{projectId}/estimate/final")
     public void updateFinalEstimate(
         @PathVariable Long projectId,

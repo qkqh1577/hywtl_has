@@ -11,19 +11,18 @@ import {
   Td,
   Th
 } from 'layouts/Table';
-import { ProjectContractVO } from 'project_contract/domain';
+import { ProjectFinalContractVO } from 'project_contract/domain';
 import DateFormat from 'layouts/DateFormat';
 import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import Input from 'layouts/Input';
 import dayjs from 'dayjs';
-import { ProjectEstimateVO } from 'project_estimate/domain';
 
 interface Props {
-  detail: ProjectContractVO | undefined;
+  detail: ProjectFinalContractVO | undefined;
 }
 
 export default function ProjectBasicContractSection({ detail }: Props) {
-  const estimate = detail?.estimate ?? {} as ProjectEstimateVO;
+  console.log('detail : ', detail);
   return (
     <SectionLayout title="최종 계약 정보">
       <Box sx={{
@@ -42,9 +41,9 @@ export default function ProjectBasicContractSection({ detail }: Props) {
             <DataFieldWithLabel label="계약 일자">
               <Input
                 readOnly
-                key={detail?.basic?.contractDate ? dayjs(detail.basic.contractDate)
+                key={detail?.contractDate ? dayjs(detail.contractDate)
                 .format('YYYY-MM-DD') : undefined}
-                defaultValue={detail?.basic?.contractDate ? dayjs(detail?.basic?.contractDate)
+                defaultValue={detail?.contractDate ? dayjs(detail?.contractDate)
                 .format('YYYY-MM-DD') : ''}
               />
             </DataFieldWithLabel>
@@ -63,8 +62,8 @@ export default function ProjectBasicContractSection({ detail }: Props) {
               <Input
                 readOnly
                 isAmount
-                key={estimate?.plan?.testAmount}
-                defaultValue={estimate?.plan?.testAmount?.toLocaleString() ?? ''}
+                key={detail?.testAmount}
+                defaultValue={detail?.testAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -73,8 +72,8 @@ export default function ProjectBasicContractSection({ detail }: Props) {
               <Input
                 readOnly
                 isAmount
-                key={estimate?.plan?.reviewAmount}
-                defaultValue={estimate?.plan?.reviewAmount?.toLocaleString() ?? ''}
+                key={detail?.reviewAmount}
+                defaultValue={detail?.reviewAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -83,8 +82,8 @@ export default function ProjectBasicContractSection({ detail }: Props) {
               <Input
                 readOnly
                 isAmount
-                key={estimate?.plan?.totalAmount}
-                defaultValue={estimate?.plan?.totalAmount?.toLocaleString() ?? ''}
+                key={detail?.totalAmount}
+                defaultValue={detail?.totalAmount?.toLocaleString() ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
@@ -92,8 +91,8 @@ export default function ProjectBasicContractSection({ detail }: Props) {
             <DataFieldWithLabel label="일정">
               <Input
                 readOnly
-                key={`${estimate?.plan?.expectedTestDeadline ?? '-'}주/${estimate?.plan?.expectedFinalReportDeadline ?? '-'}주`}
-                defaultValue={`${estimate?.plan?.expectedTestDeadline ?? '-'}주/${estimate?.plan?.expectedFinalReportDeadline ?? '-'}주`}
+                key={detail?.schedule}
+                defaultValue={detail?.schedule ?? ''}
               />
             </DataFieldWithLabel>
           </Box>
