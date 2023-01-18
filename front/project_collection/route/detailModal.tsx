@@ -38,14 +38,11 @@ export default function ProjectCollectionStageDetailModalRoute() {
   const onOpenStageStatusModal = useCallback((list: ProjectCollectionStageStatusVO[]) => dispatch(projectCollectionAction.stageStatusModal(list)), [dispatch]);
   const onCloseStageStatusModal = useCallback(() => dispatch(projectCollectionAction.stageStatusModal(undefined)), [dispatch]);
   const totalAmount = useMemo(() => {
-    if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
+    if (!contract || !contract.id || !contract.totalAmount) {
       return undefined;
     }
-    const isLh = contract.estimate.plan.isLh;
-
-    const value = contract.estimate.plan.totalAmount ?? 0;
-
-    return value * (isLh ? 1.0 : 1.1);
+    const value = contract.totalAmount ?? 0;
+    return Number((value).toFixed(0));
   }, [contract]);
   const formik = useFormik<ProjectCollectionChangeStageParameter>({
     initialValues: initialProjectCollectionChangeStageParameter,

@@ -24,12 +24,12 @@ export default function ProjectCollectionListRoute() {
   const openDetailModal = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.stageDetailModal(id)), [dispatch]);
   const changeSeq = useCallback((idList: ProjectCollectionStageId[]) => dispatch(projectCollectionAction.changeStageSeq(idList)), [dispatch]);
   const totalAmount = useMemo(() => {
-    if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
+    console.log(contract);
+    if (!contract || !contract.id || !contract.totalAmount) {
       return undefined;
     }
-    const isLh = contract.estimate.plan.isLh;
-    const value = contract.estimate.plan.totalAmount ?? 0;
-    return Number((value * (isLh ? 1.0 : 1.1)).toFixed(0));
+    const value = contract.totalAmount ?? 0;
+    return Number((value).toFixed(0));
   }, [contract]);
 
   useEffect(() => {

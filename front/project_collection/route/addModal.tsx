@@ -26,13 +26,11 @@ export default function ProjectCollectionStageAddModalRoute() {
   const onAdd = useCallback((params: ProjectCollectionAddStageParameter) => dispatch(projectCollectionAction.addStage(params)), [dispatch]);
   const onClose = useCallback(() => dispatch(projectCollectionAction.stageAddModal(false)), [dispatch]);
   const totalAmount = useMemo(() => {
-    if (!contract || !contract.id || !contract.estimate.plan?.totalAmount) {
+    if (!contract || !contract.id || !contract.totalAmount) {
       return undefined;
     }
-    const isLh = contract.estimate.plan.isLh;
-
-    const value = contract.estimate.plan.totalAmount ?? 0;
-    return Number((value * (isLh ? 1.0 : 1.1)).toFixed(0));
+    const value = contract.totalAmount ?? 0;
+    return Number((value).toFixed(0));
   }, [contract]);
 
   const stageList = detail?.stageList;
