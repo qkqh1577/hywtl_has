@@ -28,7 +28,7 @@ export default function ProjectEstimateListRoute() {
   const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectEstimateAction.setFinalModal(true)), [dispatch]);
   const onUpdate = useCallback((params: ProjectFinalEstimateParameter) => dispatch(projectEstimateAction.update(params)), [dispatch]);
-  const [codeList, setCodeList] = useState<string[]>(list?.map((item) => item.code) || []);
+  const [codeList, setCodeList] = useState<string[]>(list?.map((item) => item.code).sort() || []);
   useEffect(() => {
     if (localStorage.getItem('custom')) {
       openCustomDetailModal(ProjectEstimateId(Number(localStorage.getItem('custom'))));
@@ -62,7 +62,7 @@ export default function ProjectEstimateListRoute() {
   }, [projectId]);
 
   useEffect(() => {
-    setCodeList(list?.map((item) => item.code) || []);
+    setCodeList(list?.map((item) => item.code).sort() || []);
   }, [list]);
 
   return (

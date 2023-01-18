@@ -22,8 +22,8 @@ export default function ProjectContractListRoute() {
   const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
   const onUpdate = useCallback((params: ProjectFinalContractParameter) => dispatch(projectContractAction.update(params)), [dispatch]);
-  const [contractCodeList, setContractCode] = useState<string[]>(list?.map((item) => item.code) || []);
-  const [estimateCodeList, setEstimateCodeList] = useState<string[]>(list?.map((item) => item.estimateCode) || []);
+  const [contractCodeList, setContractCode] = useState<string[]>(list?.map((item) => item.code).sort() || []);
+  const [estimateCodeList, setEstimateCodeList] = useState<string[]>(list?.map((item) => item.estimateCode).sort() || []);
 
   useEffect(() => {
     closeStatus(requestFinalContractUpdate, () => {
@@ -42,8 +42,8 @@ export default function ProjectContractListRoute() {
   }, [projectId]);
 
   useEffect(() => {
-    setContractCode(list?.map((item) => item.code) || []);
-    setEstimateCodeList(list?.map((item) => item.estimateCode) || []);
+    setContractCode(list?.map((item) => item.code).sort() || []);
+    setEstimateCodeList(list?.map((item) => item.estimateCode).sort() || []);
   }, [list]);
 
 
