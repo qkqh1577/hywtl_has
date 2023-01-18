@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_contract.view;
 
 import com.howoocast.hywtl_has.file.view.FileItemView;
+import com.howoocast.hywtl_has.project_contract.domain.ContractType;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
@@ -20,6 +21,7 @@ public class ProjectContractShortView {
 
     private Long id;
     private String code;
+    private ContractType contractType;
     private Boolean isSent;
     private Boolean confirmed;
     private LocalDate contractDate;
@@ -101,7 +103,7 @@ public class ProjectContractShortView {
                 target.schedule = schedule;
             }
         }
-
+        target.contractType = source.getContractType();
         return target;
     }
 }

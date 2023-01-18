@@ -96,6 +96,7 @@ export interface ProjectContractParameter {
   estimateId: ProjectEstimateId;
   estimate: ProjectEstimateVO;
   isSent: boolean;
+  contractType: string;
   recipient: string;
   note?: string;
   pdfFile?: FileItemParameter; // 최종 pdf 파일이 있는 경우만

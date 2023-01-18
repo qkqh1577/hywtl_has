@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_contract.parameter;
 
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
+import com.howoocast.hywtl_has.project_contract.domain.ContractType;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class ProjectContractParameter {
 
     private String note;
 
+    private ContractType contractType;
     @NotNull(message = ProjectContract.KEY + ".basic.not_null")
     private ProjectContractBasicParameter basic;
 

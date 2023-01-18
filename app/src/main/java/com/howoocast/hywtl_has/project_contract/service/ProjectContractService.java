@@ -94,7 +94,8 @@ public class ProjectContractService {
             toBasic(parameter.getBasic()),
             toCollection(parameter.getCollection()),
             toConditionList(parameter.getConditionList()),
-            writer
+            writer,
+            parameter.getContractType()
         );
         repository.save(instance);
         eventPublisher.publishEvent(ProjectLogEvent.of(
@@ -123,7 +124,8 @@ public class ProjectContractService {
             parameter.getNote(),
             toBasic(parameter.getBasic()),
             toCollection(parameter.getCollection()),
-            toConditionList(parameter.getConditionList())
+            toConditionList(parameter.getConditionList()),
+            parameter.getContractType()
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);

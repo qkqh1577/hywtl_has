@@ -136,7 +136,9 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>
                   <DateFormat date={item.contractDate} format="YYYY-MM-DD" />
                 </Td>
-                <Td>계약 분류</Td>
+                <Td>
+                  {projectContractTypeName(item.contractType)}
+                </Td>
                 <Td>
                   <Box sx={{
                     width:          '100%',

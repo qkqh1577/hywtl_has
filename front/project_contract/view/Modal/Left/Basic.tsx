@@ -8,12 +8,16 @@ import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import React, { useContext } from 'react';
 import { FormikContext } from 'formik';
+import {
+  projectContractTypeList,
+  projectContractTypeName
+} from 'project_contract/domain';
 
 export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-
+  console.log("formik.values.contractType : ", formik.values.contractType);
   return (
     <Box sx={{
       display:      'flex',
@@ -25,7 +29,7 @@ export default function () {
       margin:       '10px 0px',
       padding:      '10px',
     }}>
-      <Box sx={{ width: '45%', marginRight: '55%', marginBottom: '15px' }}>
+      <Box sx={{ width: '45%', marginBottom: '15px' }}>
         <DataFieldWithLabel required={edit} labelWidth={60} label="송부 여부">
           <Select
             key={formik.values.isSent}
@@ -48,6 +52,31 @@ export default function () {
             }}>
             <MenuItem value="Y">Y</MenuItem>
             <MenuItem value="N">N</MenuItem>
+          </Select>
+        </DataFieldWithLabel>
+      </Box>
+      <Box sx={{ width: '45%', marginBottom: '15px', marginLeft: '10px' }}>
+        <DataFieldWithLabel required={edit} labelWidth={60} label="계약 분류">
+          <Select
+            displayEmpty
+            key={formik.values.contractType}
+            readOnly={!edit}
+            value={formik.values.contractType ?? ''}
+            onChange={(e) => {
+              if (!edit) {
+                return;
+              }
+              const value = e.target.value || undefined
+              if(formik.values.contractType !== value) {
+                formik.setFieldValue('contractType', value);
+              }
+            }}>
+            <MenuItem value="">선택</MenuItem>
+            {projectContractTypeList.map((item) => {
+              return (
+                <MenuItem key={item} value={item}>{projectContractTypeName(item)}</MenuItem>
+              );
+            })}
           </Select>
         </DataFieldWithLabel>
       </Box>
