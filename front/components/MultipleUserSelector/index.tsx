@@ -14,6 +14,11 @@ interface Props {
   title?: string;
 }
 
+/**
+ * @deprecated 대신 UserSelector({multi})를 사용하세요
+ * @param props
+ * @constructor
+ */
 export default function MultiUserSelector(props: Props) {
   const { confirm } = useDialog();
   const [open, setOpen] = useState<boolean>(false);
