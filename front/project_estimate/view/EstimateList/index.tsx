@@ -387,7 +387,7 @@ export default function ProjectEstimateListSection(props: Props) {
                     value={props.finalEstimate?.createdBy?.id}
                     onChange={(value) => {
                       if (props.finalEstimate?.createdBy?.id !== value) {
-                        if (value) {
+                        if (value && !Array.isArray(value)) {
                           props.onUpdate({ writerId: value });
                         }
                         else {

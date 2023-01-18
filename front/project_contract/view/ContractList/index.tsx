@@ -439,7 +439,7 @@ export default function ProjectContractListSection(props: Props) {
                   value={props.finalContract?.createdBy?.id}
                   onChange={(value) => {
                     if (props.finalContract?.createdBy?.id !== value) {
-                      if (value) {
+                      if (value && !Array.isArray(value)) {
                         props.onUpdate({ writerId: value });
                       }
                       else {
