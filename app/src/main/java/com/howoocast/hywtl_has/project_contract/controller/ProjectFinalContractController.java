@@ -1,5 +1,6 @@
 package com.howoocast.hywtl_has.project_contract.controller;
 
+import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractCollectionParameter;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectFinalContractParameter;
 import com.howoocast.hywtl_has.project_contract.service.ProjectFinalContractService;
 import com.howoocast.hywtl_has.project_contract.view.ProjectFinalContractShortView;
@@ -19,7 +20,7 @@ public class ProjectFinalContractController {
     private final ProjectFinalContractService service;
 
     @GetMapping("/project/sales/{projectId}/contract/final")
-    public ProjectFinalContractShortView finalEstimate(
+    public ProjectFinalContractShortView get(
         @PathVariable Long projectId
     ) {
         return ProjectFinalContractShortView.assemble(
@@ -28,10 +29,18 @@ public class ProjectFinalContractController {
     }
 
     @PatchMapping("/project/sales/{projectId}/contract/final")
-    public void updateFinalEstimate(
+    public void updateFinalContract(
         @PathVariable Long projectId,
         @Valid @RequestBody ProjectFinalContractParameter parameter
     ) {
         service.updateFinalContract(projectId, parameter);
+    }
+
+    @PatchMapping("/project/sales/{projectId}/contract/final/collection")
+    public void updateFinalContractCollection(
+        @PathVariable Long projectId,
+        @Valid @RequestBody ProjectContractCollectionParameter parameter
+    ) {
+        service.updateFinalContractCollection(projectId, parameter);
     }
 }

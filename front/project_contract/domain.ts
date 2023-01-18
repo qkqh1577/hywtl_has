@@ -8,7 +8,6 @@ export type ProjectContractId = number & { readonly _brand: symbol }
 export function ProjectContractId(id: number) {
   return id as ProjectContractId;
 }
-
 export enum ProjectContractType {
   /**
    * 본 계약

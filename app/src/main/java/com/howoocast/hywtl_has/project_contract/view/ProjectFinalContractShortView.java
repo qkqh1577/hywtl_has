@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_contract.view;
 
 import com.howoocast.hywtl_has.business.view.BusinessShortView;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectFinalContract;
 import com.howoocast.hywtl_has.user.view.UserShortView;
 import java.time.LocalDate;
@@ -10,7 +11,6 @@ import lombok.Getter;
 
 @Getter
 public class ProjectFinalContractShortView {
-
     private Long id;
     private LocalDate contractDate;
     private String contractType;
@@ -26,7 +26,7 @@ public class ProjectFinalContractShortView {
     private BusinessShortView business;
     private UserShortView createdBy;
     private LocalDateTime modifiedAt;
-
+    private ProjectContractCollection collection;
 
     public static ProjectFinalContractShortView assemble(ProjectFinalContract source) {
         ProjectFinalContractShortView target = new ProjectFinalContractShortView();
@@ -45,6 +45,7 @@ public class ProjectFinalContractShortView {
         target.business = Optional.ofNullable(source.getBusiness()).map(BusinessShortView::assemble).orElse(null);
         target.createdBy = Optional.ofNullable(source.getWriter()).map(UserShortView::assemble).orElse(null);
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
+        target.collection = source.getCollection();
         return target;
     }
 }

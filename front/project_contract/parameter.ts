@@ -37,6 +37,9 @@ export interface ProjectContractCollectionStageParameter {
   expectedDate: string;
 }
 
+export interface ProjectFinalContractCollectionParameter
+  extends ProjectContractCollectionParameter {}
+
 export interface ProjectContractCollectionParameter {
   stageNote: string;
   stageList: ProjectContractCollectionStageParameter[];
@@ -113,3 +116,11 @@ export const initialProjectContractParameter = {
   edit:          true,
   file:          {},
 } as unknown as ProjectContractParameter;
+
+export const initialProjectFinalContractCollectionParameter = {
+  stageNote:       '',
+  stageList:       [],
+  totalAmountNote: '',
+  totalAmount:     0,
+  edit:            true,
+} as unknown as ProjectFinalContractCollectionParameter;

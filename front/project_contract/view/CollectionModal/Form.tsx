@@ -3,44 +3,44 @@ import React, {
   useMemo
 } from 'react';
 import {
-  Table,
-  Td,
-  Th
-} from 'layouts/Table';
-import {
   Box,
   TableBody,
   TableHead,
   TableRow
 } from '@mui/material';
+import {
+  Table,
+  Td,
+  Th
+} from 'layouts/Table';
 import TextBox from 'layouts/Text';
-import { FormikContext } from 'formik';
 import Input from 'layouts/Input';
-import Button from 'layouts/Button';
-import { ColorPalette } from 'assets/theme';
+import { getRateAmount } from 'util/NumberUtil';
 import { DatePicker } from '@mui/x-date-pickers';
-
 import dayjs from 'dayjs';
-import AddRow from './CollectionAddRow';
 import IconButton from 'layouts/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ContractCollectionStage } from 'admin/contract/collection/domain';
+import Button from 'layouts/Button';
+import { ColorPalette } from 'assets/theme';
 import useDialog from 'dialog/hook';
-import { getRateAmount } from 'util/NumberUtil';
+import { FormikContext } from 'formik';
+import AddStage from 'project_contract/view/CollectionModal/AddStage';
+import { ProjectContractCollectionVO } from 'project_contract/domain';
 
-export default function () {
+interface Props {
+  totalAmount?: number;
+  collection?: ProjectContractCollectionVO;
+}
+export default function ProjectFinalContractCollectionForm(props: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  const collection = formik.values.collection ?? {};
-  const stageList = collection.stageList ?? [];
-  const plan = formik.values.estimate?.plan ?? {};
-  const isLh = plan.isLh;
-
-  const totalAmount = useMemo(() => {
-    return plan.totalAmount || 0;
-  }, [plan.totalAmount]);
-
+  let stageList = formik.values.stageList ?? [];
+  if (props.collection) {
+    stageList = props.collection.stageList;
+  }
+  const totalAmount = props.totalAmount ?? 0;
   const totalRate = useMemo(() =>
       stageList.map(stage => stage.rate ?? 0)
                .reduce((a,
@@ -64,7 +64,6 @@ export default function () {
                 justifyContent: 'center',
               }}>
               <TextBox variant="body11" sx={{ width: '100%' }}>예정일</TextBox>
-              <TextBox variant="body19">계약서에는 미출력됩니다</TextBox>
             </Box>
           </Th>
           {edit && (<Th>순서</Th>)}
@@ -88,7 +87,7 @@ export default function () {
                   }
                   const value = e.target.value || undefined;
                   if (stage.name !== value) {
-                    formik.setFieldValue(`collection.stageList.${i}.name`, value);
+                    formik.setFieldValue(`stageList.${i}.name`, value);
                   }
                 }}
               />
@@ -106,8 +105,8 @@ export default function () {
                   }
                   const value = +(e.target.value) || undefined;
                   if (stage.rate !== value) {
-                    formik.setFieldValue(`collection.stageList.${i}.rate`, value);
-                    formik.setFieldValue(`collection.stageList.${i}.amount`, getRateAmount(value, totalAmount));
+                    formik.setFieldValue(`stageList.${i}.rate`, value);
+                    formik.setFieldValue(`stageList.${i}.amount`, getRateAmount(value, totalAmount));
                   }
                 }}
               />
@@ -128,7 +127,7 @@ export default function () {
                   }
                   const value = +(e.target.value) || undefined;
                   if (stage.note !== value) {
-                    formik.setFieldValue(`collection.stageList.${i}.note`, value);
+                    formik.setFieldValue(`stageList.${i}.note`, value);
                   }
                 }}
               />
@@ -150,7 +149,7 @@ export default function () {
                   const formikValue = stage.expectedDate ? dayjs(stage.expectedDate)
                   .format('YYYY-MM-DD') : undefined;
                   if (formikValue !== value) {
-                    formik.setFieldValue(`collection.stageList.${i}.expectedDate`, value);
+                    formik.setFieldValue(`stageList.${i}.expectedDate`, value);
                   }
                 }}
                 renderInput={(parameter) => (
@@ -187,7 +186,7 @@ export default function () {
                         }
                         result.push(prevList[k]);
                       }
-                      formik.setFieldValue('collection.stageList', result);
+                      formik.setFieldValue('stageList', result);
                     }}
                     sx={{
                       marginRight: '10px',
@@ -209,7 +208,7 @@ export default function () {
                           result.push(stage);
                         }
                       }
-                      formik.setFieldValue('collection.stageList', result);
+                      formik.setFieldValue('stageList', result);
                     }}
                   />
                 </Box>
@@ -225,7 +224,7 @@ export default function () {
                       error('최소 하나 이상의 세부 항목이 필요합니다.');
                       return;
                     }
-                    formik.setFieldValue('collection.stageList', stageList.filter((detail,
+                    formik.setFieldValue('stageList', stageList.filter((detail,
                                                                                    k
                     ) => k !== i));
                   }}>
@@ -235,7 +234,7 @@ export default function () {
             )}
           </TableRow>
         ))}
-        {edit && (<AddRow stageList={stageList} totalAmount={totalAmount} />)}
+        {edit && (<AddStage stageList={stageList} totalAmount={totalAmount} />)}
         <TableRow>
           <Td>합계</Td>
           <Td sx={{
@@ -253,17 +252,17 @@ export default function () {
           </Td>
           <Td colSpan={edit ? 4 : 2}>
             <Input
-              key={collection.totalAmountNote}
+              key={formik.values.totalAmountNote}
               variant="outlined"
               readOnly={!edit}
-              defaultValue={collection.totalAmountNote ?? ''}
+              defaultValue={formik.values.totalAmountNote ?? ''}
               onBlur={(e) => {
                 if (!edit) {
                   return;
                 }
                 const value = +(e.target.value) || undefined;
-                if (collection.totalAmountNote !== value) {
-                  formik.setFieldValue('collection.totalAmountNote', value);
+                if (formik.values.totalAmountNote !== value) {
+                  formik.setFieldValue('totalAmountNote', value);
                 }
               }}
             />

@@ -5,13 +5,18 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
+import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollectionStage;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectFinalContract;
+import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractCollectionParameter;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectFinalContractParameter;
+import com.howoocast.hywtl_has.project_contract.repository.ProjectContractCollectionRepository;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectFinalContractRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -26,6 +31,8 @@ public class ProjectFinalContractService {
     private final BusinessRepository businessRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final ProjectContractCollectionRepository projectContractCollectionRepository;
+
     @Transactional
     public ProjectFinalContract getFinalContract(Long projectId) {
         return repository.findByProject_Id(projectId)
@@ -74,5 +81,30 @@ public class ProjectFinalContractService {
             repository.save(instance);
         }
         eventList.stream().map(event -> ProjectLogEvent.of(project, event)).forEach(eventPublisher::publishEvent);
+    }
+
+    @Transactional
+    public void updateFinalContractCollection(Long projectId, ProjectContractCollectionParameter parameter) {
+        repository.findByProject_Id(projectId).ifPresentOrElse(fc -> {
+            fc.updateCollection(toCollection(parameter));
+        }, ()-> {
+            throw new RuntimeException("final contract not found");
+        });
+    }
+
+    private ProjectContractCollection toCollection(ProjectContractCollectionParameter parameter) {
+        return projectContractCollectionRepository.save(ProjectContractCollection.of(
+            parameter.getStageNote(),
+            parameter.getStageList().stream().map(item -> ProjectContractCollectionStage.of(
+                    item.getName(),
+                    item.getRate(),
+                    item.getAmount(),
+                    item.getNote(),
+                    item.getExpectedDate()
+                ))
+                .collect(Collectors.toList()),
+            parameter.getTotalAmountNote(),
+            parameter.getTotalAmount()
+        ));
     }
 }

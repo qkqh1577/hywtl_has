@@ -204,6 +204,24 @@ function* watchUpdateFinal() {
   }
 }
 
+function* watchUpdateFinalContractCollection() {
+  while (true) {
+    const { payload: params } = yield take(projectContractAction.updateFinalContractCollection);
+    try {
+      yield put(projectContractAction.requestFinalContractCollectionUpdate('request'));
+      const { projectId } = yield select((root: RootState) => root.projectContract);
+      yield call(projectContractApi.updateFinalContractCollection, projectId, params);
+      yield put(projectContractAction.requestFinalContractCollectionUpdate('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
+    }
+    catch (e) {
+      const message = getErrorMessage(projectContractAction.updateFinalContractCollection, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestFinalContractUpdate(message));
+    }
+  }
+}
+
 export default function* projectContractSaga() {
   yield fork(watchProjectId);
   yield fork(watchModal);
@@ -214,4 +232,5 @@ export default function* projectContractSaga() {
   yield fork(watchEstimate);
   yield fork(watchGetFinal);
   yield fork(watchUpdateFinal);
+  yield fork(watchUpdateFinalContractCollection);
 }

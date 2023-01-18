@@ -17,7 +17,6 @@ export default function () {
 
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
-  console.log("formik.values.contractType : ", formik.values.contractType);
   return (
     <Box sx={{
       display:      'flex',

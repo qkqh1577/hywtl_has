@@ -9,7 +9,10 @@ import {
 } from 'react-redux';
 import { projectContractAction } from 'project_contract/action';
 import ProjectContractListSection from 'project_contract/view/ContractList';
-import { ProjectContractId } from 'project_contract/domain';
+import {
+  ProjectContractId,
+  ProjectFinalContractVO
+} from 'project_contract/domain';
 import { RootState } from 'services/reducer';
 import { ProjectFinalContractParameter } from 'project_contract/parameter';
 import { closeStatus } from 'components/DataFieldProps';
@@ -21,6 +24,7 @@ export default function ProjectContractListRoute() {
   const openAddModal = useCallback(() => dispatch(projectContractAction.setModal(null)), [dispatch]);
   const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
+  const openFinalContractCollectionModal = useCallback((finalContract: ProjectFinalContractVO) => dispatch(projectContractAction.setFinalContractCollectionModal(finalContract)), [dispatch]);
   const onUpdate = useCallback((params: ProjectFinalContractParameter) => dispatch(projectContractAction.update(params)), [dispatch]);
   const [contractCodeList, setContractCode] = useState<string[]>(list?.map((item) => item.code).sort() || []);
   const [estimateCodeList, setEstimateCodeList] = useState<string[]>(list?.map((item) => item.estimateCode).sort() || []);
@@ -57,6 +61,7 @@ export default function ProjectContractListRoute() {
       openAddModal={openAddModal}
       openDetailModal={openDetailModal}
       openFinalModal={openFinalModal}
+      openFinalContractCollectionModal={openFinalContractCollectionModal}
     />
   );
 }

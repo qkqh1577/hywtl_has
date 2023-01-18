@@ -41,6 +41,7 @@ import {
   SnackbarSeverityType
 } from 'components/Snackbar/action';
 import { useDispatch } from 'react-redux';
+import useDialog from 'dialog/hook';
 
 interface Props {
   list: ProjectContractShortVO[] | undefined;
@@ -51,13 +52,14 @@ interface Props {
   contractCodeList: string[];
   estimateCodeList: string[];
   onUpdate: (params: ProjectFinalContractParameter) => void;
+  openFinalContractCollectionModal: (projectFinalContract: ProjectFinalContractVO) => void;
 }
 
 export default function ProjectContractListSection(props: Props) {
 
   const { list, openDetailModal } = props;
-
   const [modifiedAt, setModifiedAt] = useState<Date>();
+  const { error } = useDialog();
   const dispatch = useDispatch();
   const openSnackbar = useCallback((message,
                                     severity: SnackbarSeverityType = SnackbarSeverityType.warning
@@ -386,7 +388,18 @@ export default function ProjectContractListSection(props: Props) {
                   }}
                 />
               </Td>
-              <Td></Td>
+              <Td>
+                <Button onClick={() => {
+                  if (props.finalContract?.id && props.finalContract?.totalAmount) {
+                    props.openFinalContractCollectionModal(props.finalContract);
+                  }
+                  else {
+                    error('최종 계약서 "총액"을 입력해 주시기 바랍니다.');
+                  }
+                }}>
+                  최종 기성 단계 등록
+                </Button>
+              </Td>
               <Td>
                 <BusinessSelector
                   value={props.finalContract?.business?.id ?? ''}
@@ -394,7 +407,8 @@ export default function ProjectContractListSection(props: Props) {
                     if (props.finalContract?.business?.id !== business.id) {
                       if (business.id) {
                         props.onUpdate({ businessId: business.id });
-                      }else {
+                      }
+                      else {
                         props.onUpdate({ resetBusinessId: true });
                       }
                     }

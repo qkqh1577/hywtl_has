@@ -16,7 +16,6 @@ import { ProjectEstimateId } from 'project_estimate/domain';
 import { FileItemParameter } from 'file-item';
 
 class ProjectContractApi {
-
   async getList(id: ProjectId): Promise<ProjectContractShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/contract`);
     return data;
@@ -80,11 +79,19 @@ class ProjectContractApi {
     return data;
   }
 
-  async updateFinalContract(projectId: ProjectId, params: ProjectFinalContractParameter): Promise<void> {
+  async updateFinalContract(projectId: ProjectId,
+                            params: ProjectFinalContractParameter
+  ): Promise<void> {
     const { data } = await apiClient.patch(`/project/sales/${projectId}/contract/final`, params);
     return data;
   }
 
+  async updateFinalContractCollection(projectId: ProjectId,
+                                      params: ProjectFinalContractParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${projectId}/contract/final/collection`, params);
+    return data;
+  }
 }
 
 export const projectContractApi = new ProjectContractApi();
