@@ -55,7 +55,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="영문명">
+          <DataFieldWithLabel required={edit} label="영문명" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.engName}
@@ -78,7 +78,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="생년월일">
+          <DataFieldWithLabel required={edit} label="생년월일" labelSX={{minWidth: '80px'}}>
             <DatePicker
               openTo="year"
               inputFormat="YYYY-MM-DD"
@@ -117,7 +117,7 @@ export default function BasicForm(props: Props) {
           marginRight:  '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="성별">
+          <DataFieldWithLabel required={edit} label="성별" labelSX={{minWidth: '80px'}}>
             {!edit && (
               <Input
                 readOnly
@@ -155,7 +155,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="핸드폰">
+          <DataFieldWithLabel label="핸드폰" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.phone}
@@ -178,7 +178,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="개인 이메일">
+          <DataFieldWithLabel label="개인 이메일" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.personalEmail}
@@ -201,7 +201,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="비상 연락처">
+          <DataFieldWithLabel label="비상 연락처" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.emergencyPhone}
@@ -230,7 +230,7 @@ export default function BasicForm(props: Props) {
               <br />
               사원과의 관계
             </>
-          }>
+          }  labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.relationship}
@@ -253,7 +253,7 @@ export default function BasicForm(props: Props) {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="거주지 주소">
+          <DataFieldWithLabel label="거주지 주소" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.address}
@@ -274,7 +274,7 @@ export default function BasicForm(props: Props) {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="프로필 사진">
+          <DataFieldWithLabel label="프로필 사진" labelSX={{minWidth: '80px'}}>
             <UploadField
               preview
               accept="image/*"

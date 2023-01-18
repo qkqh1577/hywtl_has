@@ -46,7 +46,7 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="입사일">
+          <DataFieldWithLabel required={edit} label="입사일" labelSX={{minWidth: '80px'}}>
             <DatePicker
               openTo="year"
               inputFormat="YYYY-MM-DD"
@@ -84,7 +84,7 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="입사 구분">
+          <DataFieldWithLabel required={edit} label="입사 구분" labelSX={{minWidth: '80px'}}>
             <Select
               readOnly={!edit}
               value={values.hiredType ?? ''}
@@ -110,7 +110,7 @@ export default function CompanyForm() {
           marginBottom: '15px',
           marginRight:  '47%',
         }}>
-          <DataFieldWithLabel label="추천자">
+          <DataFieldWithLabel label="추천자" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.recommender}
