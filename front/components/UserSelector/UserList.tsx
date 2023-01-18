@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import TextBox from "../../layouts/Text";
-import {Box, Radio} from "@mui/material";
+import {Box, Checkbox, Radio} from "@mui/material";
 import UserIcon from "../../layouts/UserIcon";
-import {UserId, UserVO} from "../../user/domain";
+import {UserVO} from "../../user/domain";
 import CircularProgress from 'components/CircularProgress';
 
 interface UserListProps {
   userList: UserVO[] | undefined,
-  selectedUser: UserId | undefined,
-  onChange: (UserId) => void
+  multi: boolean | undefined,
+  selectedUserList: UserVO[] | undefined,
+  onChange: (UserVO, boolean) => void
 }
 
 export default function UserList(props: UserListProps) {
-  const {userList, selectedUser, onChange} = props;
+  const {multi, userList, selectedUserList, onChange} = props;
+
+  const isSelectedUser = useCallback((user: UserVO)=>{
+    if (selectedUserList) {
+      return selectedUserList.filter((value)=>value.id===user.id).length > 0 ;
+    }
+    return false;
+  },[selectedUserList]);
 
   return (
     <>
@@ -36,14 +44,22 @@ export default function UserList(props: UserListProps) {
             alignItems: 'center',
             flexWrap: 'nowrap',
           }}>
-          <Radio
-            checked={selectedUser === item.id}
-            onChange={() => {
-              if (selectedUser !== item.id) {
-                onChange(item.id);
-              }
-            }}
-          />
+          { multi && (
+            <Checkbox
+              defaultValue={item.id}
+              checked={isSelectedUser(item)}
+              onChange={() => {
+                onChange(item, isSelectedUser(item));
+            }}/>
+          )}
+          { !multi && (
+            <Radio
+              defaultValue={item.id}
+              checked={isSelectedUser(item)}
+              onChange={() => {
+                onChange(item, isSelectedUser(item));
+              }}/>
+          )}
           <Box sx={{
             display: 'flex',
             flexWrap: 'nowrap',

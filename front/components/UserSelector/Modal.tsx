@@ -23,20 +23,21 @@ import departmentTreeApi from "../../department_tree/api";
 import {FormikProvider, useFormik} from "formik";
 import {UserWithDepartmentIdQuery} from "../../user/query";
 import {Progress} from "../Progress";
+import SelectedUserList from "./SelectedUserList";
 
 interface Props {
   open: boolean;
+  multi: boolean | undefined;
   title?: string;
-  value?: UserId;
+  value?: UserId | UserId[];
   departmentId?: number,
   onClose: DefaultFunction;
-  onChange: (value: UserId | undefined) => void;
+  onChange: (value: UserId | UserId[] | undefined) => void;
 }
 
 export default function UserSelectorModal(props: Props) {
-
-  const [value, setValue] = useState<UserId | undefined>(props.value);
   const [userList, setUserList] = useState<UserVO[] | undefined>(undefined);
+  const [selectedUserList, setSelectedUserList] = useState<UserVO[] | undefined>(undefined);
   const [departmentList, setDepartmentList] = useState<ListDepartment[] | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -52,6 +53,19 @@ export default function UserSelectorModal(props: Props) {
       }, 200);
     });
   }, []);
+
+
+  const getSelectedUserList = useCallback((query: UserId[], callback: (selectedUsers: UserVO[]) => void) => {
+    userApi.getListByDepartmentId({}).then(callback);
+  }, []);
+
+  const excludeSelectedUserList = useCallback((user: UserVO) => {
+    if (selectedUserList) {
+      setSelectedUserList([
+        ...selectedUserList.filter((value) => value.id !== user.id)
+      ]);
+    }
+  }, [selectedUserList]);
 
   const formik = useFormik<UserWithDepartmentIdQuery>({
     initialValues: {keyword: undefined, departmentId: props?.departmentId},
@@ -71,22 +85,28 @@ export default function UserSelectorModal(props: Props) {
   useEffect(() => {
     if (props.open) {
       departmentTreeApi.getAll().then(setDepartmentList);
-      // userApi.getList().then(setUserList);
+      getSelectedUserList([], (selectedUsers) => {
+        if(Array.isArray(props?.value)){
+          const compArr: UserId[] = props.value;
+          setSelectedUserList([...selectedUsers.filter((user)=>compArr.includes(user.id))]);
+        } else {
+          setSelectedUserList(selectedUsers.filter(value1 => value1.id === props?.value));
+        }
+      });
       search({
         departmentId: props.departmentId,
       });
     } else {
       formik.resetForm();
-      setValue(undefined);
+      setSelectedUserList(undefined);
       setDepartmentList(undefined);
       setUserList(undefined);
     }
   }, [props.open]);
 
   useEffect(() => {
-    setValue(props.value);
     formik.setFieldValue('departmentId', props.departmentId);
-  }, [props.value, props.departmentId]);
+  }, [props.departmentId]);
 
   return (
     <ModalLayout
@@ -100,6 +120,7 @@ export default function UserSelectorModal(props: Props) {
           <Box sx={{
             display: 'flex',
             width: '100%',
+            minWidth: '900px',
             flexWrap: 'wrap',
             height: 'calc(50vh - 120px)',
           }}>
@@ -156,7 +177,7 @@ export default function UserSelectorModal(props: Props) {
               <Box
                 sx={{
                   display: 'flex',
-                  width: '49%',
+                  width: '44%',
                   height: '100%',
                   margin: '0 0.5%',
                   flexWrap: 'wrap',
@@ -169,7 +190,7 @@ export default function UserSelectorModal(props: Props) {
                 className="scroll-bar-holder"
                 sx={{
                   display: 'flex',
-                  width: '49%',
+                  width: '40%',
                   height: '100%',
                   margin: '0 0.5%',
                   overflowY: 'auto',
@@ -180,12 +201,38 @@ export default function UserSelectorModal(props: Props) {
                   alignContent: 'start'
                 }}>
                 <UserList
+                  multi={props.multi}
                   userList={userList}
-                  selectedUser={value}
-                  onChange={(userId) => {
-                    setValue(userId);
-                  }
-                  }/>
+                  selectedUserList={selectedUserList}
+                  onChange={(user, checked) => {
+                    if (props.multi) {
+                      setSelectedUserList(
+                        checked ?
+                          selectedUserList?.filter((value) => value === user) :
+                          [...selectedUserList ? selectedUserList : [], user]);
+                    } else {
+                      setSelectedUserList([user]);
+                    }
+                  }}/>
+              </Box>
+              <Box
+                className="scroll-bar-holder"
+                sx={{
+                  display: 'flex',
+                  width: '13%',
+                  height: '100%',
+                  margin: '0 0.5%',
+                  overflowY: 'auto',
+                  flexWrap: 'wrap',
+                  border: '1px solid #e4e9f2',
+                  borderRadius: '5px',
+                  alignItems: 'baseline',
+                  alignContent: 'start'
+                }}>
+                <SelectedUserList
+                  userList={selectedUserList}
+                  onUserClick={excludeSelectedUserList}
+                />
               </Box>
             </Box>
           </Box>
@@ -203,7 +250,15 @@ export default function UserSelectorModal(props: Props) {
             }}
             onClick={() => {
               props.onClose();
-              props.onChange(value);
+              if (props.multi) {
+                const result: UserId[] = [];
+                selectedUserList?.forEach((user) => {
+                  result.push(user.id);
+                });
+                props.onChange(result);
+              } else {
+                props.onChange(selectedUserList ? selectedUserList.length > 0 ? selectedUserList[0].id : undefined : undefined);
+              }
             }}>
             저장
           </Button>
