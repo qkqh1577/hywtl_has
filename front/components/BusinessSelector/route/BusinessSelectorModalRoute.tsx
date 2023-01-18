@@ -19,15 +19,12 @@ import {
   MenuItem,
   Radio,
   RadioGroup, TableBody,
-  TableContainer,
   TableHead, TableRow
 } from "@mui/material";
-import {ColorPalette} from "../../../assets/theme";
 import Select from "../../../layouts/Select";
 import Input from "../../../layouts/Input";
 import Button from "../../../layouts/Button";
-import {Table, Td, Th} from "../../../layouts/Table";
-import BusinessList from "../../../project_basic/view/BusinessList";
+import {Table, Td} from "../../../layouts/Table";
 import BusinessSelectorList from "./BusinessSelectorList";
 
 export interface ModalProps {
@@ -133,14 +130,14 @@ export function BusinessSelectorModalRoute() {
     const value = e.target.value || undefined;
     if (formik.values.keywordTypeOfManager !== value) {
       formik.setFieldValue('keywordTypeOfManager', value);
-    };
+    }
   }, [formik]);
 
   const handleManagerSearchKeywordChange = useCallback((e) => {
     const value = e.target.value || undefined;
     if (formik.values.keywordOfManager !== value) {
       formik.setFieldValue('keywordOfManager', value);
-    };
+    }
   }, [formik]);
 
   return (
@@ -162,7 +159,6 @@ export function BusinessSelectorModalRoute() {
             {modal?.allowMyBusiness && (
               <Box sx={{
                 width: '100%',
-                height: '100%',
                 display: 'flex',
                 flexWrap: 'nowrap',
               }}>
@@ -205,7 +201,7 @@ export function BusinessSelectorModalRoute() {
             <Box sx={{
               display: 'flex',
               width: '100%',
-              height: '100%',
+              height: modal?.allowMyBusiness ? 'calc(100% - 42px)' : '100%',
             }}>
               <Box sx={{
                 width: `${modal?.hasEmployee ? '50%' : '100%'}`,
