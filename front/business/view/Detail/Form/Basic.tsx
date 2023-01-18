@@ -58,7 +58,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '80%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="업체명">
+          <DataFieldWithLabel required={edit} label="업체명" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.name}
@@ -81,7 +81,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="대표명">
+          <DataFieldWithLabel label="대표명" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.ceoName}
@@ -105,7 +105,7 @@ export default function BusinessBasicSection(props: Props) {
           marginBottom:  '15px',
           flexDirection: 'column',
         }}>
-          <DataFieldWithLabel required={edit} label="사업자번호">
+          <DataFieldWithLabel required={edit} label="사업자번호" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.registrationNumber}
@@ -139,7 +139,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="대표 전화번호">
+          <DataFieldWithLabel label="대표 전화번호" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.officePhone}
@@ -162,7 +162,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="팩스 번호">
+          <DataFieldWithLabel label="팩스 번호" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.fax}
@@ -185,7 +185,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="주소">
+          <DataFieldWithLabel label="주소" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.address}
@@ -210,7 +210,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="우편 번호">
+          <DataFieldWithLabel label="우편 번호" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.zipCode}
@@ -224,7 +224,7 @@ export default function BusinessBasicSection(props: Props) {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="비고">
+          <DataFieldWithLabel label="비고" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={formik.values.note}
