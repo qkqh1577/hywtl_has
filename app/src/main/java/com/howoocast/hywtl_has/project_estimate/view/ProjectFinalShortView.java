@@ -25,6 +25,7 @@ public class ProjectFinalShortView {
     private Long reviewAmount;
     private Long totalAmount;
     private String schedule;
+    private LocalDate sentDate;
 
     public static ProjectFinalShortView assemble(ProjectFinalEstimate source) {
         ProjectFinalShortView target = new ProjectFinalShortView();
@@ -43,6 +44,7 @@ public class ProjectFinalShortView {
         target.reviewAmount = source.getReviewAmount();
         target.totalAmount = source.getTotalAmount();
         target.schedule = source.getSchedule();
+        target.sentDate = source.getSentDate();
         return target;
     }
 }

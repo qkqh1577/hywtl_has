@@ -68,7 +68,9 @@ public class ProjectFinalEstimateService {
             parameter.getNote(),
             parameter.getResetNote(),
             parameter.getSchedule(),
-            parameter.getResetSchedule()
+            parameter.getResetSchedule(),
+            parameter.getSentDate(),
+            parameter.getResetSentDate()
         );
         if (Objects.isNull(instance.getId())) {
             repository.save(instance);

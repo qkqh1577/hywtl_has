@@ -116,6 +116,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 <Th>견적 업체</Th>
                 <Th>등록 일시</Th>
                 <Th>등록자</Th>
+                <Th>송부일</Th>
                 <Th>송부 여부</Th>
                 <Th>비고</Th>
                 <Th>실험정보 입력 여부</Th>
@@ -182,6 +183,7 @@ export default function ProjectEstimateListSection(props: Props) {
                     <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                   </Td>
                   <Td>{item.createdBy.name}</Td>
+                  <Td>{item.sentDate}</Td>
                   <Td>{item.isSent ? 'Y' : 'N'}</Td>
                   <Td>{item.note ?? ''}</Td>
                   <Td>{item.hasExperimentInfo ? 'Y' : 'N'}</Td>
@@ -393,6 +395,34 @@ export default function ProjectEstimateListSection(props: Props) {
                         }
                       }
                     }}
+                  />
+                </Td>
+                <Td>
+                  <DatePicker
+                    openTo="year"
+                    inputFormat="YYYY-MM-DD"
+                    mask="____-__-__"
+                    value={props.finalEstimate ?
+                      dayjs(props.finalEstimate.sentDate)
+                      .format('YYYY-MM-DD')
+                      : null}
+                    onChange={(e) => {
+                      const value = e ? dayjs(e)
+                      .format('YYYY-MM-DD') : undefined;
+                      const error = !value || !isValidDate(value);
+                      if (value) {
+                        if (error) {
+                          openSnackbar('올바르지 않은 날짜 형식입니다.');
+                        }
+                        else {
+                          props.onUpdate({ sentDate: value });
+                        }
+                      }
+                      else {
+                        props.onUpdate({ resetSentDate: true });
+                      }
+                    }}
+                    renderInput={renderDateInput}
                   />
                 </Td>
                 <Td>

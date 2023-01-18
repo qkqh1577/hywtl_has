@@ -32,4 +32,6 @@ public class ProjectFinalEstimateParameter {
     private Boolean resetNote;
     private String schedule;
     private Boolean resetSchedule;
+    private LocalDate sentDate;
+    private Boolean resetSentDate;
 }

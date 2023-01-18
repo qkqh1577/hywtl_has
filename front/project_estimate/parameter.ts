@@ -170,4 +170,6 @@ export interface ProjectFinalEstimateParameter {
   resetNote?: boolean;
   schedule?: string;
   resetSchedule?: boolean;
+  sentDate?: string;
+  resetSentDate?: boolean;
 }
