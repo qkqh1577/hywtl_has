@@ -102,7 +102,7 @@ export default function DepartmentTree(props: DepartmentTreePros) {
       className={`${classes.root} scroll-bar-holder`}
       aria-label="customized"
       defaultExpanded={expanded}
-      defaultSelected={[`${formik.values.departmentId}`]}
+      selected={[`${formik.values.departmentId}`]}
       defaultCollapseIcon={<RemoveCircleOutlineIcon/>}
       defaultExpandIcon={<ControlPointIcon/>}
       // defaultEndIcon={<CloseSquare />}
