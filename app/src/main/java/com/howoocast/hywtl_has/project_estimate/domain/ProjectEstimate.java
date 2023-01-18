@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,6 +79,11 @@ public abstract class ProjectEstimate extends CustomEntity {
     private String note;
 
     /**
+     * 송부일
+     */
+    private LocalDate sentDate;
+
+    /**
      * 작성자
      */
     @ManyToOne
@@ -106,7 +112,8 @@ public abstract class ProjectEstimate extends CustomEntity {
         String note,
         User writer,
         Project project,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         this.project = project;
         this.code = code;
@@ -117,6 +124,7 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.isSent = isSent;
         this.confirmed = false;
         this.business = business;
+        this.sentDate = sentDate;
     }
 
     private ProjectEstimate(
@@ -147,7 +155,8 @@ public abstract class ProjectEstimate extends CustomEntity {
         String recipient,
         Boolean isLh,
         String note,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         List<EventEntity> eventList = new ArrayList<>();
         eventList.add(EventEntity.of(
@@ -156,6 +165,14 @@ public abstract class ProjectEstimate extends CustomEntity {
             isSent
         ));
         this.isSent = isSent;
+
+        eventList.add(EventEntity.of(
+            "송부일 변경",
+            this.sentDate,
+            sentDate
+        ));
+        this.sentDate = sentDate;
+
         eventList.add(EventEntity.of(
             "송신처 변경",
             this.recipient,
@@ -285,7 +302,6 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     /**
-     * @migration
      * @param code
      * @param type
      * @param isSent
@@ -296,6 +312,7 @@ public abstract class ProjectEstimate extends CustomEntity {
      * @param plan
      * @param siteList
      * @param buildingList
+     * @migration
      */
     protected ProjectEstimate(
         String code,
@@ -323,11 +340,11 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     /**
-     * @migration
      * @param code
      * @param writer
      * @param project
      * @param plan
+     * @migration
      */
     private ProjectEstimate(
         String code,
@@ -346,12 +363,12 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     /**
-     * @migration
      * @param code
      * @param writer
      * @param project
      * @param plan
      * @return
+     * @migration
      */
     public static ProjectEstimate of(
         String code,
@@ -373,7 +390,6 @@ public abstract class ProjectEstimate extends CustomEntity {
     }
 
     /**
-     * @migration 마이그레이션 용도
      * @param code
      * @param type
      * @param isSent
@@ -381,6 +397,7 @@ public abstract class ProjectEstimate extends CustomEntity {
      * @param writer
      * @param project
      * @param business
+     * @migration 마이그레이션 용도
      */
     protected ProjectEstimate(
         String code,

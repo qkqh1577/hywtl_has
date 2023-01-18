@@ -22,6 +22,7 @@ export interface ProjectEstimateBasicParameter {
   isSent: boolean | undefined;
   recipient: string;
   note?: string;
+  sentDate?: string;
   confirmed?: boolean;
 }
 
@@ -52,7 +53,7 @@ export const initialProjectCustomEstimateExtensionParameter = (isLh: boolean) =>
     buildingList: [],
     edit:         true,
   } as unknown as ProjectCustomEstimateExtensionParameter;
-}
+};
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
@@ -68,6 +69,7 @@ export interface ProjectSystemEstimateParameter
 export const initialProjectSystemEstimateParameter = (isLh: boolean) => {
   return {
     isSent:       false,
+    sentDate:     null,
     plan:         { isLh: isLh, hasExperimentInfo: true },
     siteList:     [{}],
     buildingList: [{}],

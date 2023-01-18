@@ -72,6 +72,10 @@ public class ProjectFinalEstimate extends CustomEntity {
      * 비고
      */
     private String note;
+    /**
+     * 송부일
+     */
+    private LocalDate sentDate;
 
     /**
      * 프로젝트
@@ -84,6 +88,7 @@ public class ProjectFinalEstimate extends CustomEntity {
      */
     @OneToOne
     private User writer;
+
 
     public static ProjectFinalEstimate of(Project project) {
         ProjectFinalEstimate instance = new ProjectFinalEstimate();

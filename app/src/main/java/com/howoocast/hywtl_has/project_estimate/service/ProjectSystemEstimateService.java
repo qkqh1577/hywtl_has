@@ -64,7 +64,8 @@ public class ProjectSystemEstimateService {
             parameter.getNote(),
             toTemplateList(parameter.getTemplateList()),
             parameter.getContentList(),
-            new CustomFinder<>(businessRepository, Business.class).byId(1L));
+            new CustomFinder<>(businessRepository, Business.class).byId(1L),
+            parameter.getSentDate());
         estimateService.changePlan(instance, parameter.getPlan());
         estimateService.changeSiteList(instance, parameter.getSiteList());
         estimateService.changeBuildingList(instance, parameter.getBuildingList());
@@ -87,7 +88,8 @@ public class ProjectSystemEstimateService {
             parameter.getIsLh(),
             parameter.getNote(),
             toTemplateList(parameter.getTemplateList()),
-            parameter.getContentList()
+            parameter.getContentList(),
+            parameter.getSentDate()
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
