@@ -87,6 +87,7 @@ export interface ProjectEstimateShortVO {
   testAmount: number;
   reviewAmount: number;
   totalAmount: number;
+  schedule: string;
 }
 
 export interface ProjectFinalEstimateVO extends ProjectEstimateShortVO{

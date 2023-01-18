@@ -166,4 +166,6 @@ export interface ProjectFinalEstimateParameter {
   resetIsSent?: boolean;
   note?: string;
   resetNote?: boolean;
+  schedule?: string;
+  resetSchedule?: boolean;
 }

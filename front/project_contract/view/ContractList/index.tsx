@@ -173,7 +173,7 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>{item.testAmount.toLocaleString()}</Td>
                 <Td>{item.reviewAmount.toLocaleString()}</Td>
                 <Td>{item.totalAmount.toLocaleString()}</Td>
-                <Td>일정</Td>
+                <Td>{item.schedule}</Td>
                 <Td>{item.collectionRate}</Td>
                 <Td>{item.orderer}</Td>
                 <Td>{item.note ?? '-'}</Td>
@@ -349,24 +349,6 @@ export default function ProjectContractListSection(props: Props) {
               </Td>
               <Td>
                 <Input
-                  key={props.finalContract?.note}
-                  defaultValue={props.finalContract?.note ?? ''}
-                  variant="outlined"
-                  onBlur={(e) => {
-                    const value = e.target.value || undefined;
-                    if (props.finalContract?.note !== value) {
-                      if (value) {
-                        props.onUpdate({ note: value });
-                      }
-                      else {
-                        props.onUpdate({ resetNote: true });
-                      }
-                    }
-                  }}
-                />
-              </Td>
-              <Td>
-                <Input
                   type="number"
                   key={props.finalContract?.totalAmount}
                   defaultValue={props.finalContract?.totalAmount ?? ''}
@@ -402,6 +384,7 @@ export default function ProjectContractListSection(props: Props) {
                   }}
                 />
               </Td>
+              <Td></Td>
               <Td>
                 <BusinessSelector
                   value={props.finalContract?.business?.id ?? ''}
@@ -417,7 +400,22 @@ export default function ProjectContractListSection(props: Props) {
                 />
               </Td>
               <Td>
-                <DateFormat date={props.finalContract?.createdAt} format="YYYY-MM-DD hh:mm" />
+                <Input
+                  key={props.finalContract?.note}
+                  defaultValue={props.finalContract?.note ?? ''}
+                  variant="outlined"
+                  onBlur={(e) => {
+                    const value = e.target.value || undefined;
+                    if (props.finalContract?.note !== value) {
+                      if (value) {
+                        props.onUpdate({ note: value });
+                      }
+                      else {
+                        props.onUpdate({ resetNote: true });
+                      }
+                    }
+                  }}
+                />
               </Td>
               <Td>
                 <UserSelector

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class ProjectEstimateShortView {
     private Long testAmount;
     private Long reviewAmount;
     private Long totalAmount;
-
+    private String schedule;
 
     public static ProjectEstimateShortView assemble(ProjectEstimate source) {
         ProjectEstimateShortView target = new ProjectEstimateShortView();
@@ -50,23 +51,45 @@ public class ProjectEstimateShortView {
         target.modifiedAt = Optional.ofNullable(source.getModifiedAt()).orElse(source.getCreatedAt());
         // migration상 로직 변경 필요.
         target.business = Optional.ofNullable(source.getBusiness()).map(BusinessShortView::assemble).orElse(null);
-        target.hasExperimentInfo = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getHasExperimentInfo).orElse(false);
+        target.hasExperimentInfo = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getHasExperimentInfo)
+            .orElse(false);
         target.testList = ProjectEstimateTestDetailView.assemble(source.getBuildingList());
         String targetTest = target.testList.stream()
             .map(test -> String.format("%d%s", test.getBuildingCount(), test.getTestType().toString()))
             .reduce("", (a, b) -> a + b);
 
-        long eTestCount = source.getSiteList().stream().filter((site -> Boolean.TRUE.equals(site.getWithEnvironmentTest())))
+        long eTestCount = source.getSiteList().stream()
+            .filter((site -> Boolean.TRUE.equals(site.getWithEnvironmentTest())))
             .count();
         if (eTestCount > 0) {
             targetTest += String.format("%dE", eTestCount);
         }
         target.targetTest = targetTest;
-        target.estimateDate = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getEstimateDate).orElse(null);
+        target.estimateDate = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getEstimateDate)
+            .orElse(null);
         target.note = source.getNote();
         target.testAmount = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getTestAmount).orElse(0L);
-        target.reviewAmount = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getReviewAmount).orElse(0L);
+        target.reviewAmount = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getReviewAmount)
+            .orElse(0L);
         target.totalAmount = Optional.ofNullable(source.getPlan()).map(ProjectEstimatePlan::getTotalAmount).orElse(0L);
+        if (Objects.nonNull(source.getPlan())) {
+            ProjectEstimatePlan plan = source.getPlan();
+            if (Objects.nonNull(plan.getExpectedTestDeadline())
+                || Objects.nonNull(plan.getExpectedFinalReportDeadline())) {
+                String schedule = "";
+                if (Objects.nonNull(plan.getExpectedTestDeadline())) {
+                    schedule += String.format("%s주", plan.getExpectedTestDeadline());
+                }
+                if (Objects.nonNull(plan.getExpectedFinalReportDeadline())) {
+                    if (Objects.isNull(plan.getExpectedTestDeadline())) {
+                        schedule += String.format("%s주", plan.getExpectedFinalReportDeadline());
+                    } else {
+                        schedule += String.format(" / %s주", plan.getExpectedFinalReportDeadline());
+                    }
+                }
+                target.schedule = schedule;
+            }
+        }
         return target;
     }
 

@@ -4,7 +4,6 @@ import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
-import com.howoocast.hywtl_has.project_estimate.domain.ProjectFinalEstimate;
 import com.howoocast.hywtl_has.user.domain.User;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import org.springframework.lang.Nullable;
 
 @Getter
 @Entity
-@Table(name = ProjectFinalEstimate.KEY)
+@Table(name = ProjectFinalContract.KEY)
 @Where(clause = "deleted_at is null")
 public class ProjectFinalContract extends CustomEntity {
 

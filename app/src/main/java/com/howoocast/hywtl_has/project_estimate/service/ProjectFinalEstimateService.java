@@ -66,9 +66,11 @@ public class ProjectFinalEstimateService {
             parameter.getIsSent(),
             parameter.getResetIsSent(),
             parameter.getNote(),
-            parameter.getResetNote()
+            parameter.getResetNote(),
+            parameter.getSchedule(),
+            parameter.getResetSchedule()
         );
-        if(Objects.isNull(instance.getId())) {
+        if (Objects.isNull(instance.getId())) {
             repository.save(instance);
         }
         eventList.stream().map(event -> ProjectLogEvent.of(project, event)).forEach(eventPublisher::publishEvent);

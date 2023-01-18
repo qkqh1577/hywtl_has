@@ -43,7 +43,6 @@ import {
   snackbarAction,
   SnackbarSeverityType
 } from 'components/Snackbar/action';
-import { Simulate } from 'react-dom/test-utils';
 import { useDispatch } from 'react-redux';
 
 interface Props
@@ -112,7 +111,7 @@ export default function ProjectEstimateListSection(props: Props) {
                 <Th>풍동 금액</Th>
                 <Th>구검</Th>
                 <Th>총액</Th>
-                {/*<Th>일정</Th>*/}
+                <Th>일정</Th>
                 <Th>견적 구분</Th>
                 <Th>견적 업체</Th>
                 <Th>등록 일시</Th>
@@ -174,6 +173,7 @@ export default function ProjectEstimateListSection(props: Props) {
                   <Td>{item.testAmount.toLocaleString()}</Td>
                   <Td>{item.reviewAmount.toLocaleString()}</Td>
                   <Td>{item.totalAmount.toLocaleString()}</Td>
+                  <Td>{item.schedule}</Td>
                   <Td>
                     {projectEstimateTypeName(item.type)}
                   </Td>
@@ -314,6 +314,24 @@ export default function ProjectEstimateListSection(props: Props) {
                         }
                         else {
                           props.onUpdate({ resetTotalAmount: true });
+                        }
+                      }
+                    }}
+                  />
+                </Td>
+                <Td>
+                  <Input
+                    key={props.finalEstimate?.schedule}
+                    defaultValue={props.finalEstimate?.schedule ?? ''}
+                    variant="outlined"
+                    onBlur={(e) => {
+                      const value = e.target.value as string || undefined;
+                      if (props.finalEstimate?.schedule !== value) {
+                        if (value) {
+                          props.onUpdate({ schedule: value });
+                        }
+                        else {
+                          props.onUpdate({ resetSchedule: true });
                         }
                       }
                     }}

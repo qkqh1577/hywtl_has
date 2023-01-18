@@ -37,6 +37,7 @@ public class ProjectContractShortView {
     private ProjectContractCollection collection;
     private String orderer;
     private String collectionRate;
+    private String schedule;
 
     public static ProjectContractShortView assemble(ProjectContract source) {
         ProjectContractShortView target = new ProjectContractShortView();
@@ -81,6 +82,26 @@ public class ProjectContractShortView {
             List<String> collectionList = source.getCollection().getStageList().stream().map(stage -> String.valueOf(stage.getRate())).collect(Collectors.toList());
             target.collectionRate = String.join("/", collectionList);
         }
+
+        if (Objects.nonNull(source.getEstimate().getPlan())) {
+            ProjectEstimatePlan plan = source.getEstimate().getPlan();
+            if (Objects.nonNull(plan.getExpectedTestDeadline())
+                || Objects.nonNull(plan.getExpectedFinalReportDeadline())) {
+                String schedule = "";
+                if (Objects.nonNull(plan.getExpectedTestDeadline())) {
+                    schedule += String.format("%s주", plan.getExpectedTestDeadline());
+                }
+                if (Objects.nonNull(plan.getExpectedFinalReportDeadline())) {
+                    if (Objects.isNull(plan.getExpectedTestDeadline())) {
+                        schedule += String.format("%s주", plan.getExpectedFinalReportDeadline());
+                    } else {
+                        schedule += String.format(" / %s주", plan.getExpectedFinalReportDeadline());
+                    }
+                }
+                target.schedule = schedule;
+            }
+        }
+
         return target;
     }
 }

@@ -68,12 +68,12 @@ export interface ProjectContractShortVO {
   collection: ProjectContractCollectionVO;
   orderer: string;
   collectionRate: string;
+  schedule: string;
 }
 
 export interface ProjectFinalContractVO
   extends ProjectContractShortVO {
   business: BusinessShortVO;
-  schedule: string;
 }
 
 export interface ProjectContractVO

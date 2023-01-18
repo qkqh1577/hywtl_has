@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProjectFinalEstimateParameter {
+
     private LocalDate estimateDate;
     private Boolean resetEstimateDate;
     private String code;
@@ -29,4 +30,6 @@ public class ProjectFinalEstimateParameter {
     private Boolean resetIsSent;
     private String note;
     private Boolean resetNote;
+    private String schedule;
+    private Boolean resetSchedule;
 }

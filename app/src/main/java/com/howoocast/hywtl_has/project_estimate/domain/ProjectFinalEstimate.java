@@ -84,6 +84,7 @@ public class ProjectFinalEstimate extends CustomEntity {
      */
     @OneToOne
     private User writer;
+
     public static ProjectFinalEstimate of(Project project) {
         ProjectFinalEstimate instance = new ProjectFinalEstimate();
         instance.project = project;
@@ -112,7 +113,9 @@ public class ProjectFinalEstimate extends CustomEntity {
         @Nullable Boolean isSent,
         @Nullable Boolean resetIsSent,
         @Nullable String note,
-        @Nullable Boolean resetNote
+        @Nullable Boolean resetNote,
+        @Nullable String schedule,
+        @Nullable Boolean resetSchedule
     ) {
         List<EventEntity> eventList = new ArrayList<>();
 
@@ -212,6 +215,15 @@ public class ProjectFinalEstimate extends CustomEntity {
                 note
             ));
             this.note = note;
+        }
+
+        if (Objects.nonNull(schedule) || Boolean.TRUE.equals(resetSchedule)) {
+            eventList.add(EventEntity.of(
+                "일정",
+                this.schedule,
+                schedule
+            ));
+            this.schedule = schedule;
         }
 
         return eventList;
