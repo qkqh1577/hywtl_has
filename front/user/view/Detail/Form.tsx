@@ -58,7 +58,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel label="아이디">
+            <DataFieldWithLabel label="아이디" labelSX={{minWidth: '80px'}}>
               <Input
                 readOnly={true}
                 placeholder={isNew?'초대 메일을 통해 설정할 수 있습니다':'수정불가'}
@@ -73,7 +73,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit || isNew} label="이름">
+            <DataFieldWithLabel required={edit || isNew} label="이름" labelSX={{minWidth: '80px'}}>
               <Input
                 readOnly={!edit && !isNew}
                 key={formik.values.name}
@@ -96,7 +96,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit || isNew} label="이메일">
+            <DataFieldWithLabel required={edit || isNew} label="이메일" labelSX={{minWidth: '80px'}}>
               <Input
                 readOnly={!edit && !isNew}
                 key={formik.values.email}
@@ -119,7 +119,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit || isNew} label="권한">
+            <DataFieldWithLabel required={edit || isNew} label="권한" labelSX={{minWidth: '80px'}}>
               <Select
                 readOnly={!edit && !isNew}
                 value={formik.values.role ?? ''}
@@ -144,7 +144,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit || isNew} label="소속 조직">
+            <DataFieldWithLabel required={edit || isNew} label="소속 조직" labelSX={{minWidth: '80px'}}>
               <DepartmentSelector
                 readOnly={!edit && !isNew}
                 value={formik.values.departmentId ?? ''}

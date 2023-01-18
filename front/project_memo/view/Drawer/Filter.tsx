@@ -13,6 +13,7 @@ import React, {
 import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import { FormikContext } from 'formik';
+import Divider from "../../../layouts/Divider";
 
 export default function ProjectMemoDrawerFilter() {
   const formik = useContext(FormikContext);
@@ -25,15 +26,16 @@ export default function ProjectMemoDrawerFilter() {
     <Box sx={{
       width:          '100%',
       padding:        '0 10px',
+      margin:         '10px 0',
       display:        'flex',
+      flexWrap:'wrap',
       justifyContent: 'space-between',
-      flexWrap:       'unwrap',
       flex:           1,
-      alignItems:     'center',
+      // alignItems:     'center',
     }}>
       <Box sx={{
         display:     'flex',
-        width:       '120px',
+        width:       '99px',
         marginRight: '10px',
       }}>
         <Select
@@ -55,20 +57,23 @@ export default function ProjectMemoDrawerFilter() {
           ))}
         </Select>
       </Box>
-      <Input
-        key={formik.values.keyword}
-        defaultValue={formik.values.keyword ?? ''}
-        variant="outlined"
-        placeholder="검색어 입력 후 엔터"
-        onKeyDown={(e) => {
-          if (e.key.toLowerCase() === 'enter') {
-            const value = (e.target as HTMLInputElement).value || undefined;
-            if (formik.values.keyword !== value) {
-              formik.setFieldValue('keyword', value);
+      <Box sx={{width:'calc(100% - 109px)'}}>
+        <Input
+          key={formik.values.keyword}
+          defaultValue={formik.values.keyword ?? ''}
+          variant="outlined"
+          placeholder="검색어 입력 후 엔터"
+          onKeyDown={(e) => {
+            if (e.key.toLowerCase() === 'enter') {
+              const value = (e.target as HTMLInputElement).value || undefined;
+              if (formik.values.keyword !== value) {
+                formik.setFieldValue('keyword', value);
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </Box>
+      <Divider sx={{margin:'10px 0 0 0', padding:'0', width: '100%'}}/>
     </Box>
   );
 }

@@ -38,7 +38,7 @@ export default function AccountForm() {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="이름">
+          <DataFieldWithLabel label="이름" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly
               key={values.name}
@@ -52,7 +52,7 @@ export default function AccountForm() {
           width:        '100%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel label="이메일">
+          <DataFieldWithLabel label="이메일" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly
               key={values.email}
@@ -65,7 +65,7 @@ export default function AccountForm() {
           flexWrap: 'nowrap',
           width:    '100%',
         }}>
-          <DataFieldWithLabel label="상태">
+          <DataFieldWithLabel label="상태" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly
               key={values.userStatus}

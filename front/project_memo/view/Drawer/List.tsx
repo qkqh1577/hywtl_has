@@ -45,7 +45,7 @@ export default function ProjectMemoList({
                                           onChange
                                         }: ProjectMemoListProps) {
   const { confirm } = useDialog();
-  const siblingHeight = 330;
+  const siblingHeight = 306;
   return (
     <Box
       className="scroll-bar-holder"
@@ -55,7 +55,7 @@ export default function ProjectMemoList({
         height:     `calc(100% - ${siblingHeight}px)`,
         flexWrap:   'nowrap',
         flexDirection: 'column',
-        overflowY:  'scroll',
+        overflowY:  'auto',
         alignItems: 'flex-start',
         padding:    '0 10px 15px 10px',
     }}>
@@ -67,7 +67,7 @@ export default function ProjectMemoList({
             width:           '100%',
             border:          `1px solid ${ColorPalette._e4e9f2}`,
             borderRadius:    '5px',
-            marginTop:       '10px',
+            marginBottom:    '10px',
             backgroundColor: ColorPalette._ffffff,
             padding:         '15px',
             justifyContent:  'center',
@@ -91,7 +91,7 @@ export default function ProjectMemoList({
             width:           '100%',
             border:          `1px solid ${ColorPalette._e4e9f2}`,
             borderRadius:    '5px',
-            marginTop:       '10px',
+            marginBottom:    '10px',
             backgroundColor: ColorPalette._ffffff,
             padding:         '15px',
           }}>

@@ -59,7 +59,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="조직명">
+            <DataFieldWithLabel required={edit} label="조직명" labelSX={{minWidth: '80px'}}>
               <Input
                 readOnly={!edit}
                 key={formik.values.name}
@@ -82,7 +82,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit} label="조직 유형">
+            <DataFieldWithLabel required={edit} label="조직 유형" labelSX={{minWidth: '80px'}}>
               <Select
                 readOnly={!edit}
                 value={formik.values.category ?? ''}
@@ -110,7 +110,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel required={edit && formik.values.category !== DepartmentCategory.COMPANY} label="상위 조직">
+            <DataFieldWithLabel required={edit && formik.values.category !== DepartmentCategory.COMPANY} label="상위 조직" labelSX={{minWidth: '80px'}}>
               <DepartmentSelector
                 readOnly={!edit}
                 disabled={!DepartmentCategory.COMPANY}
@@ -134,7 +134,7 @@ export default function () {
             width:        '100%',
             marginBottom: '15px',
           }}>
-            <DataFieldWithLabel label="설명">
+            <DataFieldWithLabel label="설명" labelSX={{minWidth: '80px'}}>
               <Input
                 readOnly={!edit}
                 key={formik.values.note}

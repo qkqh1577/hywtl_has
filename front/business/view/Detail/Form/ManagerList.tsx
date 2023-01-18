@@ -53,14 +53,14 @@ export default function BusinessManagerListSection(props: Props) {
         alignContent:   'flex-start',
       }}>
         <Box sx={{
-          width:        '100%',
+          width:        '80%',
           marginBottom: '15px',
         }}>
           <TextBox variant="body7">담당자 정보</TextBox>
         </Box>
         {edit && (
           <Box sx={{
-            width:          '100%',
+            width:          '80%',
             display:        'flex',
             justifyContent: 'flex-start',
           }}>
@@ -100,7 +100,6 @@ export default function BusinessManagerListSection(props: Props) {
             sx={{
               display:         'flex',
               width:           '100%',
-              paddingLeft:     '50px',
               marginTop:       '15px',
               flexWrap:        'wrap',
               backgroundColor: `${manager.status === BusinessManagerStatus.RESIGNATION ? ColorPalette._e4e9f2 : 'white'}`,

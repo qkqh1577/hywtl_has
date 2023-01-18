@@ -42,10 +42,6 @@ export default function ProjectMemoDrawerRoute() {
     }
   }, [projectId]);
 
-  useEffect(() => {
-    dispatch(projectMemoAction.setDrawer(typeof projectId !== 'undefined'));
-  }, [projectId]);
-
   if (!isProjectPage || !projectId) {
     return null;
   }
