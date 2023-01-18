@@ -4,6 +4,8 @@ import {
 } from 'project_estimate/domain';
 import { ProjectContractId } from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
+import { BusinessId } from 'business/domain';
+import { UserId } from 'user/domain';
 
 export interface ProjectContractFinalParameter {
   idList: ProjectContractId[];
@@ -58,6 +60,36 @@ export interface ProjectContractConditionDescriptionToMap {
 export const initialProjectContractConditionParameter = {
   descriptionList: [{ description: '' }]
 } as ProjectContractConditionParameter;
+
+
+export interface ProjectFinalContractParameter {
+  contractDate?: string;
+  resetContractDate?: boolean;
+  contractType?: string;
+  resetContractType?: boolean;
+  code?: string;
+  resetCode?: boolean;
+  estimateCode?: string;
+  resetEstimateCode?: boolean;
+  targetTest?: string;
+  resetTargetTest?: boolean;
+  testAmount?: number;
+  resetTestAmount?: boolean;
+  reviewAmount?: number;
+  resetReviewAmount?: boolean;
+  totalAmount?: number;
+  resetTotalAmount?: boolean;
+  note?: string;
+  resetNote?: boolean;
+  schedule?: string;
+  resetSchedule?: boolean;
+  businessId?: BusinessId;
+  resetBusinessId?: boolean;
+  writerId?: UserId;
+  resetWriterId?: boolean;
+  isSent?: boolean;
+  resetIsSent?: boolean;
+}
 
 export interface ProjectContractParameter {
   id?: ProjectContractId;
