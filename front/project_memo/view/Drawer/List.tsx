@@ -25,7 +25,7 @@ import Select from 'layouts/Select';
 import Input from 'layouts/Input';
 import useDialog from 'dialog/hook';
 import Button from 'layouts/Button';
-import CircularProgress from "../../../components/CircularProgress";
+import CircularProgress from '../../../components/CircularProgress';
 
 export interface ProjectMemoListProps
   extends FormikLayoutProps<ProjectMemoChangeParameter> {
@@ -284,7 +284,6 @@ export default function ProjectMemoList({
                         margin: '0px 5px'
                       }}
                       onClick={() => {
-                        console.log('formik.values.id === item.id : ', formik.values.id, item.id);
                         if (formik.values.id === item.id) {
                           formik.handleSubmit();
                         }

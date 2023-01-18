@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -44,6 +46,11 @@ public class ProjectContract extends CustomEntity {
      * 계약 번호
      */
     private String code;
+    /**
+     * 계약 타입
+     */
+    @Enumerated(EnumType.STRING)
+    private ContractType contractType;
 
     /**
      * 송부 여부
@@ -91,7 +98,8 @@ public class ProjectContract extends CustomEntity {
         ProjectContractBasic basic,
         ProjectContractCollection collection,
         List<ProjectContractCondition> conditionList,
-        User writer
+        User writer,
+        ContractType contractType
     ) {
         ProjectContract instance = new ProjectContract();
         instance.project = project;
@@ -105,6 +113,7 @@ public class ProjectContract extends CustomEntity {
         instance.conditionList = conditionList;
         instance.writer = writer;
         instance.confirmed = Boolean.FALSE;
+        instance.contractType = contractType;
         return instance;
     }
 
@@ -115,7 +124,8 @@ public class ProjectContract extends CustomEntity {
         String note,
         ProjectContractBasic basic,
         ProjectContractCollection collection,
-        List<ProjectContractCondition> conditionList
+        List<ProjectContractCondition> conditionList,
+        ContractType contractType
     ) {
         List<EventEntity> eventList = new ArrayList<>();
         eventList.add(EventEntity.of(
@@ -146,6 +156,12 @@ public class ProjectContract extends CustomEntity {
             "비고 변경",
             this.note,
             note
+        ));
+        this.contractType = contractType;
+        eventList.add(EventEntity.of(
+            "계약서 종류 변경",
+            this.contractType.getName(),
+            contractType.getName()
         ));
         eventList.addAll(this.changeBasic(basic));
         eventList.addAll(this.changeCollection(collection));
@@ -293,7 +309,6 @@ public class ProjectContract extends CustomEntity {
 
 
     /**
-     * @migration
      * @param project
      * @param estimate
      * @param code
@@ -304,6 +319,7 @@ public class ProjectContract extends CustomEntity {
      * @param conditionList
      * @param writer
      * @return
+     * @migration
      */
     public static ProjectContract of(
         Project project,

@@ -67,7 +67,8 @@ public class ProjectCustomEstimateService {
             parameter.getIsSent(),
             parameter.getRecipient(),
             parameter.getNote(),
-            business
+            business,
+            parameter.getSentDate()
         );
         repository.save(instance);
         eventPublisher.publishEvent(ProjectLogEvent.of(
@@ -91,7 +92,8 @@ public class ProjectCustomEstimateService {
             parameter.getRecipient(),
             parameter.getIsLh(),
             parameter.getNote(),
-            business
+            business,
+            parameter.getSentDate()
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);

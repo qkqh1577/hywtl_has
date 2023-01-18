@@ -9,6 +9,7 @@ import { projectEstimateAction } from 'project_estimate/action';
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateShortVO,
+  ProjectFinalEstimateVO,
   ProjectSystemEstimateVO
 } from 'project_estimate/domain';
 import { projectEstimateApi } from 'project_estimate/api';
@@ -210,6 +211,35 @@ function* watchDeleteSystem() {
   }
 }
 
+function* watchGetFinal() {
+  while (true) {
+    const { payload: id } = yield take(projectEstimateAction.getFinalEstimate);
+    if (id) {
+      const finalEstimate: ProjectFinalEstimateVO = yield call(projectEstimateApi.getFinalEstimate, id);
+      yield put(projectEstimateAction.setFinalEstimate(finalEstimate));
+    }
+    else {
+      yield put(projectEstimateAction.setFinalEstimate(undefined));
+    }
+  }
+}
+
+function* watchUpdateFinal(){
+  while (true) {
+    const {payload: params} = yield take(projectEstimateAction.update);
+    try{
+      yield put(projectEstimateAction.requestFinalEstimateUpdate('request'));
+      const { projectId } = yield select((root: RootState) => root.projectEstimate);
+      yield call(projectEstimateApi.updateFinalEstimate, projectId, params);
+      yield put(projectEstimateAction.requestFinalEstimateUpdate('done'));
+    }catch (e) {
+      const message = getErrorMessage(projectEstimateAction.update, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectEstimateAction.requestFinalEstimateUpdate(message));
+    }
+  }
+}
+
 export default function* projectEstimateSaga() {
   yield fork(watchProjectId);
   yield fork(watchAddCustom);
@@ -222,4 +252,6 @@ export default function* projectEstimateSaga() {
   yield fork(watchFinal);
   yield fork(watchDeleteCustom);
   yield fork(watchDeleteSystem);
+  yield fork(watchGetFinal);
+  yield fork(watchUpdateFinal);
 }

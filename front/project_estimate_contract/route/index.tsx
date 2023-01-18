@@ -31,6 +31,7 @@ import { projectContractAction } from 'project_contract/action';
 import { RootState } from 'services/reducer';
 import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
+import FinalCollectionModalRoute from 'project_contract/route/finalCollectionModalRoute';
 
 function Element() {
   const id = useId();
@@ -77,6 +78,7 @@ function Element() {
         )}
         <ProjectContractListRoute />
         <ProjectContractFinalModalRoute />
+        <FinalCollectionModalRoute />
       </Box>
     </ProjectContainerRoute>
   );

@@ -595,6 +595,18 @@ public class SalesDataToMigrateService {
             if (StringUtils.hasText(salesMap.get(SalesHeader.CONTRACT_DATE.getName()))) {
                 finalDate = getDate(salesMap, SalesHeader.CONTRACT_DATE.getName());
             }
+            String ordererCompanyName = null;
+            String ordererCompanyAddress = null;
+            String ordererCeoName = null;
+            if (StringUtils.hasText(salesMap.get(SalesHeader.ORDER_COMPANY_NAME_1.getName()))) {
+                ordererCompanyName = salesMap.get(SalesHeader.ORDER_COMPANY_NAME_1.getName());
+                Optional<Business> company = businessRepository.findByName(ordererCompanyName);
+                if(company.isPresent()){
+                    ordererCompanyAddress = company.get().getAddress();
+                    ordererCeoName = company.get().getCeoName();
+                }
+            }
+
 
             ProjectContract finalContract = ProjectContract.of(
                 project,
@@ -609,9 +621,9 @@ public class SalesDataToMigrateService {
                     contractBasic.getOutcome(),
                     contractBasic.getDescription(),
                     finalDate,
-                    null,
-                    null,
-                    null,
+                    ordererCompanyAddress,
+                    ordererCompanyName,
+                    ordererCeoName,
                     contractBasic.getContractor().getAddress(),
                     contractBasic.getContractor().getCompanyName(),
                     contractBasic.getContractor().getCeoName()

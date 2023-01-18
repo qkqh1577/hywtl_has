@@ -38,6 +38,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
       onChange({
         id:         values.id,
         isSent:     !!values.isSent,
+        sentDate:   values.sentDate,
         recipient:  values.recipient,
         note:       values.note,
         businessId: values.businessId,

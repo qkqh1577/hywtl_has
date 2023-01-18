@@ -27,6 +27,7 @@ export default function ProjectCustomEstimateAddModalRoute() {
     onSubmit:      (values) => {
       addCustom({
         isSent:     !!values.isSent,
+        sentDate:   values.sentDate,
         businessId: values.businessId,
         recipient:  values.recipient,
         note:       values.note,

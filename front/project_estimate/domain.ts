@@ -17,6 +17,13 @@ export enum ProjectEstimateType {
   SUB_CONTRACTOR = 'SUB_CONTRACTOR',
 }
 
+export const projectEstimateTypeList = [
+  ProjectEstimateType.CUSTOM,
+  ProjectEstimateType.SYSTEM,
+  ProjectEstimateType.COMPARISON,
+  ProjectEstimateType.SUB_CONTRACTOR,
+];
+
 export function projectEstimateTypeName(type: ProjectEstimateType) {
   switch (type) {
     case ProjectEstimateType.CUSTOM:
@@ -67,6 +74,7 @@ export interface ProjectEstimateShortVO {
   code: string;
   type: ProjectEstimateType;
   isSent: boolean;
+  sentDate: string
   confirmed: boolean;
   recipient: string;
   note?: string;
@@ -75,6 +83,16 @@ export interface ProjectEstimateShortVO {
   modifiedAt?: Date;
   business: BusinessShortVO;
   hasExperimentInfo: boolean;
+  estimateDate: Date;
+  targetTest: string;
+  testAmount: number;
+  reviewAmount: number;
+  totalAmount: number;
+  schedule: string;
+}
+
+export interface ProjectFinalEstimateVO extends ProjectEstimateShortVO{
+
 }
 
 export interface ProjectEstimatePlanVO {

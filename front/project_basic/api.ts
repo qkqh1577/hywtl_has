@@ -18,12 +18,12 @@ import {
   ProjectBasicParameter
 } from 'project_basic/parameter';
 import { ProjectComplexTestVO } from 'project_complex/domain';
-import { ProjectEstimateVO } from 'project_estimate/domain';
+import { ProjectFinalEstimateVO } from 'project_estimate/domain';
 import { RivalEstimateVO } from 'rival_estimate/domain';
 import { ProjectBidVO } from 'project_bid/domain';
 import { RivalBidVO } from 'rival_bid/domain';
 import { ProjectContractVO } from 'project_contract/domain';
-import {BusinessId} from "../business/domain";
+import { BusinessId } from '../business/domain';
 
 class ProjectBasicApi {
 
@@ -118,8 +118,8 @@ class ProjectBasicApi {
     return data;
   }
 
-  async getEstimate(id: ProjectId): Promise<ProjectEstimateVO> {
-    const { data } = await apiClient.get(`/project/sales/${id}/basic/estimate`);
+  async getEstimate(id: ProjectId): Promise<ProjectFinalEstimateVO> {
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/estimate/final`);
     return data;
   }
 
@@ -139,7 +139,7 @@ class ProjectBasicApi {
   }
 
   async getContract(id: ProjectId): Promise<ProjectContractVO> {
-    const { data } = await apiClient.get(`/project/sales/${id}/basic/contract`);
+    const { data } = await apiClient.get(`/project/sales/${id}/basic/contract/final`);
     return data;
   }
 

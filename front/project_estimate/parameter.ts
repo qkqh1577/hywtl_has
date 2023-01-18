@@ -22,6 +22,7 @@ export interface ProjectEstimateBasicParameter {
   isSent: boolean | undefined;
   recipient: string;
   note?: string;
+  sentDate?: string;
   confirmed?: boolean;
 }
 
@@ -52,7 +53,7 @@ export const initialProjectCustomEstimateExtensionParameter = (isLh: boolean) =>
     buildingList: [],
     edit:         true,
   } as unknown as ProjectCustomEstimateExtensionParameter;
-}
+};
 
 export interface ProjectSystemEstimateParameter
   extends ProjectEstimateBasicParameter {
@@ -68,6 +69,7 @@ export interface ProjectSystemEstimateParameter
 export const initialProjectSystemEstimateParameter = (isLh: boolean) => {
   return {
     isSent:       false,
+    sentDate:     null,
     plan:         { isLh: isLh, hasExperimentInfo: true },
     siteList:     [{}],
     buildingList: [{}],
@@ -141,4 +143,33 @@ export interface ProjectEstimateContentListToMap {
 
 export interface ProjectEstimateTemplateDetailTitleListToMap {
   title: string;
+}
+
+export interface ProjectFinalEstimateParameter {
+  estimateDate?: string;
+  resetEstimateDate?: boolean;
+  code?: string;
+  resetCode?: boolean;
+  targetTest?: string;
+  resetTargetTest?: boolean;
+  testAmount?: number;
+  resetTestAmount?: boolean;
+  reviewAmount?: number;
+  resetReviewAmount?: boolean;
+  totalAmount?: number;
+  resetTotalAmount?: boolean;
+  type?: string;
+  resetType?: boolean;
+  businessId?: BusinessId;
+  resetBusinessId?: boolean;
+  writerId?: UserId;
+  resetWriterId?: boolean;
+  isSent?: boolean;
+  resetIsSent?: boolean;
+  note?: string;
+  resetNote?: boolean;
+  schedule?: string;
+  resetSchedule?: boolean;
+  sentDate?: string;
+  resetSentDate?: boolean;
 }

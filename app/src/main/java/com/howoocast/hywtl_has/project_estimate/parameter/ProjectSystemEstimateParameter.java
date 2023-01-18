@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_estimate.parameter;
 
 import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
+import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -21,6 +23,9 @@ public class ProjectSystemEstimateParameter {
     private String recipient;
 
     private String note;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate sentDate;
 
     private Boolean isLh;
 

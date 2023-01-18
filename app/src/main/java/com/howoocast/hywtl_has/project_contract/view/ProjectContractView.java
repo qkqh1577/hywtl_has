@@ -1,6 +1,7 @@
 package com.howoocast.hywtl_has.project_contract.view;
 
 import com.howoocast.hywtl_has.file.view.FileItemView;
+import com.howoocast.hywtl_has.project_contract.domain.ContractType;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_estimate.view.ProjectEstimateView;
 import java.util.List;
@@ -14,6 +15,7 @@ public class ProjectContractView {
 
     private Long id;
     private String code;
+    private ContractType contractType;
     private Boolean confirmed;
     private FileItemView pdfFile;
     private Boolean isSent;
@@ -42,6 +44,7 @@ public class ProjectContractView {
         target.conditionList = source.getConditionList().stream()
             .map(ProjectContractConditionView::assemble)
             .collect(Collectors.toList());
+        target.contractType = source.getContractType();
         return target;
     }
 }

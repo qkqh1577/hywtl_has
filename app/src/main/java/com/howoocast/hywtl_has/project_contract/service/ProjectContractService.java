@@ -94,7 +94,8 @@ public class ProjectContractService {
             toBasic(parameter.getBasic()),
             toCollection(parameter.getCollection()),
             toConditionList(parameter.getConditionList()),
-            writer
+            writer,
+            parameter.getContractType()
         );
         repository.save(instance);
         eventPublisher.publishEvent(ProjectLogEvent.of(
@@ -123,7 +124,8 @@ public class ProjectContractService {
             parameter.getNote(),
             toBasic(parameter.getBasic()),
             toCollection(parameter.getCollection()),
-            toConditionList(parameter.getConditionList())
+            toConditionList(parameter.getConditionList()),
+            parameter.getContractType()
         );
         eventList.stream().map(event -> ProjectLogEvent.of(instance.getProject(), event))
             .forEach(eventPublisher::publishEvent);
@@ -152,6 +154,8 @@ public class ProjectContractService {
             projectEstimateList.forEach(e -> e.changeConfirmed(Boolean.FALSE));
             return;
         }
+        // 견적서에서 따로 최종 선택을 하는 로직이 있어서 생기는 문제 수정
+        projectEstimateList.forEach(e -> e.changeConfirmed(Boolean.FALSE));
 
         List<ProjectContract> confirmedList = new ArrayList<>();
         projectContractlist.forEach(c -> parameter.getContractIdList().forEach(fc -> {

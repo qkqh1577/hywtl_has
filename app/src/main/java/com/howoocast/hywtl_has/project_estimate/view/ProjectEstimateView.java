@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.project_estimate.domain.ProjectCustomEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectEstimate;
 import com.howoocast.hywtl_has.project_estimate.domain.ProjectSystemEstimate;
 import com.howoocast.hywtl_has.user.view.UserShortView;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,7 @@ public class ProjectEstimateView {
     private Boolean isSent;
     private Boolean confirmed;
     private String recipient;
+    private LocalDate sentDate;
     private String note;
     private UserShortView createdBy;
     private LocalDateTime createdAt;
@@ -33,7 +35,6 @@ public class ProjectEstimateView {
     private List<ProjectEstimateComplexSiteView> siteList;
     private List<ProjectEstimateComplexBuildingView> buildingList;
     private BusinessShortView business;
-
     private ProjectEstimateTestView test;
 
     protected ProjectEstimateView(
@@ -45,6 +46,7 @@ public class ProjectEstimateView {
         this.isSent = source.getIsSent();
         this.confirmed = source.getConfirmed();
         this.recipient = source.getRecipient();
+        this.sentDate = source.getSentDate();
         this.note = source.getNote();
         this.createdBy = UserShortView.assemble(source.getWriter());
         this.createdAt = source.getCreatedAt();

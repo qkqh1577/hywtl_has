@@ -10,6 +10,7 @@ import {
   ProjectCustomEstimateAddParameter,
   ProjectCustomEstimateChangeParameter,
   ProjectCustomEstimateExtensionParameter,
+  ProjectFinalEstimateParameter,
   ProjectSystemEstimateParameter
 } from 'project_estimate/parameter';
 
@@ -79,6 +80,18 @@ class ProjectEstimateApi {
 
   async deleteSystem(id: ProjectEstimateId): Promise<void> {
     const { data } = await apiClient.delete(`/project/sales/system-estimate/${id}`);
+    return data;
+  }
+
+  async getFinalEstimate(projectId: ProjectId): Promise<void> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/estimate/final`);
+    return data;
+  }
+
+  async updateFinalEstimate(projectId: ProjectId,
+                            params: ProjectFinalEstimateParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${projectId}/estimate/final`, params);
     return data;
   }
 }

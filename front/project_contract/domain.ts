@@ -1,15 +1,55 @@
 import { UserShortVO } from 'user/domain';
 import { FileItemView } from 'file-item';
 import { ProjectEstimateVO } from 'project_estimate/domain';
+import { BusinessShortVO } from 'business/domain';
 
 export type ProjectContractId = number & { readonly _brand: symbol }
 
 export function ProjectContractId(id: number) {
   return id as ProjectContractId;
 }
+export enum ProjectContractType {
+  /**
+   * 본 계약
+   */
+  ORIGIN = 'ORIGIN',
+  /**
+   * 변경 계약
+   */
+  CHANGE = 'CHANGE',
+  /**
+   * 추가 계약
+   */
+  ADDITION = 'ADDITION',
+  /**
+   * 승계 계약
+   */
+  KEEP = 'KEEP',
+}
+
+export const projectContractTypeList = [
+  ProjectContractType.ORIGIN,
+  ProjectContractType.CHANGE,
+  ProjectContractType.ADDITION,
+  ProjectContractType.KEEP,
+];
+
+export function projectContractTypeName(type: ProjectContractType) {
+  switch (type) {
+    case ProjectContractType.ORIGIN:
+      return '본 계약';
+    case ProjectContractType.CHANGE:
+      return '변경 계약';
+    case ProjectContractType.ADDITION:
+      return '추가 계약';
+    case ProjectContractType.KEEP:
+      return '승계 계약';
+  }
+}
 
 export interface ProjectContractShortVO {
   id: ProjectContractId;
+  contractType: ProjectContractType;
   code: string;
   isSent: boolean;
   confirmed: boolean;
@@ -20,6 +60,19 @@ export interface ProjectContractShortVO {
   createdAt: Date;
   modifiedAt?: Date;
   contractDate?: Date;
+  targetTest: string;
+  testAmount: number;
+  reviewAmount: number;
+  totalAmount: number;
+  collection: ProjectContractCollectionVO;
+  orderer: string;
+  collectionRate: string;
+  schedule: string;
+}
+
+export interface ProjectFinalContractVO
+  extends ProjectContractShortVO {
+  business: BusinessShortVO;
 }
 
 export interface ProjectContractVO

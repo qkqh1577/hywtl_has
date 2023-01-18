@@ -66,8 +66,6 @@ class BusinessApi {
   }
 
   async getMangerListAll(id: BusinessId, query: BusinessManagerQuery): Promise<BusinessManagerVO[]> {
-    console.log('id', id);
-    console.log('query', query);
     const { data } = await apiClient.get(`/business/${id}/manager/all`, query);
     return data;
   }

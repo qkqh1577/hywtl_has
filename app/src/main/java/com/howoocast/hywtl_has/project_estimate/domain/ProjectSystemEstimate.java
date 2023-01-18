@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project_estimate.parameter.ProjectSystemEstimateParameter.Content;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,7 +40,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String note,
         User writer,
         Project project,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         super(
             code,
@@ -49,7 +51,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             note,
             writer,
             project,
-            business
+            business,
+            sentDate
         );
     }
 
@@ -60,7 +63,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String note,
         List<ProjectEstimateTemplate> templateList,
         List<Content> contentList,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         ProjectSystemEstimate instance = new ProjectSystemEstimate(
             dto.getCode(),
@@ -69,7 +73,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             note,
             dto.getWriter(),
             dto.getProject(),
-            business
+            business,
+            sentDate
         );
         instance.templateList = templateList;
         instance.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
@@ -82,14 +87,16 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<Content> contentList
+        List<Content> contentList,
+        LocalDate sentDate
     ) {
         List<EventEntity> eventList = super.change(
             isSent,
             recipient,
             isLh,
             note,
-            this.getBusiness()
+            this.getBusiness(),
+            sentDate
         );
 
         eventList.add(EventEntity.of(

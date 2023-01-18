@@ -4,6 +4,8 @@ import {
 } from 'project_estimate/domain';
 import { ProjectContractId } from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
+import { BusinessId } from 'business/domain';
+import { UserId } from 'user/domain';
 
 export interface ProjectContractFinalParameter {
   idList: ProjectContractId[];
@@ -35,6 +37,9 @@ export interface ProjectContractCollectionStageParameter {
   expectedDate: string;
 }
 
+export interface ProjectFinalContractCollectionParameter
+  extends ProjectContractCollectionParameter {}
+
 export interface ProjectContractCollectionParameter {
   stageNote: string;
   stageList: ProjectContractCollectionStageParameter[];
@@ -59,11 +64,42 @@ export const initialProjectContractConditionParameter = {
   descriptionList: [{ description: '' }]
 } as ProjectContractConditionParameter;
 
+
+export interface ProjectFinalContractParameter {
+  contractDate?: string;
+  resetContractDate?: boolean;
+  contractType?: string;
+  resetContractType?: boolean;
+  code?: string;
+  resetCode?: boolean;
+  estimateCode?: string;
+  resetEstimateCode?: boolean;
+  targetTest?: string;
+  resetTargetTest?: boolean;
+  testAmount?: number;
+  resetTestAmount?: boolean;
+  reviewAmount?: number;
+  resetReviewAmount?: boolean;
+  totalAmount?: number;
+  resetTotalAmount?: boolean;
+  note?: string;
+  resetNote?: boolean;
+  schedule?: string;
+  resetSchedule?: boolean;
+  businessId?: BusinessId;
+  resetBusinessId?: boolean;
+  writerId?: UserId;
+  resetWriterId?: boolean;
+  isSent?: boolean;
+  resetIsSent?: boolean;
+}
+
 export interface ProjectContractParameter {
   id?: ProjectContractId;
   estimateId: ProjectEstimateId;
   estimate: ProjectEstimateVO;
   isSent: boolean;
+  contractType: string;
   recipient: string;
   note?: string;
   pdfFile?: FileItemParameter; // 최종 pdf 파일이 있는 경우만
@@ -80,3 +116,11 @@ export const initialProjectContractParameter = {
   edit:          true,
   file:          {},
 } as unknown as ProjectContractParameter;
+
+export const initialProjectFinalContractCollectionParameter = {
+  stageNote:       '',
+  stageList:       [],
+  totalAmountNote: '',
+  totalAmount:     0,
+  edit:            true,
+} as unknown as ProjectFinalContractCollectionParameter;

@@ -12,6 +12,7 @@ import {
   ProjectContractConditionVO,
   ProjectContractShortVO,
   ProjectContractVO,
+  ProjectFinalContractVO,
 } from 'project_contract/domain';
 import { projectContractApi } from 'project_contract/api';
 import { RootState } from 'services/reducer';
@@ -171,7 +172,54 @@ function* watchEstimate() {
     }
     yield call(getContractData, estimateId);
   }
+}
 
+function* watchGetFinal() {
+  while (true) {
+    const { payload: id } = yield take(projectContractAction.getFinalContract);
+    if (id) {
+      const finalContract: ProjectFinalContractVO = yield call(projectContractApi.getFinalContract, id);
+      yield put(projectContractAction.setFinalContract(finalContract));
+    }
+    else {
+      yield put(projectContractAction.setFinalContract(undefined));
+    }
+  }
+}
+
+function* watchUpdateFinal() {
+  while (true) {
+    const { payload: params } = yield take(projectContractAction.update);
+    try {
+      yield put(projectContractAction.requestFinalContractUpdate('request'));
+      const { projectId } = yield select((root: RootState) => root.projectContract);
+      yield call(projectContractApi.updateFinalContract, projectId, params);
+      yield put(projectContractAction.requestFinalContractUpdate('done'));
+    }
+    catch (e) {
+      const message = getErrorMessage(projectContractAction.update, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestFinalContractUpdate(message));
+    }
+  }
+}
+
+function* watchUpdateFinalContractCollection() {
+  while (true) {
+    const { payload: params } = yield take(projectContractAction.updateFinalContractCollection);
+    try {
+      yield put(projectContractAction.requestFinalContractCollectionUpdate('request'));
+      const { projectId } = yield select((root: RootState) => root.projectContract);
+      yield call(projectContractApi.updateFinalContractCollection, projectId, params);
+      yield put(projectContractAction.requestFinalContractCollectionUpdate('done'));
+      yield put(dialogAction.openAlert('등록하였습니다.'));
+    }
+    catch (e) {
+      const message = getErrorMessage(projectContractAction.updateFinalContractCollection, e);
+      yield put(dialogAction.openError(message));
+      yield put(projectContractAction.requestFinalContractUpdate(message));
+    }
+  }
 }
 
 export default function* projectContractSaga() {
@@ -182,4 +230,7 @@ export default function* projectContractSaga() {
   yield fork(watchDelete);
   yield fork(watchFinal);
   yield fork(watchEstimate);
+  yield fork(watchGetFinal);
+  yield fork(watchUpdateFinal);
+  yield fork(watchUpdateFinalContractCollection);
 }

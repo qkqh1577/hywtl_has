@@ -5,6 +5,7 @@ import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.file.domain.FileItem;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.user.domain.User;
+import java.time.LocalDate;
 import java.util.List;
 import javax.annotation.Nullable;
 import javax.persistence.DiscriminatorValue;
@@ -36,7 +37,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String note,
         User writer,
         Project project,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         super(
             code,
@@ -46,7 +48,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
             note,
             writer,
             project,
-            business
+            business,
+            sentDate
         );
     }
 
@@ -57,7 +60,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         Boolean isSent,
         String recipient,
         String note,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         ProjectCustomEstimate instance =
             new ProjectCustomEstimate(
@@ -68,7 +72,8 @@ public class ProjectCustomEstimate extends ProjectEstimate {
                 note,
                 dto.getWriter(),
                 dto.getProject(),
-                business
+                business,
+                sentDate
             );
         instance.file = file;
         return instance;
@@ -79,14 +84,16 @@ public class ProjectCustomEstimate extends ProjectEstimate {
         String recipient,
         Boolean isLh,
         String note,
-        Business business
+        Business business,
+        LocalDate sentDate
     ) {
         return super.change(
             isSent,
             recipient,
             isLh,
             note,
-            business
+            business,
+            sentDate
         );
     }
 

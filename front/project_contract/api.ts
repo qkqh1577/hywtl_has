@@ -8,12 +8,14 @@ import {
   ProjectContractVO,
 } from 'project_contract/domain';
 import { ProjectId } from 'project/domain';
-import { ProjectContractParameter } from 'project_contract/parameter';
+import {
+  ProjectContractParameter,
+  ProjectFinalContractParameter
+} from 'project_contract/parameter';
 import { ProjectEstimateId } from 'project_estimate/domain';
 import { FileItemParameter } from 'file-item';
 
 class ProjectContractApi {
-
   async getList(id: ProjectId): Promise<ProjectContractShortVO[]> {
     const { data } = await apiClient.get(`/project/sales/${id}/contract`);
     return data;
@@ -69,6 +71,25 @@ class ProjectContractApi {
                  contractIdList: ProjectContractId[]
   ): Promise<void> {
     const { data } = await apiClient.post(`/project/sales/${projectId}/contract/confirmed`, { contractIdList });
+    return data;
+  }
+
+  async getFinalContract(projectId: ProjectId): Promise<void> {
+    const { data } = await apiClient.get(`/project/sales/${projectId}/contract/final`);
+    return data;
+  }
+
+  async updateFinalContract(projectId: ProjectId,
+                            params: ProjectFinalContractParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${projectId}/contract/final`, params);
+    return data;
+  }
+
+  async updateFinalContractCollection(projectId: ProjectId,
+                                      params: ProjectFinalContractParameter
+  ): Promise<void> {
+    const { data } = await apiClient.patch(`/project/sales/${projectId}/contract/final/collection`, params);
     return data;
   }
 }
