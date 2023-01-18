@@ -36,7 +36,6 @@ export default function FinalCollectionModalRoute(props) {
       dispatch(projectContractAction.getFinalContract(projectId));
     }
   }, [finalContractCollectionModal, projectId]);
-  console.log('finalContract : ', finalContract?.collection);
   return (
     <FormikProvider value={formik}>
       <ProjectFinalContractCollectionModal

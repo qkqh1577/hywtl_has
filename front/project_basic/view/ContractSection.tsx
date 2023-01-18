@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function ProjectBasicContractSection({ detail }: Props) {
-  console.log('detail : ', detail);
+
   return (
     <SectionLayout title="최종 계약 정보">
       <Box sx={{
