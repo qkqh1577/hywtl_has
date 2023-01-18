@@ -1,8 +1,13 @@
 import { Divider as MuiDivider } from '@mui/material';
 import { ColorPalette } from 'assets/theme';
 import React from 'react';
+import {SxProps} from "@mui/system";
 
-export default function Divider() {
+interface DividerProps{
+  sx?: SxProps
+}
+
+export default function Divider(props: DividerProps) {
   return (
     <MuiDivider
       sx={{
@@ -11,6 +16,7 @@ export default function Divider() {
         margin:       '20px 0',
         border:       'none',
         borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
+        ...props?.sx,
       }}
     />
   );
