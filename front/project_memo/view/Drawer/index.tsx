@@ -70,13 +70,6 @@ export default function ProjectMemoDrawer(props: Props) {
           backgroundColor: props.open ? 'inherit' : 'transparent',
         }}>
           {props.form}
-          <hr style={{
-            borderBottom: `1px solid ${ColorPalette._e4e9f2}`,
-            width:        '100%',
-            margin:       '15px 10px',
-            padding:      0,
-          }}
-          />
           {props.filter}
           {props.list}
         </Box>
