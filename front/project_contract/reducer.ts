@@ -20,6 +20,7 @@ export interface ProjectContractState {
   detail?: ProjectContractVO;
   finalModal: boolean;
   list?: ProjectContractShortVO[];
+  loading: boolean,
   modal?: ProjectContractId | null;
   estimate?: ProjectEstimateVO;
   projectId?: ProjectId;
@@ -39,6 +40,7 @@ export interface ProjectContractState {
 }
 
 const initial: ProjectContractState = {
+  loading:                              false,
   finalModal:                           false,
   requestAdd:                           'idle',
   requestChange:                        'idle',
@@ -60,6 +62,12 @@ export const projectContractReducer = createReducer(initial, {
                                                                     ) => ({
     ...state,
     list: action.payload,
+  }),
+  [ProjectContractActionType.setLoading]:                              (state,
+                                                                     action
+  ) => ({
+    ...state,
+    loading: action.payload,
   }),
   [ProjectContractActionType.setDetail]:                            (state,
                                                                      action

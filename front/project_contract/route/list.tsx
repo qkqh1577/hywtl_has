@@ -23,7 +23,7 @@ import { ProjectId } from 'project/domain';
 export default function ProjectContractListRoute() {
   const dispatch = useDispatch();
   const id = useId();
-  const { list, finalContract, requestFinalContractUpdate, contractCollectionModal } = useSelector((root: RootState) => root.projectContract);
+  const { list, loading, finalContract, requestFinalContractUpdate, contractCollectionModal } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setModal(null)), [dispatch]);
   const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
@@ -58,6 +58,7 @@ export default function ProjectContractListRoute() {
   return (
     <ProjectContractListSection
       list={list}
+      loading={loading}
       finalContract={finalContract}
       contractCodeList={contractCodeList}
       estimateCodeList={estimateCodeList}

@@ -43,9 +43,11 @@ import {
 } from 'components/Snackbar/action';
 import { useDispatch } from 'react-redux';
 import useDialog from 'dialog/hook';
+import CircularProgress from "../../../components/CircularProgress";
 
 interface Props {
   list: ProjectContractShortVO[] | undefined;
+  loading: boolean,
   openFinalModal: DefaultFunction;
   openAddModal: DefaultFunction;
   openDetailModal: DefaultFunction<ProjectContractId>;
@@ -59,9 +61,9 @@ interface Props {
 
 export default function ProjectContractListSection(props: Props) {
 
-  const { list, openDetailModal } = props;
+  const { list, loading, openDetailModal } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
-  const { error, confirm } = useDialog();
+  const { error } = useDialog();
   const dispatch = useDispatch();
   const openSnackbar = useCallback((message,
                                     severity: SnackbarSeverityType = SnackbarSeverityType.warning
@@ -122,14 +124,21 @@ export default function ProjectContractListSection(props: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!list || list.length === 0) && (
+            {loading && (
+              <TableRow>
+                <Td colSpan={19} sx={{minHeight: '38px'}}>
+                  <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                </Td>
+              </TableRow>
+            )}
+            {!loading && (!list || list.length === 0) && (
               <TableRow>
                 <Td colSpan={19}>
                   조회 결과가 없습니다.
                 </Td>
               </TableRow>
             )}
-            {list && list.map((item,
+            {!loading && list && list.map((item,
                                index
             ) => (
               <TableRow key={item.id} selected={item.confirmed}>
