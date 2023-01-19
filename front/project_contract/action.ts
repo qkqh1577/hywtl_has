@@ -46,9 +46,10 @@ export enum ProjectContractActionType {
   requestFinalContractUpdate           = 'project/sales/final-contract/update/request',
   getFinalContract                     = 'project/sales/final-contract/get',
   setFinalContract                     = 'project/sales/final-contract/set',
-  setFinalContractCollectionModal      = 'project/sales/final-contract/collection-modal/set',
+  setFinalContractCollectionModal      = 'project/sales/final-contract/collection/modal/set',
   updateFinalContractCollection        = 'project/sales/final-contract/collection/update',
   requestFinalContractCollectionUpdate = 'project/sales/final-contract/collection/update/request',
+  setContractCollectionModal           = 'project/sales/contract/collection/modal/set',
 }
 
 export const projectContractAction = {
@@ -78,4 +79,5 @@ export const projectContractAction = {
   setFinalContractCollectionModal:      createAction(ProjectContractActionType.setFinalContractCollectionModal)<ProjectFinalContractVO | undefined>(),
   updateFinalContractCollection:        createAction(ProjectContractActionType.updateFinalContractCollection)<ProjectFinalContractCollectionParameter>(),
   requestFinalContractCollectionUpdate: createAction(ProjectContractActionType.requestFinalContractCollectionUpdate)<ApiStatus>(),
+  setContractCollectionModal:           createAction(ProjectContractActionType.setContractCollectionModal)<ProjectContractCollectionVO | undefined>(),
 };
