@@ -63,6 +63,7 @@ export default function Form() {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const list = formik.values.stageList ?? [];
+
   return (
     <>
       <Table>

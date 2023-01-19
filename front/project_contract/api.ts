@@ -89,7 +89,7 @@ class ProjectContractApi {
   async updateFinalContractCollection(projectId: ProjectId,
                                       params: ProjectFinalContractParameter
   ): Promise<void> {
-    const { data } = await apiClient.patch(`/project/sales/${projectId}/contract/final/collection`, params);
+    const { data } = await apiClient.put(`/project/sales/${projectId}/contract/final/collection`, params);
     return data;
   }
 }

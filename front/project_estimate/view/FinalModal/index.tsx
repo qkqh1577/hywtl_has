@@ -19,7 +19,7 @@ export default function ProjectEstimateFinalModal(props: Props) {
     <ModalLayout
       width="55vw"
       open={props.open}
-      title="견적서 최종 선택"
+      title="견적서 확정 여부 선택"
       onClose={props.onClose}
       children={
         <ProjectEstimateFinalModalForm list={props.list} />

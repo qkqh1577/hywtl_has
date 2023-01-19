@@ -22,6 +22,7 @@ public class ProjectEstimateShortView {
     private String code;
     private String type;
     private Boolean isSent;
+    private LocalDate sentDate;
     private Boolean confirmed;
     private String recipient;
     private UserShortView createdBy;
@@ -90,6 +91,7 @@ public class ProjectEstimateShortView {
                 target.schedule = schedule;
             }
         }
+        target.sentDate = source.getSentDate();
         return target;
     }
 

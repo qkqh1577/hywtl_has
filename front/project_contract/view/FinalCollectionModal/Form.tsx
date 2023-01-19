@@ -25,22 +25,18 @@ import Button from 'layouts/Button';
 import { ColorPalette } from 'assets/theme';
 import useDialog from 'dialog/hook';
 import { FormikContext } from 'formik';
-import AddStage from 'project_contract/view/CollectionModal/AddStage';
-import { ProjectContractCollectionVO } from 'project_contract/domain';
+import AddStage from 'project_contract/view/FinalCollectionModal/AddStage';
+import { ProjectFinalContractVO } from 'project_contract/domain';
 
 interface Props {
-  totalAmount?: number;
-  collection?: ProjectContractCollectionVO;
+  finalContract?: ProjectFinalContractVO;
 }
+
 export default function ProjectFinalContractCollectionForm(props: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
-  const edit = formik.values.edit;
   let stageList = formik.values.stageList ?? [];
-  if (props.collection) {
-    stageList = props.collection.stageList;
-  }
-  const totalAmount = props.totalAmount ?? 0;
+  const totalAmount = props.finalContract?.totalAmount ?? 0;
   const totalRate = useMemo(() =>
       stageList.map(stage => stage.rate ?? 0)
                .reduce((a,
@@ -66,8 +62,8 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
               <TextBox variant="body11" sx={{ width: '100%' }}>예정일</TextBox>
             </Box>
           </Th>
-          {edit && (<Th>순서</Th>)}
-          {edit && (<Th>삭제</Th>)}
+          <Th>순서</Th>
+          <Th>삭제</Th>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -79,12 +75,8 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
               <Input
                 key={stage.name}
                 variant="outlined"
-                readOnly={!edit}
                 defaultValue={stage.name ?? ''}
                 onBlur={(e) => {
-                  if (!edit) {
-                    return;
-                  }
                   const value = e.target.value || undefined;
                   if (stage.name !== value) {
                     formik.setFieldValue(`stageList.${i}.name`, value);
@@ -97,12 +89,8 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
                 key={stage.rate}
                 type="number"
                 variant="outlined"
-                readOnly={!edit}
                 defaultValue={stage.rate ?? ''}
                 onBlur={(e) => {
-                  if (!edit) {
-                    return;
-                  }
                   const value = +(e.target.value) || undefined;
                   if (stage.rate !== value) {
                     formik.setFieldValue(`stageList.${i}.rate`, value);
@@ -119,12 +107,8 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
               <Input
                 key={stage.note}
                 variant="outlined"
-                readOnly={!edit}
                 defaultValue={stage.note ?? ''}
                 onBlur={(e) => {
-                  if (!edit) {
-                    return;
-                  }
                   const value = +(e.target.value) || undefined;
                   if (stage.note !== value) {
                     formik.setFieldValue(`stageList.${i}.note`, value);
@@ -137,13 +121,9 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
                 openTo="year"
                 inputFormat="YYYY-MM-DD"
                 mask="____-__-__"
-                readOnly={!edit}
                 value={stage.expectedDate ? dayjs(stage.expectedDate)
                 .format('YYYY-MM-DD') : null}
                 onChange={(e) => {
-                  if (!edit) {
-                    return;
-                  }
                   const value = e ? dayjs(e)
                   .format('YYYY-MM-DD') : undefined;
                   const formikValue = stage.expectedDate ? dayjs(stage.expectedDate)
@@ -163,78 +143,74 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
                 )}
               />
             </Td>
-            {edit && (
-              <Td>
-                <Box sx={{
-                  display:        'flex',
-                  width:          '100%',
-                  justifyContent: 'space-between',
-                }}>
-                  <IconButton
-                    shape="square"
-                    tooltip="순서 올리기"
-                    disabled={i === 0}
-                    children={<FontAwesomeIcon icon="angle-up" />}
-                    onClick={() => {
-                      const prevList = stageList.filter((t,
-                                                         k
-                      ) => k !== i);
-                      const result: ContractCollectionStage[] = [];
-                      for (let k = 0; k < prevList.length; k++) {
-                        if (result.length === i - 1) {
-                          result.push(stage);
-                        }
-                        result.push(prevList[k]);
-                      }
-                      formik.setFieldValue('stageList', result);
-                    }}
-                    sx={{
-                      marginRight: '10px',
-                    }}
-                  />
-                  <IconButton
-                    shape="square"
-                    tooltip="순서 내리기"
-                    disabled={i === stageList.length - 1}
-                    children={<FontAwesomeIcon icon="angle-down" />}
-                    onClick={() => {
-                      const prevList = stageList.filter((t,
-                                                         k
-                      ) => k !== i);
-                      const result: ContractCollectionStage[] = [];
-                      for (let k = 0; k < prevList.length; k++) {
-                        result.push(prevList[k]);
-                        if (result.length === i + 1) {
-                          result.push(stage);
-                        }
-                      }
-                      formik.setFieldValue('stageList', result);
-                    }}
-                  />
-                </Box>
-              </Td>
-            )}
-            {edit && (
-              <Td>
-                <Button
-                  shape="basic3"
-                  disabled={stageList.length <= 1}
+            <Td>
+              <Box sx={{
+                display:        'flex',
+                width:          '100%',
+                justifyContent: 'space-between',
+              }}>
+                <IconButton
+                  shape="square"
+                  tooltip="순서 올리기"
+                  disabled={i === 0}
+                  children={<FontAwesomeIcon icon="angle-up" />}
                   onClick={() => {
-                    if (stageList.length === 1) {
-                      error('최소 하나 이상의 세부 항목이 필요합니다.');
-                      return;
+                    const prevList = stageList.filter((t,
+                                                       k
+                    ) => k !== i);
+                    const result: ContractCollectionStage[] = [];
+                    for (let k = 0; k < prevList.length; k++) {
+                      if (result.length === i - 1) {
+                        result.push(stage);
+                      }
+                      result.push(prevList[k]);
                     }
-                    formik.setFieldValue('stageList', stageList.filter((detail,
-                                                                                   k
-                    ) => k !== i));
-                  }}>
-                  삭제
-                </Button>
-              </Td>
-            )}
+                    formik.setFieldValue('stageList', result);
+                  }}
+                  sx={{
+                    marginRight: '10px',
+                  }}
+                />
+                <IconButton
+                  shape="square"
+                  tooltip="순서 내리기"
+                  disabled={i === stageList.length - 1}
+                  children={<FontAwesomeIcon icon="angle-down" />}
+                  onClick={() => {
+                    const prevList = stageList.filter((t,
+                                                       k
+                    ) => k !== i);
+                    const result: ContractCollectionStage[] = [];
+                    for (let k = 0; k < prevList.length; k++) {
+                      result.push(prevList[k]);
+                      if (result.length === i + 1) {
+                        result.push(stage);
+                      }
+                    }
+                    formik.setFieldValue('stageList', result);
+                  }}
+                />
+              </Box>
+            </Td>
+            <Td>
+              <Button
+                shape="basic3"
+                disabled={stageList.length <= 1}
+                onClick={() => {
+                  if (stageList.length === 1) {
+                    error('최소 하나 이상의 세부 항목이 필요합니다.');
+                    return;
+                  }
+                  formik.setFieldValue('stageList', stageList.filter((detail,
+                                                                      k
+                  ) => k !== i));
+                }}>
+                삭제
+              </Button>
+            </Td>
           </TableRow>
         ))}
-        {edit && (<AddStage stageList={stageList} totalAmount={totalAmount} />)}
+        <AddStage stageList={stageList} totalAmount={totalAmount} />
         <TableRow>
           <Td>합계</Td>
           <Td sx={{
@@ -250,17 +226,13 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
             {getRateAmount(totalRate, totalAmount)
             .toLocaleString()}
           </Td>
-          <Td colSpan={edit ? 4 : 2}>
+          <Td colSpan={4}>
             <Input
               key={formik.values.totalAmountNote}
               variant="outlined"
-              readOnly={!edit}
               defaultValue={formik.values.totalAmountNote ?? ''}
               onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = +(e.target.value) || undefined;
+                const value = e.target.value || undefined;
                 if (formik.values.totalAmountNote !== value) {
                   formik.setFieldValue('totalAmountNote', value);
                 }

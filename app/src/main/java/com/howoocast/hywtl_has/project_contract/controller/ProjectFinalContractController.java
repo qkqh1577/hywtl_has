@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class ProjectFinalContractController {
         @PathVariable Long projectId
     ) {
         return ProjectFinalContractShortView.assemble(
-            service.getFinalContract(projectId)
+            service.get(projectId)
         );
     }
 
@@ -33,18 +34,18 @@ public class ProjectFinalContractController {
     public ProjectFinalContractShortView getFinal(
         @PathVariable Long projectId
     ) {
-        return ProjectFinalContractShortView.assemble(service.getFinalContract(projectId));
+        return ProjectFinalContractShortView.assemble(service.get(projectId));
     }
 
     @PatchMapping("/project/sales/{projectId}/contract/final")
-    public void updateFinalContract(
+    public void update(
         @PathVariable Long projectId,
         @Valid @RequestBody ProjectFinalContractParameter parameter
     ) {
-        service.updateFinalContract(projectId, parameter);
+        service.update(projectId, parameter);
     }
 
-    @PatchMapping("/project/sales/{projectId}/contract/final/collection")
+    @PutMapping("/project/sales/{projectId}/contract/final/collection")
     public void updateFinalContractCollection(
         @PathVariable Long projectId,
         @Valid @RequestBody ProjectContractCollectionParameter parameter

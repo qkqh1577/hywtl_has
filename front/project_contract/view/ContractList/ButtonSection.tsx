@@ -18,7 +18,7 @@ export default function (props: ProjectContractListButtonProps) {
         marginRight: '10px',
       }
     }}>
-      <Button shape="small" onClick={props.openFinalModal}>최종 선택</Button>
+      <Button shape="small" onClick={props.openFinalModal}>확정 여부 선택</Button>
       <Button shape="small" onClick={props.openAddModal}>
         + 등록
       </Button>

@@ -195,4 +195,12 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         }
         return instance;
     }
+
+    /**
+     * @migration
+     * @param note
+     */
+    public void updateNote(String note) {
+        super.updateNote(note);
+    }
 }

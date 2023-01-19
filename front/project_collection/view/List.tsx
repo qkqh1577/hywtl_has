@@ -79,7 +79,7 @@ export default function ProjectCollectionList(props: Props) {
               key={props.detail?.user?.id}
               value={props.detail?.user?.id}
               onChange={(value) => {
-                if (props.detail?.user?.id !== value) {
+                if (props.detail?.user?.id !== value && !Array.isArray(value)) {
                   props.onUpdate(value);
                 }
               }}

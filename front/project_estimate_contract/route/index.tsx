@@ -32,11 +32,13 @@ import { RootState } from 'services/reducer';
 import useDialog from 'dialog/hook';
 import { useNavigate } from 'react-router-dom';
 import FinalCollectionModalRoute from 'project_contract/route/finalCollectionModalRoute';
+import ContractModalRoute from 'project_contract/route/contractModalRoute';
 
 function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.project);
+  const { finalContractCollectionModal, contractCollectionModal } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
   const navigate = useNavigate();
 
@@ -78,7 +80,8 @@ function Element() {
         )}
         <ProjectContractListRoute />
         <ProjectContractFinalModalRoute />
-        <FinalCollectionModalRoute />
+        {finalContractCollectionModal && <FinalCollectionModalRoute />}
+        {contractCollectionModal && <ContractModalRoute />}
       </Box>
     </ProjectContainerRoute>
   );

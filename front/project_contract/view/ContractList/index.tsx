@@ -1,6 +1,7 @@
 import SectionLayout from 'layouts/SectionLayout';
 import ButtonSection from 'project_contract/view/ContractList/ButtonSection';
 import {
+  ProjectContractCollectionVO,
   ProjectContractId,
   ProjectContractShortVO,
   projectContractTypeList,
@@ -53,13 +54,14 @@ interface Props {
   estimateCodeList: string[];
   onUpdate: (params: ProjectFinalContractParameter) => void;
   openFinalContractCollectionModal: (projectFinalContract: ProjectFinalContractVO) => void;
+  openContractCollectionModal: (collection: ProjectContractCollectionVO) => void;
 }
 
 export default function ProjectContractListSection(props: Props) {
 
   const { list, openDetailModal } = props;
   const [modifiedAt, setModifiedAt] = useState<Date>();
-  const { error } = useDialog();
+  const { error, confirm } = useDialog();
   const dispatch = useDispatch();
   const openSnackbar = useCallback((message,
                                     severity: SnackbarSeverityType = SnackbarSeverityType.warning
@@ -178,7 +180,22 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>{item.reviewAmount.toLocaleString()}</Td>
                 <Td>{item.totalAmount.toLocaleString()}</Td>
                 <Td>{item.schedule}</Td>
-                <Td>{item.collectionRate}</Td>
+                <Td>
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    justifyContent: 'space-between',
+                    alignItems:     'center',
+                  }}>
+                    <TextLink
+                      onClick={() => {
+                        props.openContractCollectionModal(item.collection);
+                      }}>
+                      {item.collectionRate}
+                    </TextLink>
+                  </Box>
+                  </Td>
                 <Td>{item.orderer}</Td>
                 <Td>{item.note ?? '-'}</Td>
                 <Td>{item.createdBy.name}</Td>
@@ -315,9 +332,9 @@ export default function ProjectContractListSection(props: Props) {
               </Td>
               <Td>
                 <Input
-                  type="number"
+                  isAmount
                   key={props.finalContract?.testAmount}
-                  defaultValue={props.finalContract?.testAmount ?? ''}
+                  defaultValue={props.finalContract?.testAmount ? props.finalContract?.testAmount.toLocaleString() : ''}
                   variant="outlined"
                   onBlur={(e) => {
                     const value = +e.target.value as number || undefined;
@@ -326,6 +343,7 @@ export default function ProjectContractListSection(props: Props) {
                         props.onUpdate({ testAmount: value });
                       }
                       else {
+                        openSnackbar('숫자만 입력 가능합니다.');
                         props.onUpdate({ resetTestAmount: true });
                       }
                     }
@@ -334,9 +352,9 @@ export default function ProjectContractListSection(props: Props) {
               </Td>
               <Td>
                 <Input
-                  type="number"
+                  isAmount
                   key={props.finalContract?.reviewAmount}
-                  defaultValue={props.finalContract?.reviewAmount ?? ''}
+                  defaultValue={props.finalContract?.reviewAmount ? props.finalContract?.reviewAmount.toLocaleString() : ''}
                   variant="outlined"
                   onBlur={(e) => {
                     const value = +e.target.value as number || undefined;
@@ -345,6 +363,7 @@ export default function ProjectContractListSection(props: Props) {
                         props.onUpdate({ reviewAmount: value });
                       }
                       else {
+                        openSnackbar('숫자만 입력 가능합니다.');
                         props.onUpdate({ resetReviewAmount: true });
                       }
                     }
@@ -353,17 +372,28 @@ export default function ProjectContractListSection(props: Props) {
               </Td>
               <Td>
                 <Input
-                  type="number"
+                  isAmount
                   key={props.finalContract?.totalAmount}
-                  defaultValue={props.finalContract?.totalAmount ?? ''}
+                  defaultValue={props.finalContract?.totalAmount ? props.finalContract?.totalAmount.toLocaleString() : ''}
                   variant="outlined"
                   onBlur={(e) => {
                     const value = +e.target.value as number || undefined;
                     if (props.finalContract?.totalAmount !== value) {
                       if (value) {
-                        props.onUpdate({ totalAmount: value });
+                        // TODO: 컨펌 로직 생길 수 있음.
+                        // if (props.finalContract?.totalAmount) {
+                        //   confirm({
+                        //     children:     '최종 계약서 총액을 변경하실 경우 기성 정보가 삭제됩니다. 변경하시겠습니까?',
+                        //     confirmText:  '변경',
+                        //     afterConfirm: () => {
+                        //       props.onUpdate({ totalAmount: value });
+                        //     }
+                        //   });
+                        // }
+                          props.onUpdate({ totalAmount: value });
                       }
                       else {
+                        openSnackbar('숫자만 입력 가능합니다.');
                         props.onUpdate({ resetTotalAmount: true });
                       }
                     }
@@ -397,7 +427,7 @@ export default function ProjectContractListSection(props: Props) {
                     error('최종 계약서 "총액"을 입력해 주시기 바랍니다.');
                   }
                 }}>
-                  최종 기성 단계 등록
+                  최종 기성 정보 등록
                 </Button>
               </Td>
               <Td>
@@ -439,7 +469,7 @@ export default function ProjectContractListSection(props: Props) {
                   value={props.finalContract?.createdBy?.id}
                   onChange={(value) => {
                     if (props.finalContract?.createdBy?.id !== value) {
-                      if (value) {
+                      if (value && !Array.isArray(value)) {
                         props.onUpdate({ writerId: value });
                       }
                       else {

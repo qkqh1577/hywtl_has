@@ -74,7 +74,7 @@ export interface ProjectEstimateShortVO {
   code: string;
   type: ProjectEstimateType;
   isSent: boolean;
-  sentDate: string
+  sentDate: Date
   confirmed: boolean;
   recipient: string;
   note?: string;

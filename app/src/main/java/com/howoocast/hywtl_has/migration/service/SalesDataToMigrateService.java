@@ -106,7 +106,7 @@ public class SalesDataToMigrateService {
                 }
 
                 String finalCode = code.trim();
-                System.out.println("finalCode = " + finalCode);
+//                System.out.println("finalCode = " + finalCode);
 
                 if (
                     (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT.getName()))
@@ -601,12 +601,11 @@ public class SalesDataToMigrateService {
             if (StringUtils.hasText(salesMap.get(SalesHeader.ORDER_COMPANY_NAME_1.getName()))) {
                 ordererCompanyName = salesMap.get(SalesHeader.ORDER_COMPANY_NAME_1.getName());
                 Optional<Business> company = businessRepository.findByName(ordererCompanyName);
-                if(company.isPresent()){
+                if (company.isPresent()) {
                     ordererCompanyAddress = company.get().getAddress();
                     ordererCeoName = company.get().getCeoName();
                 }
             }
-
 
             ProjectContract finalContract = ProjectContract.of(
                 project,
@@ -641,9 +640,7 @@ public class SalesDataToMigrateService {
             em.flush();
 
             // 진행정보 수금 데이터 시작
-            persistProjectCollection(salesMap, project, contractCollection, totalAmount);
-        } else {
-//            System.out.println("salesMap.get(SalesHeader.CODE.getName()) = " + salesMap.get(SalesHeader.CODE.getName()));
+//            persistProjectCollection(salesMap, project, contractCollection, totalAmount);
         }
     }
 
@@ -1021,16 +1018,35 @@ public class SalesDataToMigrateService {
             new CustomFinder<>(businessRepository, Business.class).byId(1L) // 견적업체 : 한양풍동연구소.
         );
 
+        // 견적 차수가 같고 코드가 같은 경우
         if (salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()).equals(
             salesMapList.get(rowNum + 1).get(SalesHeader.ESTIMATE_ORDER.getName()))
             && salesMapList.get(rowNum).get(SalesHeader.CODE.getName()).equals(
             salesMapList.get(rowNum + 1).get(SalesHeader.CODE.getName()))) {
+            //견적구분이 같은 경우
             if (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("C")) {
-                em.persist(projectSystemEstimate);
-                em.flush();
-                return projectSystemEstimate;
+                projectSystemEstimate.updateNote("계약서용 견적서 생성");
+//                System.out.println(
+//                    "견적 구분이 같은데 견적 차수가 같고 코드가 같은 경우." + salesMapList.get(rowNum).get(SalesHeader.CODE.getName()));
+//                em.persist(projectSystemEstimate);
+//                em.flush();
+//                return projectSystemEstimate;
             }
-            return null;
+//            return null;
+        } else if (
+            rowNum > 0
+                &&
+                salesMapList.get(rowNum).get(SalesHeader.ESTIMATE_ORDER.getName()).equals(
+                    salesMapList.get(rowNum - 1).get(SalesHeader.ESTIMATE_ORDER.getName()))
+                && salesMapList.get(rowNum).get(SalesHeader.CODE.getName()).equals(
+                salesMapList.get(rowNum - 1).get(SalesHeader.CODE.getName()))
+        ) {
+            if (salesMapList.get(rowNum).get(SalesHeader.CONFIRM.getName()).equals("C")) {
+                // 견적 구분이 다른 경우
+                projectSystemEstimate.updateNote("계약서용 견적서 생성");
+//                System.out.println(
+//                    "견적 구분이 다른데 견적 차수가 같고 코드가 같은 경우." + salesMapList.get(rowNum).get(SalesHeader.CODE.getName()));
+            }
         }
         em.persist(projectSystemEstimate);
         em.flush();

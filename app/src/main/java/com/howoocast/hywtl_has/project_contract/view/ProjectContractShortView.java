@@ -82,7 +82,7 @@ public class ProjectContractShortView {
             .orElse("");
         if (Objects.nonNull(source.getCollection()) && Objects.nonNull(source.getCollection().getStageList())) {
             List<String> collectionList = source.getCollection().getStageList().stream().map(stage -> String.valueOf(stage.getRate())).collect(Collectors.toList());
-            target.collectionRate = String.join("/", collectionList);
+            target.collectionRate = String.join("%/", collectionList);
         }
 
         if (Objects.nonNull(source.getEstimate().getPlan())) {
