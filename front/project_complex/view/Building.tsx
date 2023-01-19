@@ -101,12 +101,13 @@ export default function ProjectComplexBuildingSection(props: Props) {
                 error('최종 선택된 계약서가 없습니다.');
                 return;
               }
-              if (props.contract.estimate!.type === ProjectEstimateType.SYSTEM) {
-                localStorage.setItem('system', '' + props.contract.estimate!.id);
-              }
-              else {
-                localStorage.setItem('custom', '' + props.contract.estimate!.id);
-              }
+              // TODO: ProjectContractVO 기준으로 로직이 작성되어 있으나, props을 통해 전달된 객체는 ProjectFinalContractVO 임 (임시로 주석처리 함)
+              // if (props.contract.estimate!.type === ProjectEstimateType.SYSTEM) {
+              //   localStorage.setItem('system', '' + props.contract.estimate!.id);
+              // }
+              // else {
+              //   localStorage.setItem('custom', '' + props.contract.estimate!.id);
+              // }
               props.toEstimateAndContractTab();
             }}
           >
