@@ -19,7 +19,7 @@ export default function ProjectContractFinalModal(props: Props) {
 
   return (
     <ModalLayout
-      title="계약서 최종 선택"
+      title="계약서 확정 여부 선택"
       open={props.open}
       onClose={props.onClose}
       children={<ProjectContractFinalModalForm list={props.list} />}

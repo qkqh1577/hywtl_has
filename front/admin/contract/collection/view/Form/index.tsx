@@ -63,7 +63,7 @@ export default function Form() {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
   const list = formik.values.stageList ?? [];
-  console.log("list in admin collection : ", list)
+
   return (
     <>
       <Table>
