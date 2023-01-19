@@ -21,6 +21,7 @@ export default function MenuBar(props: Props) {
       justifyContent: 'space-between',
       padding:        '10px 10px',
       alignContent:   'center',
+      alignItems:     'center'
     }}>
       <img src={logo} width="auto" height="70%" alt="한양풍동실험연구소_로고" />
       <IconButton
