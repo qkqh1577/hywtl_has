@@ -58,6 +58,8 @@ function Element() {
     return () => {
       dispatch(projectEstimateAction.setList(undefined));
       dispatch(projectContractAction.setList(undefined));
+      dispatch(rivalBidAction.setList(undefined));
+      dispatch(rivalEstimateAction.setList(undefined));
     }
   }, [id]);
 
