@@ -35,7 +35,6 @@ interface Props {
 export default function ProjectFinalContractCollectionForm(props: Props) {
   const { error } = useDialog();
   const formik = useContext(FormikContext);
-  const edit = formik.values.edit;
   let stageList = formik.values.stageList ?? [];
   const totalAmount = props.finalContract?.totalAmount ?? 0;
   const totalRate = useMemo(() =>
@@ -233,10 +232,7 @@ export default function ProjectFinalContractCollectionForm(props: Props) {
               variant="outlined"
               defaultValue={formik.values.totalAmountNote ?? ''}
               onBlur={(e) => {
-                if (!edit) {
-                  return;
-                }
-                const value = +(e.target.value) || undefined;
+                const value = e.target.value || undefined;
                 if (formik.values.totalAmountNote !== value) {
                   formik.setFieldValue('totalAmountNote', value);
                 }
