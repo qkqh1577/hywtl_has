@@ -1,6 +1,7 @@
 import SectionLayout from 'layouts/SectionLayout';
 import ButtonSection from 'project_contract/view/ContractList/ButtonSection';
 import {
+  ProjectContractCollectionVO,
   ProjectContractId,
   ProjectContractShortVO,
   projectContractTypeList,
@@ -53,6 +54,7 @@ interface Props {
   estimateCodeList: string[];
   onUpdate: (params: ProjectFinalContractParameter) => void;
   openFinalContractCollectionModal: (projectFinalContract: ProjectFinalContractVO) => void;
+  openContractCollectionModal: (collection: ProjectContractCollectionVO) => void;
 }
 
 export default function ProjectContractListSection(props: Props) {
@@ -178,7 +180,22 @@ export default function ProjectContractListSection(props: Props) {
                 <Td>{item.reviewAmount.toLocaleString()}</Td>
                 <Td>{item.totalAmount.toLocaleString()}</Td>
                 <Td>{item.schedule}</Td>
-                <Td>{item.collectionRate}</Td>
+                <Td>
+                  <Box sx={{
+                    width:          '100%',
+                    display:        'flex',
+                    flexWrap:       'nowrap',
+                    justifyContent: 'space-between',
+                    alignItems:     'center',
+                  }}>
+                    <TextLink
+                      onClick={() => {
+                        props.openContractCollectionModal(item.collection);
+                      }}>
+                      {item.collectionRate}
+                    </TextLink>
+                  </Box>
+                  </Td>
                 <Td>{item.orderer}</Td>
                 <Td>{item.note ?? '-'}</Td>
                 <Td>{item.createdBy.name}</Td>

@@ -25,7 +25,7 @@ import Button from 'layouts/Button';
 import { ColorPalette } from 'assets/theme';
 import useDialog from 'dialog/hook';
 import { FormikContext } from 'formik';
-import AddStage from 'project_contract/view/CollectionModal/AddStage';
+import AddStage from 'project_contract/view/FinalCollectionModal/AddStage';
 import { ProjectFinalContractVO } from 'project_contract/domain';
 
 interface Props {

@@ -641,9 +641,7 @@ public class SalesDataToMigrateService {
             em.flush();
 
             // 진행정보 수금 데이터 시작
-            persistProjectCollection(salesMap, project, contractCollection, totalAmount);
-        } else {
-//            System.out.println("salesMap.get(SalesHeader.CODE.getName()) = " + salesMap.get(SalesHeader.CODE.getName()));
+//            persistProjectCollection(salesMap, project, contractCollection, totalAmount);
         }
     }
 

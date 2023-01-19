@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
-import ProjectFinalContractCollectionForm from 'project_contract/view/CollectionModal/Form';
+import ProjectFinalContractCollectionForm from 'project_contract/view/FinalCollectionModal/Form';
 import { DefaultFunction } from 'type/Function';
 import { ProjectFinalContractVO } from 'project_contract/domain';
 import { Box } from '@mui/material';

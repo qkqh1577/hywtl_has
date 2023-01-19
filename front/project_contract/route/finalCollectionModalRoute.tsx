@@ -10,7 +10,6 @@ import {
   initialProjectFinalContractCollectionParameter,
   ProjectFinalContractCollectionParameter
 } from 'project_contract/parameter';
-import ProjectFinalContractCollectionModal from 'project_contract/view/CollectionModal';
 import {
   useDispatch,
   useSelector
@@ -18,6 +17,7 @@ import {
 import { RootState } from 'services/reducer';
 import { projectContractAction } from 'project_contract/action';
 import { closeStatus } from 'components/DataFieldProps';
+import ProjectFinalContractCollectionModal from 'project_contract/view/FinalCollectionModal';
 
 export default function FinalCollectionModalRoute(props) {
   const dispatch = useDispatch();
