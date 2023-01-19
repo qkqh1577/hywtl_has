@@ -183,7 +183,9 @@ export default function ProjectEstimateListSection(props: Props) {
                     <DateFormat date={item.createdAt} format="YYYY-MM-DD HH:mm" />
                   </Td>
                   <Td>{item.createdBy.name}</Td>
-                  <Td>{item.sentDate}</Td>
+                  <Td>
+                    <DateFormat date={item.sentDate} format="YYYY-MM-DD" />
+                  </Td>
                   <Td>{item.isSent ? 'Y' : 'N'}</Td>
                   <Td>{item.note ?? ''}</Td>
                   <Td>{item.hasExperimentInfo ? 'Y' : 'N'}</Td>
