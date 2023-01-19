@@ -247,7 +247,7 @@ public class ProjectFinalContract extends CustomEntity {
         return eventList;
     }
 
-    public void updateCollection(ProjectContractCollection collection) {
+    public void updateCollection(@Nullable ProjectContractCollection collection) {
         this.collection = collection;
     }
 }

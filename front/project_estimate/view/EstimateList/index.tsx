@@ -266,9 +266,9 @@ export default function ProjectEstimateListSection(props: Props) {
                 </Td>
                 <Td>
                   <Input
-                    type="number"
+                    isAmount
                     key={props.finalEstimate?.testAmount}
-                    defaultValue={props.finalEstimate?.testAmount ?? ''}
+                    defaultValue={props.finalEstimate?.testAmount ? props.finalEstimate?.testAmount.toLocaleString() : ''}
                     variant="outlined"
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
@@ -277,6 +277,7 @@ export default function ProjectEstimateListSection(props: Props) {
                           props.onUpdate({ testAmount: value });
                         }
                         else {
+                          openSnackbar('숫자만 입력 가능합니다.');
                           props.onUpdate({ resetTestAmount: true });
                         }
                       }
@@ -285,9 +286,9 @@ export default function ProjectEstimateListSection(props: Props) {
                 </Td>
                 <Td>
                   <Input
-                    type="number"
+                    isAmount
                     key={props.finalEstimate?.reviewAmount}
-                    defaultValue={props.finalEstimate?.reviewAmount ?? ''}
+                    defaultValue={props.finalEstimate?.reviewAmount ? props.finalEstimate?.reviewAmount.toLocaleString() : ''}
                     variant="outlined"
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
@@ -296,6 +297,7 @@ export default function ProjectEstimateListSection(props: Props) {
                           props.onUpdate({ reviewAmount: value });
                         }
                         else {
+                          openSnackbar('숫자만 입력 가능합니다.');
                           props.onUpdate({ resetReviewAmount: true });
                         }
                       }
@@ -304,9 +306,9 @@ export default function ProjectEstimateListSection(props: Props) {
                 </Td>
                 <Td>
                   <Input
-                    type="number"
+                    isAmount
                     key={props.finalEstimate?.totalAmount}
-                    defaultValue={props.finalEstimate?.totalAmount ?? ''}
+                    defaultValue={props.finalEstimate?.totalAmount ? props.finalEstimate?.totalAmount.toLocaleString() : ''}
                     variant="outlined"
                     onBlur={(e) => {
                       const value = +e.target.value as number || undefined;
@@ -315,6 +317,7 @@ export default function ProjectEstimateListSection(props: Props) {
                           props.onUpdate({ totalAmount: value });
                         }
                         else {
+                          openSnackbar('숫자만 입력 가능합니다.');
                           props.onUpdate({ resetTotalAmount: true });
                         }
                       }

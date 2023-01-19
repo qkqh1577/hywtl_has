@@ -26,7 +26,7 @@ public class ProjectFinalContractController {
         @PathVariable Long projectId
     ) {
         return ProjectFinalContractShortView.assemble(
-            service.getFinalContract(projectId)
+            service.get(projectId)
         );
     }
 
@@ -34,15 +34,15 @@ public class ProjectFinalContractController {
     public ProjectFinalContractShortView getFinal(
         @PathVariable Long projectId
     ) {
-        return ProjectFinalContractShortView.assemble(service.getFinalContract(projectId));
+        return ProjectFinalContractShortView.assemble(service.get(projectId));
     }
 
     @PatchMapping("/project/sales/{projectId}/contract/final")
-    public void updateFinalContract(
+    public void update(
         @PathVariable Long projectId,
         @Valid @RequestBody ProjectFinalContractParameter parameter
     ) {
-        service.updateFinalContract(projectId, parameter);
+        service.update(projectId, parameter);
     }
 
     @PutMapping("/project/sales/{projectId}/contract/final/collection")

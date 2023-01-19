@@ -42,13 +42,18 @@ public class ProjectFinalContractService {
     private final ProjectCollectionStageRepository stageRepository;
 
     @Transactional
-    public ProjectFinalContract getFinalContract(Long projectId) {
+    public ProjectFinalContract get(Long projectId) {
         return repository.findByProject_Id(projectId)
             .orElse(ProjectFinalContract.of(new CustomFinder<>(projectRepository, Project.class).byId(projectId)));
     }
 
     @Transactional
-    public void updateFinalContract(Long projectId, ProjectFinalContractParameter parameter) {
+    public void update(Long projectId, ProjectFinalContractParameter parameter) {
+        updateFinalContract(projectId, parameter);
+        deleteProjectCollectionIfPresentByUpdate(projectId, parameter);
+    }
+
+    private void updateFinalContract(Long projectId, ProjectFinalContractParameter parameter) {
         Project project = new CustomFinder<>(projectRepository, Project.class).byId(projectId);
         ProjectFinalContract instance = repository.findByProject_Id(projectId)
             .orElseGet(() -> ProjectFinalContract.of(project));
@@ -84,24 +89,38 @@ public class ProjectFinalContractService {
             parameter.getResetWriterId(),
             parameter.getIsSent(),
             parameter.getResetIsSent()
-            );
+        );
         if (Objects.isNull(instance.getId())) {
             repository.save(instance);
         }
         eventList.stream().map(event -> ProjectLogEvent.of(project, event)).forEach(eventPublisher::publishEvent);
     }
 
+    private void deleteProjectCollectionIfPresentByUpdate(Long projectId, ProjectFinalContractParameter parameter) {
+        if (Objects.nonNull(parameter.getTotalAmount()) || Objects.nonNull(parameter.getResetTotalAmount())) {
+            repository.findByProject_Id(projectId).ifPresent(fc -> {
+                if (Objects.nonNull(fc.getCollection())) {
+                    fc.getCollection().delete();
+                    fc.updateCollection(null);
+                    projectCollectionRepository.findByProject_Id(projectId).ifPresent(c -> {
+                        stageRepository.findByProjectCollection_Id(c.getId()).forEach(ProjectCollectionStage::delete);
+                        c.delete();
+                    });
+                }
+            });
+        }
+    }
+
     @Transactional
     public void updateFinalContractCollection(Long projectId, ProjectContractCollectionParameter parameter) {
-        ProjectFinalContract finalContract = getFinalContract(projectId);
         repository.findByProject_Id(projectId).ifPresentOrElse(fc -> {
             if (Objects.nonNull(fc.getCollection())) {
                 // 이전 값이 있으면 삭제.
                 fc.getCollection().delete();
             }
             fc.updateCollection(toCollection(parameter));
-            setProjectCollectionInformationByFinalContract(projectId, finalContract);
-        }, ()-> {
+            setProjectCollectionInformationByFinalContract(projectId, get(projectId));
+        }, () -> {
             throw new NotFoundException(ProjectContractCollection.KEY, "해당하는 최종 계약서가 없습니다.");
         });
     }
@@ -142,6 +161,7 @@ public class ProjectFinalContractService {
         projectCollection.setStageList(collectionStageList);
         setInitVersion(projectCollection);
     }
+
     @NotNull
     private List<ProjectCollectionStage> getCollectionStageList(Long projectId, ProjectFinalContract instance,
         ProjectCollection finalProjectCollection) {

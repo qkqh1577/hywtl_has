@@ -24,7 +24,6 @@ export default function ProjectCollectionListRoute() {
   const openDetailModal = useCallback((id: ProjectCollectionStageId) => dispatch(projectCollectionAction.stageDetailModal(id)), [dispatch]);
   const changeSeq = useCallback((idList: ProjectCollectionStageId[]) => dispatch(projectCollectionAction.changeStageSeq(idList)), [dispatch]);
   const totalAmount = useMemo(() => {
-    console.log(contract);
     if (!contract || !contract.id || !contract.totalAmount) {
       return undefined;
     }
