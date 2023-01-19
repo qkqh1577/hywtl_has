@@ -21,8 +21,6 @@ interface Props {
 export default function CollectionTable(props: Props) {
   const stageList = props.collection?.stageList;
   const totalAmount = props.collection?.totalAmount;
-  console.log(stageList)
-  console.log(totalAmount);
   return (
     <Box sx={{
       display:      'flex',
