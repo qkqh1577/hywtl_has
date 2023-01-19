@@ -202,13 +202,14 @@ public class ProjectService {
         }
 
         if (Objects.nonNull(parameter.getEstimateStatus())) {
-            if (instance.getBasic().getBidType() != ProjectBasicBidType.DEFAULT) {
-                // 견적 구분이 일반일 때만 업데이트 가능
-                throw new IllegalRequestException(
-                    Project.KEY + ".estimate_status.illegal_request",
-                    "견적 구분이 일반일 때만 견적 상태를 변경할 수 있습니다."
-                );
-            }
+            //TODO: [기획 변경]입찰 상태도 견적구분 변경 가능.
+//            if (instance.getBasic().getBidType() != ProjectBasicBidType.DEFAULT) {
+//                // 견적 구분이 일반일 때만 업데이트 가능
+//                throw new IllegalRequestException(
+//                    Project.KEY + ".estimate_status.illegal_request",
+//                    "견적 구분이 일반일 때만 견적 상태를 변경할 수 있습니다."
+//                );
+//            }
             eventPublisher.publishEvent(ProjectLogEvent.of(
                 instance,
                 "프로젝트 견적 상태 변경",
