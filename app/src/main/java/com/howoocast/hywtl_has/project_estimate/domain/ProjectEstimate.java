@@ -417,4 +417,12 @@ public abstract class ProjectEstimate extends CustomEntity {
         this.confirmed = false;
         this.business = business;
     }
+
+    /**
+     * @migration
+     * @param note
+     */
+    protected void updateNote(String note) {
+        this.note = note;
+    }
 }
