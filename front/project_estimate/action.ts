@@ -18,6 +18,7 @@ import {
 import { ApiStatus } from 'components/DataFieldProps';
 
 export enum ProjectEstimateActionType {
+  setLoading                 = 'project/sales/custom-estimate/loading',
   addCustom                  = 'project/sales/custom-estimate/add',
   addSystem                  = 'project/sales/system-estimate/add',
   changeCustom               = 'project/sales/custom-estimate/change',
@@ -50,6 +51,7 @@ export enum ProjectEstimateActionType {
 }
 
 export const projectEstimateAction = {
+  setLoading:                 createAction(ProjectEstimateActionType.setLoading)<boolean>(),
   addCustom:                  createAction(ProjectEstimateActionType.addCustom)<ProjectCustomEstimateAddParameter>(),
   addSystem:                  createAction(ProjectEstimateActionType.addSystem)<ProjectSystemEstimateParameter>(),
   changeCustom:               createAction(ProjectEstimateActionType.changeCustom)<ProjectCustomEstimateChangeParameter>(),

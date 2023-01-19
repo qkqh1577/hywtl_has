@@ -43,6 +43,7 @@ import {
   SnackbarSeverityType
 } from 'components/Snackbar/action';
 import { useDispatch } from 'react-redux';
+import CircularProgress from "../../../components/CircularProgress";
 
 interface Props
   extends ProjectEstimateListButtonProps {
@@ -52,12 +53,14 @@ interface Props
   onUpdate: (params: ProjectFinalEstimateParameter) => void;
   finalEstimate?: ProjectFinalEstimateVO;
   codeList?: string[];
+  loading: boolean;
 }
 
 export default function ProjectEstimateListSection(props: Props) {
 
   const {
           list,
+          loading,
           openCustomDetailModal,
           openSystemDetailModal,
         } = props;
@@ -101,34 +104,41 @@ export default function ProjectEstimateListSection(props: Props) {
         <Table>
           <TableHead>
             <TableRow>
-              <Th>No.</Th>
-              <Th>확정 여부</Th>
-              <Th>견적 일자</Th>
-              <Th>견적 번호</Th>
-              <Th>실험 정보</Th>
-              <Th>풍동 금액</Th>
-              <Th>구검</Th>
-              <Th>총액</Th>
-              <Th>일정</Th>
-              <Th>견적 구분</Th>
-              <Th>견적 업체</Th>
-              <Th>등록 일시</Th>
-              <Th>등록자</Th>
-              <Th>송부일</Th>
-              <Th>송부 여부</Th>
-              <Th>비고</Th>
-              <Th>실험정보 입력 여부</Th>
+              <Th width="5%">No.</Th>
+              <Th width="5%">확정 여부</Th>
+              <Th width="5%">견적 일자</Th>
+              <Th width="8%">견적 번호</Th>
+              <Th width="5%">실험 정보</Th>
+              <Th width="5%">풍동 금액</Th>
+              <Th width="5%">구검</Th>
+              <Th width="5%">총액</Th>
+              <Th width="5%">일정</Th>
+              <Th width="5%">견적 구분</Th>
+              <Th width="12%">견적 업체</Th>
+              <Th width="5%">등록 일시</Th>
+              <Th width="5%">등록자</Th>
+              <Th width="5%">송부일</Th>
+              <Th width="5%">송부 여부</Th>
+              <Th width="10%">비고</Th>
+              <Th width="5%">실험정보 입력 여부</Th>
             </TableRow>
           </TableHead>
           <TableBody>
-            {(!list || list.length === 0) && (
+            {loading && (
               <TableRow>
-                <Td colSpan={15}>
+                <Td colSpan={17} sx={{height: '40px'}}>
+                  <CircularProgress size={30} sx={{width: '100%', justifyContent: 'center', alignItems: 'center'}}/>
+                </Td>
+              </TableRow>
+            )}
+            {!loading && (!list || list.length === 0) && (
+              <TableRow>
+                <Td colSpan={17}>
                   조회 결과가 없습니다.
                 </Td>
               </TableRow>
             )}
-            {list && list.map((item,
+            {!loading && list && list.map((item,
                                index
             ) => (
               <TableRow key={item.id} selected={item.confirmed}>

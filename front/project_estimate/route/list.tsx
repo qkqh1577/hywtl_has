@@ -24,7 +24,7 @@ export default function ProjectEstimateListRoute() {
 
   const dispatch = useDispatch();
   const id = useId();
-  const { list, finalEstimate, requestUpdateFinalEstimate, projectId } = useSelector((root: RootState) => root.projectEstimate);
+  const { list, loading, finalEstimate, requestUpdateFinalEstimate } = useSelector((root: RootState) => root.projectEstimate);
   const openCustomAddModal = useCallback((type: ProjectEstimateType) => dispatch(projectEstimateAction.setCustomAddModal(type)), [dispatch]);
   const openCustomDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
   const openSystemAddModal = useCallback(() => dispatch(projectEstimateAction.setSystemModal(null)), [dispatch]);
@@ -71,6 +71,7 @@ export default function ProjectEstimateListRoute() {
   return (
     <ProjectEstimateListSection
       list={list}
+      loading={loading}
       codeList={codeList}
       onUpdate={onUpdate}
       finalEstimate={finalEstimate}
