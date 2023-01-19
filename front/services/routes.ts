@@ -33,6 +33,7 @@ import loginForgotRoute from 'login/route/passwordForgotten';
 import passwordToChangeRoute from 'login/route/passwordToChange';
 import passwordInvalidRoute from 'login/route/passwordInvalid';
 import departmentTreeRoute from "../department_tree/route/page";
+import defaultPageRoute from "../app/route/defaultPage";
 
 export interface AppRoute
   extends PathRouteProps {
@@ -69,7 +70,8 @@ const Routes = () => {
     salesDbPageRoute,
     ganttPageRoute,
     passwordToChangeRoute,
-    passwordInvalidRoute
+    passwordInvalidRoute,
+    defaultPageRoute
   ];
 
   return useRoutes(routes as RouteObject[]);
