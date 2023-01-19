@@ -14,9 +14,12 @@ import DataFieldWithLabel from 'layouts/DataFieldLabel';
 import BusinessSelector from 'components/BusinessSelector';
 import Input from 'layouts/Input';
 import { toAmount } from 'util/NumberUtil';
+import CircularProgress from "../../components/CircularProgress";
+import Fade from 'components/Fade';
 
 interface Props {
   list: RivalEstimateVO[] | undefined;
+  loading: boolean,
   onAdd: DefaultFunction;
   onUpdate: DefaultFunction<RivalEstimateParameter>;
   onDelete: DefaultFunction<RivalEstimateId>;
@@ -42,6 +45,7 @@ export default function RivalEstimateListSection(props: Props) {
       }>
       <Box sx={{
         width:     '100%',
+        minHeight: '160px',
         display:   'flex',
         flexWrap:  'wrap',
         '& > div': {
@@ -49,27 +53,40 @@ export default function RivalEstimateListSection(props: Props) {
           display:        'flex',
           flexWrap:       'nowrap',
           justifyContent: 'space-between',
-          alignItems:     'center',
+          alignItem: 'start',
           '& > div':      {
             marginRight: '10px',
           }
         }
       }}>
-        {(!props.list || props.list.length === 0) && (
+        { props.loading && (
           <Box sx={{
             width:          '100%',
             display:        'flex',
             flexWrap:       'unwrap',
             justifyContent: 'center',
           }}>
-            <TextBox variant="body2">
-              등록된 정보가 없습니다.
-            </TextBox>
+            <CircularProgress size={30} sx={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}/>
           </Box>
         )}
-        {props.list && props.list.map(item => (
-          <Box key={item.id}>
-            <Box sx={{ width: '220px' }}>
+        { !props.loading && (!props.list || props.list.length === 0) && (
+          <Box sx={{
+            width:          '100%',
+            height:         '100%',
+            display:        'flex',
+            flexWrap:       'unwrap',
+            justifyContent: 'center',
+          }}>
+            <Fade in={true}>
+              <TextBox variant="body2" sx={{display:'flex', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                등록된 정보가 없습니다.
+              </TextBox>
+            </Fade>
+          </Box>
+        )}
+        { !props.loading && props.list && props.list.map(item => (
+          <Box key={item.id} sx={{width: '100%'}}>
+            <Box sx={{ width: '15%' }}>
               <DataFieldWithLabel label="타 업체">
                 <BusinessSelector
                   value={item.business?.id ?? ''}
@@ -84,7 +101,7 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <Box sx={{ width: '20%' }}>
               <DataFieldWithLabel label="풍동 금액">
                 <Input
                   isAmount
@@ -99,7 +116,7 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <Box sx={{ width: '20%' }}>
               <DataFieldWithLabel label="구검">
                 <Input
                   isAmount
@@ -114,7 +131,7 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <Box sx={{ width: '20%' }}>
               <DataFieldWithLabel labelWidth={25} label="총액">
                 <Input
                   isAmount
@@ -129,7 +146,7 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-            <Box sx={{ width: 'calc((100% - 325px) / 4)' }}>
+            <Box sx={{ width: '20%' }}>
               <DataFieldWithLabel labelWidth={25} label="일정">
                 <Input
                   key={item.expectedDuration}
@@ -143,7 +160,7 @@ export default function RivalEstimateListSection(props: Props) {
                 />
               </DataFieldWithLabel>
             </Box>
-            <Box sx={{ width: '55px' }}>
+            <Box sx={{ width: '5%' }}>
               <Button
                 shape="basic3"
                 onClick={() => {

@@ -9,6 +9,7 @@ import { ApiStatus } from 'components/DataFieldProps';
 
 export enum RivalEstimateActionType {
   setProjectId  = 'project/sales/rival-estimate/project-id/set',
+  setLoading    = 'project/sales/rival-estimate/list/loading',
   setList       = 'project/sales/rival-estimate/list/set',
   push          = 'project/sales/rival-estimate/push',
   requestPush   = 'project/sales/rival-estimate/push/request',
@@ -21,6 +22,7 @@ export enum RivalEstimateActionType {
 export const rivalEstimateAction = {
   setProjectId:  createAction(RivalEstimateActionType.setProjectId)<ProjectId | undefined>(),
   setList:       createAction(RivalEstimateActionType.setList)<RivalEstimateVO[] | undefined>(),
+  setLoading:    createAction(RivalEstimateActionType.setLoading)<boolean>(),
   push:          createAction(RivalEstimateActionType.push)(),
   requestPush:   createAction(RivalEstimateActionType.requestPush)<ApiStatus>(),
   update:        createAction(RivalEstimateActionType.update)<RivalEstimateParameter>(),

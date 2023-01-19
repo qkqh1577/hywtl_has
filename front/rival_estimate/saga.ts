@@ -1,5 +1,6 @@
 import {
   call,
+  delay,
   fork,
   put,
   select,
@@ -15,9 +16,15 @@ import { dialogAction } from 'dialog/action';
 function* watchProjectId() {
   while (true) {
     const { payload: id } = yield take(rivalEstimateAction.setProjectId);
+    yield put(rivalEstimateAction.setLoading(true));
     if (id) {
-      const list: RivalEstimateVO[] = yield call(rivalEstimateApi.getList, id);
-      yield put(rivalEstimateAction.setList(list));
+      try {
+        const list: RivalEstimateVO[] = yield call(rivalEstimateApi.getList, id);
+        yield put(rivalEstimateAction.setList(list));
+      } finally {
+        yield delay(300);
+        yield put(rivalEstimateAction.setLoading(false));
+      }
     }
     else {
       yield put(rivalEstimateAction.setList(undefined));
