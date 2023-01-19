@@ -1,5 +1,6 @@
 import {
   call,
+  delay,
   fork,
   put,
   select,
@@ -28,9 +29,15 @@ import { progressAction } from 'components/Progress/action';
 function* watchProjectId() {
   while (true) {
     const { payload: projectId } = yield  take(projectContractAction.setProjectId);
+    yield put(projectContractAction.setLoading(true));
     if (projectId) {
-      const list: ProjectContractShortVO[] = yield call(projectContractApi.getList, projectId);
-      yield put(projectContractAction.setList(list));
+      try {
+        const list: ProjectContractShortVO[] = yield call(projectContractApi.getList, projectId);
+        yield put(projectContractAction.setList(list));
+      } finally {
+        yield delay(300);
+        yield put(projectContractAction.setLoading(false));
+      }
     }
     else {
       yield put(projectContractAction.setList(undefined));
@@ -234,3 +241,4 @@ export default function* projectContractSaga() {
   yield fork(watchUpdateFinal);
   yield fork(watchUpdateFinalContractCollection);
 }
+

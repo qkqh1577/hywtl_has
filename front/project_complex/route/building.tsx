@@ -16,7 +16,11 @@ import { closeStatus } from 'components/DataFieldProps';
 import ProjectCustomEstimateDetailModalRoute from 'project_estimate/route/customDetailModal';
 import ProjectSystemEstimateModalRoute from 'project_estimate/route/systemModal';
 
-export default function ProjectComplexBuildingRoute() {
+interface ProjectComplexBuildingRouteProps{
+  loading: boolean
+}
+
+export default function ProjectComplexBuildingRoute(props: ProjectComplexBuildingRouteProps) {
 
   const dispatch = useDispatch();
   const {
@@ -25,7 +29,8 @@ export default function ProjectComplexBuildingRoute() {
           siteList,
           requestPushBuilding,
           requestUpdateBuilding,
-          requestDeleteBuilding
+          requestDeleteBuilding,
+          buildingListLoading
         } = useSelector((root: RootState) => root.projectComplex);
   const { contract } = useSelector((root: RootState) => root.projectBasic);
   const add = useCallback(() => dispatch(projectComplexAction.pushBuilding()), [dispatch]);
@@ -65,6 +70,7 @@ export default function ProjectComplexBuildingRoute() {
     <>
       <ProjectComplexBuildingSection
         list={buildingList}
+        loading={buildingListLoading}
         siteList={siteList}
         onAdd={add}
         onUpdate={update}

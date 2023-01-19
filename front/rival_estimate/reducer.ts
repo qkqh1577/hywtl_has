@@ -7,18 +7,26 @@ import { ApiStatus } from 'components/DataFieldProps';
 export interface RivalEstimateState {
   projectId?: ProjectId;
   list?: RivalEstimateVO[];
+  loading: boolean,
   requestPush: ApiStatus;
   requestUpdate: ApiStatus;
   requestDelete: ApiStatus;
 }
 
 const initialRivalEstimateState: RivalEstimateState = {
+  loading:       false,
   requestPush:   'idle',
   requestUpdate: 'idle',
   requestDelete: 'idle',
 };
 
 export const rivalEstimateReducer = createReducer(initialRivalEstimateState, {
+  [RivalEstimateActionType.setLoading]:  (state,
+                                            action
+  ) => ({
+    ...state,
+    loading: action.payload
+  }),
   [RivalEstimateActionType.setProjectId]:  (state,
                                             action
                                            ) => ({

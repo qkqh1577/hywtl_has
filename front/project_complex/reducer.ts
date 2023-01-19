@@ -12,7 +12,9 @@ import { ApiStatus } from 'components/DataFieldProps';
 export interface ProjectComplexState {
   id?: ProjectId;
   siteList?: ProjectComplexSiteVO[];
+  siteListLoading: boolean,
   buildingList?: ProjectComplexBuildingVO[];
+  buildingListLoading: boolean,
   buildingDetail?: ProjectComplexBuildingVO;
   buildingFileModal?: ProjectComplexBuildingId | undefined;
   testDetail?: ProjectComplexTestVO;
@@ -30,6 +32,9 @@ const initial: ProjectComplexState = {
   requestPushSite:   'idle',
   requestUpdateSite: 'idle',
   requestDeleteSite: 'idle',
+
+  buildingListLoading: false,
+  siteListLoading: false,
 
   requestPushBuilding:   'idle',
   requestUpdateBuilding: 'idle',
@@ -49,11 +54,23 @@ export const projectComplexReducer = createReducer(initial, {
     ...state,
     siteList: action.payload,
   }),
+  [ProjectComplexActionType.setSiteListLoading]:    (state,
+                                                     action
+  ) => ({
+    ...state,
+    siteListLoading: action.payload,
+  }),
   [ProjectComplexActionType.setBuildingList]:       (state,
                                                      action
                                                     ) => ({
     ...state,
     buildingList: action.payload,
+  }),
+  [ProjectComplexActionType.setBuildingListLoading]:(state,
+                                                     action
+  ) => ({
+    ...state,
+    buildingListLoading: action.payload,
   }),
   [ProjectComplexActionType.setBuilding]:           (state,
                                                      action

@@ -55,6 +55,12 @@ function Element() {
     dispatch(projectBidAction.setProjectId(projectId));
     dispatch(rivalBidAction.setProjectId(projectId));
     dispatch(projectContractAction.setProjectId(projectId));
+    return () => {
+      dispatch(projectEstimateAction.setList(undefined));
+      dispatch(projectContractAction.setList(undefined));
+      dispatch(rivalBidAction.setList(undefined));
+      dispatch(rivalEstimateAction.setList(undefined));
+    }
   }, [id]);
 
   return (

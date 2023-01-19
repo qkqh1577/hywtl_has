@@ -1,5 +1,6 @@
 import {
   call,
+  delay,
   fork,
   put,
   select,
@@ -21,9 +22,15 @@ import { progressAction } from 'components/Progress/action';
 function* watchProjectId() {
   while (true) {
     const { payload: projectId } = yield take(projectEstimateAction.setProjectId);
+    yield put(projectEstimateAction.setLoading(true));
     if (projectId) {
-      const list: ProjectEstimateShortVO[] = yield call(projectEstimateApi.getList, projectId);
-      yield put(projectEstimateAction.setList(list));
+      try {
+        const list: ProjectEstimateShortVO[] = yield call(projectEstimateApi.getList, projectId);
+        yield put(projectEstimateAction.setList(list));
+      } finally {
+        yield delay(300);
+        yield put(projectEstimateAction.setLoading(false));
+      }
     }
     else {
       yield put(projectEstimateAction.setList(undefined));

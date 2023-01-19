@@ -12,6 +12,7 @@ import { ProjectEstimateActionType } from 'project_estimate/action';
 import { ApiStatus } from 'components/DataFieldProps';
 
 export interface ProjectEstimateState {
+  loading: boolean,
   customAddModal?: ProjectEstimateType;
   customDetail?: ProjectCustomEstimateVO;
   customDetailModal?: ProjectEstimateId;
@@ -35,6 +36,7 @@ export interface ProjectEstimateState {
 }
 
 const initial: ProjectEstimateState = {
+  loading:                    false,
   finalModal:                 false,
   requestAddCustom:           'idle',
   requestAddSystem:           'idle',
@@ -48,6 +50,12 @@ const initial: ProjectEstimateState = {
 };
 
 export const projectEstimateReducer = createReducer(initial, {
+  [ProjectEstimateActionType.setLoading]:      (state,
+                                                  action
+  ) => ({
+    ...state,
+    loading: action.payload,
+  }),
   [ProjectEstimateActionType.setProjectId]:      (state,
                                                   action
                                                  ) => ({

@@ -17,7 +17,7 @@ import { closeStatus } from 'components/DataFieldProps';
 export default function RivalEstimateListRoute() {
 
   const dispatch = useDispatch();
-  const { projectId, list, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalEstimate);
+  const { projectId, list, loading, requestPush, requestUpdate, requestDelete } = useSelector((root: RootState) => root.rivalEstimate);
   const push = useCallback(() => dispatch(rivalEstimateAction.push()), [dispatch]);
   const onUpdate = useCallback((params: RivalEstimateParameter) => dispatch(rivalEstimateAction.update(params)), [dispatch]);
   const onDelete = useCallback((id: RivalEstimateId) => dispatch(rivalEstimateAction.deleteOne(id)), [dispatch]);
@@ -50,6 +50,7 @@ export default function RivalEstimateListRoute() {
   return (
     <RivalEstimateListSection
       list={list}
+      loading={loading}
       onAdd={push}
       onUpdate={onUpdate}
       onDelete={onDelete}

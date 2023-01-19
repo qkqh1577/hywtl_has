@@ -14,7 +14,7 @@ import { DefaultFunction } from 'type/Function';
 import Button from 'layouts/Button';
 import dayjs from 'dayjs';
 import {
-  Box,
+  Box, Fade,
   MenuItem,
   TableBody,
   TableHead,
@@ -31,9 +31,12 @@ import Select from 'layouts/Select';
 import Checkbox from 'layouts/Checkbox';
 import Input from 'layouts/Input';
 import UserSelector from 'components/UserSelector';
+import CircularProgress from "../../components/CircularProgress";
+import {UserId} from "../../user/domain";
 
 interface Props {
   list: ProjectComplexSiteVO[] | undefined;
+  loading: boolean,
   onAdd: DefaultFunction;
   onUpdate: (params: ProjectComplexSiteParameter) => void;
   onDelete: (id: ProjectComplexSiteId) => void;
@@ -42,7 +45,7 @@ interface Props {
 
 export default function ProjectComplexSiteSection(props: Props) {
   const {
-          list,
+          list, loading
         } = props;
 
   const [modifiedAt, setModifiedAt] = useState<Date>();
@@ -81,18 +84,29 @@ export default function ProjectComplexSiteSection(props: Props) {
           <Table>
             <TableHead>
               <TableRow>
-                <Th>대지 모형</Th>
-                <Th>실험 종류 E 여부</Th>
-                <Th>견적 대지 모형 제작 난이도</Th>
-                <Th>대지 모형 제작 난이도</Th>
-                <Th sx={{ width: '150px' }}>담당자</Th>
-                <Th>삭제</Th>
+                <Th width="20%">대지 모형</Th>
+                <Th width="20%">실험 종류 E 여부</Th>
+                <Th width="20%">견적 대지 모형 제작 난이도</Th>
+                <Th width="15%">대지 모형 제작 난이도</Th>
+                <Th width="15%">담당자</Th>
+                <Th width="10%">삭제</Th>
               </TableRow>
             </TableHead>
             <TableBody>
-              {(!list || list.length === 0) && (
+              {loading && !list && (
                 <TableRow>
-                  <Td colSpan={6}>조회 결과가 없습니다.</Td>
+                  <Td colSpan={6}>
+                    <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+                  </Td>
+                </TableRow>
+              )}
+              {list?.length === 0 && (
+                <TableRow>
+                  <Td colSpan={6}>
+                    <Fade in>
+                      <span>조회 결과가 없습니다.</span>
+                    </Fade>
+                  </Td>
                 </TableRow>
               )}
               {list && list.map((item) => (
@@ -162,7 +176,7 @@ export default function ProjectComplexSiteSection(props: Props) {
                       value={item.manager?.id}
                       onChange={(value) => {
                         if (item.manager?.id !== value) {
-                          props.onUpdate({ id: item.id, managerId: value });
+                          props.onUpdate({ id: item.id, managerId: value as UserId});
                         }
                       }}
                     />

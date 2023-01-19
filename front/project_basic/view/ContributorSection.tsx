@@ -32,6 +32,7 @@ import Button from 'layouts/Button';
 import {DefaultFunction} from 'type/Function';
 import BusinessSelector from 'components/BusinessSelector';
 import CircularProgress from "../../components/CircularProgress";
+import {UserId} from "../../user/domain";
 
 interface Props {
   internalList: ProjectBasicInternalContributorVO[] | undefined;
@@ -138,7 +139,7 @@ export default function ProjectBasicContributorSection(props: Props) {
                       value={item.user?.id}
                       onChange={(value) => {
                         if (item.user?.id !== value) {
-                          props.onUpdateInternal({id: item.id, userId: value});
+                          props.onUpdateInternal({id: item.id, userId: value as UserId});
                         }
                       }}
                     />

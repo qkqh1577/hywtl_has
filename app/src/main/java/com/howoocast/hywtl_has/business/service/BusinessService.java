@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -34,6 +36,7 @@ public class BusinessService {
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "businessServiceCache")
     public Page<Business> findAll(@Nullable Predicate predicate, Pageable pageable) {
         return Optional.ofNullable(predicate)
             .map(p -> repository.findAll(p, pageable))
@@ -41,6 +44,7 @@ public class BusinessService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "businessServiceCache")
     public List<Business> findAll(@Nullable Predicate predicate) {
         Pageable pageable = Pageable.ofSize(Integer.MAX_VALUE);
         return Optional.ofNullable(predicate)
@@ -50,16 +54,19 @@ public class BusinessService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "businessServiceCache")
     public List<Business> findByRegistrationNumber(String registrationNumber) {
         return repository.findByRegistrationNumber(registrationNumber);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "businessServiceCache")
     public Business get(Long id) {
         return this.load(id);
     }
 
     @Transactional
+    @CacheEvict(value = "businessServiceCache", allEntries = true)
     public void upsert(@Nullable Long pathId, BusinessParameter parameter) {
         Long id = Objects.isNull(pathId) ? parameter.getId() : pathId;
 
@@ -146,6 +153,7 @@ public class BusinessService {
     }
 
     @Transactional
+    @CacheEvict(value="businessServiceCache", allEntries = true)
     public void delete(Long id) {
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
@@ -187,6 +195,7 @@ public class BusinessService {
         );
     }
 
+    @Cacheable(value = "businessServiceCache")
     public List<ProjectShortView> getProjectList(Long id) {
         return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream().map(projectBasicBusiness -> ProjectShortView.assemble(projectBasicBusiness.getProject())).collect(Collectors.toList());
     }
