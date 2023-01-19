@@ -2,10 +2,7 @@ import React, { useContext } from 'react';
 import ModalLayout from 'layouts/ModalLayout';
 import ProjectFinalContractCollectionForm from 'project_contract/view/CollectionModal/Form';
 import { DefaultFunction } from 'type/Function';
-import {
-  ProjectContractCollectionVO,
-  ProjectFinalContractVO
-} from 'project_contract/domain';
+import { ProjectFinalContractVO } from 'project_contract/domain';
 import { Box } from '@mui/material';
 import Button from 'layouts/Button';
 import { FormikContext } from 'formik';
@@ -14,7 +11,6 @@ interface Props {
   open: boolean;
   onClose: DefaultFunction;
   finalContract?: ProjectFinalContractVO;
-  collection?: ProjectContractCollectionVO;
 }
 
 export default function ProjectFinalContractCollectionModal(props: Props) {
@@ -26,8 +22,7 @@ export default function ProjectFinalContractCollectionModal(props: Props) {
       open={props.open}
       onClose={props.onClose}
       children={<ProjectFinalContractCollectionForm
-        collection={props.collection}
-        totalAmount={props.finalContract && props.finalContract.totalAmount}
+        finalContract={props.finalContract}
       />}
       footer={
         <Box sx={{
@@ -38,7 +33,6 @@ export default function ProjectFinalContractCollectionModal(props: Props) {
           alignItems:     'center',
         }}>
           <Button
-            // disabled={}
             sx={{
               marginRight: '10px',
             }}

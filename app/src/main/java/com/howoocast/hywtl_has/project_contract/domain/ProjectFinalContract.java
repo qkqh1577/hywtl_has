@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -89,7 +90,7 @@ public class ProjectFinalContract extends CustomEntity {
     @OneToOne
     private User writer;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ProjectContractCollection collection;
 
     public static ProjectFinalContract of(Project project) {

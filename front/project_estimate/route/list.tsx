@@ -16,11 +16,14 @@ import {
 } from 'project_estimate/domain';
 import { ProjectFinalEstimateParameter } from 'project_estimate/parameter';
 import { closeStatus } from 'components/DataFieldProps';
+import useId from 'services/useId';
+import { ProjectId } from 'project/domain';
 
 
 export default function ProjectEstimateListRoute() {
 
   const dispatch = useDispatch();
+  const id = useId();
   const { list, finalEstimate, requestUpdateFinalEstimate, projectId } = useSelector((root: RootState) => root.projectEstimate);
   const openCustomAddModal = useCallback((type: ProjectEstimateType) => dispatch(projectEstimateAction.setCustomAddModal(type)), [dispatch]);
   const openCustomDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setCustomDetailModal(id)), [dispatch]);
@@ -46,8 +49,8 @@ export default function ProjectEstimateListRoute() {
   useEffect(() => {
     closeStatus(requestUpdateFinalEstimate,
       () => {
-        if (projectId) {
-          dispatch(projectEstimateAction.getFinalEstimate(projectId));
+        if (id) {
+          dispatch(projectEstimateAction.getFinalEstimate(ProjectId(id)));
         }
       },
       () => {
@@ -56,10 +59,10 @@ export default function ProjectEstimateListRoute() {
   }, [requestUpdateFinalEstimate]);
 
   useEffect(() => {
-    if (projectId) {
-      dispatch(projectEstimateAction.getFinalEstimate(projectId));
+    if (id) {
+      dispatch(projectEstimateAction.getFinalEstimate(ProjectId(id)));
     }
-  }, [projectId]);
+  }, [id]);
 
   useEffect(() => {
     setCodeList(list?.map((item) => item.code).sort() || []);

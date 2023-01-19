@@ -16,11 +16,13 @@ import {
 import { RootState } from 'services/reducer';
 import { ProjectFinalContractParameter } from 'project_contract/parameter';
 import { closeStatus } from 'components/DataFieldProps';
+import useId from 'services/useId';
+import { ProjectId } from 'project/domain';
 
 export default function ProjectContractListRoute() {
-
   const dispatch = useDispatch();
-  const { list, finalContract, requestFinalContractUpdate, projectId } = useSelector((root: RootState) => root.projectContract);
+  const id = useId();
+  const { list, finalContract, requestFinalContractUpdate } = useSelector((root: RootState) => root.projectContract);
   const openAddModal = useCallback(() => dispatch(projectContractAction.setModal(null)), [dispatch]);
   const openDetailModal = useCallback((id: ProjectContractId) => dispatch(projectContractAction.setModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectContractAction.setFinalModal(true)), [dispatch]);
@@ -31,8 +33,8 @@ export default function ProjectContractListRoute() {
 
   useEffect(() => {
     closeStatus(requestFinalContractUpdate, () => {
-      if (projectId) {
-        dispatch(projectContractAction.getFinalContract(projectId));
+      if (id) {
+        dispatch(projectContractAction.getFinalContract(ProjectId(id)));
       }
     }, () => {
       dispatch(projectContractAction.requestFinalContractUpdate('idle'));
@@ -40,10 +42,10 @@ export default function ProjectContractListRoute() {
   }, [requestFinalContractUpdate]);
 
   useEffect(() => {
-    if (projectId) {
-      dispatch(projectContractAction.getFinalContract(projectId));
+    if (id) {
+      dispatch(projectContractAction.getFinalContract(ProjectId(id)));
     }
-  }, [projectId]);
+  }, [id]);
 
   useEffect(() => {
     setContractCode(list?.map((item) => item.code).sort() || []);

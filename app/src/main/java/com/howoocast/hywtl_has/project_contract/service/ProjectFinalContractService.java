@@ -2,6 +2,7 @@ package com.howoocast.hywtl_has.project_contract.service;
 
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
+import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -86,14 +87,18 @@ public class ProjectFinalContractService {
     @Transactional
     public void updateFinalContractCollection(Long projectId, ProjectContractCollectionParameter parameter) {
         repository.findByProject_Id(projectId).ifPresentOrElse(fc -> {
+            if (Objects.nonNull(fc.getCollection())) {
+                // 이전 값이 있으면 삭제.
+                fc.getCollection().delete();
+            }
             fc.updateCollection(toCollection(parameter));
         }, ()-> {
-            throw new RuntimeException("final contract not found");
+            throw new NotFoundException(ProjectContractCollection.KEY, "해당하는 최종 계약서가 없습니다.");
         });
     }
 
     private ProjectContractCollection toCollection(ProjectContractCollectionParameter parameter) {
-        return projectContractCollectionRepository.save(ProjectContractCollection.of(
+        return ProjectContractCollection.of(
             parameter.getStageNote(),
             parameter.getStageList().stream().map(item -> ProjectContractCollectionStage.of(
                     item.getName(),
@@ -105,6 +110,6 @@ public class ProjectFinalContractService {
                 .collect(Collectors.toList()),
             parameter.getTotalAmountNote(),
             parameter.getTotalAmount()
-        ));
+        );
     }
 }

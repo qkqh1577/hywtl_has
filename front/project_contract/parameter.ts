@@ -2,7 +2,10 @@ import {
   ProjectEstimateId,
   ProjectEstimateVO
 } from 'project_estimate/domain';
-import { ProjectContractId } from 'project_contract/domain';
+import {
+  ProjectContractCollectionVO,
+  ProjectContractId
+} from 'project_contract/domain';
 import { FileItemParameter } from 'file-item';
 import { BusinessId } from 'business/domain';
 import { UserId } from 'user/domain';
@@ -38,7 +41,7 @@ export interface ProjectContractCollectionStageParameter {
 }
 
 export interface ProjectFinalContractCollectionParameter
-  extends ProjectContractCollectionParameter {}
+  extends ProjectContractCollectionVO {}
 
 export interface ProjectContractCollectionParameter {
   stageNote: string;
@@ -122,5 +125,4 @@ export const initialProjectFinalContractCollectionParameter = {
   stageList:       [],
   totalAmountNote: '',
   totalAmount:     0,
-  edit:            true,
 } as unknown as ProjectFinalContractCollectionParameter;

@@ -37,6 +37,7 @@ function Element() {
   const id = useId();
   const dispatch = useDispatch();
   const { detail } = useSelector((root: RootState) => root.project);
+  const { finalContractCollectionModal } = useSelector((root: RootState) => root.projectContract);
   const { error } = useDialog();
   const navigate = useNavigate();
 
@@ -78,7 +79,7 @@ function Element() {
         )}
         <ProjectContractListRoute />
         <ProjectContractFinalModalRoute />
-        <FinalCollectionModalRoute />
+        {finalContractCollectionModal && <FinalCollectionModalRoute />}
       </Box>
     </ProjectContainerRoute>
   );
