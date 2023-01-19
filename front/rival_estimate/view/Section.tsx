@@ -45,7 +45,7 @@ export default function RivalEstimateListSection(props: Props) {
       }>
       <Box sx={{
         width:     '100%',
-        minHeight: '160px',
+        minHeight: '60px',
         display:   'flex',
         flexWrap:  'wrap',
         '& > div': {
@@ -59,17 +59,7 @@ export default function RivalEstimateListSection(props: Props) {
           }
         }
       }}>
-        { props.loading && (
-          <Box sx={{
-            width:          '100%',
-            display:        'flex',
-            flexWrap:       'unwrap',
-            justifyContent: 'center',
-          }}>
-            <CircularProgress size={30} sx={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}/>
-          </Box>
-        )}
-        { !props.loading && (!props.list || props.list.length === 0) && (
+        { props.list?.length === 0 && (
           <Box sx={{
             width:          '100%',
             height:         '100%',
@@ -79,12 +69,19 @@ export default function RivalEstimateListSection(props: Props) {
           }}>
             <Fade in={true}>
               <TextBox variant="body2" sx={{display:'flex', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                등록된 정보가 없습니다.
+                {props.loading && (
+                  <CircularProgress size={30} sx={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}/>
+                )}
+                {!props.loading && (
+                  <span>
+                    등록된 정보가 없습니다.
+                  </span>
+                )}
               </TextBox>
             </Fade>
           </Box>
         )}
-        { !props.loading && props.list && props.list.map(item => (
+        { props.list?.map(item => (
           <Box key={item.id} sx={{width: '100%'}}>
             <Box sx={{ width: '15%' }}>
               <DataFieldWithLabel label="타 업체">
