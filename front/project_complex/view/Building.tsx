@@ -39,19 +39,20 @@ import {
   testTypeName
 } from 'type/TestType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ProjectEstimateType } from 'project_estimate/domain';
-import { ProjectContractVO } from 'project_contract/domain';
+import {ProjectContractVO, ProjectFinalContractVO} from 'project_contract/domain';
 import useDialog from 'dialog/hook';
 import { STANDARD_RATIO } from 'util/CommonConstantVariable';
+import CircularProgress from "../../components/CircularProgress";
 
 interface Props {
   list: ProjectComplexBuildingVO[] | undefined;
+  loading: boolean,
   siteList: ProjectComplexSiteVO[] | undefined;
   onAdd: DefaultFunction;
   onUpdate: DefaultFunction<ProjectComplexBuildingParameter>;
   onDelete: DefaultFunction<ProjectComplexBuildingId>;
   openDocumentModal: DefaultFunction<ProjectComplexBuildingId>;
-  contract?: ProjectContractVO;
+  contract?: ProjectFinalContractVO;
   toEstimateAndContractTab: DefaultFunction;
 }
 

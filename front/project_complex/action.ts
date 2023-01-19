@@ -17,8 +17,10 @@ export enum ProjectComplexActionType {
   setId                 = 'project/sales/complex/id/set',
   getSiteList           = 'project/sales/complex/site-list/get',
   setSiteList           = 'project/sales/complex/site-list/set',
+  setSiteListLoading    = 'project/sales/complex/site-list/loading',
   setBuildingList       = 'project/sales/complex/building-list/set',
   getBuildingList       = 'project/sales/complex/building-list/get',
+  setBuildingListLoading= 'project/sales/complex/building-list/loading',
   setBuilding           = 'project/sales/complex/building/set',
 
   pushSite              = 'project/sales/complex/site/push',
@@ -42,12 +44,14 @@ export enum ProjectComplexActionType {
 }
 
 export const projectComplexAction = {
-  setId:           createAction(ProjectComplexActionType.setId)<ProjectId | undefined>(),
-  getSiteList:     createAction(ProjectComplexActionType.getSiteList)<ProjectId | undefined>(),
-  setSiteList:     createAction(ProjectComplexActionType.setSiteList)<ProjectComplexSiteVO[] | undefined>(),
-  getBuildingList: createAction(ProjectComplexActionType.getBuildingList)<ProjectId | undefined>(),
-  setBuildingList: createAction(ProjectComplexActionType.setBuildingList)<ProjectComplexBuildingVO[] | undefined>(),
-  setBuilding:     createAction(ProjectComplexActionType.setBuilding)<ProjectComplexBuildingVO | undefined>(),
+  setId:              createAction(ProjectComplexActionType.setId)<ProjectId | undefined>(),
+  getSiteList:        createAction(ProjectComplexActionType.getSiteList)<ProjectId | undefined>(),
+  setSiteList:        createAction(ProjectComplexActionType.setSiteList)<ProjectComplexSiteVO[] | undefined>(),
+  setSiteLoading:     createAction(ProjectComplexActionType.setSiteListLoading)<boolean>(),
+  getBuildingList:    createAction(ProjectComplexActionType.getBuildingList)<ProjectId | undefined>(),
+  setBuildingList:    createAction(ProjectComplexActionType.setBuildingList)<ProjectComplexBuildingVO[] | undefined>(),
+  setBuildingLoading: createAction(ProjectComplexActionType.setBuildingListLoading)<boolean>(),
+  setBuilding:        createAction(ProjectComplexActionType.setBuilding)<ProjectComplexBuildingVO | undefined>(),
 
   pushSite:          createAction(ProjectComplexActionType.pushSite)(),
   requestPushSite:   createAction(ProjectComplexActionType.requestPushSite)<ApiStatus>(),

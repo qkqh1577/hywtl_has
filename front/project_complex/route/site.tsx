@@ -14,10 +14,14 @@ import { ProjectComplexSiteId } from 'project_complex/domain';
 import { projectBasicAction } from 'project_basic/action';
 import { closeStatus } from 'components/DataFieldProps';
 
-export default function ProjectComplexSiteRoute() {
+interface ProjectComplexSiteRouteProps {
+  loading: boolean
+}
+
+export default function ProjectComplexSiteRoute(props: ProjectComplexSiteRouteProps) {
 
   const dispatch = useDispatch();
-  const { id, siteList, testDetail, requestPushSite, requestUpdateSite, requestDeleteSite } = useSelector((root: RootState) => root.projectComplex);
+  const { id, siteList, siteListLoading, testDetail, requestPushSite, requestUpdateSite, requestDeleteSite } = useSelector((root: RootState) => root.projectComplex);
 
   const add = useCallback(() => dispatch(projectComplexAction.pushSite()), [dispatch]);
   const update = useCallback((params: ProjectComplexSiteParameter) => dispatch(projectComplexAction.updateSite(params)), [dispatch]);
@@ -53,6 +57,7 @@ export default function ProjectComplexSiteRoute() {
     <ProjectComplexSiteSection
       onAdd={add}
       list={siteList}
+      loading={siteListLoading}
       onUpdate={update}
       onDelete={deleteSite}
       testDetail={testDetail}

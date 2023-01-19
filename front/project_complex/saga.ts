@@ -1,5 +1,6 @@
 import {
   call,
+  delay,
   fork,
   put,
   select,
@@ -34,9 +35,15 @@ function* watchId() {
 function* watchSiteList() {
   while (true) {
     const { payload: id } = yield take(projectComplexAction.getSiteList);
+    yield put(projectComplexAction.setSiteLoading(true));
     if (id) {
-      const list: ProjectComplexSiteVO[] = yield call(projectComplexApi.getSiteList, id);
-      yield put(projectComplexAction.setSiteList(list));
+      try {
+        const list: ProjectComplexSiteVO[] = yield call(projectComplexApi.getSiteList, id);
+        yield put(projectComplexAction.setSiteList(list));
+      } finally {
+        yield delay(300);
+        yield put(projectComplexAction.setSiteLoading(false));
+      }
     }
     else {
       yield put(projectComplexAction.setSiteList(undefined));
@@ -47,9 +54,15 @@ function* watchSiteList() {
 function* watchBuildingList() {
   while (true) {
     const { payload: id } = yield take(projectComplexAction.getBuildingList);
+    yield put(projectComplexAction.setBuildingLoading(true));
     if (id) {
-      const list: ProjectComplexBuildingVO[] = yield call(projectComplexApi.getBuildingList, id);
-      yield put(projectComplexAction.setBuildingList(list));
+      try {
+        const list: ProjectComplexBuildingVO[] = yield call(projectComplexApi.getBuildingList, id);
+        yield put(projectComplexAction.setBuildingList(list));
+      } finally {
+        yield delay(300);
+        yield put(projectComplexAction.setBuildingLoading(false));
+      }
     }
     else {
       yield put(projectComplexAction.setBuildingList(undefined));

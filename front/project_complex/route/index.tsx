@@ -3,34 +3,33 @@ import React, {useEffect} from 'react';
 import ProjectContainerRoute from 'project/route/container';
 import ProjectComplexSiteRoute from 'project_complex/route/site';
 import {
-    useDispatch,
+    useDispatch, useSelector,
 } from 'react-redux';
 import useId from 'services/useId';
 import {projectComplexAction} from 'project_complex/action';
 import {ProjectId} from 'project/domain';
 import ProjectComplexBuildingRoute from 'project_complex/route/building';
 import ProjectComplexBuildingFileModalRoute from 'project_complex/route/buildingFileModal';
+import {RootState} from "../../services/reducer";
 
 function Element() {
     const dispatch = useDispatch();
+    const {siteListLoading, buildingListLoading} = useSelector((root: RootState) => root.projectComplex);
     const id = useId();
 
     useEffect(() => {
-        return ()=>{
+        id && dispatch(projectComplexAction.setId(ProjectId(id)));
+        return () => {
             dispatch(projectComplexAction.setSiteList(undefined));
             dispatch(projectComplexAction.setBuildingList(undefined));
             dispatch(projectComplexAction.setTestDetail(undefined));
         }
-    }, []);
-
-    useEffect(() => {
-        id && dispatch(projectComplexAction.setId(ProjectId(id)));
     }, [id]);
 
     return (
         <ProjectContainerRoute>
-            <ProjectComplexSiteRoute/>
-            <ProjectComplexBuildingRoute/>
+            <ProjectComplexSiteRoute loading={siteListLoading}/>
+            <ProjectComplexBuildingRoute loading={buildingListLoading}/>
             <ProjectComplexBuildingFileModalRoute/>
         </ProjectContainerRoute>
     );

@@ -1,4 +1,5 @@
 import {
+  Fade,
   TableBody,
   TableContainer,
   TableHead,
@@ -12,6 +13,7 @@ import {
 import { testTypeName } from 'type/TestType';
 import React from 'react';
 import { ProjectComplexTestVO } from 'project_complex/domain';
+import CircularProgress from "../../components/CircularProgress";
 
 interface Props
   extends Partial<ProjectComplexTestVO> {
@@ -26,6 +28,7 @@ export default function ProjectComplexTestSection({ testList }: Props) {
                           ) => Math.max(a, b), 1) || 1;
 
   return (
+
     <TableContainer>
       <Table>
         <TableHead>
@@ -36,9 +39,20 @@ export default function ProjectComplexTestSection({ testList }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(!testList || testList.length === 0) && (
+          {!testList && (
             <TableRow>
-              <Td colSpan={3}>조회 결과가 없습니다.</Td>
+              <Td colSpan={3}>
+                <CircularProgress size={24} sx={{justifyContent: 'center', alignItems: 'center'}}/>
+              </Td>
+            </TableRow>
+          )}
+          { testList?.length === 0 && (
+            <TableRow>
+              <Td colSpan={3}>
+                <Fade in>
+                  <span>조회 결과가 없습니다.</span>
+                </Fade>
+              </Td>
             </TableRow>
           )}
           {testList && testList.map((item) => (
