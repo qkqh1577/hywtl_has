@@ -1,23 +1,29 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
+import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
+import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
+import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionStageRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollectionStage;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectFinalContract;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectContractCollectionParameter;
 import com.howoocast.hywtl_has.project_contract.parameter.ProjectFinalContractParameter;
-import com.howoocast.hywtl_has.project_contract.repository.ProjectContractCollectionRepository;
 import com.howoocast.hywtl_has.project_contract.repository.ProjectFinalContractRepository;
 import com.howoocast.hywtl_has.project_log.domain.ProjectLogEvent;
 import com.howoocast.hywtl_has.user.repository.UserRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -32,7 +38,8 @@ public class ProjectFinalContractService {
     private final BusinessRepository businessRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final ProjectContractCollectionRepository projectContractCollectionRepository;
+    private final ProjectCollectionRepository projectCollectionRepository;
+    private final ProjectCollectionStageRepository stageRepository;
 
     @Transactional
     public ProjectFinalContract getFinalContract(Long projectId) {
@@ -86,12 +93,14 @@ public class ProjectFinalContractService {
 
     @Transactional
     public void updateFinalContractCollection(Long projectId, ProjectContractCollectionParameter parameter) {
+        ProjectFinalContract finalContract = getFinalContract(projectId);
         repository.findByProject_Id(projectId).ifPresentOrElse(fc -> {
             if (Objects.nonNull(fc.getCollection())) {
                 // 이전 값이 있으면 삭제.
                 fc.getCollection().delete();
             }
             fc.updateCollection(toCollection(parameter));
+            setProjectCollectionInformationByFinalContract(projectId, finalContract);
         }, ()-> {
             throw new NotFoundException(ProjectContractCollection.KEY, "해당하는 최종 계약서가 없습니다.");
         });
@@ -111,5 +120,54 @@ public class ProjectFinalContractService {
             parameter.getTotalAmountNote(),
             parameter.getTotalAmount()
         );
+    }
+
+    private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectFinalContract instance) {
+        ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
+        if (Objects.isNull(projectCollection)) {
+            projectCollection = projectCollectionRepository.save(
+                ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
+                    throw new NotFoundException(Project.KEY, projectId);
+                })));
+        }
+        List<ProjectCollectionStage> collectionStageList = stageRepository
+            .findByProjectCollection_Id(projectCollection.getId());
+        if (collectionStageList.isEmpty()) {
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
+        } else {
+            stageRepository.findByProjectCollection_Id(projectCollection.getId())
+                .forEach(CustomEntity::delete);
+            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
+        }
+        projectCollection.setStageList(collectionStageList);
+        setInitVersion(projectCollection);
+    }
+    @NotNull
+    private List<ProjectCollectionStage> getCollectionStageList(Long projectId, ProjectFinalContract instance,
+        ProjectCollection finalProjectCollection) {
+        return instance.getCollection()
+            .getStageList()
+            .stream()
+            .map(stage -> stageRepository.save(ProjectCollectionStage.of(
+                finalProjectCollection,
+                stage.getName(),
+                stage.getAmount(),
+                stage.getExpectedDate(),
+                stage.getNote(),
+                this.getNextSeq(projectId)
+            ))).collect(Collectors.toList());
+    }
+
+    private void setInitVersion(ProjectCollection projectCollection) {
+        projectCollection.getStageList().forEach(stage -> stage.updateVersionList(ProjectCollectionStageVersion.of(
+            stage.getName(),
+            stage.getAmount(),
+            stage.getExpectedDate(),
+            stage.getNote(),
+            null)));
+    }
+
+    private Integer getNextSeq(Long projectId) {
+        return stageRepository.findNextSeq(projectId);
     }
 }

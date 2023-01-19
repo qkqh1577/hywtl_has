@@ -1,6 +1,5 @@
 package com.howoocast.hywtl_has.project_contract.service;
 
-import com.howoocast.hywtl_has.common.domain.CustomEntity;
 import com.howoocast.hywtl_has.common.domain.EventEntity;
 import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
@@ -10,10 +9,6 @@ import com.howoocast.hywtl_has.file.parameter.FileItemParameter;
 import com.howoocast.hywtl_has.file.service.FileItemService;
 import com.howoocast.hywtl_has.project.domain.Project;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
-import com.howoocast.hywtl_has.project_collection.domain.ProjectCollection;
-import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStage;
-import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
-import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionStageRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
@@ -37,7 +32,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -53,7 +47,6 @@ public class ProjectContractService {
     private final ProjectEstimateRepository estimateRepository;
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
-    private final ProjectCollectionRepository projectCollectionRepository;
     private final ProjectCollectionStageRepository stageRepository;
     private final FileItemService fileItemService;
     private final ApplicationEventPublisher eventPublisher;
@@ -233,52 +226,6 @@ public class ProjectContractService {
         instance.delete();
     }
 
-    private void setProjectCollectionInformationByFinalContract(Long projectId, ProjectContract instance) {
-        ProjectCollection projectCollection = projectCollectionRepository.findByProject_Id(projectId).orElse(null);
-        if (Objects.isNull(projectCollection)) {
-            projectCollection = projectCollectionRepository.save(
-                ProjectCollection.of(projectRepository.findById(projectId).orElseThrow(() -> {
-                    throw new NotFoundException(Project.KEY, projectId);
-                })));
-        }
-        List<ProjectCollectionStage> collectionStageList = stageRepository
-            .findByProjectCollection_Id(projectCollection.getId());
-        if (collectionStageList.isEmpty()) {
-            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
-        } else {
-            stageRepository.findByProjectCollection_Id(projectCollection.getId())
-                .forEach(CustomEntity::delete);
-            collectionStageList = getCollectionStageList(projectId, instance, projectCollection);
-        }
-        projectCollection.setStageList(collectionStageList);
-        setInitVersion(projectCollection);
-    }
-
-    private void setInitVersion(ProjectCollection projectCollection) {
-        projectCollection.getStageList().forEach(stage -> stage.updateVersionList(ProjectCollectionStageVersion.of(
-            stage.getName(),
-            stage.getAmount(),
-            stage.getExpectedDate(),
-            stage.getNote(),
-            null)));
-    }
-
-    @NotNull
-    private List<ProjectCollectionStage> getCollectionStageList(Long projectId, ProjectContract instance,
-        ProjectCollection finalProjectCollection) {
-        return instance.getCollection()
-            .getStageList()
-            .stream()
-            .map(stage -> stageRepository.save(ProjectCollectionStage.of(
-                finalProjectCollection,
-                stage.getName(),
-                stage.getAmount(),
-                stage.getExpectedDate(),
-                stage.getNote(),
-                this.getNextSeq(projectId)
-            ))).collect(Collectors.toList());
-    }
-
     private ProjectContract load(Long id) {
         return repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(ProjectContract.KEY, id);
@@ -343,10 +290,6 @@ public class ProjectContractService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Integer getNextSeq(Long projectId) {
-        return stageRepository.findNextSeq(projectId);
     }
 
 }
