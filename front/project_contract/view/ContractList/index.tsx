@@ -43,7 +43,7 @@ import {
 } from 'components/Snackbar/action';
 import { useDispatch } from 'react-redux';
 import useDialog from 'dialog/hook';
-import CircularProgress from "../../../components/CircularProgress";
+import CircularProgress from '../../../components/CircularProgress';
 
 interface Props {
   list: ProjectContractShortVO[] | undefined;
@@ -57,6 +57,7 @@ interface Props {
   onUpdate: (params: ProjectFinalContractParameter) => void;
   openFinalContractCollectionModal: (projectFinalContract: ProjectFinalContractVO) => void;
   openContractCollectionModal: (collection: ProjectContractCollectionVO) => void;
+  onValidateFile: (contract: ProjectContractShortVO) => void;
 }
 
 export default function ProjectContractListSection(props: Props) {
@@ -170,12 +171,13 @@ export default function ProjectContractListSection(props: Props) {
                 </Td>
                 <Td>{item.estimateCode}</Td>
                 <Td>
-                  <Button shape="small" onClick={() => {window.open(`/file-item?projectContractId=${item.id}&type=word`, '_blank');}}>다운로드</Button>
+                  <Button shape="small" onClick={() => {props.onValidateFile({ ...item, fileType: 'word' })}}>다운로드</Button>
                 </Td>
                 <Td>
-                  <Button shape="small" onClick={() => {window.open(`/file-item?projectContractId=${item.id}&type=pdf`, '_blank');}}>다운로드</Button>
+                  <Button shape="small" onClick={() => {props.onValidateFile({ ...item, fileType: 'pdf' })}}>다운로드</Button>
                 </Td>
                 <Td>
+                  {/*TODO: 날인본 pdf 다운로드 구현 */}
                   {item.pdfFile && (
                     <Button shape="small" onClick={() => {
                       window.open(`/file-item/${item.pdfFile!.id}`, '_blank');

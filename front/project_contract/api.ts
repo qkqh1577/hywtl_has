@@ -92,6 +92,12 @@ class ProjectContractApi {
     const { data } = await apiClient.put(`/project/sales/${projectId}/contract/final/collection`, params);
     return data;
   }
+
+  async validateFile(contract: ProjectContractShortVO): Promise<void> {
+    const { data } = await apiClient.get(`/file-item?projectContractId=${contract.id}&type=${contract.fileType}`);
+    return data;
+  }
+
 }
 
 export const projectContractApi = new ProjectContractApi();

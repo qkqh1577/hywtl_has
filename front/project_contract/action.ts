@@ -51,6 +51,7 @@ export enum ProjectContractActionType {
   updateFinalContractCollection        = 'project/sales/final-contract/collection/update',
   requestFinalContractCollectionUpdate = 'project/sales/final-contract/collection/update/request',
   setContractCollectionModal           = 'project/sales/contract/collection/modal/set',
+  validateFile                         = 'project/sales/contract/file/validation',
 }
 
 export const projectContractAction = {
@@ -82,4 +83,5 @@ export const projectContractAction = {
   updateFinalContractCollection:        createAction(ProjectContractActionType.updateFinalContractCollection)<ProjectFinalContractCollectionParameter>(),
   requestFinalContractCollectionUpdate: createAction(ProjectContractActionType.requestFinalContractCollectionUpdate)<ApiStatus>(),
   setContractCollectionModal:           createAction(ProjectContractActionType.setContractCollectionModal)<ProjectContractCollectionVO | undefined>(),
+  validateFile:                         createAction(ProjectContractActionType.validateFile)<ProjectContractShortVO | ProjectContractParameter>(),
 };

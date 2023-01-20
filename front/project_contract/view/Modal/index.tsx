@@ -7,6 +7,7 @@ import Top from './Top';
 import Left from './Left';
 import Right from './Right';
 import { ContractConditionVariableVO } from 'admin/contract/condition/domain';
+import { ProjectContractParameter } from 'project_contract/parameter';
 
 interface Props {
   open: boolean;
@@ -14,6 +15,7 @@ interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   variableList?: ContractConditionVariableVO[];
+  onValidateFile: (contract: ProjectContractParameter) => void
 }
 
 export default function ProjectContractModal(props: Props) {
@@ -36,6 +38,7 @@ export default function ProjectContractModal(props: Props) {
         <Top
           onCancel={props.onCancel}
           onDelete={props.onDelete}
+          onValidateFile={props.onValidateFile}
         />
         <Left />
         <Right variableList={props.variableList}/>

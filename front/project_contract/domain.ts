@@ -68,6 +68,7 @@ export interface ProjectContractShortVO {
   orderer: string;
   collectionRate: string;
   schedule: string;
+  fileType?: string;
 }
 
 export interface ProjectFinalContractVO

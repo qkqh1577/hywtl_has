@@ -7,10 +7,12 @@ import UploadField from 'components/UploadField';
 import { fileToView } from 'file-item';
 import Button from 'layouts/Button';
 import { DefaultFunction } from 'type/Function';
+import { ProjectContractParameter } from 'project_contract/parameter';
 
 interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
+  onValidateFile: (contract: ProjectContractParameter) => void;
 }
 
 export default function ProjectContractModalTopForm(props: Props) {
@@ -108,15 +110,14 @@ export default function ProjectContractModalTopForm(props: Props) {
             sx={{
               marginRight: '10px',
             }}
-            onClick={() => {window.open(`/file-item?projectContractId=${id}&type=word`, '_blank');}}
-          >
+            onClick={() => {props.onValidateFile({...formik.values, fileType: "word"});}}>
             Word 다운로드
           </Button>
         )}
         {!edit && (
           <Button
             shape="basic3"
-            onClick={() => {window.open(`/file-item?projectContractId=${id}&type=pdf`, '_blank');}}
+            onClick={() => {props.onValidateFile({...formik.values, fileType: "pdf"});}}
           >
             PDF 다운로드
           </Button>

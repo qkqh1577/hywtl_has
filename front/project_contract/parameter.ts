@@ -110,6 +110,7 @@ export interface ProjectContractParameter {
   collection: ProjectContractCollectionParameter;
   conditionList: ProjectContractConditionParameter[];
   file: FileItemParameter;
+  fileType? : string;
 }
 
 export const initialProjectContractParameter = {
