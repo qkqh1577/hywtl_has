@@ -83,5 +83,5 @@ export const projectEstimateAction = {
   requestFinalEstimateUpdate: createAction(ProjectEstimateActionType.requestFinalEstimateUpdate)<ApiStatus>(),
   getFinalEstimate:           createAction(ProjectEstimateActionType.getFinalEstimate)<ProjectId>(),
   setFinalEstimate:           createAction(ProjectEstimateActionType.setFinalEstimate)<ProjectFinalEstimateVO | undefined>(),
-  validateFile:               createAction(ProjectEstimateActionType.validateFile)<ProjectEstimateShortVO>(),
+  validateFile:               createAction(ProjectEstimateActionType.validateFile)<ProjectEstimateShortVO | ProjectSystemEstimateParameter>(),
 };

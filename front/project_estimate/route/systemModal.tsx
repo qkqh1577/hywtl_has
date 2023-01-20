@@ -47,6 +47,7 @@ export default function ProjectSystemEstimateModalRoute() {
   const { variableList } = useSelector((root: RootState) => root.estimateContent);
   const { error, rollback } = useDialog();
   const [buildingSeq, setBuildingSeq] = useState<number>();
+  const onValidateFile = useCallback((estimate: ProjectSystemEstimateParameter) => dispatch(projectEstimateAction.validateFile(estimate)), [dispatch]);
 
   const closeBuildingFileModal = () => {
     setBuildingSeq(undefined);
@@ -196,6 +197,7 @@ export default function ProjectSystemEstimateModalRoute() {
       <ProjectSystemEstimateModal
         open={typeof systemModal !== 'undefined'}
         onClose={onClose}
+        onValidateFile={onValidateFile}
         onCancel={() => {
           rollback(() => {
             if (systemModal === null) {

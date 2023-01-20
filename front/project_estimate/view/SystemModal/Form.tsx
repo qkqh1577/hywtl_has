@@ -6,6 +6,7 @@ import LeftForm from 'project_estimate/view/SystemModal/LeftForm';
 import RightForm from 'project_estimate/view/SystemModal/RightForm';
 import { ProjectSystemEstimateVO } from 'project_estimate/domain';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
+import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   onClose: DefaultFunction;
@@ -14,6 +15,7 @@ interface Props {
   openDocumentModal: DefaultFunction<number>;
   openContractAddModal: (values: ProjectSystemEstimateVO) => void;
   variableList?: EstimateContentVariableVO[];
+  onValidateFile: (estimate: ProjectSystemEstimateParameter) => void;
 }
 
 export default function ProjectSystemEstimateModalForm(props: Props) {
@@ -32,6 +34,7 @@ export default function ProjectSystemEstimateModalForm(props: Props) {
         onDelete={props.onDelete}
         onContractAdd={props.openContractAddModal}
         onClose={props.onClose}
+        onValidateFile={props.onValidateFile}
       />
       <Box sx={{
         width:    '100%',
