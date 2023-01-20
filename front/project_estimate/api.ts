@@ -1,6 +1,7 @@
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   ProjectEstimateVO,
   ProjectSystemEstimateVO,
 } from 'project_estimate/domain';
@@ -92,6 +93,11 @@ class ProjectEstimateApi {
                             params: ProjectFinalEstimateParameter
   ): Promise<void> {
     const { data } = await apiClient.patch(`/project/sales/${projectId}/estimate/final`, params);
+    return data;
+  }
+
+  async validateFile(estimated: ProjectEstimateShortVO): Promise<void> {
+    const { data } = await apiClient.get(`/file-item?projectEstimateId=${estimated.id}`);
     return data;
   }
 }

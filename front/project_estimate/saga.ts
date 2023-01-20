@@ -10,6 +10,7 @@ import { projectEstimateAction } from 'project_estimate/action';
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateShortVO,
+  ProjectEstimateType,
   ProjectFinalEstimateVO,
   ProjectSystemEstimateVO
 } from 'project_estimate/domain';
@@ -27,7 +28,8 @@ function* watchProjectId() {
       try {
         const list: ProjectEstimateShortVO[] = yield call(projectEstimateApi.getList, projectId);
         yield put(projectEstimateAction.setList(list));
-      } finally {
+      }
+      finally {
         yield delay(300);
         yield put(projectEstimateAction.setLoading(false));
       }
@@ -231,18 +233,33 @@ function* watchGetFinal() {
   }
 }
 
-function* watchUpdateFinal(){
+function* watchUpdateFinal() {
   while (true) {
-    const {payload: params} = yield take(projectEstimateAction.update);
-    try{
+    const { payload: params } = yield take(projectEstimateAction.update);
+    try {
       yield put(projectEstimateAction.requestFinalEstimateUpdate('request'));
       const { projectId } = yield select((root: RootState) => root.projectEstimate);
       yield call(projectEstimateApi.updateFinalEstimate, projectId, params);
       yield put(projectEstimateAction.requestFinalEstimateUpdate('done'));
-    }catch (e) {
+    }
+    catch (e) {
       const message = getErrorMessage(projectEstimateAction.update, e);
       yield put(dialogAction.openError(message));
       yield put(projectEstimateAction.requestFinalEstimateUpdate(message));
+    }
+  }
+}
+
+function* validateFile() {
+  while (true) {
+    const { payload: estimate } = yield take(projectEstimateAction.validateFile);
+    try {
+      yield call(projectEstimateApi.validateFile, estimate);
+      window.location.assign(estimate.type === ProjectEstimateType.SYSTEM ? `/file-item?projectEstimateId=${estimate.id}` : `/project/sales/estimate/${estimate.id}/file`);
+    }
+    catch (e) {
+      const message = getErrorMessage(projectEstimateAction.validateFile, e);
+      yield put(dialogAction.openError(message));
     }
   }
 }
@@ -261,4 +278,5 @@ export default function* projectEstimateSaga() {
   yield fork(watchDeleteSystem);
   yield fork(watchGetFinal);
   yield fork(watchUpdateFinal);
+  yield fork(validateFile);
 }

@@ -43,7 +43,7 @@ import {
   SnackbarSeverityType
 } from 'components/Snackbar/action';
 import { useDispatch } from 'react-redux';
-import CircularProgress from "../../../components/CircularProgress";
+import CircularProgress from '../../../components/CircularProgress';
 
 interface Props
   extends ProjectEstimateListButtonProps {
@@ -54,6 +54,7 @@ interface Props
   finalEstimate?: ProjectFinalEstimateVO;
   codeList?: string[];
   loading: boolean;
+  onValidateFile: (estimate: ProjectEstimateShortVO) => void;
 }
 
 export default function ProjectEstimateListSection(props: Props) {
@@ -88,7 +89,6 @@ export default function ProjectEstimateListSection(props: Props) {
       );
     }
   }, [list]);
-
   return (
     <SectionLayout
       title="견적서"
@@ -126,8 +126,8 @@ export default function ProjectEstimateListSection(props: Props) {
           <TableBody>
             {loading && (
               <TableRow>
-                <Td colSpan={17} sx={{height: '40px'}}>
-                  <CircularProgress size={30} sx={{width: '100%', justifyContent: 'center', alignItems: 'center'}}/>
+                <Td colSpan={17} sx={{ height: '40px' }}>
+                  <CircularProgress size={30} sx={{ width: '100%', justifyContent: 'center', alignItems: 'center' }} />
                 </Td>
               </TableRow>
             )}
@@ -139,7 +139,7 @@ export default function ProjectEstimateListSection(props: Props) {
               </TableRow>
             )}
             {!loading && list && list.map((item,
-                               index
+                                           index
             ) => (
               <TableRow key={item.id} selected={item.confirmed}>
                 <Td>{index + 1}</Td>
@@ -169,8 +169,7 @@ export default function ProjectEstimateListSection(props: Props) {
                     <IconButton
                       shape="square"
                       onClick={() => {
-                        window.open(item.type !== ProjectEstimateType.SYSTEM ? `/project/sales/estimate/${item.id}/file` : `/file-item?projectEstimateId=${item.id}`,
-                          '_blank');
+                        props.onValidateFile(item);
                       }}
                       children={<FontAwesomeIcon icon="download" />}
                     />

@@ -108,6 +108,9 @@ public class FileItemService {
     public FileItem getByProjectEstimateId(Long projectEstimateId) {
         FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectEstimateIdOrderByCreatedAtDesc(
             projectEstimateId);
+        if (Objects.isNull(history)) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
 
         return getFileItem(history, "pdf");
     }

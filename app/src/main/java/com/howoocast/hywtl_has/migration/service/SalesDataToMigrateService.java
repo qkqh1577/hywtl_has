@@ -106,7 +106,7 @@ public class SalesDataToMigrateService {
                 }
 
                 String finalCode = code.trim();
-//                System.out.println("finalCode = " + finalCode);
+                System.out.println("finalCode = " + finalCode);
 
                 if (
                     (StringUtils.hasText(salesMapList.get(rowNum).get(SalesHeader.TOTAL_AMOUNT.getName()))
