@@ -50,7 +50,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
     if (customDetail) {
       formik.setValues({
         ...customDetail,
-        businessId: customDetail.business.id,
+        businessId: customDetail.business ? customDetail.business.id : undefined,
         edit:       false,
       } as unknown as ProjectCustomEstimateChangeParameter);
     }
@@ -87,7 +87,7 @@ export default function ProjectCustomEstimateDetailModalRoute() {
             if (customDetail) {
               formik.setValues({
                 ...customDetail,
-                businessId: customDetail.business.id,
+                businessId: customDetail.business ? customDetail.business.id : undefined,
                 edit:       false,
               } as unknown as ProjectCustomEstimateChangeParameter);
             }
