@@ -81,8 +81,8 @@ public class ProjectContractShortView {
         target.orderer = Optional.ofNullable(source.getBasic()).map(ProjectContractBasic::getOrdererCompanyName)
             .orElse("");
         if (Objects.nonNull(source.getCollection()) && Objects.nonNull(source.getCollection().getStageList())) {
-            List<String> collectionList = source.getCollection().getStageList().stream().map(stage -> String.valueOf(stage.getRate())).collect(Collectors.toList());
-            target.collectionRate = String.join("%/", collectionList);
+            List<String> collectionList = source.getCollection().getStageList().stream().map(stage -> String.valueOf(stage.getRate()) + "%").collect(Collectors.toList());
+            target.collectionRate = String.join("/", collectionList);
         }
 
         if (Objects.nonNull(source.getEstimate().getPlan())) {
