@@ -62,7 +62,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         String recipient,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<Content> contentList,
+        @Nullable List<Content> contentList,
         Business business,
         LocalDate sentDate
     ) {
@@ -77,7 +77,9 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             sentDate
         );
         instance.templateList = templateList;
-        instance.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
+        if (Objects.nonNull(contentList)) {
+            instance.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
+        }
         return instance;
     }
 
@@ -87,7 +89,7 @@ public class ProjectSystemEstimate extends ProjectEstimate {
         Boolean isLh,
         String note,
         List<ProjectEstimateTemplate> templateList,
-        List<Content> contentList,
+        @Nullable List<Content> contentList,
         LocalDate sentDate
     ) {
         List<EventEntity> eventList = super.change(
@@ -114,22 +116,24 @@ public class ProjectSystemEstimate extends ProjectEstimate {
             Objects.isNull(this.contentList) || this.contentList.isEmpty()
                 ? null
                 : "복합 내용은 일시 정보만 기록함",
-            contentList.isEmpty()
+            Objects.nonNull(contentList) && contentList.isEmpty()
                 ? null
                 : "복합 내용은 일시 정보만 기록함"
         ));
-        this.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
+        if (Objects.nonNull(contentList)) {
+            this.contentList = contentList.stream().map(Content::getContent).collect(Collectors.toList());
+        }
 
         return eventList;
     }
 
     /**
-     * @migration
      * @param code
      * @param isSent
      * @param recipient
      * @param writer
      * @param project
+     * @migration
      */
     protected ProjectSystemEstimate(
         String code,
@@ -157,13 +161,13 @@ public class ProjectSystemEstimate extends ProjectEstimate {
     }
 
     /**
-     * @migration
      * @param dto
      * @param isSent
      * @param recipient
      * @param templateList
      * @param contentList
      * @return
+     * @migration
      */
 
     public static ProjectSystemEstimate of(
@@ -197,8 +201,8 @@ public class ProjectSystemEstimate extends ProjectEstimate {
     }
 
     /**
-     * @migration
      * @param note
+     * @migration
      */
     public void updateNote(String note) {
         super.updateNote(note);

@@ -1,6 +1,8 @@
 package com.howoocast.hywtl_has.project_estimate.service;
 
 import com.howoocast.hywtl_has.common.domain.EventEntity;
+import com.howoocast.hywtl_has.common.exception.FileSystemException;
+import com.howoocast.hywtl_has.common.exception.FileSystemException.FileSystemExceptionType;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.file.domain.FileItem;
@@ -202,6 +204,11 @@ public class ProjectEstimateService {
         ProjectCustomEstimate projectCustomEstimate = customEstimateRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(ProjectEstimate.KEY, id);
         });
+
+        if(Objects.isNull(projectCustomEstimate.getFile())) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
+
         return fileItemRepository.findById(projectCustomEstimate.getFile().getId()).orElseThrow(() -> {
             throw new NotFoundException(FileItem.KEY, projectCustomEstimate.getFile().getId());
         });

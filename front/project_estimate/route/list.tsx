@@ -12,6 +12,7 @@ import { RootState } from 'services/reducer';
 import { projectEstimateAction } from 'project_estimate/action';
 import {
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   ProjectEstimateType
 } from 'project_estimate/domain';
 import { ProjectFinalEstimateParameter } from 'project_estimate/parameter';
@@ -31,7 +32,9 @@ export default function ProjectEstimateListRoute() {
   const openSystemDetailModal = useCallback((id: ProjectEstimateId) => dispatch(projectEstimateAction.setSystemModal(id)), [dispatch]);
   const openFinalModal = useCallback(() => dispatch(projectEstimateAction.setFinalModal(true)), [dispatch]);
   const onUpdate = useCallback((params: ProjectFinalEstimateParameter) => dispatch(projectEstimateAction.update(params)), [dispatch]);
-  const [codeList, setCodeList] = useState<string[]>(list?.map((item) => item.code).sort() || []);
+  const onValidateFile = useCallback((estimate: ProjectEstimateShortVO) => dispatch(projectEstimateAction.validateFile(estimate)), [dispatch]);
+  const [codeList, setCodeList] = useState<string[]>(list?.map((item) => item.code)
+                                                         .sort() || []);
   useEffect(() => {
     if (localStorage.getItem('custom')) {
       openCustomDetailModal(ProjectEstimateId(Number(localStorage.getItem('custom'))));
@@ -65,7 +68,8 @@ export default function ProjectEstimateListRoute() {
   }, [id]);
 
   useEffect(() => {
-    setCodeList(list?.map((item) => item.code).sort() || []);
+    setCodeList(list?.map((item) => item.code)
+                    .sort() || []);
   }, [list]);
 
   return (
@@ -74,6 +78,7 @@ export default function ProjectEstimateListRoute() {
       loading={loading}
       codeList={codeList}
       onUpdate={onUpdate}
+      onValidateFile={onValidateFile}
       finalEstimate={finalEstimate}
       openCustomAddModal={openCustomAddModal}
       openCustomDetailModal={openCustomDetailModal}

@@ -34,7 +34,8 @@ function* watchProjectId() {
       try {
         const list: ProjectContractShortVO[] = yield call(projectContractApi.getList, projectId);
         yield put(projectContractAction.setList(list));
-      } finally {
+      }
+      finally {
         yield delay(300);
         yield put(projectContractAction.setLoading(false));
       }
@@ -229,6 +230,20 @@ function* watchUpdateFinalContractCollection() {
   }
 }
 
+function* validateFile() {
+  while (true) {
+    const { payload: contract } = yield take(projectContractAction.validateFile);
+    try {
+      yield call(projectContractApi.validateFile, contract);
+      window.location.assign(`/file-item?projectContractId=${contract.id}&type=${contract.fileType}`);
+    }
+    catch (e) {
+      const message = getErrorMessage(projectContractAction.validateFile, e);
+      yield put(dialogAction.openError(message));
+    }
+  }
+}
+
 export default function* projectContractSaga() {
   yield fork(watchProjectId);
   yield fork(watchModal);
@@ -240,5 +255,6 @@ export default function* projectContractSaga() {
   yield fork(watchGetFinal);
   yield fork(watchUpdateFinal);
   yield fork(watchUpdateFinalContractCollection);
+  yield fork(validateFile);
 }
 

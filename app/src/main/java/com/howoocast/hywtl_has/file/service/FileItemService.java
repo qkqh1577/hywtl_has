@@ -108,6 +108,9 @@ public class FileItemService {
     public FileItem getByProjectEstimateId(Long projectEstimateId) {
         FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectEstimateIdOrderByCreatedAtDesc(
             projectEstimateId);
+        if (Objects.isNull(history)) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
 
         return getFileItem(history, "pdf");
     }
@@ -115,16 +118,19 @@ public class FileItemService {
     public FileItem getByProjectContractId(Long projectContractId, String type) {
         FileConversionHistory history = fileConversionHistoryRepository.findTopByProjectContractIdOrderByCreatedAtDesc(
             projectContractId);
-
+        if (Objects.isNull(history)) {
+            throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
         return getFileItem(history, type);
     }
+
     private FileItem getFileItem(FileConversionHistory history, String type) {
         if (history.getState() == FileState.FAIL) {
             throw new FileSystemException(FileSystemExceptionType.FAILED_TO_CONVERT);
-        }else if(history.getState() == FileState.WAITING) {
+        } else if (history.getState() == FileState.WAITING) {
             throw new FileSystemException(FileSystemExceptionType.IS_CONVERTING);
         }
-        if(StringUtils.equals(type, "word")) {
+        if (StringUtils.equals(type, "word")) {
             return get(history.getOriginalFile().getId());
         }
         return get(history.getConvertedFile().getId());

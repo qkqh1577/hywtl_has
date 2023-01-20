@@ -12,6 +12,7 @@ import ProjectContractListSection from 'project_contract/view/ContractList';
 import {
   ProjectContractCollectionVO,
   ProjectContractId,
+  ProjectContractShortVO,
   ProjectFinalContractVO
 } from 'project_contract/domain';
 import { RootState } from 'services/reducer';
@@ -32,7 +33,7 @@ export default function ProjectContractListRoute() {
   const onUpdate = useCallback((params: ProjectFinalContractParameter) => dispatch(projectContractAction.update(params)), [dispatch]);
   const [contractCodeList, setContractCode] = useState<string[]>(list?.map((item) => item.code).sort() || []);
   const [estimateCodeList, setEstimateCodeList] = useState<string[]>(list?.map((item) => item.estimateCode).sort() || []);
-
+  const onValidateFile = useCallback((contract: ProjectContractShortVO) => dispatch(projectContractAction.validateFile(contract)), [dispatch]);
   useEffect(() => {
     closeStatus(requestFinalContractUpdate, () => {
       if (id) {
@@ -68,6 +69,7 @@ export default function ProjectContractListRoute() {
       openFinalModal={openFinalModal}
       openFinalContractCollectionModal={openFinalContractCollectionModal}
       openContractCollectionModal={openContractCollectionModal}
+      onValidateFile={onValidateFile}
     />
   );
 }

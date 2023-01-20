@@ -7,12 +7,14 @@ import React, { useContext } from 'react';
 import { FormikContext, } from 'formik';
 import { DefaultFunction } from 'type/Function';
 import { ProjectSystemEstimateVO } from 'project_estimate/domain';
+import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   onCancel: DefaultFunction;
   onDelete: DefaultFunction;
   onContractAdd: (values: ProjectSystemEstimateVO) => void;
   onClose: DefaultFunction;
+  onValidateFile: (estimate: ProjectSystemEstimateParameter) => void;
 }
 
 export default function ProjectSystemEstimateModalTopForm(props: Props) {
@@ -20,6 +22,7 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
   const formik = useContext(FormikContext);
   const edit = formik.values.edit;
   const isDetail = !edit && formik.values.id;
+
   return (
     <Box
       sx={{
@@ -95,7 +98,7 @@ export default function ProjectSystemEstimateModalTopForm(props: Props) {
         )}
         {isDetail && (
           <Button onClick={() => {
-            window.open(`/file-item?projectEstimateId=${isDetail}`, '_blank');
+            props.onValidateFile(formik.values);
           }}>
             PDF 다운로드
           </Button>

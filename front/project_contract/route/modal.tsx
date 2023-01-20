@@ -53,6 +53,7 @@ export default function ProjectContractModalRoute() {
   const onDelete = useCallback((id: ProjectContractId) => dispatch(projectContractAction.deleteOne(id)), [dispatch]);
   const onAdd = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.add(params)), [dispatch]);
   const onChange = useCallback((params: ProjectContractParameter) => dispatch(projectContractAction.change(params)), [dispatch]);
+  const onValidateFile = useCallback((contract: ProjectContractParameter) => dispatch(projectContractAction.validateFile(contract)), [dispatch]);
   const getEstimate = useCallback((id: ProjectEstimateId | undefined) => dispatch(projectContractAction.getEstimate(id)), [dispatch]);
   const { variableList } = useSelector((root: RootState) => root.contractCondition);
   const formik = useFormik<ProjectContractParameter>({
@@ -168,6 +169,7 @@ export default function ProjectContractModalRoute() {
         <ProjectContractModal
           open={typeof modal !== 'undefined'}
           onClose={onClose}
+          onValidateFile={onValidateFile}
           onCancel={() => {
             rollback(() => {
               if (modal === null) {

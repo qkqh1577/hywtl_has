@@ -32,7 +32,6 @@ export interface ProjectEstimateState {
   systemModal?: ProjectEstimateId | null;
   requestUpdateFinalEstimate: ApiStatus;
   finalEstimate?: ProjectFinalEstimateVO;
-
 }
 
 const initial: ProjectEstimateState = {
@@ -50,9 +49,9 @@ const initial: ProjectEstimateState = {
 };
 
 export const projectEstimateReducer = createReducer(initial, {
-  [ProjectEstimateActionType.setLoading]:      (state,
+  [ProjectEstimateActionType.setLoading]:        (state,
                                                   action
-  ) => ({
+                                                 ) => ({
     ...state,
     loading: action.payload,
   }),
@@ -165,8 +164,9 @@ export const projectEstimateReducer = createReducer(initial, {
     ...state,
     requestUpdateFinalEstimate: action.payload,
   }),
-  [ProjectEstimateActionType.setFinalEstimate]:                      (state,
-                                                                      action) => ({
+  [ProjectEstimateActionType.setFinalEstimate]:           (state,
+                                                           action
+                                                          ) => ({
     ...state,
     finalEstimate: action.payload,
   })

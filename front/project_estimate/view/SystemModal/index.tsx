@@ -5,6 +5,7 @@ import ModalLayout from 'layouts/ModalLayout';
 import ProjectSystemEstimateModalForm from 'project_estimate/view/SystemModal/Form';
 import { ProjectSystemEstimateVO } from 'project_estimate/domain';
 import { EstimateContentVariableVO } from 'admin/estimate/content/domain';
+import { ProjectSystemEstimateParameter } from 'project_estimate/parameter';
 
 interface Props {
   open: boolean;
@@ -14,6 +15,7 @@ interface Props {
   openDocumentModal: DefaultFunction<number>;
   openContractAddModal: (values: ProjectSystemEstimateVO) => void;
   variableList?: EstimateContentVariableVO[];
+  onValidateFile: (estimate: ProjectSystemEstimateParameter) => void;
 }
 
 export default function ProjectSystemEstimateModal(props: Props) {
@@ -34,6 +36,7 @@ export default function ProjectSystemEstimateModal(props: Props) {
           openDocumentModal={props.openDocumentModal}
           openContractAddModal = {props.openContractAddModal}
           variableList={props.variableList}
+          onValidateFile={props.onValidateFile}
         />
       }
     />

@@ -45,6 +45,7 @@ export default function ProjectStatusLeftBar({
                                                contractStatus,
                                                bidStatus,
                                              }: Props) {
+
   return (
     <Box sx={{
       display:        'flex',
@@ -109,7 +110,7 @@ export default function ProjectStatusLeftBar({
           ))}
         </Select>
       </DataBox>
-      {bidStatus && (
+      {bidType !== ProjectBasicBidType.DEFAULT && (
         <DataBox title="입찰 상태">
           <Select
             displayEmpty

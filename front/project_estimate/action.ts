@@ -3,6 +3,7 @@ import { ProjectId } from 'project/domain';
 import {
   ProjectCustomEstimateVO,
   ProjectEstimateId,
+  ProjectEstimateShortVO,
   ProjectEstimateType,
   ProjectEstimateVO,
   ProjectFinalEstimateVO,
@@ -48,6 +49,7 @@ export enum ProjectEstimateActionType {
   requestFinalEstimateUpdate = 'project/sales/final-estimate/update/request',
   getFinalEstimate           = 'project/sales/final-estimate/get',
   setFinalEstimate           = 'project/sales/final-estimate/set',
+  validateFile               = 'project/sales/estimate/file/validation',
 }
 
 export const projectEstimateAction = {
@@ -81,4 +83,5 @@ export const projectEstimateAction = {
   requestFinalEstimateUpdate: createAction(ProjectEstimateActionType.requestFinalEstimateUpdate)<ApiStatus>(),
   getFinalEstimate:           createAction(ProjectEstimateActionType.getFinalEstimate)<ProjectId>(),
   setFinalEstimate:           createAction(ProjectEstimateActionType.setFinalEstimate)<ProjectFinalEstimateVO | undefined>(),
+  validateFile:               createAction(ProjectEstimateActionType.validateFile)<ProjectEstimateShortVO | ProjectSystemEstimateParameter>(),
 };
