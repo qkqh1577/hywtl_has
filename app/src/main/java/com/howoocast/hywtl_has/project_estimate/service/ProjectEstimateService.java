@@ -204,8 +204,13 @@ public class ProjectEstimateService {
         ProjectCustomEstimate projectCustomEstimate = customEstimateRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(ProjectEstimate.KEY, id);
         });
-        return fileItemRepository.findById(projectCustomEstimate.getFile().getId()).orElseThrow(() -> {
+
+        if(Objects.isNull(projectCustomEstimate.getFile())) {
             throw new FileSystemException(FileSystemExceptionType.NOT_FOUND);
+        }
+
+        return fileItemRepository.findById(projectCustomEstimate.getFile().getId()).orElseThrow(() -> {
+            throw new NotFoundException(FileItem.KEY, projectCustomEstimate.getFile().getId());
         });
     }
 

@@ -254,8 +254,13 @@ function* validateFile() {
   while (true) {
     const { payload: estimate } = yield take(projectEstimateAction.validateFile);
     try {
-      yield call(projectEstimateApi.validateFile, estimate);
-      window.location.assign(estimate.type === ProjectEstimateType.SYSTEM ? `/file-item?projectEstimateId=${estimate.id}` : `/project/sales/estimate/${estimate.id}/file`);
+      if (estimate.type === ProjectEstimateType.SYSTEM) {
+        yield call(projectEstimateApi.validateSystemFile, estimate);
+        window.location.assign(`/file-item?projectEstimateId=${estimate.id}`);
+      }else {
+        yield call(projectEstimateApi.validateCustomFile, estimate);
+       window.location.assign( `/project/sales/estimate/${estimate.id}/file`);
+      }
     }
     catch (e) {
       const message = getErrorMessage(projectEstimateAction.validateFile, e);

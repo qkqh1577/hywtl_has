@@ -96,8 +96,13 @@ class ProjectEstimateApi {
     return data;
   }
 
-  async validateFile(estimated: ProjectEstimateShortVO): Promise<void> {
-    const { data } = await apiClient.get(`/file-item?projectEstimateId=${estimated.id}`);
+  async validateSystemFile(estimate: ProjectEstimateShortVO): Promise<void> {
+    const { data } = await apiClient.get(`/file-item?projectEstimateId=${estimate.id}`);
+    return data;
+  }
+
+  async validateCustomFile(estimate: ProjectEstimateShortVO): Promise<void> {
+    const { data } = await apiClient.get(`/project/sales/estimate/${estimate.id}/file`);
     return data;
   }
 }
