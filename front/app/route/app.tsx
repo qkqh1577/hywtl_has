@@ -3,7 +3,10 @@ import {
   useNavigate
 } from 'react-router-dom';
 import useDialog from 'dialog/hook';
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect
+} from 'react';
 import {
   useDispatch,
   useSelector
@@ -22,37 +25,52 @@ import ReactRouter from 'services/routes';
 import { Box } from '@mui/material';
 import { closeStatus } from 'components/DataFieldProps';
 import PasswordChangeModalRoute from 'login/route/passwordChangeModal';
+import axios from 'axios';
+import LoginModalRoute from 'login/route/loginModalRoute';
 
 const MemoizedProjectDrawerRoute = React.memo(ProjectDrawerRoute);
 
 export default function () {
-
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { detail: loginUser, requestLogin } = useSelector((root: RootState) => root.login);
-  const { error } = useDialog();
+  const { detail: loginUser, requestLogin, isOpenLoginModal } = useSelector((root: RootState) => root.login);
+  const { error, alert } = useDialog();
   const isLoginPage = pathname.startsWith('/login');
   const isPageRelationWithPassword = pathname.startsWith('/user/password-reset');
-
+  const openLoginModal = useCallback(() => dispatch(loginAction.setLoginModal(true)), [dispatch]);
   useEffect(() => {
     if (!loginUser) {
-      //TODO: 로그인 수정사항
-      // dispatch(loginAction.requestDetail());
       dispatch(menuAction.getMenu());
     }
   }, [loginUser]);
 
   useEffect(() => {
-    closeStatus(requestLogin, undefined, () => {
-      dispatch(loginAction.requestLogin('idle'));
-    }, () => {
-      if (pathname !== '/login') {
-        error('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
-        navigate('/login');
-      }
-    });
+    closeStatus(
+      requestLogin,
+      undefined,
+      () => {
+        dispatch(loginAction.requestLogin('idle'));
+      },
+      () => {
+        if (pathname !== '/login') {
+          openLoginModal();
+          // error('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
+          // navigate('/login');
+        }
+      });
   }, [requestLogin]);
+
+  useEffect(() => {
+    setInterval(async () => {
+      if (loginUser) {
+        let result = await axios.get('/login/session');
+        if (result.data) {
+          openLoginModal();
+        }
+      }
+    }, 62000);
+  }, [loginUser]);
 
   return (
     <Box sx={{
@@ -81,6 +99,7 @@ export default function () {
       <LoginChangeModalRoute />
       <PasswordChangeModalRoute />
       <UserNotificationModalRoute />
+      <LoginModalRoute />
     </Box>
   );
 }

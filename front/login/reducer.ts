@@ -17,6 +17,7 @@ export interface LoginState {
   passwordValidation?: PasswordValidation;
   loginError?: LoginError;
   requestReset: ApiStatus;
+  isOpenLoginModal: boolean;
 }
 
 const initial: LoginState = {
@@ -25,7 +26,8 @@ const initial: LoginState = {
   requestChange:       'idle',
   changeModal:         false,
   passwordChangeModal: false,
-  requestReset:        'idle'
+  requestReset:        'idle',
+  isOpenLoginModal:    false
 };
 
 export const loginReducer = createReducer(initial, {
@@ -83,4 +85,11 @@ export const loginReducer = createReducer(initial, {
     ...state,
     requestReset: action.payload
   }),
+  [LoginActionType.setLoginModal]:       (state,
+                                          action
+                                         ) => ({
+    ...state,
+    isOpenLoginModal: action.payload
+  }),
+
 });

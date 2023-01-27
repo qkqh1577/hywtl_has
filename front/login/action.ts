@@ -28,6 +28,7 @@ export enum LoginActionType {
   loginError          = 'login/error',
   reset               = 'login/password/reset',
   requestReset        = 'login/password/reset/request',
+  setLoginModal       = 'login/modal/set',
 }
 
 export const loginAction = {
@@ -46,4 +47,5 @@ export const loginAction = {
   loginError:          createAction(LoginActionType.loginError)<LoginError | undefined>(),
   reset:               createAction(LoginActionType.reset)<PasswordResetParameter>(),
   requestReset:        createAction(LoginActionType.requestReset)<ApiStatus>(),
+  setLoginModal:       createAction(LoginActionType.setLoginModal)<boolean>(),
 };

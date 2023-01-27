@@ -14,7 +14,7 @@ export interface ModalLayoutProps {
   title: string;
   width?: string | number;
   height?: string | number;
-  onClose: DefaultFunction;
+  onClose?: DefaultFunction;
   children: React.ReactNode;
   footer?: React.ReactNode;
 }
@@ -37,7 +37,9 @@ export default function ModalLayout({
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
           return;
         }
-        onClose();
+        if (onClose) {
+          onClose();
+        }
       }}
       disableEscapeKeyDown
     >
@@ -66,14 +68,16 @@ export default function ModalLayout({
           color:           ColorPalette._ffffff,
         }}>
           <TextBox variant="heading2">{title}</TextBox>
-          <FontAwesomeIcon
-            icon="xmark"
-            onClick={onClose}
-            style={{
-              cursor:   'pointer',
-              fontSize: '18px',
-            }}
-          />
+          {onClose && (
+            <FontAwesomeIcon
+              icon="xmark"
+              onClick={onClose}
+              style={{
+                cursor:   'pointer',
+                fontSize: '18px',
+              }}
+            />
+          )}
         </Box>
         <Box sx={{
           display:      'flex',
@@ -84,17 +88,17 @@ export default function ModalLayout({
           maxHeight:    '80vh',
         }}>
           <Box sx={{
-            display:                      'flex',
-            width:                        '100%',
-            flexWrap:                     'wrap',
+            display:  'flex',
+            width:    '100%',
+            flexWrap: 'wrap',
           }}>
             <Box
               sx={{
-                display:        'flex',
-                justifyContent: 'center',
-                flexWrap:       'wrap',
-                width:          '100%',
-                height:         footer? 'calc(100% - 80px)' : '100%',
+                display:                      'flex',
+                justifyContent:               'center',
+                flexWrap:                     'wrap',
+                width:                        '100%',
+                height:                       footer ? 'calc(100% - 80px)' : '100%',
                 padding:                      '20px',
                 overflowY:                    'auto',
                 '&::-webkit-scrollbar':       {
