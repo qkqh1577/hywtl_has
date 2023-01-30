@@ -62,6 +62,7 @@ public class LoginController {
         log.warn("session.getLastAccessedTime(): {}", session.getLastAccessedTime());
         log.warn("minus : {}", System.currentTimeMillis() - session.getLastAccessedTime());
         log.warn("System.currentTimeMillis(): {}", System.currentTimeMillis());
+        
         if (session.getMaxInactiveInterval() * 1000L < System.currentTimeMillis() - session.getLastAccessedTime()) {
             log.warn("세션 만료");
             Cookie[] cookies = request.getCookies();

@@ -25,8 +25,8 @@ import ReactRouter from 'services/routes';
 import { Box } from '@mui/material';
 import { closeStatus } from 'components/DataFieldProps';
 import PasswordChangeModalRoute from 'login/route/passwordChangeModal';
-import axios from 'axios';
 import LoginModalRoute from 'login/route/loginModalRoute';
+import { useInterval } from 'hook/useInterval';
 
 const MemoizedProjectDrawerRoute = React.memo(ProjectDrawerRoute);
 
@@ -62,14 +62,39 @@ export default function () {
   }, [requestLogin]);
 
   useEffect(() => {
-    setInterval(async () => {
+    const interval = useInterval(() => {
       if (loginUser) {
-        let result = await axios.get('/login/session');
-        if (result.data) {
-          openLoginModal();
-        }
+        dispatch(loginAction.setDetail(undefined));
+        openLoginModal();
       }
-    }, 62000);
+    }, 60000);
+    interval.start();
+
+    document.addEventListener('click', () => {
+      console.log('click');
+      interval.stop();
+      interval.restart();
+    });
+
+    document.addEventListener('scroll', () => {
+      console.log('scroll');
+      interval.stop();
+      interval.restart();
+    }, { passive: true });
+
+    document.addEventListener('keydown', () => {
+      console.log('key down');
+      interval.stop();
+      interval.restart();
+    });
+
+    document.addEventListener('mousemove', () => {
+      console.log('mousemove');
+      interval.stop();
+      interval.restart();
+    });
+
+
   }, [loginUser]);
 
   return (
