@@ -55,8 +55,6 @@ export default function () {
       () => {
         if (pathname !== '/login') {
           openLoginModal();
-          // error('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
-          // navigate('/login');
         }
       });
   }, [requestLogin]);
@@ -67,29 +65,26 @@ export default function () {
         dispatch(loginAction.setDetail(undefined));
         openLoginModal();
       }
-    }, 60000);
+    }, 3600000);
+
     interval.start();
 
     document.addEventListener('click', () => {
-      console.log('click');
       interval.stop();
       interval.restart();
     });
 
     document.addEventListener('scroll', () => {
-      console.log('scroll');
       interval.stop();
       interval.restart();
     }, { passive: true });
 
     document.addEventListener('keydown', () => {
-      console.log('key down');
       interval.stop();
       interval.restart();
     });
 
     document.addEventListener('mousemove', () => {
-      console.log('mousemove');
       interval.stop();
       interval.restart();
     });
