@@ -875,10 +875,19 @@ public class SalesDataToMigrateService {
                 .toPlainString()
         );
 
+        double rate = Double.parseDouble(salesMap.get(rateKey)) * 100;
+
+        Long vat = Long.parseLong(
+            new BigDecimal(salesMap.get(SalesHeader.TOTAL_CONSTRUCTION_VAT.getName())).setScale(0, RoundingMode.HALF_UP)
+                .toPlainString()
+        );
+
+        Long amountWithoutVat = (long) (amount - (vat * Double.parseDouble(salesMap.get(rateKey))));
+
         return ProjectContractCollectionStage.of(
             title,
-            Double.parseDouble(salesMap.get(rateKey)) * 100,
-            amount,
+            rate,
+            amountWithoutVat,
             salesMap.get(timeKey),
             null
         );
