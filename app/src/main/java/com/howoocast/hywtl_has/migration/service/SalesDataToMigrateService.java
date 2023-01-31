@@ -278,6 +278,11 @@ public class SalesDataToMigrateService {
                     });
             }
         });
+
+        Project byBasicCode = projectRepository.findByBasic_Code("32").orElse(null);
+        if (Objects.nonNull(byBasicCode)) {
+            byBasicCode.delete();
+        }
     }
 
     private void updateCreatedProjectDate(Map<String, String> salesMap, Project project) {
