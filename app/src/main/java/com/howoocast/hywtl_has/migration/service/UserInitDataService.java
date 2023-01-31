@@ -5,9 +5,14 @@ import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
 import com.howoocast.hywtl_has.migration.enums.PersonnelHeader;
 import com.howoocast.hywtl_has.migration.loader.PersonnelExcelReader;
 import com.howoocast.hywtl_has.personnel.domain.Personnel;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelBasic;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelCompany;
+import com.howoocast.hywtl_has.personnel.domain.PersonnelJob;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -53,36 +58,38 @@ public class UserInitDataService {
         });
 
         List<Map<String, String>> userInitMapList = PersonnelExcelReader.excelReader();
-        userInitMapList.forEach(user -> {
+        userInitMapList.forEach(userMap -> {
             DepartmentCategory departmentCategory = Arrays.stream(DepartmentCategory.values()).filter(category -> {
-                return category.name().equals(user.get(PersonnelHeader.DEPARTMENT_CATEGORY.getName()));
-            }).findFirst().orElseThrow(() -> new IllegalArgumentException("부서 카테고리가 잘못되었습니다."));
+                return category.name().equals(userMap.get(PersonnelHeader.DEPARTMENT_CATEGORY.getName()));
+            }).findFirst().orElseThrow(() -> {
+                return new IllegalArgumentException("부서 카테고리가 잘못되었습니다.");
+            });
 
-            departmentRepository.findByNameAndCategory(user.get(PersonnelHeader.DEPARTMENT_NAME.getName()),
+            departmentRepository.findByNameAndCategory(userMap.get(PersonnelHeader.DEPARTMENT_NAME.getName()),
                     departmentCategory)
                 .ifPresent((department) -> {
                     UserRole role = UserRole.NORMAL;
-                    if ("대표이사".equals(user.get(PersonnelHeader.POSITION.getName()))) {
+                    if ("대표이사".equals(userMap.get(PersonnelHeader.POSITION.getName()))) {
                         role = UserRole.MASTER;
                     }
                     String email = "이메일 없음";
-                    if (StringUtils.hasText(user.get(PersonnelHeader.COMPANY_EMAIL.getName()))) {
-                        email = user.get(PersonnelHeader.COMPANY_EMAIL.getName());
+                    if (StringUtils.hasText(userMap.get(PersonnelHeader.COMPANY_EMAIL.getName()))) {
+                        email = userMap.get(PersonnelHeader.COMPANY_EMAIL.getName());
                     }
 
                     em.persist(
                         UserInvitation.of(
                             email,
-                            user.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
+                            userMap.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
                             department,
                             role
                         ));
                     em.flush();
 
                     User newUser = User.of(
-                        user.get(PersonnelHeader.EMPLOYEE_ID.getName()),
+                        userMap.get(PersonnelHeader.EMPLOYEE_ID.getName()),
                         "qwe123",
-                        user.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
+                        userMap.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
                         email,
                         department,
                         role
@@ -91,11 +98,57 @@ public class UserInitDataService {
                     em.flush();
 
                     Personnel personnelInfo = Personnel.of(newUser);
+                    List<PersonnelJob> jobList = new ArrayList<>();
+                    PersonnelJob job = PersonnelJob.of(
+                        department,
+                        null,
+                        null,
+                        userMap.get(PersonnelHeader.POSITION.getName()),
+                        userMap.get(PersonnelHeader.POSITION.getName()),
+                        userMap.get(PersonnelHeader.DUTY.getName()),
+                        Boolean.TRUE
+                    );
+                    em.persist(job);
+                    em.flush();
+                    jobList.add(job);
+
+                    personnelInfo.change(
+                        PersonnelBasic.of(
+                            null,
+                            getDate(userMap, PersonnelHeader.BIRTH_DATE.getName()),
+                            userMap.get(PersonnelHeader.SEX.getName()),
+                            null,
+                            null,
+                            userMap.get(PersonnelHeader.MOBILE.getName()),
+                            null,
+                            null,
+                            userMap.get(PersonnelHeader.PERSONAL_EMAIL.getName())
+                        ),
+                        PersonnelCompany.of(
+                            getDate(userMap, PersonnelHeader.JOIN_DATE.getName()),
+                            null,
+                            null
+                        ),
+                        jobList,
+                        null,
+                        null,
+                        null,
+                        null
+                    );
+
                     em.persist(personnelInfo);
                     em.flush();
 
                     em.clear();
                 });
         });
+    }
+
+    private static LocalDate getDate(Map<String, String> salesMap, String type) {
+        String[] splitDate = salesMap.get(type).split("-");
+        String year = splitDate[2];
+        String month = String.format("%02d", Integer.parseInt(splitDate[1].split("월")[0]));
+        String day = splitDate[0];
+        return LocalDate.parse(String.format("%s-%s-%s", year, month, day));
     }
 }
