@@ -10,6 +10,10 @@ import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
+import com.howoocast.hywtl_has.rival_bid.domain.RivalBid;
+import com.howoocast.hywtl_has.rival_bid.repository.RivalBidRepository;
+import com.howoocast.hywtl_has.rival_estimate.domain.RivalEstimate;
+import com.howoocast.hywtl_has.rival_estimate.repository.RivalEstimateRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,10 @@ public class BusinessService {
     private final BusinessRepository repository;
 
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
+
+    private final RivalBidRepository rivalBidRepository;
+
+    private final RivalEstimateRepository rivalEstimateRepository;
 
     @Transactional(readOnly = true)
     @Cacheable(value = "businessServiceCache")
@@ -155,6 +163,7 @@ public class BusinessService {
     @Transactional
     @CacheEvict(value="businessServiceCache", allEntries = true)
     public void delete(Long id) {
+        //TODO: existsBy로 변경.
         repository.findById(id).ifPresent(instance -> {
             if (!instance.getManagerList().isEmpty()) {
                 throw new IllegalRequestException(
@@ -165,6 +174,23 @@ public class BusinessService {
             // TODO: 프로젝트 담당이 있는 담당자가 있는 경우 해당 담당자를 삭제할 수 없다
             instance.delete();
         });
+
+        List<RivalBid> rivalBidList = rivalBidRepository.findByBusiness_Id(id);
+        if (!rivalBidList.isEmpty()) {
+            throw new IllegalRequestException(
+                Business.KEY + ".rival_bid.delete_violation",
+                "경쟁 업체 입찰이 존재하는 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        List<RivalEstimate> rivalEstimateList = rivalEstimateRepository.findByBusiness_Id(id);
+        if (!rivalEstimateList.isEmpty()) {
+            throw new IllegalRequestException(
+                Business.KEY + ".rival_estimate_bid.delete_violation",
+                "경쟁 업체 견적이 존재하는 업체는 삭제할 수 없습니다."
+            );
+        }
+
     }
 
     private Business load(Long id) {
