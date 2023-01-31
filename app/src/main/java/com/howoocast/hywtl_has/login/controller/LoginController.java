@@ -8,8 +8,6 @@ import com.howoocast.hywtl_has.login.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.login.service.LoginService;
 import com.howoocast.hywtl_has.user.view.UserView;
 import java.io.IOException;
-import java.util.Arrays;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,29 +54,7 @@ public class LoginController {
 
     @GetMapping("/login/session")
     public boolean hasSession(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws IOException {
-        log.warn("httpSession.getLastAccessedTime() : {}", httpSession.getLastAccessedTime());
         HttpSession session = request.getSession(false);
-        log.warn("session: {}", session.getId());
-        log.warn("session.getLastAccessedTime(): {}", session.getLastAccessedTime());
-        log.warn("minus : {}", System.currentTimeMillis() - session.getLastAccessedTime());
-        log.warn("System.currentTimeMillis(): {}", System.currentTimeMillis());
-        
-        if (session.getMaxInactiveInterval() * 1000L < System.currentTimeMillis() - session.getLastAccessedTime()) {
-            log.warn("세션 만료");
-            Cookie[] cookies = request.getCookies();
-            Arrays.stream(cookies).forEach(cookie -> {
-                if ("JSESSIONID".equals(cookie.getName())) {
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            });
-
-//            session.removeAttribute("JSESSIONID");
-//            session.invalidate();
-            log.warn("after invalidate session: {}", session.getId());
-            return true;
-        }
-
         return false;
     }
 }
