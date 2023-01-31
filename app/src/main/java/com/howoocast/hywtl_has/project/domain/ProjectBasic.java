@@ -199,12 +199,12 @@ public class ProjectBasic {
     }
 
     /**
-     * @migration 마이그레이션 용도 한정
      * @param code
      * @param name
      * @param bidType
      * @param receptionManager
      * @return
+     * @migration 마이그레이션 용도 한정
      */
 
     public static ProjectBasic of(
@@ -222,9 +222,9 @@ public class ProjectBasic {
     }
 
     /**
-     * @migration 마이그레이션 용도 한정
      * @param name
      * @return
+     * @migration 마이그레이션 용도 한정
      */
     public ProjectBasic updateName(String name) {
         this.name = name;
@@ -232,12 +232,20 @@ public class ProjectBasic {
     }
 
     /**
-     * @migration 마이그레이션 용도 한정
      * @param isLh
      * @return
+     * @migration 마이그레이션 용도 한정
      */
     public ProjectBasic updateIsLh(Boolean isLh) {
         this.isLh = isLh;
         return this;
+    }
+
+    /**
+     * @migration 마이그레이션 용도 한정
+     * @param g2b
+     */
+    public void updateCategory(ProjectBasicBidType g2b) {
+        this.bidType = g2b;
     }
 }

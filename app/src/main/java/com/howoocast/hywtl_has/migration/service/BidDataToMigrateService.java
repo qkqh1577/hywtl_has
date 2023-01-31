@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.migration.enums.BidHeader;
 import com.howoocast.hywtl_has.migration.loader.BidExcelReader;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.domain.ProjectBasic;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -40,6 +41,7 @@ public class BidDataToMigrateService {
         userRepository.findByUsername("admin").ifPresent(a -> {
             List<Map<String, String>> bidMapList = BidExcelReader.excelReader();
             bidMapList.forEach(bidMap -> {
+                // 프로젝트 코드가 없는 것 제외.
                 if (!StringUtils.hasText(bidMap.get(BidHeader.PROJECT_CODE.getName()))) {
                     return;
                 }
@@ -53,9 +55,19 @@ public class BidDataToMigrateService {
                     code = value.substring(0, value.length() - 2);
                 }
                 String finalCode = code.trim();
+
                 projectRepository.findByBasic_Code(finalCode).ifPresentOrElse(project -> {
                         getBid(bidMap, project);
                         getRivalBid(bidMap, project);
+                        // 프로젝트 나라장터 입찰이 아닌 경우
+
+                        ProjectBasic basic = project.getBasic();
+                        if (!project.getBasic().getBidType().equals(ProjectBasicBidType.G2B)) {
+                            basic.updateCategory(ProjectBasicBidType.G2B);
+                            project.updateBasic(basic);
+                            em.persist(project);
+                        }
+
                     },
                     () -> {
                         // 프로젝트 없는 경우.
@@ -80,6 +92,14 @@ public class BidDataToMigrateService {
     }
 
     private void getRivalBid(Map<String, String> bidMap, Project project) {
+        if(bidMap.get(BidHeader.PROJECT_CODE.getName()).equals("22366.0")){
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.FIRST_RANK.getName()));
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.SECOND_RANK.getName()));
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.THIRD_RANK.getName()));
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.FOURTH_RANK.getName()));
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.FIFTH_RANK.getName()));
+            System.out.println("bidMap.get() = " + bidMap.get(BidHeader.SIXTH_RANK.getName()));
+        }
         // 1순위
         if (StringUtils.hasText(bidMap.get(BidHeader.FIRST_RANK.getName()))
             && StringUtils.hasText(bidMap.get(BidHeader.FIRST_RANK_AMOUNT.getName()))) {
@@ -183,7 +203,6 @@ public class BidDataToMigrateService {
         // 금액
         if (StringUtils.hasText(bidMap.get(BidHeader.AMOUNT.getName()))) {
             bid.updateTotalAmount(getAmount(bidMap, BidHeader.AMOUNT.getName()));
-            // super return 확인 필요.
         }
     }
 
