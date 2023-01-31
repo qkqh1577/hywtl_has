@@ -2,14 +2,21 @@ package com.howoocast.hywtl_has.migration.service;
 
 import com.howoocast.hywtl_has.department.domain.DepartmentCategory;
 import com.howoocast.hywtl_has.department.repository.DepartmentRepository;
+import com.howoocast.hywtl_has.migration.enums.PersonnelHeader;
+import com.howoocast.hywtl_has.migration.loader.PersonnelExcelReader;
+import com.howoocast.hywtl_has.personnel.domain.Personnel;
 import com.howoocast.hywtl_has.user.common.UserRole;
 import com.howoocast.hywtl_has.user.domain.User;
 import com.howoocast.hywtl_has.user_verification.domain.UserInvitation;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -22,75 +29,73 @@ public class UserInitDataService {
 
     @Transactional
     public void init() {
-        final int userCount = 100;
-
-        final String[] departments=new String[]{
-                "한양풍동실험연구소",
-                "총괄본부",
-                "영업본부",
-                "기술본부",
-                "경영전략본부",
-                "기술팀",
-                "영업팀",
-                "모형팀",
-                "마케팅팀",
-                "기술 부서",
-                "실험 부서",
-                "편집 부서",
-                "영업 부서",
-                "마케팅 부서",
-                "디자인 1부서",
-                "디자인 2부서",
-                "기계제작 부서",
-                "튜빙 부서"
-        };
-
-        for(int i=0;i<userCount;i++){
-
-            String userId   = i==0? "admin" : String.format("user%d",i);
-            String name     = i==0? "관리자" : String.format("사용자%d",i);
-            String email    = i==0? "woo@howoocast.com" : String.format("user%d@howoocast.com",i);
-            UserRole role   = i==0? UserRole.MASTER: UserRole.NORMAL;
-
-            String departmentName = departments[i%departments.length];
-            DepartmentCategory category = null;
-
-            if(departmentName.endsWith("연구소")){
-                category = DepartmentCategory.COMPANY;
-            } else if(departmentName.endsWith("본부")){
-                category = DepartmentCategory.HQ;
-            } else if(departmentName.endsWith("팀")){
-                category = DepartmentCategory.TEAM;
-            } else if(departmentName.endsWith("부서")){
-                category = DepartmentCategory.PART;
-            } else {
-                category = DepartmentCategory.EXTRA;
-            }
-
-            departmentRepository.findByNameAndCategory(departmentName,
-                    category).ifPresent(department -> {
-                em.persist(
-                    UserInvitation.of(
-                        email,
-                        name,
-                        department,
-                        role
+        // admin 계정
+        departmentRepository.findByNameAndCategory("한양풍동실험연구소",
+            DepartmentCategory.COMPANY).ifPresent(department -> {
+            em.persist(
+                UserInvitation.of(
+                    "geun@howoocast.com",
+                    "관리자",
+                    department,
+                    UserRole.MASTER
                 ));
+            em.persist(
+                User.of(
+                    "admin",
+                    "qwe123",
+                    "관리자",
+                    "geun@howoocast.com",
+                    department,
+                    UserRole.MASTER
+                )
+            );
 
-                em.persist(
-                    User.of(
-                        userId,
+        });
+
+        List<Map<String, String>> userInitMapList = PersonnelExcelReader.excelReader();
+        userInitMapList.forEach(user -> {
+            DepartmentCategory departmentCategory = Arrays.stream(DepartmentCategory.values()).filter(category -> {
+                return category.name().equals(user.get(PersonnelHeader.DEPARTMENT_CATEGORY.getName()));
+            }).findFirst().orElseThrow(() -> new IllegalArgumentException("부서 카테고리가 잘못되었습니다."));
+
+            departmentRepository.findByNameAndCategory(user.get(PersonnelHeader.DEPARTMENT_NAME.getName()),
+                    departmentCategory)
+                .ifPresent((department) -> {
+                    UserRole role = UserRole.NORMAL;
+                    if ("대표이사".equals(user.get(PersonnelHeader.POSITION.getName()))) {
+                        role = UserRole.MASTER;
+                    }
+                    String email = "이메일 없음";
+                    if (StringUtils.hasText(user.get(PersonnelHeader.COMPANY_EMAIL.getName()))) {
+                        email = user.get(PersonnelHeader.COMPANY_EMAIL.getName());
+                    }
+
+                    em.persist(
+                        UserInvitation.of(
+                            email,
+                            user.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
+                            department,
+                            role
+                        ));
+                    em.flush();
+
+                    User newUser = User.of(
+                        user.get(PersonnelHeader.EMPLOYEE_ID.getName()),
                         "qwe123",
-                        name,
+                        user.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
                         email,
                         department,
                         role
-                    )
-                );
-                em.flush();
-                em.clear();
-            });
-        }
+                    );
+                    em.persist(newUser);
+                    em.flush();
 
+                    Personnel personnelInfo = Personnel.of(newUser);
+                    em.persist(personnelInfo);
+                    em.flush();
+
+                    em.clear();
+                });
+        });
     }
 }
