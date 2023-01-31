@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 @Slf4j
 @Getter
@@ -60,13 +61,13 @@ public class Personnel extends CustomEntity {
     }
 
     public void change(
-        PersonnelBasic basic,
-        PersonnelCompany company,
-        List<PersonnelJob> jobList,
-        List<PersonnelAcademic> academicList,
-        List<PersonnelCareer> careerList,
-        List<PersonnelLicence> licenceList,
-        List<PersonnelLanguage> languageList
+        @Nullable PersonnelBasic basic,
+        @Nullable PersonnelCompany company,
+        @Nullable List<PersonnelJob> jobList,
+        @Nullable List<PersonnelAcademic> academicList,
+        @Nullable List<PersonnelCareer> careerList,
+        @Nullable List<PersonnelLicence> licenceList,
+        @Nullable List<PersonnelLanguage> languageList
     ) {
         this.basic = basic;
         this.company = company;

@@ -77,7 +77,6 @@ export default function LanguageForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="자격증명"
                 labelPosition="top"
               >
@@ -102,7 +101,6 @@ export default function LanguageForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="대상 언어"
                 labelPosition="top"
               >
@@ -151,7 +149,6 @@ export default function LanguageForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="발급기관명"
                 labelPosition="top"
               >
@@ -176,7 +173,6 @@ export default function LanguageForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="취득일(시작일)"
                 labelPosition="top"
               >

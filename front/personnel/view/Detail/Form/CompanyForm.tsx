@@ -46,7 +46,7 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="입사일" labelSX={{minWidth: '80px'}}>
+          <DataFieldWithLabel label="입사일" labelSX={{minWidth: '80px'}}>
             <DatePicker
               openTo="year"
               inputFormat="YYYY-MM-DD"
@@ -84,7 +84,7 @@ export default function CompanyForm() {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="입사 구분" labelSX={{minWidth: '80px'}}>
+          <DataFieldWithLabel label="입사 구분" labelSX={{minWidth: '80px'}}>
             <Select
               readOnly={!edit}
               value={values.hiredType ?? ''}

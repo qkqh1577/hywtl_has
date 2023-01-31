@@ -55,7 +55,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="영문명" labelSX={{minWidth: '80px'}}>
+          <DataFieldWithLabel label="영문명" labelSX={{minWidth: '80px'}}>
             <Input
               readOnly={!edit}
               key={values.engName}
@@ -78,7 +78,7 @@ export default function BasicForm(props: Props) {
           width:        '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="생년월일" labelSX={{minWidth: '80px'}}>
+          <DataFieldWithLabel label="생년월일" labelSX={{minWidth: '80px'}}>
             <DatePicker
               openTo="year"
               inputFormat="YYYY-MM-DD"
@@ -117,7 +117,7 @@ export default function BasicForm(props: Props) {
           marginRight:  '47%',
           marginBottom: '15px',
         }}>
-          <DataFieldWithLabel required={edit} label="성별" labelSX={{minWidth: '80px'}}>
+          <DataFieldWithLabel label="성별" labelSX={{minWidth: '80px'}}>
             {!edit && (
               <Input
                 readOnly

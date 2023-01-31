@@ -62,23 +62,10 @@ public class PersonnelService {
         Long id,
         PersonnelParameter parameter) {
         Personnel instance = this.load(id);
+
         instance.change(
-            PersonnelBasic.of(
-                parameter.getBasic().getEngName(),
-                parameter.getBasic().getBirthDate(),
-                parameter.getBasic().getSex(),
-                fileItemService.build(parameter.getBasic().getImage()),
-                parameter.getBasic().getAddress(),
-                parameter.getBasic().getPhone(),
-                parameter.getBasic().getEmergencyPhone(),
-                parameter.getBasic().getRelationship(),
-                parameter.getBasic().getPersonalEmail()
-            ),
-            PersonnelCompany.of(
-                parameter.getCompany().getHiredDate(),
-                parameter.getCompany().getHiredType(),
-                parameter.getCompany().getRecommender()
-            ),
+            getBasic(parameter),
+            getCompany(parameter),
             parameter.getJobList().stream()
                 .map(item -> PersonnelJob.of(
                     new CustomFinder<>(departmentRepository, Department.class).byId(item.getDepartmentId()),
@@ -98,6 +85,34 @@ public class PersonnelService {
         if (Objects.isNull(instance.getId())) {
             repository.save(instance);
         }
+    }
+
+    private PersonnelCompany getCompany(PersonnelParameter parameter) {
+        if (Objects.isNull(parameter.getCompany())) {
+            return null;
+        }
+        return PersonnelCompany.of(
+            parameter.getCompany().getHiredDate(),
+            parameter.getCompany().getHiredType(),
+            parameter.getCompany().getRecommender()
+        );
+    }
+
+    private PersonnelBasic getBasic(PersonnelParameter parameter) {
+        if (Objects.isNull(parameter.getBasic())) {
+            return null;
+        }
+        return PersonnelBasic.of(
+            parameter.getBasic().getEngName(),
+            parameter.getBasic().getBirthDate(),
+            parameter.getBasic().getSex(),
+            fileItemService.build(parameter.getBasic().getImage()),
+            parameter.getBasic().getAddress(),
+            parameter.getBasic().getPhone(),
+            parameter.getBasic().getEmergencyPhone(),
+            parameter.getBasic().getRelationship(),
+            parameter.getBasic().getPersonalEmail()
+        );
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT, classes = User.class)

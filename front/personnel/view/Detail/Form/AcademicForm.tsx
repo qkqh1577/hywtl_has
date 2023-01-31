@@ -75,7 +75,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="교육기관명" labelPosition="top">
+              <DataFieldWithLabel label="교육기관명" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.academyName}
@@ -96,7 +96,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="전공(과)" labelPosition="top">
+              <DataFieldWithLabel label="전공(과)" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.major}
@@ -138,7 +138,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="재적상태" labelPosition="top">
+              <DataFieldWithLabel label="재적상태" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.state}
@@ -180,7 +180,7 @@ export default function AcademicForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="입학일" labelPosition="top">
+              <DataFieldWithLabel label="입학일" labelPosition="top">
                 <DatePicker
                   openTo="year"
                   inputFormat="YYYY-MM-DD"
@@ -217,7 +217,6 @@ export default function AcademicForm() {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="졸업일"
                 labelPosition="top"
               >

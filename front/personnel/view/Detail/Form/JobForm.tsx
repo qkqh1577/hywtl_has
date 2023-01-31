@@ -131,7 +131,6 @@ export default function JobForm(props: Props) {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="소속부서"
                 labelPosition="top"
               >
@@ -158,7 +157,6 @@ export default function JobForm(props: Props) {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="직함"
                 labelPosition="top"
               >
@@ -183,7 +181,6 @@ export default function JobForm(props: Props) {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="직종"
                 labelPosition="top"
               >
@@ -208,7 +205,6 @@ export default function JobForm(props: Props) {
               marginRight: '30px',
             }}>
               <DataFieldWithLabel
-                required={edit}
                 label="직위"
                 labelPosition="top"
               >

@@ -76,7 +76,7 @@ export default function LicenceForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="면허정보" labelPosition="top">
+              <DataFieldWithLabel label="면허정보" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.name}
@@ -118,7 +118,7 @@ export default function LicenceForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="발급기관명" labelPosition="top">
+              <DataFieldWithLabel label="발급기관명" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.organizationName}
@@ -139,7 +139,7 @@ export default function LicenceForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="인가번호" labelPosition="top">
+              <DataFieldWithLabel label="인가번호" labelPosition="top">
                 <Input
                   readOnly={!edit}
                   key={values.qualifiedNumber}
@@ -181,7 +181,7 @@ export default function LicenceForm() {
               width:       `calc((100% - ${100 + (30 * spaceCount)}px) / ${spaceCount})`,
               marginRight: '30px',
             }}>
-              <DataFieldWithLabel required={edit} label="만료일" labelPosition="top">
+              <DataFieldWithLabel label="만료일" labelPosition="top">
                 <DatePicker
                   openTo="year"
                   inputFormat="YYYY-MM-DD"

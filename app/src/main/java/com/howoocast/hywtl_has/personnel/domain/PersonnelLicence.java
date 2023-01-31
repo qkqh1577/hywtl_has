@@ -1,9 +1,7 @@
 package com.howoocast.hywtl_has.personnel.domain;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,22 +14,14 @@ import lombok.NoArgsConstructor;
 public class PersonnelLicence {
 
     public static final String KEY = "personnel_licence";
-    @NotBlank
-    @Column(nullable = false)
     protected String name; // 면허 이름
 
     protected String type; // 종별
 
-    @NotBlank
-    @Column(nullable = false)
     protected String organizationName; // 발급기관명
 
-    @NotBlank
-    @Column(nullable = false)
     protected String qualifiedNumber; // 승인 번호
 
-    @NotBlank
-    @Column(nullable = false)
     protected LocalDate qualifiedDate; // 승인 일자
 
     protected String note; // 비고
