@@ -45,4 +45,6 @@ public interface ProjectBasicBusinessRepository extends CustomRepository<Project
     List<ProjectBasicBusiness> findByBusiness_NameAndProjectAndInvolvedTypeAndBusinessManager_Name(String businessName, Project project, ProjectInvolvedType projectInvolvedType, String businessManagerName);
 
     Boolean existsByBusiness_Id(Long id);
+
+    Boolean existsByBusinessManager_Id(Long id);
 }

@@ -361,10 +361,6 @@ export default function BusinessManagerListSection(props: Props) {
                     shape="small3"
                     children="삭제"
                     onClick={() => {
-                      if (managerList.length === 1) {
-                        error('최소 하나 이상의 담당자 정보가 필요합니다.');
-                        return;
-                      }
                       formik.setFieldValue('managerList', managerList.filter((manager,
                                                                               j
                       ) => i !== j));
