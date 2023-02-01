@@ -30,12 +30,12 @@ export default function ProjectDrawerRoute() {
 
   const isProjectPage = useMemo(() => pathname.startsWith('/project/'), [pathname]);
   const { drawerOpen, filterOpen, filterStatus, id, loading, page } = useSelector((root: RootState) => root.project);
-
   const [list, setList] = useState<ProjectShortVO[]>([]);
   const setFilter = useCallback((query: ProjectQuery) => dispatch(projectAction.setFilter(query)), [dispatch]);
   const toggleFilter = useCallback(() => dispatch(projectAction.toggleFilter()), [dispatch]);
 
   const onRowClick: ProjectDrawerProps['onRowClick'] = (item) => {
+    dispatch(projectAction.setId(item.id));
     navigate(`/project/sales-management/${item.id}/basic`,{
       state:{
         initialize: true
