@@ -30,6 +30,8 @@ import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageS
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageStatusType;
 import com.howoocast.hywtl_has.project_collection.domain.ProjectCollectionStageVersion;
 import com.howoocast.hywtl_has.project_collection.repository.ProjectCollectionRepository;
+import com.howoocast.hywtl_has.project_complex.domain.ProjectComplexBuilding;
+import com.howoocast.hywtl_has.project_complex.repository.ProjectComplexBuildingRepository;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContract;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractBasic;
 import com.howoocast.hywtl_has.project_contract.domain.ProjectContractCollection;
@@ -84,8 +86,9 @@ public class SalesDataToMigrateService {
     private final ContractCollectionRepository contractCollectionRepository;
     private final ContractConditionRepository contractConditionRepository;
     private final ProjectCollectionRepository projectCollectionRepository;
-    private static long lastTimeStamp = System.currentTimeMillis();
     private final BusinessManagerRepository businessManagerRepository;
+    private final ProjectComplexBuildingRepository projectComplexBuildingRepository;
+    private static long lastTimeStamp = System.currentTimeMillis();
 
     @Transactional
     public void migrate() {
@@ -361,30 +364,59 @@ public class SalesDataToMigrateService {
         }
 
         if (buildingCountList.size() > 0) {
+            List<ProjectComplexBuilding> projectComplexBuildingList = projectComplexBuildingRepository.findByProject_Id(
+                project.getId());
             Long buildingSize = Collections.max(buildingCountList);
             List<ProjectEstimateComplexBuilding> complexBuildingList = new ArrayList<>();
-            for (int i = 0; i < buildingSize; i++) {
-                ProjectEstimateComplexBuilding complexBuilding = ProjectEstimateComplexBuilding.of(
-                    "임의" + (i + 1),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                );
-                em.persist(complexBuilding);
-                em.flush();
-                complexBuildingList.add(
-                    complexBuilding
-                );
+            // 설계 개요 파일 동 개수가 견적서별 개수와 일치 할 경우 프로젝트 기준 동 정보를 사용한다.
+            if (!projectComplexBuildingList.isEmpty() && buildingSize == projectComplexBuildingList.size()) {
+                projectComplexBuildingList.forEach(pcb -> {
+                    ProjectEstimateComplexBuilding complexBuilding = ProjectEstimateComplexBuilding.of(
+                        pcb.getName(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    );
+                    em.persist(complexBuilding);
+                    em.flush();
+                    complexBuildingList.add(
+                        complexBuilding
+                    );
+                });
+            } else {
+                for (int i = 0; i < buildingSize; i++) {
+                    ProjectEstimateComplexBuilding complexBuilding = ProjectEstimateComplexBuilding.of(
+                        "임의" + (i + 1),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    );
+                    em.persist(complexBuilding);
+                    em.flush();
+                    complexBuildingList.add(
+                        complexBuilding
+                    );
+                }
             }
 
             for (int k = 0; k < complexBuildingList.size(); k++) {
