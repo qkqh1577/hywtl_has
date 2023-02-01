@@ -71,8 +71,8 @@ export default function ProjectStatusRoute({ filter }: Props) {
       <ProjectStatusRightBar
         id={id}
         targetTest={test?.targetTest}
-        testAmount={contract?.estimate?.plan?.testAmount}
-        reviewAmount={contract?.estimate?.plan?.reviewAmount}
+        testAmount={contract?.testAmount}
+        reviewAmount={contract?.reviewAmount}
         stageList={collection?.stageList}
       />
       <ProjectBasicFailReasonModalRoute />
