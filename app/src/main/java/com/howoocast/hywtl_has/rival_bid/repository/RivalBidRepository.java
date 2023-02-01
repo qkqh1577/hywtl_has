@@ -9,4 +9,6 @@ public interface RivalBidRepository extends CustomRepository<RivalBid> {
     List<RivalBid> findByProject_Id(Long projectId);
 
     List<RivalBid> findByBusiness_Id(Long businessId);
+
+    Boolean existsByBusiness_Id(Long id);
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface ProjectFinalContractRepository extends CustomRepository<ProjectFinalContract> {
 
     Optional<ProjectFinalContract> findByProject_Id(Long projectId);
+
+    Boolean existsByBusiness_Id(Long id);
 }

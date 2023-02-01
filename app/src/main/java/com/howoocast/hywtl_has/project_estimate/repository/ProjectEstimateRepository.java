@@ -18,4 +18,6 @@ public interface ProjectEstimateRepository extends CustomRepository<ProjectEstim
         nativeQuery = true
     )
     Long findNextSeq(Long projectId);
+
+    Boolean existsByBusiness_Id(Long id);
 }
