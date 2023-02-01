@@ -3,6 +3,7 @@ package com.howoocast.hywtl_has.migration.service;
 import com.howoocast.hywtl_has.business.domain.Business;
 import com.howoocast.hywtl_has.business.domain.BusinessManager;
 import com.howoocast.hywtl_has.business.domain.ProjectInvolvedType;
+import com.howoocast.hywtl_has.business.repository.BusinessManagerRepository;
 import com.howoocast.hywtl_has.business.repository.BusinessRepository;
 import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.contract_basic.domain.ContractBasic;
@@ -83,8 +84,8 @@ public class SalesDataToMigrateService {
     private final ContractCollectionRepository contractCollectionRepository;
     private final ContractConditionRepository contractConditionRepository;
     private final ProjectCollectionRepository projectCollectionRepository;
-
     private static long lastTimeStamp = System.currentTimeMillis();
+    private final BusinessManagerRepository businessManagerRepository;
 
     @Transactional
     public void migrate() {
@@ -93,7 +94,6 @@ public class SalesDataToMigrateService {
             ContractBasic contractBasic = contractBasicRepository.findTop1By().orElse(ContractBasic.of());
             ContractCollection contractCollection = contractCollectionRepository.findTop1By()
                 .orElse(ContractCollection.of());
-            List<ContractCondition> contractConditionList = contractConditionRepository.findAll();
             for (int i = 0; i < salesMapList.size(); i++) {
                 int rowNum = i;
                 String value = salesMapList.get(rowNum).get(SalesHeader.CODE.getName());
@@ -228,7 +228,6 @@ public class SalesDataToMigrateService {
                                 project,
                                 contractBasic,
                                 contractCollection,
-                                contractConditionList,
                                 rowNum
                             );
                         }
@@ -270,7 +269,6 @@ public class SalesDataToMigrateService {
                                 project,
                                 contractBasic,
                                 contractCollection,
-                                contractConditionList,
                                 rowNum
                             );
                         }
@@ -279,10 +277,13 @@ public class SalesDataToMigrateService {
             }
         });
 
-        Project byBasicCode = projectRepository.findByBasic_Code("32").orElse(null);
-        if (Objects.nonNull(byBasicCode)) {
-            byBasicCode.delete();
-        }
+        List<BusinessManager> businessManagerList = businessManagerRepository.findAll();
+        businessManagerList.forEach(businessManager -> {
+            List<Project> projectList = projectBasicBusinessRepository.findByBusinessManager_Id(
+                businessManager.getId()).stream().map(ProjectBasicBusiness::getProject).collect(Collectors.toList());
+            businessManager.updateProjectCount(projectList);
+        });
+
     }
 
     private void updateCreatedProjectDate(Map<String, String> salesMap, Project project) {
@@ -298,7 +299,6 @@ public class SalesDataToMigrateService {
         Project project,
         ContractBasic contractBasic,
         ContractCollection contractCollection,
-        List<ContractCondition> contractConditionList,
         int rowNum
     ) {
         // E, C가 아닌 다른 구분은 데이터에서 제외.
@@ -433,7 +433,6 @@ public class SalesDataToMigrateService {
                 project,
                 contractBasic,
                 contractCollection,
-                contractConditionList,
                 projectSystemEstimate);
         } else {
             // 견적서(부모) 생성
@@ -463,7 +462,6 @@ public class SalesDataToMigrateService {
                 project,
                 contractBasic,
                 contractCollection,
-                contractConditionList,
                 projectSystemEstimate);
         }
     }
@@ -474,7 +472,6 @@ public class SalesDataToMigrateService {
         Project project,
         ContractBasic contractBasic,
         ContractCollection contractCollection,
-        List<ContractCondition> contractConditionList,
         ProjectSystemEstimate projectSystemEstimate
     ) {
         // 구분이 C인 경우
@@ -575,7 +572,7 @@ public class SalesDataToMigrateService {
                     )
                 );
             }
-
+            List<ContractCondition> contractConditionList = contractConditionRepository.findAll();
             List<ProjectContractCondition> projectContractConditionList = contractConditionList.stream()
                 .map(condition -> {
                     return ProjectContractCondition.of(
