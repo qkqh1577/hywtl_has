@@ -23,6 +23,7 @@ application:
         starttls: true
         name: 발송자
         dev-receiver: woo@howoocast.com
+        expire-time: PT30M
     file:
         root-path: d:/ws_intellij/hywtl_has
 
