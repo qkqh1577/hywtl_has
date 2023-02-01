@@ -10,6 +10,12 @@ import com.howoocast.hywtl_has.common.exception.IllegalRequestException;
 import com.howoocast.hywtl_has.common.exception.NotFoundException;
 import com.howoocast.hywtl_has.project.view.ProjectShortView;
 import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicBusinessRepository;
+import com.howoocast.hywtl_has.project_basic.repository.ProjectBasicExternalContributorRepository;
+import com.howoocast.hywtl_has.project_contract.repository.ProjectFinalContractRepository;
+import com.howoocast.hywtl_has.project_estimate.repository.ProjectEstimateRepository;
+import com.howoocast.hywtl_has.project_estimate.repository.ProjectFinalEstimateRepository;
+import com.howoocast.hywtl_has.rival_bid.repository.RivalBidRepository;
+import com.howoocast.hywtl_has.rival_estimate.repository.RivalEstimateRepository;
 import com.querydsl.core.types.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +40,18 @@ public class BusinessService {
     private final BusinessRepository repository;
 
     private final ProjectBasicBusinessRepository projectBasicBusinessRepository;
+
+    private final RivalBidRepository rivalBidRepository;
+
+    private final RivalEstimateRepository rivalEstimateRepository;
+
+    private final ProjectFinalEstimateRepository projectFinalEstimateRepository;
+
+    private final ProjectFinalContractRepository projectFinalContractRepository;
+
+    private final ProjectEstimateRepository projectEstimateRepository;
+
+    private final ProjectBasicExternalContributorRepository projectBasicExternalContributorRepository;
 
     @Transactional(readOnly = true)
     @Cacheable(value = "businessServiceCache")
@@ -80,9 +98,12 @@ public class BusinessService {
     }
 
     private void add(BusinessParameter parameter) {
-        List<BusinessManager> managerList = parameter.getManagerList().stream()
-            .map(this::ofDomain)
-            .collect(Collectors.toList());
+        List<BusinessManager> managerList = new ArrayList<>();
+        if (Objects.nonNull(parameter.getManagerList())) {
+            managerList = parameter.getManagerList().stream()
+                .map(this::ofDomain)
+                .collect(Collectors.toList());
+        }
 
         Business business = Business.of(
             parameter.getName(),
@@ -104,7 +125,12 @@ public class BusinessService {
         Business instance = this.load(id);
 
         List<BusinessManager> managerList = new ArrayList<>();
-        for (BusinessManagerParameter managerParameter : parameter.getManagerList()) {
+        List<BusinessManagerParameter> managerParameterList = new ArrayList<>();
+        if (Objects.nonNull(parameter.getManagerList())) {
+            managerParameterList = parameter.getManagerList();
+        }
+
+        for (BusinessManagerParameter managerParameter : managerParameterList) {
             Long managerId = managerParameter.getId();
             if (Objects.isNull(managerId)) {
                 // add
@@ -137,6 +163,8 @@ public class BusinessService {
                 .noneMatch(nextManager -> Objects.equals(prevManager.getId(), nextManager.getId()))
             ).forEach(removedManager -> {
                 // TODO: removed manager
+                exceptionHandlingByBusinessManger(removedManager);
+                removedManager.delete();
             });
 
         instance.change(
@@ -153,20 +181,88 @@ public class BusinessService {
     }
 
     @Transactional
-    @CacheEvict(value="businessServiceCache", allEntries = true)
+    @CacheEvict(value = "businessServiceCache", allEntries = true)
     public void delete(Long id) {
+        //TODO: existsBy로 변경.
         repository.findById(id).ifPresent(instance -> {
-            if (!instance.getManagerList().isEmpty()) {
-                throw new IllegalRequestException(
-                    Business.KEY + ".manager_list.delete_violation",
-                    "담당자가 존재하는 업체는 삭제할 수 없습니다."
-                );
-            }
-            // TODO: 프로젝트 담당이 있는 담당자가 있는 경우 해당 담당자를 삭제할 수 없다
+            exceptionHandlingByBusiness(id, instance);
             instance.delete();
         });
     }
 
+    @Cacheable(value = "businessServiceCache")
+    public List<ProjectShortView> getProjectList(Long id) {
+        return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream()
+            .map(projectBasicBusiness -> ProjectShortView.assemble(projectBasicBusiness.getProject()))
+            .collect(Collectors.toList());
+    }
+
+    private void exceptionHandlingByBusiness(Long id, Business instance) {
+        if (!instance.getManagerList().isEmpty()) {
+            throw new IllegalRequestException(
+                Business.KEY + ".manager_list.delete_violation",
+                "담당자가 존재하는 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (rivalBidRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".rival_bid.delete_violation",
+                "경쟁 업체 입찰이 존재하는 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (rivalEstimateRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".rival_estimate_bid.delete_violation",
+                "경쟁 업체 견적이 존재하는 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (projectBasicBusinessRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".project_basic_business.delete_violation",
+                "프로젝트 관계사로 등록된 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (projectFinalEstimateRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".project_final_estimate.delete_violation",
+                "프로젝트 최종 견적서의 견적 업체로 등록된 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (projectFinalContractRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".project_final_contract.delete_violation",
+                "프로젝트 최종 계약서의 발주처로 등록된 업체는 삭제할 수 없습니다."
+            );
+        }
+
+        if (projectEstimateRepository.existsByBusiness_Id(id)) {
+            throw new IllegalRequestException(
+                Business.KEY + ".project_estimate.delete_violation",
+                "프로젝트 견적서의 견적 업체로 등록된 업체는 삭제할 수 없습니다."
+            );
+        }
+    }
+
+    private void exceptionHandlingByBusinessManger(BusinessManager removedManager) {
+        if(projectBasicBusinessRepository.existsByBusinessManager_Id(removedManager.getId())){
+            throw new IllegalRequestException(
+                BusinessManager.KEY,
+                "프로젝트 기본 정보 관계사의 담당자로 등록된 담당자는 삭제할 수 없습니다."
+            );
+        }
+
+        if (projectBasicExternalContributorRepository.existsByBusinessManager_Id(removedManager.getId())) {
+            throw new IllegalRequestException(
+                BusinessManager.KEY,
+                "프로젝트 기본 정보 외부 기여자로 등록된 담당자는 삭제할 수 없습니다."
+            );
+        }
+    }
     private Business load(Long id) {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(Business.KEY, id));
     }
@@ -193,11 +289,6 @@ public class BusinessService {
             parameter.getStatus(),
             parameter.getAddress()
         );
-    }
-
-    @Cacheable(value = "businessServiceCache")
-    public List<ProjectShortView> getProjectList(Long id) {
-        return projectBasicBusinessRepository.findByBusinessManager_Id(id).stream().map(projectBasicBusiness -> ProjectShortView.assemble(projectBasicBusiness.getProject())).collect(Collectors.toList());
     }
 }
 

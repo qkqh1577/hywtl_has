@@ -22,13 +22,6 @@ public interface ProjectBasicBusinessRepository extends CustomRepository<Project
      * @migration
      * @param businessName
      * @param project
-     * @return
-     */
-    List<ProjectBasicBusiness> findByBusiness_NameAndProject(String businessName, Project project);
-    /**
-     * @migration
-     * @param businessName
-     * @param project
      * @param involvedType
      * @return
      */
@@ -50,4 +43,8 @@ public interface ProjectBasicBusinessRepository extends CustomRepository<Project
      * @return
      */
     List<ProjectBasicBusiness> findByBusiness_NameAndProjectAndInvolvedTypeAndBusinessManager_Name(String businessName, Project project, ProjectInvolvedType projectInvolvedType, String businessManagerName);
+
+    Boolean existsByBusiness_Id(Long id);
+
+    Boolean existsByBusinessManager_Id(Long id);
 }

@@ -13,7 +13,6 @@ import {
   businessManagerStatusName,
 } from 'business/domain';
 import { FormikContext } from 'formik';
-import useDialog from 'dialog/hook';
 import TextBox from 'layouts/Text';
 import Button from 'layouts/Button';
 import { initialBusinessManagerParameter } from 'business/parameter';
@@ -32,11 +31,9 @@ interface Props {
 
 const spaceCount = 4;
 export default function BusinessManagerListSection(props: Props) {
-  const { error } = useDialog();
   const formik = useContext(FormikContext);
   const managerList = formik.values.managerList;
   const edit = formik.values.edit === false ? !formik.values.id : (formik.values.id && formik.values.edit);
-
   return (
     <Box sx={{
       display:  'flex',
@@ -361,10 +358,6 @@ export default function BusinessManagerListSection(props: Props) {
                     shape="small3"
                     children="삭제"
                     onClick={() => {
-                      if (managerList.length === 1) {
-                        error('최소 하나 이상의 담당자 정보가 필요합니다.');
-                        return;
-                      }
                       formik.setFieldValue('managerList', managerList.filter((manager,
                                                                               j
                       ) => i !== j));

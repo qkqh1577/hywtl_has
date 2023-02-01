@@ -25,6 +25,27 @@ public class DepartmentInitDataService {
         );
         em.persist(hanYang);
 
+        Department boardMember = Department.of();
+        boardMember.change(
+            "임원",
+            DepartmentCategory.PERSON,
+            hanYang,
+            2,
+            null
+        );
+        em.persist(boardMember);
+
+        Department advisor = Department.of();
+        advisor.change(
+            "고문",
+            DepartmentCategory.PERSON,
+            hanYang,
+            2,
+            null
+        );
+        em.persist(advisor);
+
+
         Department headquarter = Department.of();
         headquarter.change(
             "총괄본부",
@@ -85,6 +106,7 @@ public class DepartmentInitDataService {
         );
         em.persist(salesTeam);
 
+
         Department modelingTeam = Department.of();
         modelingTeam.change(
             "모형팀",
@@ -100,7 +122,7 @@ public class DepartmentInitDataService {
         marketingTeam.change(
             "마케팅팀",
             DepartmentCategory.TEAM,
-            headquarter3,
+            headquarter2,
             4,
             null
         );
@@ -159,7 +181,7 @@ public class DepartmentInitDataService {
 
         Department design1Part = Department.of();
         design1Part.change(
-            "디자인 1부서",
+            "디자인1 부서",
             DepartmentCategory.PART,
             modelingTeam,
             5,
@@ -169,7 +191,7 @@ public class DepartmentInitDataService {
 
         Department design2Part = Department.of();
         design2Part.change(
-            "디자인 2부서",
+            "디자인2 부서",
             DepartmentCategory.PART,
             modelingTeam,
             5,

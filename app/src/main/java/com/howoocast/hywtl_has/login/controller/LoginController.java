@@ -7,6 +7,10 @@ import com.howoocast.hywtl_has.login.parameter.LoginUserChangeParameter;
 import com.howoocast.hywtl_has.login.parameter.UserValidatePasswordParameter;
 import com.howoocast.hywtl_has.login.service.LoginService;
 import com.howoocast.hywtl_has.user.view.UserView;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,4 +52,9 @@ public class LoginController {
         service.change(UsernameExtractor.get(authentication), parameter);
     }
 
+    @GetMapping("/login/session")
+    public boolean hasSession(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws IOException {
+        HttpSession session = request.getSession(false);
+        return false;
+    }
 }

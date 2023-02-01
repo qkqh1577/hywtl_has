@@ -6,6 +6,7 @@ import com.howoocast.hywtl_has.common.service.CustomFinder;
 import com.howoocast.hywtl_has.migration.enums.BidHeader;
 import com.howoocast.hywtl_has.migration.loader.BidExcelReader;
 import com.howoocast.hywtl_has.project.domain.Project;
+import com.howoocast.hywtl_has.project.domain.ProjectBasic;
 import com.howoocast.hywtl_has.project.domain.ProjectBasicBidType;
 import com.howoocast.hywtl_has.project.domain.ProjectProgressStatus;
 import com.howoocast.hywtl_has.project.repository.ProjectRepository;
@@ -28,6 +29,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class BidDataToMigrateService {
 
+    public static final String HAS_LAB = "한양풍동실험연구소";
     @PersistenceContext
     private EntityManager em;
 
@@ -40,6 +42,7 @@ public class BidDataToMigrateService {
         userRepository.findByUsername("admin").ifPresent(a -> {
             List<Map<String, String>> bidMapList = BidExcelReader.excelReader();
             bidMapList.forEach(bidMap -> {
+                // 프로젝트 코드가 없는 것 제외.
                 if (!StringUtils.hasText(bidMap.get(BidHeader.PROJECT_CODE.getName()))) {
                     return;
                 }
@@ -53,9 +56,19 @@ public class BidDataToMigrateService {
                     code = value.substring(0, value.length() - 2);
                 }
                 String finalCode = code.trim();
+
                 projectRepository.findByBasic_Code(finalCode).ifPresentOrElse(project -> {
-                        getBid(bidMap, project);
-                        getRivalBid(bidMap, project);
+                        ProjectBid bid = getBid(bidMap, project);
+                        getRivalBid(bidMap, project, bid);
+                        // 프로젝트 나라장터 입찰이 아닌 경우
+
+                        ProjectBasic basic = project.getBasic();
+                        if (!project.getBasic().getBidType().equals(ProjectBasicBidType.G2B)) {
+                            basic.updateCategory(ProjectBasicBidType.G2B);
+                            project.updateBasic(basic);
+                            em.persist(project);
+                        }
+
                     },
                     () -> {
                         // 프로젝트 없는 경우.
@@ -72,14 +85,14 @@ public class BidDataToMigrateService {
                             ProjectProgressStatus.UNDER_CONTRACT
                         );
                         em.persist(project);
-                        getBid(bidMap, project);
-                        getRivalBid(bidMap, project);
+                        ProjectBid bid = getBid(bidMap, project);
+                        getRivalBid(bidMap, project, bid);
                     });
             });
         });
     }
 
-    private void getRivalBid(Map<String, String> bidMap, Project project) {
+    private void getRivalBid(Map<String, String> bidMap, Project project, ProjectBid bid) {
         // 1순위
         if (StringUtils.hasText(bidMap.get(BidHeader.FIRST_RANK.getName()))
             && StringUtils.hasText(bidMap.get(BidHeader.FIRST_RANK_AMOUNT.getName()))) {
@@ -87,7 +100,8 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.FIRST_RANK.getName(),
-                BidHeader.FIRST_RANK_AMOUNT.getName()
+                BidHeader.FIRST_RANK_AMOUNT.getName(),
+                bid
             );
         }
         // 2순위
@@ -97,7 +111,8 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.SECOND_RANK.getName(),
-                BidHeader.SECOND_RANK_AMOUNT.getName()
+                BidHeader.SECOND_RANK_AMOUNT.getName(),
+                bid
             );
         }
         // 3순위
@@ -107,7 +122,8 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.THIRD_RANK.getName(),
-                BidHeader.THIRD_RANK_AMOUNT.getName()
+                BidHeader.THIRD_RANK_AMOUNT.getName(),
+                bid
             );
         }
         // 4순위
@@ -117,7 +133,8 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.FOURTH_RANK.getName(),
-                BidHeader.FOURTH_RANK_AMOUNT.getName()
+                BidHeader.FOURTH_RANK_AMOUNT.getName(),
+                bid
             );
         }
         // 5순위
@@ -127,7 +144,8 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.FIFTH_RANK.getName(),
-                BidHeader.FIFTH_RANK_AMOUNT.getName()
+                BidHeader.FIFTH_RANK_AMOUNT.getName(),
+                bid
             );
         }
         // 6순위
@@ -137,12 +155,13 @@ public class BidDataToMigrateService {
                 bidMap,
                 project,
                 BidHeader.SIXTH_RANK.getName(),
-                BidHeader.SIXTH_RANK_AMOUNT.getName()
+                BidHeader.SIXTH_RANK_AMOUNT.getName(),
+                bid
             );
         }
     }
 
-    private void getBid(Map<String, String> bidMap, Project project) {
+    private ProjectBid getBid(Map<String, String> bidMap, Project project) {
         ProjectBid bid = ProjectBid.of(project);
         em.persist(bid);
 
@@ -155,7 +174,7 @@ public class BidDataToMigrateService {
         // 선정업체
         if (StringUtils.hasText(bidMap.get(BidHeader.WIN_COMPANY.getName()))) {
             if (!bidMap.get(BidHeader.WIN_COMPANY.getName()).equals("미정")) {
-                if (bidMap.get(BidHeader.WIN_COMPANY.getName()).equals("한양풍동")) {
+                if (bidMap.get(BidHeader.WIN_COMPANY.getName()).equals(HAS_LAB)) {
                     bid.updateWin(new CustomFinder<>(businessRepository, Business.class).byId(1L));
                     em.persist(bid);
                 } else {
@@ -180,15 +199,19 @@ public class BidDataToMigrateService {
             }
         }
 
-        // 금액
-        if (StringUtils.hasText(bidMap.get(BidHeader.AMOUNT.getName()))) {
-            bid.updateTotalAmount(getAmount(bidMap, BidHeader.AMOUNT.getName()));
-            // super return 확인 필요.
-        }
+        return bid;
     }
 
-    private void getRivalBid(Map<String, String> bidMap, Project project, String rankKey, String amountKey) {
+    private void getRivalBid(Map<String, String> bidMap, Project project, String rankKey, String amountKey,
+        ProjectBid bid) {
         businessRepository.findByName(bidMap.get(rankKey)).ifPresentOrElse(business -> {
+                if (HAS_LAB.equals(business.getName())) {
+                    if (!bidMap.get(amountKey).equals("-")) {
+                        bid.updateTotalAmount(getAmount(bidMap, amountKey));
+                        em.persist(bid);
+                    }
+                    return;
+                }
                 RivalBid rivalBid = RivalBid.of(project, business);
                 if (!bidMap.get(amountKey).equals("-")) {
                     rivalBid.updateTotalAmount(getAmount(bidMap, amountKey));

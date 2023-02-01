@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,16 +26,10 @@ public class PersonnelJob extends CustomEntity {
     @ManyToOne
     private Department department; // 조직
 
-    @NotBlank
-    @Column(nullable = false)
     private String jobTitle; // 직함 - 조직 내 호칭
 
-    @NotBlank
-    @Column(nullable = false)
     private String jobType; // 직종 - 종사 계열. ex) 일반직, 연구직, 임원직
 
-    @NotBlank
-    @Column(nullable = false)
     private String jobPosition; // 직위 - 직무 상의 서열. ex) 사원, 대리...
 
     private String jobClass; // 직급 - 직위 내에서의 구분 단위. ex) n호봉, 주임, 책임...

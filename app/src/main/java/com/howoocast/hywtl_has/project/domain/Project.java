@@ -121,4 +121,8 @@ public class Project extends CustomEntity {
         super.setCreatedAt(date);
         return this;
     }
+
+    public void updateBasic(ProjectBasic basic) {
+        this.basic = basic;
+    }
 }

@@ -86,10 +86,10 @@ export function cut10000(amount: number | undefined): number {
 
   if (Math.floor(value)
           .toFixed(1) === Math.ceil(value)
-                              .toFixed(1)) {
+                              .toFixed(2)) {
     return +value.toFixed(0);
   }
-  return +value.toFixed(1);
+  return +value.toFixed(2);
 }
 
 

@@ -7,4 +7,6 @@ import java.util.List;
 public interface ProjectBasicExternalContributorRepository extends CustomRepository<ProjectBasicExternalContributor> {
 
     List<ProjectBasicExternalContributor> findByProject_Id(Long projectId);
+
+    Boolean existsByBusinessManager_Id(Long id);
 }

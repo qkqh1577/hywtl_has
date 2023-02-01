@@ -26,7 +26,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http
             .headers()
             .cacheControl().and().contentTypeOptions().disable()
@@ -44,8 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .logout()
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/login")
+            .logoutSuccessUrl("/")
             .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
             .and()
             .anonymous()
             .and()
@@ -60,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/user/login",
                 "/login",
                 "/login/forgot",
+                "/login/session",
                 "/static/**"
             )
             .permitAll()
@@ -75,9 +76,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .permitAll()
             .anyRequest()
             .authenticated();
+
 //            .antMatchers("/**")
 //            // TODO: 권한 및 url 체계 확정 후 denyAll 전환
 //            .permitAll();
+//        http.sessionManagement() //세션 관리 기능이 작동함
+//            .invalidSessionUrl("/"); //세션이 유효하지 않을 때 이동할 페이지
+//            .maximumSessions(1)//최대 허용 가능 세션 수, (-1: 무제한)
+//            .maxSessionsPreventsLogin(true)//동시 로그인 차단함, false: 기존 세션 만료(default)
+//            .expiredUrl("/");//세션이 만료된 경우 이동할 페이지
     }
 
     @Override
@@ -102,4 +109,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new LoginEntryPointService(userRepository);
     }
+
 }

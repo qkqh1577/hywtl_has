@@ -47,15 +47,15 @@ public class PersonnelBasic extends CustomEntity {
     protected String personalEmail; // 개인 이메일
 
     public static PersonnelBasic of(
-        String engName,
-        LocalDate birthDate,
-        String sex,
+        @Nullable String engName,
+        @Nullable LocalDate birthDate,
+        @Nullable String sex,
         @Nullable FileItem fileItem,
-        String address,
-        String phone,
-        String emergencyPhone,
-        String relationship,
-        String personalEmail
+        @Nullable String address,
+        @Nullable String phone,
+        @Nullable String emergencyPhone,
+        @Nullable String relationship,
+        @Nullable String personalEmail
     ) {
         return new PersonnelBasic(
             engName,

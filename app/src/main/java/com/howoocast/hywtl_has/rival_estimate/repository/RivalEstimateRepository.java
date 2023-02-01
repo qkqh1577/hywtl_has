@@ -8,5 +8,5 @@ public interface RivalEstimateRepository extends CustomRepository<RivalEstimate>
 
     List<RivalEstimate> findByProject_Id(Long projectId);
 
-    List<RivalEstimate> findByBusiness_Id(Long businessId);
+    Boolean existsByBusiness_Id(Long businessId);
 }
