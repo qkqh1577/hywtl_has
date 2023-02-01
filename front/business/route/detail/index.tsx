@@ -137,12 +137,16 @@ function Element() {
           }
         }}
       />
-      <AddressModal updateByFormik={address} />
-      <ProjectListModal
-        open={open}
-        onClose={closeProjectListModal}
-        projectList={projectList}
-      />
+      {address && (
+        <AddressModal updateByFormik={address} />
+      )}
+      {open && (
+        <ProjectListModal
+          open={open}
+          onClose={closeProjectListModal}
+          projectList={projectList}
+        />
+      )}
     </FormikProvider>
   );
 }
