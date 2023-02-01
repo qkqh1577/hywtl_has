@@ -36,7 +36,7 @@ function ProjectListModal(props: Props) {
             <TableHead>
               <TableRow>
                 <Th>No.</Th>
-                <Th>업체명</Th>
+                <Th>프로젝트명</Th>
                 <Th>진행현황</Th>
               </TableRow>
             </TableHead>
