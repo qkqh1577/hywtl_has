@@ -87,7 +87,7 @@ public class UserInitDataService {
                     em.flush();
 
                     User newUser = User.of(
-                        userMap.get(PersonnelHeader.EMPLOYEE_ID.getName()),
+                        userMap.get(PersonnelHeader.USERNAME.getName()),
                         "qwe123",
                         userMap.get(PersonnelHeader.EMPLOYEE_NAME.getName()),
                         email,
@@ -96,6 +96,13 @@ public class UserInitDataService {
                     );
                     em.persist(newUser);
                     em.flush();
+
+                    newUser.changeForMigration(
+                        getDate(userMap, PersonnelHeader.BIRTH_DATE.getName()),
+                        userMap.get(PersonnelHeader.MOBILE.getName()),
+                        userMap.get(PersonnelHeader.PERSONAL_EMAIL.getName()),
+                        userMap.get(PersonnelHeader.SEX.getName())
+                    );
 
                     Personnel personnelInfo = Personnel.of(newUser);
                     List<PersonnelJob> jobList = new ArrayList<>();
