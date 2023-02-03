@@ -12,7 +12,8 @@ public enum PersonnelHeader {
     COMPANY_EMAIL("회사Email"),
     PERSONAL_EMAIL("Email"),
     BIRTH_DATE("생년월일(주민번호)"),
-    SEX("성별");
+    SEX("성별"),
+    USERNAME("아이디");
 
     private final String name;
     PersonnelHeader(String name) {

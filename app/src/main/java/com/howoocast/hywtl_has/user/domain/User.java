@@ -299,4 +299,22 @@ public class User extends CustomEntity {
         this.profile = profile;
     }
 
+    /**
+     * @migration
+     * @param birthDate
+     * @param mobilePhone
+     * @param privateEmail
+     */
+    public void changeForMigration(
+        LocalDate birthDate,
+        String mobilePhone,
+        String privateEmail,
+        String sex
+    ) {
+        this.birthDate = birthDate;
+        this.mobilePhone = mobilePhone;
+        this.privateEmail = privateEmail;
+        this.sex = sex;
+    }
+
 }
