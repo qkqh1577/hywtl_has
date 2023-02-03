@@ -86,7 +86,6 @@ export default function List(props: Props) {
     const [filters, setFilters] = useState<Filter>({enabled:true});
 
     useEffect(() => {
-        console.debug('[LIST COMPONENT] filter state has changed');
         prepareGridData();
     }, [list, filter]);
 
@@ -98,7 +97,6 @@ export default function List(props: Props) {
         try {
             return schema[entityName].attributes[attrName].description;
         } catch (e) {
-            console.debug(e);
             console.warn(`Cannot find human readable attribute name for [${entityName}_${attrName}]`);
             return attrName;
         }
@@ -110,16 +108,13 @@ export default function List(props: Props) {
             let result = entity[attrName];
 
             if(attrInfo.prefix){
-                console.debug(attrInfo.prefix);
                 result = entity[attrInfo.prefix][attrName];
             }
 
             if ('option' in attrInfo) {
                 Object.keys(attrInfo.option).forEach(k => {
                     const attrCode = attrInfo.option[k];
-
                     if(attrInfo.prefix){
-                        console.debug(attrCode, entity[attrInfo.prefix][attrName]);
                         if (attrCode === entity[attrInfo.prefix][attrName]) {
                             result = attrInfo.optionLabel[k];
                             return false;
@@ -132,38 +127,14 @@ export default function List(props: Props) {
                     }
                 });
             }
-
             if (typeof result === 'boolean') {
                 result = (result) ? 'Y' : 'N';
             }
-
             return result;
         } catch (e) {
-            console.debug(e, schema[entityName].attributes[attrName]);
-
             console.warn(`Cannot find human readable value name for [${entityName}_${attrName}]`);
             return entity[attrName];
         }
-    }
-
-    const assignRowValues = (entityName: string, entity: any, row: Row) => {
-        const entityInfo = schema[entityName];
-        Object.keys(entity).forEach(attrName => {
-            if (typeof entity[attrName] === 'object' && entity[attrName] !== null) {
-                //console.debug(attrName, entity[attrName], entityInfo);
-                console.debug('filtered@1',attrName);
-                return true;
-            }
-            if (!isVisibleAttr(entityName, attrName) && entityName !== '') {
-                console.debug('filtered@2',attrName);
-                return true;
-            }
-
-            console.debug('accepted@',attrName);
-
-            const newAttrName = `${entityName}_${attrName}`;
-            row[newAttrName] = getHumanReadableAttrValue(entity, entityName, attrName);
-        });
     }
 
     const assignColumnValues = (prefix: string, entity: any, columns: Column[]) => {
@@ -176,9 +147,6 @@ export default function List(props: Props) {
             };
 
             const attrInfo = schema[prefix].attributes[attrName];
-            // filter extension
-            // see https://github.com/adazzle/react-data-grid/blob/main/website/demos/HeaderFilters.tsx
-
             column['headerCellClass'] = filterColumnClassName;
             column['headerRenderer'] = (p) => {
                 return (
@@ -200,11 +168,10 @@ export default function List(props: Props) {
                                     >
                                         <option key={0} value="">전체</option>
                                         {
-                                            Object.keys(attrInfo.option).map((key, index) => {
-                                                const optionValue = attrInfo.option[key];
+                                            Object.keys(attrInfo.option).map((key) => {
                                                 const optionLabel = attrInfo.optionLabel[key];
                                                 return (
-                                                    <option key={index + 1} value={optionLabel}>{optionLabel}</option>
+                                                    <option key={key} value={optionLabel}>{optionLabel}</option>
                                                 )
                                             })
                                         }
@@ -250,7 +217,6 @@ export default function List(props: Props) {
                     </FilterRenderer>
                 )
             }
-
             columns.push(column);
         });
     }
@@ -258,35 +224,24 @@ export default function List(props: Props) {
     const prepareGridData = () => {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
-
-        Object.keys(schema).reverse().map((entityName, index) => {
+        Object.keys(schema).reverse().forEach((entityName) => {
             const entityInfo = schema[entityName];
             assignColumnValues(entityName, entityInfo.attributes, newColumns);
         });
-
-        //// filter support
         const newFilter = {...filters};
         newColumns.forEach((col)=>{
             newFilter[col.key]='';
         });
         setFilters(newFilter);
-        //////
-
         setColumns(newColumns);
 
         list && list.forEach((entities, index) => {
             const row: Row = {id: index};
-            // Object.keys(entities).forEach((entityName) => {
-            //     const entityNameReal = entityName.charAt(0).toUpperCase() + entityName.slice(1) + 'View';
-            //     entities[entityName] && assignRowValues(entityNameReal, entities[entityName], row);
-            // });
-
-            Object.keys(schema).reverse().map((entityName, index) => {
+            Object.keys(schema).reverse().forEach((entityName) => {
                 const entityInfo = schema[entityName];
                 const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View','');
                 const viewData = entities[viewAttrName];
                 if(!viewData) return true;
-
                 Object.keys(entityInfo.attributes).forEach(attrName => {
                     if (!isVisibleAttr(entityName, attrName) && entityName !== '') return true;
                     const attrInfo = entityInfo.attributes[attrName];
@@ -297,10 +252,8 @@ export default function List(props: Props) {
                         if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) return true;
                         row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
                     }
-
                 });
             });
-
             newRows.push(row);
         });
         setRows(newRows);

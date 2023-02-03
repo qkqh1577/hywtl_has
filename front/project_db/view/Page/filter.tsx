@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback} from 'react'
 import {
     Accordion, AccordionDetails,
     AccordionSummary,
@@ -6,17 +6,14 @@ import {
     Checkbox,
     List,
     ListItemButton,
-    ListItemIcon,
     ListItemText, Typography
 } from "@mui/material";
 import {ProjectDbSchemaVO} from "../../domain";
-import InboxIcon from '@mui/icons-material/Inbox';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {ProjectDbFilter} from "../../reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
-import ProjectDbPage from "./index";
-import {projectDbAction, ProjectDbAction} from "../../action";
+import {projectDbAction} from "../../action";
 
 interface Props {
     schema: ProjectDbSchemaVO[],
@@ -32,7 +29,7 @@ export default function Filter(props: Props) {
         (filterState) => dispatch(projectDbAction.setFilter(filterState))
         , [dispatch]);
 
-    const onEntityItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string) => {
+    const onEntityItemChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, entityType: string) => {
         const checked = event.target.checked;
         const newFilterState = {...filter};
 
@@ -41,7 +38,7 @@ export default function Filter(props: Props) {
             newFilterState[entityType][attrName] = checked;
         });
         setFilter(newFilterState);
-    };
+    }, [filter]);
 
     const onAttributeItemChange = (event: React.ChangeEvent<HTMLInputElement>, entityType: string, attributeName: string) => {
         const checked = event.target.checked;
