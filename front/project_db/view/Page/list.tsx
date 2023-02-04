@@ -137,16 +137,26 @@ export default function List(props: Props) {
         }
     }
 
-    const assignColumnValues = (prefix: string, entity: any, columns: Column[]) => {
-        Object.keys(entity).forEach(attrName => {
+    const assignColumnValues = (prefix: string, entityInfo: any, columns: Column[]) => {
+        const entityNames = getSortedKeys(entityInfo);
+        entityNames.forEach(attrName => {
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
+
             const newAttrName = `${prefix}_${attrName}`;
+            const attrInfo = schema[prefix].attributes[attrName];
+
             const column: Column = {
                 key: newAttrName,
                 name: getHumanReadableAttrName(prefix, attrName)
             };
 
-            const attrInfo = schema[prefix].attributes[attrName];
+            const defaultWidth = 100;
+            if(attrInfo.width){
+                column['width'] = defaultWidth * attrInfo.width;
+            } else {
+                column['width'] = defaultWidth;
+            }
+
             column['headerCellClass'] = filterColumnClassName;
             column['headerRenderer'] = (p) => {
                 return (
@@ -221,12 +231,22 @@ export default function List(props: Props) {
         });
     }
 
+    function getSortedKeys(entityInfo){
+      const tmpArr : any[] = [];
+      Object.keys(entityInfo.attributes).forEach((attrName)=>{
+        const attrInfo = entityInfo.attributes[attrName];
+        tmpArr.push({...attrInfo, attrName});
+      });
+      const sortedTmpArr = tmpArr.sort((a, b) => a.order > b.order ? 1 : -1);
+      return sortedTmpArr.map(item=>item.attrName);
+    }
+
     const prepareGridData = () => {
         const newColumns: Column[] = [];
         const newRows: Row[] = [];
         Object.keys(schema).reverse().forEach((entityName) => {
             const entityInfo = schema[entityName];
-            assignColumnValues(entityName, entityInfo.attributes, newColumns);
+            assignColumnValues(entityName, entityInfo, newColumns);
         });
         const newFilter = {...filters};
         newColumns.forEach((col)=>{
