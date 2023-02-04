@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 import static com.howoocast.hywtl_has.project.domain.QProject.project;
 import static com.howoocast.hywtl_has.project_bid.domain.QProjectBid.projectBid;
 import static com.howoocast.hywtl_has.project_complex.domain.QProjectComplexSite.projectComplexSite;
-import static com.howoocast.hywtl_has.project_contract.domain.QProjectContract.projectContract;
-import static com.howoocast.hywtl_has.project_estimate.domain.QProjectEstimate.projectEstimate;
+import static com.howoocast.hywtl_has.project_contract.domain.QProjectFinalContract.projectFinalContract;
+import static com.howoocast.hywtl_has.project_estimate.domain.QProjectFinalEstimate.projectFinalEstimate;
 import static com.howoocast.hywtl_has.project_memo.domain.QProjectMemo.projectMemo;
 
 @Slf4j
@@ -158,7 +158,7 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
 
     private static JPAQuery<Tuple> joinByParameter(ProjectDbParameter parameter, JPAQuery<Tuple> query) {
         if (parameter.getProjectEstimate())
-            query = query.leftJoin(projectEstimate).on(project.id.eq(projectEstimate.project.id));
+            query = query.leftJoin(projectFinalEstimate).on(project.id.eq(projectFinalEstimate.project.id));
         if (parameter.getProjectComplexSite())
             query = query.leftJoin(projectComplexSite).on(project.id.eq(projectComplexSite.project.id));
         if (parameter.getProjectBid())
@@ -166,17 +166,17 @@ public class ProjectDbRepositoryImpl implements ProjectDbRepository {
         if (parameter.getProjectMemo())
             query = query.leftJoin(projectMemo).on(project.id.eq(projectMemo.project.id));
         if (parameter.getProjectContract())
-            query = query.leftJoin(projectContract).on(project.id.eq(projectContract.project.id));
+            query = query.leftJoin(projectFinalContract).on(project.id.eq(projectFinalContract.project.id));
         return query;
     }
 
     private static void prepareProjection(ProjectDbParameter parameter, ArrayList<Expression<?>> classes) {
         classes.add(project);
-        if (parameter.getProjectEstimate()) classes.add(projectEstimate);
+        if (parameter.getProjectEstimate()) classes.add(projectFinalEstimate);
         if (parameter.getProjectComplexSite()) classes.add(projectComplexSite);
         if (parameter.getProjectBid()) classes.add(projectBid);
         if (parameter.getProjectMemo()) classes.add(projectMemo);
-        if (parameter.getProjectContract()) classes.add(projectContract);
+        if (parameter.getProjectContract()) classes.add(projectFinalContract);
     }
 
 }

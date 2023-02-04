@@ -101,95 +101,116 @@ project-db:
           description: 최종수정
           search: false
           width: 2.4
-#    ProjectEstimateView:
-#      type: ProjectEstimateView
-#      description: 견적정보
-#      attributes:
-#        id:
-#          type: Long
-#          description: 아이디
-#        code:
-#          type: String
-#          description: 코드
-#          search: true
-#        type:
-#          type: String
-#          description: 유형
-#          search: true
-#        estimateDate:
-#          type: Date
-#          description: 견적일자
-#          search: true
-#          prefix: plan
-#        expectedServiceDate:
-#          type: Date
-#          description: 예상착수일자
-#          search: true
-#          prefix: plan
-#        expectedTestDeadline:
-#          type: Long
-#          description: 예상작업마감주
-#          search: true
-#          prefix: plan
-#        expectedFinalReportDeadline:
-#          type: Long
-#          description: 예상최종보고서마감주
-#          search: true
-#          prefix: plan
-#        testAmount:
-#          type: Long
-#          description: 풍동금액
-#          search: true
-#          prefix: plan
-#        reviewAmount:
-#          type: Long
-#          description: 구검금액
-#          search: true
-#          prefix: plan
-#        discountAmount:
-#          type: Long
-#          description: 특별할인금액
-#          search: true
-#          prefix: plan
-#        totalAmount:
-#          type: Long
-#          description: 총액
-#          search: true
-#          prefix: plan
-#        isSent:
-#          type: Boolean
-#          description: 제출여부
-#          search: true
-#        confirmed:
-#          type: Boolean
-#          description: 확정여부
-#          search: true
-#        recipient:
-#          type: String
-#          description: 수신인
-#          search: true
-#        note:
-#          type: String
-#          description: 노트
-#          search: true
-#        createdBy:
-#          type: UserShortView
-#          description: 작성자
-#        createdAt:
-#          type: LocalDateTime
-#          description: 최초작성일시
-#        modifiedAt:
-#          type: LocalDateTime
-#          description: 최종수정일시
-#        plan:
-#          type: ProjectEstimatePlanView
-#          description: 견적정보
-#        siteList:
-#          type: List<ProjectEstimateComplexSiteView>
-#          description: 현장정보
-#        buildingList:
-#          type: List<ProjectEstimateComplexBuildingView>
-#          description: 동정보
+    ProjectEstimateView:
+      type: ProjectEstimateView
+      description: 견적정보
+      attributes:
+        id:
+          order: 1
+          type: Long
+          description: 아이디
+        code:
+          order: 2
+          type: String
+          description: 코드
+          search: true
+        type:
+          order: 3
+          type: String
+          description: 유형
+          search: true
+        estimateDate:
+          order: 4
+          type: Date
+          description: 견적일자
+          search: true
+          prefix: plan
+        expectedServiceDate:
+          order: 5
+          type: Date
+          description: 예상착수일자
+          search: true
+          prefix: plan
+        expectedTestDeadline:
+          order: 6
+          type: Long
+          description: 예상작업마감주
+          search: true
+          prefix: plan
+        expectedFinalReportDeadline:
+          order: 7
+          type: Long
+          description: 예상최종보고서마감주
+          search: true
+          prefix: plan
+        testAmount:
+          order: 8
+          type: Long
+          description: 풍동금액
+          search: true
+          prefix: plan
+        reviewAmount:
+          order: 9
+          type: Long
+          description: 구검금액
+          search: true
+          prefix: plan
+        discountAmount:
+          order: 10
+          type: Long
+          description: 특별할인금액
+          search: true
+          prefix: plan
+        totalAmount:
+          order: 11
+          type: Long
+          description: 총액
+          search: true
+          prefix: plan
+        isSent:
+          order: 12
+          type: Boolean
+          description: 제출여부
+          search: true
+        confirmed:
+          order: 13
+          type: Boolean
+          description: 확정여부
+          search: true
+        recipient:
+          order: 14
+          type: String
+          description: 수신인
+          search: true
+        note:
+          order: 15
+          type: String
+          description: 노트
+          search: true
+        createdBy:
+          order: 16
+          type: UserShortView
+          description: 작성자
+        createdAt:
+          order: 17
+          type: LocalDateTime
+          description: 최초작성일시
+        modifiedAt:
+          order: 18
+          type: LocalDateTime
+          description: 최종수정일시
+        plan:
+          order: 19
+          type: ProjectEstimatePlanView
+          description: 견적정보
+        siteList:
+          order: 20
+          type: List<ProjectEstimateComplexSiteView>
+          description: 현장정보
+        buildingList:
+          order: 21
+          type: List<ProjectEstimateComplexBuildingView>
+          description: 동정보
 #    ProjectComplexSiteView:
 #      type: ProjectComplexSiteView
 #      description: 동정보
@@ -278,68 +299,57 @@ project-db:
 #        modifiedAt:
 #          type: LocalDateTime
 #          description: 수정일시
-#    ProjectContractView:
-#      type: ProjectContractView
-#      description: 계약정보
-#      attributes:
-#        confirmed:
-#          type: Boolean
-#          description: 최종여부
-#          search: true
-#        isSent:
-#          type: Boolean
-#          description: 발송여부
-#          search: true
-#        recipient:
-#          type: String
-#          description: 송부처
-#          search: true
-#        note:
-#          type: String
-#          description: 비고
-#          search: true
-#        serviceDuration:
-#          type: String
-#          description: 용역기간
-#          search: true
-#          prefix: basic
-#        outcome:
-#          type: String
-#          description: 성과품
-#          search: true
-#          prefix: basic
-#        contractDate:
-#          type: Date
-#          description: 계약날짜
-#          search: true
-#          prefix: basic
-#        ordererAddress:
-#          type: String
-#          description: 발주자소재
-#          search: true
-#          prefix: basic
-#        ordererCompanyName:
-#          type: String
-#          description: 발주자상호
-#          search: true
-#          prefix: basic
-#        ordererCeoName:
-#          type: String
-#          description: 발주자대표명
-#          search: true
-#          prefix: basic
-#        contractorAddress:
-#          type: String
-#          description: 수급자소재
-#          search: true
-#          prefix: basic
-#        contractorCompanyName:
-#          type: String
-#          description: 수급자상호
-#          search: true
-#          prefix: basic
-#        contractorCeoName:
-#          type: String
-#          description: 수급자대표명
-#          search: true
-#          prefix: basic
+    ProjectContractView:
+      type: ProjectContractView
+      description: 계약정보
+      attributes:
+        contractDate:
+          order: 1
+          type: LocalDate
+          description: 계약일자
+        contractType:
+          order: 2
+          type: String
+          description: 계약구분
+        code:
+          order: 3
+          type: String
+          description: 계약번호
+        estimateCode:
+          order: 4
+          type: String
+          description: 견적번호
+        targetTest:
+          order: 5
+          type: String
+          description: 실험정보
+        testAmount:
+          order: 6
+          type: Long
+          description: 풍동금액
+          search: true
+        reviewAmount:
+          order: 7
+          type: Long
+          description: 구검금액
+          search: true
+        totalAmount:
+          order: 8
+          type: Long
+          description: 총액
+          search: true
+        schedule:
+          order: 9
+          type: String
+          description: 일정
+          search: true
+        business:
+          order: 10
+          type: BusinessShortView
+          description: 발주처
+          search: true
+        note:
+          order: 11
+          type: String
+          description: 비고
+          search: true
