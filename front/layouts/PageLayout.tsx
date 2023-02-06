@@ -26,6 +26,7 @@ export interface PageLayoutProps
   footer?: React.ReactNode;
   modifiedAt?: Date | null;
   modals?: JSX.Element | JSX.Element[];
+  showTitle?: boolean;
 }
 
 export interface SearchPageLayoutProps
@@ -54,6 +55,8 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
           modals,
         } = props;
 
+  const showTitle = typeof props.showTitle != 'undefined' ? props.showTitle : true;
+
   return (
     <Paper sx={{
       width:    '100%',
@@ -62,35 +65,38 @@ export default function PageLayout<T>(props: PageLayoutProps | SearchPageLayoutP
       display:  'flex',
       flexWrap: 'wrap',
     }}>
-      <Box sx={{
-        display:        'flex',
-        flexWrap:       'nowrap',
-        width:          '100%',
-        justifyContent: 'space-between',
-        padding: '20px 30px 20px 20px'
-      }}>
-        {typeof title === 'string' && (
-          <Typography sx={{
-            fontSize:   '18px',
-            lineHeight: '26px',
-            color:      ColorPalette._252627,
-            fontWeight: 'bold'
-          }}>
-            {title}
-          </Typography>
-        )}
-        {typeof title !== 'string' && title}
-        {titleRightComponent && (
-          <Box sx={{
-            display:        'flex',
-            width:          '50%',
-            flexWrap:       'nowrap',
-            justifyContent: 'right',
-          }}>
-            {titleRightComponent}
-          </Box>
-        )}
-      </Box>
+
+      {showTitle && (
+        <Box sx={{
+          display:        'flex',
+          flexWrap:       'nowrap',
+          width:          '100%',
+          justifyContent: 'space-between',
+          padding: '20px 30px 20px 20px'
+        }}>
+          {typeof title === 'string' && (
+            <Typography sx={{
+              fontSize:   '18px',
+              lineHeight: '26px',
+              color:      ColorPalette._252627,
+              fontWeight: 'bold'
+            }}>
+              {title}
+            </Typography>
+          )}
+          {typeof title !== 'string' && title}
+          {titleRightComponent && (
+            <Box sx={{
+              display:        'flex',
+              width:          '50%',
+              flexWrap:       'nowrap',
+              justifyContent: 'right',
+            }}>
+              {titleRightComponent}
+            </Box>
+          )}
+        </Box>)
+      }
       {isFormikForm(props) && (
         <FormikProvider value={props.formik}>
           <PageContent {...props} />
