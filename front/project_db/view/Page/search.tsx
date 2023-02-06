@@ -23,7 +23,10 @@ import {projectDbAction} from "../../action";
 const useContainerStyle = makeStyles({
   root: {
     width: '100% !important',
-    padding: '20px',
+    padding: '0',
+    margin: '20px 20px 0px 20px',
+    zIndex:1000,
+    maxHeight: '56px'
   }
 });
 
@@ -33,12 +36,12 @@ const StyledAccordionSummary = withStyles({
     // width: '100%',
   },
   content: {
-    marginBottom: 0,
+    margin: 0,
   },
   expandIcon: {
     marginRight: 0,
     paddingTop: 0,
-  }
+  },
 })(AccordionSummary);
 
 export default function ProjectSearch() {
@@ -84,7 +87,7 @@ export default function ProjectSearch() {
 
   return (
     <Box className={useContainerStyle().root}>
-      <Accordion>
+      <Accordion sx={{overflow:'visible'}}>
         <StyledAccordionSummary
           expandIcon={<ExpandMoreIcon/>}
         >

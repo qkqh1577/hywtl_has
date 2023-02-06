@@ -40,7 +40,7 @@ const ProjectDbList = () => {
                     {presetModal && <PresetModal state={presetModal} handleClose={onModalClose}/>}
                 </Box>
             </Box>
-            <Box style={{display: 'flex', width: '100%', height: '100%', maxHeight: 'calc(100vh - 330px)'}}>
+            <Box style={{display: 'flex', width: '100%', height: '100%', maxHeight: 'calc(100vh - 200px)'}}>
                 <Box style={{display: 'flex', width: 'calc(100% - 200px)'}}>
                     <List list={list}/>
                 </Box>
