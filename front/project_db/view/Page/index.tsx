@@ -55,6 +55,7 @@ const ProjectDbList = () => {
 export default function ProjectDbPage() {
     return (
         <PageLayout
+            showTitle={false}
             title={"영업DB 분석"}
             // filter={<SearchBox/>}
             filter={<ProjectSearch/>}
