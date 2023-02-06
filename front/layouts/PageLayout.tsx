@@ -138,9 +138,9 @@ function PageContent(props: PageLayoutProps) {
         display:                      'flex',
         width:                        '100%',
         flexWrap:                     'wrap',
-        padding:                      '0px 20px 0 20px',
-        overflowY:                    'auto',
-        height:                       `calc(100% - ${filterHeight + 66}px)`,
+        padding:                      '20px 20px 0 20px',
+        overflowY:                    'scroll',
+        height:                       `calc(100% - ${filterHeight}px)`,
         '&::-webkit-scrollbar':       {
           width:           '10px',
           backgroundColor: ColorPalette._e4e9f2
