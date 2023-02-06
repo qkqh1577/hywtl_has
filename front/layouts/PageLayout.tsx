@@ -138,7 +138,7 @@ function PageContent(props: PageLayoutProps) {
         display:                      'flex',
         width:                        '100%',
         flexWrap:                     'wrap',
-        padding:                      '20px 20px 0 20px',
+        padding:                      '0px 20px 0 20px',
         overflowY:                    'scroll',
         height:                       `calc(100% - ${filterHeight + 66}px)`,
         '&::-webkit-scrollbar':       {
