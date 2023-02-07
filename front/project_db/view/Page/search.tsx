@@ -47,7 +47,7 @@ const StyledAccordionSummary = withStyles({
 export default function ProjectSearch() {
 
   const dispatch = useDispatch();
-  const {list, search} = useSelector((root: RootState) => root.projectDb);
+  const {list, search, exporting} = useSelector((root: RootState) => root.projectDb);
 
   const setSearch = useCallback(
     (searchState) => dispatch(projectDbAction.setSearch(searchState))
@@ -85,6 +85,12 @@ export default function ProjectSearch() {
     };
   }
 
+  const onExportToExcel = useCallback(()=> {
+    if (!exporting) {
+      dispatch(projectDbAction.setExporting(true));
+    }
+  },[exporting]);
+
   return (
     <Box className={useContainerStyle().root}>
       <Accordion sx={{overflow:'visible'}}>
@@ -95,6 +101,7 @@ export default function ProjectSearch() {
             <Chip icon={<TagIcon/>} sx={{backgroundColor: '#d3e9ff', fontWeight: 'bold'}} variant="outlined"
                   label={`검색 결과 - ${list.length}건`}/>
           </Typography>
+
         </StyledAccordionSummary>
         <AccordionDetails>
           <div style={{display: 'inline-flex'}}>
@@ -112,7 +119,18 @@ export default function ProjectSearch() {
               value={searchTo}
               renderInput={TextFieldForDatePicker()}/>
 
-            <Button onClick={onSearch}>검색</Button>
+            <Button
+                onClick={onSearch}
+                sx={{minWidth:'100px', margin:'0 10px'}}
+            >검색</Button>
+
+            <Button
+                onClick={onExportToExcel}
+                sx={{minWidth:'100px', margin:'0 10px'}}
+            >
+              {exporting && "저장중"}
+              {!exporting && "엑셀로 저장"}
+            </Button>
           </div>
         </AccordionDetails>
       </Accordion>

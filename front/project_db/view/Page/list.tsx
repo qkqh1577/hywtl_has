@@ -2,10 +2,13 @@ import React, {createContext, useContext, useEffect, useMemo, useState} from 're
 import 'react-data-grid/lib/styles.css';
 import DataGrid, {HeaderRendererProps, useFocusRef} from 'react-data-grid';
 import {ProjectDbVO} from "../../domain";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import {makeStyles} from "@mui/styles";
 import dayjs from "dayjs";
+import {projectDbAction} from "../../action";
+import {exportToXlsx} from "../../util/exportUtils";
+React.useLayoutEffect = React.useEffect
 
 interface Props {
     list: ProjectDbVO[]
@@ -31,8 +34,6 @@ const theme = {
 interface Filter extends Omit<Row, 'id' | 'complete'> {
     enabled: boolean;
 }
-
-const FilterContext = createContext<Filter | undefined>(undefined);
 
 function inputStopPropagation(event: React.KeyboardEvent<HTMLInputElement>) {
     if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
@@ -91,16 +92,18 @@ function FilterRenderer<R, SR, T extends HTMLOrSVGElement>({
     return (
         <>
             <div style={{height: '20px'}}>{column.name}</div>
-            {filters.enabled && <div>{children({ref, tabIndex, filters})}</div>}
+            {filters && filters.enabled && <div>{children({ref, tabIndex, filters})}</div>}
         </>
     );
 }
 
+const FilterContext = createContext<Filter | undefined>(undefined);
 export default function List(props: Props) {
 
     const classes = listClassname();
+    const dispatch = useDispatch();
     const {list} = props;
-    const {filter, schema} = useSelector((root: RootState) => root.projectDb);
+    const {filter, schema, exporting} = useSelector((root: RootState) => root.projectDb);
     const [columns, setColumns] = useState<Column[]>([]);
     const [rows, setRows] = useState<Row[]>([]);
     const [filters, setFilters] = useState<Filter>({enabled: true});
@@ -122,7 +125,7 @@ export default function List(props: Props) {
         }
     }
 
-    const getHumanReadableAttrValue = (entity: any, entityName: string, attrName: string, attrInfo: any) => {
+    const getHumanReadableAttrValue = (entity: any, entityName: string, attrName: string) => {
         try {
             const attrInfo = schema[entityName].attributes[attrName];
             let result = entity[attrName];
@@ -311,12 +314,12 @@ export default function List(props: Props) {
                     const attrInfo = entityInfo.attributes[attrName];
                     const newAttrName = `${entityName}_${attrName}`;
                     if (attrInfo.prefix) {
-                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName, attrInfo);
+                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
                     } else {
                         if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) {
                             row[newAttrName] = getHumanReadableAttrValueByType(viewData, entityName, attrName, attrInfo);
                         } else {
-                            row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName, attrInfo);
+                            row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
                         }
                     }
                 });
@@ -351,25 +354,44 @@ export default function List(props: Props) {
         });
     }, [rows, filters]);
 
+
+    const dataGridComponent = (
+        <DataGrid
+            className={theme.light}
+            headerRowHeight={filters.enabled ? 56 : undefined}
+            defaultColumnOptions={{
+                // sortable: true,
+                resizable: true
+            }}
+            columns={columns}
+            rows={filteredRows}
+            style={{height: '100%'}}
+        />
+    );
+    const gridWithConditionalContextProvider = exporting ? (
+            dataGridComponent
+        ):(
+        <FilterContext.Provider value={filters}>
+            {dataGridComponent}
+        </FilterContext.Provider>
+    );
+
+    useEffect(()=>{
+        if(exporting) {
+            exportToXlsx(
+                gridWithConditionalContextProvider, 'exported.xlsx').then(()=>{
+                dispatch(projectDbAction.setExporting(false));
+            }).catch((resp)=>{
+                console.error(resp);
+            });
+        }
+    },[exporting]);
+
     return (
         <div className={classes.root}>
-            <FilterContext.Provider value={filters}>
-                <DataGrid
-                    className={theme.light}
-                    headerRowHeight={filters.enabled ? 56 : undefined}
-                    defaultColumnOptions={{
-                        // sortable: true,
-                        resizable: true
-                    }}
-                    columns={columns}
-                    rows={filteredRows}
-                    style={{height: '100%'}}
-                />
-            </FilterContext.Provider>
+            {gridWithConditionalContextProvider}
         </div>
     )
 
 }
-
-
 
