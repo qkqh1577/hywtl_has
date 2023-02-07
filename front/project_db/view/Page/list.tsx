@@ -5,6 +5,7 @@ import {ProjectDbVO} from "../../domain";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import {makeStyles} from "@mui/styles";
+import dayjs from "dayjs";
 
 interface Props {
     list: ProjectDbVO[]
@@ -13,13 +14,13 @@ interface Props {
 interface Column {
     key: string,
     name: string,
-    frozen: boolean
+    frozen: boolean,
+    cellClass: (row: any) => string | undefined
 }
 
 interface Row {
     id: number,
-
-    [key: string]: any
+        [key: string]: any
 }
 
 const theme = {
@@ -59,7 +60,9 @@ const listClassname = makeStyles({
         },
         '& .rdg-cell-frozen-last': {
             borderRight: '2px solid navy',
-            boxSizing: 'border-box'
+        },
+        '& .last-attr-of-entity': {
+            borderRight: '1px dashed navy',
         }
     },
     filter: {
@@ -119,7 +122,7 @@ export default function List(props: Props) {
         }
     }
 
-    const getHumanReadableAttrValue = (entity: any, entityName: string, attrName: string) => {
+    const getHumanReadableAttrValue = (entity: any, entityName: string, attrName: string, attrInfo: any) => {
         try {
             const attrInfo = schema[entityName].attributes[attrName];
             let result = entity[attrName];
@@ -146,7 +149,14 @@ export default function List(props: Props) {
             }
             if (typeof result === 'boolean') {
                 result = (result) ? 'Y' : 'N';
+            } else if (attrInfo.currency) {
+                result = result.toLocaleString();
+            } else if (attrInfo.type === 'LocalDateTime') {
+                if(result){
+                    result = dayjs(result).format('YYYY-MM-DD hh:mm');
+                }
             }
+
             return result;
         } catch (e) {
             console.warn(`Cannot find human readable value name for [${entityName}_${attrName}]`);
@@ -154,19 +164,33 @@ export default function List(props: Props) {
         }
     }
 
+    const getHumanReadableAttrValueByType = (entity: any, entityName: string, attrName: string, attrInfo: any) => {
+        if(attrInfo.type === 'UserShortView') {
+            return entity[attrName].name;
+        } else if(attrInfo.type === 'BusinessShortView'){
+            return entity[attrName].name;
+        } else {
+            console.debug(`cannot handle type ${attrInfo.type}`)
+            return '';
+        }
+    };
+
     const assignColumnValues = (prefix: string, entityInfo: any, columns: Column[]) => {
         const entityNames = getSortedKeys(entityInfo);
-        entityNames.forEach(attrName => {
+        entityNames.forEach((attrName, index) => {
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
-
             const newAttrName = `${prefix}_${attrName}`;
             const attrInfo = schema[prefix].attributes[attrName];
             const frozen = typeof attrInfo.frozen == 'undefined' ? false : attrInfo.frozen;
+            const isLastAttrOfEntity = entityNames.length === index + 1 ? 'last-attr-of-entity':undefined;
 
             const column: Column = {
                 key: newAttrName,
                 name: getHumanReadableAttrName(prefix, attrName),
-                frozen: frozen
+                frozen: frozen,
+                cellClass(row) {
+                    return isLastAttrOfEntity;
+                }
             };
 
             const defaultWidth = 100;
@@ -287,10 +311,13 @@ export default function List(props: Props) {
                     const attrInfo = entityInfo.attributes[attrName];
                     const newAttrName = `${entityName}_${attrName}`;
                     if (attrInfo.prefix) {
-                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName, attrInfo);
                     } else {
-                        if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) return true;
-                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                        if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) {
+                            row[newAttrName] = getHumanReadableAttrValueByType(viewData, entityName, attrName, attrInfo);
+                        } else {
+                            row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName, attrInfo);
+                        }
                     }
                 });
             });
