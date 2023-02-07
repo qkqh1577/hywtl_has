@@ -12,7 +12,8 @@ interface Props {
 
 interface Column {
     key: string,
-    name: string
+    name: string,
+    frozen: boolean
 }
 
 interface Row {
@@ -44,10 +45,26 @@ function selectStopPropagation(event: React.KeyboardEvent<HTMLSelectElement>) {
     }
 }
 
-const filterClassname = makeStyles({
+const listClassname = makeStyles({
     root: {
+        position: 'relative', width: '100%', height: '100%',
+        '& .rdg-header-row': {
+            color: '#2d3a54',
+            backgroundColor: '#e4e9f2'
+        },
+        '& .filter-cell': {
+            outline:'none !important',
+            lineHeight: '35px',
+            padding: 0,
+        },
+        '& .rdg-cell-frozen-last': {
+            borderRight: '2px solid navy',
+            boxSizing: 'border-box'
+        }
+    },
+    filter: {
         inlineSize: '100%',
-        padding: '4px',
+        padding: '2px',
         fontSize: '14px',
     }
 });
@@ -70,7 +87,7 @@ function FilterRenderer<R, SR, T extends HTMLOrSVGElement>({
 
     return (
         <>
-            <div style={{height:'20px'}}>{column.name}</div>
+            <div style={{height: '20px'}}>{column.name}</div>
             {filters.enabled && <div>{children({ref, tabIndex, filters})}</div>}
         </>
     );
@@ -78,12 +95,12 @@ function FilterRenderer<R, SR, T extends HTMLOrSVGElement>({
 
 export default function List(props: Props) {
 
-    const classes = filterClassname();
+    const classes = listClassname();
     const {list} = props;
     const {filter, schema} = useSelector((root: RootState) => root.projectDb);
     const [columns, setColumns] = useState<Column[]>([]);
     const [rows, setRows] = useState<Row[]>([]);
-    const [filters, setFilters] = useState<Filter>({enabled:true});
+    const [filters, setFilters] = useState<Filter>({enabled: true});
 
     useEffect(() => {
         prepareGridData();
@@ -107,14 +124,14 @@ export default function List(props: Props) {
             const attrInfo = schema[entityName].attributes[attrName];
             let result = entity[attrName];
 
-            if(attrInfo.prefix){
+            if (attrInfo.prefix) {
                 result = entity[attrInfo.prefix][attrName];
             }
 
             if ('option' in attrInfo) {
                 Object.keys(attrInfo.option).forEach(k => {
                     const attrCode = attrInfo.option[k];
-                    if(attrInfo.prefix){
+                    if (attrInfo.prefix) {
                         if (attrCode === entity[attrInfo.prefix][attrName]) {
                             result = attrInfo.optionLabel[k];
                             return false;
@@ -144,14 +161,16 @@ export default function List(props: Props) {
 
             const newAttrName = `${prefix}_${attrName}`;
             const attrInfo = schema[prefix].attributes[attrName];
+            const frozen = typeof attrInfo.frozen == 'undefined' ? false : attrInfo.frozen;
 
             const column: Column = {
                 key: newAttrName,
-                name: getHumanReadableAttrName(prefix, attrName)
+                name: getHumanReadableAttrName(prefix, attrName),
+                frozen: frozen
             };
 
             const defaultWidth = 100;
-            if(attrInfo.width){
+            if (attrInfo.width) {
                 column['width'] = defaultWidth * attrInfo.width;
             } else {
                 column['width'] = defaultWidth;
@@ -162,11 +181,11 @@ export default function List(props: Props) {
                 return (
                     <FilterRenderer<Row, unknown, HTMLInputElement> {...p}>
                         {({filters, ...rest}) => {
-                            if(attrInfo.option) {
+                            if (attrInfo.option) {
                                 return (
                                     <select
                                         tabIndex={rest.tabIndex}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -187,11 +206,11 @@ export default function List(props: Props) {
                                         }
                                     </select>
                                 )
-                            } else if(attrInfo.type === 'Boolean'){
+                            } else if (attrInfo.type === 'Boolean') {
                                 return (
                                     <select
                                         tabIndex={rest.tabIndex}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -211,7 +230,7 @@ export default function List(props: Props) {
                                 return (
                                     <input
                                         {...rest}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -221,8 +240,9 @@ export default function List(props: Props) {
                                         }
                                         onKeyDown={inputStopPropagation}
                                     />
-                                )}
+                                )
                             }
+                        }
                         }
                     </FilterRenderer>
                 )
@@ -231,14 +251,14 @@ export default function List(props: Props) {
         });
     }
 
-    function getSortedKeys(entityInfo){
-      const tmpArr : any[] = [];
-      Object.keys(entityInfo.attributes).forEach((attrName)=>{
-        const attrInfo = entityInfo.attributes[attrName];
-        tmpArr.push({...attrInfo, attrName});
-      });
-      const sortedTmpArr = tmpArr.sort((a, b) => a.order > b.order ? 1 : -1);
-      return sortedTmpArr.map(item=>item.attrName);
+    function getSortedKeys(entityInfo) {
+        const tmpArr: any[] = [];
+        Object.keys(entityInfo.attributes).forEach((attrName) => {
+            const attrInfo = entityInfo.attributes[attrName];
+            tmpArr.push({...attrInfo, attrName});
+        });
+        const sortedTmpArr = tmpArr.sort((a, b) => a.order > b.order ? 1 : -1);
+        return sortedTmpArr.map(item => item.attrName);
     }
 
     const prepareGridData = () => {
@@ -249,8 +269,8 @@ export default function List(props: Props) {
             assignColumnValues(entityName, entityInfo, newColumns);
         });
         const newFilter = {...filters};
-        newColumns.forEach((col)=>{
-            newFilter[col.key]='';
+        newColumns.forEach((col) => {
+            newFilter[col.key] = '';
         });
         setFilters(newFilter);
         setColumns(newColumns);
@@ -259,14 +279,14 @@ export default function List(props: Props) {
             const row: Row = {id: index};
             Object.keys(schema).reverse().forEach((entityName) => {
                 const entityInfo = schema[entityName];
-                const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View','');
+                const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View', '');
                 const viewData = entities[viewAttrName];
-                if(!viewData) return true;
+                if (!viewData) return true;
                 Object.keys(entityInfo.attributes).forEach(attrName => {
                     if (!isVisibleAttr(entityName, attrName) && entityName !== '') return true;
                     const attrInfo = entityInfo.attributes[attrName];
                     const newAttrName = `${entityName}_${attrName}`;
-                    if(attrInfo.prefix){
+                    if (attrInfo.prefix) {
                         row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
                     } else {
                         if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) return true;
@@ -283,20 +303,20 @@ export default function List(props: Props) {
         return rows.filter((r) => {
             let validRow = true;
             Object.keys(filters).forEach(columnName => {
-                if(columnName === 'enabled') return true;
+                if (columnName === 'enabled') return true;
                 const columnValue = filters[columnName];
                 let valid = true;
-                if(filters[columnName]) {
-                    if(r[columnName]){
-                        valid= `${r[columnName]}`.includes(columnValue)
+                if (filters[columnName]) {
+                    if (r[columnName]) {
+                        valid = `${r[columnName]}`.includes(columnValue)
                     } else {
                         // skip null rows
                         valid = false;
                     }
                 }
 
-                if(!valid){
-                    validRow=false;
+                if (!valid) {
+                    validRow = false;
                     return false;
                 }
             })
@@ -305,11 +325,15 @@ export default function List(props: Props) {
     }, [rows, filters]);
 
     return (
-        <div style={{position: 'relative', width: '100%', height: '100%'}}>
+        <div className={classes.root}>
             <FilterContext.Provider value={filters}>
                 <DataGrid
                     className={theme.light}
-                    headerRowHeight={filters.enabled ? 70 : undefined}
+                    headerRowHeight={filters.enabled ? 56 : undefined}
+                    defaultColumnOptions={{
+                        // sortable: true,
+                        resizable: true
+                    }}
                     columns={columns}
                     rows={filteredRows}
                     style={{height: '100%'}}
