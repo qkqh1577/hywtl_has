@@ -124,6 +124,8 @@ project-db:
           type: String
           description: 견적유형
           search: true
+          option: [ "SYSTEM","CUSTOM","COMPARISON","SUB_CONTRACTOR" ]
+          optionLabel: [ "시스템 견적서","커스텀 견적서","대비 견적서","협력 견적서" ]
         estimateDate:
           order: 3
           type: Date
