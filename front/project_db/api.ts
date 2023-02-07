@@ -28,8 +28,8 @@ class ProjectDbApi {
 
         const query: ProjectDbQuery = {
             projectEstimate: true,
-            projectBid: true,
-            projectComplexSite: true,
+            projectBid: false,
+            projectComplexSite: false,
             projectContract: true,
             projectMemo: false,
             search: searchState.condition,
