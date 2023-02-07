@@ -11,7 +11,8 @@ export interface ProjectDbState {
     search?: ProjectDbSearch,
     preset: ProjectDbPreset[],
     activePreset?: ProjectDbPreset,
-    dynamicSelectState?:{}
+    dynamicSelectState?:{},
+    exporting: boolean
 }
 
 export interface ProjectDbSearch {
@@ -22,7 +23,7 @@ export interface ProjectDbSearch {
 
 export interface ProjectDbSearchCondition {
     [any: string]: ProjectSearchKV[]
-};
+}
 
 export interface ProjectSearchKV {
     key: string,
@@ -41,7 +42,8 @@ const initialState: ProjectDbState = {
     schema: [],
     filter: {},
     preset: [],
-    dynamicSelectState:{}
+    dynamicSelectState:{},
+    exporting: false
 };
 
 export const projectDbReducer = createReducer(initialState, {
@@ -74,17 +76,14 @@ export const projectDbReducer = createReducer(initialState, {
         activePreset: action.payload
     }),
     [ProjectDbAction.openDefaultPreset]: (state, action) => {
-
         const defaultEntityName = 'ProjectView';
-
         const initialFilterState : ProjectDbFilter = {};
         const entities: string[] = Object.keys(state.schema);
-        entities.map((entityName, index) => {
+        entities.forEach((entityName) => {
             const entityInfo = state.schema[entityName];
             const attributes = Object.keys(entityInfo.attributes);
             const initialAttrState = {};
-            attributes.map((attributeName, attributeIndex) => {
-                const attributeInfo = entityInfo.attributes[attributeName];
+            attributes.forEach((attributeName) => {
                 initialAttrState[attributeName] = entityName === defaultEntityName;
             });
             initialFilterState[entityInfo.type] = initialAttrState;
@@ -99,6 +98,10 @@ export const projectDbReducer = createReducer(initialState, {
     [ProjectDbAction.setDynamicSelectState]: (state, action) =>({
         ...state,
         dynamicSelectState: action.payload
+    }),
+    [ProjectDbAction.setExporting]: (state, action) =>({
+        ...state,
+        exporting: action.payload
     })
 
 });

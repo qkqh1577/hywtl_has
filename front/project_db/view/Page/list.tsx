@@ -2,9 +2,13 @@ import React, {createContext, useContext, useEffect, useMemo, useState} from 're
 import 'react-data-grid/lib/styles.css';
 import DataGrid, {HeaderRendererProps, useFocusRef} from 'react-data-grid';
 import {ProjectDbVO} from "../../domain";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../services/reducer";
 import {makeStyles} from "@mui/styles";
+import dayjs from "dayjs";
+import {projectDbAction} from "../../action";
+import {exportToXlsx} from "../../util/exportUtils";
+React.useLayoutEffect = React.useEffect
 
 interface Props {
     list: ProjectDbVO[]
@@ -12,13 +16,14 @@ interface Props {
 
 interface Column {
     key: string,
-    name: string
+    name: string,
+    frozen: boolean,
+    cellClass: (row: any) => string | undefined
 }
 
 interface Row {
     id: number,
-
-    [key: string]: any
+        [key: string]: any
 }
 
 const theme = {
@@ -29,8 +34,6 @@ const theme = {
 interface Filter extends Omit<Row, 'id' | 'complete'> {
     enabled: boolean;
 }
-
-const FilterContext = createContext<Filter | undefined>(undefined);
 
 function inputStopPropagation(event: React.KeyboardEvent<HTMLInputElement>) {
     if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
@@ -44,10 +47,28 @@ function selectStopPropagation(event: React.KeyboardEvent<HTMLSelectElement>) {
     }
 }
 
-const filterClassname = makeStyles({
+const listClassname = makeStyles({
     root: {
+        position: 'relative', width: '100%', height: '100%',
+        '& .rdg-header-row': {
+            color: '#2d3a54',
+            backgroundColor: '#e4e9f2'
+        },
+        '& .filter-cell': {
+            outline:'none !important',
+            lineHeight: '35px',
+            padding: 0,
+        },
+        '& .rdg-cell-frozen-last': {
+            borderRight: '2px solid navy',
+        },
+        '& .last-attr-of-entity': {
+            borderRight: '1px dashed navy',
+        }
+    },
+    filter: {
         inlineSize: '100%',
-        padding: '4px',
+        padding: '2px',
         fontSize: '14px',
     }
 });
@@ -70,20 +91,22 @@ function FilterRenderer<R, SR, T extends HTMLOrSVGElement>({
 
     return (
         <>
-            <div style={{height:'20px'}}>{column.name}</div>
-            {filters.enabled && <div>{children({ref, tabIndex, filters})}</div>}
+            <div style={{height: '20px'}}>{column.name}</div>
+            {filters && filters.enabled && <div>{children({ref, tabIndex, filters})}</div>}
         </>
     );
 }
 
+const FilterContext = createContext<Filter | undefined>(undefined);
 export default function List(props: Props) {
 
-    const classes = filterClassname();
+    const classes = listClassname();
+    const dispatch = useDispatch();
     const {list} = props;
-    const {filter, schema} = useSelector((root: RootState) => root.projectDb);
+    const {filter, schema, exporting} = useSelector((root: RootState) => root.projectDb);
     const [columns, setColumns] = useState<Column[]>([]);
     const [rows, setRows] = useState<Row[]>([]);
-    const [filters, setFilters] = useState<Filter>({enabled:true});
+    const [filters, setFilters] = useState<Filter>({enabled: true});
 
     useEffect(() => {
         prepareGridData();
@@ -107,14 +130,14 @@ export default function List(props: Props) {
             const attrInfo = schema[entityName].attributes[attrName];
             let result = entity[attrName];
 
-            if(attrInfo.prefix){
+            if (attrInfo.prefix) {
                 result = entity[attrInfo.prefix][attrName];
             }
 
             if ('option' in attrInfo) {
                 Object.keys(attrInfo.option).forEach(k => {
                     const attrCode = attrInfo.option[k];
-                    if(attrInfo.prefix){
+                    if (attrInfo.prefix) {
                         if (attrCode === entity[attrInfo.prefix][attrName]) {
                             result = attrInfo.optionLabel[k];
                             return false;
@@ -129,7 +152,14 @@ export default function List(props: Props) {
             }
             if (typeof result === 'boolean') {
                 result = (result) ? 'Y' : 'N';
+            } else if (attrInfo.currency) {
+                result = result.toLocaleString();
+            } else if (attrInfo.type === 'LocalDateTime') {
+                if(result){
+                    result = dayjs(result).format('YYYY-MM-DD hh:mm');
+                }
             }
+
             return result;
         } catch (e) {
             console.warn(`Cannot find human readable value name for [${entityName}_${attrName}]`);
@@ -137,21 +167,37 @@ export default function List(props: Props) {
         }
     }
 
+    const getHumanReadableAttrValueByType = (entity: any, entityName: string, attrName: string, attrInfo: any) => {
+        if(attrInfo.type === 'UserShortView') {
+            return entity[attrName].name;
+        } else if(attrInfo.type === 'BusinessShortView'){
+            return entity[attrName].name;
+        } else {
+            console.debug(`cannot handle type ${attrInfo.type}`)
+            return '';
+        }
+    };
+
     const assignColumnValues = (prefix: string, entityInfo: any, columns: Column[]) => {
         const entityNames = getSortedKeys(entityInfo);
-        entityNames.forEach(attrName => {
+        entityNames.forEach((attrName, index) => {
             if (!isVisibleAttr(prefix, attrName) && prefix !== '') return true;
-
             const newAttrName = `${prefix}_${attrName}`;
             const attrInfo = schema[prefix].attributes[attrName];
+            const frozen = typeof attrInfo.frozen == 'undefined' ? false : attrInfo.frozen;
+            const isLastAttrOfEntity = entityNames.length === index + 1 ? 'last-attr-of-entity':undefined;
 
             const column: Column = {
                 key: newAttrName,
-                name: getHumanReadableAttrName(prefix, attrName)
+                name: getHumanReadableAttrName(prefix, attrName),
+                frozen: frozen,
+                cellClass(row) {
+                    return isLastAttrOfEntity;
+                }
             };
 
             const defaultWidth = 100;
-            if(attrInfo.width){
+            if (attrInfo.width) {
                 column['width'] = defaultWidth * attrInfo.width;
             } else {
                 column['width'] = defaultWidth;
@@ -162,11 +208,11 @@ export default function List(props: Props) {
                 return (
                     <FilterRenderer<Row, unknown, HTMLInputElement> {...p}>
                         {({filters, ...rest}) => {
-                            if(attrInfo.option) {
+                            if (attrInfo.option) {
                                 return (
                                     <select
                                         tabIndex={rest.tabIndex}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -187,11 +233,11 @@ export default function List(props: Props) {
                                         }
                                     </select>
                                 )
-                            } else if(attrInfo.type === 'Boolean'){
+                            } else if (attrInfo.type === 'Boolean') {
                                 return (
                                     <select
                                         tabIndex={rest.tabIndex}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -211,7 +257,7 @@ export default function List(props: Props) {
                                 return (
                                     <input
                                         {...rest}
-                                        className={classes.root}
+                                        className={classes.filter}
                                         value={filters[p.column.key]}
                                         onChange={(e) =>
                                             setFilters({
@@ -221,8 +267,9 @@ export default function List(props: Props) {
                                         }
                                         onKeyDown={inputStopPropagation}
                                     />
-                                )}
+                                )
                             }
+                        }
                         }
                     </FilterRenderer>
                 )
@@ -231,14 +278,14 @@ export default function List(props: Props) {
         });
     }
 
-    function getSortedKeys(entityInfo){
-      const tmpArr : any[] = [];
-      Object.keys(entityInfo.attributes).forEach((attrName)=>{
-        const attrInfo = entityInfo.attributes[attrName];
-        tmpArr.push({...attrInfo, attrName});
-      });
-      const sortedTmpArr = tmpArr.sort((a, b) => a.order > b.order ? 1 : -1);
-      return sortedTmpArr.map(item=>item.attrName);
+    function getSortedKeys(entityInfo) {
+        const tmpArr: any[] = [];
+        Object.keys(entityInfo.attributes).forEach((attrName) => {
+            const attrInfo = entityInfo.attributes[attrName];
+            tmpArr.push({...attrInfo, attrName});
+        });
+        const sortedTmpArr = tmpArr.sort((a, b) => a.order > b.order ? 1 : -1);
+        return sortedTmpArr.map(item => item.attrName);
     }
 
     const prepareGridData = () => {
@@ -249,8 +296,8 @@ export default function List(props: Props) {
             assignColumnValues(entityName, entityInfo, newColumns);
         });
         const newFilter = {...filters};
-        newColumns.forEach((col)=>{
-            newFilter[col.key]='';
+        newColumns.forEach((col) => {
+            newFilter[col.key] = '';
         });
         setFilters(newFilter);
         setColumns(newColumns);
@@ -259,18 +306,21 @@ export default function List(props: Props) {
             const row: Row = {id: index};
             Object.keys(schema).reverse().forEach((entityName) => {
                 const entityInfo = schema[entityName];
-                const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View','');
+                const viewAttrName = entityName.charAt(0).toLowerCase() + entityName.slice(1).replace('View', '');
                 const viewData = entities[viewAttrName];
-                if(!viewData) return true;
+                if (!viewData) return true;
                 Object.keys(entityInfo.attributes).forEach(attrName => {
                     if (!isVisibleAttr(entityName, attrName) && entityName !== '') return true;
                     const attrInfo = entityInfo.attributes[attrName];
                     const newAttrName = `${entityName}_${attrName}`;
-                    if(attrInfo.prefix){
+                    if (attrInfo.prefix) {
                         row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
                     } else {
-                        if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) return true;
-                        row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                        if (typeof viewData[attrName] === 'object' && viewData[attrName] !== null) {
+                            row[newAttrName] = getHumanReadableAttrValueByType(viewData, entityName, attrName, attrInfo);
+                        } else {
+                            row[newAttrName] = getHumanReadableAttrValue(viewData, entityName, attrName);
+                        }
                     }
                 });
             });
@@ -283,20 +333,20 @@ export default function List(props: Props) {
         return rows.filter((r) => {
             let validRow = true;
             Object.keys(filters).forEach(columnName => {
-                if(columnName === 'enabled') return true;
+                if (columnName === 'enabled') return true;
                 const columnValue = filters[columnName];
                 let valid = true;
-                if(filters[columnName]) {
-                    if(r[columnName]){
-                        valid= `${r[columnName]}`.includes(columnValue)
+                if (filters[columnName]) {
+                    if (r[columnName]) {
+                        valid = `${r[columnName]}`.includes(columnValue)
                     } else {
                         // skip null rows
                         valid = false;
                     }
                 }
 
-                if(!valid){
-                    validRow=false;
+                if (!valid) {
+                    validRow = false;
                     return false;
                 }
             })
@@ -304,21 +354,44 @@ export default function List(props: Props) {
         });
     }, [rows, filters]);
 
+
+    const dataGridComponent = (
+        <DataGrid
+            className={theme.light}
+            headerRowHeight={filters.enabled ? 56 : undefined}
+            defaultColumnOptions={{
+                // sortable: true,
+                resizable: true
+            }}
+            columns={columns}
+            rows={filteredRows}
+            style={{height: '100%'}}
+        />
+    );
+    const gridWithConditionalContextProvider = exporting ? (
+            dataGridComponent
+        ):(
+        <FilterContext.Provider value={filters}>
+            {dataGridComponent}
+        </FilterContext.Provider>
+    );
+
+    useEffect(()=>{
+        if(exporting) {
+            exportToXlsx(
+                gridWithConditionalContextProvider, 'exported.xlsx').then(()=>{
+                dispatch(projectDbAction.setExporting(false));
+            }).catch((resp)=>{
+                console.error(resp);
+            });
+        }
+    },[exporting]);
+
     return (
-        <div style={{position: 'relative', width: '100%', height: '100%'}}>
-            <FilterContext.Provider value={filters}>
-                <DataGrid
-                    className={theme.light}
-                    headerRowHeight={filters.enabled ? 70 : undefined}
-                    columns={columns}
-                    rows={filteredRows}
-                    style={{height: '100%'}}
-                />
-            </FilterContext.Provider>
+        <div className={classes.root}>
+            {gridWithConditionalContextProvider}
         </div>
     )
 
 }
-
-
 

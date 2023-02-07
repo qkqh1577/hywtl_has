@@ -19,7 +19,10 @@ export enum ProjectDbAction {
 
     setActivePreset = 'project/db/preset/active',
     openDefaultPreset = 'project/db/preset/default',
-    setDynamicSelectState = 'project/db/dynamic/select/set'
+    setDynamicSelectState = 'project/db/dynamic/select/set',
+
+    exportToExcel = 'project/db/export/excel',
+    setExporting = 'project/db/export/excel/progress',
 }
 
 export const projectDbAction = {
@@ -39,5 +42,8 @@ export const projectDbAction = {
 
     setActivePreset: createAction(ProjectDbAction.setActivePreset)<ProjectDbPreset | undefined>(),
     openDefaultPreset: createAction(ProjectDbAction.openDefaultPreset)(),
-    setDynamicSelectState: createAction(ProjectDbAction.setDynamicSelectState)<object>()
+    setDynamicSelectState: createAction(ProjectDbAction.setDynamicSelectState)<object>(),
+
+    exportToExcel: createAction(ProjectDbAction.exportToExcel)(),
+    setExporting: createAction(ProjectDbAction.setExporting)<boolean>(),
 };
