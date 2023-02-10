@@ -43,7 +43,11 @@ const defaultMenuList: Menu[] = [{
   title: '업체 관리',
   path:  '/business-management',
   icon:  'building',
-}, {
+},{
+title: '민영',
+  path:  '/minyoung-study',
+  icon:  'building',
+},{
   title: 'WBS 관리',
   icon:  'list-ol',
 }, {
